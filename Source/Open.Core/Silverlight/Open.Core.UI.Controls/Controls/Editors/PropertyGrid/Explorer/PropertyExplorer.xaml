@@ -26,7 +26,7 @@
 
                     <!--Object Name-->
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,1,0,0">
-                        <Image Grid.Column="0" Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/Icon.Class.17x17.png" Stretch="None" Margin="6,-1,8,0" />
+                        <Image Grid.Column="0" Source="/Open.Core.UI.Controls;component/Images/Icon.Class.17x17.png" Stretch="None" Margin="6,-1,8,0" />
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding ObjectNamspace}" FontSize="8.5" FontStyle="Italic" Opacity="0.5" />
                             <TextBlock Text="{Binding ObjectName}" Margin="0,-2,0,0" />
@@ -62,11 +62,11 @@
                         <StackPanel Grid.Column="1" Margin="0,5,5,5" Orientation="Horizontal">
                             <Grid>
                                 <Image 
-                                        Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/Icon.Hierarchy.16x19.png" 
+                                        Source="/Open.Core.UI.Controls;component/Images/Icon.Hierarchy.16x19.png" 
                                         Visibility="{Binding IconVisibilityHierarchy}" 
                                         Stretch="None" />
                                 <Image 
-                                        Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/Icon.NoHierarchy.16x19.png" 
+                                        Source="/Open.Core.UI.Controls;component/Images/Icon.NoHierarchy.16x19.png" 
                                         Visibility="{Binding IconVisibilityNoHierarchy}" 
                                         Stretch="None" />
                                 <!--Tooltip-->
