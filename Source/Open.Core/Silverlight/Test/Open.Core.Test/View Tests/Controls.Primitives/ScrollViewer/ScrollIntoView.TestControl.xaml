@@ -1,0 +1,17 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Controls.Primitives.ScrollIntoViewTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+    
+    <ScrollViewer x:Name="scrollViewer" BorderBrush="Transparent" HorizontalScrollBarVisibility="Auto">
+        <ItemsControl x:Name="itemsControl">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Controls:Placeholder Text="{Binding Text}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+    
+</UserControl>

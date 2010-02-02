@@ -1,0 +1,16 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:b="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="toolbarButtonStyle" TargetType="b:ImageButton">
+        <Setter Property="Stretch" Value="None" />
+        <Setter Property="Opacity" Value="0.6" />
+        <Setter Property="DownOffset" Value="1,1" />
+    </Style>
+
+</ResourceDictionary>

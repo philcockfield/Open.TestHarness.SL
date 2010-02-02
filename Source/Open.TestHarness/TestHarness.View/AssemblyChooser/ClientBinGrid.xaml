@@ -1,0 +1,45 @@
+﻿<UserControl 
+    x:Class="Open.TestHarness.View.AssemblyChooser.ClientBinGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:dg="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/ControlStyles/DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Border BorderBrush="{StaticResource Brush.Black.020}" BorderThickness="1" CornerRadius="2">
+        <dg:DataGrid 
+                x:Name="binGrid_DataGrid" 
+                ItemsSource="{Binding Path=Files}" 
+                SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}"
+                Style="{StaticResource SimpleGrid}"
+                x:FieldModifier="private">
+            <i:Interaction.Behaviors>
+                <ab:DataGridFillerColumn ColumnIndex="0" />
+            </i:Interaction.Behaviors>
+
+            <dg:DataGrid.Columns>
+                <dg:DataGridTemplateColumn Header="Assembly Name" IsReadOnly="True">
+                    <dg:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="10,5,10,5">
+                                <Image Source="../Images/Icon.XapFile.16x15.png" Stretch="None" />
+                                <TextBlock Text="{Binding Name}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </dg:DataGridTemplateColumn.CellTemplate>
+                </dg:DataGridTemplateColumn>
+                <dg:DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True" />
+            </dg:DataGrid.Columns>
+        </dg:DataGrid>
+    </Border>
+
+</UserControl>

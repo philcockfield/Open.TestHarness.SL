@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67718EFF-D4D5-471A-A946-0E274A6651E1}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core</RootNamespace>
+    <AssemblyName>Open.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Silverlight\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Silverlight\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>..\..\..\..\Lib\MEF.Silverlight\v4.0\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition.Initialization">
+      <HintPath>..\..\..\..\Lib\MEF.Silverlight\v4.0\System.ComponentModel.Composition.Initialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition.Packaging.Toolkit">
+      <HintPath>..\..\..\..\Lib\MEF.Silverlight\v4.0\System.ComponentModel.Composition.Packaging.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Assets\StringLibrary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringLibrary.resx</DependentUpon>
+    </Compile>
+    <Compile Include="AttachedProperties\Focus.cs" />
+    <Compile Include="Attributes\PropertyGridAttribute.cs" />
+    <Compile Include="Attributes\SyncValueToAttribute.cs" />
+    <Compile Include="Base Classes\ControllerBase.cs" />
+    <Compile Include="Base Classes\DisposableBase.cs" />
+    <Compile Include="Network\PackageDownloadService.cs" />
+    <Compile Include="Exceptions\ValidationException.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.silverlight.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\HtmlWindowCloseMonitor.cs" />
+    <Compile Include="Logging\Output\OutputLine.cs" />
+    <Compile Include="Logging\Output\OutputWriter.cs" />
+    <Compile Include="Logging\Output\Output.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Base Classes\ModelBase.BeginInvoke.partial.cs" />
+    <Compile Include="Base Classes\EmbeddedParentT.cs" />
+    <Compile Include="Model\Base Classes\ModelBase.cs" />
+    <Compile Include="Model\Base Classes\ModelBase.AutoProperty.partial.cs" />
+    <Compile Include="Model\DomainCredential.cs" />
+    <Compile Include="Model\ViewTemplate.cs" />
+    <Compile Include="Base Classes\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Base Classes\NotifyPropertyChangedInvoker.cs" />
+    <Compile Include="Model\Base Classes\SettingsModelBase.cs" />
+    <Compile Include="Model\Base Classes\ViewModelBase.cs" />
+    <Compile Include="Collection\ChildPropertyChangedEventArgs.cs" />
+    <Compile Include="Collection\ObservableCollectionWrapperEventArgs.cs" />
+    <Compile Include="Collection\NotifyPropertyChangedCollectionMonitor.cs" />
+    <Compile Include="Collection\ObservableCollectionMonitor.cs" />
+    <Compile Include="Collection\ObservableCollectionWrapper.cs" />
+    <Compile Include="Collection\ProcessQueueEventArgs.cs" />
+    <Compile Include="Collection\ProcessQueueHandle.cs" />
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="Exceptions\AssertionException.cs" />
+    <Compile Include="Exceptions\InitializationException.cs" />
+    <Compile Include="Exceptions\ExistsException.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\TemplateNotSetException.cs" />
+    <Compile Include="Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\HtmlBridgeExtensions.cs" />
+    <Compile Include="Extensions\KeyExtensions.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="Extensions\NumberExtensions.cs" />
+    <Compile Include="Collection\ProcessQueue.cs" />
+    <Compile Include="Helper Classes\DataContextObserver.cs" />
+    <Compile Include="Helper Classes\DataContextPropertyObserver.cs" />
+    <Compile Include="Helper Classes\PropertyObserver.silverlight.cs" />
+    <Compile Include="Helper Classes\PropertyObserver.cs" />
+    <Compile Include="Helper Classes\SelectionManager.cs" />
+    <Compile Include="Helper Classes\SyncValueToHandler.cs" />
+    <Compile Include="Network\Callback.cs" />
+    <Compile Include="Testing\RandomData.cs" />
+    <Compile Include="Testing\Should.cs" />
+    <Compile Include="Extensions\XExtensions.silverlight.cs" />
+    <Compile Include="Extensions\LocalizationExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\SerializationExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\StringExtensions.silverlight.cs" />
+    <Compile Include="Testing\TestingExtensions.cs" />
+    <Compile Include="Extensions\XExtensions.cs" />
+    <Compile Include="Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs" />
+    <Compile Include="Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs" />
+    <Compile Include="Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs" />
+    <Compile Include="Helper Classes\DoubleClickMonitor.cs" />
+    <Compile Include="Helper Classes\StackArranger.cs" />
+    <Compile Include="Helper Classes\UrlHash.cs" />
+    <Compile Include="Network\AssemblyLoader.cs" />
+    <Compile Include="Network\LoaderBase.cs" />
+    <Compile Include="Network\TestableOpenReadCompletedEventArgs.cs" />
+    <Compile Include="Network\TestableWebClient.cs" />
+    <Compile Include="Helper Classes\DelayedAction.cs" />
+    <Compile Include="Util\MathUtil.cs" />
+    <Compile Include="Util\ReflectionUtil.cs" />
+    <Compile Include="Util\ServiceUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\StringLibrary.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringLibrary.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

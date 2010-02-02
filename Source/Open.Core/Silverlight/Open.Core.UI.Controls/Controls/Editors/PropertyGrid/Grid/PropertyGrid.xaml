@@ -1,0 +1,53 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
+    xmlns:c="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls" 
+    xmlns:pgs="clr-namespace:Open.Core.Common.Controls.Editors.PropertyGridStructure;assembly=Open.Core.UI.Controls" >
+
+    <ControlTemplate x:Key="PropertyGrid" TargetType="ContentControl">
+        <Grid Background="{TemplateBinding Background}">
+            <ScrollViewer x:Name="scroller" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" BorderThickness="1" BorderBrush="Transparent" x:FieldModifier="private">
+                <i:Interaction.Behaviors>
+                    <ab:MouseWheelScroller />
+                </i:Interaction.Behaviors>
+                <Grid Width="{Binding ViewportWidth, ElementName=scroller}">
+                    
+                    <!--Single Category-->
+                    <Border Visibility="{Binding SingleCategoryVisibility}">
+                        <pgs:PropertyGridPrimitive 
+                                        DataContext="{Binding SingleCategoryPropertiesViewModel}"
+                                        Background="{TemplateBinding Background}" />
+                    </Border>
+
+                    <!--Multiple Categories-->
+                    <ItemsControl ItemsSource="{Binding Categories}" Visibility="{Binding CategoriesVisibility}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                
+                                <!--Category of Properties-->
+                                <c:TitleContainer IsOpen="True" Title="{Binding CategoryName}" Margin="0,0,0,3" TitleOpacity="0.5">
+                                    <c:TitleContainer.Child>
+                                        <pgs:PropertyGridPrimitive 
+                                                        DataContext="{Binding GridViewModel}" 
+                                                        Margin="20,2,0,5" 
+                                                        Background="{TemplateBinding Background}" />
+                                    </c:TitleContainer.Child>
+                                </c:TitleContainer>
+                                
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>
+    
+    

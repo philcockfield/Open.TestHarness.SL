@@ -1,0 +1,32 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.AcceptCancelDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:c="clr-namespace:Open.Core.UI.Controls">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
+    </UserControl.Resources>
+    
+    <c:DialogPresenter x:Name="root" x:FieldModifier="private"
+            IsShowing="{Binding IsShowing}"
+            AnimationDuration="{Binding AnimationDuration}"
+            MaskOpacity="{Binding MaskOpacity}"
+            MaskBrush="{Binding MaskBrush}"
+            Easing="{Binding Easing}">
+        
+        <Border Width="{Binding DialogWidth}" Height="{Binding DialogHeight}">
+            <c:AcceptCancelPresenter DataContext="{Binding AcceptCancelPresenter}" BorderThickness="1,0,1,1">
+                
+                <ContentControl 
+                        ContentTemplate="{Binding DataContext.Content.Template, ElementName=root}" 
+                        DataContext="{Binding DataContext.Content.ViewModel, ElementName=root}"
+                        Style="{StaticResource StretchedContent}">
+                    <ContentPresenter />
+                </ContentControl>
+                
+            </c:AcceptCancelPresenter>
+        </Border>
+
+    </c:DialogPresenter>
+</UserControl>

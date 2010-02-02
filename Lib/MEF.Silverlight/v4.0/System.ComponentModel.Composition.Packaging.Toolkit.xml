@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>System.ComponentModel.Composition.Packaging.Toolkit</name>
+    </assembly>
+    <members>
+        <member name="T:System.ComponentModel.Composition.Packaging.Package">
+            <summary>
+                This is a prototype API that we have proposed to the Silverlight team to represent a Package (aka XAP)
+                so that we can work on some Catalogs that specifically target Silverlight packages. It is an
+                experimental API and will change if it ever ships as part of Silverlight.
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.Package.#ctor(System.Uri,System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+                Constructs package object.
+            </summary>
+            <param name="packageUri">Uri of the package</param>
+            <param name="assemblies">Set of assemblies included in this package</param>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.Package.DownloadPackageAsync(System.Uri,System.Action{System.ComponentModel.AsyncCompletedEventArgs,System.ComponentModel.Composition.Packaging.Package})">
+            <summary>
+                Downloads a secondary XAP and loads those assemblies into the AppDomain. Currently only supports
+                a limited set of scenarios, namely only loads the list of AssemblyParts found in the AppManifest.xaml
+                file of the secondary XAP.
+                
+                List of known issues:
+                 - Transparent Platform Extensions (TPE) aren't loaded supported.
+                 - Resources in the XAP directly are not supported, any needed resources need to be embedded in the assembly.
+                 - Versioning not supported. Currently if Silverlight finds another assembly with the same name but different
+                    version it will not load the new assembly. It purely uses the assembly name to identify already loaded assemblies.
+            
+            </summary>
+            <param name="packageUri">Uri the the xap file to be downloaded, needs to be </param>
+            <param name="packageDownloadCompleted">callback for when the package downloading completes</param>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.Package.GetDeploymentParts(System.Windows.Resources.StreamResourceInfo)">
+            <summary>
+                Only reads AssemblyParts and does not support external parts (aka Platform Extensions or TPEs).
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.Composition.Packaging.Package.Uri">
+            <summary>
+                Uri of the package.
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.Composition.Packaging.Package.Assemblies">
+            <summary>
+                Set of assemblies included in this package
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.Composition.Packaging.Package.Current">
+            <summary>
+                Retrieves a Package object for the set of assemblies loaded during the initial
+                application XAP load. Depends on the Deployment.Current property being setup and
+                so can only be accessed after the Application object has be completely constructed.
+            </summary>
+        </member>
+        <member name="T:System.ComponentModel.Composition.Packaging.PackageCatalog">
+            <summary>
+                This type is dependent on the Package class, which is currently an experimental API
+                added in this assembly. Which makes this API also an experimental API and will likely
+                change if it ever ships as part of Silverlight.
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.PackageCatalog.#ctor">
+            <summary>
+                Construct a PackageCatlaog object.
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.PackageCatalog.AddPackage(System.ComponentModel.Composition.Packaging.Package)">
+            <summary>
+                Adds a Package to the catalog. It will ensure that the same Package added more than
+                once will not cause duplication in the catalog. It will also ensure that the same
+                assembly appearing in multiple packages will not cause duplication in the catalog.
+            </summary>
+            <param name="package">
+                Package obtained by constructing a <see cref="T:System.ComponentModel.Composition.Packaging.Package"/> object or 
+                calling <see cref="M:System.ComponentModel.Composition.Packaging.Package.DownloadPackageAsync(System.Uri,System.Action{System.ComponentModel.AsyncCompletedEventArgs,System.ComponentModel.Composition.Packaging.Package})"/>. 
+            </param>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.PackageCatalog.OnChanged(System.ComponentModel.Composition.Hosting.ComposablePartCatalogChangeEventArgs)">
+            <summary>
+                Raises the <see cref="E:System.ComponentModel.Composition.Hosting.INotifyComposablePartCatalogChanged.Changed"/> event.
+            </summary>
+            <param name="e">
+                An <see cref="T:System.ComponentModel.Composition.Hosting.ComposablePartCatalogChangeEventArgs"/> containing the data for the event.
+            </param>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.PackageCatalog.OnChanging(System.ComponentModel.Composition.Hosting.ComposablePartCatalogChangeEventArgs)">
+            <summary>
+                Raises the <see cref="E:System.ComponentModel.Composition.Hosting.INotifyComposablePartCatalogChanged.Changing"/> event.
+            </summary>
+            <param name="e">
+                An <see cref="T:System.ComponentModel.Composition.Hosting.ComposablePartCatalogChangeEventArgs"/> containing the data for the event.
+            </param>
+        </member>
+        <member name="M:System.ComponentModel.Composition.Packaging.PackageCatalog.Dispose(System.Boolean)">
+            <summary>
+                Disposes the PackageCatalog.
+            </summary>
+            <param name="disposing">true if diposing; false if finalizing.</param>
+        </member>
+        <member name="P:System.ComponentModel.Composition.Packaging.PackageCatalog.Packages">
+            <summary>
+                List of packages already contained in this catalog.
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.Composition.Packaging.PackageCatalog.Parts">
+            <summary>
+                Gets the union of all the part definitions for all the packages that have
+                been added to this catalog.
+            </summary>
+            <value>
+                A <see cref="T:System.Linq.IQueryable`1"/> of <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition"/> objects of the 
+                <see cref="T:System.ComponentModel.Composition.Packaging.PackageCatalog"/>.
+            </value>
+        </member>
+        <member name="E:System.ComponentModel.Composition.Packaging.PackageCatalog.Changed">
+            <summary>
+            Notify when the contents of the Catalog has changed.
+            </summary>
+        </member>
+        <member name="E:System.ComponentModel.Composition.Packaging.PackageCatalog.Changing">
+            <summary>
+            Notify when the contents of the Catalog has changing.
+            </summary>
+        </member>
+    </members>
+</doc>

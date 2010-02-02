@@ -1,0 +1,16 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Common.Extensions.FocusChild.FocusChildTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Open.Core.Common;assembly=Open.Core">
+    
+    <Grid Background="Orange">
+        <Border Margin="30" Padding="30" Background="HotPink">
+            <StackPanel VerticalAlignment="Stretch" Margin="30">
+                <TextBox Margin="0,0,0,10" />
+                <TextBox c:Focus.IsDefault="true" />
+            </StackPanel>
+        </Border>
+    </Grid>
+    
+</UserControl>

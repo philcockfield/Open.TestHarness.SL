@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FEB32091-727E-418B-8841-6AD08D5952BD}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core.UI</RootNamespace>
+    <AssemblyName>Open.Core.UI</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Silverlight\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Silverlight\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\..\..\Lib\Expression.Silverlight\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Styles\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Colors\Flat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Colors\Gradients.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Colors\OpacityVariants.Black.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Colors\OpacityVariants.White.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ControlStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ControlStyles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ControlStyles\DataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ControlStyles\GridSplitter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Shapes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Composite\Command\ButtonBaseClickCommandBehavior.cs" />
+    <Compile Include="Composite\Command\Click.cs" />
+    <Compile Include="Composite\Command\CommandBehaviorBase.cs" />
+    <Compile Include="Composite\Command\DelegateCommand.cs" />
+    <Compile Include="Converter\CommaConverter.cs" />
+    <Compile Include="Converter\InvertedVisibilityConverter.cs" />
+    <Compile Include="Converter\VisibilityConverter.cs" />
+    <Compile Include="Extensions\DataGridExtensions.cs" />
+    <Compile Include="Interactivity\Behaviors\Animation\NamedPropertyAnimation.cs" />
+    <Compile Include="Interactivity\Behaviors\Animation\OpacityAnimation.cs" />
+    <Compile Include="Interactivity\Behaviors\Animation\PropertyAnimation.cs" />
+    <Compile Include="Interactivity\Behaviors\Animation\RotateAnimation.cs" />
+    <Compile Include="Interactivity\Behaviors\Animation\SizeAnimation.cs" />
+    <Compile Include="Interactivity\Behaviors\AutoRowDefinitions.cs" />
+    <Compile Include="Interactivity\Behaviors\ClipToBounds.cs" />
+    <Compile Include="Interactivity\Behaviors\CommonWidth.cs" />
+    <Compile Include="Interactivity\Behaviors\DataGridFillerColumn.cs" />
+    <Compile Include="Interactivity\Behaviors\DisposeWithViewModel.cs" />
+    <Compile Include="Interactivity\Behaviors\Drag\DragBehavior.cs" />
+    <Compile Include="Interactivity\Behaviors\Drag\Draggable.cs" />
+    <Compile Include="Interactivity\Behaviors\Drag\DraggingEventArgs.cs" />
+    <Compile Include="Interactivity\Behaviors\Drag\Resizer.cs" />
+    <Compile Include="Interactivity\Behaviors\EnabledOpacity.cs" />
+    <Compile Include="Interactivity\Behaviors\Persistent Size\PersistentColumnSize.cs" />
+    <Compile Include="Interactivity\Behaviors\Persistent Size\PersistentGridSizeBase.cs" />
+    <Compile Include="Interactivity\Behaviors\Persistent Size\PersistentRowSize.cs" />
+    <Compile Include="Interactivity\Behaviors\Persistent Size\PersistentSize.cs" />
+    <Compile Include="Interactivity\Behaviors\PositionSlider.cs" />
+    <Compile Include="Interactivity\Behaviors\RoundedCorners.cs" />
+    <Compile Include="Interactivity\Behaviors\ScrollWheel\ListBoxMouseWheelScroller.cs" />
+    <Compile Include="Interactivity\Behaviors\ScrollWheel\MouseWheelScroller.cs" />
+    <Compile Include="Interactivity\Behaviors\SelectTextOnFocus.cs" />
+    <Compile Include="Interactivity\Behaviors\SyncSizeRatio.cs" />
+    <Compile Include="Interactivity\Behaviors\SyncWithScrollViewerWidth.cs" />
+    <Compile Include="Interactivity\Behaviors\TextMouseHighlight.cs" />
+    <Compile Include="Interactivity\Behaviors\UpdateOnKeyPress.cs" />
+    <Compile Include="Interactivity\Behaviors.cs" />
+    <Compile Include="Base Classes\ResourcesBase.cs" />
+    <Compile Include="Enumerations\Icons %28Enum%29.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.silverlight.cs" />
+    <Compile Include="Extensions\IconExtensions.cs" />
+    <Compile Include="Extensions\IconExtensions.silverlight.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
+    <Compile Include="Helper Classes\ScrollViewerMonitor.cs" />
+    <Compile Include="Styles\Shapes.cs" />
+    <Compile Include="Styles\StyleResources.cs" />
+    <Compile Include="Interactivity\TriggerActions\ExecuteMethod.cs" />
+    <Compile Include="Util\AnimationUtil.cs" />
+    <Compile Include="Util\AnimationUtil.silverlight.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Open.Core\Open.Core.csproj">
+      <Project>{67718EFF-D4D5-471A-A946-0E274A6651E1}</Project>
+      <Name>Open.Core %28Open.Core\Silverlight\Open.Core%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

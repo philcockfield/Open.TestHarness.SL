@@ -1,0 +1,17 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Common.Animation.AnimationBehaviorTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI"
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+    
+    <Controls:Placeholder>
+        <i:Interaction.Behaviors>
+            <ab:RotateAnimation Duration="0.4" PropertyName="Angle" TransformOrigin="0.4,0.2" />
+            <ab:SizeAnimation Duration="0.3" WidthPropertyName="Width" HeightPropertyName="Height" />
+            <ab:OpacityAnimation Duration="0.3" PropertyName="Opacity" />
+        </i:Interaction.Behaviors>
+    </Controls:Placeholder>
+    
+</UserControl>

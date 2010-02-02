@@ -1,0 +1,87 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Editors="clr-namespace:Open.Core.Common.Controls.Editors;assembly=Open.Core.UI.Controls"
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI"
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="PropertyExplorer" TargetType="ContentControl">
+        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid Background="{TemplateBinding Background}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--Selected Object Title-->
+                <Grid Grid.Row="0" Height="36" Visibility="{Binding PropertyGridVisibility}">
+                    <!--Background-->
+                    <Border Background="{StaticResource Brush.Black.003}" BorderBrush="{StaticResource Brush.Black.015}" BorderThickness="0,0,0,1" />
+                    <Border Background="{StaticResource Gradient.Vertical.Black-Transparent}" Opacity="0.15" Height="8" VerticalAlignment="Top" />
+
+                    <!--Object Name-->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,1,0,0">
+                        <Image Grid.Column="0" Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/Icon.Class.17x17.png" Stretch="None" Margin="6,-1,8,0" />
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding ObjectNamspace}" FontSize="8.5" FontStyle="Italic" Opacity="0.5" />
+                            <TextBlock Text="{Binding ObjectName}" Margin="0,-2,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!--Property Grid-->
+                <Grid Grid.Row="1" Visibility="{Binding PropertyGridVisibility}">
+                    <Editors:PropertyGrid 
+                                    DataContext="{Binding GridViewModel}"
+                                    Background="{TemplateBinding Background}" 
+                                    Margin="1" />
+                </Grid>
+
+                <!--Text Filter-->
+                <Grid Grid.Row="2">
+                    <Border Background="{StaticResource Brush.Black.005}" BorderBrush="{StaticResource Brush.Black.025}" BorderThickness="0,1,0,0" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <!--Textbox-->
+                        <Controls:CoreTextBox Grid.Column="0" Text="{Binding FilterByPropertyName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Margin="5">
+                            <ab:Behaviors.UpdateOnKeyPress>
+                                <ab:UpdateOnKeyPress />
+                            </ab:Behaviors.UpdateOnKeyPress>
+                        </Controls:CoreTextBox>
+
+                        <!--Inheritance Option-->
+                        <StackPanel Grid.Column="1" Margin="0,5,5,5" Orientation="Horizontal">
+                            <Grid>
+                                <Image 
+                                        Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/Icon.Hierarchy.16x19.png" 
+                                        Visibility="{Binding IconVisibilityHierarchy}" 
+                                        Stretch="None" />
+                                <Image 
+                                        Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/Icon.NoHierarchy.16x19.png" 
+                                        Visibility="{Binding IconVisibilityNoHierarchy}" 
+                                        Stretch="None" />
+                                <!--Tooltip-->
+                                <TextBlock x:Name="tooltipHierarchyText" Text="{Binding IncludeHierarchyTooltip}" Visibility="Collapsed" />
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{Binding Text, ElementName=tooltipHierarchyText}" />
+                                </ToolTipService.ToolTip>
+                            </Grid>
+                            <CheckBox IsChecked="{Binding IncludeHierarchy, Mode=TwoWay}" VerticalAlignment="Center" Margin="4,0,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

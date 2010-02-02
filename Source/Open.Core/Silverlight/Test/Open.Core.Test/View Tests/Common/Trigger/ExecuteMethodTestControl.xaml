@@ -1,0 +1,19 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Common.Trigger.ExecuteMethodTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:t="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+    <Grid>
+
+        <Controls:Placeholder Text="{Binding Text}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <t:ExecuteMethod MethodName="IncrementCounter" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Controls:Placeholder>
+        
+    </Grid>
+</UserControl>

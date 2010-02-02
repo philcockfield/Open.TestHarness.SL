@@ -1,0 +1,31 @@
+﻿<UserControl 
+    x:Class="Open.Core.Common.Controls.Editors.PropertyGridStructure.Editors.BooleanEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
+
+    <UserControl.Resources>
+        <Converter:VisibilityConverter x:Key="visibilityConverter" />
+    </UserControl.Resources>
+    
+    <!--NB: A root button container so that the set of radio-buttons do not lose focus when the background is clicked.-->
+    <Border Background="White">
+        <Button HorizontalAlignment="Left">
+            <Button.Template>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Background="White">
+                        <RadioButton Content="True" IsChecked="{Binding TrueIsChecked, Mode=TwoWay}" GroupName="Bool" Margin="0,0,12,0" />
+                        <RadioButton Content="False" IsChecked="{Binding FalseIsChecked, Mode=TwoWay}" GroupName="Bool" />
+                        <RadioButton 
+                                Content="Null" 
+                                IsChecked="{Binding NullIsChecked, Mode=TwoWay}" 
+                                Visibility="{Binding IsNullBool, Converter={StaticResource visibilityConverter}}"
+                                GroupName="Bool" 
+                                Margin="12,0,0,0" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Border>
+
+</UserControl>

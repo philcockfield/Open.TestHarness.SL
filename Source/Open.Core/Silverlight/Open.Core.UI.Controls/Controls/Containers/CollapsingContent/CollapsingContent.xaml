@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Core="clr-namespace:Open.Core.UI.Silverlight.Controls">
+    
+    <ControlTemplate x:Key="CollapsingContent" TargetType="Core:CollapsingContent">
+        <Border x:Name="PART_Container" Visibility="Collapsed" x:FieldModifier="private">
+            <Border Height="10000">
+                <ContentPresenter 
+                                        x:Name="PART_Child" 
+                                        VerticalAlignment="Top"
+                                        x:FieldModifier="private" />
+            </Border>
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors/Flat.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors/Gradients.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors/OpacityVariants.Black.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors/OpacityVariants.White.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

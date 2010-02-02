@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pgs="clr-namespace:Open.Core.Common.Controls.Editors.PropertyGridStructure;assembly=Open.Core.UI.Controls"
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+
+    <ControlTemplate x:Key="PropertyGridLabel">
+        <Grid Background="White" Width="200" Margin="0,0,2,1">
+            <!--Focused Highlight Background-->
+            <Border Background="#3399ff" Visibility="{Binding EditorControlVisibility}" />
+            
+            <!--Property Name-->
+            <TextBlock 
+                        Text="{Binding PropertyName}" 
+                        Foreground="{Binding LabelColor}"
+                        Opacity="{Binding LabelTextOpacity}" 
+                        Margin="5,0,0,0" 
+                        VerticalAlignment="Center" />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="PropertyGridValue">
+        <Border Background="White" Margin="0,0,0,1">
+            <pgs:PropertyValue />
+        </Border>
+    </ControlTemplate>
+
+    
+    <ControlTemplate x:Key="PropertyGridPrimitive" TargetType="ContentControl">
+        <Controls:AutoGrid Background="{TemplateBinding Background}" ItemsSource="{Binding Properties}" RowHeight="22">
+            <Controls:AutoGrid.Columns>
+                <Controls:AutoColumnDefinition Width="140" Template="{StaticResource PropertyGridLabel}" />
+                <Controls:AutoColumnDefinition Width="*" Template="{StaticResource PropertyGridValue}" />
+            </Controls:AutoGrid.Columns>
+        </Controls:AutoGrid>
+    </ControlTemplate>
+</ResourceDictionary>
+    
+    

@@ -1,0 +1,16 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.StatusIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="16" Height="17">
+    <Grid x:Name="root" x:FieldModifier="private">
+
+        <Image x:Name="backgroundIcon" 
+                       Source="/Open.Core.UI.Controls;component/Images/Icon.Status.16x17.Grey.png"
+                       Opacity="0.3"
+                       x:FieldModifier="private" />
+        
+        <Image x:Name="icon" x:FieldModifier="private" />
+
+    </Grid>
+</UserControl>

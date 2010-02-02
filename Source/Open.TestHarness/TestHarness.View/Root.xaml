@@ -1,0 +1,87 @@
+﻿<UserControl 
+    x:Class="Open.TestHarness.View.Root"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:wc="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls" 
+    xmlns:Selector="clr-namespace:Open.TestHarness.View.Selector;assembly=Open.TestHarness.View"
+    xmlns:ControlHost="clr-namespace:Open.TestHarness.View.ControlHost;assembly=Open.TestHarness.View"
+    xmlns:AssemblyChooser="clr-namespace:Open.TestHarness.View.AssemblyChooser;assembly=Open.TestHarness.View"
+    xmlns:PropertyGrid="clr-namespace:Open.TestHarness.View.PropertyGrid;assembly=Open.TestHarness.View"
+    xmlns:FooterPanel="clr-namespace:Open.TestHarness.View.FooterPanel" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <!--TestHarness-->
+        <Grid Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="columnLeft" MinWidth="200" Width="350" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition x:Name="columnRight" MinWidth="215" Width="300" />
+            </Grid.ColumnDefinitions>
+
+            <!--Left Panel-->
+            <Grid Background="{StaticResource Mac.Lavender}" Grid.Column="0">
+                <ab:Behaviors.PersistentColumnSize>
+                    <ab:PersistentColumnSize x:Name="leftColumnPersister" Key="TestHarness.NavigationPane" />
+                </ab:Behaviors.PersistentColumnSize>
+                <Selector:SelectorPanel DataContext="{Binding SelectorPanel}"  />
+            </Grid>
+            <wc:GridSplitter Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" ShowsPreview="False" Style="{StaticResource GridSplitterStyle.Vertical}" />
+
+            <!--Center Panel-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" MinHeight="50" />
+                    <RowDefinition x:Name="rowFooterPanel" MinHeight="34" Height="34" />
+                </Grid.RowDefinitions>
+
+                <!--Display Option Toolbar-->
+                <ControlHost:DisplayOptionToolbar Grid.Row="0" DataContext="{Binding DisplayOptionToolbar}" />
+
+                <!--Test Control Layout-->
+                <ControlHost:DisplayContainer Grid.Row="1" DataContext="{Binding CurrentClass}" />
+
+                <!--Footer Panel-->
+                <Border Grid.Row="2" Background="{StaticResource Mac.Lavender}" BorderBrush="{StaticResource Brush.Black.050}" BorderThickness="0,1,0,0">
+                    <ab:Behaviors.PersistentRowSize>
+                        <ab:PersistentRowSize x:Name="rowFooterPanelPersister" Key="TestHarness.RowFooterPanel" />
+                    </ab:Behaviors.PersistentRowSize>
+                    <FooterPanel:FooterPanelContainer DataContext="{Binding FooterPanelContainer}"  />
+                </Border>
+                <wc:GridSplitter Grid.Row="2" VerticalAlignment="top" HorizontalAlignment="Stretch" ShowsPreview="False" Style="{StaticResource GridSplitterStyle.Horizontal}" />
+            </Grid>
+
+            <!--Right Panel-->
+            <Border Grid.Column="2">
+                <ab:Behaviors.PersistentColumnSize>
+                    <ab:PersistentColumnSize x:Name="rightColumnPersister" Key="TestHarness.PropertyExplorerPanel" />
+                </ab:Behaviors.PersistentColumnSize>
+                <PropertyGrid:PropertyExplorerPanel DataContext="{Binding PropertyExplorer}" />
+            </Border>
+            <wc:GridSplitter Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" ShowsPreview="False" Style="{StaticResource GridSplitterStyle.Vertical}" />
+        </Grid>
+
+        <!--Assembly Chooser Dialog-->
+        <Controls:DialogPresenter IsShowing="{Binding ClientBinGrid.IsShowing}">
+            <Controls:AcceptCancelPresenter
+                                DataContext="{Binding ClientBinGrid}" 
+                                Width="550" 
+                                Height="300"
+                                BorderThickness="1,0,1,1"
+                                TopShadowOpacity="0.2">
+                <AssemblyChooser:ClientBinGrid />
+            </Controls:AcceptCancelPresenter>
+        </Controls:DialogPresenter>
+
+    </Grid>
+</UserControl>

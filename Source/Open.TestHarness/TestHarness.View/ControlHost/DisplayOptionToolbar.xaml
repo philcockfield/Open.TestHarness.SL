@@ -1,0 +1,25 @@
+﻿<UserControl 
+    x:Class="Open.TestHarness.View.ControlHost.DisplayOptionToolbar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Height="26">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <!--Background-->
+        <Border Background="{StaticResource Brush.Black.005}" BorderBrush="{StaticResource Brush.Black.015}" BorderThickness="0,0,0,1" />
+
+        <!--Options-->
+        <StackPanel Orientation="Horizontal" Margin="8,-1,8,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <CheckBox Content="Border" IsChecked="{Binding Model.ShowBorder, Mode=TwoWay}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

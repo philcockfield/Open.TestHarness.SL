@@ -1,0 +1,27 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <!--General-->
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/ProgressBar/ProgressBarFlat.xaml" />
+        
+        <!--Containers-->
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/AcceptCancelPresenter/AcceptCancelPresenter.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/CollapsingContent/CollapsingContent.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/TitleContainer/TitleContainerTemplates.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/DialogPresenter/DialogPresenter.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/WidgetGroup/WidgetGroup.xaml" />
+
+        <!--Dialogs-->
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Dialogs/ExceptionDialog/ExceptionDialog.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Dialogs/QuestionDialog/QuestionDialog.xaml" />
+
+        <!--Editors-->
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/Grid/PropertyGrid.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/PropertyGridStructure/PropertyGridPrimitive/PropertyGridPrimitive.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/PropertyGridStructure/PropertyValue/PropertyValue.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/Explorer/PropertyExplorer.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

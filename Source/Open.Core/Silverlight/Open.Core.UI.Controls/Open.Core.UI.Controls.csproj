@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D1373094-30F7-42F8-AD04-5647D19859C9}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core.UI.Controls</RootNamespace>
+    <AssemblyName>Open.Core.UI.Controls</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Silverlight\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Silverlight\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Assets\StringLibrary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringLibrary.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AutoGrid\AutoColumnDefinition.cs" />
+    <Compile Include="Controls\AutoGrid\AutoGrid.cs" />
+    <Compile Include="Controls\Buttons\Base Classes\VisualButton.cs" />
+    <Compile Include="Controls\Buttons\ImageButton\ImageButton.cs" />
+    <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\ArrowPointerButtonBase.cs" />
+    <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\RoundedPointerButton.cs" />
+    <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\TriangleButton.cs" />
+    <Compile Include="Controls\Buttons\ShapeButton\CrossButton.cs" />
+    <Compile Include="Controls\Buttons\ShapeButton\RemoveButton.cs" />
+    <Compile Include="Controls\Buttons\ShapeButton\ShapeButton.cs" />
+    <Compile Include="Controls\Buttons\Templates\ButtonTemplates.cs" />
+    <Compile Include="Controls\Buttons\TextButton\TextButton.cs" />
+    <Compile Include="Controls\Containers\AcceptCancelDialog\AcceptCancelDialog.ViewModel.cs" />
+    <Compile Include="Controls\Containers\AcceptCancelDialog\AcceptCancelDialog.xaml.cs">
+      <DependentUpon>AcceptCancelDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Containers\AcceptCancelPresenter\AcceptCancelPresenter.cs" />
+    <Compile Include="Controls\Containers\AcceptCancelPresenter\AcceptCancelPresenter.ViewModel.cs" />
+    <Compile Include="Controls\Containers\CollapsingContent\CollapsingContent.cs" />
+    <Compile Include="Controls\Containers\DialogPresenter\DialogPresenter.cs" />
+    <Compile Include="Controls\Containers\DraggableStackPanel\DraggableStackPanel.cs" />
+    <Compile Include="Controls\Containers\DraggableStackPanel\DraggableStackPanelAnimator.cs" />
+    <Compile Include="Controls\Containers\TitleContainer\TitleContainer.xaml.cs">
+      <DependentUpon>TitleContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Containers\WidgetGroup\WidgetGroup.cs" />
+    <Compile Include="Controls\Dialogs\DialogContent\DialogContent.cs" />
+    <Compile Include="Controls\Dialogs\DialogExtensions.cs" />
+    <Compile Include="Controls\Dialogs\ExceptionDialog\ExceptionDialog.cs" />
+    <Compile Include="Controls\Dialogs\Interfaces\IDialogContent.cs" />
+    <Compile Include="Controls\Dialogs\Interfaces\IExceptionDialog.cs" />
+    <Compile Include="Controls\Dialogs\Interfaces\INotificationDialog.cs" />
+    <Compile Include="Controls\Dialogs\Interfaces\IQuestionDialog.cs" />
+    <Compile Include="Controls\Dialogs\NotificationType.cs" />
+    <Compile Include="Controls\Dialogs\QuestionDialog\QuestionDialog.cs" />
+    <Compile Include="Controls\Editors\ColorSelector\ColorSelector.xaml.cs">
+      <DependentUpon>ColorSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\ColorSelector\ColorSelectorViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\Declarations.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\Explorer\PropertyExplorer.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\Explorer\PropertyExplorer.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\Grid\PropertyGrid.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\Grid\PropertyGrid.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\DateTime\TimeSpanConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Enum\EnumHelper.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Enum\EnumTypeConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Enum\EnumValueConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Misc\BooleanConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Misc\ByteConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Misc\GuidConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Misc\SByteConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Misc\ThicknessConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\BaseNumberConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\DecimalConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\DoubleConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\Int16Converter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\Int32Converter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\Int64Converter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\SingleConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\UInt16Converter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\UInt32Converter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\Number\UInt64Converter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\String\CharConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\String\StringConverter.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Converters\TypeConverterHelper.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\EditorContainer\EditorContainer.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\EditorContainer\EditorContainer.xaml.cs">
+      <DependentUpon>EditorContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\EditorViewModelBase.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\PropertyEditorFactory.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Boolean\BooleanEditor.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Boolean\BooleanEditor.xaml.cs">
+      <DependentUpon>BooleanEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Color\ColorEditor.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Color\ColorEditor.xaml.cs">
+      <DependentUpon>ColorEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Enum\EnumEditor.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Enum\EnumEditor.xaml.cs">
+      <DependentUpon>EnumEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Stream\StreamEditor.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Stream\StreamEditor.xaml.cs">
+      <DependentUpon>StreamEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\String\StringEditor.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\String\StringEditor.xaml.cs">
+      <DependentUpon>StringEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\PropertyGridPrimitive\PropertyGridPrimitive.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\PropertyGridPrimitive\PropertyGridPrimitive.ViewModel.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\PropertyValue\PropertyValue.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyGridStructure\ValueParser.cs" />
+    <Compile Include="Controls\Editors\PropertyGrid\PropertyModel.cs" />
+    <Compile Include="Controls\HtmlBlock.xaml.cs">
+      <DependentUpon>HtmlBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HtmlDocument.xaml.cs">
+      <DependentUpon>HtmlDocument.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\OutputLog\OutputLog.ViewModel.cs" />
+    <Compile Include="Controls\OutputLog\OutputLog.xaml.cs">
+      <DependentUpon>OutputLog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Placeholder.xaml.cs">
+      <DependentUpon>Placeholder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dropdowns\ComboBox.ViewModel.cs" />
+    <Compile Include="Controls\Dropdowns\ComboBoxItem.ViewModel.cs" />
+    <Compile Include="Controls\Dropdowns\CoreComboBox.cs" />
+    <Compile Include="Controls\ProgressBar\ProgressBarFlat.cs" />
+    <Compile Include="Controls\Spinner.xaml.cs">
+      <DependentUpon>Spinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusIcon.xaml.cs">
+      <DependentUpon>StatusIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Text\CoreTextBox.cs" />
+    <Compile Include="Templates\Templates.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Open.Core.UI\Open.Core.UI.csproj">
+      <Project>{FEB32091-727E-418B-8841-6AD08D5952BD}</Project>
+      <Name>Open.Core.UI %28Open.Core\Silverlight\Open.Core.UI%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Open.Core\Open.Core.csproj">
+      <Project>{67718EFF-D4D5-471A-A946-0E274A6651E1}</Project>
+      <Name>Open.Core %28Open.Core\Silverlight\Open.Core%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\Buttons\ImageButton\ImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Buttons\ShapeButton\ShapeButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Buttons\Templates\ButtonTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Buttons\TextButton\TextButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\AcceptCancelDialog\AcceptCancelDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\AcceptCancelPresenter\AcceptCancelPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\CollapsingContent\CollapsingContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\DialogPresenter\DialogPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\TitleContainer\TitleContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\TitleContainer\TitleContainerTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\WidgetGroup\WidgetGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\ExceptionDialog\ExceptionDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\QuestionDialog\QuestionDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\ColorSelector\ColorSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\Explorer\PropertyExplorer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\Grid\PropertyGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\EditorContainer\EditorContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Boolean\BooleanEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Color\ColorEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Enum\EnumEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\Stream\StreamEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\Property Editors\Types\String\StringEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\PropertyGridPrimitive\PropertyGridPrimitive.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Editors\PropertyGrid\PropertyGridStructure\PropertyValue\PropertyValue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\HtmlBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\HtmlDocument.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OutputLog\OutputLog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Placeholder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ProgressBar\ProgressBarFlat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Spinner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\StatusIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Templates\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icon.Shield.Error.59x66.png" />
+    <Resource Include="Images\Icon.Shield.GreenTick.59x66.png" />
+    <Resource Include="Images\Icon.Shield.Question.59x66.png" />
+    <Resource Include="Images\Icon.Shield.Warning.59x66.png" />
+    <Resource Include="Images\Icon.Status.16x17.Green.png" />
+    <Resource Include="Images\Icon.Status.16x17.Grey.png" />
+    <Resource Include="Images\Icon.Status.16x17.Orange.png" />
+    <Resource Include="Images\Icon.Status.16x17.Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\StringLibrary.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringLibrary.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CheckerboardTile.png" />
+    <Resource Include="Images\Icon.Class.17x17.png" />
+    <Resource Include="Images\Icon.Hierarchy.16x19.png" />
+    <Resource Include="Images\Icon.NoHierarchy.16x19.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

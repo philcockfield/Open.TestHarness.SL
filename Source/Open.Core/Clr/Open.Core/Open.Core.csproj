@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core</RootNamespace>
+    <AssemblyName>Open.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Clr\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Clr\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.DomainServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Attributes\SyncValueToAttribute.cs">
+      <Link>Attributes\SyncValueToAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Base Classes\ControllerBase.cs">
+      <Link>Base Classes\ControllerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Base Classes\DisposableBase.cs">
+      <Link>Base Classes\DisposableBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Base Classes\NotifyPropertyChangedBase.cs">
+      <Link>Base Classes\NotifyPropertyChangedBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Base Classes\NotifyPropertyChangedInvoker.cs">
+      <Link>Base Classes\NotifyPropertyChangedInvoker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ChildPropertyChangedEventArgs.cs">
+      <Link>Collection\ChildPropertyChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs">
+      <Link>Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs">
+      <Link>Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs">
+      <Link>Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\NotifyPropertyChangedCollectionMonitor.cs">
+      <Link>Collection\NotifyPropertyChangedCollectionMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ObservableCollectionMonitor.cs">
+      <Link>Collection\ObservableCollectionMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ObservableCollectionWrapper.cs">
+      <Link>Collection\ObservableCollectionWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ObservableCollectionWrapperEventArgs.cs">
+      <Link>Collection\ObservableCollectionWrapperEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ProcessQueue.cs">
+      <Link>Collection\ProcessQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ProcessQueueEventArgs.cs">
+      <Link>Collection\ProcessQueueEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Collection\ProcessQueueHandle.cs">
+      <Link>Collection\ProcessQueueHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Enumerations.cs">
+      <Link>Enumerations.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Exceptions\AssertionException.cs">
+      <Link>Exceptions\AssertionException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Exceptions\ExistsException.cs">
+      <Link>Exceptions\ExistsException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Exceptions\InitializationException.cs">
+      <Link>Exceptions\InitializationException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Exceptions\NotFoundException.cs">
+      <Link>Exceptions\NotFoundException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Exceptions\TemplateNotSetException.cs">
+      <Link>Exceptions\TemplateNotSetException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\CollectionExtensions.cs">
+      <Link>Extensions\CollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\EnumExtensions.cs">
+      <Link>Extensions\EnumExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\KeyExtensions.cs">
+      <Link>Extensions\KeyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\LinqExtensions.cs">
+      <Link>Extensions\LinqExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\LocalizationExtensions.cs">
+      <Link>Extensions\LocalizationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\NumberExtensions.cs">
+      <Link>Extensions\NumberExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\ReflectionExtensions.cs">
+      <Link>Extensions\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\XExtensions.cs">
+      <Link>Extensions\XExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\DelayedAction.cs">
+      <Link>Helper Classes\DelayedAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\PropertyObserver.cs">
+      <Link>Helper Classes\PropertyObserver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\SelectionManager.cs">
+      <Link>Helper Classes\SelectionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\SyncValueToHandler.cs">
+      <Link>Helper Classes\SyncValueToHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.AutoProperty.partial.cs">
+      <Link>Model\Base Classes\ModelBase.AutoProperty.partial.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.BeginInvoke.partial.cs">
+      <Link>Model\Base Classes\ModelBase.BeginInvoke.partial.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.cs">
+      <Link>Model\Base Classes\ModelBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ViewModelBase.cs">
+      <Link>Model\Base Classes\ViewModelBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Model\DomainCredential.cs">
+      <Link>Model\DomainCredential.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Network\Callback.cs">
+      <Link>Network\Callback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Testing\RandomData.cs">
+      <Link>Testing\RandomData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Testing\Should.cs">
+      <Link>Testing\Should.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Testing\TestingExtensions.cs">
+      <Link>Testing\TestingExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Util\MathUtil.cs">
+      <Link>Util\MathUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Util\ReflectionUtil.cs">
+      <Link>Util\ReflectionUtil.cs</Link>
+    </Compile>
+    <Compile Include="Composition %28MEF%29\DirectoryPartInitializer.cs" />
+    <Compile Include="Extensions\LinqExtensions.CLR.cs" />
+    <Compile Include="Extensions\ObjectContextExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.CLR.cs" />
+    <Compile Include="Helper Classes\PropertyObserver.clr.cs" />
+    <Compile Include="Testing\AsyncTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Clr\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,41 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
+    xmlns:c="clr-namespace:Open.Core.Common;assembly=Open.Core">
+    
+    <DataTemplate x:Key="AcceptCancelDialog.Content1">
+        <Grid>
+            <Controls:Placeholder Text="{Binding Text}" />
+            <TextBox Margin="10,30,10,0" Height="30" VerticalAlignment="Top" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AcceptCancelDialog.Content2">
+        <Grid>
+            <Controls:Placeholder Text="{Binding Text}" Color="Green" />
+            <TextBox Margin="10,30,10,0" Height="30" VerticalAlignment="Top" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="GetElementFromViewModel.Test">
+        <Controls:Placeholder />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Placeholder1">
+        <Controls:Placeholder Text="One" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Placeholder2">
+        <Controls:Placeholder Text="Two" Color="Green" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Placeholder.Text">
+        <Controls:Placeholder Text="{Binding Text}"  />
+    </DataTemplate>
+
+    <DataTemplate x:Key="TextBox">
+        <TextBox TextWrapping="Wrap" c:Focus.IsDefault="True" />
+    </DataTemplate>
+
+</ResourceDictionary>

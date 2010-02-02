@@ -1,0 +1,27 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
+    xmlns:ProgressBar="clr-namespace:Open.Core.UI.Controls.Controls.ProgressBar" >
+
+    <ControlTemplate x:Name="ProgressBarFlat" TargetType="ProgressBar:ProgressBarFlat">
+        <Border 
+            Background="{TemplateBinding Background}" 
+            Height="{TemplateBinding Height}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            BorderBrush="{TemplateBinding Color}">
+            <i:Interaction.Behaviors>
+                <ab:RoundedCorners />
+            </i:Interaction.Behaviors>
+            
+                <!--Progress Indicator-->
+                <Border x:Name="progressIndicator" Background="{TemplateBinding Color}" HorizontalAlignment="Left">
+                    <i:Interaction.Behaviors>
+                        <ab:RoundedCorners />
+                    </i:Interaction.Behaviors>
+                </Border>
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

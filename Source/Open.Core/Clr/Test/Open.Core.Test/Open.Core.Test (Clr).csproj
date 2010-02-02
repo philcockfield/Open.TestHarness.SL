@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0EB85969-A003-4853-9172-2B52D9CFC638}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core.Common.Test</RootNamespace>
+    <AssemblyName>Open.Core.Common.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\..\Bin\Bin.Test\Clr\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Bin\Bin.Test\Clr\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\..\..\..\..\Lib\Moq.CLR\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition, Version=2009.22.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\MEF.CLR\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Core.Testing\Extensions\MockTestingExtensionsTest.cs" />
+    <Compile Include="Core.UI\IconNameProcessor.cs" />
+    <Compile Include="Core.UI\IconTest.cs" />
+    <Compile Include="Core\Attributes\ViewTestAttributeTest.cs" />
+    <Compile Include="Core\Attributes\ViewTestClassAttributeTest.cs" />
+    <Compile Include="Core\Base Classes\DisposableBaseTest.cs" />
+    <Compile Include="Core\Base Classes\NotifyPropertyChangedBaseTest.cs" />
+    <Compile Include="Core\Collection\CollectionChangedEventBatch.Test.cs" />
+    <Compile Include="Core\Collection\ObservableCollectionWrapperTest.cs" />
+    <Compile Include="Core\Collection\ProcessQueueTest.cs" />
+    <Compile Include="Core\Composition %28MEF%29\DirectoryPartInitializerTest.cs" />
+    <Compile Include="Core\Extensions\CollectionExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\EnumExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\FrameworkElementExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\KeyExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\LinqExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\NumberExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\ReflectionExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\StringExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\TestingExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\VisualTreeExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\XExtensions.Test.cs" />
+    <Compile Include="Core\Helper Classes\PropertyObserverTest.cs" />
+    <Compile Include="Core\Helper Classes\SelectionManagerTest.cs" />
+    <Compile Include="Core\Helper Classes\SyncValueToHandlerTest.cs" />
+    <Compile Include="Core\Model\ControllerBase.Test.cs" />
+    <Compile Include="Core\Model\DomainCredentialTest.cs" />
+    <Compile Include="Core\Model\ModelBase.AutoProperty.Test.cs" />
+    <Compile Include="Core\Model\ModelBase.Test.cs" />
+    <Compile Include="Core\Model\ModelBase.BeginInvoke.Test.cs" />
+    <Compile Include="Core\Model\ViewModelBase.Test.cs" />
+    <Compile Include="Core\Testing\AsyncTest.Test.cs" />
+    <Compile Include="Core\Testing\Should.Test.cs" />
+    <Compile Include="Core\Testing\ReflectionTestingExtensions.Test.cs" />
+    <Compile Include="Core\Utility\ReflectionUtilTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Clr\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.Testing\Open.Core.Testing.csproj">
+      <Project>{8AAAF157-7ECD-4ED9-9AB8-DE13AA5B7BE9}</Project>
+      <Name>Open.Core.Testing %28Open.Core\Clr\Open.Core.Testing%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.UI\Open.Core.UI.csproj">
+      <Project>{FF0BAE2A-4D48-42AE-95C8-FDEB9ACC3011}</Project>
+      <Name>Open.Core.UI %28Open.Core\Clr\Open.Core.UI%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core\Open.Core.csproj">
+      <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
+      <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Extensions\Resource File\File.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

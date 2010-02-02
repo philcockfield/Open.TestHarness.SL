@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{187CCB78-51F9-4C9D-AB8E-D556813E7D1D}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core.Test</RootNamespace>
+    <AssemblyName>Open.Core.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Open.Core.UI.Test.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>Open.Core.UI.Silverlight.Test.App</SilverlightAppEntry>
+    <TestPageFileName>TestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\..\Bin\Bin.Test\Silverlight\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Bin\Bin.Test\Silverlight\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Silverlight.Testing">
+      <HintPath>..\..\..\..\..\Lib\Silverlight.Testing\Microsoft.Silverlight.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
+      <HintPath>..\..\..\..\..\Lib\Silverlight.Testing\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\..\..\..\Lib\Moq.Silverlight\Moq.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\..\..\..\Lib\Expression.Silverlight\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
+    <Compile Include="UnitTests\Core\Behavior\AutoRowDefinitionsTest.cs" />
+    <Compile Include="UnitTests\Core\Behavior\BehaviorTest.cs" />
+    <Compile Include="UnitTests\Core\Behavior\ExecuteMethodTest.cs" />
+    <Compile Include="UnitTests\Core\Behavior\PositionSliderTest.cs" />
+    <Compile Include="UnitTests\Core\Extensions\FrameworkElementExtensions.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\NumberExtensionsTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\ButtonTemplates.Test.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyGridPrimitiveViewModelTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyGridTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyGridViewModelTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
+    <Compile Include="View Tests\Code.ViewTest.cs" />
+    <Compile Include="View Tests\Common.Testing\Output.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Animation\AnimationBehavior.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Animation\AnimationBehaviorTestControl.xaml.cs">
+      <DependentUpon>AnimationBehaviorTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Common\Animation\AnimationMove.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\AutoRowDefinitions.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\DataGridFillerColumn.ViewTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View Tests\Common\Behavior\DisposeWithViewModel\DisposeWithViewModel.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\DisposeWithViewModel\DisposeWithViewModelTestControl.xaml.cs">
+      <DependentUpon>DisposeWithViewModelTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Common\Behavior\Draggable.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\MouseWheelScroller.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\PositionSlider.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\Resizer\Resizer.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\Resizer\ResizerTestControl.xaml.cs">
+      <DependentUpon>ResizerTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Common\Behavior\SelectTextOnFocus.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidth.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml.cs">
+      <DependentUpon>SyncWithScrollViewerWidthTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Common\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml.cs">
+      <DependentUpon>UpdateOnKeyPressTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Common\Behavior\UpdateOnKeyPress\UpdateOnKeyPressViewTest.cs" />
+    <Compile Include="View Tests\Common\Extensions\ColorExtensions.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Extensions\FocusChild\FocusChild.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Extensions\FocusChild\FocusChildTestControl.xaml.cs">
+      <DependentUpon>FocusChildTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Common\Functional Adorners\HtmlWindowCloseMonitor.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Model\ModelBase.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Model\SettingsModelBase.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Trigger\ExecuteMethod.ViewTest.cs" />
+    <Compile Include="View Tests\Common\Trigger\ExecuteMethodTestControl.xaml.cs">
+      <DependentUpon>ExecuteMethodTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Composite\DelegateCommand.ViewTest.cs" />
+    <Compile Include="View Tests\Composite\DelegateCommandTestControl.xaml.cs">
+      <DependentUpon>DelegateCommandTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Controls.Primitives\AutoGrid\AutoGrid.TestControl.xaml.cs">
+      <DependentUpon>AutoGrid.TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Controls.Primitives\AutoGrid\AutoGrid.ViewTest.cs" />
+    <Compile Include="View Tests\Controls.Primitives\Buttons\CoreComboBox.ViewTest.cs" />
+    <Compile Include="View Tests\Controls.Primitives\Buttons\TextButton\TextButton.TestControl.xaml.cs">
+      <DependentUpon>TextButton.TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Controls.Primitives\Buttons\TextButton\TextButton.ViewTest.cs" />
+    <Compile Include="View Tests\Controls.Primitives\Buttons\VisualButton.TestControl.xaml.cs">
+      <DependentUpon>VisualButton.TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Controls.Primitives\Buttons\VisualButton.ViewTest.cs" />
+    <Compile Include="View Tests\Controls.Primitives\ScrollViewer\ScrollIntoView.TestControl.xaml.cs">
+      <DependentUpon>ScrollIntoView.TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Controls.Primitives\ScrollViewer\ScrollIntoView.ViewTest.cs" />
+    <Compile Include="View Tests\Controls.Primitives\TextBox\CoreTextBox.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\AcceptCancelDialog.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\AcceptCancelPresenter.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\CollapsingContent.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\DialogPresenter.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\DraggableStackPanel\DraggableStackPanel.TestControl.xaml.cs">
+      <DependentUpon>DraggableStackPanel.TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Controls\Containers\DraggableStackPanel\DraggableStackPanel.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\TitleContainer.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Containers\WidgetGroup.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Dialogs\ContentDialog.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Dialogs\Dialog.ViewTest.Base.cs" />
+    <Compile Include="View Tests\Controls\Dialogs\ExceptionDialog.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Dialogs\QuestionDialog.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\HtmlBlock.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\HtmlDocument.ViewTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View Tests\Controls\Panels\StackArranger.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Placeholder.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\ProgressBarFlat.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\Spinner.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\StatusIcon.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\TestCanvas.ViewTest.cs" />
+    <Compile Include="View Tests\Controls\TestCanvas.xaml.cs">
+      <DependentUpon>TestCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View Tests\Editors\ColorSelector.ViewTest.cs" />
+    <Compile Include="View Tests\Editors\PropertyGrid\TestModels.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View Tests\Editors\Test Controls\DatabindingControl.xaml.cs">
+      <DependentUpon>DatabindingControl.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Resources\SampleTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Images\SilkIcons\SilkIcons.cs" />
+    <Compile Include="Resources\SampleTemplates.cs" />
+    <Compile Include="Resources\StringLibrary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringLibrary.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTests\Core\Base Classes\ResourceBase\Stubs\StubTemplates.cs" />
+    <Compile Include="UnitTests\Core\Base Classes\SettingsModelBase.Test.cs" />
+    <Compile Include="UnitTests\Core\Base Classes\ModelBase.BeginInvoke.Test.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Core\Base Classes\NotifyPropertyChangedBase.Test.silverlight.cs" />
+    <Compile Include="UnitTests\Core\Collection\NotifyPropertyChangedCollectionMonitorTest.cs" />
+    <Compile Include="UnitTests\Core\Collection\ObservableCollectionMonitorTest.cs" />
+    <Compile Include="UnitTests\Core\Converters\VisibilityConverter.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\FrameworkElementExtensions.Focus.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\ReflectionExtensions.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\SerializationExtensions.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\StringExtensions.Silverlight.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\VisualTreeExtensions.Test.cs" />
+    <Compile Include="UnitTests\Core\Extensions\XExtensions.Silverlight.Test.cs" />
+    <Compile Include="UnitTests\Core\Helper Classes\DataContextObserverTest.cs" />
+    <Compile Include="UnitTests\Core\Helper Classes\DataContextPropertyObserverTest.cs" />
+    <Compile Include="UnitTests\Core\Helper Classes\PropertyObserverTest.cs" />
+    <Compile Include="UnitTests\Core\Helper Classes\UrlHashTest.cs" />
+    <Compile Include="UnitTests\Core\Localization\LocalizationExtensionsTest.cs" />
+    <Compile Include="UnitTests\Core\Network\LoaderBaseTest.cs" />
+    <Compile Include="UnitTests\Core\Network\Sample\SampleWebClient.cs" />
+    <Compile Include="UnitTests\Core\Threading\DelayedActionTest.cs" />
+    <Page Include="View Tests\Common\Animation\AnimationBehaviorTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Common\Behavior\DisposeWithViewModel\DisposeWithViewModelTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Common\Behavior\Resizer\ResizerTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Common\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Common\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Common\Extensions\FocusChild\FocusChildTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Common\Trigger\ExecuteMethodTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Composite\DelegateCommandTestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Controls.Primitives\AutoGrid\AutoGrid.TestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Controls.Primitives\Buttons\TextButton\TextButton.TestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Controls.Primitives\Buttons\VisualButton.TestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Controls.Primitives\ScrollViewer\ScrollIntoView.TestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Controls\Containers\DraggableStackPanel\DraggableStackPanel.TestControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Controls\TestCanvas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View Tests\Editors\Test Controls\DatabindingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Open.Core.UI.Controls\Open.Core.UI.Controls.csproj">
+      <Project>{D1373094-30F7-42F8-AD04-5647D19859C9}</Project>
+      <Name>Open.Core.UI.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.UI\Open.Core.UI.csproj">
+      <Project>{FEB32091-727E-418B-8841-6AD08D5952BD}</Project>
+      <Name>Open.Core.UI %28Open.Core\Silverlight\Open.Core.UI%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core\Open.Core.csproj">
+      <Project>{67718EFF-D4D5-471A-A946-0E274A6651E1}</Project>
+      <Name>Open.Core %28Open.Core\Silverlight\Open.Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.Testing\Open.Core.Testing.csproj">
+      <Project>{1830A8E6-D2F6-4C4F-90E2-74DE357D660C}</Project>
+      <Name>Open.Core.Testing %28Open.Core\Silverlight\Open.Core.Testing%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="UnitTests\Core\Extensions\ResourceTest.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="UnitTests\Core\Base Classes\ResourceBase\Stubs\StubTemplates.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\StringLibrary.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringLibrary.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UnitTests\Core\Extensions\File.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SilkIcons\accept.png" />
+    <Resource Include="Images\SilkIcons\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SilkIcons\brick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SilkIcons\chart_pie.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UnitTests\Core\Functional Adorners\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View Tests\Controls.Primitives\Buttons\Images\Button.Default.png" />
+    <Resource Include="View Tests\Controls.Primitives\Buttons\Images\Button.Disabled.png" />
+    <Resource Include="View Tests\Controls.Primitives\Buttons\Images\Button.Down.png" />
+    <Resource Include="View Tests\Controls.Primitives\Buttons\Images\Button.Over.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

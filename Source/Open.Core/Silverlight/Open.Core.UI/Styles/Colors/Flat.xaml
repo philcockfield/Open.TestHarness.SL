@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <Color x:Key="Mac.Lavender.Color">#e3e7ee</Color>
+    <SolidColorBrush x:Key="Mac.Lavender" Color="{StaticResource Mac.Lavender.Color}" />
+
+    <Color x:Key="System.Title.Blue.Color">#203e90</Color>
+    <SolidColorBrush x:Key="System.Title.Blue" Color="{StaticResource System.Title.Blue.Color}" />
+    
+    
+</ResourceDictionary>

@@ -1,0 +1,74 @@
+﻿<UserControl 
+    x:Class="Open.TestHarness.View.PropertyGrid.PropertyExplorerPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI" 
+    xmlns:Editors="clr-namespace:Open.Core.Common.Controls.Editors;assembly=Open.Core.UI.Controls">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Templates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Converter:VisibilityConverter x:Name="visibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border BorderBrush="{StaticResource Brush.Black.050}" BorderThickness="1,0,0,0" Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--Toolbar-->
+            <Grid Grid.Row="0" Height="26" Background="White">
+                <Border Background="{StaticResource Brush.Black.015}" />
+                <ContentControl Template="{StaticResource Background.Toolbar.Shiny}" />
+                <Border BorderBrush="{StaticResource Brush.Black.030}" BorderThickness="0,0,0,1" />
+
+                <!--Title-->
+                <TextBlock Text="{Binding PropertiesLabel}" 
+                                           FontFamily="Arial" 
+                                           FontWeight="Bold" 
+                                           FontSize="16" 
+                                           Margin="8,0,0,0" 
+                                           VerticalAlignment="Center" 
+                                           Opacity="0.55" />
+
+                <!--Model | View Options-->
+                <StackPanel Orientation="Horizontal" Margin="0,0,8,0" HorizontalAlignment="Right" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <RadioButton 
+                                 IsChecked="{Binding ViewOptionSelected, Mode=TwoWay}"
+                                 GroupName="DataOption" 
+                                 ToolTipService.ToolTip="{Binding Text, ElementName=tooltipViewOption}" 
+                                 Margin="0,0,10,0">
+                        <TextBlock Text="{Binding ViewOptionLabel}" Opacity="0.6" />
+                    </RadioButton>
+                    <RadioButton 
+                                 IsChecked="{Binding ModelOptionSelected, Mode=TwoWay}"
+                                 GroupName="DataOption" 
+                                 ToolTipService.ToolTip="{Binding Text, ElementName=tooltipModelOption}">
+                        <TextBlock Text="{Binding ModelOptionLabel}" Opacity="0.6" />
+                    </RadioButton>
+                    <StackPanel.RenderTransform>
+                        <ScaleTransform ScaleX="0.85" ScaleY="0.85" />
+                    </StackPanel.RenderTransform>
+                </StackPanel>
+                
+                <!--Tooltip Text-->
+                <Grid Visibility="Collapsed">
+                    <TextBlock x:Name="tooltipViewOption" Text="{Binding ViewOptionToolTip}" x:FieldModifier="private" />
+                    <TextBlock x:Name="tooltipModelOption" Text="{Binding ModelOptionToolTip}" x:FieldModifier="private" />
+                </Grid>
+            </Grid>
+
+            <!--PropertyExplorer-->
+            <Editors:PropertyExplorer Grid.Row="1" DataContext="{Binding PropertyExplorerModel}" />
+
+        </Grid>
+    </Border>
+
+</UserControl>

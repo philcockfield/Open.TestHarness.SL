@@ -1,0 +1,8 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Common.Behavior.UpdateOnKeyPressTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <TextBox x:Name="textbox" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Width="200" />
+    
+</UserControl>

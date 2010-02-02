@@ -1,0 +1,92 @@
+﻿<UserControl 
+    x:Class="Open.Core.Common.Controls.Editors.ColorSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
+    Width="155" Height="127">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Border x:Name="root" 
+            Padding="0,0,5,0" 
+            CornerRadius="2" 
+            Background="{StaticResource Mac.Lavender}" 
+            BorderBrush="{StaticResource Brush.Black.040}" 
+            BorderThickness="1"
+            x:FieldModifier="private">
+        <Grid >
+            <Grid.Resources>
+                <Style x:Key="label" TargetType="TextBlock">
+                    <Setter Property="Opacity" Value="0.8" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style x:Key="slider" TargetType="Slider">
+                    <Setter Property="Minimum" Value="0" />
+                    <Setter Property="Maximum" Value="255" />
+                </Style>
+                <Style x:Key="textbox" TargetType="Controls:CoreTextBox">
+                    <Setter Property="Margin" Value="5,3,0,3" />
+                    <Setter Property="MaxLength" Value="3" />
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="UpdateDataSourceOnEnterPress" Value="True" />
+                </Style>
+            </Grid.Resources>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--Color Preview Swatch-->
+            <Border Grid.Column="0" 
+                    Background="{Binding ColorBrush}" 
+                    CornerRadius="2,0,0,2"
+                    Width="24" 
+                    Margin="0,0,8,0">
+                <Grid>
+                    <Image Source="/Open.Core.UI.Silverlight.Controls.Editors;component/Images/CheckerboardTile.png" Stretch="None" />
+                    <Border Background="{Binding ColorBrush}" />
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--RGB Labels-->
+                <TextBlock Text="R" Grid.Row="0" Grid.Column="0" Style="{StaticResource label}" ToolTipService.ToolTip="Red" />
+                <TextBlock Text="G" Grid.Row="1" Grid.Column="0" Style="{StaticResource label}" ToolTipService.ToolTip="Green" />
+                <TextBlock Text="B" Grid.Row="2" Grid.Column="0" Style="{StaticResource label}" ToolTipService.ToolTip="Blue" />
+                <TextBlock Text="A" Grid.Row="3" Grid.Column="0" Style="{StaticResource label}" ToolTipService.ToolTip="Alpha" />
+                
+                <!--Sliders-->
+                <Slider Grid.Row="0" Grid.Column="1" Style="{StaticResource slider}" Value="{Binding Red, Mode=TwoWay}" x:Name="sliderRed" x:FieldModifier="private" />
+                <Slider Grid.Row="1" Grid.Column="1" Style="{StaticResource slider}" Value="{Binding Green, Mode=TwoWay}" />
+                <Slider Grid.Row="2" Grid.Column="1" Style="{StaticResource slider}" Value="{Binding Blue, Mode=TwoWay}" />
+                <Slider Grid.Row="3" Grid.Column="1" Style="{StaticResource slider}" Value="{Binding Alpha, Mode=TwoWay}" />
+
+                <!--RGB Textboxes-->
+                <Controls:CoreTextBox Grid.Row="0" Grid.Column="2" Style="{StaticResource textbox}" Text="{Binding Red, Mode=TwoWay}" />
+                <Controls:CoreTextBox Grid.Row="1" Grid.Column="2" Style="{StaticResource textbox}" Text="{Binding Green, Mode=TwoWay}" />
+                <Controls:CoreTextBox Grid.Row="2" Grid.Column="2" Style="{StaticResource textbox}" Text="{Binding Blue, Mode=TwoWay}" />
+                <Controls:CoreTextBox Grid.Row="3" Grid.Column="2" Style="{StaticResource textbox}" Text="{Binding Alpha, Mode=TwoWay}" />
+            </Grid>
+            
+        </Grid>
+    </Border>
+</UserControl>

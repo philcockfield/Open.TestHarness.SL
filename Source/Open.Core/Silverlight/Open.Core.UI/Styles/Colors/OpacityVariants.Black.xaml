@@ -1,0 +1,40 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <!--Black Opacity Variants-->
+    <SolidColorBrush x:Key="Brush.Black.100" Color="Black" Opacity="1" />
+    <SolidColorBrush x:Key="Brush.Black.099" Color="Black" Opacity="0.99" />
+    <SolidColorBrush x:Key="Brush.Black.098" Color="Black" Opacity="0.98" />
+    <SolidColorBrush x:Key="Brush.Black.097" Color="Black" Opacity="0.97" />
+    <SolidColorBrush x:Key="Brush.Black.096" Color="Black" Opacity="0.96" />
+    <SolidColorBrush x:Key="Brush.Black.095" Color="Black" Opacity="0.95" />
+    <SolidColorBrush x:Key="Brush.Black.090" Color="Black" Opacity="0.90" />
+    <SolidColorBrush x:Key="Brush.Black.085" Color="Black" Opacity="0.85" />
+    <SolidColorBrush x:Key="Brush.Black.080" Color="Black" Opacity="0.80" />
+    <SolidColorBrush x:Key="Brush.Black.075" Color="Black" Opacity="0.75" />
+    <SolidColorBrush x:Key="Brush.Black.070" Color="Black" Opacity="0.70" />
+    <SolidColorBrush x:Key="Brush.Black.065" Color="Black" Opacity="0.65" />
+    <SolidColorBrush x:Key="Brush.Black.060" Color="Black" Opacity="0.60" />
+    <SolidColorBrush x:Key="Brush.Black.055" Color="Black" Opacity="0.55" />
+    <SolidColorBrush x:Key="Brush.Black.050" Color="Black" Opacity="0.50" />
+    <SolidColorBrush x:Key="Brush.Black.045" Color="Black" Opacity="0.45" />
+    <SolidColorBrush x:Key="Brush.Black.040" Color="Black" Opacity="0.40" />
+    <SolidColorBrush x:Key="Brush.Black.035" Color="Black" Opacity="0.35" />
+    <SolidColorBrush x:Key="Brush.Black.030" Color="Black" Opacity="0.30" />
+    <SolidColorBrush x:Key="Brush.Black.025" Color="Black" Opacity="0.25" />
+    <SolidColorBrush x:Key="Brush.Black.020" Color="Black" Opacity="0.20" />
+    <SolidColorBrush x:Key="Brush.Black.015" Color="Black" Opacity="0.15" />
+    <SolidColorBrush x:Key="Brush.Black.010" Color="Black" Opacity="0.10" />
+    <SolidColorBrush x:Key="Brush.Black.009" Color="Black" Opacity="0.09" />
+    <SolidColorBrush x:Key="Brush.Black.008" Color="Black" Opacity="0.08" />
+    <SolidColorBrush x:Key="Brush.Black.007" Color="Black" Opacity="0.07" />
+    <SolidColorBrush x:Key="Brush.Black.006" Color="Black" Opacity="0.06" />
+    <SolidColorBrush x:Key="Brush.Black.005" Color="Black" Opacity="0.05" />
+    <SolidColorBrush x:Key="Brush.Black.004" Color="Black" Opacity="0.04" />
+    <SolidColorBrush x:Key="Brush.Black.003" Color="Black" Opacity="0.03" />
+    <SolidColorBrush x:Key="Brush.Black.002" Color="Black" Opacity="0.02" />
+    <SolidColorBrush x:Key="Brush.Black.001" Color="Black" Opacity="0.01" />
+    <SolidColorBrush x:Key="Brush.Black.000" Color="Black" Opacity="0" />
+    
+</ResourceDictionary>

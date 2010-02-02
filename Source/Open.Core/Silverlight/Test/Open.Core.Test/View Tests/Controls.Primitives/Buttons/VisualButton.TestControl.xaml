@@ -1,0 +1,39 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Controls.Primitives.Buttons.VisualButtonTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
+    Width="600" Height="400">
+  
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="container" TargetType="Border">
+                <Setter Property="BorderBrush" Value="{StaticResource Brush.Black.010}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Style="{StaticResource container}">
+            <Controls:ShapeButton x:Name="shapeButton" Padding="20" Cursor="Hand" />
+        </Border>
+
+        <Border Grid.Column="2" Style="{StaticResource container}">
+            <Controls:ImageButton x:Name="imageButton" />
+        </Border>
+
+    </Grid>
+</UserControl>

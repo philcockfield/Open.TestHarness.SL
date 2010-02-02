@@ -1,0 +1,60 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI"
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI"
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Converter:VisibilityConverter x:Key="visibilityConverter" />
+
+    <ControlTemplate x:Key="DefaultWidgetGroupTitle" TargetType="ContentControl">
+        <TextBlock Text="{Binding}" Margin="10,1,10,0" VerticalAlignment="Center" />
+    </ControlTemplate>
+
+
+    <ControlTemplate x:Key="WidgetGroup" TargetType="Controls:WidgetGroup">
+        <Border
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1">
+            <ab:Behaviors.ClipToBounds>
+                <ab:ClipToBounds />
+            </ab:Behaviors.ClipToBounds>
+            <Grid x:Name="root">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!--Title-->
+                    <Grid x:Name="titleGrid"
+                          Grid.Row="0" 
+                          Height="{TemplateBinding TitleHeight}">
+                        <Border Background="{TemplateBinding TitleBackground}" BorderBrush="{TemplateBinding TitleBorderBrush}" BorderThickness="0,0,0,1" />
+                        <ContentControl 
+                                DataContext="{TemplateBinding Title}" 
+                                Template="{TemplateBinding TitleTemplate}"
+                                Opacity="{TemplateBinding TitleOpacity}" />
+                    </Grid>
+
+                    <!--Content-->
+                    <ContentPresenter x:Name="content" Grid.Row="1" Margin="{TemplateBinding Padding}" />
+                </Grid>
+                
+                <!--Drop Shadow-->
+                <Border
+                        Opacity="{TemplateBinding DropShadowOpacity}" 
+                        Height="{TemplateBinding DropShadowHeight}"
+                        Background="{StaticResource Gradient.Vertical.Black-Transparent}"
+                        VerticalAlignment="Top" />
+            </Grid>
+        </Border>
+
+    </ControlTemplate>
+</ResourceDictionary>

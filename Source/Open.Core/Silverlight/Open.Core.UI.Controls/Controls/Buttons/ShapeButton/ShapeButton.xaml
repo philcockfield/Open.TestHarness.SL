@@ -1,0 +1,22 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/ControlStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <ControlTemplate x:Name="ShapeButton" TargetType="Controls:ShapeButton">
+        <Grid x:Name="root" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+            
+            <!--Background-->
+            <ContentControl ContentTemplate="{TemplateBinding BackgroundTemplate}" Style="{StaticResource StretchedContent}" />
+
+            <!--Content-->
+            <ContentControl ContentTemplate="{TemplateBinding HitTargetTemplate}" Style="{StaticResource StretchedContent}" />
+            <Border x:Name="iconContainer" />
+            
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

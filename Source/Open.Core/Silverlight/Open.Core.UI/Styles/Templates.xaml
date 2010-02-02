@@ -1,0 +1,48 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--Backgrounds-->
+    <ControlTemplate x:Key="Background.Selection.Highlights">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderBrush="{StaticResource Brush.White.015}" BorderThickness="0,1,0,0" Height="1" VerticalAlignment="Top" />
+            <Border Grid.Row="0" Margin="0,1,0,0" Background="{StaticResource Gradient.Vertical.White-Transparent}" Opacity="0.3" />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="Background.Selection.Blue">
+        <Border Background="#1e6cbb">
+            <ContentControl Template="{StaticResource Background.Selection.Highlights}" />
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="Background.Selection.Blue-Violet">
+        <Border Background="#7182ad">
+            <ContentControl Template="{StaticResource Background.Selection.Highlights}" />
+        </Border>
+    </ControlTemplate>
+
+    
+
+    <ControlTemplate x:Key="Background.Toolbar.Shiny">
+        <Grid>
+            <Border Background="{StaticResource Gradient.Vertical.White-Transparent}" Opacity="0.7" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="{StaticResource Gradient.Vertical.Transparent-White}" Opacity="0.7" />
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+</ResourceDictionary>

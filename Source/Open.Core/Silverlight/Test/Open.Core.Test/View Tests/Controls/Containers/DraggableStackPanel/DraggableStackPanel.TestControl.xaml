@@ -1,0 +1,27 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Silverlight.Test.View_Tests.Controls.Containers.DraggableStackPanelTestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
+    xmlns:Core="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls">
+
+    <ItemsControl x:Name="itemsControl" ItemsSource="{Binding Items}">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Controls:Placeholder Margin="5" Text="{Binding}" ShowInstanceCount="True" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <Core:DraggableStackPanel 
+                            ItemsSource="{Binding Items}"
+                            Orientation="Vertical"
+                            Background="Orange"
+                            Width="200"
+                            Height="400" 
+                            Loaded="DraggableStackPanel_Loaded" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
+    
+</UserControl>

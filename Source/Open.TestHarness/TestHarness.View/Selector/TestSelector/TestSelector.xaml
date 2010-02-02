@@ -1,0 +1,58 @@
+﻿<UserControl 
+    x:Class="Open.TestHarness.View.Selector.TestSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ViewTestButton.xaml" />
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Title Bar-->
+        <Grid Grid.Row="0"  Height="34">
+            <Border Background="{StaticResource Brush.Black.010}" BorderBrush="{StaticResource Brush.Black.030}" BorderThickness="0,1,0,0" />
+            <Border Background="{StaticResource Gradient.Vertical.Black-Transparent}" Opacity="0.1" Height="8" VerticalAlignment="Top" />
+            <Button
+                    Content="{Binding ReloadLabel}"
+                    cmd:Click.Command="{Binding ReloadClick}"
+                    Style="{StaticResource SmallButtonStyle}"
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center" 
+                    Margin="3,0,6,0" 
+                    Visibility="{Binding ViewTestsVisibility}" />
+        </Grid>
+
+        <!--Method Buttons-->
+        <Controls:CollapsingContent Grid.Row="1">
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" BorderThickness="0" Margin="0,0,2,0" Visibility="{Binding ViewTestsVisibility}">
+                <i:Interaction.Behaviors>
+                    <ab:MouseWheelScroller />
+                </i:Interaction.Behaviors>
+                <Border Background="Transparent">
+                    <ItemsControl ItemsSource="{Binding ViewTests}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource ViewTestButton}" Visibility="{Binding Visibility}" cmd:Click.Command="{Binding Click}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </ScrollViewer>
+        </Controls:CollapsingContent>
+    </Grid>
+
+</UserControl>

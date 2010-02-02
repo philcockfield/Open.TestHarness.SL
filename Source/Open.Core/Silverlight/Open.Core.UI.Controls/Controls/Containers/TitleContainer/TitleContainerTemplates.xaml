@@ -1,0 +1,24 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/Shapes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="DefaultTitle" TargetType="ContentControl">
+        <TextBlock Text="{Binding}" Margin="5,2,0,2" />
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="DefaultIcon" TargetType="ContentControl">
+        <Border IsHitTestVisible="True" Background="{StaticResource Brush.White.000}">
+            <Path 
+                  Width="8" Height="10" Stretch="Fill"
+                  Margin="4,0,4,0"
+                  Fill="{StaticResource Brush.Black.040}" 
+                  Data="{StaticResource Shape.Triangle.Right}" />
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

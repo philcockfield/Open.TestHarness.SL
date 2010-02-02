@@ -1,0 +1,23 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Buttons/ImageButton/ImageButton.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Buttons/ShapeButton/ShapeButton.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Buttons/TextButton/TextButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <DataTemplate x:Key="SimpleButtonBackground">
+        <Border Background="Transparent"></Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SquareButtonHitTarget">
+        <Border Background="Transparent"></Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="RemoveButtonHitTarget">
+        <Ellipse Stretch="Fill" Fill="Transparent"/>
+    </DataTemplate>
+
+</ResourceDictionary>

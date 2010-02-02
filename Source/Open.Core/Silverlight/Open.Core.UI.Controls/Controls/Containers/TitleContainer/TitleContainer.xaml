@@ -1,0 +1,49 @@
+﻿<UserControl 
+    x:Name="root"
+    x:Class="Open.Core.UI.Silverlight.Controls.TitleContainer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Core="clr-namespace:Open.Core.UI.Silverlight.Controls">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--Title-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--Icon-->
+            <ContentControl 
+                            x:Name="icon"
+                            Grid.Column="0" 
+                            DataContext="{Binding ElementName=root}" 
+                            Template="{Binding IconTemplate, ElementName=root}"
+                            RenderTransformOrigin="0.5, 0.5"
+                            x:FieldModifier="private" />
+
+            <!--Title Content-->
+            <ContentControl 
+                            x:Name="title"
+                            Grid.Column="1" 
+                            DataContext="{Binding Title, ElementName=root}" 
+                            Template="{Binding TitleTemplate, ElementName=root}"
+                            Opacity="{Binding TitleOpacity, ElementName=root}"
+                            x:FieldModifier="private" />
+        </Grid>
+
+        <!--Child Content-->
+        <Core:CollapsingContent 
+                            Grid.Row="1" 
+                            IsOpen="{Binding IsOpen, ElementName=root}"
+                            Content="{Binding Child, ElementName=root}" 
+                            AnimationDuration="{Binding AnimationDuration, ElementName=root}" 
+                            Easing="{Binding Easing, ElementName=root}" />
+        
+    </Grid>
+</UserControl>

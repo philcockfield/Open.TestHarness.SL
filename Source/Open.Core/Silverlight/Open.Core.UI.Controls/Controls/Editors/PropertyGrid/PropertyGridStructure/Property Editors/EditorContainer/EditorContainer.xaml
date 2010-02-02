@@ -1,0 +1,21 @@
+﻿<UserControl 
+    x:Class="Open.Core.Common.Controls.Editors.PropertyGridStructure.Editors.EditorContainer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+
+        <!--Inline Content-->
+        <ContentPresenter x:Name="inline" Content="{Binding InlineControl}" DataContext="{Binding PropertyViewModel}" x:FieldModifier="private" />
+
+        <!--Popup Content-->
+        <Popup x:Name="popup" IsOpen="{Binding PopupIsOpen}" x:FieldModifier="private">
+            <ContentPresenter Content="{Binding PopupControl}" DataContext="{Binding PropertyViewModel}">
+                <ContentPresenter.Effect>
+                    <DropShadowEffect BlurRadius="10" Opacity="0.3" ShadowDepth="8" />
+                </ContentPresenter.Effect>
+            </ContentPresenter>
+        </Popup>
+
+    </Grid>
+</UserControl>

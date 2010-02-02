@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B7614A63-B311-4AA0-B53F-8751609B7984}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.TestHarness.Test</RootNamespace>
+    <AssemblyName>Open.TestHarness.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Open.TestHarness.Test.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>Open.TestHarness.Test.App</SilverlightAppEntry>
+    <TestPageFileName>TestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Test\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Bin\Bin.Test\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TalkAudience|AnyCPU' ">
+    <OutputPath>bin\TalkAudience\</OutputPath>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Silverlight.Testing, Version=2.0.21103.1925, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Lib\Silverlight.Testing\Microsoft.Silverlight.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight, Version=2.0.21024.1838, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Lib\Silverlight.Testing\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTests\Model\TestHarnessModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\TestHarnessSettingsTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\ModuleSettingTest.cs" />
+    <Compile Include="UnitTests\Model\Samples\SampleViewTestClass3.cs" />
+    <Compile Include="UnitTests\Model\Samples\SampleViewTestClass1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\Samples\SampleViewTestClass2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\Samples\SampleViewTestClassEmpty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\Samples\SampleViewTestClassNoMethodsVisible.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\ViewTestClassesAssemblyModuleTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\ViewTestClassesModuleTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\ViewTestClassTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\ViewTestModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\ViewTestTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\Model\XapFileTest.cs" />
+    <Compile Include="UnitTests\ViewModel\ControlHost\DisplayContainerViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\ViewModel\RootViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\ViewModel\GlobalTests.cs" />
+    <Compile Include="UnitTests\ViewModel\Selector\ClassNodeViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\ViewModel\Selector\ModuleNodeViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\ViewModel\Selector\SelectorPanelViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\ViewModel\Selector\TestSelectorViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTests\ViewModel\Selector\ViewTestViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewTests\ClientBinGrid.ViewTest.cs" />
+    <Compile Include="ViewTests\ModuleSelector.ViewTest.cs" />
+    <Compile Include="ViewTests\PropertyExplorerPanel.ViewTest.cs" />
+    <Compile Include="ViewTests\SelectorPanel.ViewTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Open.Core\Silverlight\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+      <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
+      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Open.Core\Silverlight\Open.Core.Testing\Open.Core.Testing.csproj">
+      <Project>{1830A8E6-D2F6-4C4F-90E2-74DE357D660C}</Project>
+      <Name>Open.Core.Testing %28Open.Core\Silverlight\Open.Core.Testing%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Open.Core\Silverlight\Open.Core.UI.Controls\Open.Core.UI.Controls.csproj">
+      <Project>{D1373094-30F7-42F8-AD04-5647D19859C9}</Project>
+      <Name>Open.Core.UI.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Open.Core\Silverlight\Open.Core.UI\Open.Core.UI.csproj">
+      <Project>{FEB32091-727E-418B-8841-6AD08D5952BD}</Project>
+      <Name>Open.Core.UI %28Open.Core\Silverlight\Open.Core.UI%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Open.Core\Silverlight\Open.Core\Open.Core.csproj">
+      <Project>{67718EFF-D4D5-471A-A946-0E274A6651E1}</Project>
+      <Name>Open.Core %28Open.Core\Silverlight\Open.Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestHarness.Model\TestHarness.Model.csproj">
+      <Project>{D95FA890-A6AA-4465-8042-9EFB69EC82F6}</Project>
+      <Name>TestHarness.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestHarness.View\TestHarness.View.csproj">
+      <Project>{665816F7-EA4E-4610-B3C3-CFDB63A54E32}</Project>
+      <Name>TestHarness.View</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

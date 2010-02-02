@@ -1,0 +1,260 @@
+//------------------------------------------------------
+//    Copyright (c) 2010 TestHarness.org
+//
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the 'Software'), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//
+//    The above copyright notice and this permission notice shall be included in
+//    all copies or substantial portions of the Software.
+//
+//    THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//    THE SOFTWARE.
+//------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Common;
+using Open.Core.Common.Testing;
+
+namespace Open.Core.Common.Test.Extensions
+{
+    [TestClass]
+    public class StringExtensionsTest
+    {
+        [TestMethod]
+        public void ShouldDetermineWhenStringIsNullWhenEmpty()
+        {
+            Assert.IsNull("  ".AsNullWhenEmpty());
+            Assert.IsNull(" ".AsNullWhenEmpty());
+            Assert.IsNull("".AsNullWhenEmpty());
+
+            Assert.AreEqual("a", "a".AsNullWhenEmpty());
+            Assert.AreEqual("   a   ", "   a   ".AsNullWhenEmpty());
+        }
+
+        [TestMethod]
+        public void ShouldRemoveExtensionFromString()
+        {
+            "Filename.doc".StripExtension("xls").ShouldBe("Filename.doc");
+            "Filename.doc".StripExtension("doc").ShouldBe("Filename");
+            "Filename.doc".StripExtension(".doc").ShouldBe("Filename");
+            "Filename.doc".StripExtension("....doc").ShouldBe("Filename");
+
+            "Filename.doc".StripExtension(".DOC").ShouldBe("Filename");
+            "Filename.doc".StripExtension("DOC").ShouldBe("Filename");
+            "Filename.doc".StripExtension("Doc").ShouldBe("Filename");
+
+            "Filename.doc".StripExtension("  ").ShouldBe("Filename.doc");
+            "Filename.doc".StripExtension(null as string).ShouldBe("Filename.doc");
+        }
+
+        [TestMethod]
+        public void ShouldRemoveExtensionFromStringWhenCollectionOfExtensionsPassed()
+        {
+            "Filename.doc".StripExtension("xls", "psd").ShouldBe("Filename.doc");
+            "Filename.doc".StripExtension("doc", "psd").ShouldBe("Filename");
+            "Filename.doc".StripExtension(".psd", ".doc").ShouldBe("Filename");
+            "Filename.doc".StripExtension("...psd", "....doc").ShouldBe("Filename");
+
+            "Filename.doc".StripExtension("PSd",".DOC").ShouldBe("Filename");
+            "Filename.doc".StripExtension("PSD", "DOC").ShouldBe("Filename");
+            "Filename.doc".StripExtension("Doc", "Psd").ShouldBe("Filename");
+
+            "Filename.doc".StripExtension("  ", null).ShouldBe("Filename.doc");
+            "Filename.doc".StripExtension(null, null).ShouldBe("Filename.doc");
+            "Filename.doc".StripExtension("   ", "").ShouldBe("Filename.doc");
+            "Filename.doc".StripExtension("   ", " ").ShouldBe("Filename.doc");
+        }
+
+        [TestMethod]
+        public void ShouldFindAnyUsingContainsAny()
+        {
+            const string nullValue = null;
+            nullValue.ContainsAny("a b", " ").ShouldBe(false);
+            nullValue.ContainsAny(null, " ").ShouldBe(false);
+            nullValue.ContainsAny(" ", " ").ShouldBe(false);
+            "  ".ContainsAny("a b", " ").ShouldBe(false);
+
+            "cat dog".ContainsAny("roger at", " ").ShouldBe(true);
+            "cat dog".ContainsAny("roger AT", " ").ShouldBe(true);
+            "cat dog".ContainsAny("roger drat", " ").ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldFindAllUsingContainsAll()
+        {
+            const string nullValue = null;
+            nullValue.ContainsAll("a b", " ").ShouldBe(false);
+            nullValue.ContainsAll(null, " ").ShouldBe(false);
+            nullValue.ContainsAll(" ", " ").ShouldBe(false);
+            "  ".ContainsAll("a b", " ").ShouldBe(false);
+
+            "cat dog".ContainsAll("roger AT", " ").ShouldBe(false);
+            "cat dog".ContainsAll("OG AT", " ").ShouldBe(true);
+            "cat dog".ContainsAll("KOG AT", " ").ShouldBe(false);
+        }
+
+
+        [TestMethod]
+        public void ShouldFormatWithArguments()
+        {
+            "one {0} {1}".FormatWith("two", "three").ShouldBe("one two three");
+        }
+
+        [TestMethod]
+        public void ShouldDetermineIfStringIsNullOrEmpty()
+        {
+            "abc".IsNullOrEmpty().ShouldBe(false);
+
+            ((string)null).IsNullOrEmpty().ShouldBe(true);
+            "".IsNullOrEmpty().ShouldBe(true);
+            " ".IsNullOrEmpty().ShouldBe(false);
+
+            "  ".IsNullOrEmpty(true).ShouldBe(true);
+            "  ".IsNullOrEmpty(false).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldRemoveStart()
+        {
+            "HotHouse".RemoveStart("Cat").ShouldBe("HotHouse"); // No change
+
+            "HotHouse".RemoveStart("Hot").ShouldBe("House");
+            "HotHouse".RemoveStart("hot").ShouldBe("House");
+            "HotHouse".RemoveStart("HOT").ShouldBe("House");
+
+            "HotHouse".RemoveStart("HOT", true).ShouldBe("HotHouse");
+        }
+
+        [TestMethod]
+        public void ShouldRemoveEnd()
+        {
+            "HotHouse".RemoveEnd("Cat").ShouldBe("HotHouse"); // No change
+
+            "HotHouse".RemoveEnd("House").ShouldBe("Hot");
+            "HotHouse".RemoveEnd("house").ShouldBe("Hot");
+            "HotHouse".RemoveEnd("HOUSE").ShouldBe("Hot");
+
+            "HotHouse".RemoveEnd("HOUSE", true).ShouldBe("HotHouse"); 
+        }
+
+        [TestMethod]
+        public void ShouldConvertAnEnumerableToString()
+        {
+            new[] { "One", "Two", "Three" }.ToString("; ", e => e.ToLower()).ShouldBe("one; two; three");
+            new[] { "One"}.ToString("; ", e => e.ToLower()).ShouldBe("one");
+            new[] { "  " }.ToString("; ", e => e).ShouldBe("  ");
+            new[] { "" }.ToString("; ", e => e).ShouldBe(string.Empty);
+            new string[0].ToString("; ", e => e).ShouldBe(string.Empty);
+
+            new[] { "One", "Two", "Three" }.ToString(e => e.ToLower()).ShouldBe("one, two, three");
+
+            Should.Throw<ArgumentNullException>(() => new[] { "One"}.ToString("; ", null));
+        }
+
+
+        [TestMethod]
+        public void ShouldLoadEmbeddedResourceFile()
+        {
+            "Core/Extensions/Resource File/File.txt".LoadEmbeddedResource(GetType().Assembly).ShouldNotBe(null);
+            "Core/Extensions/Resource File/File.txt".LoadEmbeddedResource().ShouldNotBe(null);
+
+            "/Core/Extensions/Resource File/File.txt".LoadEmbeddedResource(GetType().Assembly).ShouldNotBe(null);
+            "/Core/Extensions/Resource File/File.txt".LoadEmbeddedResource().ShouldNotBe(null);
+
+            "\\Core\\Extensions\\Resource File\\File.txt".LoadEmbeddedResource().ShouldNotBe(null);
+            @"\Core\Extensions\Resource File\File.txt".LoadEmbeddedResource().ShouldNotBe(null);
+            "\\Core\\Extensions/Resource File/File.txt".LoadEmbeddedResource().ShouldNotBe(null);
+
+            "".LoadEmbeddedResource().ShouldBe(null);
+            " ".LoadEmbeddedResource().ShouldBe(null);
+            ((string)null).LoadEmbeddedResource().ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldFormatUnderscoresOutOfName()
+        {
+            "".FormatUnderscores().ShouldBe(String.Empty);
+            (null as string).FormatUnderscores().ShouldBe(null);
+            "cat".FormatUnderscores().ShouldBe("cat");
+
+            "one_".FormatUnderscores().ShouldBe("one");
+            "one_two".FormatUnderscores().ShouldBe("one two");
+            "one__two".FormatUnderscores().ShouldBe("one: two");
+            "one__two_three__four".FormatUnderscores().ShouldBe("one: two three: four");
+        }
+
+        [TestMethod]
+        public void ShouldReverseString()
+        {
+            (null as string).Reverse().ShouldBe(null);
+
+            "".Reverse().ShouldBe("");
+            " ".Reverse().ShouldBe(" ");
+
+            "abc".Reverse().ShouldBe("cba");
+            "a".Reverse().ShouldBe("a");
+        }
+
+        [TestMethod]
+        public void ShouldCapitalizeFirstLetterOfSentence()
+        {
+            "".ToSentenceCase().ShouldBe("");
+            ((string)null).ToSentenceCase().ShouldBe(null);
+
+            "abc".ToSentenceCase().ShouldBe("Abc");
+            "a".ToSentenceCase().ShouldBe("A");
+        }
+
+        [TestMethod]
+        public void ShouldConvertToPlural()
+        {
+            "cat".ToPlural(2, "cats").ShouldBe("cats");
+            "cat".ToPlural(0, "cats").ShouldBe("cats");
+            "cat".ToPlural(-0, "cats").ShouldBe("cats");
+            "cat".ToPlural(-2, "cats").ShouldBe("cats");
+
+            (null as string).ToPlural(2, "cats").ShouldBe("cats");
+            "cat".ToPlural(2, null).ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotConvertToPlural()
+        {
+            "cat".ToPlural(1, "cats").ShouldBe("cat");
+            "cat".ToPlural(-1, "cats").ShouldBe("cat");
+        }
+
+        [TestMethod]
+        public void ShouldGetFileExtension()
+        {
+            "".FileExtension().ShouldBe(null);
+            "  ".FileExtension().ShouldBe(null);
+            ((string)null).FileExtension().ShouldBe(null);
+
+            // ---
+
+            "file".FileExtension().ShouldBe(null);
+            "file.doc".FileExtension().ShouldBe(".doc");
+            "file.name.doc".FileExtension().ShouldBe(".doc");
+            ".doc".FileExtension().ShouldBe(".doc");
+
+            "file.name.".FileExtension().ShouldBe(null);
+            "file.".FileExtension().ShouldBe(null);
+            ".".FileExtension().ShouldBe(null);
+        }
+    }
+}
