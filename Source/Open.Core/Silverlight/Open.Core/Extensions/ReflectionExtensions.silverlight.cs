@@ -57,6 +57,7 @@ namespace Open.Core.Common
                          where field.IsLiteral
                          select field.GetValue(enumType);
 
+
             // Finish up.
             return fields.ToArray();
         }
