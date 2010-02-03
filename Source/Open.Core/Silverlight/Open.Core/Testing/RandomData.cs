@@ -107,6 +107,12 @@ namespace Open.Core.Common.Testing
             // Finish up.
             return values[index];
         }
+
+        /// <summary>Gets a random icon.</summary>
+        public static Icons GetRandomIconEnum()
+        {
+            return GetRandomEnum<Icons>();
+        }
         #endregion
 
         #region Methods - File / Domain Name / Email Address

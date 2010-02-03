@@ -152,7 +152,6 @@
     <Compile Include="Interactivity\Behaviors\UpdateOnKeyPress.cs" />
     <Compile Include="Interactivity\Behaviors.cs" />
     <Compile Include="Base Classes\ResourcesBase.cs" />
-    <Compile Include="Enumerations\Icons %28Enum%29.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.silverlight.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />

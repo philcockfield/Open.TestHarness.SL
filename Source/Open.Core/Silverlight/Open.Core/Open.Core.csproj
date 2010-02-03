@@ -100,6 +100,7 @@
     <Compile Include="Attributes\SyncValueToAttribute.cs" />
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\DisposableBase.cs" />
+    <Compile Include="Enumerations\Icons %28Enum%29.cs" />
     <Compile Include="Network\PackageDownloadService.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="Collection\ObservableCollectionWrapper.cs" />
     <Compile Include="Collection\ProcessQueueEventArgs.cs" />
     <Compile Include="Collection\ProcessQueueHandle.cs" />
-    <Compile Include="Enumerations.cs" />
+    <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Exceptions\AssertionException.cs" />
     <Compile Include="Exceptions\InitializationException.cs" />
     <Compile Include="Exceptions\ExistsException.cs" />

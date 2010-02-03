@@ -135,8 +135,11 @@
     <Compile Include="..\..\Silverlight\Open.Core\Collection\ProcessQueueHandle.cs">
       <Link>Collection\ProcessQueueHandle.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core\Enumerations.cs">
-      <Link>Enumerations.cs</Link>
+    <Compile Include="..\..\Silverlight\Open.Core\Enumerations\Enumerations.cs">
+      <Link>Enumerations\Enumerations.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Enumerations\Icons %28Enum%29.cs">
+      <Link>Enumerations\Icons %28Enum%29.cs</Link>
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Exceptions\AssertionException.cs">
       <Link>Exceptions\AssertionException.cs</Link>

@@ -63,9 +63,6 @@
     <Compile Include="..\..\Silverlight\Open.Core.UI\Converter\VisibilityConverter.cs">
       <Link>Converter\VisibilityConverter.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Enumerations\Icons %28Enum%29.cs">
-      <Link>Enumerations\Icons %28Enum%29.cs</Link>
-    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core.UI\Extensions\FrameworkElementExtensions.cs">
       <Link>Extensions\FrameworkElementExtensions.cs</Link>
     </Compile>
