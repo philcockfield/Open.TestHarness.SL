@@ -109,9 +109,9 @@ namespace Open.Core.Common.Testing
         }
 
         /// <summary>Gets a random icon.</summary>
-        public static Icons GetRandomIconEnum()
+        public static IconImage GetRandomIconEnum()
         {
-            return GetRandomEnum<Icons>();
+            return GetRandomEnum<IconImage>();
         }
         #endregion
 

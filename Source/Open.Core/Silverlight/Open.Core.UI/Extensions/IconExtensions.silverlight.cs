@@ -29,7 +29,7 @@ namespace Open.Core.Common
     {
         /// <summary>Converts the icon to an a value that can be used as the 'Source' of an Image.</summary>
         /// <param name="icon">The flag of the icon to convert.</param>
-        public static BitmapImage ToImageSource(this Icons icon)
+        public static BitmapImage ToImageSource(this IconImage icon)
         {
             return new BitmapImage { UriSource = icon.ToUri() };
         }

@@ -29,7 +29,7 @@ namespace Open.Core.Common
     {
         /// <summary>Determines whether the given icon flag is from the Silk icon set.</summary>
         /// <param name="icon">The flag of the icon to examine.</param>
-        public static bool IsSilk(this Icons icon)
+        public static bool IsSilk(this IconImage icon)
         {
             return icon.ToString().StartsWith("Silk");
         }
@@ -37,7 +37,7 @@ namespace Open.Core.Common
 
         /// <summary>Retrieves the path to the corresponding image file.</summary>
         /// <param name="icon">The flag of the icon to convert.</param>
-        public static Uri ToUri(this Icons icon)
+        public static Uri ToUri(this IconImage icon)
         {
             var path = string.Format("/Images/Icons/Silk/{0}.png", icon);
             return new Uri(path, UriKind.Relative);

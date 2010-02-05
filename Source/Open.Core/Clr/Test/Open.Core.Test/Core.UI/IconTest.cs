@@ -34,13 +34,13 @@ namespace Open.Core.Common.Test.Core.UI.Icon
         [TestMethod]
         public void ShouldDetermineIfIconIsFromSilkSet()
         {
-            Icons.SilkZoomOut.IsSilk().ShouldBe(true);
+            Open.Core.Common.IconImage.SilkZoomOut.IsSilk().ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldConvertSilkIconToUri()
         {
-            var icon = Icons.SilkAdd;
+            var icon = Open.Core.Common.IconImage.SilkAdd;
             var path = "/Images/Icons/Silk/SilkAdd.png";
 
             var uri = icon.ToUri();
@@ -57,7 +57,7 @@ namespace Open.Core.Common.Test.Core.UI.Icon
             if (!folder.Exists) throw new NotFoundException("The path to the icon set cannot be found on the server. Looked in: " + path);
 
             // Match names.
-            foreach (Icons icon in Enum.GetValues(typeof(Icons)))
+            foreach (Open.Core.Common.IconImage icon in Enum.GetValues(typeof(Open.Core.Common.IconImage)))
             {
                 if (!icon.IsSilk()) continue;
                 var iconPath = folder.FullName + icon.ToUri().ToString().Replace("/", "\\");

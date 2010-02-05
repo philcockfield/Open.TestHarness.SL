@@ -24,7 +24,7 @@ namespace Open.Core.Common
 {
     /// <summary>Flags representing icons.</summary>
     /// <remarks>The first word in the camel-case set represents the icon set's name.</remarks>
-    public enum Icons
+    public enum IconImage
     {
         // Silk icon set.  See: http://www.famfamfam.com/lab/icons/silk/ (Creative Commons Attribution License 3.0)
         SilkAccept,
