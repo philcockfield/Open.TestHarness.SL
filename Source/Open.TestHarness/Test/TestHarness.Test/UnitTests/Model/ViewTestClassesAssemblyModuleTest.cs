@@ -30,6 +30,8 @@ using Open.Core.Common;
 using Open.Core.Common.Testing;
 using Open.TestHarness.Model;
 
+using T = Open.TestHarness.Model.ViewTestClassesAssemblyModule;
+
 namespace Open.TestHarness.Test.Model
 {
     [TestClass]
@@ -86,9 +88,9 @@ namespace Open.TestHarness.Test.Model
             moduleModel.Classes.ShouldNotBeEmpty();
             testHarness.LoadedAssemblies.ShouldContain(sampleAssembly);
 
-            propArgs.ShouldContain(ViewTestClassesAssemblyModule.PropAssemblyName);
-            propArgs.ShouldContain(ViewTestClassesAssemblyModule.PropAssembly);
-            propArgs.ShouldContain(ViewTestClassesAssemblyModule.PropIsLoaded);
+            propArgs.ShouldContain(LinqExtensions.GetPropertyName<T>(m => m.AssemblyName));
+            propArgs.ShouldContain(LinqExtensions.GetPropertyName<T>(m => m.Assembly));
+            propArgs.ShouldContain(LinqExtensions.GetPropertyName<T>(m => m.IsLoaded));
             propArgs.Clear();
 
             startArgs.ShouldNotBe(null);

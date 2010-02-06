@@ -30,27 +30,17 @@ using Open.Core.Common.Collection;
 using Open.Core.Composite.Command;
 using Open.TestHarness.Model;
 
+using T = Open.TestHarness.View.Selector.ModuleNodeViewModel;
+
 namespace Open.TestHarness.View.Selector
 {
     /// <summary>Logical model of a root node within the class selector.</summary>
     public class ModuleNodeViewModel : NodeViewModelBase
     {
         #region Head
-        public const string PropDisplayName = "DisplayName";
-        public const string PropIsLoaded = "IsLoaded";
-        public const string PropIsLoading = "IsLoading";
-        public const string PropRemoveButtonVisible = "RemoveButtonVisible";
-        public const string PropIsOpen = "IsOpen";
-
-        private bool isLoaded;
-        private bool isLoading;
-        private bool isOpen;
-        private string displayName;
-        private bool loadingFromClick;
         private readonly ViewTestClassesModule model;
         private readonly ObservableCollectionWrapper<ViewTestClass, ClassNodeViewModel> classes;
-        private DelegateCommand<Button> removeCommand;
-        private DelegateCommand<Button> clickCommand;
+        private bool isLoadingFromClick;
 
         public ModuleNodeViewModel(ViewTestClassesModule model)
         {
@@ -59,20 +49,22 @@ namespace Open.TestHarness.View.Selector
             classes = new ObservableCollectionWrapper<ViewTestClass, ClassNodeViewModel>(model.Classes, item => new ClassNodeViewModel(item));
             if (IsRecentSelections) IsOpen = true;
 
+            // Create commands.
+            RemoveCommand = new DelegateCommand<Button>(button => RemoveModule());
+            ClickCommand = new DelegateCommand<Button>(button => { if (!IsLoading) IsOpen = !IsOpen; });
+
             // Wire up events.
             if (AssemblyModel != null)
             {
                 AssemblyModel.AssemblyLoadStarted += delegate { LoadStart(); };
                 AssemblyModel.AssemblyLoadComplete += delegate { LoadComplete(); };
             }
-
-            // Wire up events.
             model.PropertyChanged += (s, e) =>
                                          {
                                              if (e.PropertyName == ViewTestClassesModule.PropDisplayName)
                                              {
                                                  UpdateDisplayName();
-                                                 OnPropertyChanged(PropDisplayName);
+                                                 OnPropertyChanged<T>(m => m.DisplayName);
                                              }
                                          };
 
@@ -88,70 +80,36 @@ namespace Open.TestHarness.View.Selector
         /// <summary>Retrieves the display name of the node.</summary>
         public string DisplayName
         {
-            get { return displayName; }
-            set
-            {
-                value = value.AsNullWhenEmpty();
-                if (value == DisplayName) return;
-                displayName = value;
-                OnPropertyChanged(PropDisplayName);
-            }
+            get { return GetPropertyValue<T, string>(m => m.DisplayName); }
+            set { SetPropertyValue<T, string>(m => m.DisplayName, value); }
         }
 
         /// <summary>Gets whether the module is loaded.</summary>
         /// <remarks>Modules remain in unloaded state until selected.</remarks>
         public bool IsLoaded
         {
-            get { return isLoaded; }
-            set
-            {
-                if (value == IsLoaded) return;
-                isLoaded = value;
-                OnPropertyChanged(PropIsLoaded);
-                OnPropertyChanged(PropRemoveButtonVisible);
-            }
+            get { return GetPropertyValue<T, bool>(m => m.IsLoaded); }
+            set { SetPropertyValue<T, bool>(m => m.IsLoaded, value, m => m.IsRemoveButtonVisible); }
         }
 
         /// <summary>Gets or sets whether the module is currently being loaded.</summary>
         public bool IsLoading
         {
-            get { return isLoading; }
-            set
-            {
-                if (value == IsLoading) return;
-                isLoading = value;
-                OnPropertyChanged(PropIsLoading);
-            }
+            get { return GetPropertyValue<T, bool>(m => m.IsLoading); }
+            set { SetPropertyValue<T, bool>(m => m.IsLoading, value); }
         }
 
         /// <summary>Gets whether the button that removes the modeule from the list is visible.</summary>
-        public Visibility RemoveButtonVisible
+        public bool IsRemoveButtonVisible
         {
-            get { return IsLoaded && model is ViewTestClassesAssemblyModule ? Visibility.Visible : Visibility.Collapsed; }
+            get { return IsLoaded && model is ViewTestClassesAssemblyModule; }
         }
 
         /// <summary>Gets the command associated with the 'Remove' button.</summary>
-        public ICommand RemoveCommand
-        {
-            get
-            {
-                if (removeCommand == null) removeCommand = new DelegateCommand<Button>(button => RemoveModule(), button => true);
-                return removeCommand;
-            }
-        }
+        public ICommand RemoveCommand { get; private set; }
 
         /// <summary>Gets the command for handling general selection of the button.</summary>
-        public DelegateCommand<Button> ClickCommand
-        {
-            get
-            {
-                if (clickCommand == null) 
-                    clickCommand = new DelegateCommand<Button>(
-                        button => { if (!IsLoading) IsOpen = !IsOpen; },
-                        button => true);
-                return clickCommand;
-            }
-        }
+        public DelegateCommand<Button> ClickCommand { get; private set; }
 
         /// <summary>Gets the currently selected class within the module (null if none are selected).</summary>
         public ClassNodeViewModel CurrentClass
@@ -162,21 +120,18 @@ namespace Open.TestHarness.View.Selector
         /// <summary>Gets or sets whether the module node is currently open.</summary>
         public bool IsOpen
         {
-            get { return isOpen; }
+            get { return GetPropertyValue<T, bool>(m => m.IsOpen); }
             set
             {
                 // Store value.
-                isOpen = value; 
+                SetPropertyValue<T, bool>(m => m.IsOpen, value);
 
                 // Load the assembly (if it's not already loaded).
-                if (isOpen && ! IsLoading && ! IsLoaded)
+                if (value && !IsLoading && !IsLoaded)
                 {
-                    loadingFromClick = true;
+                    isLoadingFromClick = true;
                     OnSelected();
                 }
-
-                // Finish up.
-                OnPropertyChanged(PropIsOpen);
             }
         }
         #endregion
@@ -189,7 +144,8 @@ namespace Open.TestHarness.View.Selector
         #region Methods
         public override void OnSelected()
         {
-            if (!IsLoaded && !IsLoading) Load();
+            if (IsLoaded || IsLoading) return;
+            Load();
         }
         #endregion
 
@@ -210,8 +166,8 @@ namespace Open.TestHarness.View.Selector
             IsLoading = false;
             IsLoaded = true;
             UpdateDisplayName();
-            OnPropertyChanged(PropRemoveButtonVisible);
-            if (!IsOpen && loadingFromClick) IsOpen = true;
+            OnPropertyChanged<T>(m => m.IsRemoveButtonVisible);
+            if (!IsOpen && isLoadingFromClick) IsOpen = true;
         }
 
         private void UpdateDisplayName()

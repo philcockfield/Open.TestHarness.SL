@@ -1,4 +1,4 @@
-//------------------------------------------------------
+﻿//------------------------------------------------------
 //    Copyright (c) 2010 TestHarness.org
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,15 +20,14 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.Windows.Controls;
+using System.Windows;
 
-namespace Open.Core.UI.Silverlight.Test.View_Tests.Editors.Test_Controls
+namespace Open.Core.Common
 {
-    public partial class DatabindingControl : UserControl
+    /// <summary>Defines an object which can create it's own view.</summary>
+    public interface IViewFactory
     {
-        public DatabindingControl()
-        {
-            InitializeComponent();
-        }
+        /// <summary>Creates a new instance of the view.</summary>
+        FrameworkElement CreateView();
     }
 }

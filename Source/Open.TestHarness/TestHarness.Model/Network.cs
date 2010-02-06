@@ -77,15 +77,7 @@ namespace Open.TestHarness.Model
             
             // Build the list.
             var xapFileName = Application.Current.GetXapFileName().RemoveEnd(".xap");
-            var list = new List<XapFile>();
-            foreach (var file in files)
-            {
-                if (file.Name == xapFileName) continue;
-                list.Add(file);
-            }
-
-            // Finish up.
-            return list;
+            return files.Where(file => file.Name != xapFileName).ToList();
         }
         #endregion
     }

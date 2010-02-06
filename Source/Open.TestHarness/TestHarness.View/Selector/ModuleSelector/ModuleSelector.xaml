@@ -5,17 +5,19 @@
     xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI" 
     xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI" 
     xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
-    xmlns:Core="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls">
+    xmlns:Core="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Open.Core.UI;component/Styles/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Converter:VisibilityConverter x:Name="visibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     
-    <Grid x:Name="LayoutRoot">
+    <Grid>
         <Grid.Resources>
             <!--General-->
             <Converter:VisibilityConverter x:Key="visibilityConverter" />
@@ -66,18 +68,22 @@
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.Column="0" Source="../../Images/Icon.Assembly.20x12.png" Stretch="None" Margin="2,0,2,-3" />
                                 <TextBlock Grid.Column="1" Text="{Binding DisplayName}" />
-                                <Button
-                                    Grid.Column="2"
-                                    Width="16" Height="16"
-                                    cmd:Click.Command="{Binding RemoveCommand}"
-                                    Visibility="{Binding RemoveButtonVisible}"
-                                    Margin="0,0,3,0">
-                                    <Button.Template>
-                                        <ControlTemplate>
-                                            <Image Grid.Column="0" Source="../../Images/Icon.Eject.14x14.png" Stretch="None" />
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
+                                
+                                <Controls:ImageButton 
+                                        Grid.Column="2"
+                                        Width="16" 
+                                        Height="16"
+                                        cmd:Click.Command="{Binding RemoveCommand}"
+                                        Visibility="{Binding IsRemoveButtonVisible, Converter={StaticResource visibilityConverter}}"
+                                        Margin="0,0,3,0"
+                                        Source="../../Images/Icon.Eject.14x14.png" 
+                                        Stretch="None" />
+                                
+                                <Controls:Spinner
+                                        Grid.Column="2"
+                                        IsSpinning="{Binding IsLoading}"
+                                        Scale="0.2"
+                                        Margin="0,0,3,0" />
                             </Grid>
 
                         </ControlTemplate>
