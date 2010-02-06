@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Controls;
 using Open.Core.UI.Controls;
 using Open.Core.Common.Testing;
 using System.Threading;
@@ -48,6 +49,13 @@ namespace Open.Core.Common.Test.Core.Common.Testing.Controls
             Output.Write(Colors.Green, "Written from initial ViewTest.");
         }
         #endregion
+
+        [ViewTest]
+        public void TEMP(TextBox control) //TEMP 
+        {
+            
+        }
+
 
         #region Tests
         [ViewTest]

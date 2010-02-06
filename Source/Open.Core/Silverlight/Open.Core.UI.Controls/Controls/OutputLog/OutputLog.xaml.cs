@@ -20,11 +20,13 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Open.Core.Common;
 
 using T = Open.Core.UI.Controls.OutputLog;
@@ -57,6 +59,9 @@ namespace Open.Core.UI.Controls
 
             // Create a default writer.
             Writer = new OutputWriter();
+
+            // Wire up events.
+            KeyUp += OnKeyUp;
         }
         #endregion
 
@@ -69,6 +74,20 @@ namespace Open.Core.UI.Controls
 
             // Finish up.
             previousIsEmpty = IsEmpty;
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            // Setup initial conditions.
+            if (!(e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)) return; // Ctrl + C
+            if (!this.ContainsFocus()) return;
+
+            // Retreive the selected item.
+            var selectedLine = listBox.SelectedItem as OutputLineViewModel;
+            if (selectedLine == null) return;
+
+            // Copy to clipboard.
+            Clipboard.SetText(selectedLine.Text);
         }
         #endregion
 

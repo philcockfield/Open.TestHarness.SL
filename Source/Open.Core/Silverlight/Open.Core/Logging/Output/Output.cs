@@ -238,7 +238,7 @@ namespace Open.Core.Common
             var msg = "";
             foreach (var property in properties)
             {
-                msg += string.Format(" - {0}: {1}\r", property.Name, GetValue(property, obj));
+                msg += string.Format(" - {0}: {1}{2}", property.Name, GetValue(property, obj), Environment.NewLine);
             }
             return msg.TrimEnd(Environment.NewLine.ToCharArray());
         }
