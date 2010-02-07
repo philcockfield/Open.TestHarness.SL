@@ -96,6 +96,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Base Classes\DisposableBase.cs">
       <Link>Base Classes\DisposableBase.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Base Classes\NotifyPropertyChangedBase.AutoProperty.partial.cs">
+      <Link>Base Classes\NotifyPropertyChangedBase.AutoProperty.partial.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Base Classes\NotifyPropertyChangedBase.cs">
       <Link>Base Classes\NotifyPropertyChangedBase.cs</Link>
     </Compile>
@@ -194,9 +197,6 @@
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\SyncValueToHandler.cs">
       <Link>Helper Classes\SyncValueToHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.AutoProperty.partial.cs">
-      <Link>Model\Base Classes\ModelBase.AutoProperty.partial.cs</Link>
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.BeginInvoke.partial.cs">
       <Link>Model\Base Classes\ModelBase.BeginInvoke.partial.cs</Link>

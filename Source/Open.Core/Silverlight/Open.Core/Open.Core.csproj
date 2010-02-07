@@ -116,7 +116,7 @@
     <Compile Include="Model\Base Classes\ModelBase.BeginInvoke.partial.cs" />
     <Compile Include="Base Classes\EmbeddedParentT.cs" />
     <Compile Include="Model\Base Classes\ModelBase.cs" />
-    <Compile Include="Model\Base Classes\ModelBase.AutoProperty.partial.cs" />
+    <Compile Include="Base Classes\NotifyPropertyChangedBase.AutoProperty.partial.cs" />
     <Compile Include="Model\DomainCredential.cs" />
     <Compile Include="Model\ViewTemplate.cs" />
     <Compile Include="Base Classes\NotifyPropertyChangedBase.cs" />

@@ -31,7 +31,7 @@ using System.IO;
 namespace Open.Core.Common.Test.Model
 {
     [TestClass]
-    public class ModelBaseAutoPropertyTest
+    public class NotifyPropertyChangedBaseAutoPropertyTest
     {
         #region Tests
         [TestMethod]
@@ -171,7 +171,7 @@ namespace Open.Core.Common.Test.Model
         #endregion
 
         #region Stubs
-        public class Stub : ModelBase
+        public class Stub : NotifyPropertyChangedBase
         {
             #region Head
             public int ReadPropertyValueCount { get; set; }

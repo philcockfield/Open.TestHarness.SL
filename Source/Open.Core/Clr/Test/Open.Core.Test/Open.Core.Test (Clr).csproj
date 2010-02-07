@@ -115,7 +115,7 @@
     <Compile Include="Core\Helper Classes\SyncValueToHandlerTest.cs" />
     <Compile Include="Core\Model\ControllerBase.Test.cs" />
     <Compile Include="Core\Model\DomainCredentialTest.cs" />
-    <Compile Include="Core\Model\ModelBase.AutoProperty.Test.cs" />
+    <Compile Include="Core\Base Classes\NotifyPropertyChangedBase.AutoProperty.Test.cs" />
     <Compile Include="Core\Model\ModelBase.Test.cs" />
     <Compile Include="Core\Model\ModelBase.BeginInvoke.Test.cs" />
     <Compile Include="Core\Model\ViewModelBase.Test.cs" />

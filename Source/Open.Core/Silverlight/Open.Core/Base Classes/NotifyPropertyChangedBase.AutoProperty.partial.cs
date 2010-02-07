@@ -28,7 +28,7 @@ namespace Open.Core.Common
 {
     /// <summary>The base class for models.</summary>
     /// <remarks>Implements functionality for automatically storing property backing values.</remarks>
-    public partial class ModelBase
+    public partial class NotifyPropertyChangedBase
     {
         #region Head
         private Dictionary<string, object> propertyStore;

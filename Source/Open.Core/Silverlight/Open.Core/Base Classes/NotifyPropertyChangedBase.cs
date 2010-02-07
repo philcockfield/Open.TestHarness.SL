@@ -28,7 +28,7 @@ using System.Threading;
 namespace Open.Core.Common
 {
     /// <summary>Base class that implements INotifyPropertyChanged.</summary>
-    public abstract class NotifyPropertyChangedBase : DisposableBase, INotifyPropertyChanged
+    public abstract partial class NotifyPropertyChangedBase : DisposableBase, INotifyPropertyChanged
     {
         #region Head
         /// <summary>Fires when a property on the object has changed value.</summary>
@@ -42,6 +42,19 @@ namespace Open.Core.Common
         {
             // Store a static reference to the sync-context.
             if (SynchronizationContext == null) SynchronizationContext = SynchronizationContext.Current;
+
+            // Wire up events.
+            Disposed += HandleDisposed;
+        }
+        #endregion
+
+        #region Event Handlers
+        private void HandleDisposed(object sender, EventArgs e)
+        {
+            // NB: The event is hooked (rather than overiding OnDisposed) to avoid inconsistent
+            // behavior if a deriving class does not call base.OnDisposed() when it overrides.
+            Disposed -= HandleDisposed;
+            DisposeOfAutoProperties();
         }
         #endregion
 

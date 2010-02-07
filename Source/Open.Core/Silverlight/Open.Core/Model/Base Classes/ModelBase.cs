@@ -45,17 +45,6 @@ namespace Open.Core.Common
         // NB: Constructor is public so the object can be de-serialized.
         public ModelBase() : base()
         {
-            Disposed += HandleDisposed;
-        }
-        #endregion
-
-        #region Event Handlers
-        private void HandleDisposed(object sender, EventArgs e)
-        {
-            // NB: The event is hooked (rather overiding OnDisposed) to avoid inconsistent
-            // behavior if a deriving class does not call base.OnDisposed() when it overrides.
-            Disposed -= HandleDisposed;
-            DisposeOfAutoProperties();
         }
         #endregion
 
