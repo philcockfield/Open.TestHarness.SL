@@ -179,6 +179,37 @@ namespace Open.Core.UI.Controls
                 typeof (Thickness),
                 typeof (T),
                 new PropertyMetadata(new Thickness(3,0,0,0), (s, e) => ((T) s).UpdateIconVisibility()));
+
+
+        /// <summary>Gets or sets the trimming rule for the text.</summary>
+        public TextTrimming TextTrimming
+        {
+            get { return (TextTrimming) (GetValue(TextTrimmingProperty)); }
+            set { SetValue(TextTrimmingProperty, value); }
+        }
+        /// <summary>Gets or sets the trimming rule for the text.</summary>
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                LinqExtensions.GetPropertyName<T>(m => m.TextTrimming),
+                typeof (TextTrimming),
+                typeof (T),
+                new PropertyMetadata(TextTrimming.WordEllipsis));
+
+
+        /// <summary>Gets or sets the opacity of the underline that indicates when the TextButton has focus.</summary>
+        public double FocusOpacity
+        {
+            get { return (double) (GetValue(FocusOpacityProperty)); }
+            set { SetValue(FocusOpacityProperty, value); }
+        }
+        /// <summary>Gets or sets the opacity of the underline that indicates when the TextButton has focus.</summary>
+        public static readonly DependencyProperty FocusOpacityProperty =
+            DependencyProperty.Register(
+                LinqExtensions.GetPropertyName<T>(m => m.FocusOpacity),
+                typeof (double),
+                typeof (T),
+                new PropertyMetadata(0.35d));
+        
         #endregion
 
         #region Internal

@@ -67,6 +67,13 @@ namespace Open.Core.UI.Controls
         {
             get { return SelectedItem == null ? null : SelectedItem.Value; }
         }
+
+        /// <summary>Gets or sets the tooltip to apply to the ComboBox.</summary>
+        public string ToolTip
+        {
+            get { return GetPropertyValue<T, string>(m => m.ToolTip); }
+            set { SetPropertyValue<T, string>(m => m.ToolTip, value); }
+        }
         #endregion
 
         #region Methods

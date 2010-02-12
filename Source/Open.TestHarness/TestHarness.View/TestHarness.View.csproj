@@ -152,11 +152,26 @@
       <DependentUpon>TestSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Selector\TestSelector\ViewTestButton.ViewModel.cs" />
+    <Compile Include="Selector\TestSelector\ViewTestButton.xaml.cs">
+      <DependentUpon>ViewTestButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Selector\TestSelector\ViewTestParameters.xaml.cs">
+      <DependentUpon>ViewTestParameters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Selector\TestSelector\ViewTestParameters.ViewModel.cs" />
     <Page Include="Resources\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Selector\TestSelector\ViewTestButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Selector\TestSelector\ViewTestParameters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -221,12 +236,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Selector\TestSelector\TestSelector.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Selector\TestSelector\ViewTestButton.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

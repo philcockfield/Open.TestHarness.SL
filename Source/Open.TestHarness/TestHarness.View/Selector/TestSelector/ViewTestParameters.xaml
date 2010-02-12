@@ -1,0 +1,23 @@
+﻿<UserControl 
+    x:Class="Open.TestHarness.View.Selector.ViewTestParameters"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls">
+
+    <ItemsControl ItemsSource="{Binding EnumDropDowns}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Controls:CoreComboBox 
+                        DataContext="{Binding}" 
+                        Padding="8,1,22,1" 
+                        Margin="3,0,0,0" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+</UserControl>

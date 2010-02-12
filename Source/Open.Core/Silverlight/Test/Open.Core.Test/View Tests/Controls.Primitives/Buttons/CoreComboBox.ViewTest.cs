@@ -108,6 +108,18 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls.Primitives.Buttons
         {
             control.FontSize = 25;
         }
+
+        [ViewTest]
+        public void Set_Tooltip(CoreComboBox control)
+        {
+            viewModel.ToolTip = "My ToolTip";
+        }
+
+        [ViewTest]
+        public void Set_Tooltip_Null(CoreComboBox control)
+        {
+            viewModel.ToolTip = null;
+        }
         #endregion
 
         #region Stubs

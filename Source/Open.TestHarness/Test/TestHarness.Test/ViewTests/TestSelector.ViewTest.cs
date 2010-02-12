@@ -69,15 +69,23 @@ namespace Open.TestHarness.Test.ViewTests
         [ViewTestClass]
         public class MyViewTestClass { }
 
+        public enum MyEnum{One, Two, Three}
+
         [ViewTestClass]
         public class MyViewTestClassWithEnums
         {
             [ViewTest]
-            public void MyTest(Placeholder control, Visibility visibility)
+            public void MyTest1(Placeholder control, Visibility visibility)
             {
+                Output.Write("Method Invoked - MyTest1", "Visibility: " + visibility);
+            }
+
+            [ViewTest]
+            public void MyTest2(Placeholder control, Visibility visibility, MyEnum myEnum)
+            {
+                Output.Write("Method Invoked - MyTest2", "Visibility: " + visibility, "MyEnum: " + myEnum);
             }
 
         }
-
     }
 }

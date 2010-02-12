@@ -26,26 +26,45 @@ using Open.Core.Common;
 using Open.Core.Composite.Command;
 using Open.TestHarness.Model;
 
+using T = Open.TestHarness.View.Selector.ViewTestButtonViewModel;
+
 namespace Open.TestHarness.View.Selector
 {
     /// <summary>View-model for an individual [ViewTest].</summary>
     public class ViewTestButtonViewModel : ViewModelBase
     {
         #region Head
-        public const string PropExecuteCount = "ExecuteCount";
-
         private readonly ViewTest model;
-        private DelegateCommand<Button> clickCommand;
+        private readonly PropertyObserver<ViewTest> modelObserver;
 
         public ViewTestButtonViewModel(ViewTest model)
         {
+            // Setup initial conditions.
             this.model = model;
-            model.PropertyChanged += (s, e) =>
-                                         {
-                                             if (e.PropertyName == ViewTest.PropExecuteCount) OnPropertyChanged(PropExecuteCount);
-                                         };
+            Click = new DelegateCommand<Button>(button => OnClick());
+            ParametersViewModel = new ViewTestParametersViewModel(model);
+
+            // Wire up events.
+            modelObserver = new PropertyObserver<ViewTest>(model)
+                .RegisterHandler(m => m.ExecuteCount, m => OnPropertyChanged<T>(o => o.ExecuteCount));
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            modelObserver.Dispose();
         }
         #endregion
+
+        #region Event Handlers
+
+        private void OnClick()
+        {
+            model.Execute();
+        }
+
+        #endregion
+
 
         #region Properties
         /// <summary>Gets the number of times the command has been executed.</summary>
@@ -71,14 +90,10 @@ namespace Open.TestHarness.View.Selector
         }
 
         /// <summary>Gets the click command.</summary>
-        public DelegateCommand<Button> Click
-        {
-            get
-            {
-                if (clickCommand== null) clickCommand = new DelegateCommand<Button>(button => model.Execute(), button => true);
-                return clickCommand;
-            }
-        }
+        public DelegateCommand<Button> Click { get; private set; }
+
+        /// <summary>Gets the view-model for the parameters editor.</summary>
+        public ViewTestParametersViewModel ParametersViewModel { get; private set; }
         #endregion
     }
 }

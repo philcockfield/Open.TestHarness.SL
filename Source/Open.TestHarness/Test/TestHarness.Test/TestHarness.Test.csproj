@@ -168,7 +168,7 @@
     <Compile Include="ViewTests\ModuleSelector.ViewTest.cs" />
     <Compile Include="ViewTests\PropertyExplorerPanel.ViewTest.cs" />
     <Compile Include="ViewTests\SelectorPanel.ViewTest.cs" />
-    <Compile Include="ViewTests\TestSelectorViewTest.cs" />
+    <Compile Include="ViewTests\TestSelector.ViewTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

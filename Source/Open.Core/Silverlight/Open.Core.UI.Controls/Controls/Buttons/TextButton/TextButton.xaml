@@ -25,7 +25,7 @@
             </VisualStateManager.VisualStateGroups>
 
             <Border x:Name="focusBorder" 
-                        Opacity="0.35" 
+                        Opacity="{TemplateBinding FocusOpacity}" 
                         BorderThickness="0,0,0,1" 
                         VerticalAlignment="Bottom"
                         Margin="0,0,0,2"
@@ -53,6 +53,7 @@
                         FontStretch="{TemplateBinding FontStretch}"
                         FontWeight="{TemplateBinding FontWeight}"
                         FontStyle="{TemplateBinding FontStyle}"
+                        TextTrimming="{TemplateBinding TextTrimming}"
                         Text="{TemplateBinding Text}">
                 <i:Interaction.Behaviors>
                     <ab:TextMouseHighlight />

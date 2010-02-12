@@ -40,7 +40,6 @@ namespace Open.Core.UI.Controls
     public class CoreComboBox : ComboBox
     {
         #region Head
-        private static readonly string selectedItemPropertyName = LinqExtensions.GetPropertyName<ComboBoxViewModel>(m => m.SelectedItem);
         private readonly DataContextObserver dataContextObserver;
 
         public CoreComboBox()
@@ -73,8 +72,15 @@ namespace Open.Core.UI.Controls
             ItemsSource = ViewModel.Items;
 
             // Bind to the 'SelectedItem' property.
-            var binding = new Binding(selectedItemPropertyName){Mode = BindingMode.TwoWay};
-            SetBinding(SelectedItemProperty, binding);
+            var selectedItemBinding = new Binding(LinqExtensions.GetPropertyName<ComboBoxViewModel>(m => m.SelectedItem))
+                              {
+                                  Mode = BindingMode.TwoWay
+                              };
+            SetBinding(SelectedItemProperty, selectedItemBinding);
+
+            // Bind the tooltip.
+            var tooltipBinding = new Binding(LinqExtensions.GetPropertyName<ComboBoxViewModel>(m => m.ToolTip));
+            SetBinding(ToolTipService.ToolTipProperty, tooltipBinding);
         }
         #endregion
     }

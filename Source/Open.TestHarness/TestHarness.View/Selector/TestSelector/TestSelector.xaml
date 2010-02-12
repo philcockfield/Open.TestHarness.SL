@@ -6,12 +6,11 @@
     xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI" 
     xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
     xmlns:Controls="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls" 
-    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI" xmlns:Selector="clr-namespace:Open.TestHarness.View.Selector">
     
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ViewTestButton.xaml" />
                 <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Converter:VisibilityConverter x:Name="visibilityConverter" />
@@ -56,7 +55,7 @@
                     <ItemsControl ItemsSource="{Binding ViewTests}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Style="{StaticResource ViewTestButton}" Visibility="{Binding Visibility}" cmd:Click.Command="{Binding Click}" />
+                                <Selector:ViewTestButton DataContext="{Binding}" Margin="2,4,4,4" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
