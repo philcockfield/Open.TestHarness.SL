@@ -29,16 +29,14 @@ using Open.Core.Common.Collection;
 using Open.Core.Composite.Command;
 using Open.TestHarness.Model;
 
+using T = Open.TestHarness.View.Selector.TestSelectorViewModel;
+
 namespace Open.TestHarness.View.Selector
 {
     /// <summary>View model for the test-selector.</summary>
     public class TestSelectorViewModel : ViewModelBase
     {
         #region Head
-        public const string PropViewTestsVisibility = "ViewTestsVisibility";
-        public const string PropViewTests = "ViewTests";
-        public const string PropModel = "Model";
-
         private ViewTestClass model;
         private ObservableCollectionWrapper<ViewTest, ViewTestButtonViewModel> viewTests;
         private DelegateCommand<Button> reloadClick;
@@ -59,9 +57,7 @@ namespace Open.TestHarness.View.Selector
                 viewTests = null;
 
                 // Finish up.
-                OnPropertyChanged(PropModel);
-                OnPropertyChanged(PropViewTests);
-                OnPropertyChanged(PropViewTestsVisibility);
+                OnPropertyChanged<T>(m => m.Model, m => m.ViewTests, m => m.IsViewTestsVisible, m => m.IsReloadButtonVisible);
             }
         }
 
@@ -71,7 +67,9 @@ namespace Open.TestHarness.View.Selector
             get
             {
                 if (viewTests == null && Model != null)
-                    viewTests = new ObservableCollectionWrapper<ViewTest, ViewTestButtonViewModel>(model.ViewTests, item => new ViewTestButtonViewModel(item));
+                    viewTests = new ObservableCollectionWrapper<ViewTest, ViewTestButtonViewModel>(
+                                                        model.ViewTests, 
+                                                        item => new ViewTestButtonViewModel(item));
                 return viewTests;
             }
         }
@@ -79,25 +77,24 @@ namespace Open.TestHarness.View.Selector
         /// <summary>Gets the refresh button command.</summary>
         public DelegateCommand<Button> ReloadClick
         {
-            get
-            {
-                if (reloadClick == null) reloadClick = new DelegateCommand<Button>(button => model.Reload());
-                return reloadClick;
-            }
+            get { return reloadClick ?? (reloadClick = new DelegateCommand<Button>(button => model.Reload())); }
         }
 
         /// <summary>Gets or sets the refresh label.</summary>
         public string ReloadLabel { get { return StringLibrary.Common_Reload; } }
 
         /// <summary>Gets the visibility of the collection of tests.</summary>
-        public Visibility ViewTestsVisibility
+        public bool IsViewTestsVisible
         {
             get
             {
-                if (Model == null || Model.ViewTests.Count == 0) return Visibility.Collapsed;
-                return ViewTests.Count(item => item.Visibility == Visibility.Visible) > 0 ? Visibility.Visible : Visibility.Collapsed;
+                if (Model == null || Model.ViewTests.Count == 0) return false;
+                return ViewTests.Count(item => item.Visibility == Visibility.Visible) > 0;
             }
         }
+
+        /// <summary>Gets whether the 'Reload' button is visible.</summary>
+        public bool IsReloadButtonVisible { get { return Model != null; } }
         #endregion
     }
 }

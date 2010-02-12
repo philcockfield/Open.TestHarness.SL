@@ -27,9 +27,17 @@ namespace Open.TestHarness.View.Selector
     /// <summary>The panel that presents the set of [ViewTest] methods.</summary>
     public partial class TestSelector : UserControl
     {
-        public TestSelector()
+        /// <summary>Constructor.</summary>
+       public TestSelector()
         {
             InitializeComponent();
+        }
+
+        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
+        public TestSelectorViewModel ViewModel
+        {
+            get { return DataContext as TestSelectorViewModel; }
+            set { DataContext = value; }
         }
     }
 }

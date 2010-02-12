@@ -13,7 +13,7 @@
     <RootNamespace>Open.TestHarness.Web</RootNamespace>
     <AssemblyName>Open.TestHarness.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightApplicationList>{665816F7-EA4E-4610-B3C3-CFDB63A54E32}|..\TestHarness.View\TestHarness.View.csproj|ClientBin|False,{187CCB78-51F9-4C9D-AB8E-D556813E7D1D}|..\..\..\Core.Refactor\Silverlight\Test\Open.Core.Test\Open.Core.Test %28Silverlight%29.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{665816F7-EA4E-4610-B3C3-CFDB63A54E32}|..\TestHarness.View\TestHarness.View.csproj|ClientBin|False,{187CCB78-51F9-4C9D-AB8E-D556813E7D1D}|..\..\..\Core.Refactor\Silverlight\Test\Open.Core.Test\Open.Core.Test %28Silverlight%29.csproj|ClientBin|False,{B7614A63-B311-4AA0-B53F-8751609B7984}|..\Test\TestHarness.Test\TestHarness.Test.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +54,7 @@
   <ItemGroup>
     <Content Include="ClientBin.aspx" />
     <Content Include="ClientBin\Open.Core.UI.Test.xap" />
+    <Content Include="ClientBin\Open.TestHarness.Test.xap" />
     <Content Include="ClientBin\Open.TestHarness.xap" />
     <Content Include="Silverlight.js" />
     <Content Include="TestHarness.htm" />

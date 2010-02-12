@@ -5,7 +5,8 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
     xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI" 
     xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
-    xmlns:Controls="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls">
+    xmlns:Controls="clr-namespace:Open.Core.UI.Silverlight.Controls;assembly=Open.Core.UI.Controls" 
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
     
     <UserControl.Resources>
         <ResourceDictionary>
@@ -13,6 +14,7 @@
                 <ResourceDictionary Source="ViewTestButton.xaml" />
                 <ResourceDictionary Source="/Open.Core.UI;component/Styles/Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Converter:VisibilityConverter x:Name="visibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -33,12 +35,17 @@
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center" 
                     Margin="3,0,6,0" 
-                    Visibility="{Binding ViewTestsVisibility}" />
+                    Visibility="{Binding IsReloadButtonVisible, Converter={StaticResource visibilityConverter}}" />
         </Grid>
 
         <!--Method Buttons-->
         <Controls:CollapsingContent Grid.Row="1">
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" BorderThickness="0" Margin="0,0,2,0" Visibility="{Binding ViewTestsVisibility}">
+            <ScrollViewer 
+                    HorizontalScrollBarVisibility="Hidden" 
+                    VerticalScrollBarVisibility="Auto" 
+                    BorderThickness="0" 
+                    Margin="0,0,2,0" 
+                    Visibility="{Binding IsViewTestsVisible, Converter={StaticResource visibilityConverter}}">
                 <i:Interaction.Behaviors>
                     <ab:MouseWheelScroller />
                 </i:Interaction.Behaviors>
