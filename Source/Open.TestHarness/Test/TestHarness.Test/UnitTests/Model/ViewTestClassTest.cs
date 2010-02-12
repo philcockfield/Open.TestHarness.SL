@@ -23,13 +23,11 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Controls;
-using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
-using Open.Core.UI.Silverlight.Controls;
 using Open.TestHarness.Model;
 using ReflectionUtil=Open.Core.Common.ReflectionUtil;
 using ViewTestClassAttribute=Open.Core.Common.ViewTestClassAttribute;
@@ -154,8 +152,8 @@ namespace Open.TestHarness.Test.Model
             model1.IsCurrent = true;
             model1.IsCurrent.ShouldBe(true);
             testHarness.CurrentClass.ShouldBe(model1);
-            
-            argsModel1.PropertyName.ShouldBe(ViewTestClass.PropIsCurrent);
+
+            argsModel1.PropertyName.ShouldBe(LinqExtensions.GetPropertyName<ViewTestClass>(m => m.IsCurrent));
 
             module.CurrentClass.ShouldBe(model1);
 
@@ -233,7 +231,7 @@ namespace Open.TestHarness.Test.Model
 
             testModel.Execute();
             argsExecuteRequest.ShouldNotBe(null);
-            argsProp.ShouldContain(ViewTestClass.PropCurrentViewTest);
+            argsProp.ShouldContain(LinqExtensions.GetPropertyName<ViewTestClass>(m => m.CurrentViewTest));
 
             classModel.CurrentViewTest.ShouldBe(testModel);
         }
@@ -288,7 +286,7 @@ namespace Open.TestHarness.Test.Model
             classModel.CurrentControls.Count.ShouldBe(3);
             classModel.ViewTests[0].Execute();
 
-            args.ShouldContain(ViewTestClass.PropCurrentControls);
+            args.ShouldContain(LinqExtensions.GetPropertyName<ViewTestClass>(m => m.CurrentControls));
 
             classModel.CurrentControls.Count.ShouldBe(1);
         }

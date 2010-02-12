@@ -22,10 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 using Open.Core.Common;
 
 namespace Open.TestHarness.Model
@@ -50,6 +48,9 @@ namespace Open.TestHarness.Model
             var attributes = methodInfo.GetCustomAttributes(typeof (ViewTestAttribute), true);
             if (attributes.Length == 0) throw new ArgumentOutOfRangeException(string.Format("The given method is not decorated with the [{0}] attribute.", typeof(ViewTestAttribute).Name));
             Attribute = attributes[0] as ViewTestAttribute;
+
+            // Create sub-models.
+            Parameters = new ViewTestParametersCollection(this);
         }
         #endregion
 
@@ -70,6 +71,9 @@ namespace Open.TestHarness.Model
                 OnPropertyChanged(PropExecuteCount);
             }
         }
+
+        /// <summary>Gets the collection of parameters associated with the view-test.</summary>
+        public ViewTestParametersCollection Parameters { get; private set; }
         #endregion
 
         #region Methods
@@ -81,15 +85,12 @@ namespace Open.TestHarness.Model
 
         /// <summary>Executes the method against the specifeid set of control instances.</summary>
         /// <param name="instance">The object instance to execute against (null if the method is static).</param>
-        /// <param name="controls">The set of controls.</param>
-        internal void Execute(object instance, ObservableCollection<UIElement> controls)
+        /// <param name="parameters">The parameterscontrols.</param>
+        internal void Execute(object instance, IEnumerable<object> parameters)
         {
-            // Setup initial conditions.
-            if (controls == null) return;
-
             // Execute the method.
-            var parameters = controls.ToArray();
-            MethodInfo.Invoke(instance, parameters);
+            var paramsArray = parameters == null ? null : parameters.ToArray();
+            MethodInfo.Invoke(instance, paramsArray);
 
             // Finish up.
             ExecuteCount++;

@@ -26,8 +26,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Reflection;
+using Open.Core.Common;
 using Open.Core.Composite.Command;
 using Open.TestHarness.Model;
+
+using T = Open.TestHarness.View.Selector.ClassNodeViewModel;
 
 [assembly: InternalsVisibleTo("Open.TestHarness.Test")]
 
@@ -41,6 +44,9 @@ namespace Open.TestHarness.View.Selector
         public const string PropIsCurrent = "IsCurrent";
         public const string PropTextColor = "TextColor";
 
+        private readonly PropertyObserver<ViewTestClass> modelObserver;
+        private readonly PropertyObserver<TestHarnessModel> harnessObserver;
+
         /// <summary>Fires when the class is selected.</summary>
         public event EventHandler Selected;
 
@@ -48,16 +54,22 @@ namespace Open.TestHarness.View.Selector
 
         public ClassNodeViewModel(ViewTestClass model)
         {
+            // Setup initial conditions.
             Model = model;
-            model.PropertyChanged += (sender, e) =>
-                                         {
-                                             if (e.PropertyName == ViewTestClass.PropDisplayName) OnPropertyChanged(PropDisplayName);
-                                             if (e.PropertyName == ViewTestClass.PropIsCurrent) FireCurrentChanged();
-                                         };
-            TestHarnessModel.Instance.PropertyChanged += (sender, e) =>
-                                           {
-                                               if (e.PropertyName == TestHarnessModel.PropCurrentClass) FireCurrentChanged();
-                                           };
+
+            // Wire up events.
+            modelObserver = new PropertyObserver<ViewTestClass>(model)
+                    .RegisterHandler(m => m.DisplayName, m => OnPropertyChanged<T>(o => o.DisplayName))
+                    .RegisterHandler(m => m.IsCurrent, m => FireCurrentChanged());
+            harnessObserver = new PropertyObserver<TestHarnessModel>(TestHarnessModel.Instance)
+                    .RegisterHandler(m => m.CurrentClass, m => FireCurrentChanged());
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            harnessObserver.Dispose();
+            modelObserver.Dispose();
         }
         #endregion
 

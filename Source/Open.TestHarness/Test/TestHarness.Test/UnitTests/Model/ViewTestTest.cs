@@ -29,6 +29,7 @@ using Open.Core.Common;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
+using Open.Core.UI.Controls;
 using Open.TestHarness.Model;
 
 namespace Open.TestHarness.Test.Model
@@ -93,6 +94,13 @@ namespace Open.TestHarness.Test.Model
             var methodInfo = GetType().GetMethod("ShouldThrowOnMethodWithoutAttribute");
             methodInfo.ShouldNotBe(null);
             Should.Throw<ArgumentOutOfRangeException>(() => new ViewTest(methodInfo));
+        }
+
+        [TestMethod]
+        public void ShouldExposeParametersCollection()
+        {
+            testModel.Parameters.Items.Count().ShouldBe(1);
+            testModel.Parameters.Items.ElementAt(0).Type.ShouldBe(typeof(Placeholder));
         }
         #endregion
     }

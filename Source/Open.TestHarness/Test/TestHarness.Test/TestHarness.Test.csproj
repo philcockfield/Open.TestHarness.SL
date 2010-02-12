@@ -137,6 +137,7 @@
     <Compile Include="UnitTests\Model\ViewTestModelTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTests\Model\ViewTestParamtersCollectionTest.cs" />
     <Compile Include="UnitTests\Model\ViewTestTest.cs">
       <SubType>Code</SubType>
     </Compile>

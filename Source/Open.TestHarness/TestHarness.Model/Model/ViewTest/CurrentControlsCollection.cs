@@ -30,10 +30,10 @@ using Open.Core.Common;
 namespace Open.TestHarness.Model
 {
     /// <summary>A collection of Control instances corresponding to a view test.</summary>
-    public class CurrentControlsCollection : ObservableCollection<UIElement>
+    public class CurrentControlsCollection : ObservableCollection<object>
     {
         #region Head
-        private readonly Dictionary<Type, List<UIElement>> allControls = new Dictionary<Type, List<UIElement>>();
+        private readonly Dictionary<Type, List<object>> allControls = new Dictionary<Type, List<object>>();
         #endregion
 
         #region Methods
@@ -63,6 +63,27 @@ namespace Open.TestHarness.Model
             }
         }
 
+        /// <summary>
+        ///     Populates the collection with controls for the specified [ViewTest] related to the
+        ///     given parameters-collection, and assigns the control instances to the params collection.
+        /// </summary>
+        /// <param name="parametersCollection">The view-test parameters collection to populate.</param>
+        public void Populate(ViewTestParametersCollection parametersCollection)
+        {
+            // Setup initial conditions.
+            if (parametersCollection != null) Populate(parametersCollection.ViewTest);
+            if (parametersCollection == null) return;
+
+            // Populate the parameters collection with the new instances.
+            var index = 0;
+            foreach (var parameter in parametersCollection.Items)
+            {
+                if (!parameter.Type.IsA(typeof(UIElement))) continue;
+                parameter.Value = this[index];
+                index++;
+            }
+        }
+
         /// <summary>Resets the collection of controls.</summary>
         public void Reset()
         {
@@ -80,12 +101,12 @@ namespace Open.TestHarness.Model
             // Determine if an instance of the control already exists.
             if (allControls.ContainsKey(type) && allControls[type].Count > index)
             {
-                return allControls[type][index];
+                return allControls[type][index] as UIElement;
             }
 
             // Construct the control and store a reference to it.
             var control = Activator.CreateInstance(type) as UIElement;
-            if (!allControls.ContainsKey(type)) allControls.Add(type, new List<UIElement>());
+            if (!allControls.ContainsKey(type)) allControls.Add(type, new List<object>());
             allControls[type].Add(control);
 
             // Finish up.

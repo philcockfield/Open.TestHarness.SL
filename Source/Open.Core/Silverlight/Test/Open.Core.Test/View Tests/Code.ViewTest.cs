@@ -22,10 +22,12 @@
 
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using Open.Core.Common;
 using System.Diagnostics;
 using Open.Core.Common.Converter;
 using System;
+using Open.Core.UI.Controls;
 
 namespace Open.Core.UI.Silverlight.Test.View_Tests
 {
@@ -180,24 +182,37 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
             model1.Clear();
         }
 
+        [ViewTest]
+        public void ControlAndENum(Placeholder control, Visibility visibility)
+        {
+            
+        }
+
+        [ViewTest]
+        public void Control(Placeholder control1)
+        {
+
+        }
+
+        [ViewTest]
+        public void Controls(Placeholder control1, Visibility visibility1, Visibility visibility2, Placeholder control2,  Visibility visibility3)
+        {
+//            control1.SetSize(50,50);
+            
+        }
+
 
 
         #endregion
 
         public class Settings : SettingsModelBase
         {
-            public Settings(Uri uri) : base(SettingsStoreType.Application, "Model-" + uri)
-            {
-            }
-
+            public Settings(Uri uri) : base(SettingsStoreType.Application, "Model-" + uri){}
             public string Text
             {
                 get { return GetPropertyValue<Settings, string>(m => m.Text); }
                 set { SetPropertyValue<Settings, string>(m => m.Text, value); }
             }
-
         }
-        
-
     }
 }

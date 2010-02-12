@@ -30,6 +30,7 @@ using System.Diagnostics;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 
+using T = Open.TestHarness.Model.ViewTestClass;
 
 namespace Open.TestHarness.Model
 {
@@ -41,11 +42,6 @@ namespace Open.TestHarness.Model
         public event EventHandler<TestExecuteEventArgs> ExecuteRequest;
         protected void OnExecuteRequest(ViewTest test) { if (ExecuteRequest != null) ExecuteRequest(this, new TestExecuteEventArgs{ViewTest = test}); }
 
-        public const string PropCurrentControls = "CurrentControls";
-        public const string PropCurrentViewTest = "CurrentViewTest";
-        public const string PropDisplayName = "DisplayName";
-        public const string PropIsCurrent = "IsCurrent";
-
         private ObservableCollection<ViewTest> viewTests;
         private Type type;
         private ViewTestClassAttribute attribute;
@@ -54,7 +50,7 @@ namespace Open.TestHarness.Model
         private readonly CurrentControlsCollection currentControls = new CurrentControlsCollection();
         private object instance;
         private static readonly List<ViewTestClass> singletonInstances = new List<ViewTestClass>();
-        private string customName;
+        private readonly string customName;
 
         public ViewTestClass(Type classType, string xapFileName)
         {
@@ -90,24 +86,29 @@ namespace Open.TestHarness.Model
             AssemblyName = assemblyName;
             XapFileName = xapFileName;
         }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            if (viewTestsMonitor != null) viewTestsMonitor.Dispose();
+        }
         #endregion
 
         #region Event Handlers
-        void Handle_Test_ExecuteRequest(object sender, EventArgs e)
+        private void OnTestExecuteRequest(object sender, EventArgs e)
         {
             // Store property state.
             currentViewTest = sender as ViewTest;
 
             // Update the set of controls instances.
-            currentControls.Populate(currentViewTest);
+            currentControls.Populate(currentViewTest.Parameters);
 
             // Alert listeners.
             OnExecuteRequest(currentViewTest);
-            OnPropertyChanged(PropCurrentViewTest);
-            OnPropertyChanged(PropCurrentControls);
+            OnPropertyChanged<T>(m => m.CurrentViewTest, m => m.CurrentControls);
 
             // Pass execution back to the ViewTest with the set of controls.
-            CurrentViewTest.Execute(Instance, CurrentControls);
+            CurrentViewTest.Execute(Instance, currentViewTest.Parameters.ToArray());
         }
         #endregion
 
@@ -151,10 +152,9 @@ namespace Open.TestHarness.Model
         /// <summary>
         ///    Gets whether the Type has been activated.  
         ///    True if a 'Type' was passed into the constructor, or the any member has been called that has caused the 'Activate' method to be called.
-        ///    False if a string type-name was passed to the constructor and the 'Active' method has not yet been called.</summary>
+        ///    False if a string type-name was passed to the constructor and the 'Active' method has not yet been called.
         /// </summary>
         public bool IsActivated{ get; private set; }
-
 
         /// <summary>Gets the type of the class.</summary>
         public Type Type
@@ -191,8 +191,8 @@ namespace Open.TestHarness.Model
                     PopulateViewTests();
                     viewTestsMonitor = new ObservableCollectionMonitor<ViewTest>(
                                                         viewTests,
-                                                        (c, item) => { item.ExecuteRequest += Handle_Test_ExecuteRequest; },
-                                                        (c, item) => { item.ExecuteRequest -= Handle_Test_ExecuteRequest; }
+                                                        (c, item) => { item.ExecuteRequest += OnTestExecuteRequest; },
+                                                        (c, item) => { item.ExecuteRequest -= OnTestExecuteRequest; }
                                                         );
                 }
                 return viewTests;
@@ -247,12 +247,12 @@ namespace Open.TestHarness.Model
                 }
 
                 // Finish up.
-                OnPropertyChanged(PropIsCurrent);
+                RaiseIsCurrentChanged();
             }
         }
 
         /// <summary>Gets the current set of controls pertaining the the current [ViewTest].</summary>
-        public ObservableCollection<UIElement> CurrentControls
+        public ObservableCollection<object> CurrentControls
         {
             get
             {
@@ -323,7 +323,7 @@ namespace Open.TestHarness.Model
             catch (TypeLoadException) { return false; }
 
             // Finish up.
-            OnPropertyChanged(PropDisplayName);
+            OnPropertyChanged<T>(m => m.DisplayName);
             return true;
         }
 
@@ -366,7 +366,7 @@ namespace Open.TestHarness.Model
 
         internal void RaiseIsCurrentChanged()
         {
-            OnPropertyChanged(PropIsCurrent);
+            OnPropertyChanged<T>(m => m.IsCurrent);
         }
         #endregion
 

@@ -113,6 +113,8 @@
     <Compile Include="Model\ViewTest\ViewTestClass.cs" />
     <Compile Include="Model\ViewTest\ViewTestClassesAssemblyModule.cs" />
     <Compile Include="Model\ViewTest\ViewTestClassesModule.cs" />
+    <Compile Include="Model\ViewTest\ViewTestParameter.cs" />
+    <Compile Include="Model\ViewTest\ViewTestParametersCollection.cs" />
     <Compile Include="Network.cs" />
   </ItemGroup>
   <ItemGroup>

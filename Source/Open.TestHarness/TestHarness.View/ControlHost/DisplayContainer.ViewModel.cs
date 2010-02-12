@@ -20,12 +20,13 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 using Open.TestHarness.Model;
+
+using T = Open.TestHarness.View.ControlHost.DisplayContainerViewModel;
 
 namespace Open.TestHarness.View.ControlHost
 {
@@ -33,9 +34,8 @@ namespace Open.TestHarness.View.ControlHost
     public class DisplayContainerViewModel : ViewModelBase
     {
         #region Head
-        public const string PropCurrentControls = "CurrentControls"; 
-        
         private readonly ViewTestClass model;
+        private readonly PropertyObserver<ViewTestClass> modelObserver;
 
         public DisplayContainerViewModel(ViewTestClass model)
         {
@@ -43,27 +43,20 @@ namespace Open.TestHarness.View.ControlHost
             this.model = model;
 
             // Create wrapper collection.
-            CurrentControls = new ObservableCollectionWrapper<UIElement, DisplayItemViewModel>(
+            CurrentControls = new ObservableCollectionWrapper<object, DisplayItemViewModel>(
                                                 model.CurrentControls,
-                                                control => new DisplayItemViewModel(control));
+                                                control => new DisplayItemViewModel(control as UIElement));
 
             // Wire up events.
-            model.PropertyChanged += Handle_Model_PropertyChanged;
+            modelObserver = new PropertyObserver<ViewTestClass>(model)
+                .RegisterHandler(m => m.CurrentViewTest, m => OnPropertyChanged<T>(o => o.CurrentControls));
         }
 
-        // Dispose.
         protected override void OnDisposed()
         {
             base.OnDisposed();
             CurrentControls.Dispose();
-            model.PropertyChanged -= Handle_Model_PropertyChanged;
-        }
-        #endregion
-
-        #region Event Handlers
-        private void Handle_Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == ViewTestClass.PropCurrentViewTest) OnPropertyChanged(PropCurrentControls);
+            modelObserver.Dispose();
         }
         #endregion
 
@@ -75,7 +68,7 @@ namespace Open.TestHarness.View.ControlHost
         }
 
         /// <summary>Gets the current set of controls pertaining the the current [ViewTest].</summary>
-        public ObservableCollectionWrapper<UIElement, DisplayItemViewModel> CurrentControls { get; private set; }
+        public ObservableCollectionWrapper<object, DisplayItemViewModel> CurrentControls { get; private set; }
         #endregion
 
         public class DisplayItemViewModel : ViewModelBase

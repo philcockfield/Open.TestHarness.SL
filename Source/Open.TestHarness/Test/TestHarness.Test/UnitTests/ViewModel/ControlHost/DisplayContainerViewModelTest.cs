@@ -33,6 +33,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Common;
 using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
 using Open.Core.UI.Silverlight.Controls;
@@ -81,7 +82,7 @@ namespace Open.TestHarness.Test.ViewModel.ControlHost
             viewModel.CurrentControls.Count.ShouldBe(3);
             classModel.ViewTests[0].Execute();
 
-            args.PropertyName.ShouldBe(DisplayContainerViewModel.PropCurrentControls);
+            args.PropertyName.ShouldBe(LinqExtensions.GetPropertyName<DisplayContainerViewModel>(m => m.CurrentControls));
 
             viewModel.CurrentControls.Count.ShouldBe(1);
         }
