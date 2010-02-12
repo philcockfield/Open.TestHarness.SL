@@ -13,15 +13,17 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Image Source="../../Images/Icon.Method.16x13.png" Stretch="None" Grid.Column="0" Margin="0,0,5,0" />
-                        <TextBlock Grid.Column="1" Text="{Binding Path=DisplayName}">
+                        <TextBlock Grid.Column="1" Text="{Binding Path=DisplayName}" TextTrimming="WordEllipsis" Margin="0,0,5,0">
                                 <ab:Behaviors.TextMouseHighlight>
                                     <ab:TextMouseHighlight />
                                 </ab:Behaviors.TextMouseHighlight>
                         </TextBlock>
-                        <TextBlock Grid.Column="2" Text="{Binding Path=ExecuteCount}" />
+                        <TextBlock Grid.Column="4" Text="{Binding Path=ExecuteCount}" />
 
                     </Grid>
                 </ControlTemplate>

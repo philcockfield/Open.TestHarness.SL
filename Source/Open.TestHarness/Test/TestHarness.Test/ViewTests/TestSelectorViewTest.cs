@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Open.Core.Common;
+using Open.Core.UI.Controls;
 using Open.TestHarness.Model;
 using Open.TestHarness.View.Selector;
 
@@ -36,7 +37,7 @@ namespace Open.TestHarness.Test.ViewTests
         [ViewTest]
         public void Set_Model__This(TestSelector control)
         {
-            viewModel.Model = new ViewTestClass(GetType(), "File.xap");
+            SetModel(GetType());
         }
 
         [ViewTest]
@@ -48,11 +49,35 @@ namespace Open.TestHarness.Test.ViewTests
         [ViewTest]
         public void Set_Model__No_ViewTests(TestSelector control)
         {
-            viewModel.Model = new ViewTestClass(typeof(MyViewTestClass), "File.xap");
+            SetModel(typeof(MyViewTestClass));
+        }
+
+        [ViewTest]
+        public void Set_Model__Tests_With_Enums(TestSelector control)
+        {
+            SetModel(typeof(MyViewTestClassWithEnums));
+        }
+        #endregion
+
+        #region Internal
+        private void SetModel(Type viewTestClassType)
+        {
+            viewModel.Model = new ViewTestClass(viewTestClassType, "File.xap");
         }
         #endregion
 
         [ViewTestClass]
         public class MyViewTestClass { }
+
+        [ViewTestClass]
+        public class MyViewTestClassWithEnums
+        {
+            [ViewTest]
+            public void MyTest(Placeholder control, Visibility visibility)
+            {
+            }
+
+        }
+
     }
 }

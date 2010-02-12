@@ -50,6 +50,9 @@
                     <ab:MouseWheelScroller />
                 </i:Interaction.Behaviors>
                 <Border Background="Transparent">
+                    <i:Interaction.Behaviors>
+                        <ab:SyncWithScrollViewerWidth />
+                    </i:Interaction.Behaviors>
                     <ItemsControl ItemsSource="{Binding ViewTests}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
