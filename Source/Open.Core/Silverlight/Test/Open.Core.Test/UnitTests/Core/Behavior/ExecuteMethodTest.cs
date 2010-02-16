@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
 using Open.Core.Common.AttachedBehavior;
@@ -43,7 +44,7 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests
         public void TestSetup()
         {
             stub = new StubViewModel();
-            element = new Border{DataContext = stub};
+            element = new Border { DataContext = stub };
 
             trigger = new ExecuteMethodStub { MethodName = "IncrementNumber" };
             trigger.Attach(element);
@@ -75,6 +76,15 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests
             trigger.MethodName = "MethodWithOneParameter";
             trigger.Method.Name.ShouldBe("MethodWithOneParameter");
         }
+
+        [TestMethod]
+        public void ShouldRemoveTrailingParameterBrackets()
+        {
+            trigger = new ExecuteMethodStub { MethodName = "IncrementNumber()" };
+            trigger.Attach(element);
+            trigger.Method.Name.ShouldBe("IncrementNumber");
+        }
+
 
         [TestMethod]
         public void ShouldNotHaveMethod()

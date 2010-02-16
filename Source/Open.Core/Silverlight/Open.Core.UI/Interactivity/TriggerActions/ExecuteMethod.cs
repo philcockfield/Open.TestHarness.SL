@@ -28,6 +28,13 @@ using System.Reflection;
 namespace Open.Core.Common.AttachedBehavior
 {
     /// <summary>Invokes a method on the data-bound view-model.</summary>
+    /// <example>
+    ///       <i:Interaction.Triggers>
+    ///           <i:EventTrigger EventName="MouseLeftButtonDown">
+    ///               <t:ExecuteMethod MethodName="IncrementCounter" />
+    ///           </i:EventTrigger>
+    ///       </i:Interaction.Triggers>
+    /// </example>
     public class ExecuteMethod : TriggerAction<FrameworkElement>
     {
         #region Head
@@ -45,11 +52,7 @@ namespace Open.Core.Common.AttachedBehavior
         /// <summary>Gets the method to invoke.</summary>
         public MethodInfo Method
         {
-            get
-            {
-                if (method == null) method = GetMethodInfo();
-                return method;
-            }
+            get { return method ?? (method = GetMethodInfo()); }
         }
         #endregion
 
@@ -96,13 +99,14 @@ namespace Open.Core.Common.AttachedBehavior
             // Setup initial conditions.
             if (ViewModel == null) return null;
             var name = MethodName.AsNullWhenEmpty();
+            if (name != null) name = name.RemoveEnd("()").AsNullWhenEmpty();
             if (name == null) return null;
 
             // Retrieve the method.
             MethodInfo m;
             try
             {
-                m = ViewModel.GetType().GetMethod(MethodName, BindingFlags.Instance | BindingFlags.Public);
+                m = ViewModel.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.Public);
             }
             catch (AmbiguousMatchException) { return null; }
             catch (Exception) { throw; }
