@@ -56,7 +56,7 @@ namespace Open.Core.Common.Test.Core.Composite
         [TestMethod]
         public void ShouldContainNoHandlers()
         {
-            eventBus.Count<Event1>().ShouldBe(0);
+            eventBus.SubscribedCount<Event1>().ShouldBe(0);
             eventBus.GetActions<Event1>().Count().ShouldBe(0);
         }
 
@@ -90,7 +90,7 @@ namespace Open.Core.Common.Test.Core.Composite
             eventBus.Subscribe(handler1);
             eventBus.Subscribe(handler2);
 
-            eventBus.Count<Event1>().ShouldBe(2);
+            eventBus.SubscribedCount<Event1>().ShouldBe(2);
             eventBus.GetActions<Event1>().ShouldContain(handler1);
             eventBus.GetActions<Event1>().ShouldContain(handler2);
         }
@@ -167,6 +167,12 @@ namespace Open.Core.Common.Test.Core.Composite
         }
 
         [TestMethod]
+        public void ShouldHaveNothingPublished()
+        {
+            eventBus.PublishedCount<Event1>().ShouldBe(0L);
+        }
+
+        [TestMethod]
         public void ShouldPublishSynchronously()
         {
             eventBus.IsAsynchronous = false;
@@ -181,6 +187,8 @@ namespace Open.Core.Common.Test.Core.Composite
             eventBus.Publish(publishArgs);
 
             firedArgs.ShouldBe(publishArgs);
+            eventBus.PublishedCount<Event1>().ShouldBe(1L);
+            eventBus.PublishedCount<Event2>().ShouldBe(0L);
         }
 
         [TestMethod]

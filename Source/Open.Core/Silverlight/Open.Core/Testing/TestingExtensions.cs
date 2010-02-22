@@ -27,6 +27,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Open.Core.Composite;
 
 namespace Open.Core.Common.Testing
 {
@@ -362,6 +363,61 @@ namespace Open.Core.Common.Testing
 
             // Finish up.
             return false;
+        }
+        #endregion
+
+        #region Methods - Should Fire
+        /// <summary>Asserts that when the specified action was invoked the event was fired at least once.</summary>
+        /// <typeparam name="TEvent">The event type.</typeparam>
+        /// <param name="self">The event-bus to monitor.</param>
+        /// <param name="action"></param>
+        public static void ShouldFire<TEvent>(this EventBus self, Action action)
+        {
+            if (GetFireCount<TEvent>(self, action) == 0) throw new AssertionException(string.Format("Expected the event '{0}' to be fired at least once.", typeof(TEvent).Name));
+        }
+
+        /// <summary>Asserts that when the specified action is invoked the event was fired a specific number of times.</summary>
+        /// <typeparam name="TEvent">The event type.</typeparam>
+        /// <param name="self">The event-bus to monitor.</param>
+        /// <param name="total">The total number of times the event should have fired.</param>
+        /// <param name="action"></param>
+        public static void ShouldFire<TEvent>(this EventBus self, int total, Action action)
+        {
+            var fireCount = GetFireCount<TEvent>(self, action);
+            if (fireCount != total) throw new AssertionException(string.Format("Expected the event '{0}' to be fired {1} times. Instead it fired {2} times.", typeof(TEvent).Name, total, fireCount));
+        }
+
+        /// <summary>Asserts that when the specified action was invoked the event was not fired.</summary>
+        /// <param name="self">The event-bus to monitor.</param>
+        /// <typeparam name="TEvent">The event type.</typeparam>
+        /// <param name="action"></param>
+        public static void ShouldNotFire<TEvent>(this EventBus self, Action action)
+        {
+            if (GetFireCount<TEvent>(self, action) != 0) throw new AssertionException(string.Format("Expected the event '{0}' to not fire.", typeof(TEvent).Name));
+        }
+
+        private static int GetFireCount<TEvent>(EventBus self, Action action)
+        {
+            // Setup initial conditions.
+            if (self == null) throw new ArgumentNullException("self");
+            if (action == null) throw new ArgumentNullException("action", "A test action was not passed to the method");
+            var originalAsyncValue = self.IsAsynchronous;
+            self.IsAsynchronous = false;
+
+            // Wire up the event.
+            var count = 0;
+            Action<TEvent> handler = e => { count++; };
+            self.Subscribe(handler);
+
+            // Invoke the action.
+            action();
+
+            // Reset state.
+            self.IsAsynchronous = originalAsyncValue;
+            self.Unsubscribe(handler);
+
+            // Finish up.
+            return count;
         }
         #endregion
 

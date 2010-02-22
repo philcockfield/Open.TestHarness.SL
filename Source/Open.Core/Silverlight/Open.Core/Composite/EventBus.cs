@@ -138,10 +138,18 @@ namespace Open.Core.Composite
 
         /// <summary>Gets the number of handlers for the given event-type that have subscribed.</summary>
         /// <typeparam name="TEvent">The type of the event to look for.</typeparam>
-        public int Count<TEvent>()
+        public int SubscribedCount<TEvent>()
         {
             var collection = GetHandlerCollection<TEvent>();
             return collection == null ? 0 : collection.Handlers.Count;
+        }
+
+        /// <summary>Gets the number of times the given event has been published.</summary>
+        /// <typeparam name="TEvent">The type of the event to look for.</typeparam>
+        public long PublishedCount<TEvent>()
+        {
+            var collection = GetHandlerCollection<TEvent>();
+            return collection == null ? 0 : collection.InvokeCount;
         }
         #endregion
 
@@ -185,6 +193,7 @@ namespace Open.Core.Composite
             #region Properties
             public Type Type { get; private set; }
             public List<WeakReference> Handlers { get; private set; }
+            public long  InvokeCount { get; private set; }
             #endregion
 
             #region Methods
@@ -207,6 +216,7 @@ namespace Open.Core.Composite
                     if (action != null)
                     {
                         action(message);
+                        InvokeCount++;
                     }
                     else
                     {

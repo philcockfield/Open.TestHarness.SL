@@ -22,11 +22,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
+using Open.Core.Composite;
 
 namespace Open.Core.Common.Test.Extensions
 {
@@ -331,6 +329,83 @@ namespace Open.Core.Common.Test.Extensions
             var assembly = GetType().Assembly;
             Should.Throw<AssertionException>(() => assembly.ShouldIntantiateAllTypes<ConstructorStubFailureChild>());
         }
+        #endregion
+
+        #region EventBus Assertions
+        [TestMethod]
+        public void ShouldDoNothingWhenUnsubscribingFromEventThatHasNotBeenSubscribedTo()
+        {
+            var aggregator = new EventBus();
+            aggregator.Unsubscribe<MyEvent>(obj => { });
+
+            // --
+
+            Action<MyEvent> action1 = e => { };
+            Action<MyEvent> action2 = e => { };
+
+            aggregator.Subscribe(action1);
+            aggregator.SubscribedCount<MyEvent>().ShouldBe(1);
+
+            aggregator.Unsubscribe(action2);
+            aggregator.SubscribedCount<MyEvent>().ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldFireTestMethod_FireAtLeastOnce()
+        {
+            var aggregator = new EventBus();
+            aggregator.ShouldFire<MyEvent>(() => aggregator.Publish(new MyEvent()));
+            aggregator.ShouldFire<MyEvent>(() =>
+                        {
+                            aggregator.Publish(new MyEvent());
+                            aggregator.Publish(new MyEvent());
+                        });
+            Should.Throw<AssertionException>(() => aggregator.ShouldFire<MyEvent>(() => { }));
+        }
+
+        [TestMethod]
+        public void ShouldFireTestMethod_SpecificNumberOfTimes()
+        {
+            var aggregator = new EventBus();
+            aggregator.ShouldFire<MyEvent>(2, () =>
+                        {
+                            aggregator.Publish(new MyEvent());
+                            aggregator.Publish(new MyEvent());
+                        });
+            Should.Throw<AssertionException>(() => aggregator.ShouldFire<MyEvent>(2, () =>
+                        {
+                            aggregator.Publish(new MyEvent());
+                            aggregator.Publish(new MyEvent());
+                            aggregator.Publish(new MyEvent());
+                        }));
+
+            Should.Throw<AssertionException>(() => aggregator.ShouldFire<MyEvent>(2, () => { }));
+        }
+
+        [TestMethod]
+        public void ShouldNotFireTestMethod()
+        {
+            var aggregator = new EventBus();
+            aggregator.ShouldNotFire<MyEvent>(() => { });
+            Should.Throw<AssertionException>(() => aggregator.ShouldNotFire<MyEvent>(() => aggregator.Publish(new MyEvent())));
+        }
+
+
+        [TestMethod]
+        public void ShouldRetainOriginalAsyncSetting()
+        {
+            var aggregator = new EventBus();
+
+            aggregator.IsAsynchronous.ShouldBe(true);
+            aggregator.ShouldFire<MyEvent>(() => aggregator.Publish(new MyEvent()));
+            aggregator.IsAsynchronous.ShouldBe(true);
+
+            aggregator.IsAsynchronous = false;
+            aggregator.ShouldFire<MyEvent>(() => aggregator.Publish(new MyEvent()));
+            aggregator.IsAsynchronous.ShouldBe(false);
+        }
+
+        public class MyEvent{}
         #endregion
 
         #region Sample Data
