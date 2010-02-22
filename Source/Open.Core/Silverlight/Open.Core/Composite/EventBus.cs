@@ -108,7 +108,7 @@ namespace Open.Core.Composite
 
         #region Methods
         /// <summary>Retrieves the subscribed actions for the given event-type.</summary>
-        /// <typeparam name="TEvent">The type of the event to retrieve the actions for..</typeparam>
+        /// <typeparam name="TEvent">The type of the event to retrieve the actions for.</typeparam>
         public IEnumerable<Action<TEvent>> GetActions<TEvent>()
         {
             // Retrieve the corresponding type-handler collection.
@@ -134,6 +134,14 @@ namespace Open.Core.Composite
 
             // Determine if the action exists.
             return collection.Handlers.Count(m => (Action<TEvent>) m.Target == action) != 0;
+        }
+
+        /// <summary>Gets the number of handlers for the given event-type that have subscribed.</summary>
+        /// <typeparam name="TEvent">The type of the event to look for.</typeparam>
+        public int Count<TEvent>()
+        {
+            var collection = GetHandlerCollection<TEvent>();
+            return collection == null ? 0 : collection.Handlers.Count;
         }
         #endregion
 

@@ -56,6 +56,7 @@ namespace Open.Core.Common.Test.Core.Composite
         [TestMethod]
         public void ShouldContainNoHandlers()
         {
+            eventBus.Count<Event1>().ShouldBe(0);
             eventBus.GetActions<Event1>().Count().ShouldBe(0);
         }
 
@@ -89,13 +90,13 @@ namespace Open.Core.Common.Test.Core.Composite
             eventBus.Subscribe(handler1);
             eventBus.Subscribe(handler2);
 
-            eventBus.GetActions<Event1>().Count().ShouldBe(2);
+            eventBus.Count<Event1>().ShouldBe(2);
             eventBus.GetActions<Event1>().ShouldContain(handler1);
             eventBus.GetActions<Event1>().ShouldContain(handler2);
         }
 
         [TestMethod]
-        public void ShouldAllowUnscribeNullParam()
+        public void ShouldAllowUnsubscribeWithNullParam()
         {
             eventBus.Unsubscribe<Event1>(null);
         }
