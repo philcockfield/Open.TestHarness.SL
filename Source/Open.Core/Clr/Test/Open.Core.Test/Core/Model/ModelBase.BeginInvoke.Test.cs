@@ -21,9 +21,6 @@
 //------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 using System.Threading;
@@ -44,12 +41,6 @@ namespace Open.Core.Common.Test.Core.Common.Model
         #endregion
         
         #region Tests
-        [TestMethod]
-        public void ShouldBeAsyncEnabledByDefault()
-        {
-            ModelBase.IsAsyncEnabled.ShouldBe(true);
-        }
-
         [TestMethod]
         public void ShouldInvokeSynchronously()
         {

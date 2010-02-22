@@ -44,6 +44,9 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core.Composite\IEventBus.cs">
+      <Link>Core.Composite\IEventBus.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\ICallback.cs">
       <Link>Core\ICallback.cs</Link>
     </Compile>

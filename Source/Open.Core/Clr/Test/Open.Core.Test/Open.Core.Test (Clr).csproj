@@ -98,6 +98,7 @@
     <Compile Include="Core\Collection\CollectionChangedEventBatch.Test.cs" />
     <Compile Include="Core\Collection\ObservableCollectionWrapperTest.cs" />
     <Compile Include="Core\Collection\ProcessQueueTest.cs" />
+    <Compile Include="Core\Composite\EventBusTest.cs" />
     <Compile Include="Core\Composition %28MEF%29\DirectoryPartInitializerTest.cs" />
     <Compile Include="Core\Extensions\CollectionExtensionsTest.cs" />
     <Compile Include="Core\Extensions\EnumExtensionsTest.cs" />

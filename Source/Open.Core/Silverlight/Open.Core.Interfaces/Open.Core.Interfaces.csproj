@@ -77,6 +77,7 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Core.Composite\IEventBus.cs" />
     <Compile Include="Core\IError.cs" />
     <Compile Include="Core\ICallback.cs" />
     <Compile Include="Core\INotifyDisposed.cs" />

@@ -138,6 +138,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Collection\ProcessQueueHandle.cs">
       <Link>Collection\ProcessQueueHandle.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Composite\EventBus.cs">
+      <Link>Composite\EventBus.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Enumerations\Enumerations.cs">
       <Link>Enumerations\Enumerations.cs</Link>
     </Compile>
@@ -228,6 +231,7 @@
     <Compile Include="..\..\Silverlight\Open.Core\Util\ReflectionUtil.cs">
       <Link>Util\ReflectionUtil.cs</Link>
     </Compile>
+    <Compile Include="Composite\EventBus.Clr.cs" />
     <Compile Include="Composition %28MEF%29\DirectoryPartInitializer.cs" />
     <Compile Include="Extensions\LinqExtensions.CLR.cs" />
     <Compile Include="Extensions\ObjectContextExtensions.cs" />
