@@ -21,12 +21,8 @@
 //------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Open.Core.Common;
 using Open.Core.Common.Testing;
 
 namespace Open.Core.Common.Test.Extensions
@@ -255,6 +251,96 @@ namespace Open.Core.Common.Test.Extensions
             "file.name.".FileExtension().ShouldBe(null);
             "file.".FileExtension().ShouldBe(null);
             ".".FileExtension().ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldReturnEmptyListFromToKeyValuePairs()
+        {
+            "".ToKeyValuePairs().Count().ShouldBe(0);
+            "   ".ToKeyValuePairs().Count().ShouldBe(0);
+            ((string)null).ToKeyValuePairs().Count().ShouldBe(0);
+        }
+
+
+        [TestMethod]
+        public void ShouldThrowIfKeyValuePairsDelimitersAreNull()
+        {
+            Should.Throw<ArgumentNullException>(() => "key=value".ToKeyValuePairs(keyValueDelimiter: null));
+            Should.Throw<ArgumentNullException>(() => "key=value".ToKeyValuePairs(pairDelimiter: null));
+
+            Should.Throw<ArgumentNullException>(() => "key=value".ToKeyValuePairs(keyValueDelimiter: ""));
+            Should.Throw<ArgumentNullException>(() => "key=value".ToKeyValuePairs(pairDelimiter: ""));
+
+            Should.Throw<ArgumentNullException>(() => "key=value".ToKeyValuePairs(keyValueDelimiter: "  "));
+            Should.Throw<ArgumentNullException>(() => "key=value".ToKeyValuePairs(pairDelimiter: "  "));
+        }
+
+        [TestMethod]
+        public void ShouldReturnTwoKeyValuePairs()
+        {
+            var pairs = "key1=value1&key2=value2".ToKeyValuePairs();
+            pairs.Count().ShouldBe(2);
+
+            pairs.ElementAt(0).Key.ShouldBe("key1");
+            pairs.ElementAt(0).Value.ShouldBe("value1");
+
+            pairs.ElementAt(1).Key.ShouldBe("key2");
+            pairs.ElementAt(1).Value.ShouldBe("value2");
+        }
+
+        [TestMethod]
+        public void ShouldTakeDifferentDelimitersWhenParsingKeyValuePairs()
+        {
+            var pairs = "key1:value1+key2:value2".ToKeyValuePairs(":", "+");
+
+            pairs.ElementAt(0).Key.ShouldBe("key1");
+            pairs.ElementAt(0).Value.ShouldBe("value1");
+
+            pairs.ElementAt(1).Key.ShouldBe("key2");
+            pairs.ElementAt(1).Value.ShouldBe("value2");
+        }
+
+        [TestMethod]
+        public void ShouldReturnNoPairsFromToKeyValuePairs()
+        {
+            ((string)null).ToKeyValuePairs().Count().ShouldBe(0);
+            "".ToKeyValuePairs().Count().ShouldBe(0);
+            "    ".ToKeyValuePairs().Count().ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldReturnKeyOnly()
+        {
+            var pairs = "key".ToKeyValuePairs();
+            pairs.Count().ShouldBe(1);
+            pairs.ElementAt(0).Key.ShouldBe("key");
+            pairs.ElementAt(0).Value.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldReturnMultipleKeysOnlyWithNoValues()
+        {
+            var pairs = "key1&key2".ToKeyValuePairs();
+            pairs.Count().ShouldBe(2);
+
+            pairs.ElementAt(0).Key.ShouldBe("key1");
+            pairs.ElementAt(0).Value.ShouldBe(null);
+
+            pairs.ElementAt(1).Key.ShouldBe("key2");
+            pairs.ElementAt(1).Value.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotAddEmptyKeyValuePairs()
+        {
+            "key=value&".ToKeyValuePairs().Count().ShouldBe(1);
+            "key=value&&&".ToKeyValuePairs().Count().ShouldBe(1);
+            "&key=value".ToKeyValuePairs().Count().ShouldBe(1);
+
+            "key=value&&&key=value".ToKeyValuePairs().Count().ShouldBe(2);
+
+            "&".ToKeyValuePairs().Count().ShouldBe(0);
+            "&&".ToKeyValuePairs().Count().ShouldBe(0);
         }
     }
 }

@@ -101,6 +101,45 @@ namespace Open.Core.Common
             var extension = parts[parts.Length - 1].AsNullWhenEmpty();
             return extension == null ? null : "." + extension;
         }
+
+        /// <summary>Parses the given string into a set of key:value pairs.</summary>
+        /// <param name="self">The string to parse.</param>
+        /// <param name="keyValueDelimiter">The delimiter between the key and value (eg. key=value, or key:value).</param>
+        /// <param name="pairDelimiter">The delimiter between each key:value pair (eg. key1=value&key2=value)</param>
+        public static IEnumerable<KeyValuePair<string, string>> ToKeyValuePairs(
+                    this string self, 
+                    string keyValueDelimiter = "=", 
+                    string pairDelimiter = "&" )
+        {
+            // Setup initial conditions.
+            if (keyValueDelimiter.IsNullOrEmpty(true)) throw new ArgumentNullException("keyValueDelimiter");
+            if (pairDelimiter.IsNullOrEmpty(true)) throw new ArgumentNullException("pairDelimiter");
+
+            // Check for empty or null string.
+            var list = new List<KeyValuePair<string, string>>();
+            if (self.IsNullOrEmpty(true)) return list;
+
+            // Split around the pair delimiter.
+            foreach (var phrase in self.Split(pairDelimiter.ToCharArray()))
+            {
+                // Ensure the phrase is not empty.
+                if (phrase.IsNullOrEmpty(true)) continue;
+
+                // Spit to the key and value.
+                var parts = phrase.Split(keyValueDelimiter.ToCharArray());
+                if (parts.Length == 0) continue;
+
+                // Construct the key-value pair.
+                string key = null;
+                string value = null;
+                if (parts.Length > 0) key = parts[0];
+                if (parts.Length > 1) value = parts[1];
+                list.Add(new KeyValuePair<string, string>(key, value));
+            }
+
+            // Finish up.
+            return list;
+        }
         #endregion
 
         #region String - Null Strings
