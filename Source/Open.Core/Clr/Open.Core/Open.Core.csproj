@@ -186,6 +186,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Extensions\StringExtensions.cs">
       <Link>Extensions\StringExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\UriExtensions.cs">
+      <Link>Extensions\UriExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Extensions\XExtensions.cs">
       <Link>Extensions\XExtensions.cs</Link>
     </Compile>

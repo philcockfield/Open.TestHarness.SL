@@ -109,6 +109,7 @@
     <Compile Include="Core\Extensions\ReflectionExtensionsTest.cs" />
     <Compile Include="Core\Extensions\StringExtensionsTest.cs" />
     <Compile Include="Core\Extensions\TestingExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\UriExtensionsTest.cs" />
     <Compile Include="Core\Extensions\VisualTreeExtensionsTest.cs" />
     <Compile Include="Core\Extensions\XExtensions.Test.cs" />
     <Compile Include="Core\Helper Classes\PropertyObserverTest.cs" />
