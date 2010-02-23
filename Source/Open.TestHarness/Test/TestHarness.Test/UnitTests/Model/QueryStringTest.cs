@@ -1,14 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
@@ -17,6 +8,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.TestHarness.Test.UnitTests.Model
 {
+    [Tag("current")]
     [TestClass]
     public class QueryStringTest
     {
@@ -60,10 +52,10 @@ namespace Open.TestHarness.Test.UnitTests.Model
             var model = new QueryString(uri.GetQueryString());
             model.XapFiles.Count().ShouldBe(4);
 
-            model.XapFiles.ElementAt(0).ShouldBe("One.xap");
-            model.XapFiles.ElementAt(1).ShouldBe("Two.xap");
-            model.XapFiles.ElementAt(2).ShouldBe("Three.xap");
-            model.XapFiles.ElementAt(3).ShouldBe("Four.xap");
+            model.XapFiles.ElementAt(0).ShouldBe("One");
+            model.XapFiles.ElementAt(1).ShouldBe("Two");
+            model.XapFiles.ElementAt(2).ShouldBe("Three");
+            model.XapFiles.ElementAt(3).ShouldBe("Four");
         }
 
         [TestMethod]

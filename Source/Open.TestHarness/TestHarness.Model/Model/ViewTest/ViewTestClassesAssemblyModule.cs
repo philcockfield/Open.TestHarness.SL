@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using Open.Core.Common;
 using Open.Core.Common.Network;
@@ -139,13 +140,19 @@ namespace Open.TestHarness.Model
                                 {
                                     // Check for failure.
                                     IsLoading = false;
-                                    if (!response.IsSuccessful) throw
-                                                            new Exception(
-                                                                string.Format("Failed to load XAP file '{0}'.", XapFileName),
-                                                                response.Error);
-
-                                    // Retrieve the entry-point assembly.
-                                    LoadAssemblyInternal(response.Result.EntryPointAssembly);
+                                    if (!response.IsSuccessful)
+                                    {
+                                        // This module cannot be loaded - remove it from the list.
+                                        TestHarness.Modules.Remove(this);
+                                        TestHarness.Settings.SyncLoadedModulesWithTestHarness();
+                                        TestHarness.Settings.Save();
+                                    }
+                                    else
+                                    {
+                                        // Load the entry-point assembly.
+                                        LoadAssemblyInternal(response.Result.EntryPointAssembly);
+                                    }
+                                        
 
                                     // Finish up.
                                     if (callback != null) callback();

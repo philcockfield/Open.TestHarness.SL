@@ -52,6 +52,10 @@ namespace Open.TestHarness.View
             // Load the view.
             var viewModel = new RootViewModel();
             RootVisual = new Root { ViewModel = viewModel };
+
+            // Process any instructions in the query-string.
+            var queryString = new QueryString();
+            queryString.LoadAssemblies(null);
         }
 
         private void Application_Exit(object sender, EventArgs e)
