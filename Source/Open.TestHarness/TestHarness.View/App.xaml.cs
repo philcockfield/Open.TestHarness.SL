@@ -47,7 +47,7 @@ namespace Open.TestHarness.View
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // Setup MEF.
-            ViewTestClassesAssemblyModule.PackageDownloader = PackageDownloadService.InitializeContainer();
+            Network.PackageDownloader = PackageDownloadService.InitializeContainer();
 
             // Load the view.
             var viewModel = new RootViewModel();

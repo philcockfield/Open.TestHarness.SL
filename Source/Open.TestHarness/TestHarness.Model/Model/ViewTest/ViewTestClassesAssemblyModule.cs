@@ -100,15 +100,6 @@ namespace Open.TestHarness.Model
             get { return GetPropertyValue<T, bool>(m => m.IsLoading); }
             private set { SetPropertyValue<T, bool>(m => m.IsLoading, value); }
         }
-
-        /// <summary>Gets or sets the package-download service.</summary>
-        /// <remarks>
-        ///    NB: This is set in App.Startup() routine.
-        ///    It would be best not to strongly couple this with a static member, ideally you'd use
-        ///    MEF to import the service, however re-composition errors seems to occur in some
-        ///    situations when this downloader is also involved in a MEF import itself.
-        /// </remarks>
-        public static IPackageDownloadService PackageDownloader { get; set; }
         #endregion
 
         #region Properties - Internal
@@ -135,28 +126,28 @@ namespace Open.TestHarness.Model
             FireAssemblyLoadStarted();
 
             // Start the downloading of the XAP.
-            Debug.WriteLine("Test Harness - Loading with 'AssemblyLoader': " + XapFileName);
-            PackageDownloader.DownloadAsync(XapFileName, response =>
-                                {
-                                    // Check for failure.
-                                    IsLoading = false;
-                                    if (!response.IsSuccessful)
-                                    {
-                                        // This module cannot be loaded - remove it from the list.
-                                        TestHarness.Modules.Remove(this);
-                                        TestHarness.Settings.SyncLoadedModulesWithTestHarness();
-                                        TestHarness.Settings.Save();
-                                    }
-                                    else
-                                    {
-                                        // Load the entry-point assembly.
-                                        LoadAssemblyInternal(response.Result.EntryPointAssembly);
-                                    }
-                                        
+            Network.DownloadXapFile(XapFileName, entryPointAssembly =>
+                                         {
+                                             IsLoading = false;
 
-                                    // Finish up.
-                                    if (callback != null) callback();
-                                });
+                                             // Check for failure.
+                                             var isSuccessful = entryPointAssembly != null;
+                                             if (!isSuccessful)
+                                             {
+                                                 // This module cannot be loaded - remove it from the list.
+                                                 TestHarness.Modules.Remove(this);
+                                                 TestHarness.Settings.SyncLoadedModulesWithTestHarness();
+                                                 TestHarness.Settings.Save();
+                                             }
+                                             else
+                                             {
+                                                 // Load the entry-point assembly.
+                                                 LoadAssemblyInternal(entryPointAssembly);
+                                             }
+
+                                             // Finish up.
+                                             if (callback != null) callback();
+                                         });
         }
 
         /// <summary>Loads the specified assembly into the module.</summary>

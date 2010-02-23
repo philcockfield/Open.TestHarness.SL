@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Windows;
 using System.Xml.Linq;
 using Open.Core.Common;
@@ -33,6 +34,34 @@ namespace Open.TestHarness.Model
     /// <summary>Common access to network resources.</summary>
     public static class Network
     {
+        #region Properties
+        /// <summary>Gets or sets the package-download service.</summary>
+        /// <remarks>
+        ///    NB: This is set in App.Startup() routine.
+        ///    It would be best not to strongly couple this with a static member, ideally you'd use
+        ///    MEF to import the service, however re-composition errors seems to occur in some
+        ///    situations when this downloader is also involved in a MEF import itself.
+        /// </remarks>
+        public static IPackageDownloadService PackageDownloader { get; set; }
+        #endregion
+
+        #region Methods
+        /// <summary>Downloads the specified XAP file.</summary>
+        /// <param name="xapFileName">The name of the XAP file to download.</param>
+        /// <param name="callback">Action to invoke when complete (passes back the entry-point assembly).</param>
+        public static void DownloadXapFile(string xapFileName, Action<Assembly> callback)
+        {
+            // Start the downloading of the XAP.
+            PackageDownloader.DownloadAsync(xapFileName, response =>
+                                                             {
+                                                                 var returnAssembly = response.IsSuccessful
+                                                                                          ? response.Result.EntryPointAssembly
+                                                                                          : null;
+                                                                 if (callback != null) callback(returnAssembly);
+                                                             });
+        }
+        #endregion
+
         #region Method - GetClientBin
         /// <summary>Starts an asyncronous call to get the client-bin contents.</summary>
         /// <param name="returnValue">Callback that returns the values.</param>
