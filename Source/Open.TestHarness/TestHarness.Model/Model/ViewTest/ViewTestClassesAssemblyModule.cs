@@ -135,9 +135,7 @@ namespace Open.TestHarness.Model
                                              if (!isSuccessful)
                                              {
                                                  // This module cannot be loaded - remove it from the list.
-                                                 TestHarness.Modules.Remove(this);
-                                                 TestHarness.Settings.SyncLoadedModulesWithTestHarness();
-                                                 TestHarness.Settings.Save();
+                                                 TestHarness.RemoveModule(this);
                                              }
                                              else
                                              {

@@ -149,6 +149,16 @@ namespace Open.TestHarness.Model
             Settings.SyncLoadedModulesWithTestHarness();
             Settings.Save();
         }
+
+        /// <summary>Removes the given module from the harness (and settings).</summary>
+        /// <param name="module">The module to remove.</param>
+        public void RemoveModule(ViewTestClassesAssemblyModule module)
+        {
+            if (module == null) throw new ArgumentNullException("module");
+            Modules.Remove(module);
+            Settings.SyncLoadedModulesWithTestHarness();
+            Settings.Save();
+        }
         #endregion
     }
 }

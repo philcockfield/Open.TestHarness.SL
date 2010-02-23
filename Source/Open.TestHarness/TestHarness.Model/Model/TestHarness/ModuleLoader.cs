@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Open.Core.Common;
@@ -121,10 +122,10 @@ namespace Open.TestHarness.Model
             foreach (var setting in testHarness.Settings.RecentSelections)
             {
                 list.Add(ViewTestClass.GetSingleton(
-                                                    setting.ClassName, 
-                                                    setting.CustomName, 
-                                                    setting.Module.AssemblyName, 
-                                                    setting.Module.XapFileName));
+                             setting.ClassName, 
+                             setting.CustomName, 
+                             setting.Module.AssemblyName, 
+                             setting.Module.XapFileName));
             }
 
             // Re-populate the collection.
