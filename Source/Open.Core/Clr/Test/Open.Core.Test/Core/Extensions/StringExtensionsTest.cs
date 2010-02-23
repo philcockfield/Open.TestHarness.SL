@@ -342,5 +342,23 @@ namespace Open.Core.Common.Test.Extensions
             "&".ToKeyValuePairs().Count().ShouldBe(0);
             "&&".ToKeyValuePairs().Count().ShouldBe(0);
         }
+
+        [TestMethod]
+        public void ShouldHaveEqualsInKeyValuePairValue()
+        {
+            "key=a=b".ToKeyValuePairs().ElementAt(0).Value.ShouldBe("a=b");
+            "key=a=b&key=a=b".ToKeyValuePairs().ElementAt(1).Value.ShouldBe("a=b");
+        }
+
+        [TestMethod]
+        public void ShouldHaveValueButNoKey()
+        {
+            var pairs = "=value&key=value".ToKeyValuePairs();
+            pairs.Count().ShouldBe(2);
+            pairs.ElementAt(0).Key.ShouldBe(null);
+            pairs.ElementAt(0).Value.ShouldBe("value");
+        }
+
+
     }
 }

@@ -130,11 +130,14 @@ namespace Open.Core.Common
                 if (parts.Length == 0) continue;
 
                 // Construct the key-value pair.
-                string key = null;
+                string key = "";
                 string value = null;
                 if (parts.Length > 0) key = parts[0];
-                if (parts.Length > 1) value = parts[1];
-                list.Add(new KeyValuePair<string, string>(key, value));
+                if (parts.Length > 1)
+                {
+                    value = phrase.Substring(key.Length + 1, phrase.Length - (key.Length + 1));
+                }
+                list.Add(new KeyValuePair<string, string>(key.AsNullWhenEmpty(), value));
             }
 
             // Finish up.
