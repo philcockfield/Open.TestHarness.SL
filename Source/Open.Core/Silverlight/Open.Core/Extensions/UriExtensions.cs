@@ -33,7 +33,7 @@ namespace Open.Core.Common
         /// <param name="self">The Uri to examine.</param>
         /// <returns>The collection of key-value pairs in the query-string</returns>
         /// <remarks>
-        ///     The query string is assumed to start at a '?' character, and be a set of 'key=value' paris
+        ///     The query string is assumed to start at a '?' character, and be a set of 'key=value' pairs
         ///     seperated by the '&' delimiter character.<BR/>
         ///     For example: http://domain.com?a=b&b=c;
         /// </remarks>

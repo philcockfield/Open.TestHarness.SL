@@ -112,10 +112,7 @@ namespace Open.TestHarness.View.AssemblyChooser
             if (SelectedFile == null) return;
 
             // Add the assembly to the list.
-            var testHarness = TestHarnessModel.Instance;
-            testHarness.AddModule(new ModuleSetting(SelectedFile.Name));
-            testHarness.Settings.SyncLoadedModulesWithTestHarness();
-            testHarness.Settings.Save();
+            TestHarnessModel.Instance.AddModule(SelectedFile.Name);
         }
         #endregion
 

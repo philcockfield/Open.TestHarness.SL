@@ -105,6 +105,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UnitTests\Model\QueryStringTest.cs" />
     <Compile Include="UnitTests\Model\TestHarnessModelTest.cs">
       <SubType>Code</SubType>
     </Compile>

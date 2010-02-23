@@ -135,10 +135,19 @@ namespace Open.TestHarness.Model
         }
 
         /// <summary>Loads the module with the specified name.</summary>
+        /// <param name="xapFileName">The name of the XAP file.</param>
+        public void AddModule(string xapFileName)
+        {
+            AddModule(new ModuleSetting(xapFileName));
+        }
+
+        /// <summary>Loads the module with the specified name.</summary>
         /// <param name="moduleSetting">The identifying settings of the module to load.</param>
         public void AddModule(ModuleSetting moduleSetting)
         {
             moduleLoader.AddModule(moduleSetting);
+            Settings.SyncLoadedModulesWithTestHarness();
+            Settings.Save();
         }
         #endregion
     }

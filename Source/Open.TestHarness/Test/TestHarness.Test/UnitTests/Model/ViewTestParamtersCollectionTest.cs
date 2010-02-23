@@ -10,7 +10,6 @@ using Open.Core.Common.Testing;
 
 namespace Open.TestHarness.Test.UnitTests.Model
 {
-    [Tag("current")]
     [TestClass]
     public class ViewTestParamtersCollectionTest
     {

@@ -22,6 +22,7 @@
 
 using System.Reflection;
 using System.Windows;
+using System.Windows.Browser;
 using System.Windows.Controls;
 using Open.Core.Common;
 using System.Diagnostics;
@@ -197,8 +198,15 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
         [ViewTest]
         public void Controls(Placeholder control1, Visibility visibility1, Visibility visibility2, Placeholder control2,  Visibility visibility3)
         {
-//            control1.SetSize(50,50);
-            
+        }
+
+
+        [ViewTest]
+        public void Host()
+        {
+            Output.WriteProperties(Application.Current.Host);
+            Output.WriteProperties(Application.Current.Host.Source);
+            Output.WriteProperties(HtmlPage.Document.DocumentUri);
         }
 
 

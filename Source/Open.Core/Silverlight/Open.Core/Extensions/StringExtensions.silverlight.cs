@@ -49,59 +49,6 @@ namespace Open.Core.Common
         #endregion
 
         #region Methods - URL / URI
-        /// <summary>Retrieves the current [http://domain]:[port] value.</summary>
-        /// <param name="application">The application instance (use 'Application.Current').</param>
-        /// <returns>The current server URL the application is hosted on.</returns>
-        public static string GetServerUrl(this Application application)
-        {
-            var hostSource = application.Host.Source;
-            if (hostSource.DnsSafeHost.AsNullWhenEmpty() == null && hostSource.Port < 0)
-            {
-                // Page is loaded from a file, not a server.  Construct dummy URL.
-                var path = hostSource.AbsolutePath.Reverse();
-                path = path.Substring(0, path.IndexOf("/")).Reverse();
-                return "http://not-from-server/" + path;
-            }
-            return string.Format("http://{0}:{1}", hostSource.DnsSafeHost, hostSource.Port);
-        }
-
-        /// <summary>Retrieves the name of the XAP file of the application.</summary>
-        /// <param name="application">The application instance (use 'Application.Current').</param>
-        public static string GetXapFileName(this Application application)
-        {
-            var parts = application.Host.Source.LocalPath.Split("/".ToCharArray());
-            return parts[parts.Length - 1];
-        }
-
-        /// <summary>Retrieves the path up to the folder the XAP file.</summary>
-        /// <param name="application">The application instance (use 'Application.Current').</param>
-        public static string GetClientBinPath(this Application application)
-        {
-            return application.Host.Source.LocalPath.RemoveEnd(application.GetXapFileName());
-        }
-
-        /// <summary>Retrieves the URL path up to the folder the XAP file is running within, including the server URL.</summary>
-        /// <param name="application">The application instance (use 'Application.Current').</param>
-        public static string GetClientBinUrl(this Application application)
-        {
-            return application.GetServerUrl() + application.GetClientBinPath();
-        }
-
-        /// <summary>Retrieves the URL path up to the root of the server application (the folder above the ClientBin).</summary>
-        /// <param name="application">The application instance (use 'Application.Current').</param>
-        /// <remarks>This assumes the XAP file is hosted in a folder which is at the root of the application.</remarks>
-        public static string GetApplicationRootUrl(this Application application)
-        {
-            // Get the client-bin name.
-            var divider = "/".ToCharArray();
-            var parts = application.GetClientBinUrl().TrimEnd(divider).Split(divider);
-            var clientBinName = parts[parts.Length - 1];
-
-            // Trim off the end of the app URL.
-            var url = application.GetClientBinUrl().TrimEnd(divider);
-            return url.RemoveEnd(clientBinName);
-        }
-
         /// <summary>
         ///    Converts the path to a resource into a fully qualified component URI using the calling assembly 
         ///    (eg "/assembly;component/Images/MyImage.png").
