@@ -6,14 +6,14 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BBF930A4-8C7C-41AE-AAFD-93B6CF99ADC9}</ProjectGuid>
+    <ProjectGuid>{C65D7E7E-33D9-43DB-AB99-DE25DF4A1245}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Open.TestHarness.Web</RootNamespace>
-    <AssemblyName>Open.TestHarness.Web</AssemblyName>
+    <RootNamespace>Sample.Web</RootNamespace>
+    <AssemblyName>Sample.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightApplicationList>{665816F7-EA4E-4610-B3C3-CFDB63A54E32}|..\TestHarness.View\TestHarness.View.csproj|ClientBin|False,{187CCB78-51F9-4C9D-AB8E-D556813E7D1D}|..\..\..\Core.Refactor\Silverlight\Test\Open.Core.Test\Open.Core.Test %28Silverlight%29.csproj|ClientBin|False,{B7614A63-B311-4AA0-B53F-8751609B7984}|..\Test\TestHarness.Test\TestHarness.Test.csproj|ClientBin|False,{0F4D1AB6-C9D8-4C05-86CE-DE88A09D1EA7}|..\..\..\..\..\..\Users\Phil\Desktop\Test Code\Sample.TestHarness\Sample.TestHarness\Sample.TestHarness.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{89F7E8B8-FB1B-47CB-976B-D69266AB79B9}|..\Sample.Test\Sample.Test.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,12 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientBin.aspx" />
-    <Content Include="ClientBin\Open.Core.UI.Test.xap" />
-    <Content Include="ClientBin\Open.TestHarness.Test.xap" />
-    <Content Include="ClientBin\Open.TestHarness.xap" />
     <Content Include="ClientBin\Sample.Test.xap" />
     <Content Include="Silverlight.js" />
-    <Content Include="TestHarness.htm" />
+    <Content Include="Default.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -84,8 +81,8 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>1235</DevelopmentServerPort>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7731</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
@@ -98,9 +95,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /Y  "$(ProjectDir)\ClientBin\Open.TestHarness.xap" "$(ProjectDir)\..\..\..\Bin\Bin.Silverlight\"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
