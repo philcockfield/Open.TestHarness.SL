@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientBin.aspx" />
+    <Content Include="ClientBin\Open.TestHarness.xap" />
     <Content Include="ClientBin\Sample.Test.xap" />
     <Content Include="Silverlight.js" />
     <Content Include="Default.htm" />

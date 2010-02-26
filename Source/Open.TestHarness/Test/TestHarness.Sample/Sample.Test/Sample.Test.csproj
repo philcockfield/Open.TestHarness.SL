@@ -61,12 +61,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="Open.Core">
-      <HintPath>..\Lib\Open.Core\Silverlight\Open.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Open.Core.Interfaces">
-      <HintPath>..\Lib\Open.Core\Silverlight\Open.Core.Interfaces.dll</HintPath>
-    </Reference>
+    <Reference Include="Open.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Open.Core.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Open.Core.Testing">
       <HintPath>..\Lib\Open.Core\Silverlight\Open.Core.Testing.dll</HintPath>
     </Reference>

@@ -58,7 +58,7 @@ namespace Open.TestHarness.Test.Model
             testHarness.Modules.Add(moduleModel);
         }
         #endregion
-
+        
         #region Tests
         [TestMethod]
         public void ShouldLoadAssembly()
@@ -154,5 +154,60 @@ namespace Open.TestHarness.Test.Model
             moduleModel.XapFileName.ShouldBe("File");
         }
         #endregion
+
+        #region Tests - Query Methods
+        private const string sampleClassName = "MySampleQueryViewTest";
+
+        [TestMethod]
+        public void ShouldGetAllMatchingClasses()
+        {
+            moduleModel.LoadAssembly(sampleAssembly);
+            moduleModel.GetTestClasses(sampleClassName).Count().ShouldBe(2);
+        }
+
+        [TestMethod]
+        public void ShouldGetAllSpecificFullyQualifiedClass()
+        {
+            moduleModel.LoadAssembly(sampleAssembly);
+            moduleModel.GetTestClasses("Open.TestHarness.Test.Model.Namespace1." + sampleClassName).Count().ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldNotFindClass()
+        {
+            moduleModel.Unload();
+            moduleModel.IsLoaded.ShouldBe(false);
+            moduleModel.GetTestClasses(sampleClassName).Count().ShouldBe(0);
+
+            moduleModel.LoadAssembly(sampleAssembly);
+            moduleModel.IsLoaded.ShouldBe(true);
+            moduleModel.GetTestClasses("NotAClassThatExistsAnywhere").Count().ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldReturnAllClasses()
+        {
+            moduleModel.LoadAssembly(sampleAssembly);
+            moduleModel.GetTestClasses(null).ShouldBe(moduleModel.Classes);
+            moduleModel.GetTestClasses("").ShouldBe(moduleModel.Classes);
+            moduleModel.GetTestClasses("  ").ShouldBe(moduleModel.Classes);
+        }
+        #endregion
     }
 }
+
+namespace Open.TestHarness.Test.Model.Namespace1
+{
+    [ViewTestClass]
+    public class MySampleQueryViewTest { }
+}
+
+namespace Open.TestHarness.Test.Model.Namespace2
+{
+    [ViewTestClass]
+    public class MySampleQueryViewTest { }
+}
+
+
+
+

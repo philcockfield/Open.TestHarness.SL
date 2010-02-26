@@ -48,6 +48,14 @@ namespace Open.Core.Common
                 if (disposable != null) disposable.Dispose();
             }
         }
+
+        /// <summary>Determines whether the specified collection is empty.</summary>
+        /// <param name="self">The collection to examine.</param>
+        public static bool IsEmpty<T>(this IEnumerable<T> self)
+        {
+            if (Equals(self, default(IEnumerable))) return true;
+            return self.Count() == 0;
+        }
         #endregion
 
         #region ICollection<T>
@@ -115,11 +123,11 @@ namespace Open.Core.Common
         public static T NextItem<T>(this IList<T> collection, T relativeTo, bool cycle)
         {
             return GetRelativeItem(collection, relativeTo, () =>
-                                               {
-                                                   var nextIndex = collection.IndexOf(relativeTo) + 1;
-                                                   if (nextIndex < collection.Count) return nextIndex;
-                                                   return cycle ? 0 : -1;
-                                               });
+                                                               {
+                                                                   var nextIndex = collection.IndexOf(relativeTo) + 1;
+                                                                   if (nextIndex < collection.Count) return nextIndex;
+                                                                   return cycle ? 0 : -1;
+                                                               });
         }
 
         /// <summary>Gets the previous item in a collection relative to the given object.</summary>
@@ -131,11 +139,11 @@ namespace Open.Core.Common
         public static T PreviousItem<T>(this IList<T> collection, T relativeTo, bool cycle)
         {
             return GetRelativeItem(collection, relativeTo, () =>
-                                                {
-                                                    var previousIndex = collection.IndexOf(relativeTo) - 1;
-                                                    if (previousIndex >= 0) return previousIndex;
-                                                    return cycle ? collection.Count - 1 : -1;
-                                                });
+                                                               {
+                                                                   var previousIndex = collection.IndexOf(relativeTo) - 1;
+                                                                   if (previousIndex >= 0) return previousIndex;
+                                                                   return cycle ? collection.Count - 1 : -1;
+                                                               });
         }
 
         private static T GetRelativeItem<T>(IList<T> collection, T relativeTo, Func<int> getRelativeIndex)

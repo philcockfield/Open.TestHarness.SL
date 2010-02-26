@@ -51,12 +51,11 @@ namespace Open.TestHarness.View.Selector
             viewModel.SelectFirst();
 
             // Wire up events.
-            viewModel.SelectionChanged += delegate
-                                              {
-                                                  parameter.Value = viewModel.SelectedItemValue;
-                                              };
+            Action syncParameterValue = () => { parameter.Value = viewModel.SelectedItemValue; };
+            viewModel.SelectionChanged += delegate { syncParameterValue(); };
 
             // Finish up.
+            syncParameterValue();
             return viewModel;
         }
         #endregion

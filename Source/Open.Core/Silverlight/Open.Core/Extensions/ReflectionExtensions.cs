@@ -89,6 +89,15 @@ namespace Open.Core.Common
 
             return false;
         }
+
+        /// <summary>Gets the type from the object if the object is not null.</summary>
+        /// <param name="self">The object to get the type from.</param>
+        /// <returns>The object's Type, or null if the object is not available.</returns>
+        /// <remarks>This exists as an easy way for dealing with potentially null struct/enum values.</remarks>
+        public static Type GetTypeOrNull(this object self)
+        {
+            return self == null ? null : self.GetType();
+        }
         #endregion
 
         #region Assembly

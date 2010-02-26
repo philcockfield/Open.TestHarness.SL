@@ -193,7 +193,7 @@ namespace Open.Core.Common
                 foreach (var item in collection)
                 {
                     object line = NullText;
-                    if (!Equals(item, default(T)))
+                    if (item.GetTypeOrNull() != null)
                     {
                         line = formatItem == null
                                                    ? item.ToString()

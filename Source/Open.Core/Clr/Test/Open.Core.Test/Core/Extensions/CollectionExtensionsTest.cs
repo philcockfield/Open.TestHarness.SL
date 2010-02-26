@@ -184,6 +184,18 @@ namespace Open.Core.Test.Extensions
             list.PreviousItem(item1, false).ShouldBe(null);
             list.PreviousItem(item1, true).ShouldBe(item1);
         }
+
+        [TestMethod]
+        public void ShouldDetermineIfEnumerableIsEmpty()
+        {
+            ((List<Stub>) null).IsEmpty().ShouldBe(true);
+
+            var list = new List<Stub> ();
+            list.IsEmpty().ShouldBe(true);
+            
+            list.Add(new Stub());
+            list.IsEmpty().ShouldBe(false);
+        }
         #endregion
 
         #region Stubs

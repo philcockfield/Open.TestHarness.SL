@@ -57,14 +57,11 @@ namespace Open.TestHarness.View.Selector
         #endregion
 
         #region Event Handlers
-
         private void OnClick()
         {
             model.Execute();
         }
-
         #endregion
-
 
         #region Properties
         /// <summary>Gets the number of times the command has been executed.</summary>

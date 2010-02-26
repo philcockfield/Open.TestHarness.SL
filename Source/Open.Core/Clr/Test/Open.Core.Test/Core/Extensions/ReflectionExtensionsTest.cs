@@ -21,6 +21,8 @@
 //------------------------------------------------------
 
 using System;
+using System.Windows;
+using System.Windows.Media;
 using Open.Core.Common.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
@@ -138,6 +140,21 @@ namespace Open.Core.Common.Test.Extensions
 
             value = MyEnum.Three;
             value.NextValue<MyEnum>().ShouldBe(MyEnum.One);
+        }
+
+        [TestMethod]
+        public void ShouldGetType()
+        {
+            (default(Visibility)).GetTypeOrNull().ShouldBe(typeof(Visibility)); // Enum
+            (default(Color)).GetTypeOrNull().ShouldBe(typeof(Color)); // Struct
+            "string".GetTypeOrNull().ShouldBe(typeof(string));
+            this.GetTypeOrNull().ShouldBe(this.GetType());
+        }
+
+        [TestMethod]
+        public void ShouldNotGetType()
+        {
+            ((string)null).GetTypeOrNull().ShouldBe(null);
         }
         #endregion
 

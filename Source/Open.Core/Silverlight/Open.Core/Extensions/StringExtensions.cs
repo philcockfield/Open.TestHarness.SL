@@ -143,6 +143,46 @@ namespace Open.Core.Common
             // Finish up.
             return list;
         }
+
+        /// <summary>Retrieves the end of a string after the last occurance of the given character.</summary>
+        /// <param name="self">The string to examine.</param>
+        /// <param name="character">The delimiter character.</param>
+        /// <example>
+        ///     For example:<br/>
+        ///     "Namespace.ClassName".SubstringAfterLast(".")<br/>
+        ///     Would return "ClassName".
+        /// </example>
+        public static string SubstringAfterLast(this string self, string character)
+        {
+            // Setup initial conditions.
+            if (self.IsNullOrEmpty(true)) return self;
+            if (character.IsNullOrEmpty(false)) return self;
+            if (!self.Contains(character)) return self;
+
+            // Split on the character.
+            var parts = self.Split(character.ToCharArray());
+            return parts[parts.Length - 1];
+        }
+
+        /// <summary>Retrieves the beginning of a string up to the last occurance of the given character.</summary>
+        /// <param name="self">The string to examine.</param>
+        /// <param name="character">The delimiter character.</param>
+        /// <example>
+        ///     For example:<br/>
+        ///     "Namespace.ClassName".SubstringBeforeLast(".")<br/>
+        ///     Would return "Namespace".
+        /// </example>
+        public static string SubstringBeforeLast(this string self, string character)
+        {
+            // Setup initial conditions.
+            if (self.IsNullOrEmpty(true)) return self;
+            if (character.IsNullOrEmpty(false)) return self;
+            if (!self.Contains(character)) return self;
+
+            // Get last.
+            var last = self.SubstringAfterLast(character);
+            return self.RemoveEnd(last);
+        }
         #endregion
 
         #region String - Null Strings

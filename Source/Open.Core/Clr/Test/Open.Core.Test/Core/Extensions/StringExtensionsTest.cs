@@ -359,6 +359,40 @@ namespace Open.Core.Common.Test.Extensions
             pairs.ElementAt(0).Value.ShouldBe("value");
         }
 
+        [TestMethod]
+        public void ShouldGetSubstringAfterLast()
+        {
+            "".SubstringAfterLast(".").ShouldBe("");
+            "  ".SubstringAfterLast(".").ShouldBe("  ");
+            ((string)null).SubstringAfterLast(".").ShouldBe(null);
 
+            "One.Two".SubstringAfterLast("").ShouldBe("One.Two");
+            "One.Two".SubstringAfterLast(null).ShouldBe("One.Two");
+            "One.Two".SubstringAfterLast("-").ShouldBe("One.Two");
+
+            "One.Two".SubstringAfterLast(".").ShouldBe("Two");
+            "One.Two.Three".SubstringAfterLast(".").ShouldBe("Three");
+
+            "One.".SubstringAfterLast(".").ShouldBe("");
+            ".".SubstringAfterLast(".").ShouldBe("");
+        }
+
+        [TestMethod]
+        public void ShouldGetSubstringBeforeLast()
+        {
+            "".SubstringBeforeLast(".").ShouldBe("");
+            "  ".SubstringBeforeLast(".").ShouldBe("  ");
+            ((string)null).SubstringBeforeLast(".").ShouldBe(null);
+
+            "One.Two".SubstringBeforeLast("").ShouldBe("One.Two");
+            "One.Two".SubstringBeforeLast(null).ShouldBe("One.Two");
+            "One.Two".SubstringBeforeLast("-").ShouldBe("One.Two");
+
+            "One.Two".SubstringBeforeLast(".").ShouldBe("One.");
+            "One.Two.Three".SubstringBeforeLast(".").ShouldBe("One.Two.");
+
+            "One.".SubstringBeforeLast(".").ShouldBe("One.");
+            ".".SubstringBeforeLast(".").ShouldBe(".");
+        }
     }
 }

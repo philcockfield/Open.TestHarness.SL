@@ -22,9 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using Open.Core.Common;
 using Open.Core.Common.Network;
@@ -205,6 +203,31 @@ namespace Open.TestHarness.Model
         public ModuleSetting ToSetting()
         {
             return new ModuleSetting(AssemblyName, XapFileName);
+        }
+        #endregion
+
+        #region Methods - Query
+        /// <summary>Gets the [ViewTestClass]'s that match the given name.</summary>
+        /// <param name="name">
+        ///     The class-name filter.  If a single class name, all classes that match (in any namespace) will be returned.
+        ///     If a fully qualified class-name (with namespace) is provided only that class will be retrieved.
+        /// </param>
+        /// <returns></returns>
+        public IEnumerable<ViewTestClass> GetTestClasses(string name)
+        {
+            // Setup initial conditions.
+            var empty = new List<ViewTestClass>();
+            if (!IsLoaded) return empty;
+            if (name.IsNullOrEmpty(true)) return Classes;
+
+            // Retrieve matching types decorated with [ViewTestClass]
+            var types = Assembly.GetViewTestClasses(name);
+            if (types.IsEmpty()) return empty;
+            
+            // Return the subset.
+            return from c in Classes
+                       where types.Count(m => m.FullName == c.TypeName) > 0
+                       select c;
         }
         #endregion
 

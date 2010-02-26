@@ -53,7 +53,7 @@ namespace Open.TestHarness.Model
         }
 
         /// <summary>Gets the list of classes.</summary>
-        public ObservableCollection<ViewTestClass> Classes{get { return classes; }}
+        public ObservableCollection<ViewTestClass> Classes { get { return classes; } }
 
         /// <summary>Returns the current class (the 'ViewTestClass' marked as IsCurrent).</summary>
         public ViewTestClass CurrentClass
@@ -72,16 +72,9 @@ namespace Open.TestHarness.Model
         /// <returns>The number of classes found within the assembly.</returns>
         public int AddFromAssembly(Assembly assembly, string xapFileName)
         {
-            // Retrieve the set of classes.
-            var viewTestClasses = 
-                        from type in assembly.GetTypes()
-                        where type.IsPublic && type.GetCustomAttributes(typeof(ViewTestClassAttribute), false).FirstOrDefault() != null
-                        orderby type.Name
-                        select type;
-
             // Create corresponding set of models and add to 'Classes' property.
             var list = new List<ViewTestClass>();
-            foreach (var type in viewTestClasses)
+            foreach (var type in assembly.GetViewTestClasses())
             {
                 list.Add(ViewTestClass.GetSingleton(type, xapFileName));
             }
