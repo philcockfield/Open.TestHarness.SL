@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Windows;
 
 namespace Open.Core.Common
 {
@@ -95,6 +96,19 @@ namespace Open.Core.Common
             if (unit == FileSizeUnit.Terabyte) return value * multiplier * multiplier * multiplier * multiplier;
 
             throw new NotSupportedException(unit.ToString());
+        }
+
+        /// <summary>Converts the given collection of edges to a thickness.</summary>
+        /// <param name="edges">The collection of edges to include in the return Thickness.</param>
+        /// <param name="thickness">The pixel width/height of the edges.</param>
+        public static Thickness ToThickness(this RectEdgeFlag edges, int thickness = 1)
+        {
+            Func<RectEdgeFlag, int> getThickness = edge =>  (edges & edge) == edge ? thickness : 0; 
+            return new Thickness(
+                                getThickness(RectEdgeFlag.Left),
+                                getThickness(RectEdgeFlag.Top),
+                                getThickness(RectEdgeFlag.Right), 
+                                getThickness(RectEdgeFlag.Bottom));
         }
     }
 }

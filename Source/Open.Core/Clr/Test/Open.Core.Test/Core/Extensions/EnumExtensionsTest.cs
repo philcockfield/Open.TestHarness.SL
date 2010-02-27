@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 
@@ -140,6 +141,24 @@ namespace Open.Core.Common.Test.Core.Common.Extensions
             FileSizeUnit.Megabyte.ToBytes(-1d).ShouldBe(-1048576.0);
             FileSizeUnit.Gigabyte.ToBytes(-1d).ShouldBe(-1073741824.0);
             FileSizeUnit.Terabyte.ToBytes(-1d).ShouldBe(-1099511627776.0);
+        }
+
+        [TestMethod]
+        public void ShouldConvertToThickness()
+        {
+            default(RectEdgeFlag).ToThickness().ShouldBe(new Thickness(0));
+            RectEdgeFlag.None.ToThickness().ShouldBe(new Thickness(0));
+
+            RectEdgeFlag.Left.ToThickness().ShouldBe(new Thickness(1, 0, 0, 0));
+            RectEdgeFlag.Top.ToThickness().ShouldBe(new Thickness(0, 1, 0, 0));
+            RectEdgeFlag.Right.ToThickness().ShouldBe(new Thickness(0, 0, 1, 0));
+            RectEdgeFlag.Bottom.ToThickness().ShouldBe(new Thickness(0, 0, 0, 1));
+
+            (RectEdgeFlag.Left | RectEdgeFlag.Top).ToThickness().ShouldBe(new Thickness(1, 1, 0, 0));
+            (RectEdgeFlag.Bottom | RectEdgeFlag.Top).ToThickness().ShouldBe(new Thickness(0, 1, 0, 1));
+            (RectEdgeFlag.Left | RectEdgeFlag.Top | RectEdgeFlag.Right | RectEdgeFlag.Bottom).ToThickness().ShouldBe(new Thickness(1));
+
+            RectEdgeFlag.Left.ToThickness(5).ShouldBe(new Thickness(5, 0, 0, 0));
         }
     }
 }

@@ -24,7 +24,7 @@ using System;
 
 namespace Open.Core.Common
 {
-    /// <summary>Flag indicating which size dimension a value pertains to.</summary>
+    /// <summary>Size dimension a value pertains to.</summary>
     public enum SizeDimension
     {
         /// <summary>The width of the element.</summary>
@@ -44,7 +44,7 @@ namespace Open.Core.Common
         Both = Male | Female
     }
 
-    /// <summary>Flags representing a person's gender.</summary>
+    /// <summary>A person's gender.</summary>
     public enum Gender
     {
         Unknown = 0,
@@ -52,14 +52,14 @@ namespace Open.Core.Common
         Female = 2
     }
 
-    /// <summary>Flags representing the various kinds of click gestures.</summary>
+    /// <summary>The various kinds of click gestures.</summary>
     public enum ClickGesture
     {
         SingleClick,
         DoubleClick
     }
 
-    /// <summary>Flags representing a unit of file size.</summary>
+    /// <summary>A unit of file size.</summary>
     public enum FileSizeUnit
     {
         Byte,
@@ -67,5 +67,25 @@ namespace Open.Core.Common
         Megabyte,
         Gigabyte,
         Terabyte,
+    }
+
+    /// <summary>The edges of a rectangle.</summary>
+    public enum RectEdge
+    {
+        Left,
+        Top,
+        Right,
+        Bottom
+    }
+
+    /// <summary>Flags representing the edges of a rectangle.</summary>
+    [Flags]
+    public enum RectEdgeFlag
+    {
+        None = 0,
+        Left = 1 << 0,
+        Top = 1 << 1,
+        Right = 1 << 2,
+        Bottom = 1 << 3,
     }
 }
