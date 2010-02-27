@@ -40,14 +40,14 @@
                                            Opacity="0.55" />
 
             <!--Right Aligned Buttons-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,1">
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,1">
                 <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
                 <c:ImageButton 
                             Source="../../Images/Icon.Minimize.9x8.png" 
                             HorizontalAlignment="Right"
                             Width="33"
                             Style="{StaticResource toolbarButtonStyle}"/>
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
 
         <!--Output Log-->
