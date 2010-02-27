@@ -69,15 +69,21 @@ namespace Open.TestHarness.Test.ViewTests
         {
 
             [ViewTest]
-            public void MyTest1(Placeholder control, Visibility visibility)
+            public void MyTest1(Placeholder control, Gender gender)
             {
-                Output.Write("Method Invoked - MyTest1", "Visibility: " + visibility);
+                Output.Write("Method Invoked - MyTest1", "Gender: " + gender);
             }
 
             [ViewTest]
             public void MyTest2(Placeholder control, Visibility visibility, MyEnum myEnum)
             {
                 Output.Write("Method Invoked - MyTest2", "Visibility: " + visibility, "MyEnum: " + myEnum);
+            }
+
+            [ViewTest]
+            public void MyTest3(Placeholder control, RectEdgeFlag edge = RectEdgeFlag.Top)
+            {
+                Output.Write("Method Invoked - MyTest3", "edge: " + edge);
             }
 
         }

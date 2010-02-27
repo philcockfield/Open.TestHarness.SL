@@ -32,7 +32,8 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.UI.Silverlight.Test.View_Tests
 {
-    [ViewTestClass(IsPropertyExplorerVisible = false)]
+//    [ViewTestClass(IsPropertyExplorerVisible = false)]
+    [ViewTestClass]
     public class CodeViewTest
     {
         #region Head

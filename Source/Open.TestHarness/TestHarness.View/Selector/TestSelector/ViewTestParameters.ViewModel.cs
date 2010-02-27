@@ -48,7 +48,18 @@ namespace Open.TestHarness.View.Selector
             {
                 viewModel.Add(value.ToString(), value);
             }
-            viewModel.SelectFirst();
+
+            // Select the default value.
+            var defaultValue = parameter.Info.DefaultValue;
+            var hasDefault = viewModel.Items.Count(m => Equals(m.Value, defaultValue)) > 0;
+            if (hasDefault)
+            {
+                viewModel.SelectValue(defaultValue);
+            }
+            else
+            {
+                viewModel.SelectFirst();
+            }
 
             // Wire up events.
             Action syncParameterValue = () => { parameter.Value = viewModel.SelectedItemValue; };
