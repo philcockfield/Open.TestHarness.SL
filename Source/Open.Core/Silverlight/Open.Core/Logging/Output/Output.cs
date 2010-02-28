@@ -63,7 +63,7 @@ namespace Open.Core.Common
         /// <summary>Writes the empty line to the log.</summary>
         public static void Write()
         {
-            OnAllWriters(writer => writer.Write());
+            OnAllWriters(writer => writer.Write(""));
         }
 
         /// <summary>Write the value(s) to a single line, delimited by pipes if a set of values were passed (|).</summary>
@@ -107,8 +107,17 @@ namespace Open.Core.Common
         #region Methods - WriteProperties
         /// <summary>Writes out the properties for the specified object.</summary>
         /// <param name="obj">The object to write the properties of.</param>
-        /// <param name="includeHierarchy">Flag indicating properties from the entire inheritance tree should be written.</param>
+        /// <param name="includeHierarchy">Flag indicating whether properties from the entire inheritance tree should be written.</param>
         public static void WriteProperties(object obj, bool includeHierarchy)
+        {
+            WriteProperties(null, obj, includeHierarchy);
+        }
+
+        /// <summary>Writes out the properties for the specified object.</summary>
+        /// <param name="title">Title of the object being written.</param>
+        /// <param name="obj">The object to write the properties of.</param>
+        /// <param name="includeHierarchy">Flag indicating whether properties from the entire inheritance tree should be written.</param>
+        public static void WriteProperties(string title, object obj, bool includeHierarchy)
         {
             // Setup initial conditions.
             if (obj == null)
@@ -123,7 +132,7 @@ namespace Open.Core.Common
             var properties = obj.GetType().GetProperties(flags).OrderBy(m => m.Name);
 
             // Finish up.
-            Write(ToPropertyOutput(obj, properties));
+            Write(ToPropertyOutput(title, obj, properties));
         }
 
         /// <summary>Writes out the specified properties for the given object.</summary>
@@ -136,6 +145,20 @@ namespace Open.Core.Common
         /// </param>
         public static void WriteProperties<T>(T obj, params Expression<Func<T, object>>[] properties)
         {
+            WriteProperties(null, obj, properties);
+        }
+
+        /// <summary>Writes out the specified properties for the given object.</summary>
+        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <param name="title">Title of the object being written.</param>
+        /// <param name="obj">The object to write the properties of.</param>
+        /// <param name="properties">
+        ///    The collection of expressions that represent the properties 
+        ///    that have changed (for example 'n => n.PropertyName'.)
+        ///    Passing null writes the entire set of properties (not including the inheritance hierarchy).
+        /// </param>
+        public static void WriteProperties<T>(string title, T obj, params Expression<Func<T, object>>[] properties)
+        {
             // Setup initial conditions.
             if (Equals(obj, default(T)))
             {
@@ -144,7 +167,7 @@ namespace Open.Core.Common
             }
             if (properties == null || properties.Length == 0)
             {
-                WriteProperties(obj, false);
+                WriteProperties(title, obj, false);
                 return;
             }
 
@@ -158,7 +181,7 @@ namespace Open.Core.Common
             }
 
             // Finish up.
-            Write(ToPropertyOutput(obj, list));
+            Write(ToPropertyOutput(title, obj, list));
         }
         #endregion
 
@@ -166,16 +189,18 @@ namespace Open.Core.Common
         /// <summary>Writes out the given collection items to the log (using ToString to get the output for each line item).</summary>
         /// <typeparam name="T">The type items within the collection.</typeparam>
         /// <param name="collection">The collection.</param>
-        public static void WriteCollection<T>(IEnumerable<T> collection)
+        /// <param name="truncateAfter">The maximum number of items to write (output is truncated if exceeds this value).</param>
+        public static void WriteCollection<T>(IEnumerable<T> collection, int truncateAfter = int.MaxValue)
         {
-            WriteCollection(collection, item => item);
+            WriteCollection(collection, item => item, truncateAfter: truncateAfter);
         }
 
         /// <summary>Writes out the given collection items to the log.</summary>
         /// <typeparam name="T">The type items within the collection.</typeparam>
         /// <param name="collection">The collection.</param>
         /// <param name="formatItem">Function that formats the given line item.</param>
-        public static void WriteCollection<T>(IEnumerable<T> collection, Func<T, object> formatItem)
+        /// <param name="truncateAfter">The maximum number of items to write (output is truncated if exceeds this value).</param>
+        public static void WriteCollection<T>(IEnumerable<T> collection, Func<T, object> formatItem, int truncateAfter = int.MaxValue)
         {
             // Setup initial conditions.
             if (collection == null)
@@ -184,14 +209,18 @@ namespace Open.Core.Common
                 return;
             }
             var count = collection.Count();
+            var isTruncated = count > truncateAfter;
 
             // Prepare the collection list.
             var collectionText = string.Empty;
             if (count > 0)
             {
                 var builder = new StringBuilder();
+                var index = 0;
                 foreach (var item in collection)
                 {
+                    if (index >= truncateAfter) break;
+
                     object line = NullText;
                     if (item.GetTypeOrNull() != null)
                     {
@@ -199,14 +228,20 @@ namespace Open.Core.Common
                                                    ? item.ToString()
                                                    : formatItem(item);
                     }
-                    builder.AppendLine(string.Format("> {0}", line));
+                    builder.AppendLine(string.Format("   {0}. - {1}", index, line));
+                    index++;
                 }
                 collectionText = Environment.NewLine + builder.ToString().TrimEnd(Environment.NewLine.ToCharArray());
             }
 
             // Preare the final output.
-            var itemText = "item".ToPlural(count, "items");
-            var msg = string.Format("{0} {1}{2}", count, itemText, collectionText);
+            var truncatedText = isTruncated ? string.Format(" (showing {0} only)", truncateAfter) : null;
+            var msg = string.Format("{0} {1}{2}:{3}{4}", 
+                            count,
+                            "item".ToPlural(count, "items"),
+                            isTruncated ? string.Format(" (showing {0} only)", truncateAfter) : null, 
+                            collectionText,
+                            isTruncated ? Environment.NewLine + "..." : null);
 
             // Finish up.
             Write(msg);
@@ -233,14 +268,20 @@ namespace Open.Core.Common
             return value == null ? NullText : value.ToString();
         }
 
-        private static string ToPropertyOutput(object obj, IEnumerable<PropertyInfo> properties)
+        private static string ToPropertyOutput(string title, object obj, IEnumerable<PropertyInfo> properties)
         {
-            var msg = "";
+            // Format the property list.
+            var props = "";
             foreach (var property in properties)
             {
-                msg += string.Format(" - {0}: {1}{2}", property.Name, GetValue(property, obj), Environment.NewLine);
+                props += string.Format(" - {0}: {1}{2}", property.Name, GetValue(property, obj), Environment.NewLine);
             }
-            return msg.TrimEnd(Environment.NewLine.ToCharArray());
+            props = props.TrimEnd(Environment.NewLine.ToCharArray());
+
+            // Finish up.
+            return string.Format("{0}{1}",
+                                title.AsNullWhenEmpty() == null ? null : title + Environment.NewLine,
+                                props);
         }
 
         private static string ToOutputString(object[] values)

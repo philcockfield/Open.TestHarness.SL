@@ -86,6 +86,18 @@ namespace Open.TestHarness.Test.ViewTests
                 Output.Write("Method Invoked - MyTest3", "edge: " + edge);
             }
 
+            [ViewTest]
+            public void MyTest4(Placeholder control, bool isCollapsed)
+            {
+                Output.Write("Method Invoked - MyTest4", "isCollased (Bool): " + isCollapsed);
+            }
+
+            [ViewTest]
+            public void MyTest5(Placeholder control, bool isCollapsed = true)
+            {
+                Output.Write("Method Invoked - MyTest5", "isCollased (Bool): " + isCollapsed);
+            }
+
         }
     }
 }

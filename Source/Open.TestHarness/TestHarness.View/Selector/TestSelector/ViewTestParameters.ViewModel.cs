@@ -73,8 +73,9 @@ namespace Open.TestHarness.View.Selector
 
         private static void PopulateBooleanDropdown(ComboBoxViewModel viewModel, ViewTestParameter parameter)
         {
-            viewModel.Add("True", true);
-            viewModel.Add("False", false);
+            var name = parameter.Info.Name;
+            viewModel.Add(string.Format("{0}: True", name), true);
+            viewModel.Add(string.Format("{0}: False", name), false);
 
             var defaultValue = parameter.Info.DefaultValue;
             SelectDefaultValue(

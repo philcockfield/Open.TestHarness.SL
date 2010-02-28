@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Controls;
 using Open.Core.UI.Controls;
 using Open.Core.Common.Testing;
@@ -46,14 +47,25 @@ namespace Open.Core.Common.Test.Core.Common.Testing.Controls
             writer = new OutputWriter();
             control.Writer = writer;
 
-            Output.Write(Colors.Green, "Written from initial ViewTest.");
+//            Output.Write(Colors.Green, "Written from initial ViewTest.");
         }
         #endregion
 
         [ViewTest]
-        public void TEMP(TextBox control) //TEMP 
+        public void OutputSample() 
         {
-            
+            Output.Write("My Value");                    // ToString() on the given object.
+            Output.Write(null);                              // <null>
+            Output.Break();                                  // Visual section divider
+            Output.Write();                                  // Blank line
+            Output.Write("One", "Two", "Three");  // Pipe delimited set of values.
+
+            //Output.Write(Colors.Red, "Red");
+            //Output.Write(Colors.Green, "Green");
+            //Output.Write(Colors.Orange, "Orange");
+
+            Debug.WriteLine("");
+            Console.WriteLine("HI");
         }
 
 
@@ -183,38 +195,60 @@ namespace Open.Core.Common.Test.Core.Common.Testing.Controls
         }
 
         [ViewTest]
-        public void Global_Output__WriteProperties(OutputLog control)
+        public void Global_Output__WriteProperties(OutputLog control, bool withTitle = true)
         {
             var stub = new Stub { Text = RandomData.LoremIpsum(5) };
-            Output.WriteProperties(stub);
+            if (withTitle)
+            {
+                Output.WriteProperties("My Title", stub);
+            }
+            else
+            {
+                Output.WriteProperties(stub);
+            }
         }
 
         [ViewTest]
-        public void Global_Output__WriteProperties_IncludeHierarchy(OutputLog control)
+        public void Global_Output__WriteProperties_IncludeHierarchy(OutputLog control, bool withTitle = true)
         {
             var stub = new Stub { Text = RandomData.LoremIpsum(5) };
-            Output.WriteProperties(stub, true);
+            if (withTitle)
+            {
+                Output.WriteProperties("My Title", stub, includeHierarchy: true);
+            }
+            else
+            {
+                Output.WriteProperties(stub, includeHierarchy: true);
+            }
         }
 
         [ViewTest]
         public void Global_Output__WriteProperties_Specific(OutputLog control)
         {
             var stub = new Stub { Text = RandomData.LoremIpsum(5) };
-            Output.WriteProperties(stub, m => m.ParentProperty, m => m.Text);
+            Output.WriteProperties("My Title", stub, m => m.ParentProperty, m => m.Text);
         }
 
         [ViewTest]
-        public void Global_Output__WriteCollection(OutputLog control)
+        public void Global_Output__WriteCollection(OutputLog control, bool truncate)
         {
-            var items = CreateStubs(5);
-            Output.WriteCollection(items);
+            IEnumerable<Stub> items = CreateStubs(12);
+
+            if (truncate)
+            {
+                Output.WriteCollection(items, truncateAfter: 5);
+            }
+            else
+            {
+                Output.WriteCollection(items);
+            }
         }
 
         [ViewTest]
         public void Global_Output__WriteCollection_Custom(OutputLog control)
         {
-            var items = CreateStubs(5);
-            Output.WriteCollection(items, stub => "Custom Output: " + stub.Number);
+            var items = CreateStubs(3);
+            Output.WriteCollection(items, o => "Custom Output: " + o.Number);
         }
 
         [ViewTest]
