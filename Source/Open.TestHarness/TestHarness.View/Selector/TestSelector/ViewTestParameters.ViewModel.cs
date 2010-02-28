@@ -20,7 +20,7 @@ namespace Open.TestHarness.View.Selector
 
             // Populate with enum combo-boxes.
             var enumParams = from p in model.Parameters.Items
-                             where p.Type.IsA(typeof (Enum))
+                             where p.Type.IsEnum || p.Type.IsA(typeof(bool))
                              select p;
             foreach (var parameter in enumParams)
             {
@@ -44,21 +44,13 @@ namespace Open.TestHarness.View.Selector
                                 };
 
             // Populate with values.
-            foreach (var value in parameter.Type.GetEnumValues())
+            if (parameter.Type.IsEnum)
             {
-                viewModel.Add(value.ToString(), value);
+                PopulateEnumDropdown(viewModel, parameter);
             }
-
-            // Select the default value.
-            var defaultValue = parameter.Info.DefaultValue;
-            var hasDefault = viewModel.Items.Count(m => Equals(m.Value, defaultValue)) > 0;
-            if (hasDefault)
+            else if (parameter.Type.IsA(typeof(bool)))
             {
-                viewModel.SelectValue(defaultValue);
-            }
-            else
-            {
-                viewModel.SelectFirst();
+                PopulateBooleanDropdown(viewModel, parameter);
             }
 
             // Wire up events.
@@ -68,6 +60,39 @@ namespace Open.TestHarness.View.Selector
             // Finish up.
             syncParameterValue();
             return viewModel;
+        }
+
+        private static void PopulateEnumDropdown(ComboBoxViewModel viewModel, ViewTestParameter parameter)
+        {
+            foreach (var value in parameter.Type.GetEnumValues())
+            {
+                viewModel.Add(value.ToString(), value);
+            }
+            SelectDefaultValue(viewModel, parameter.Info.DefaultValue);
+        }
+
+        private static void PopulateBooleanDropdown(ComboBoxViewModel viewModel, ViewTestParameter parameter)
+        {
+            viewModel.Add("True", true);
+            viewModel.Add("False", false);
+
+            var defaultValue = parameter.Info.DefaultValue;
+            SelectDefaultValue(
+                            viewModel,
+                            defaultValue is DBNull ? false : defaultValue);
+        }
+
+        private static void SelectDefaultValue(ComboBoxViewModel viewModel, object defaultValue)
+        {
+            var hasDefault = viewModel.Items.Count(m => Equals(m.Value, defaultValue)) > 0;
+            if (hasDefault)
+            {
+                viewModel.SelectValue(defaultValue);
+            }
+            else
+            {
+                viewModel.SelectFirst();
+            }
         }
         #endregion
     }
