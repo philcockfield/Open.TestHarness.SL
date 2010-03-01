@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Open.TestHarness.Model;
 
@@ -30,6 +31,14 @@ namespace Open.TestHarness.Automation
     public class TestRunner
     {
         #region Head
+        private readonly List<MethodItem> methods = new List<MethodItem>();
+
+        private class MethodItem
+        {
+            public ViewTestClass TestClass { get; set; }
+            public ViewTest Method { get; set; }
+        }
+
         /// <summary>Constructor.</summary>
         /// <param name="testHarness">instance of the root TestHarness model.</param>
         public TestRunner(TestHarnessModel testHarness)
@@ -44,21 +53,54 @@ namespace Open.TestHarness.Automation
         public TestHarnessModel TestHarness { get; private set; }
 
         /// <summary>Gets the set of methods to be executed during the test run.</summary>
-        public IEnumerable<ViewTest> Methods { get; private set; }
+        public IEnumerable<ViewTest> Methods { get { return methods.Select(m => m.Method); } }
         #endregion
 
         #region Methods
-        
+        /// <summary>Adds all test methods within the given assembly to the execution queue.</summary>
+        /// <param name="module">The assembly module to add methods from.</param>
+        public void Add(ViewTestClassesAssemblyModule module)
+        {
+            if (module == null) throw new ArgumentNullException("module");
+            if (!module.IsLoaded) throw new ArgumentOutOfRangeException("module", "Module must be loaded before adding to the test runner");
+            foreach (var testClass in module.Classes)
+            {
+                Add(testClass);
+            }
+        }
+
+        /// <summary>Adds all test method within the given class to the execution queue.</summary>
+        /// <param name="testClass">The class to add methods from.</param>
+        public void Add(ViewTestClass testClass)
+        {
+            if (testClass == null) throw new ArgumentNullException("testClass");
+            foreach (var method in testClass.ViewTests)
+            {
+                Add(testClass, method);
+            }
+        }
+
+        /// <summary>Adds the specified test method to the execution queue.</summary>
+        /// <param name="testClass">The class that the method belongs to.</param>
+        /// <param name="method">The [ViewTest] method.</param>
         public void Add(ViewTestClass testClass, ViewTest method)
         {
-            // Setup initial conditions.
             if (testClass == null) throw new ArgumentNullException("testClass");
             if (method == null) throw new ArgumentNullException("method");
 
-            
-//            testClass.p
-        }
+            if (Methods.Count(m => 
+                (m.MethodInfo.DeclaringType == method.MethodInfo.DeclaringType) &&
+                (m.MethodInfo.Name == method.MethodInfo.Name)
 
+                ) > 0) return;
+
+//            if (Methods.Contains(method)) return;
+            methods.Add(new MethodItem
+                            {
+                                TestClass = testClass,
+                                Method = method
+                            });
+        }
         #endregion
 
     }

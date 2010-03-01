@@ -368,6 +368,16 @@ namespace Open.TestHarness.Model
         {
             OnPropertyChanged<T>(m => m.IsCurrent);
         }
+
+        /// <summary>Gets the [ViewTest] method with the given name.</summary>
+        /// <param name="name">The name of the method to retrieve.</param>
+        /// <returns>Method or null.</returns>
+        public ViewTest GetTestMethod(string name)
+        {
+            if (name.IsNullOrEmpty(true)) return null;
+            name = name.ToLower();
+            return ViewTests.FirstOrDefault(m => m.MethodInfo.Name.ToLower() == name);
+        }
         #endregion
 
         #region Internal
@@ -375,8 +385,8 @@ namespace Open.TestHarness.Model
         {
             // See if the assembly has already been loaded.
             var assembly = 
-                        TestHarnessModel.Instance.LoadedAssemblies.FirstOrDefault(
-                        item => ReflectionUtil.GetAssemblyName(item.FullName) == AssemblyName);
+                TestHarnessModel.Instance.LoadedAssemblies.FirstOrDefault(
+                    item => ReflectionUtil.GetAssemblyName(item.FullName) == AssemblyName);
             if (assembly != null) return assembly;
 
             // Load and store the assembly.

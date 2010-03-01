@@ -23,12 +23,14 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Controls;
+using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
 using Open.TestHarness.Model;
+
 using ReflectionUtil=Open.Core.Common.ReflectionUtil;
 using ViewTestClassAttribute=Open.Core.Common.ViewTestClassAttribute;
 
@@ -314,6 +316,28 @@ namespace Open.TestHarness.Test.Model
 
             var model2 = new ViewTestClass(typeof(SampleViewTestClass2), "File.xap");
             model2.IsEquivalent(type1).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldGetMethod()
+        {
+            var sampleType = new Sample().GetType(); // NB: Instance used to get actual SL type of (instead of 'typeof' which returns native Type).
+            var model = new ViewTestClass(sampleType, "File.xap");
+
+            var method = model.GetTestMethod("method1");
+            method.ShouldNotBe(null);
+            model.ViewTests.ShouldContain(method);
+        }
+
+        [TestMethod]
+        public void ShouldNotGetMethod()
+        {
+            var sampleType = new Sample().GetType(); // NB: Instance used to get actual SL type of (instead of 'typeof' which returns native Type).
+            var model = new ViewTestClass(sampleType, "File.xap");
+
+            model.GetTestMethod(null).ShouldBe(null);
+            model.GetTestMethod("").ShouldBe(null);
+            model.GetTestMethod("  ").ShouldBe(null);
         }
         #endregion
 

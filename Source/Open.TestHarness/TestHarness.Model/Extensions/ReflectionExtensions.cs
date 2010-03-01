@@ -72,7 +72,7 @@ namespace Open.TestHarness
                                             : methodName == method.Name.ToLower();
                              };
             return (from c in assembly.GetViewTestClasses()
-                   from m in c.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                    from m in c.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public)
                    where isMatch(m)
                    select m).Distinct();
         }

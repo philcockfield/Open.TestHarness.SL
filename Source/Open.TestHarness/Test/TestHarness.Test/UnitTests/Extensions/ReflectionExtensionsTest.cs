@@ -64,7 +64,7 @@ namespace Open.TestHarness.Test.UnitTests.Extensions
         public void ShouldRetreiveAllViewTestsInAssembly()
         {
             var methods = from c in assembly.GetViewTestClasses()
-                        from m in c.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                          from m in c.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public)
                         where m.HasAttribute<ViewTestAttribute>()
                         select m;
 
