@@ -228,14 +228,14 @@ namespace Open.Core.Common
                                                    ? item.ToString()
                                                    : formatItem(item);
                     }
-                    builder.AppendLine(string.Format("   {0}. - {1}", index, line));
+                    builder.AppendLine(string.Format("   {0}) - {1}", index, line));
                     index++;
                 }
                 collectionText = Environment.NewLine + builder.ToString().TrimEnd(Environment.NewLine.ToCharArray());
             }
 
             // Preare the final output.
-            var truncatedText = isTruncated ? string.Format(" (showing {0} only)", truncateAfter) : null;
+            var truncatedText = isTruncated ? string.Format(" (showing only {0})", truncateAfter) : null;
             var msg = string.Format("{0} {1}{2}:{3}{4}", 
                             count,
                             "item".ToPlural(count, "items"),

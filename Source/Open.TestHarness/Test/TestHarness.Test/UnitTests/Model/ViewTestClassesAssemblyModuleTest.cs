@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Silverlight.Testing;
@@ -157,6 +158,8 @@ namespace Open.TestHarness.Test.Model
 
         #region Tests - Query Methods
         private const string sampleClassName = "MySampleQueryViewTest";
+        private const string sampleMethodName = "MySampleQueryMethod";
+
 
         [TestMethod]
         public void ShouldGetAllMatchingClasses()
@@ -192,6 +195,40 @@ namespace Open.TestHarness.Test.Model
             moduleModel.GetTestClasses("").ShouldBe(moduleModel.Classes);
             moduleModel.GetTestClasses("  ").ShouldBe(moduleModel.Classes);
         }
+
+        [TestMethod]
+        public void ShouldReturnNoMethods()
+        {
+            moduleModel.Unload();
+            moduleModel.IsLoaded.ShouldBe(false);
+            moduleModel.GetTestMethods(sampleMethodName).Count().ShouldBe(0);
+
+            moduleModel.LoadAssembly(sampleAssembly);
+            moduleModel.GetTestMethods("NotAMethodName").Count().ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldGetTwoMethods()
+        {
+            moduleModel
+                .GetTestMethods(sampleMethodName)
+                .Count().ShouldBe(2);
+        }
+
+        [TestMethod]
+        public void ShouldGetOneFullyQualifiedMethod()
+        {
+            moduleModel
+                .GetTestMethods("open.testHarness.Test.Model.namespace1.MySampleQueryViewTest.MySampleQueryMethod")
+                .Count().ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldGetAllMethodsInAssembly()
+        {
+            var methods = GetType().Assembly.GetViewTestMethods();
+            moduleModel.GetTestMethods().Count().ShouldBe(methods.Count());
+        }
         #endregion
     }
 }
@@ -199,13 +236,21 @@ namespace Open.TestHarness.Test.Model
 namespace Open.TestHarness.Test.Model.Namespace1
 {
     [ViewTestClass]
-    public class MySampleQueryViewTest { }
+    public class MySampleQueryViewTest
+    {
+        [ViewTest]
+        public void MySampleQueryMethod() { }
+    }
 }
 
 namespace Open.TestHarness.Test.Model.Namespace2
 {
     [ViewTestClass]
-    public class MySampleQueryViewTest { }
+    public class MySampleQueryViewTest
+    {
+        [ViewTest]
+        public void MySampleQueryMethod() { }
+    }
 }
 
 

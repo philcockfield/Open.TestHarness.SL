@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using Open.Core.Common;
+using Open.TestHarness.Automation;
 using Open.TestHarness.Model;
 
 namespace Open.TestHarness.View

@@ -21,7 +21,7 @@
 //------------------------------------------------------
 
 using System;
-using Microsoft.Silverlight.Testing;
+using System.Reflection;
 using Open.Core.Common.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

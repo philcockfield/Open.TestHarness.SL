@@ -48,13 +48,31 @@ namespace Open.Core.Common
                 if (disposable != null) disposable.Dispose();
             }
         }
+        #endregion
 
+        #region IEnumerable
         /// <summary>Determines whether the specified collection is empty.</summary>
         /// <param name="self">The collection to examine.</param>
         public static bool IsEmpty<T>(this IEnumerable<T> self)
         {
             if (Equals(self, default(IEnumerable))) return true;
             return self.Count() == 0;
+        }
+
+        /// <summary>Returns the enumerable with any duplicate object instances removed.</summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="self">The collection.</param>
+        /// <param name="isMatch">An object comparer.</param>
+        public static IEnumerable<T> Distinct<T>(this IEnumerable<T> self, Func<T, T, bool> isMatch)
+        {
+            if (self == null || self.Count() == 0 || isMatch == null) return self;
+            var list = new List<T>();
+            foreach (var item in self)
+            {
+                var add = list.All(addedItem => !isMatch(addedItem, item));
+                if (add) list.Add(item);
+            }
+            return list;
         }
         #endregion
 

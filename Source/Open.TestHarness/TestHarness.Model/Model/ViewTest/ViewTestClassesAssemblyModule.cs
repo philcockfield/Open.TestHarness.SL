@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Open.Core.Common;
@@ -229,6 +230,32 @@ namespace Open.TestHarness.Model
                        where types.Count(m => m.FullName == c.TypeName) > 0
                        select c;
         }
+
+        /// <summary>Gets the [ViewTest] classes that match the given name.</summary>
+        /// <param name="name">
+        ///     The name of the method (not case sensitive).<BR/>
+        ///     If only the method name is specified , all matching methods (from any class in any namespace) will be returned.<BR/>
+        ///     If a fully-qualified method name (with namespace) is provided only that method will be retrieved.<BR/>
+        ///     Passing null returns all [ViewTest] methods within the assembly.
+        /// </param>
+        /// <returns></returns>
+        public IEnumerable<ViewTest> GetTestMethods(string name = null)
+        {
+            // Setup initial conditions.
+            var empty = new List<ViewTest>();
+            if (!IsLoaded) return empty;
+
+            // Retrieve the matching MethodInfo's.
+            var methodDefs = Assembly.GetViewTestMethods(name);
+            if (methodDefs.IsEmpty()) return empty;
+
+            // Return the corresponding ViewTest model classes.
+            return (from c in Classes
+                       from t in c.ViewTests
+                       where methodDefs.Count(m => m == t.MethodInfo) > 0
+                       select t)
+                   .Distinct((test1, test2) => test1.MethodInfo == test2.MethodInfo);
+        }
         #endregion
 
         #region Internal
@@ -263,3 +290,4 @@ namespace Open.TestHarness.Model
         #endregion
     }
 }
+

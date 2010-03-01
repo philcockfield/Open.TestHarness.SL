@@ -168,5 +168,27 @@ namespace Open.Core.Common
                 (setter != null && setter.IsStatic);
         }
         #endregion
+
+        #region Attributes
+        /// <summary>Determines whether the specified type is decorated with a particular attribute.</summary>
+        /// <typeparam name="TAttribute">The type of the attribute to look for.</typeparam>
+        /// <param name="type">The type to examine.</param>
+        public static bool HasAttribute<TAttribute>(this Type type) where TAttribute : Attribute
+        {
+            return type == null
+                        ? false
+                        : type.GetCustomAttributes(typeof(TAttribute), false).FirstOrDefault() != null;
+        }
+
+        /// <summary>Determines whether the specified member is decorated with a particular attribute.</summary>
+        /// <typeparam name="TAttribute">The type of the attribute to look for.</typeparam>
+        /// <param name="member">The member to examine.</param>
+        public static bool HasAttribute<TAttribute>(this MemberInfo member) where TAttribute : Attribute
+        {
+            return member == null
+                        ? false
+                        : member.GetCustomAttributes(typeof(TAttribute), false).FirstOrDefault() != null;
+        }
+        #endregion
     }
 }

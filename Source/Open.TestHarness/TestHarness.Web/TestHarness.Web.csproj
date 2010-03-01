@@ -58,7 +58,7 @@
     <Content Include="ClientBin\Open.TestHarness.xap" />
     <Content Include="ClientBin\Sample.Test.xap" />
     <Content Include="Silverlight.js" />
-    <Content Include="TestHarness.htm" />
+    <Content Include="Default.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

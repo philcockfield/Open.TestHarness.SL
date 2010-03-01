@@ -20,6 +20,8 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -196,6 +198,33 @@ namespace Open.Core.Test.Extensions
             list.Add(new Stub());
             list.IsEmpty().ShouldBe(false);
         }
+
+        [TestMethod]
+        public void ShouldRemoveDuplicateEntires()
+        {
+            var stub1 = new Stub{Text = "One"};
+            var stub2 = new Stub{Text = "Two"};
+            var list = new List<Stub> { stub1, stub1, stub2, stub1, stub2 };
+
+            var distinct = list.Distinct((s1, s2) => s1 == s2);
+            distinct.Count().ShouldBe(2);
+            distinct.First().ShouldBe(stub1);
+            distinct.Last().ShouldBe(stub2);
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveDuplicateEntires()
+        {
+            var list = new List<Stub> { new Stub(), new Stub(), new Stub() };
+            list.Distinct((s1, s2) => s1 == s2).Count().ShouldBe(3);
+        }
+
+        [TestMethod]
+        public void ShouldTakeEmptyParamsInUniqueMethod()
+        {
+            new List<Stub>().Distinct((s1, s2) => s1 == s2).Count().ShouldBe(0);
+            ((List<Stub>)null).Distinct((s1, s2) => s1 == s2).ShouldBe(null);
+        }
         #endregion
 
         #region Stubs
@@ -203,7 +232,10 @@ namespace Open.Core.Test.Extensions
         {
         }
 
-        private class Stub : ModelBase { }
+        private class Stub : ModelBase
+        {
+            public string Text { get; set; }
+        }
         #endregion
     }
 }

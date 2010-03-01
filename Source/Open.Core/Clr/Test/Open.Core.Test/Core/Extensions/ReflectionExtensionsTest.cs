@@ -156,6 +156,24 @@ namespace Open.Core.Common.Test.Extensions
         {
             ((string)null).GetTypeOrNull().ShouldBe(null);
         }
+
+        [TestMethod]
+        public void ShouldReportIfClassHasAttribute()
+        {
+            ((Type)null).HasAttribute<TestClassAttribute>().ShouldBe(false);
+            GetType().HasAttribute<TestClassAttribute>().ShouldBe(true);
+            GetType().HasAttribute<ViewTestClassAttribute>().ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldReportIfMemberHasAttribute()
+        {
+            ((MemberInfo)null).HasAttribute<TestMethodAttribute>().ShouldBe(false);
+
+            var method = GetType().GetMethod("ShouldReportIfMemberHasAttribute");
+            method.HasAttribute<TestMethodAttribute>().ShouldBe(true);
+            method.HasAttribute<ViewTestAttribute>().ShouldBe(false);
+        }
         #endregion
 
         #region Stubs
