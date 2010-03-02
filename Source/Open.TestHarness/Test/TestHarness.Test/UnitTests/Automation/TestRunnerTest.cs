@@ -5,13 +5,15 @@ using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
+using Open.Core.UI.Controls;
 using Open.TestHarness.Automation;
 using Open.TestHarness.Model;
 
 namespace Open.TestHarness.Test.UnitTests.Automation
 {
+    [Tag("current")]
     [TestClass]
-    public class TestRunnerTest
+    public class TestRunnerTest : SilverlightUnitTest
     {
         #region Head
         private TestRunner testRunner;
@@ -81,32 +83,43 @@ namespace Open.TestHarness.Test.UnitTests.Automation
             module.Unload();
             Should.Throw<ArgumentOutOfRangeException>(() => testRunner.Add(module));
         }
+
+        [TestMethod]
+        [Asynchronous]
+        public void ShouldRunTests()
+        {
+            testRunner.Interval = 0.2;
+            testRunner.Add(testClass);
+            testRunner.Start(() =>
+                                 {
+                                     var instance = testClass.Instance as TestRunnerMockViewTest;
+                                     instance.InvokeCount.ShouldBe(2);
+                                     instance.Control.ShouldBeInstanceOfType<Placeholder>();
+                                     EnqueueTestComplete();
+                                 });
+        }
         #endregion
     }
 
     [ViewTestClass]
     public class TestRunnerMockViewTest
     {
+        public Placeholder Control { get; private set; }
+        public int InvokeCount { get; private set; }
+
         [ViewTest]
-        public void SampleTestRunnerMethod()
+        public void SampleTestRunnerMethod(Placeholder control)
         {
+            Control = control;
+            InvokeCount++;
+        }
+
+        [ViewTest]
+        public void AnotherTestRunnerMethod(Placeholder control)
+        {
+            Control = control;
+            InvokeCount++;
         }
 
     }
-
-
-    //TEMP 
-    //namespace Open.TestHarness.Test.Model.Namespace1
-    //{
-    //    [ViewTestClass]
-    //    public class MyReflectionSampleViewTest
-    //    {
-    //        [ViewTest]
-    //        public void MyReflectionSampleMethod() { }
-
-    //        public void MethodWithOutAttribute() { }
-    //    }
-    //}
-
-
 }

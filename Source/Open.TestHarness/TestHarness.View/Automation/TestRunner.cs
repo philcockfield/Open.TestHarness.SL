@@ -23,6 +23,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Open.Core.Common;
 using Open.TestHarness.Model;
 
 namespace Open.TestHarness.Automation
@@ -32,6 +33,7 @@ namespace Open.TestHarness.Automation
     {
         #region Head
         private readonly List<MethodItem> methods = new List<MethodItem>();
+        private double interval = 0.5;
 
         private class MethodItem
         {
@@ -54,9 +56,16 @@ namespace Open.TestHarness.Automation
 
         /// <summary>Gets the set of methods to be executed during the test run.</summary>
         public IEnumerable<ViewTest> Methods { get { return methods.Select(m => m.Method); } }
+
+        /// <summary>Gets or sets the interval (in seconds) between each method being executed.</summary>
+        public double Interval
+        {
+            get { return interval; }
+            set { interval = value.WithinBounds(0, double.MaxValue); }
+        }
         #endregion
 
-        #region Methods
+        #region Methods - Add
         /// <summary>Adds all test methods within the given assembly to the execution queue.</summary>
         /// <param name="module">The assembly module to add methods from.</param>
         public void Add(ViewTestClassesAssemblyModule module)
@@ -87,14 +96,7 @@ namespace Open.TestHarness.Automation
         {
             if (testClass == null) throw new ArgumentNullException("testClass");
             if (method == null) throw new ArgumentNullException("method");
-
-            if (Methods.Count(m => 
-                (m.MethodInfo.DeclaringType == method.MethodInfo.DeclaringType) &&
-                (m.MethodInfo.Name == method.MethodInfo.Name)
-
-                ) > 0) return;
-
-//            if (Methods.Contains(method)) return;
+            if (Methods.Count(m => m.MethodInfo== method.MethodInfo) > 0) return;
             methods.Add(new MethodItem
                             {
                                 TestClass = testClass,
@@ -103,5 +105,40 @@ namespace Open.TestHarness.Automation
         }
         #endregion
 
+        #region Methods - Execute
+        /// <summary>Starts the test-runner.</summary>
+        /// <param name="callback">The action to invoke when complete.</param>
+        public void Start(Action callback)
+        {
+            if (methods.IsEmpty())
+            {
+                if (callback != null) callback();
+                return;
+            }
+            DelayedInvoke(methods.First(), callback);
+        }
+
+        private void DelayedInvoke(MethodItem item, Action callback)
+        {
+            DelayedAction.Invoke(Interval, () => Invoke(item, callback));
+        }
+
+        private void Invoke(MethodItem item, Action callback)
+        {
+            // TODO - Try/Catch, write results to log (in HTML page).
+            item.Method.Execute();
+            
+            
+            var next = methods.NextItem(item, false);
+            if (next != null)
+            {
+                DelayedInvoke(next, callback);
+            }
+            else
+            {
+                if (callback != null) callback();
+            }
+        }
+        #endregion
     }
 }
