@@ -56,7 +56,10 @@ namespace Open.TestHarness.View
 
             // Process any instructions in the query-string.
             var queryString = new QueryString();
-            queryString.LoadAssemblies(null);
+            queryString.StartTestRun(() =>
+                                     {
+                                         
+                                     });
         }
 
         private void Application_Exit(object sender, EventArgs e)

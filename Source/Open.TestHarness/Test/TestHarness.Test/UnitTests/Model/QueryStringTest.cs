@@ -9,6 +9,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.TestHarness.Test.UnitTests.Model
 {
+    [Tag("current")]
     [TestClass]
     public class QueryStringTest
     {
@@ -56,6 +57,31 @@ namespace Open.TestHarness.Test.UnitTests.Model
             model.XapFiles.ElementAt(1).ShouldBe("Two");
             model.XapFiles.ElementAt(2).ShouldBe("Three");
             model.XapFiles.ElementAt(3).ShouldBe("Four");
+        }
+
+        [TestMethod]
+        public void ShouldContainClassNamesFromQueryString()
+        {
+            var uri = new Uri("/TestHarness.htm?xap=One&Class=NS.Class&class=  Class2.&CLASS=  &class=Class3  ", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+            model.ClassNames.Count().ShouldBe(3);
+
+            model.ClassNames.ElementAt(0).ShouldBe("NS.Class");
+            model.ClassNames.ElementAt(1).ShouldBe("Class2.");
+            model.ClassNames.ElementAt(2).ShouldBe("Class3");
+        }
+
+        [TestMethod]
+        public void ShouldGetRunTestsFromQueryString()
+        {
+            new QueryString(new Uri("/TestHarness.htm?RunTests=truE", UriKind.Relative).GetQueryString()).RunTests.ShouldBe(true);
+            new QueryString(new Uri("/TestHarness.htm?RUNTESTS=FALSE", UriKind.Relative).GetQueryString()).RunTests.ShouldBe(false);
+
+            new QueryString(new Uri("/TestHarness.htm?", UriKind.Relative).GetQueryString()).RunTests.ShouldBe(false);
+            new QueryString(new Uri("/TestHarness.htm?runTests=", UriKind.Relative).GetQueryString()).RunTests.ShouldBe(false);
+
+            new QueryString(new Uri("/TestHarness.htm?runTests=  TRUE  ", UriKind.Relative).GetQueryString()).RunTests.ShouldBe(true);
+            new QueryString(new Uri("/TestHarness.htm?runtests=  false  ", UriKind.Relative).GetQueryString()).RunTests.ShouldBe(false);
         }
 
         [TestMethod]

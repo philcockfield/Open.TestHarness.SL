@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Media;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
@@ -11,7 +13,6 @@ using Open.TestHarness.Model;
 
 namespace Open.TestHarness.Test.UnitTests.Automation
 {
-    [Tag("current")]
     [TestClass]
     public class TestRunnerTest : SilverlightUnitTest
     {
@@ -19,50 +20,47 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         private TestRunner testRunner;
         private ViewTestClassesAssemblyModule module;
         private ViewTestClass testClass;
-        private ViewTest testMethod;
+        private MethodInfo testMethodInfo;
 
         [TestInitialize]
         public void TestSetup()
         {
-            testRunner = new TestRunner(TestHarnessModel.Instance);
+            TestHarnessModel.ResetSingleton();
+            TestRunnerMockViewTest.InvokeCount = 0;
+
+            testRunner = new TestRunner { Interval = 0.01 };
 
             module = new ViewTestClassesAssemblyModule(new ModuleSetting());
             module.LoadAssembly(GetType().Assembly);
 
             testClass = module.GetTestClasses("TestRunnerMockViewTest").FirstOrDefault();
-            testMethod = testClass.GetTestMethod("SampleTestRunnerMethod");
+            testMethodInfo = testClass.GetTestMethod("SampleTestRunnerMethod").MethodInfo;
         }
         #endregion
         
         #region Tests
         [TestMethod]
-        public void ShouldConstructWithDefaultValues()
-        {
-            testRunner.TestHarness.ShouldBeInstanceOfType<TestHarnessModel>();
-        }
-
-        [TestMethod]
         public void ShouldAddOneTestMethod()
         {
-            testRunner.Add(testClass, testMethod);
-            testRunner.Methods.ShouldContain(testMethod);
+            testRunner.Add(testClass, testMethodInfo);
+            testRunner.GetMethods().Count(m => m.MethodInfo == testMethodInfo).ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldNotAddTheSameMethodTwice()
         {
-            testRunner.Add(testClass, testMethod);
-            testRunner.Add(testClass, testMethod);
-            testRunner.Add(testClass, testMethod);
-            testRunner.Methods.Count().ShouldBe(1);
+            testRunner.Add(testClass, testMethodInfo);
+            testRunner.Add(testClass, testMethodInfo);
+            testRunner.Add(testClass, testMethodInfo);
+            testRunner.GetMethods().Count().ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldAddAllTestMethodsInClass()
         {
             testRunner.Add(testClass);
-            testRunner.Methods.Count().ShouldBe(testClass.ViewTests.Count);
-            foreach (var method in testRunner.Methods)
+            testRunner.GetMethods().Count().ShouldBe(testClass.ViewTests.Count);
+            foreach (var method in testRunner.GetMethods())
             {
                 testClass.ViewTests.ShouldContain(method);
             }
@@ -74,7 +72,7 @@ namespace Open.TestHarness.Test.UnitTests.Automation
             var types = module.Assembly.GetViewTestMethods();
             testRunner.Add(module);
 
-            testRunner.Methods.Count().ShouldBe(types.Count());
+            testRunner.GetMethods().Count().ShouldBe(types.Count());
         }
 
         [TestMethod]
@@ -88,15 +86,88 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         [Asynchronous]
         public void ShouldRunTests()
         {
-            testRunner.Interval = 0.2;
             testRunner.Add(testClass);
             testRunner.Start(() =>
-                                 {
-                                     var instance = testClass.Instance as TestRunnerMockViewTest;
-                                     instance.InvokeCount.ShouldBe(2);
-                                     instance.Control.ShouldBeInstanceOfType<Placeholder>();
-                                     EnqueueTestComplete();
-                                 });
+                         {
+                             TestRunnerMockViewTest.InvokeCount.ShouldBe(4); // NB: default test executed for each test.
+                             var instance = testClass.Instance as TestRunnerMockViewTest;
+                             instance.Control.ShouldBeInstanceOfType<Placeholder>();
+                             EnqueueTestComplete();
+                         });
+        }
+
+        [TestMethod]
+        [Asynchronous]
+        public void ShouldSetTestClassAsCurrentOnRootModel()
+        {
+            testRunner.Add(testClass);
+            TestHarnessModel.Instance.CurrentClass.ShouldBe(null);
+            testRunner.Start(() =>
+                            {
+                                TestHarnessModel.Instance.CurrentClass.ShouldBe(testClass);
+                                EnqueueTestComplete();
+                            });
+        }
+
+        [TestMethod]
+        [Asynchronous]
+        public void ShouldReportWhenRunning()
+        {
+            testRunner.Add(testClass);
+            testRunner.IsRunning.ShouldBe(false);
+            testRunner.Start(() =>
+                        {
+                            testRunner.IsRunning.ShouldBe(false);
+                            EnqueueTestComplete();
+                        });
+            testRunner.IsRunning.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfRunnerStartedWhileAlreadyRunning()
+        {
+            testRunner.Add(testClass);
+            testRunner.Start(null);
+            Should.Throw<Exception>(() => testRunner.Start(null));
+        }
+
+        [TestMethod]
+        [Asynchronous]
+        public void ShouldReportSuccessesAndFailures()
+        {
+            var method1 = testClass.GetTestMethod("SampleTestRunnerMethod").MethodInfo;
+            var method2 = testClass.GetTestMethod("AnotherTestRunnerMethod").MethodInfo;
+            var method3 = testClass.GetTestMethod("ThrowError").MethodInfo;
+
+            testRunner.Add(testClass);
+            testRunner.Start(() =>
+                                {
+                                    testRunner.Passed.Count.ShouldBe(2);
+                                    testRunner.Failed.Count.ShouldBe(1);
+
+                                    testRunner.Passed.ShouldContain(method1);
+                                    testRunner.Passed.ShouldContain(method2);
+                                    testRunner.Failed.ShouldContain(method3);
+
+                                    EnqueueTestComplete();
+                                });
+        }
+
+        [TestMethod]
+        [Asynchronous]
+        public void ShouldResetPassAndFailCollectionUponStart()
+        {
+            testRunner.Add(testClass);
+            testRunner.Start(() =>
+                        {
+                            testRunner.Passed.Count.ShouldBe(2);
+                            testRunner.Failed.Count.ShouldBe(1);
+
+                            testRunner.Start(() => EnqueueTestComplete());
+
+                            testRunner.Passed.Count.ShouldBe(0);
+                            testRunner.Failed.Count.ShouldBe(0);
+                        });
         }
         #endregion
     }
@@ -105,13 +176,14 @@ namespace Open.TestHarness.Test.UnitTests.Automation
     public class TestRunnerMockViewTest
     {
         public Placeholder Control { get; private set; }
-        public int InvokeCount { get; private set; }
+        public static int InvokeCount { get; internal set; }
 
-        [ViewTest]
+        [ViewTest(Default = true)]
         public void SampleTestRunnerMethod(Placeholder control)
         {
             Control = control;
             InvokeCount++;
+            Output.Write(Colors.Orange, "EXECUTED: SampleTestRunnerMethod (Default)");
         }
 
         [ViewTest]
@@ -119,7 +191,30 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         {
             Control = control;
             InvokeCount++;
+            Output.Write(Colors.Green, "EXECUTED: AnotherTestRunnerMethod");
         }
 
+        [ViewTest]
+        public void ThrowError(Placeholder control)
+        {
+            throw new Exception("Sample exception thrown in ViewTest.");
+        }
     }
+
+    [ViewTestClass]
+    public class TestRunnerMockViewTestNoErrors
+    {
+        [ViewTest]
+        public void Method1(Placeholder control)
+        {
+            Output.Write("Executed: Method1");
+        }
+
+        [ViewTest]
+        public void Method2(Placeholder control)
+        {
+            Output.Write("Executed: Method2");
+        }
+    }
+
 }

@@ -96,6 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringLibrary.resx</DependentUpon>
     </Compile>
+    <Compile Include="Automation\TestRunner.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Model\ClientBin\XapFile.cs" />

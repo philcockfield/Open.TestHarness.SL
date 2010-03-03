@@ -239,10 +239,10 @@ namespace Open.TestHarness.Test.Model
         }
 
         [TestMethod]
-        public void ShouldReturnFirstTestIfNotDefaultTestsSpecified()
+        public void ShouldReturnNullIfNoDefaultTestsSpecified()
         {
             var model = new ViewTestClass(typeof(SampleViewTestClass2), "File.xap");
-            model.DefaultViewTest.MethodInfo.Name.ShouldBe(SampleViewTestClass2.PropMyMethod);
+            model.DefaultViewTest.ShouldBe(null);
         }
 
         [TestMethod]

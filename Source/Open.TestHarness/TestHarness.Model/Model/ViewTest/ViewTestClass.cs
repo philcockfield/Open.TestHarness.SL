@@ -208,8 +208,7 @@ namespace Open.TestHarness.Model
             get
             {
                 if (ViewTests.Count == 0) return null;
-                var defaultTest = ViewTests.FirstOrDefault(item => item.Attribute.Default);
-                return defaultTest ?? ViewTests[0];
+                return ViewTests.FirstOrDefault(item => item.Attribute.Default);
             }
         }
 

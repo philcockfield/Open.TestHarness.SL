@@ -116,7 +116,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringLibrary.resx</DependentUpon>
     </Compile>
-    <Compile Include="Automation\TestRunner.cs" />
     <Compile Include="ControlHost\DisplayContainer.ViewModel.cs" />
     <Compile Include="ControlHost\DisplayContainer.xaml.cs">
       <DependentUpon>DisplayContainer.xaml</DependentUpon>
