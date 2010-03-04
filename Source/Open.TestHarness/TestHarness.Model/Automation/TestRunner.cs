@@ -24,6 +24,9 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Windows.Browser;
+using System.Windows.Media;
+using System.Xml.Linq;
 using Open.Core.Common;
 using Open.TestHarness.Model;
 
@@ -33,6 +36,7 @@ namespace Open.TestHarness.Automation
     public class TestRunner
     {
         #region Head
+        public const string HtmlOutputId = "TestHarness.Output";
         private double interval = 0.3;
         private readonly List<MethodItem> methods = new List<MethodItem>();
         private readonly List<MethodInfo> passed = new List<MethodInfo>();
@@ -110,15 +114,16 @@ namespace Open.TestHarness.Automation
         }
         #endregion
 
-        #region Methods - Execute
+        #region Methods - Execution
         /// <summary>Starts the test-runner.</summary>
         /// <param name="callback">The action to invoke when complete.</param>
         public void Start(Action callback)
         {
             // Setup initial conditions.
-            if (IsRunning) throw new Exception("Tests executinon has already been started.");
+            if (IsRunning) throw new Exception("Tests execution has already been started.");
             if (methods.IsEmpty())
             {
+                Output.Write(Colors.Red, "No tests have been added to the TestRunner.");
                 if (callback != null) callback();
                 return;
             }
@@ -129,9 +134,18 @@ namespace Open.TestHarness.Automation
 
             // Start executing tests.
             IsRunning = true;
+            var startTime = DateTime.Now;
             DelayedInvoke(methods.First(), () =>
                                                {
+                                                   // Update state.
                                                    IsRunning = false;
+                                                   var elapsed = DateTime.Now.Subtract(startTime);
+
+                                                   // Write results.
+                                                   WriteToOutput(elapsed);
+                                                   WriteToHtmlPage(elapsed);
+
+                                                   // Finish up.
                                                    if (callback != null) callback();
                                                });
         }
@@ -173,6 +187,75 @@ namespace Open.TestHarness.Automation
                 if (callback != null) callback();
             }
         }
-        #endregion
+
+        private void WriteToOutput(TimeSpan elapsedTime)
+        {
+            // Setup initial conditions.
+            Output.Clear();
+            var failedCount = Failed.Count;
+            var passedCount = Passed.Count;
+            var color = failedCount > 0 ? Colors.Red : Colors.Green;
+            var successOfFailureText = failedCount > 0 ? "with failures" : "successfully";
+
+            // Write summary.
+            Output.Write(color, string.Format("{0} tests ran {1}", GetMethods().Count(), successOfFailureText));
+            Output.Write(color, string.Format("Completed in: {0} seconds", elapsedTime.TotalSeconds.Round(1)));
+            if (failedCount > 0) Output.Write(Colors.Red, string.Format("Failed: {0}", failedCount));
+            if (passedCount > 0) Output.Write(Colors.Green, string.Format("Passed: {0}", passedCount));
+            Output.Break();
+            if (failedCount == 0) return;
+
+            // Write failure details.
+            Output.Write("Failed Tests:");
+            foreach (var methodInfo in Failed)
+            {
+                Output.Write(string.Format(" - {0}.{1}()", methodInfo.DeclaringType.FullName, methodInfo.Name));
+            }
+            Output.Break();
+        }
+
+        private void WriteToHtmlPage(TimeSpan elapsedTime)
+        {
+            // Create the DIV element.
+            var doc = HtmlPage.Document;
+            var divRoot = doc.GetElementById(HtmlOutputId);
+            if (divRoot == null) divRoot = CreateElement("div");
+
+            // Setup root.
+            divRoot.SetAttribute("id", HtmlOutputId);
+            divRoot.SetAttribute("duration", elapsedTime.ToString());
+            divRoot.SetAttribute("passed", Passed.Count.ToString());
+            divRoot.SetAttribute("failed", Failed.Count.ToString());
+            doc.Body.AppendChild(divRoot);
+
+            // Insert method report.
+            InsertMethods(divRoot, "passed", Passed);
+            InsertMethods(divRoot, "failed", Failed);
+        }
+
+        private void InsertMethods(HtmlElement parent, string name, IEnumerable<MethodInfo> methods)
+        {
+            // Setup initial conditions.
+            if (methods.IsEmpty()) return;
+
+            // Create the method container.
+            var methodContainer = CreateElement(name);
+            parent.AppendChild(methodContainer);
+
+            // Insert each method.
+            foreach (var methodInfo in methods)
+            {
+                var htmMethod = CreateElement("method");
+                htmMethod.SetAttribute("name", methodInfo.Name);
+                htmMethod.SetAttribute("class", methodInfo.DeclaringType.FullName);
+                methodContainer.AppendChild(htmMethod);
+            }
+        }
+
+        private HtmlElement CreateElement(string tag)
+        {
+            return HtmlPage.Document.CreateElement(tag);
+        }
+       #endregion
     }
 }

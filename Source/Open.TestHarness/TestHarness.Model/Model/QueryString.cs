@@ -97,10 +97,8 @@ namespace Open.TestHarness.Model
                        Populate(testRunner, modules);
 
                        // Start the test run.
-                       var time = DateTime.Now;
                        testRunner.Start(() =>
                                             {
-                                                WriteResults(testRunner, DateTime.Now.Subtract(time));
                                                 if (callback != null) callback();
                                             });
                    });
@@ -177,32 +175,6 @@ namespace Open.TestHarness.Model
                     testRunner.Add(testClasses.ToArray());
                 }
             }
-        }
-
-        private static void WriteResults(TestRunner testRunner, TimeSpan elapsedTime)
-        {
-            // Setup initial conditions.
-            Output.Clear();
-            var failedCount = testRunner.Failed.Count;
-            var passedCount = testRunner.Passed.Count;
-            var color = failedCount > 0 ? Colors.Red : Colors.Green;
-            var successOfFailureText = failedCount > 0 ? "with failures" : "successfully";
-
-            // Write summary.
-            Output.Write(color, string.Format("{0} tests ran {1}", testRunner.GetMethods().Count(), successOfFailureText));
-            Output.Write(color, string.Format("Completed in: {0} seconds", elapsedTime.TotalSeconds.Round(1)));
-            if (failedCount > 0) Output.Write(Colors.Red, string.Format("Failed: {0}", failedCount));
-            if (passedCount > 0) Output.Write(Colors.Green, string.Format("Passed: {0}", testRunner.Passed.Count));
-            Output.Break();
-            if (failedCount == 0) return;
-
-            // Write failure details.
-            Output.Write("Failed Tests:");
-            foreach (var methodInfo in testRunner.Failed)
-            {
-                Output.Write(string.Format(" - {0}.{1}()", methodInfo.DeclaringType.FullName, methodInfo.Name));
-            }
-            Output.Break();
         }
         #endregion
     }
