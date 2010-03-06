@@ -87,7 +87,7 @@ namespace Open.TestHarness.Model
         public void StartTestRun(Action callback)
         {
             // Setup initial conditions.
-            if (! RunTests || ClassNames.IsEmpty())
+            if (! RunTests)
             {
                 if (callback != null) callback();
                 return;
@@ -170,13 +170,28 @@ namespace Open.TestHarness.Model
 
         private void Populate(TestRunner testRunner, IEnumerable<ViewTestClassesAssemblyModule> modules)
         {
-            foreach (var assemblyModule in modules)
+            // Only add complete modules if a more narrow criteria has not been specified.
+            var addModules = ClassNames.IsEmpty();
+
+            foreach (var module in modules)
             {
-                foreach (var className in ClassNames)
+                if (addModules)
                 {
-                    var testClasses = assemblyModule.GetTestClasses(className);
-                    testRunner.Add(testClasses.ToArray());
+                    testRunner.Add(module);
                 }
+                else
+                {
+                    AddClasses(testRunner, module);
+                }
+            }
+        }
+
+        private void AddClasses(TestRunner testRunner, ViewTestClassesAssemblyModule module)
+        {
+            foreach (var className in ClassNames)
+            {
+                var testClasses = module.GetTestClasses(className);
+                testRunner.Add(testClasses.ToArray());
             }
         }
         #endregion

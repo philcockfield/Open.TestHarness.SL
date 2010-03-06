@@ -193,7 +193,7 @@ namespace Open.TestHarness.Automation
             var failedCount = Failed.Count;
             var passedCount = Passed.Count;
             var color = failedCount > 0 ? Colors.Red : Colors.Green;
-            var successOfFailureText = failedCount > 0 ? "with failures" : "successfully";
+            var successOfFailureText = failedCount > 0 ? "(with failures)" : "successfully";
 
             // Write summary.
             Output.WriteTitle(color, "Automated Test Run Results:");
