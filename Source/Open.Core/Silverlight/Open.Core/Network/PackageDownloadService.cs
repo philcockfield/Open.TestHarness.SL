@@ -21,12 +21,15 @@
 //------------------------------------------------------
 
 using System;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Packaging;
 using System.Reflection;
+using System.ComponentModel;
+using System.ComponentModel.Composition.Hosting;
+
 
 namespace Open.Core.Common
 {
@@ -35,16 +38,7 @@ namespace Open.Core.Common
     public class PackageDownloadService : IPackageDownloadService
     {
         #region Head
-        private readonly PackageCatalog catalog;
-        private const string XapExtension = ".xap";
-
-        /// <summary>Constructor.</summary>
-        /// <param name="catalog">The package catalog to use.</param>
-        public PackageDownloadService(PackageCatalog catalog)
-        {
-            if (catalog == null) throw new ArgumentNullException("catalog");
-            this.catalog = catalog;
-        }
+        private const string xapExtension = ".xap";
         #endregion
 
         #region Methods
@@ -53,7 +47,7 @@ namespace Open.Core.Common
         /// <param name="callback">The callback to invoke when the operation is complete.</param>
         public void DownloadAsync(string xapName, CallbackAction<IPackage> callback)
         {
-            xapName = xapName.RemoveEnd(XapExtension) + XapExtension;
+            xapName = xapName.RemoveEnd(xapExtension) + xapExtension;
             DownloadAsync(new Uri(xapName, UriKind.Relative), callback);
         }
 
@@ -66,28 +60,19 @@ namespace Open.Core.Common
             if (packageUri == null) throw new ArgumentNullException("packageUri");
 
             // Start the download.
-            Package.DownloadPackageAsync(packageUri, (args, package) =>
-                                         {
-                                             // Construct a payload to pass back through the callback.
-                                             var callbackPayload = new Callback<IPackage>
-                                                                 {
-                                                                     Cancelled = args.Cancelled,
-                                                                     Error = args.Error,
-                                                                 };
-
-                                             // Register the package with MEF (if there were no problems).
-                                             if (!callbackPayload.HasError && !callbackPayload.Cancelled)
-                                             {
-                                                 catalog.AddPackage(package);
-                                             }
-
-                                             // Finish up.
-                                             if (callback != null)
-                                             {
-                                                 callbackPayload.Result = new PackageWrapper(package);
-                                                 callback(callbackPayload);
-                                             }
-                                         });
+            var downloader = new DeploymentCatalog(packageUri);
+            downloader.DownloadCompleted += (s, args) =>
+                                                {
+                                                    if (callback == null) return;
+                                                    var callbackPayload = new Callback<IPackage>
+                                                                        {
+                                                                            Cancelled = args.Cancelled,
+                                                                            Error = args.Error,
+                                                                        };
+                                                    if (!callbackPayload.HasError) callbackPayload.Result = new PackageWrapper(downloader);
+                                                    callback(callbackPayload);
+                                                };
+            downloader.DownloadAsync();
         }
 
         /// <summary>
@@ -97,31 +82,24 @@ namespace Open.Core.Common
         /// <returns>The download-serivce.</returns>
         public static PackageDownloadService InitializeContainer()
         {
-            var catalog = new PackageCatalog();
-            var downloadService = new PackageDownloadService(catalog);
-
-            var container = new CompositionContainer(catalog);
-            container.ComposeParts(downloadService);
-
-            CompositionHost.InitializeContainer(container);
-            return downloadService;
+            CompositionHost.Initialize(new DeploymentCatalog());
+            return new PackageDownloadService();
         }
         #endregion
 
         private class PackageWrapper : IPackage
         {
             #region Head
-            private readonly Package package;
-            public PackageWrapper(Package package)
+            public PackageWrapper(DeploymentCatalog downloader)
             {
-                this.package = package;
+                Uri = downloader.Uri;
+                Parts = downloader.Parts;
             }
             #endregion
 
             #region Properties
-            public IEnumerable<Assembly> Assemblies { get { return package.Assemblies; } }
-            public Uri Uri { get { return package.Uri; } }
-            public Assembly EntryPointAssembly { get { return Assemblies.FirstOrDefault(); } }
+            public Uri Uri { get; private set; }
+            public IQueryable<ComposablePartDefinition> Parts { get; private set; }
             #endregion
         }
     }

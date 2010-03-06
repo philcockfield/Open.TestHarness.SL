@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using System.Windows.Ria;
+using System.ServiceModel.DomainServices.Client;
 
 namespace Open.Core.Ria
 {

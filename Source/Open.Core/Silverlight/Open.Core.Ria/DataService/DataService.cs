@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Windows.Ria;
+using System.ServiceModel.DomainServices.Client;
 using Open.Core.Common;
-using TClass = Open.Core.Ria.DataService<System.Windows.Ria.DomainContext>;
+
+using TClass = Open.Core.Ria.DataService<System.ServiceModel.DomainServices.Client.DomainContext>;
 
 namespace Open.Core.Ria
 {

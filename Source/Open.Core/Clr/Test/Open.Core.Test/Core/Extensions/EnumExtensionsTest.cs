@@ -160,5 +160,23 @@ namespace Open.Core.Common.Test.Core.Common.Extensions
 
             RectEdgeFlag.Left.ToThickness(5).ShouldBe(new Thickness(5, 0, 0, 0));
         }
+
+        [TestMethod]
+        public void ShouldDetermineIfDirectionIsVertical()
+        {
+            Direction.Left.IsVertical().ShouldBe(false);
+            Direction.Right.IsVertical().ShouldBe(false);
+            Direction.Up.IsVertical().ShouldBe(true);
+            Direction.Down.IsVertical().ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldDetermineIfDirectionIsHorizontal()
+        {
+            Direction.Left.IsHorizontal().ShouldBe(true);
+            Direction.Right.IsHorizontal().ShouldBe(true);
+            Direction.Up.IsHorizontal().ShouldBe(false);
+            Direction.Down.IsHorizontal().ShouldBe(false);
+        }
     }
 }

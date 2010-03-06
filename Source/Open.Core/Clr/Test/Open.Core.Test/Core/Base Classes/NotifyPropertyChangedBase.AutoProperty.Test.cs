@@ -192,6 +192,12 @@ namespace Open.Core.Common.Test.Model
             }
 
             public int Number { get; set; }
+
+            public double Double
+            {
+                get { return GetPropertyValue<Stub, double>(m => m.Double, 15); }
+                set { SetPropertyValue<Stub, double>(m => m.Double, value, 15); }
+            }
             #endregion
 
             #region Methods

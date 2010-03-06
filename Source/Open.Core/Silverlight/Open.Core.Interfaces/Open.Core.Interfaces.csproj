@@ -65,6 +65,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -78,6 +79,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Core.Composite\IEventBus.cs" />
+    <Compile Include="Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Core\IError.cs" />
     <Compile Include="Core\ICallback.cs" />
     <Compile Include="Core\INotifyDisposed.cs" />
@@ -88,10 +90,11 @@
     <Compile Include="Core\IViewTemplate.cs" />
     <Compile Include="Core.Composite\IDelegateCommand.cs" />
     <Compile Include="Core.Composite\IActiveAware.cs" />
-    <Compile Include="Core.UI\Containers\IAcceptCancelDialog.cs" />
-    <Compile Include="Core.UI\Containers\IAcceptCancelPresenter.cs" />
-    <Compile Include="Core.UI\Containers\IDialogPresenter.cs" />
+    <Compile Include="Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
+    <Compile Include="Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
+    <Compile Include="Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Core\IDomainCredential.cs" />
+    <Compile Include="Enumerations\Enumerations.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

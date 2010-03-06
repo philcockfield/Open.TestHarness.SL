@@ -25,7 +25,7 @@ using System.Data;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Diagnostics.Contracts;
-using System.Web.DomainServices.Providers;
+using System.ServiceModel.DomainServices.Hosting;
 
 namespace Open.Core.Common
 {
@@ -59,18 +59,23 @@ namespace Open.Core.Common
         /// <param name="context">The object-context.</param>
         /// <param name="currentEntity">The current entity.</param>
         /// <param name="getOriginalEntity">The original entity (in Ria Service use 'ChangeSet.GetOriginal(currentEntity)').</param>
-        public static void Update(this ObjectContext context, EntityObject currentEntity, Func<EntityObject> getOriginalEntity)
+        public static void Update<T>(this ObjectContext context, ObjectSet<T> collection, EntityObject currentEntity, Func<EntityObject> getOriginalEntity) where T:class
         {
             // Setup initial conditions.
             Contract.Requires(context != null);
             Contract.Requires(currentEntity != null);
+            Contract.Requires(collection != null);
             Contract.Requires(getOriginalEntity != null);
 
-            // Perform the change.
-            if ((currentEntity.EntityState == EntityState.Detached))
-            {
-                context.AttachAsModified(currentEntity, getOriginalEntity());
-            }
+            collection.AttachAsModified(currentEntity, getOriginalEntity());
+
+            //// Perform the change.
+            //if ((currentEntity.EntityState == EntityState.Detached))
+            //{
+
+            //    context.
+            //    context.AttachAsModified(currentEntity, getOriginalEntity());
+            //}
         }
 
         /// <summary>Deltes an entity from the context.</summary>

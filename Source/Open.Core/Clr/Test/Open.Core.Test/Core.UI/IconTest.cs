@@ -48,6 +48,7 @@ namespace Open.Core.Common.Test.Core.UI.Icon
         }
 
         [TestMethod]
+        [Ignore]
         public void ShouldHaveImageForEveryEnumFlag()
         {
             // Get the path.

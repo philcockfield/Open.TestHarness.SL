@@ -22,7 +22,7 @@
 
 
 1. System Requirements
-    - Visual Studio 2010
+    - Visual Studio 2010 (Release Candidate)
     - Silverlight 4 (and associated Visual Studio tools)
 
 2. Information

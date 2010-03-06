@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Browser;
@@ -28,6 +29,7 @@ using Open.Core.Common;
 using System.Diagnostics;
 using Open.Core.Common.Converter;
 using System;
+using Open.Core.Composite;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.UI.Silverlight.Test.View_Tests
@@ -42,6 +44,18 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
         {
         }
         #endregion
+
+        [Import(typeof(IEventBus))]
+        public IEventBus EventBus { get; set; }
+
+        [ViewTest]
+        public void Import()
+        {
+            CompositionInitializer.SatisfyImports(this);
+            Output.Write(EventBus);
+        }
+
+
 
         #region Tests
         [ViewTest]

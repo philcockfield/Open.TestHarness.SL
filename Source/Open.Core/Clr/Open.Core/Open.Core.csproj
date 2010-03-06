@@ -69,8 +69,8 @@
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.DomainServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.DomainServices.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.DomainServices.Server, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -140,9 +140,6 @@
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Composite\EventBus.cs">
       <Link>Composite\EventBus.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core\Enumerations\Enumerations.cs">
-      <Link>Enumerations\Enumerations.cs</Link>
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Enumerations\Icons %28Enum%29.cs">
       <Link>Enumerations\Icons %28Enum%29.cs</Link>
@@ -237,7 +234,6 @@
     <Compile Include="Composite\EventBus.Clr.cs" />
     <Compile Include="Composition %28MEF%29\DirectoryPartInitializer.cs" />
     <Compile Include="Extensions\LinqExtensions.CLR.cs" />
-    <Compile Include="Extensions\ObjectContextExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.CLR.cs" />
     <Compile Include="Helper Classes\PropertyObserver.clr.cs" />
     <Compile Include="Testing\AsyncTest.cs" />

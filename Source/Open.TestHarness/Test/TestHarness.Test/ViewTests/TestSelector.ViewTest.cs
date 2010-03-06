@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Open.Core;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
 using Open.TestHarness.Model;

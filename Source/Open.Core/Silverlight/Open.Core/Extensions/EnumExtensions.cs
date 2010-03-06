@@ -110,5 +110,17 @@ namespace Open.Core.Common
                                 getThickness(RectEdgeFlag.Right), 
                                 getThickness(RectEdgeFlag.Bottom));
         }
+
+        /// <summary>Gets whether the direction is vertical.</summary>
+        /// <param name="direction">The value to examine.</param>
+        public static bool IsVertical(this Direction direction) { return direction == Direction.Up || direction == Direction.Down; }
+
+        /// <summary>Gets whether the direction is horizontal.</summary>
+        /// <param name="direction">The value to examine.</param>
+        public static bool IsHorizontal(this Direction direction) { return direction == Direction.Left || direction == Direction.Right; }
+
+        /// <summary>Converts a boolean into a corresponding Visible or Collapsed value.</summary>
+        /// <param name="isVisible">The boolean to convert.</param>
+        public static Visibility ToVisibility(this bool isVisible) { return isVisible ? Visibility.Visible : Visibility.Collapsed; }
     }
 }

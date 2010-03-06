@@ -107,6 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
     <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
     <Compile Include="UnitTests\Core\Behavior\AutoRowDefinitionsTest.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="ViewTests\Controls\Dialogs\Dialog.ViewTest.Base.cs" />
     <Compile Include="ViewTests\Controls\Dialogs\ExceptionDialog.ViewTest.cs" />
     <Compile Include="ViewTests\Controls\Dialogs\QuestionDialog.ViewTest.cs" />
+    <Compile Include="ViewTests\Controls\DropShadowViewTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlBlock.ViewTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlDocument.ViewTest.cs">
       <SubType>Code</SubType>

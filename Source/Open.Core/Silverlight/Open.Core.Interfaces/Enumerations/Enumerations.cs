@@ -19,10 +19,9 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //    THE SOFTWARE.
 //------------------------------------------------------
-
 using System;
 
-namespace Open.Core.Common
+namespace Open.Core
 {
     /// <summary>Size dimension a value pertains to.</summary>
     public enum SizeDimension
@@ -87,5 +86,14 @@ namespace Open.Core.Common
         Top = 1 << 1,
         Right = 1 << 2,
         Bottom = 1 << 3,
+    }
+
+    /// <summary>Simple planar directions.</summary>
+    public enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
     }
 }

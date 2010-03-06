@@ -62,6 +62,9 @@
     <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\ISelectable.cs">
       <Link>Core\ISelectable.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Enumerations\Enumerations.cs">
+      <Link>Enumerations\Enumerations.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

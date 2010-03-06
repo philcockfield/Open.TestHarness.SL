@@ -21,22 +21,19 @@
 //------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
+using System.ComponentModel.Composition.Primitives;
+using System.Linq;
 
 namespace Open.Core.Common
 {
     /// <summary>Represents a downloaded XAP package.</summary>
     public interface IPackage
     {
-        /// <summary>Gets the set of assemblies included in this package.</summary>
-        IEnumerable<Assembly> Assemblies { get;  }
-
         /// <summary>Gets the Uri of the package.</summary>
         Uri Uri { get; }
 
-        /// <summary>Gets the root entry point assembly.</summary>
-        Assembly EntryPointAssembly { get; }
+        /// <summary>Gets the collection of defined parts within the package.</summary>
+        IQueryable<ComposablePartDefinition> Parts { get; }
     }
 
     /// <summary>A service that handles downloading new XAP functionality from the server.</summary>

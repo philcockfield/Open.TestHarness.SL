@@ -157,8 +157,6 @@ namespace Open.TestHarness.Automation
 
         private void Invoke(MethodItem item, Action callback)
         {
-            // TODO - Write results to log (in HTML page).
-
             try
             {
                 // Reset the test-class.  This will cause the Default initialize method to be invoked.
@@ -200,8 +198,8 @@ namespace Open.TestHarness.Automation
             // Write summary.
             Output.Write(color, string.Format("{0} tests ran {1}", GetMethods().Count(), successOfFailureText));
             Output.Write(color, string.Format("Completed in: {0} seconds", elapsedTime.TotalSeconds.Round(1)));
-            if (failedCount > 0) Output.Write(Colors.Red, string.Format("Failed: {0}", failedCount));
             if (passedCount > 0) Output.Write(Colors.Green, string.Format("Passed: {0}", passedCount));
+            if (failedCount > 0) Output.Write(Colors.Red, string.Format("Failed: {0}", failedCount));
             Output.Break();
             if (failedCount == 0) return;
 
@@ -218,19 +216,20 @@ namespace Open.TestHarness.Automation
         {
             // Create the DIV element.
             var doc = HtmlPage.Document;
-            var divRoot = doc.GetElementById(HtmlOutputId);
-            if (divRoot == null) divRoot = CreateElement("div");
+            var div = doc.GetElementById(HtmlOutputId) ?? CreateElement("div");
+            doc.Body.AppendChild(div);
 
-            // Setup root.
-            divRoot.SetAttribute("id", HtmlOutputId);
-            divRoot.SetAttribute("duration", elapsedTime.ToString());
-            divRoot.SetAttribute("passed", Passed.Count.ToString());
-            divRoot.SetAttribute("failed", Failed.Count.ToString());
-            doc.Body.AppendChild(divRoot);
+            // Insert root XML element.
+            var xml = CreateElement("xml");
+            xml.SetAttribute("id", HtmlOutputId);
+            xml.SetAttribute("duration", elapsedTime.ToString());
+            xml.SetAttribute("passed", Passed.Count.ToString());
+            xml.SetAttribute("failed", Failed.Count.ToString());
+            div.AppendChild(xml);
 
             // Insert method report.
-            InsertMethods(divRoot, "passed", Passed);
-            InsertMethods(divRoot, "failed", Failed);
+            InsertMethods(div, "passed", Passed);
+            InsertMethods(div, "failed", Failed);
         }
 
         private void InsertMethods(HtmlElement parent, string name, IEnumerable<MethodInfo> methods)
@@ -252,7 +251,7 @@ namespace Open.TestHarness.Automation
             }
         }
 
-        private HtmlElement CreateElement(string tag)
+        private static HtmlElement CreateElement(string tag)
         {
             return HtmlPage.Document.CreateElement(tag);
         }

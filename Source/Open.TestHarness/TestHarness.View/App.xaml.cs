@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Open.Core.Common;
 using Open.TestHarness.Automation;
@@ -48,7 +49,8 @@ namespace Open.TestHarness.View
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // Setup MEF.
-            Network.PackageDownloader = PackageDownloadService.InitializeContainer();
+            Network.DownloadCatalog = new AggregateCatalog();
+            CompositionHost.Initialize(new DeploymentCatalog(), Network.DownloadCatalog);
 
             // Load the view.
             var viewModel = new RootViewModel();

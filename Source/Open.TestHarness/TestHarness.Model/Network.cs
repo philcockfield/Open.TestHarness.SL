@@ -22,12 +22,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Windows;
 using System.Xml.Linq;
 using Open.Core.Common;
+using Open.Core.Common.Network;
 
 namespace Open.TestHarness.Model
 {
@@ -35,14 +37,8 @@ namespace Open.TestHarness.Model
     public static class Network
     {
         #region Properties
-        /// <summary>Gets or sets the package-download service.</summary>
-        /// <remarks>
-        ///    NB: This is set in App.Startup() routine.
-        ///    It would be best not to strongly couple this with a static member, ideally you'd use
-        ///    MEF to import the service, however re-composition errors seems to occur in some
-        ///    situations when this downloader is also involved in a MEF import itself.
-        /// </remarks>
-        public static IPackageDownloadService PackageDownloader { get; set; }
+        /// <summary>Gets or sets the catalog within which downloaded assemblies are added.</summary>
+        public static AggregateCatalog DownloadCatalog { get; set; }
         #endregion
 
         #region Methods
@@ -51,14 +47,32 @@ namespace Open.TestHarness.Model
         /// <param name="callback">Action to invoke when complete (passes back the entry-point assembly).</param>
         public static void DownloadXapFile(string xapFileName, Action<Assembly> callback)
         {
-            // Start the downloading of the XAP.
-            PackageDownloader.DownloadAsync(xapFileName, response =>
-                                                             {
-                                                                 var returnAssembly = response.IsSuccessful
-                                                                                          ? response.Result.EntryPointAssembly
-                                                                                          : null;
-                                                                 if (callback != null) callback(returnAssembly);
-                                                             });
+            // Setup initial conditions.
+            if (DownloadCatalog == null) throw new InitializationException("The 'DownloadCatalog' has not been set. Create this an initialize it with the CompositionHost during startup.");
+
+            // Download the XAP file.
+            var loader = new AssemblyLoader(xapFileName);
+            loader.Load(() =>
+                            {
+                                // Check for errors.
+                                if (loader.Error != null)
+                                {
+                                    Output.Write("Failed to load XAP file: " + xapFileName);
+                                    Output.Write(loader.Error);
+                                    return;
+                                }
+
+                                // Register the assemblies with MEF.
+                                var currentAssemblies = Deployment.Current.GetAssemblies();
+                                foreach (var assembly in loader.Assemblies)
+                                {
+                                    if (currentAssemblies.Contains(assembly)) continue; // Ensure assemblies are not added more than once.
+                                    DownloadCatalog.Catalogs.Add(new AssemblyCatalog(assembly));
+                                }
+
+                                // Finish up.
+                                if (callback != null) callback(loader.RootAssembly);
+                            });
         }
         #endregion
 

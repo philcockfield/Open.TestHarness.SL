@@ -48,6 +48,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -100,6 +102,10 @@
     <Compile Include="Controls\Dialogs\Interfaces\IQuestionDialog.cs" />
     <Compile Include="Controls\Dialogs\NotificationType.cs" />
     <Compile Include="Controls\Dialogs\QuestionDialog\QuestionDialog.cs" />
+    <Compile Include="Controls\DropShadow\DropShadow.ViewModel.cs" />
+    <Compile Include="Controls\DropShadow\DropShadow.xaml.cs">
+      <DependentUpon>DropShadow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Editors\ColorSelector\ColorSelector.xaml.cs">
       <DependentUpon>ColorSelector.xaml</DependentUpon>
     </Compile>
@@ -256,6 +262,10 @@
     <Page Include="Controls\Dialogs\QuestionDialog\QuestionDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DropShadow\DropShadow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Editors\ColorSelector\ColorSelector.xaml">
       <Generator>MSBuild:Compile</Generator>

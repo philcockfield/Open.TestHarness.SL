@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Resources;
 
 namespace Open.Core.Common
 {
@@ -59,6 +61,37 @@ namespace Open.Core.Common
 
             // Finish up.
             return fields.ToArray();
+        }
+
+        /// <summary>
+        ///     Retrieves the current list of assemblies for the application XAP. 
+        ///     Depends on the 'Deployment.Current' property being setup and
+        ///     so can only be accessed after the Application object has be completely constructed.
+        /// </summary>
+        /// <param name="currentDeployment">The current deployment.  Use 'Deployment.Current'.</param>
+        /// <remarks>Derived from the MEF source (Preview 9).</remarks>
+        public static IEnumerable<Assembly> GetAssemblies(this Deployment currentDeployment)
+        {
+            // Setup initial conditions.
+            if (currentDeployment == null) throw new ArgumentNullException("currentDeployment");
+            var assemblies = new List<Assembly>();
+
+            // While this may seem like somewhat of a hack, walking the AssemblyParts in the active 
+            // deployment object is the only way to get the list of assemblies loaded by the initial XAP. 
+            foreach (AssemblyPart assemblyPart in currentDeployment.Parts)
+            {
+                var streamResource = Application.GetResourceStream(new Uri(assemblyPart.Source, UriKind.Relative));
+                if (streamResource != null)
+                {
+                    // Keep in mind that calling Load on an assembly that is already loaded will
+                    // be a no-op and simply return the already loaded assembly object.
+                    var assembly = assemblyPart.Load(streamResource.Stream);
+                    assemblies.Add(assembly);
+                }
+            }
+
+            // Finish up.
+            return assemblies;
         }
     }
 }

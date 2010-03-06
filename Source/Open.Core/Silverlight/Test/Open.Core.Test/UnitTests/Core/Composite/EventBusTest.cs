@@ -34,7 +34,10 @@ namespace Open.Core.Test.UnitTests.Core.Composite
         [TestMethod]
         public void ShouldImport()
         {
-            PartInitializer.SatisfyImports(this);
+            // CompositionInitializer
+            
+
+//            PartInitializer.SatisfyImports(this);
             EventBus.ShouldNotBe(null);
         }
 

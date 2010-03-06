@@ -66,15 +66,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\..\Lib\MEF.Silverlight\v4.0\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition.Initialization">
-      <HintPath>..\..\..\..\Lib\MEF.Silverlight\v4.0\System.ComponentModel.Composition.Initialization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition.Packaging.Toolkit">
-      <HintPath>..\..\..\..\Lib\MEF.Silverlight\v4.0\System.ComponentModel.Composition.Packaging.Toolkit.dll</HintPath>
-    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows" />
@@ -133,7 +126,6 @@
     <Compile Include="Collection\ObservableCollectionWrapper.cs" />
     <Compile Include="Collection\ProcessQueueEventArgs.cs" />
     <Compile Include="Collection\ProcessQueueHandle.cs" />
-    <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Exceptions\AssertionException.cs" />
     <Compile Include="Exceptions\InitializationException.cs" />
     <Compile Include="Exceptions\ExistsException.cs" />

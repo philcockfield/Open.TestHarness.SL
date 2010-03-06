@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows;
 using System.Windows.Media;
 
 namespace Open.Core.Common
@@ -35,9 +36,9 @@ namespace Open.Core.Common
             opacity = opacity.WithinBounds(0, 1);
             return Color.FromArgb(
                                     ToByte(255, opacity),
-                                    ToByte(self.R, opacity),
-                                    ToByte(self.G, opacity),
-                                    ToByte(self.B, opacity));
+                                    ToByte(self.R, 1),
+                                    ToByte(self.G, 1),
+                                    ToByte(self.B, 1));
         }
 
         /// <summary>Converts the given color to a solid color brush at the given opacity.</summary>
@@ -46,6 +47,44 @@ namespace Open.Core.Common
         public static SolidColorBrush ToBrush(this Color self, double opacity)
         {
             return new SolidColorBrush(self.ToAlpha(opacity));
+        }
+
+        /// <summary>Creates a gradient brush with the given colors flowing in the specified direction.</summary>
+        /// <param name="direction">The direction of the gradient.</param>
+        /// <param name="start">The starting color.</param>
+        /// <param name="end">The ending color.</param>
+        public static LinearGradientBrush ToGradient(this Direction direction, Color start, Color end)
+        {
+            // Create the brush.
+            var brush = new LinearGradientBrush();
+            switch (direction)
+            {
+                case Direction.Down:
+                case Direction.Up:
+                    brush.StartPoint = new Point(0.5, 0);
+                    brush.EndPoint = new Point(0.5, 1);
+                    break;
+                case Direction.Right:
+                case Direction.Left:
+                    brush.StartPoint = new Point(0, 0.5);
+                    brush.EndPoint = new Point(1, 0.5);
+                    break;
+            }
+
+            // Configure colors.
+            var gradientStart = new GradientStop { Color = start };
+            var gradientEnd = new GradientStop { Color = end };
+
+            gradientStart.Offset = direction == Direction.Up || direction == Direction.Left ? 1 : 0;
+            gradientEnd.Offset = direction == Direction.Down || direction == Direction.Right ? 1 : 0;
+
+            // Insert colors.
+            brush.GradientStops.Add(gradientStart);
+            brush.GradientStops.Add(gradientEnd);
+
+            // Finish up.
+            return brush;
+            
         }
         #endregion
 
