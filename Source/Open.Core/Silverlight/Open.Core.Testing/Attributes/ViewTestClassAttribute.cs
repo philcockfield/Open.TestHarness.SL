@@ -43,6 +43,9 @@ namespace Open.Core.Common
 
         /// <summary>Gets or sets whether the property editor pane is visible (default is True).</summary>
         public bool IsPropertyExplorerVisible { get; set; }
+
+        /// <summary>Gets or sets a space-delimited category tag.</summary>
+        public string Tag { get; set; }
         #endregion
 
         #region Methods - Static

@@ -76,5 +76,16 @@ namespace Open.TestHarness
                    where isMatch(m)
                    select m).Distinct();
         }
+
+
+        //TEMP 
+        ///// <summary>Get test-methods that have either been specifically tagged, or are in a class that has been tagged with the given tag.</summary>
+        ///// <param name="tags"></param>
+        ///// <returns></returns>
+        //public static IEnumerable<MethodInfo> GetTaggedViewTestMethods(params string[] tags)
+        //{
+            
+        //}
+
     }
 }

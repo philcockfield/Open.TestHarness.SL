@@ -96,6 +96,7 @@
     <Compile Include="Composite\EventBus.cs" />
     <Compile Include="Composite\EventBus.silverlight.cs" />
     <Compile Include="Enumerations\Icons %28Enum%29.cs" />
+    <Compile Include="Exceptions\NotInitializedException.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Network\PackageDownloadService.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />

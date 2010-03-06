@@ -59,19 +59,28 @@ namespace Open.TestHarness.Model
                                 {
                                     Output.Write("Failed to load XAP file: " + xapFileName);
                                     Output.Write(loader.Error);
+                                    if (callback != null) callback(loader.RootAssembly);
                                     return;
                                 }
 
+                                //TEMP 
                                 // Register the assemblies with MEF.
-                                var currentAssemblies = Deployment.Current.GetAssemblies();
-                                foreach (var assembly in loader.Assemblies)
-                                {
-                                    if (currentAssemblies.Contains(assembly)) continue; // Ensure assemblies are not added more than once.
-                                    DownloadCatalog.Catalogs.Add(new AssemblyCatalog(assembly));
-                                }
+                                //var currentAssemblies = Deployment.Current.GetAssemblies();
+                                //foreach (var assembly in loader.Assemblies)
+                                //{
+                                //    if (currentAssemblies.Contains(assembly)) continue; // Ensure assemblies are not added more than once.
+                                //    DownloadCatalog.Catalogs.Add(new AssemblyCatalog(assembly));
+                                //}
 
-                                // Finish up.
-                                if (callback != null) callback(loader.RootAssembly);
+                                // Re-download with the MEF package-downloader to ensure it gets registered correctly with MEF.
+                                // NB: This should get the XAP file from cache.
+                                var mefDownloader = new DeploymentCatalog(loader.XapFileName);
+                                mefDownloader.DownloadCompleted += delegate
+                                                                       {
+                                                                           // Finish up.
+                                                                           if (callback != null) callback(loader.RootAssembly);
+                                                                       };
+                                mefDownloader.DownloadAsync();
                             });
         }
         #endregion
