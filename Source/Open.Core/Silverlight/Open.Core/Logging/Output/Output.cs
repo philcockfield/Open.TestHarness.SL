@@ -87,7 +87,15 @@ namespace Open.Core.Common
         /// <param name="value">The value to write.</param>
         public static void WriteTitle(object value)
         {
-            var args = new OutputLine { Value = value, FontWeight = FontWeights.Bold };
+            WriteTitle(Colors.Transparent, value);
+        }
+
+        /// <summary>Writes the given value as a bold title.</summary>
+        /// <param name="color">The color to associate with the log entry.</param>
+        /// <param name="value">The value to write.</param>
+        public static void WriteTitle(Color color, object value)
+        {
+            var args = new OutputLine { Value = value, FontWeight = FontWeights.Bold, Color = color };
             OnAllWriters(writer => writer.Write(args));
         }
 

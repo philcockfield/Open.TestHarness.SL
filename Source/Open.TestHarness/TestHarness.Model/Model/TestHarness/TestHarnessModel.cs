@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
@@ -64,6 +65,17 @@ namespace Open.TestHarness.Model
 
         /// <summary>Gets the collection of modules.</summary>
         public ObservableCollection<ViewTestClassesModule> Modules { get { return moduleLoader.Modules; } }
+
+        /// <summary>Gets the collection of modules that are AssemblyModules.</summary>
+        public IEnumerable<ViewTestClassesAssemblyModule> AssemblyModules
+        {
+            get
+            {
+                return Modules
+                    .Where(m => m.GetType().IsA(typeof (ViewTestClassesAssemblyModule)))
+                    .Cast<ViewTestClassesAssemblyModule>();
+            }
+        }
 
         /// <summary>Gets the recent selections module (or null if the modules have not been built).</summary>
         public ViewTestClassesModule RecentSelectionsModule { get { return moduleLoader.RecentSelectionsModule; } }

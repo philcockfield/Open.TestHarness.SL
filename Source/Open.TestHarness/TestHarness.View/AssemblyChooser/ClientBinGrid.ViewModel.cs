@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,10 +51,15 @@ namespace Open.TestHarness.View.AssemblyChooser
             ContentMargin = new Thickness(15);
 
             // Show the 'Add Modules' dialog if nothing is loaded.
-            if (TestHarnessModel.Instance.Modules.Count == 0)
+            if (TestHarnessModel.Instance.AssemblyModules.Count() == 0)
             {
-                IsShowing = true;
-                LoadAsync();
+                // Ensure that a XAP was not auto loaded.
+                CompositionInitializer.SatisfyImports(this);
+                if (QueryString.XapFiles.IsEmpty())
+                {
+                    IsShowing = true;
+                    LoadAsync();
+                }
             }
         }
         #endregion
@@ -88,6 +94,10 @@ namespace Open.TestHarness.View.AssemblyChooser
 
         /// <summary>Gets whether the data is currently being loaded.summary>
         public bool IsLoading { get; private set; }
+
+        /// <summary>Gets or sets QueryString singleton (requires MEF to initialize).</summary>
+        [Import]
+        public QueryString QueryString { get; set; }
         #endregion
 
         #region Methods
@@ -150,7 +160,7 @@ namespace Open.TestHarness.View.AssemblyChooser
         #endregion
 
         #region Internal
-        private List<XapFile> RemoveAlreadyLoadedFiles(List<XapFile> files)
+        private static List<XapFile> RemoveAlreadyLoadedFiles(List<XapFile> files)
         {
             var modules = TestHarnessModel.Instance.Modules;
             var list = new List<XapFile>();
@@ -161,11 +171,6 @@ namespace Open.TestHarness.View.AssemblyChooser
             }
 
             return list;
-            //foreach (var module in modules)
-            //{
-                
-            //}
-
         }
         #endregion
     }

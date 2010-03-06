@@ -56,7 +56,6 @@
     <Content Include="ClientBin\Open.Core.UI.Test.xap" />
     <Content Include="ClientBin\Open.TestHarness.Test.xap" />
     <Content Include="ClientBin\Open.TestHarness.xap" />
-    <Content Include="ClientBin\Sample.Test.xap" />
     <Content Include="Silverlight.js" />
     <Content Include="Default.htm" />
     <Content Include="Web.config" />

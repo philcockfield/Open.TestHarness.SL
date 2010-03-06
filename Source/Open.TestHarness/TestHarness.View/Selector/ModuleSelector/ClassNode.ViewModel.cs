@@ -126,6 +126,7 @@ namespace Open.TestHarness.View.Selector
                                             return;
                                         }
                                         Model.IsCurrent = true;
+                                        TestHarnessModel.Instance.Settings.SyncRecentSelection();
 
                                         // Finish up.
                                         if (Selected != null) Selected(this, new EventArgs());
@@ -155,11 +156,19 @@ namespace Open.TestHarness.View.Selector
             if (TestAssembly != null)
             {
                 module.LoadAssembly(TestAssembly);
-                onComplete();
+                if (onComplete != null) onComplete();
             }
             else
             {
-                module.LoadAssembly(onComplete);
+                if (module == null)
+                {
+                    RemoveFromRecentSelections();
+                    if (onComplete != null) onComplete();
+                }
+                else
+                {
+                    module.LoadAssembly(onComplete);
+                }
             }
         }
 

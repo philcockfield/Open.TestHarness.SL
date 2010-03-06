@@ -55,12 +55,6 @@ namespace Open.TestHarness.Model
             this.testHarness = testHarness;
             PropertyExplorer = new PropertyExplorerSettings();
             ControlDisplayOptionSettings = new ControlDisplayOptionSettings();
-
-            // Wire up events.
-            testHarness.PropertyChanged += (sender, e) =>
-                                                          {
-                                                              if (e.PropertyName == TestHarnessModel.PropCurrentClass) SyncRecentSelection();
-                                                          };
         }
         #endregion
 
@@ -133,27 +127,8 @@ namespace Open.TestHarness.Model
             if (RemoveItem(item, list)) SetRecentSelections(list.ToArray(), true);
         }
 
-        /// <summary>Syncs the set of saved loaded-module-names with the current set of modules.</summary>
-        public void SyncLoadedModulesWithTestHarness()
-        {
-            var list = new List<ModuleSetting>();
-            foreach (var module in testHarness.Modules)
-            {
-                var assemblyModule = module as ViewTestClassesAssemblyModule;
-                if (assemblyModule != null) list.Add(assemblyModule.ToSetting());
-            }
-
-            LoadedModules = list.ToArray();
-        }
-        #endregion
-
-        #region Internal
-        private void Remove(string key)
-        {
-            if (settings.Contains(key)) settings.Remove(key);
-        }
-
-        private void SyncRecentSelection()
+        /// <summary>Syncs the 'Recent Selections' list with the current TestHarness selected class.</summary>
+        public void SyncRecentSelection()
         {
             // Setup initial conditions.
             var list = new List<RecentSelectionSetting>(RecentSelections);
@@ -178,12 +153,32 @@ namespace Open.TestHarness.Model
             Save();
         }
 
+        /// <summary>Syncs the set of saved loaded-module-names with the current set of modules.</summary>
+        public void SyncLoadedModulesWithTestHarness()
+        {
+            var list = new List<ModuleSetting>();
+            foreach (var module in testHarness.Modules)
+            {
+                var assemblyModule = module as ViewTestClassesAssemblyModule;
+                if (assemblyModule != null) list.Add(assemblyModule.ToSetting());
+            }
+
+            LoadedModules = list.ToArray();
+        }
+        #endregion
+
+        #region Internal
+        private void Remove(string key)
+        {
+            if (settings.Contains(key)) settings.Remove(key);
+        }
+
         private static bool RemoveItem(ViewTestClass item, ICollection<RecentSelectionSetting> collection)
         {
             var match = collection.FirstOrDefault(
-                                setting => 
-                                setting.Module.AssemblyName == item.AssemblyName 
-                                && setting.ClassName == item.TypeName);
+                setting => 
+                setting.Module.AssemblyName == item.AssemblyName 
+                && setting.ClassName == item.TypeName);
             if (match == null) return false;
             collection.Remove(match);
             return true;

@@ -37,6 +37,21 @@ namespace Open.TestHarness.Model
 
         private string displayName = "Loading...";
         private readonly ObservableCollection<ViewTestClass> classes = new ObservableCollection<ViewTestClass>();
+
+        //TEMP 
+        //public ViewTestClassesModule()
+        //{
+        //    //TEMP 
+        //    classes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(classes_CollectionChanged);
+        //}
+
+        //void classes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (DisplayName != "Recent Selections") return;
+
+
+        //}
+
         #endregion
 
         #region Properties

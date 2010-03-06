@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
@@ -9,6 +10,8 @@ using Open.TestHarness.Automation;
 namespace Open.TestHarness.Model
 {
     /// <summary>Interprets the query string.</summary>
+    [Export]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class QueryString : ModelBase
     {
         #region Head
