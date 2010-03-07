@@ -216,5 +216,4 @@ namespace Open.TestHarness.Test.UnitTests.Automation
             Output.Write("Executed: Method2");
         }
     }
-
 }

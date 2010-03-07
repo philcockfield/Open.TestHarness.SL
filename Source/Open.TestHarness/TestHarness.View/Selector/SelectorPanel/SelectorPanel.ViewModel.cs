@@ -71,9 +71,13 @@ namespace Open.TestHarness.View.Selector
 
         private static void OnAutoRunTestsClick()
         {
+            // Setup initial conditions.
+            var modules = TestHarnessModel.Instance.Settings.LoadedModules;
+            if (modules.IsEmpty()) return;
+
             // Build query string.
             var xapQuery = string.Empty;
-            foreach (var assembly in TestHarnessModel.Instance.Settings.LoadedModules)
+            foreach (var assembly in modules)
             {
                 xapQuery += string.Format("xap={0}&", assembly.XapFileName);
             }

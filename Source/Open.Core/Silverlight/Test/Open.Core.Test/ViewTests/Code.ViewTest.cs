@@ -151,7 +151,6 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
             uri.NewWindow();
         }
 
-
         private Settings model1;
         private Settings model2;
         private Settings model3;
