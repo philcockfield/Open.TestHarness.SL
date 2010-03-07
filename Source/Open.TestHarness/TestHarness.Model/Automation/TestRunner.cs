@@ -213,7 +213,7 @@ namespace Open.TestHarness.Automation
             Output.Write("Failed Tests:");
             foreach (var methodInfo in Failed)
             {
-                Output.Write(string.Format(" - {0}.{1}()", methodInfo.DeclaringType.FullName, methodInfo.Name));
+                Output.Write(Colors.Red, string.Format(" - {0}.{1}()", methodInfo.DeclaringType.FullName, methodInfo.Name));
             }
             Output.Break();
         }
