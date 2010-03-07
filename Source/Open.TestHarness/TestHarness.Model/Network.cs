@@ -27,6 +27,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Linq;
 using Open.Core.Common;
 using Open.Core.Common.Network;
@@ -63,24 +64,42 @@ namespace Open.TestHarness.Model
                                     return;
                                 }
 
-                                //TEMP 
                                 // Register the assemblies with MEF.
-                                //var currentAssemblies = Deployment.Current.GetAssemblies();
-                                //foreach (var assembly in loader.Assemblies)
-                                //{
-                                //    if (currentAssemblies.Contains(assembly)) continue; // Ensure assemblies are not added more than once.
-                                //    DownloadCatalog.Catalogs.Add(new AssemblyCatalog(assembly));
-                                //}
+                                var currentAssemblies = Deployment.Current.GetAssemblies();
+                                foreach (var assembly in loader.Assemblies)
+                                {
+                                    try
+                                    {
+                                        if (currentAssemblies.Contains(assembly)) continue; // Ensure assemblies are not added more than once.
+                                        DownloadCatalog.Catalogs.Add(new AssemblyCatalog(assembly));
+                                    }
+                                    catch (Exception error)
+                                    {
+                                        Output.WriteTitle(Colors.Red, "Load Failure");
+                                        Output.Write(
+                                            Colors.Red, 
+                                            string.Format("Failed to load assembly '{0}' while downloading the XAP file: '{1}'", 
+                                                    assembly.GetName(), 
+                                                    xapFileName));
+                                        Output.WriteException(error);
+                                        break;
+                                    }
+                                }
 
+                                // Finish up.
+                                if (callback != null) callback(loader.RootAssembly);
+
+
+                                //TEMP 
                                 // Re-download with the MEF package-downloader to ensure it gets registered correctly with MEF.
                                 // NB: This should get the XAP file from cache.
-                                var mefDownloader = new DeploymentCatalog(loader.XapFileName);
-                                mefDownloader.DownloadCompleted += delegate
-                                                                       {
-                                                                           // Finish up.
-                                                                           if (callback != null) callback(loader.RootAssembly);
-                                                                       };
-                                mefDownloader.DownloadAsync();
+                                //var mefDownloader = new DeploymentCatalog(loader.XapFileName);
+                                //mefDownloader.DownloadCompleted += delegate
+                                //                                       {
+                                //                                           // Finish up.
+                                //                                           if (callback != null) callback(loader.RootAssembly);
+                                //                                       };
+                                //mefDownloader.DownloadAsync();
                             });
         }
         #endregion

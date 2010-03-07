@@ -37,7 +37,7 @@ namespace Open.Core.Common.Test.Core.Composite
         [TestMethod]
         public void ShouldImport()
         {
-            DirectoryPartInitializer.SatisfyImports(this);
+            DirectoryCompositionInitializer.SatisfyImports(this);
             EventBus.ShouldNotBe(null);
         }
 

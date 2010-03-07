@@ -232,7 +232,7 @@
       <Link>Util\ReflectionUtil.cs</Link>
     </Compile>
     <Compile Include="Composite\EventBus.Clr.cs" />
-    <Compile Include="Composition %28MEF%29\DirectoryPartInitializer.cs" />
+    <Compile Include="Composition %28MEF%29\DirectoryCompositionInitializer.cs" />
     <Compile Include="Extensions\LinqExtensions.CLR.cs" />
     <Compile Include="Extensions\ReflectionExtensions.CLR.cs" />
     <Compile Include="Helper Classes\PropertyObserver.clr.cs" />

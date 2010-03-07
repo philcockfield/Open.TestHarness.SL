@@ -195,6 +195,15 @@ namespace Open.Core.Common.Test.Core.Common.Testing.Controls
         }
 
         [ViewTest]
+        public void Global_Output__WriteException(OutputLog control, bool includeInner = true)
+        {
+            var error3 = new ArgumentException("param", "Parameter value not set.");
+            var error2 = new Exception(null, error3);
+            var error1 = new NotFoundException("My Sample Error", error2);
+            Output.WriteException(error1, includeInner);
+        }
+
+        [ViewTest]
         public void Global_Output__WriteProperties(OutputLog control, bool withTitle = true)
         {
             var stub = new Stub { Text = RandomData.LoremIpsum(5) };

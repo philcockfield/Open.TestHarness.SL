@@ -95,6 +95,7 @@
     <Compile Include="Base Classes\DisposableBase.cs" />
     <Compile Include="Composite\EventBus.cs" />
     <Compile Include="Composite\EventBus.silverlight.cs" />
+    <Compile Include="Base Classes\ImporterBase.cs" />
     <Compile Include="Enumerations\Icons %28Enum%29.cs" />
     <Compile Include="Exceptions\NotInitializedException.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />

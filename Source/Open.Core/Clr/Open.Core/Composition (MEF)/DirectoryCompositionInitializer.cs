@@ -29,7 +29,7 @@ using System.Reflection;
 namespace Open.Core.Composition
 {
     /// <summary>Handles initialization of server parts.</summary>
-    public static class DirectoryPartInitializer
+    public static class DirectoryCompositionInitializer
     {
         #region Properties
         /// <summary>Gets whether the catalog(s) have been initialized.</summary>

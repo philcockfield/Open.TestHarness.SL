@@ -112,6 +112,59 @@ namespace Open.Core.Common
         }
         #endregion
 
+        #region Method - WriteException
+        /// <summary>Write out the exception details to the Output.</summary>
+        /// <param name="exception">The error to write.</param>
+        /// <param name="includeInner">Flag indicating if the entire tree of child-errors should be included.</param>
+        public static void WriteException(Exception exception, bool includeInner = true)
+        {
+            // Setup initial conditions.
+            var red = Colors.Red;
+            if (exception == null)
+            {
+                WriteTitle(red, "Error: " + NullText);
+                return;
+            }
+
+            // Write title.
+            WriteTitle(red, "Error: " + exception.GetType().Name);
+            Write(red, exception.Message);
+
+            // Get inner exceptions.
+            if (includeInner)
+            {
+                var innerExceptions = GetInner(exception);
+                if (innerExceptions.IsEmpty()) return;
+                Write(red, "Inner exceptions:");
+
+                // Write out inner exceptions.
+                var index = 0;
+                foreach (var innerException in innerExceptions)
+                {
+                    index++;
+                    Write(red, string.Format("{0}) {1}: {2}",
+                                            index,
+                                            innerException.GetType().Name,
+                                            innerException.Message));
+                }
+            }
+
+            // Finish up.
+            Break();
+        }
+
+        private static IEnumerable<Exception> GetInner(Exception error)
+        {
+            var list = new List<Exception>();
+            do
+            {
+                error = error.InnerException;
+                if (error != null) list.Add(error);
+            } while (error != null);
+            return list;
+        }
+        #endregion
+
         #region Methods - WriteProperties
         /// <summary>Writes out the properties for the specified object.</summary>
         /// <param name="obj">The object to write the properties of.</param>
@@ -233,8 +286,8 @@ namespace Open.Core.Common
                     if (item.GetTypeOrNull() != null)
                     {
                         line = formatItem == null
-                                                   ? item.ToString()
-                                                   : formatItem(item);
+                                   ? item.ToString()
+                                   : formatItem(item);
                     }
                     builder.AppendLine(string.Format("   {0}) - {1}", index, line));
                     index++;
@@ -245,11 +298,11 @@ namespace Open.Core.Common
             // Preare the final output.
             var truncatedText = isTruncated ? string.Format(" (showing only {0})", truncateAfter) : null;
             var msg = string.Format("{0} {1}{2}:{3}{4}", 
-                            count,
-                            "item".ToPlural(count, "items"),
-                            isTruncated ? string.Format(" (showing {0} only)", truncateAfter) : null, 
-                            collectionText,
-                            isTruncated ? Environment.NewLine + "..." : null);
+                                    count,
+                                    "item".ToPlural(count, "items"),
+                                    isTruncated ? string.Format(" (showing {0} only)", truncateAfter) : null, 
+                                    collectionText,
+                                    isTruncated ? Environment.NewLine + "..." : null);
 
             // Finish up.
             Write(msg);
@@ -288,8 +341,8 @@ namespace Open.Core.Common
 
             // Finish up.
             return string.Format("{0}{1}",
-                                title.AsNullWhenEmpty() == null ? null : title + Environment.NewLine,
-                                props);
+                                 title.AsNullWhenEmpty() == null ? null : title + Environment.NewLine,
+                                 props);
         }
 
         private static string ToOutputString(object[] values)

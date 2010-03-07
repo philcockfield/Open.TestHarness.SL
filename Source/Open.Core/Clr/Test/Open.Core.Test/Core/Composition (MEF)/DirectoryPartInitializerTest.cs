@@ -35,7 +35,7 @@ namespace Open.Core.Common.Test.Core.MEF
         [TestInitialize]
         public void TestSetup()
         {
-            DirectoryPartInitializer.Reset();
+            DirectoryCompositionInitializer.Reset();
             StubImport = null;
         }
         #endregion
@@ -51,64 +51,64 @@ namespace Open.Core.Common.Test.Core.MEF
         [TestMethod]
         public void ShouldInitialize()
         {
-            DirectoryPartInitializer.Initialize(Path);
+            DirectoryCompositionInitializer.Initialize(Path);
 
-            DirectoryPartInitializer.IsInitialized.ShouldBe(true);
-            DirectoryPartInitializer.Container.ShouldNotBe(null);
-            DirectoryPartInitializer.Catalog.Path.ShouldBe(Path);
+            DirectoryCompositionInitializer.IsInitialized.ShouldBe(true);
+            DirectoryCompositionInitializer.Container.ShouldNotBe(null);
+            DirectoryCompositionInitializer.Catalog.Path.ShouldBe(Path);
         }
 
         [TestMethod]
         public void ShouldInitializeToBaseDirectory()
         {
-            DirectoryPartInitializer.Initialize();
-            DirectoryPartInitializer.Catalog.Path.ShouldBe(Path);
+            DirectoryCompositionInitializer.Initialize();
+            DirectoryCompositionInitializer.Catalog.Path.ShouldBe(Path);
         }
 
         [TestMethod]
         public void ShouldInitalizeOnFirstCallToSatisyImports()
         {
-            DirectoryPartInitializer.IsInitialized.ShouldBe(false);
-            DirectoryPartInitializer.SatisfyImports(this);
-            DirectoryPartInitializer.IsInitialized.ShouldBe(true);
+            DirectoryCompositionInitializer.IsInitialized.ShouldBe(false);
+            DirectoryCompositionInitializer.SatisfyImports(this);
+            DirectoryCompositionInitializer.IsInitialized.ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldNotBeInitializedAfterReset()
         {
-            DirectoryPartInitializer.Initialize(Path);
+            DirectoryCompositionInitializer.Initialize(Path);
 
-            DirectoryPartInitializer.Reset();
-            DirectoryPartInitializer.IsInitialized.ShouldBe(false);
-            DirectoryPartInitializer.Container.ShouldBe(null);
-            DirectoryPartInitializer.Catalog.ShouldBe(null);
+            DirectoryCompositionInitializer.Reset();
+            DirectoryCompositionInitializer.IsInitialized.ShouldBe(false);
+            DirectoryCompositionInitializer.Container.ShouldBe(null);
+            DirectoryCompositionInitializer.Catalog.ShouldBe(null);
         }
 
         [TestMethod]
         public void ShouldThrowIfPathNull()
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => DirectoryPartInitializer.Initialize(""));
-            Should.Throw<ArgumentOutOfRangeException>(() => DirectoryPartInitializer.Initialize("   "));
-            Should.Throw<ArgumentOutOfRangeException>(() => DirectoryPartInitializer.Initialize(null));
+            Should.Throw<ArgumentOutOfRangeException>(() => DirectoryCompositionInitializer.Initialize(""));
+            Should.Throw<ArgumentOutOfRangeException>(() => DirectoryCompositionInitializer.Initialize("   "));
+            Should.Throw<ArgumentOutOfRangeException>(() => DirectoryCompositionInitializer.Initialize(null));
         }
 
         [TestMethod]
         public void ShouldImportParts()
         {
             StubImport.ShouldBe(null);
-            DirectoryPartInitializer.SatisfyImports(this);
+            DirectoryCompositionInitializer.SatisfyImports(this);
             StubImport.ShouldBeInstanceOfType<Stub>();
         }
 
         [TestMethod]
         public void ShouldImportMultipleTimes()
         {
-            DirectoryPartInitializer.SatisfyImports(this);
+            DirectoryCompositionInitializer.SatisfyImports(this);
             var import1 = StubImport;
 
             StubImport = null;
 
-            DirectoryPartInitializer.SatisfyImports(this);
+            DirectoryCompositionInitializer.SatisfyImports(this);
             var import2 = StubImport;
 
             // ---
