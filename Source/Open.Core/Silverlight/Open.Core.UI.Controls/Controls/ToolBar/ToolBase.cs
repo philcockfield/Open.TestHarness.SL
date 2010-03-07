@@ -1,4 +1,4 @@
-//------------------------------------------------------
+﻿//------------------------------------------------------
 //    Copyright (c) 2010 TestHarness.org
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +20,30 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using Open.Core.Common.Testing;
-using Microsoft.Silverlight.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Windows;
+using Open.Core.Common;
+using T = Open.Core.UI.Controls.ToolBase;
 
-namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Editors.PropertyGrid
+namespace Open.Core.UI.Controls
 {
-    [TestClass]
-    public class PropertyGridTest
+    /// <summary>The base class for tools.</summary>
+    public abstract class ToolBase : ModelBase, ITool
     {
-        [TestMethod]
-        public void ShouldNeverHaveANullModel()
+        #region Properties
+        /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
+        public IToolBar Parent
         {
-            var control = new Open.Core.Common.Controls.Editors.PropertyGrid();
-
-            control.ViewModel.ShouldNotBe(null);
-            control.DataContext.ShouldNotBe(null);
-            control.DataContext.ShouldBe(control.ViewModel);
+            get { return GetPropertyValue<T, IToolBar>(m => m.Parent); }
+            set { SetPropertyValue<T, IToolBar>(m => m.Parent, value); }
         }
+        #endregion
+
+        #region Methods
+        /// <summary>Creates a new instance of the tool's view.</summary>
+        public virtual FrameworkElement CreateView()
+        {
+            return null;
+        }
+        #endregion
     }
 }

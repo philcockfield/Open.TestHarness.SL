@@ -83,7 +83,7 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Editors
         [TestMethod]
         public void ShouldChangeSelectedObjectOnModelWhenControlChanges()
         {
-            var control = new Core.Common.Controls.Editors.PropertyGrid();
+            var control = new Open.Core.Common.Controls.Editors.PropertyGrid();
             var model = control.ViewModel;
             
             control.SelectedObject.ShouldBe(null);

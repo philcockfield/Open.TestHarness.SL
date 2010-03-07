@@ -63,6 +63,15 @@ namespace Open.Core.Common
             // Finish up.
             return true;
         }
+
+        /// <summary>Sets the 'HorizontalAlignment' and 'VerticalContentAlignment' to Stretch.</summary>
+        /// <param name="self">The control to update.</param>
+        public static void StretchContent(this ContentControl self)
+        {
+            if (self == null) return;
+            self.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            self.VerticalContentAlignment = VerticalAlignment.Stretch;
+        }
         #endregion
 
         #region Size

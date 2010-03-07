@@ -1,4 +1,4 @@
-//------------------------------------------------------
+﻿//------------------------------------------------------
 //    Copyright (c) 2010 TestHarness.org
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +20,12 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using Open.Core.Common.Testing;
-using Microsoft.Silverlight.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Editors.PropertyGrid
+namespace Open.Core.UI.Controls
 {
-    [TestClass]
-    public class PropertyGridTest
+    /// <summary>Contract for a ToolBarView (used by MEF).</summary>
+    public interface IToolBarView
     {
-        [TestMethod]
-        public void ShouldNeverHaveANullModel()
-        {
-            var control = new Open.Core.Common.Controls.Editors.PropertyGrid();
-
-            control.ViewModel.ShouldNotBe(null);
-            control.DataContext.ShouldNotBe(null);
-            control.DataContext.ShouldBe(control.ViewModel);
-        }
+        /// <summary>Gets or sets the logical model of the ToolBar (passed to 'DataContext').</summary>
+        IToolBar ViewModel { get; set; }
     }
 }

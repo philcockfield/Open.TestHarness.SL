@@ -194,12 +194,17 @@
       <DependentUpon>StatusIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Text\CoreTextBox.cs" />
+    <Compile Include="Controls\ToolBar\ToolBarModel.cs" />
+    <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
+      <DependentUpon>ToolBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolBar\ToolBase.cs" />
     <Compile Include="Templates\Templates.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
       <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
-      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+      <Name>Open.Core.Contracts %28Open.Core\Silverlight\Open.Core.Contracts%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Open.Core.UI\Open.Core.UI.csproj">
       <Project>{FEB32091-727E-418B-8841-6AD08D5952BD}</Project>
@@ -338,6 +343,10 @@
     <Page Include="Controls\StatusIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ToolBar\ToolBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Templates\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>

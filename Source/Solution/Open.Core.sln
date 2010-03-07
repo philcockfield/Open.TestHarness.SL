@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core", "..\Open.Core\S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{BC9B6EF3-2486-4B34-A457-3B639DE4409D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Interfaces", "..\Open.Core\Silverlight\Open.Core.Interfaces\Open.Core.Interfaces.csproj", "{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Contracts", "..\Open.Core\Silverlight\Open.Core.Contracts\Open.Core.Contracts.csproj", "{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A2D3430D-1847-4116-BB32-6A3D7CF3DBB4}"
 EndProject
@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clr", "Clr", "{C709E5E5-EF5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core", "..\Open.Core\Clr\Open.Core\Open.Core.csproj", "{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Interfaces", "..\Open.Core\Clr\Open.Core.Interfaces\Open.Core.Interfaces.csproj", "{DE11A17B-85C9-4B05-95FD-7D41A22F3520}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Contracts", "..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.csproj", "{DE11A17B-85C9-4B05-95FD-7D41A22F3520}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.UI", "..\Open.Core\Clr\Open.Core.UI\Open.Core.UI.csproj", "{FF0BAE2A-4D48-42AE-95C8-FDEB9ACC3011}"
 EndProject

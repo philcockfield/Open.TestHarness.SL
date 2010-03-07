@@ -126,9 +126,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core\Silverlight\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+    <ProjectReference Include="..\..\Open.Core\Silverlight\Open.Core.Contracts\Open.Core.Contracts.csproj">
       <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
-      <Name>Open.Core.Interfaces %28Open.Core\Silverlight\Open.Core.Interfaces%29</Name>
+      <Name>Open.Core.Contracts %28Open.Core\Silverlight\Open.Core.Contracts%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\Silverlight\Open.Core.Testing\Open.Core.Testing.csproj">
       <Project>{1830A8E6-D2F6-4C4F-90E2-74DE357D660C}</Project>

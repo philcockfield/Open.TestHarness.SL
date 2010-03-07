@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Open.Core</RootNamespace>
-    <AssemblyName>Open.Core.Interfaces</AssemblyName>
+    <AssemblyName>Open.Core.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
@@ -78,22 +78,27 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Core.Composite\IEventBus.cs" />
-    <Compile Include="Core.UI.Controls\IDropShadow.cs" />
-    <Compile Include="Core\IError.cs" />
-    <Compile Include="Core\ICallback.cs" />
-    <Compile Include="Core\INotifyDisposed.cs" />
-    <Compile Include="Core\IOutput.cs" />
-    <Compile Include="Core\IPackageDownloadService.cs" />
-    <Compile Include="Core\ISelectable.cs" />
-    <Compile Include="Core\IViewFactory.cs" />
-    <Compile Include="Core\IViewTemplate.cs" />
-    <Compile Include="Core.Composite\IDelegateCommand.cs" />
-    <Compile Include="Core.Composite\IActiveAware.cs" />
-    <Compile Include="Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
-    <Compile Include="Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
-    <Compile Include="Core.UI.Controls\Containers\IDialogPresenter.cs" />
-    <Compile Include="Core\IDomainCredential.cs" />
+    <Compile Include="Attributes\Core.UI.Controls\ExportToolBarViewAttribute.cs" />
+    <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />
+    <Compile Include="Interfaces\Core\IError.cs" />
+    <Compile Include="Interfaces\Core\ICallback.cs" />
+    <Compile Include="Interfaces\Core\IIdentifiable.cs" />
+    <Compile Include="Interfaces\Core\INotifyDisposed.cs" />
+    <Compile Include="Interfaces\Core\IOutput.cs" />
+    <Compile Include="Interfaces\Core\IPackageDownloadService.cs" />
+    <Compile Include="Interfaces\Core\ISelectable.cs" />
+    <Compile Include="Interfaces\Core\IViewFactory.cs" />
+    <Compile Include="Interfaces\Core\IViewTemplate.cs" />
+    <Compile Include="Interfaces\Core.Composite\IDelegateCommand.cs" />
+    <Compile Include="Interfaces\Core.Composite\IActiveAware.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
+    <Compile Include="Interfaces\Core\IDomainCredential.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +118,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

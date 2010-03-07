@@ -1,4 +1,4 @@
-//------------------------------------------------------
+﻿//------------------------------------------------------
 //    Copyright (c) 2010 TestHarness.org
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +20,14 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using Open.Core.Common.Testing;
-using Microsoft.Silverlight.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Common;
 
-namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Editors.PropertyGrid
+namespace Open.Core.UI.Controls
 {
-    [TestClass]
-    public class PropertyGridTest
+    /// <summary>Represents a single tool in a toolbar.</summary>
+    public interface ITool : IViewFactory
     {
-        [TestMethod]
-        public void ShouldNeverHaveANullModel()
-        {
-            var control = new Open.Core.Common.Controls.Editors.PropertyGrid();
-
-            control.ViewModel.ShouldNotBe(null);
-            control.DataContext.ShouldNotBe(null);
-            control.DataContext.ShouldBe(control.ViewModel);
-        }
+        /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
+        IToolBar Parent { get; set; }
     }
 }

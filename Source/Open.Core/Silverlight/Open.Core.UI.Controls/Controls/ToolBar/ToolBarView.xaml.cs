@@ -1,4 +1,4 @@
-//------------------------------------------------------
+﻿//------------------------------------------------------
 //    Copyright (c) 2010 TestHarness.org
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +20,27 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using Open.Core.Common.Testing;
-using Microsoft.Silverlight.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.ComponentModel.Composition;
+using System.Windows.Controls;
 
-namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Editors.PropertyGrid
+namespace Open.Core.UI.Controls
 {
-    [TestClass]
-    public class PropertyGridTest
+    /// <summary>Renders a toolbar.</summary>
+    [ExportToolBarView(Key = ToolBarModel.DefaultViewExportKey)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class ToolBarView : UserControl, IToolBarView
     {
-        [TestMethod]
-        public void ShouldNeverHaveANullModel()
+        /// <summary>Constructor.</summary>
+        public ToolBarView()
         {
-            var control = new Open.Core.Common.Controls.Editors.PropertyGrid();
+            InitializeComponent();
+        }
 
-            control.ViewModel.ShouldNotBe(null);
-            control.DataContext.ShouldNotBe(null);
-            control.DataContext.ShouldBe(control.ViewModel);
+        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
+        public IToolBar ViewModel
+        {
+            get { return DataContext as IToolBar; }
+            set { DataContext = value; }
         }
     }
 }

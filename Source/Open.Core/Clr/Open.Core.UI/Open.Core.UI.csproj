@@ -45,10 +45,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\IOutput.cs">
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IOutput.cs">
       <Link>Interfaces\IOutput.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\IViewTemplate.cs">
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IViewTemplate.cs">
       <Link>Interfaces\IViewTemplate.cs</Link>
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core.UI\Base Classes\ResourcesBase.cs">
@@ -96,9 +96,9 @@
     <Compile Include="Util\AnimationUtil.wpf.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Interfaces\Open.Core.Interfaces.csproj">
+    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Interfaces %28Open.Core\Clr\Open.Core.Interfaces%29</Name>
+      <Name>Open.Core.Contracts %28Open.Core\Clr\Open.Core.Contracts%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>

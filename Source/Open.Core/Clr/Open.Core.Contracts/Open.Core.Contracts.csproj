@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Open.Core</RootNamespace>
-    <AssemblyName>Open.Core.Interfaces</AssemblyName>
+    <AssemblyName>Open.Core.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -44,26 +44,29 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core.Composite\IEventBus.cs">
-      <Link>Core.Composite\IEventBus.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\ICallback.cs">
-      <Link>Core\ICallback.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\IDomainCredential.cs">
-      <Link>Core\IDomainCredential.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\IError.cs">
-      <Link>Core\IError.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\INotifyDisposed.cs">
-      <Link>Core\INotifyDisposed.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Core\ISelectable.cs">
-      <Link>Core\ISelectable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Interfaces\Enumerations\Enumerations.cs">
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Enumerations\Enumerations.cs">
       <Link>Enumerations\Enumerations.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core.Composite\IEventBus.cs">
+      <Link>Interfaces\Core.Composite\IEventBus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ICallback.cs">
+      <Link>Interfaces\Core\ICallback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IDomainCredential.cs">
+      <Link>Interfaces\Core\IDomainCredential.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IError.cs">
+      <Link>Interfaces\Core\IError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IIdentifiable.cs">
+      <Link>Interfaces\Core\IIdentifiable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\INotifyDisposed.cs">
+      <Link>Interfaces\Core\INotifyDisposed.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ISelectable.cs">
+      <Link>Interfaces\Core\ISelectable.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

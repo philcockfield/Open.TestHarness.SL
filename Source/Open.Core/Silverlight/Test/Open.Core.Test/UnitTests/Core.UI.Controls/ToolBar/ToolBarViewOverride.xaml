@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar.ToolBarViewOverride"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="HotPink">
+        <TextBlock Text="Toolbar View Override" />
+    </Grid>
+</UserControl>
