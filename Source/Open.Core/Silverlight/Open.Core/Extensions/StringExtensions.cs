@@ -181,7 +181,7 @@ namespace Open.Core.Common
 
             // Get last.
             var last = self.SubstringAfterLast(character);
-            return self.RemoveEnd(last);
+            return self.RemoveEnd(character + last);
         }
         #endregion
 

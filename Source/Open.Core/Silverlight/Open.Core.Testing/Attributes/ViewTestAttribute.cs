@@ -35,6 +35,7 @@ namespace Open.Core.Common
         public ViewTestAttribute()
         {
             IsVisible = true;
+            AllowAutoRun = true;
         }
         #endregion
 
@@ -53,6 +54,9 @@ namespace Open.Core.Common
 
         /// <summary>Gets or sets a space-delimited category tag.</summary>
         public string Tag { get; set; }
+
+        /// <summary>Gets or sets whether the test can be automatically run from the TestRunner.</summary>
+        public bool AllowAutoRun { get; set; }
         #endregion
     }
 }

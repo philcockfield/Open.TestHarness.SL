@@ -41,15 +41,30 @@
                 <ContentControl Template="{StaticResource Background.Toolbar.Shiny}" />
                 <Border BorderBrush="{StaticResource Brush.Black.030}" BorderThickness="0,0,0,1" />
 
+                <!--Left Aligned Buttons-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,1">
+                    <c:ImageButton 
+                            cmd:Click.Command="{Binding AutoRunTestsCommand}"
+                            Source="../../Images/Icon.AutoRunTests.23x16.png"
+                            ToolTipService.ToolTip="{Binding Strings.ToolTip_AutoRunTests}"
+                            HorizontalAlignment="Left"
+                            Padding="0,0,3,0"
+                            Width="30"
+                            Opacity="0.9"
+                            Style="{StaticResource toolbarButtonStyle}"/>
+                    <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
+                </StackPanel>
+
+
                 <!--Right Aligned Buttons-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,1">
-                    
                     <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
                     
                     <!--Add Assembly Button-->
                     <c:ImageButton 
-                            cmd:Click.Command="{Binding AddAssemblyClick}"
+                            cmd:Click.Command="{Binding AddAssemblyCommand}"
                             Source="../../Images/Icon.Plus.10x10.png"
+                            ToolTipService.ToolTip="{Binding Strings.ToolTip_AddModule}"
                             HorizontalAlignment="Right"
                             Width="28"
                             Style="{StaticResource toolbarButtonStyle}"/>

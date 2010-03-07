@@ -20,12 +20,68 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Common.Testing;
 
 namespace Open.Core.Common.Test.Attributes
 {
     [TestClass]
     public class ViewTestAttributeTest
     {
+
+        [TestMethod]
+        public void ShouldGetReflectionDataFromMock()
+        {
+            var mock = new Mock();
+            mock.MethodInfo1.ShouldBeInstanceOfType<MethodInfo>();
+            mock.MethodInfo2.ShouldBeInstanceOfType<MethodInfo>();
+
+            mock.ViewTestAttribute1.ShouldBeInstanceOfType<ViewTestAttribute>();
+            mock.ViewTestAttribute2.ShouldBeInstanceOfType<ViewTestAttribute>();
+        }
+
+        [TestMethod]
+        public void ShouldBeVisibleByDefault()
+        {
+            var mock = new Mock();
+            mock.ViewTestAttribute1.IsVisible.ShouldBe(true);
+            mock.ViewTestAttribute2.IsVisible.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldAllowAutoRunByDefault()
+        {
+            var mock = new Mock();
+            mock.ViewTestAttribute1.AllowAutoRun.ShouldBe(true);
+            mock.ViewTestAttribute2.AllowAutoRun.ShouldBe(false);
+        }
+
+        [ViewTestClass]
+        private class Mock
+        {
+            public Mock()
+            {
+                MethodInfo1 = GetType().GetMethod("Method1");
+                MethodInfo2 = GetType().GetMethod("Method2");
+                ViewTestAttribute1 = MethodInfo1.GetCustomAttributes(typeof(ViewTestAttribute), true).FirstOrDefault() as ViewTestAttribute;
+                ViewTestAttribute2 = MethodInfo2.GetCustomAttributes(typeof(ViewTestAttribute), true).FirstOrDefault() as ViewTestAttribute;
+            }
+
+            public MethodInfo MethodInfo1 { get; private set; }
+            public MethodInfo MethodInfo2 { get; private set; }
+
+            public ViewTestAttribute ViewTestAttribute1 { get; private set; }
+            public ViewTestAttribute ViewTestAttribute2 { get; private set; }
+
+            [ViewTest]
+            public void Method1(Border control){}
+
+            [ViewTest(AllowAutoRun = false, IsVisible = false)]
+            public void Method2(Border control){}
+        }
     }
 }

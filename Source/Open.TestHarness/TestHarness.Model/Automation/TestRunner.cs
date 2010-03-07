@@ -135,7 +135,7 @@ namespace Open.TestHarness.Automation
             // Start executing tests.
             IsRunning = true;
             var startTime = DateTime.Now;
-            DelayedInvoke(methods.First(), () =>
+            DelayedRunTest(methods.First(), () =>
                                                {
                                                    // Update state.
                                                    IsRunning = false;
@@ -150,13 +150,33 @@ namespace Open.TestHarness.Automation
                                                });
         }
 
-        private void DelayedInvoke(MethodItem item, Action callback)
+        private void DelayedRunTest(MethodItem item, Action callback)
         {
-            DelayedAction.Invoke(Interval, () => Invoke(item, callback));
+            DelayedAction.Invoke(Interval, () => RunTest(item, callback));
         }
 
-        private void Invoke(MethodItem item, Action callback)
+        private void RunTest(MethodItem item, Action callback)
         {
+            // Invoke the test.
+            Invoke(item);
+
+            // Execute next test in sequence.
+            var next = methods.NextItem(item, false);
+            if (next != null)
+            {
+                DelayedRunTest(next, callback);
+            }
+            else
+            {
+                if (callback != null) callback();
+            }
+        }
+
+        private void Invoke(MethodItem item)
+        {
+            // Setup initial conditions.
+            if (!item.Method.Attribute.AllowAutoRun) return;
+
             try
             {
                 // Reset the test-class.  This will cause the Default initialize method to be invoked.
@@ -172,17 +192,6 @@ namespace Open.TestHarness.Automation
             catch (Exception)
             {
                 failed.Add(item.MethodInfo);
-            }
-            
-            // Execute next test in sequence.
-            var next = methods.NextItem(item, false);
-            if (next != null)
-            {
-                DelayedInvoke(next, callback);
-            }
-            else
-            {
-                if (callback != null) callback();
             }
         }
 

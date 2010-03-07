@@ -20,11 +20,16 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
+using System.ComponentModel.Composition;
 using System.Linq;
+using System.Windows;
+using System.Windows.Browser;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 using Open.Core.Composite.Command;
 using Open.TestHarness.Model;
+using Open.TestHarness.View.Assets;
 
 namespace Open.TestHarness.View.Selector
 {
@@ -36,7 +41,6 @@ namespace Open.TestHarness.View.Selector
         private readonly RootViewModel parent;
         private readonly ObservableCollectionWrapper<ViewTestClassesModule, ModuleNodeViewModel> modules;
         private readonly TestSelectorViewModel testSelector = new TestSelectorViewModel();
-        private DelegateCommand<string> addAssemblyClick;
 
         public SelectorPanelViewModel(RootViewModel parent)
         {
@@ -44,6 +48,11 @@ namespace Open.TestHarness.View.Selector
             this.parent = parent;
             model = TestHarnessModel.Instance;
             modules = new ObservableCollectionWrapper<ViewTestClassesModule, ModuleNodeViewModel>(model.Modules, item => new ModuleNodeViewModel(item));
+            Strings = new StringLibrary();
+
+            // Create commands.
+            AddAssemblyCommand = new DelegateCommand<string>(param => OnAddAssemblyClick(), param => true);
+            AutoRunTestsCommand = new DelegateCommand<string>(param => OnAutoRunTestsClick(), param => true);
 
             // Wire up events.
             model.PropertyChanged += (sender, e) =>
@@ -54,10 +63,25 @@ namespace Open.TestHarness.View.Selector
         #endregion
 
         #region Event Handlers
-        private void HandleAddAssemblyClick()
+        private void OnAddAssemblyClick()
         {
             parent.ClientBinGrid.IsShowing = true;
             parent.ClientBinGrid.LoadAsync(true);
+        }
+
+        private static void OnAutoRunTestsClick()
+        {
+            // Build query string.
+            var xapQuery = string.Empty;
+            foreach (var assembly in TestHarnessModel.Instance.Settings.LoadedModules)
+            {
+                xapQuery += string.Format("xap={0}&", assembly.XapFileName);
+            }
+            var query = string.Format("?runTests=true&{0}", xapQuery.RemoveEnd("&"));
+            var url = HtmlPage.Document.DocumentUri.ToString().SubstringBeforeLast("?") + query;
+
+            // Navigate to the auto-run URL.
+            HtmlPage.Window.Navigate(new Uri(url));
         }
         #endregion
 
@@ -67,16 +91,15 @@ namespace Open.TestHarness.View.Selector
 
         /// <summary>Gets the currently selected [TestClass].</summary>
         public TestSelectorViewModel TestSelector { get { return testSelector; } }
-        
-        /// <summary>Gets the command for reacing to click's of the 'Add Assembly' option.</summary>
-        public DelegateCommand<string> AddAssemblyClick
-        {
-            get
-            {
-                if (addAssemblyClick == null) addAssemblyClick = new DelegateCommand<string>(param => HandleAddAssemblyClick(), param => true);
-                return addAssemblyClick;
-            }
-        }
+
+        /// <summary>Get the localized string resources.</summary>
+        public StringLibrary Strings { get; private set; }
+
+        /// <summary>Gets the command for the 'Add Assembly' button.</summary>
+        public DelegateCommand<string> AddAssemblyCommand { get; private set; }
+
+        /// <summary>Gets the command for the 'Auto Run Tests' button.</summary>
+        public DelegateCommand<string> AutoRunTestsCommand { get; private set; }
         #endregion
 
         #region Internal

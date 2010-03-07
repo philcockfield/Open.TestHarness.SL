@@ -137,7 +137,7 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
             Debug.WriteLine("IsApplicationStorageEnabled: " + SettingsModelBase.IsApplicationStorageEnabled);
         }
 
-        [ViewTest]
+        [ViewTest(AllowAutoRun = false)]
         public void Uri__NavigateTo()
         {
             var uri = new Uri("http://google.com");
