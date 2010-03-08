@@ -20,6 +20,8 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows.Controls;
+
 namespace Open.Core.UI.Controls
 {
     /// <summary>Contract for a ToolBarView (used by MEF).</summary>

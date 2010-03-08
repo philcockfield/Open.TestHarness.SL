@@ -36,6 +36,12 @@ namespace Open.Core.UI.Controls
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ToolBarModel : ToolBase, IToolBar
     {
+        #region Event Handlers
+        /// <summary>Fires when the 'UpdateLayout' method is invoked.</summary>
+        public event EventHandler UpdateLayoutRequest;
+        private void FireUpdateLayoutRequest(){if (UpdateLayoutRequest != null) UpdateLayoutRequest(this, new EventArgs());}
+        #endregion
+
         #region Head
         internal const string DefaultViewExportKey = "Open.Core.UI.Controls.ToolBarView.Default";
         private readonly List<ToolItem> toolItems = new List<ToolItem>();
@@ -55,6 +61,16 @@ namespace Open.Core.UI.Controls
             get { return GetPropertyValue<T, object>(m => m.ViewImportKey, DefaultViewExportKey); }
             set { SetPropertyValue<T, object>(m => m.ViewImportKey, value, DefaultViewExportKey); }
         }
+
+        /// <summary>
+        ///     Gets or sets the default margin to apply to tools within the toolbar. This is overridden by the tool itself,
+        ///     if the CreateView() method yeilds a control which as a pre-defined Margin value.
+        /// </summary>
+        public Thickness DefaultToolMargin
+        {
+            get { return GetPropertyValue<T, Thickness>(m => m.DefaultToolMargin, new Thickness(3)); }
+            set { SetPropertyValue<T, Thickness>(m => m.DefaultToolMargin, value, new Thickness(3)); }
+        }
         #endregion
 
         #region Methods
@@ -67,6 +83,20 @@ namespace Open.Core.UI.Controls
             return view;
         }
 
+        /// <summary>Causes the toolbar to re-build it's tool layout.</summary>
+        public void UpdateLayout()
+        {
+            FireUpdateLayoutRequest();
+        }
+
+        /// <summary>Removes all tools.</summary>
+        public void Clear()
+        {
+            if (toolItems.IsEmpty()) return;
+            toolItems.Clear();
+            FireUpdateLayoutRequest();
+        }
+
         /// <summary>Adds a tool to the toolbar.</summary>
         /// <typeparam name="TTool">The type of the tool.</typeparam>
         /// <param name="tool">The instance of the tool model being added.</param>
@@ -74,27 +104,26 @@ namespace Open.Core.UI.Controls
         /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
-        public void Add<TTool>(TTool tool, int? column = null, int? row = null, int columnSpan = 1, int rowSpan = 1) where TTool : ITool
+        public void Add<TTool>(TTool tool, int? column = null, int? row = null, int? columnSpan = 1, int? rowSpan = 1) where TTool : ITool
         {
             // Setup initial conditions.
             if (Equals(tool, default(TTool))) throw new ArgumentNullException("tool");
             if (rowSpan < 1) throw new ArgumentOutOfRangeException("rowSpan", "RowSpan's must be 1 or greater.");
             if (columnSpan < 1) throw new ArgumentOutOfRangeException("columnSpan", "ColumnSpan's must be 1 or greater.");
 
-            // Determine the column.
-            if (column == null) column = toolItems.Count;
-            if (row == null) row = 0;
-
             // Create the new item.
             var item = new ToolItem
                            {
                                Tool = tool,
-                               Column = column.Value,
-                               Row = row.Value,
-                               ColumnSpan = columnSpan,
-                               RowSpan = rowSpan
+                               Column = column == null ? toolItems.Count : column.Value,
+                               Row = row == null ? 0 : row.Value,
+                               ColumnSpan = columnSpan == null ? 1 : columnSpan.Value,
+                               RowSpan = rowSpan == null ? 1 : rowSpan.Value
                            };
             toolItems.Add(item);
+
+            // Finish up.
+            tool.Parent = this;
         }
 
         /// <summary>Gets the column value for the given tool.</summary>

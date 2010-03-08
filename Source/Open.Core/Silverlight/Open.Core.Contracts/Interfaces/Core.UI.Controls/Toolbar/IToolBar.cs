@@ -20,18 +20,29 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Open.Core.UI.Controls
 {
     /// <summary>A laid up structure of tools.</summary>
     public interface IToolBar : ITool
     {
+        /// <summary>Fires when the 'UpdateLayout' method is invoked.</summary>
+        event EventHandler UpdateLayoutRequest;
+
         /// <summary>Gets the collection of tools within the toolbar.</summary>
         IEnumerable<ITool> Tools { get; }
 
         /// <summary>Gets or sets the key used to import the ToolBar view (via MEF).</summary>
         object ViewImportKey { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the default margin to apply to tools within the toolbar. This is overridden by the tool itself,
+        ///     if the CreateView() method yeilds a control which as a pre-defined Margin value.
+        /// </summary>
+        Thickness DefaultToolMargin { get; set; }
 
         /// <summary>Adds a tool to the toolbar.</summary>
         /// <typeparam name="T">The type of the tool.</typeparam>
@@ -44,8 +55,14 @@ namespace Open.Core.UI.Controls
                     T tool,
                     int? column = null,
                     int? row = null,
-                    int columnSpan = 0,
-                    int rowSpan = 0) where T : ITool;
+                    int? columnSpan = 1,
+                    int? rowSpan = 1) where T : ITool;
+
+        /// <summary>Causes the toolbar to re-build it's tool layout.</summary>
+        void UpdateLayout();
+
+        /// <summary>Removes all tools.</summary>
+        void Clear();
 
         /// <summary>Gets the column value for the given tool.</summary>
         /// <param name="tool">The tool to look up.</param>

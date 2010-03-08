@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel.Composition;
 using System.Net;
 using System.Windows;
@@ -17,12 +18,12 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
-//    [Tag("current")]
+    [Tag("current")]
     [TestClass]
     public class ToolBarModelTest
     {
         #region Head
-        private ToolBarModel toolbar;
+        private IToolBar toolbar;
 
         [TestInitialize]
         public void TestSetup()
@@ -76,6 +77,16 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         }
 
         [TestMethod]
+        public void ShouldAssignToolBarAsParentWhenAdded()
+        {
+            var tool = new MockTool();
+            tool.Parent.ShouldBe(null);
+
+            toolbar.Add(tool);
+            tool.Parent.ShouldBe(toolbar);
+        }
+
+        [TestMethod]
         public void ShouldAutoIncrementColumnWhenNullPassed()
         {
             var tool1 = new MockTool();
@@ -113,6 +124,43 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             var tool = new MockTool();
             Should.Throw<ArgumentOutOfRangeException>(() => toolbar.Add(tool, columnSpan: 0));
             Should.Throw<ArgumentOutOfRangeException>(() => toolbar.Add(tool, rowSpan: 0));
+        }
+
+        [TestMethod]
+        public void ShouldFireUpdateLayoutRequest()
+        {
+            FireUpdateLayoutCount(() => toolbar.UpdateLayout()).ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldClear()
+        {
+            toolbar.Add(new MockTool());
+            toolbar.Add(new MockTool());
+            toolbar.Add(new MockTool());
+            toolbar.Tools.Count().ShouldBe(3);
+            
+            toolbar.Clear();
+            toolbar.Tools.Count().ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldFireUpdateLayoutOnClear()
+        {
+            toolbar.Add(new MockTool());
+            FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(1);
+            FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(0);
+            FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(0);
+        }
+        #endregion
+
+        #region Internal
+        private int FireUpdateLayoutCount(Action action)
+        {
+            var fireCount = 0;
+            toolbar.UpdateLayoutRequest += delegate { fireCount++; };
+            action();
+            return fireCount;
         }
         #endregion
     }
