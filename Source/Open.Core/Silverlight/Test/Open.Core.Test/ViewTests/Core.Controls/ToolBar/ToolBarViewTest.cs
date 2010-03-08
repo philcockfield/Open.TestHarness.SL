@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
+using Open.Core.Composite.Command;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
@@ -73,9 +74,16 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             public double Width= 16;
             public double Height = 16;
 
+            public MockTool()
+            {
+                Command = new DelegateCommand<Button>(button => Output.Write("Click"));
+            }
+
             public override FrameworkElement CreateView()
             {
-                return new Placeholder { Width = Width, Height = Height, MinWidth = 0, MinHeight = 0 };
+                var button = new Button{Width = Width, Height = Height};
+                Composite.Command.Click.SetCommand(button, Command);
+                return button;
             }
 
             public static MockTool Create(int width = 24, int height = 24)

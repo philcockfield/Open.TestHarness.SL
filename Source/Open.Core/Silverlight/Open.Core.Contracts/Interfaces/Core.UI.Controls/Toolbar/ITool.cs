@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows.Input;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
@@ -29,5 +30,8 @@ namespace Open.Core.UI.Controls
     {
         /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
         IToolBar Parent { get; set; }
+
+        /// <summary>Gets the action command for the tool.</summary>
+        ICommand Command { get; }
     }
 }

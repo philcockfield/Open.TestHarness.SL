@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System.Windows;
+using System.Windows.Input;
 using Open.Core.Common;
 using T = Open.Core.UI.Controls.ToolBase;
 
@@ -35,6 +36,13 @@ namespace Open.Core.UI.Controls
         {
             get { return GetPropertyValue<T, IToolBar>(m => m.Parent); }
             set { SetPropertyValue<T, IToolBar>(m => m.Parent, value); }
+        }
+
+        /// <summary>Gets the action command for the tool.</summary>
+        public ICommand Command
+        {
+            get { return GetPropertyValue<T, ICommand>(m => m.Command); }
+            protected set { SetPropertyValue<T, ICommand>(m => m.Command, value); }
         }
         #endregion
 

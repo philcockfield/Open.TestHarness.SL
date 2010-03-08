@@ -21,11 +21,8 @@
 //------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.ComponentModel.Composition;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
@@ -36,8 +33,9 @@ namespace Open.Core.UI.Controls
     public partial class ToolBarView : UserControl, IToolBarView
     {
         #region Head
-        private DataContextObserver dataContextObserver;
+        private readonly DataContextObserver dataContextObserver;
         private IToolBar viewModel;
+        private ToolLayoutController toolLayoutController;
 
         /// <summary>Constructor.</summary>
         public ToolBarView()
@@ -48,10 +46,13 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Event Handlers
-        private void OnDataContextChanged( )
+        private void OnDataContextChanged()
         {
+            // Setup initial conditions.
+            if (toolLayoutController != null) toolLayoutController.Dispose();
+
             // Unwire old view-model.
-            if (viewModel != null) viewModel.UpdateLayoutRequest += OnUpdateLayout;
+            if (viewModel != null) viewModel.UpdateLayoutRequest -= OnUpdateLayout;
 
             // Wire up events.
             viewModel = ViewModel;
@@ -60,8 +61,9 @@ namespace Open.Core.UI.Controls
 
         private void OnUpdateLayout(object sender, EventArgs e)
         {
-            ClearToolBar();
-            if (ViewModel != null) BuildToolBar(ViewModel);
+            if (ViewModel == null) return;
+            if (toolLayoutController == null) toolLayoutController = new ToolLayoutController(toolContainer);
+            toolLayoutController.LayupTools(ViewModel);
         }
         #endregion
 
@@ -73,71 +75,5 @@ namespace Open.Core.UI.Controls
             set { DataContext = value; }
         }
         #endregion
-
-        #region Internal
-        private void ClearToolBar()
-        {
-            toolContainer.Children.Clear();
-            toolContainer.ColumnDefinitions.Clear();
-            toolContainer.RowDefinitions.Clear();
-        }
-
-        private void BuildToolBar(IToolBar model)
-        {
-            // Setup initial conditions.
-            if (model.Tools.IsEmpty()) return;
-
-            // Add row/column definitions.
-            AddRowDefinitions(model);
-            AddColumnDefinitions(model);
-
-            // Insert tools.
-            foreach (var tool in model.Tools)
-            {
-                InsertTool(tool);
-            }
-        }
-
-        private void InsertTool(ITool tool)
-        {
-            // Create the view.
-            var view = tool.CreateView();
-            view.DataContext = tool;
-            view.HorizontalAlignment = HorizontalAlignment.Left;
-            view.VerticalAlignment = VerticalAlignment.Top;
-
-            // Assign the margin (if the generated view did not arrive with an explicitly set value).
-            if (view.Margin == default(Thickness)) view.Margin = tool.Parent.DefaultToolMargin;
-
-            // Assign Row/Column position.
-            Grid.SetRow(view, tool.Parent.GetRow(tool));
-            Grid.SetColumn(view, tool.Parent.GetColumn(tool));
-
-            // Set spans.
-            Grid.SetRowSpan(view, tool.Parent.GetRowSpan(tool));
-            Grid.SetColumnSpan(view, tool.Parent.GetColumnSpan(tool));
-
-            // Insert into the visual tree.
-            toolContainer.Children.Add(view);
-        }
-
-        private void AddRowDefinitions(IToolBar model)
-        {
-            var total = model.Tools.Max(m => model.GetRow(m));
-            for (var i = 0; i <= total; i++)
-            {
-                toolContainer.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            }
-        }
-
-        private void AddColumnDefinitions(IToolBar model)
-        {
-            var total = model.Tools.Max(m => model.GetColumn(m));
-            for (var i = 0; i <= total; i++)
-            {
-                toolContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            }
-        }
-        #endregion
     }
-}
+} 
