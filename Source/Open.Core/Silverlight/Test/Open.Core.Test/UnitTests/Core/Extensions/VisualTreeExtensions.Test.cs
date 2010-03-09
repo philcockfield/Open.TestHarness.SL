@@ -39,7 +39,6 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
 {
-    [Tag("current")]
     [TestClass]
     public class VisualTreeExtensionsTest : SilverlightUnitTest
     {

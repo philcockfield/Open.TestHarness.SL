@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Open.Core.UI</RootNamespace>
-    <AssemblyName>Open.Core.UI</AssemblyName>
+    <AssemblyName>Open.Core.UI.Clr</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

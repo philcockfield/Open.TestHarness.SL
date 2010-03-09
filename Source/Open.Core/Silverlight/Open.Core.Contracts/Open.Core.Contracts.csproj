@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Attributes\Core.UI.Controls\ExportToolBarViewAttribute.cs" />
     <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IContentContainer.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />

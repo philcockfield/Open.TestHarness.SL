@@ -12,6 +12,7 @@
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/TitleContainer/TitleContainerTemplates.xaml" />
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/DialogPresenter/DialogPresenter.xaml" />
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/WidgetGroup/WidgetGroup.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/ContentContainer/ContentContainerTemplates.xaml" />
 
         <!--Dialogs-->
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Dialogs/ExceptionDialog/ExceptionDialog.xaml" />

@@ -107,6 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UnitTests\Core.UI.Controls\ContentContainerTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\Mocks.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyGridViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.Controls\Containers\ContentContainerViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />

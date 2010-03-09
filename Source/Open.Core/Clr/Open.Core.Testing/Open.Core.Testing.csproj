@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Open.Core.Testing</RootNamespace>
-    <AssemblyName>Open.Core.Testing</AssemblyName>
+    <AssemblyName>Open.Core.Testing.Clr</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

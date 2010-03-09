@@ -93,6 +93,14 @@
       <DependentUpon>TitleContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Containers\WidgetGroup\WidgetGroup.cs" />
+    <Compile Include="Controls\Containers\ContentContainer\ContentContainer.xaml.cs">
+      <DependentUpon>ContentContainer.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\Containers\ContentContainer\ContentContainerTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Controls\Containers\ContentContainer\ContentContainerViewModel.cs" />
     <Compile Include="Controls\Dialogs\DialogContent\DialogContent.cs" />
     <Compile Include="Controls\Dialogs\DialogExtensions.cs" />
     <Compile Include="Controls\Dialogs\ExceptionDialog\ExceptionDialog.cs" />
@@ -264,6 +272,10 @@
     <Page Include="Controls\Containers\WidgetGroup\WidgetGroup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Containers\ContentContainer\ContentContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dialogs\ExceptionDialog\ExceptionDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
