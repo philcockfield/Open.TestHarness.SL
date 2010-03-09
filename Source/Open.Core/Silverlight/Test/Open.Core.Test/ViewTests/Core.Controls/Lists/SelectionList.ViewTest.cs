@@ -75,7 +75,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.Lists
         [ViewTest]
         public void Clear_List(SelectionList control)
         {
-            ViewModel.Items.Clear();
+            ViewModel.Items.RemoveAll();
         }
 
 
