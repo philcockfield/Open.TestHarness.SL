@@ -105,6 +105,16 @@ namespace Open.Core.Common.Test.Core.Common.Extensions
             (1572864.0).ToFileSize(FileSizeUnit.Kilobyte, FileSizeUnit.Megabyte).ShouldBe("1,536 MB");
             (1610612736.0).ToFileSize(FileSizeUnit.Byte, FileSizeUnit.Gigabyte).ShouldBe("1.5 GB");
         }
+
+        [TestMethod]
+        public void ShouldDetermineIfNumberIsOddOrEven()
+        {
+            1.IsOdd().ShouldBe(true);
+            1.IsEven().ShouldBe(false);
+
+            2.IsOdd().ShouldBe(false);
+            2.IsEven().ShouldBe(true);
+        }
         #endregion
     }
 }

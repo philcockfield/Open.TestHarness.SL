@@ -21,7 +21,9 @@
 //------------------------------------------------------
 
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 
@@ -79,6 +81,36 @@ namespace Open.Core.Common.Test.Core.Common.Extensions
             level1.FindFirstChildOfType<Border>().ShouldBe(level3a);
             level1.FindFirstChildOfType<TextBlock>().ShouldBe(level4);
             level1.FindFirstChildOfType<Grid>().ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldRemoveFromVisualTreeInGrid()
+        {
+            var item = new TextBlock();
+            var parent = new Grid();
+            parent.Children.Add(item);
+
+            item.Parent.ShouldBe(parent);
+            item.RemoveFromVisualTree();
+            item.Parent.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldRemoveFromVisualTreeInBorder()
+        {
+            var item = new TextBlock();
+            var parent = new Border {Child = item};
+
+            item.Parent.ShouldBe(parent);
+            item.RemoveFromVisualTree();
+            item.Parent.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotFailWhenRemoveFromVisualTreeIsCalled()
+        {
+            ((UIElement)null).RemoveFromVisualTree();
+           new TextBlock().RemoveFromVisualTree();
         }
         #endregion
     }

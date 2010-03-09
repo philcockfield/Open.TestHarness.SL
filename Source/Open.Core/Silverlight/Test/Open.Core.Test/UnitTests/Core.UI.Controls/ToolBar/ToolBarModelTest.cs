@@ -33,11 +33,17 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         #endregion
         
         #region Tests
-        [Import]
+        [Import(RequiredCreationPolicy = CreationPolicy.NonShared)]
         public IToolBar ImportedToolBar1 { get; set; }
 
-        [Import]
+        [Import(RequiredCreationPolicy = CreationPolicy.NonShared)]
         public IToolBar ImportedToolBar2 { get; set; }
+
+        [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
+        public IToolBar ImportedToolBar3 { get; set; }
+
+        [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
+        public IToolBar ImportedToolBar4 { get; set; }
 
         [TestMethod]
         public void ShouldImportUniqueInstances()
@@ -48,6 +54,13 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             ImportedToolBar2.ShouldBeInstanceOfType<ToolBarModel>();
 
             ImportedToolBar1.ShouldNotBe(ImportedToolBar2);
+        }
+
+        [TestMethod]
+        public void ShouldImportSingletonInstanceOfToolBar()
+        {
+            CompositionInitializer.SatisfyImports(this);
+            ImportedToolBar3.ShouldBe(ImportedToolBar4);
         }
 
         [TestMethod]

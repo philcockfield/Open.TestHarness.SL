@@ -1,0 +1,29 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DataTemplate x:Key="SelectionList.DefaultEmptyMessage">
+        <Border>
+            <TextBlock 
+                    Text="{Binding EmptyMessageValue}" 
+                    FontStyle="Italic"
+                    Opacity="0.5"
+                    VerticalAlignment="Top" 
+                    HorizontalAlignment="Center" 
+                    Margin="10,20,10,0"  />
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SelectionList.CustomEmptyMessage">
+        <ContentControl 
+            Content="{Binding EmptyMessageValue}"
+            HorizontalContentAlignment="Stretch" 
+            VerticalContentAlignment="Stretch">
+        </ContentControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SelectionList.DefaultItemTemplate">
+        <TextBlock Text="{Binding Value}" />
+    </DataTemplate>
+
+</ResourceDictionary>

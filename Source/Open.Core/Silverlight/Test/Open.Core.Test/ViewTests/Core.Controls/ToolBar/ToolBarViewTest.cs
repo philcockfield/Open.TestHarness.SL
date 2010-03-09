@@ -12,7 +12,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
     public class ToolBarViewTest
     {
         #region Head
-        [Import]
+        [Import(RequiredCreationPolicy = CreationPolicy.NonShared)]
         public IToolBar ToolBar { get; set; }
 
         [ViewTest(Default = true, IsVisible = false)]

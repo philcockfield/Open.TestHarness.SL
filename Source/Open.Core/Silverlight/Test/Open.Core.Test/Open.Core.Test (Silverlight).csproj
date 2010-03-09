@@ -130,6 +130,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyGridViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehavior.ViewTest.cs" />

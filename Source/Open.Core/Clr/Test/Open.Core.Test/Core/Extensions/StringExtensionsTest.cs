@@ -388,11 +388,11 @@ namespace Open.Core.Common.Test.Extensions
             "One.Two".SubstringBeforeLast(null).ShouldBe("One.Two");
             "One.Two".SubstringBeforeLast("-").ShouldBe("One.Two");
 
-            "One.Two".SubstringBeforeLast(".").ShouldBe("One.");
-            "One.Two.Three".SubstringBeforeLast(".").ShouldBe("One.Two.");
+            "One.Two".SubstringBeforeLast(".").ShouldBe("One");
+            "One.Two.Three".SubstringBeforeLast(".").ShouldBe("One.Two");
 
-            "One.".SubstringBeforeLast(".").ShouldBe("One.");
-            ".".SubstringBeforeLast(".").ShouldBe(".");
+            "One.".SubstringBeforeLast(".").ShouldBe("One");
+            ".".SubstringBeforeLast(".").ShouldBe("");
         }
     }
 }

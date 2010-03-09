@@ -129,4 +129,7 @@
   <data name="PropertyExplorer_Tooltip_IncludeHierarchy" xml:space="preserve">
     <value>Include inheritance hierarchy.</value>
   </data>
+  <data name="SelectionList_EmptyMessage" xml:space="preserve">
+    <value>No Items To Display</value>
+  </data>
 </root>

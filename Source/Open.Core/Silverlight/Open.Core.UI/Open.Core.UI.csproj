@@ -122,6 +122,7 @@
     <Compile Include="Converter\InvertedVisibilityConverter.cs" />
     <Compile Include="Converter\VisibilityConverter.cs" />
     <Compile Include="Extensions\DataGridExtensions.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.silverlight.cs" />
     <Compile Include="Interactivity\Behaviors\Animation\NamedPropertyAnimation.cs" />
     <Compile Include="Interactivity\Behaviors\Animation\OpacityAnimation.cs" />
     <Compile Include="Interactivity\Behaviors\Animation\PropertyAnimation.cs" />

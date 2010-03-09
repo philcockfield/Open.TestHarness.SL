@@ -23,5 +23,8 @@
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/PropertyGridStructure/PropertyValue/PropertyValue.xaml" />
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/Explorer/PropertyExplorer.xaml" />
 
+        <!--Lists-->
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Lists/SelectionListTemplates.xaml" />
+
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

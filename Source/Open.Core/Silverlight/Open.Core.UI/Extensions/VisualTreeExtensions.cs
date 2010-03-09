@@ -22,11 +22,12 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Open.Core.Common
 {
-    public static class VisualTreeExtensions
+    public static partial class VisualTreeExtensions
     {
         #region Methods - Find/Retrieve Elements from Tree
         /// <summary>Gets the elements parent in the VisualTree.</summary>
@@ -36,6 +37,38 @@ namespace Open.Core.Common
         {
             return VisualTreeHelper.GetParent(element);
         }
+
+        /// <summary>Removes the specified element from the visual tree (if it's currently contained within the tree).</summary>
+        /// <param name="element">The element to remove.</param>
+        public static void RemoveFromVisualTree(this UIElement element)
+        {
+            // Setup initial conditions.
+            if (element == null) return;
+            var parent = element.GetParentVisual();
+            if (parent == null) return;
+
+            // Common remove types.
+            if (parent.GetType().IsA(typeof(Panel)))
+            {
+                ((Panel)parent).Children.Remove(element);
+                return;
+            }
+            if (parent.GetType().IsA(typeof(ContentPresenter)))
+            {
+                ((ContentPresenter)parent).Content = null;
+                return;
+            }
+
+            // Platform specific remove types (differs between WPF and Silverlight).
+            if (RemoveChild(parent, element)) return;
+
+            // Failed to remove.  Container not supported.
+            throw new NotSupportedException(
+                            string.Format("Cannot remove '{0}' from a parent of type '{1}'.",
+                                    element.GetType().Name,
+                                    parent.GetType().Name));
+        }
+
 
         /// <summary>Retreives the first ancestor from the VisualTree that is the same type as the calling element.</summary>
         /// <typeparam name="TParent">The type of the parent to look for.</typeparam>

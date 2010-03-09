@@ -44,7 +44,7 @@ namespace Open.Core.Common
         /// <summary>Converts the given color to a solid color brush at the given opacity.</summary>
         /// <param name="self">The color to build the brush from.</param>
         /// <param name="opacity">The oapcity percentage (value from 0 to 1).</param>
-        public static SolidColorBrush ToBrush(this Color self, double opacity)
+        public static SolidColorBrush ToBrush(this Color self, double opacity = 1)
         {
             return new SolidColorBrush(self.ToAlpha(opacity));
         }

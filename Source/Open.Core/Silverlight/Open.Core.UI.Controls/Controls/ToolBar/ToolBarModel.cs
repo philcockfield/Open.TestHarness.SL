@@ -33,7 +33,6 @@ namespace Open.Core.UI.Controls
 {
     /// <summary>A laid up structure of tools.</summary>
     [Export(typeof(IToolBar))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ToolBarModel : ToolBase, IToolBar
     {
         #region Event Handlers
@@ -181,7 +180,7 @@ namespace Open.Core.UI.Controls
 
         public class Importer : ImporterBase
         {
-            [ImportMany]
+            [ImportMany(RequiredCreationPolicy = CreationPolicy.NonShared)]
             public IEnumerable<Lazy<IToolBarView, IIdentifiable>> Views { get; set; }
         }
     }

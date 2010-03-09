@@ -39,44 +39,41 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
 {
+    [Tag("current")]
     [TestClass]
     public class VisualTreeExtensionsTest : SilverlightUnitTest
     {
-        #region Tests
-        //[TestMethod]
-        //[Asynchronous]
-        //public void ShouldGetElementFromViewModel()
-        //{
-        //    var itemsControl = new ItemsControl
-        //                           {
-        //                               ItemTemplate = SampleTemplates.GetDataTemplate("GetElementFromViewModel.Test")
-        //                           };
-
-        //    var model1 = new Stub{Text = "one"};
-        //    var model2 = new Stub{Text = "two"};
-        //    var model3 = new Stub{Text = "three"};
-        //    var collection = new ObservableCollection<Stub> { model1, model2, model3 };
-        //    itemsControl.ItemsSource = collection;
-
-        //    AddAndWaitForLoaded(itemsControl);
-
-        //    // ---
-
-        //    var element1 = itemsControl.GetElementFromViewModel<Stub>(model1);
-        //    element1.ShouldBeInstanceOfType<Placeholder>();
-        //}
-        #endregion
-
-        #region Stubs
-        public class Stub : ViewModelBase
+        [TestMethod]
+        public void ShouldRemoveFromVisualTreeInGrid()
         {
-            /// <summary>Gets or sets .</summary>
-            public string Text
-            {
-                get { return GetPropertyValue<Stub, string>(m => m.Text); }
-                set { SetPropertyValue<Stub, string>(m => m.Text, value); }
-            }
+            var item = new TextBlock();
+            var parent = new Grid();
+            parent.Children.Add(item);
+
+            item.Parent.ShouldBe(parent);
+            item.RemoveFromVisualTree();
+            item.Parent.ShouldBe(null);
         }
-        #endregion
+
+        [TestMethod]
+        public void ShouldRemoveFromVisualTreeInBorder()
+        {
+            var item = new TextBlock();
+            var parent = new Border { Child = item };
+
+            item.Parent.ShouldBe(parent);
+            item.RemoveFromVisualTree();
+            item.Parent.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotFailWhenRemoveFromVisualTreeIsCalled()
+        {
+            ((UIElement)null).RemoveFromVisualTree();
+            new TextBlock().RemoveFromVisualTree();
+        }
+
+
+
     }
 }

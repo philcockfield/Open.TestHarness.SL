@@ -91,7 +91,8 @@
       <Link>Model\ViewTemplate.cs</Link>
     </Compile>
     <Compile Include="Converter\VisibilityHiddenConverter.cs" />
-    <Compile Include="Extensions\FrameworkElementExtensions.CLR.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.Clr.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.Clr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\AnimationUtil.wpf.cs" />
   </ItemGroup>

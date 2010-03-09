@@ -86,6 +86,20 @@ namespace Open.Core.Common
             if (!throwError) return false;
             throw new ArgumentOutOfRangeException(string.Format("The value {0} cannot be cast to a '{1}' enum.", enumValue, typeof(TEnum).Name));
         }
+
+        /// <summary>Determines whether the number is odd.</summary>
+        /// <param name="value">The value to examine.</param>
+        public static bool IsOdd(this int value)
+        {
+            return !value.IsEven();
+        }
+
+        /// <summary>Determines whether the number is odd.</summary>
+        /// <param name="value">The value to examine.</param>
+        public static bool IsEven(this int value)
+        {
+            return value % 2 == 0;
+        }
         #endregion
 
         #region Methods - File Size

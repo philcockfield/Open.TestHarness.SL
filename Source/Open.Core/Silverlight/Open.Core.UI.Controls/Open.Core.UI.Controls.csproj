@@ -176,6 +176,10 @@
       <DependentUpon>HtmlDocument.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\Lists\SelectionList.xaml.cs">
+      <DependentUpon>SelectionList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Lists\SelectionListViewModel.cs" />
     <Compile Include="Controls\OutputLog\OutputLog.ViewModel.cs" />
     <Compile Include="Controls\OutputLog\OutputLog.xaml.cs">
       <DependentUpon>OutputLog.xaml</DependentUpon>
@@ -194,6 +198,7 @@
       <DependentUpon>StatusIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Text\CoreTextBox.cs" />
+    <Compile Include="Controls\ToolBar\Controllers\ToolLayoutController.cs" />
     <Compile Include="Controls\ToolBar\ToolBarModel.cs" />
     <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
       <DependentUpon>ToolBarView.xaml</DependentUpon>
@@ -323,6 +328,14 @@
     <Page Include="Controls\HtmlDocument.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Lists\SelectionList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Lists\SelectionListTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\OutputLog\OutputLog.xaml">
       <Generator>MSBuild:Compile</Generator>
