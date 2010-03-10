@@ -101,17 +101,6 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls
             viewModel.Dispose();
             viewModel.RenderTemplate.ShouldBe(null);
         }
-
-        [TestMethod]
-        public void ShouldRemoveFromVisualTreeWhenDisposed()
-        {
-            var item = new Placeholder();
-            viewModel.Content = item;
-            item.Parent.ShouldNotBe(null);
-
-            viewModel.Dispose();
-            item.Parent.ShouldBe(null);
-        }
         #endregion
     }
 }

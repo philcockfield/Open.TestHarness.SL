@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Linq;
 using System.Windows.Controls;
 using Open.Core.Common;
 
@@ -16,6 +17,7 @@ namespace Open.Core.UI.Controls
         {
             InitializeComponent();
             dataContextObserver = new DataContextObserver(this, OnDataContextChanged);
+            if (ViewModel != null) OnDataContextChanged();
         }
         #endregion
 
@@ -35,6 +37,7 @@ namespace Open.Core.UI.Controls
                 viewModelObserver = new PropertyObserver<IContentContainer>(ViewModel)
                     .RegisterHandler(m => m.Content, m => OnChanged())
                     .RegisterHandler(m => m.ContentTemplate, m => OnChanged());
+                ViewModel.Disposed += delegate { ClearContentElement(); };
             }
         }
 
@@ -55,7 +58,12 @@ namespace Open.Core.UI.Controls
             }
             else
             {
-                elementContainer.Child = element;
+                if (!elementContainer.Children.Contains(element))
+                {
+                    ClearContentElement();
+                    element.RemoveFromVisualTree();
+                    elementContainer.Children.Add(element);
+                }
             }
         }
         #endregion
@@ -72,7 +80,11 @@ namespace Open.Core.UI.Controls
         #region Internal
         private void ClearContentElement()
         {
-            elementContainer.Child = null;
+            foreach (var child in elementContainer.Children.ToList())
+            {
+                elementContainer.Children.Remove(child);
+            }
+            elementContainer.UpdateLayout();
         }
         #endregion
     }

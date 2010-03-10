@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -100,6 +101,20 @@ namespace Open.Core.Test.ViewTests.Core.Controls.Lists
         public void Set_ItemDividerColor__Red(SelectionList control)
         {
             ViewModel.ItemDividerColor = Colors.Red.ToBrush(0.3);
+        }
+
+        [ViewTest]
+        public void Select_First(SelectionList control)
+        {
+            if (ViewModel.Items.IsEmpty()) return;
+            ViewModel.SelectedItem = ViewModel.Items.First();
+        }
+
+        [ViewTest]
+        public void Select_Last(SelectionList control)
+        {
+            if (ViewModel.Items.IsEmpty()) return;
+            ViewModel.SelectedItem = ViewModel.Items.Last();
         }
         #endregion
     }

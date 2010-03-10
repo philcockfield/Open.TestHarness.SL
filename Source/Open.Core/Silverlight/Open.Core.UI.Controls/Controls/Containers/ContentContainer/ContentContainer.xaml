@@ -13,9 +13,7 @@
             <ContentPresenter />
         </ContentControl>
 
-        <Border x:Name="elementContainer" x:FieldModifier="private" />
+        <Grid x:Name="elementContainer" x:FieldModifier="private" />
 
     </Grid >
-    
-    
 </UserControl>

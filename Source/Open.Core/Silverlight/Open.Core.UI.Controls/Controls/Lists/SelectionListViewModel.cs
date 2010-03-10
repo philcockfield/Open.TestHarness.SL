@@ -53,7 +53,7 @@ namespace Open.Core.UI.Controls
         private static readonly Brush defaultDividerColor = Colors.Black.ToBrush(0.15);
         
         private readonly ResourceDictionary templates;
-        private object selectedItem;
+        private ItemViewModel selectedItem;
 
 
         /// <summary>Constructor.</summary>
@@ -83,18 +83,14 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the currently selected item.</summary>
         public object SelectedItem
         {
-            get { return selectedItem; }
+            get { return SelectedItemWrapper == null ? null : SelectedItemWrapper.Value; }
             set
             {
                 // Setup initial conditions.
                 if (value == SelectedItem) return;
 
-                // Store value.
-                selectedItem = value;
-
-                // Alert listeners.
-                OnPropertyChanged<T>(m => m.SelectedItem);
-                OnSelectionChanged();
+                // Pass execution to the wrapper method.
+                SelectedItemWrapper = ItemsWrapper.GetWrapper(value);
             }
         }
 
@@ -128,6 +124,23 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Properties - View Model Internals
+        public ItemViewModel SelectedItemWrapper
+        {
+            get { return selectedItem; }
+            set
+            {
+                // Setup initial conditions.
+                if (value == SelectedItem) return;
+
+                // Store value.
+                selectedItem = value;
+
+                // Alert listeners.
+                OnPropertyChanged<T>(m => m.SelectedItem, m => m.SelectedItemWrapper);
+                OnSelectionChanged();
+            }
+        }
+
         public ObservableCollectionWrapper<object, ItemViewModel> ItemsWrapper { get; private set; }
         public bool IsItemsVisible { get { return Items.Count != 0; } }
         public object EmptyMessageValue

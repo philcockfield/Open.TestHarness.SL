@@ -23,7 +23,7 @@
                 Visibility="{Binding IsItemsVisible, Converter={StaticResource visibilityConverter}}"
                 ItemsSource="{Binding ItemsWrapper}"
                 ItemContainerStyle="{StaticResource ListBox.Item.FullWidth}" 
-                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                SelectedItem="{Binding SelectedItemWrapper, Mode=TwoWay}"
                 BorderBrush="Transparent">
             <i:Interaction.Behaviors>
                 <ab:ListBoxMouseWheelScroller />

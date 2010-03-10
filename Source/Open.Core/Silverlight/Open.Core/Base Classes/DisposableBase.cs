@@ -38,7 +38,6 @@ namespace Open.Core.Common
         public DisposableBase() : base() { }
         #endregion
 
-
         #region Dispose | Finalize
         ~DisposableBase()
         {

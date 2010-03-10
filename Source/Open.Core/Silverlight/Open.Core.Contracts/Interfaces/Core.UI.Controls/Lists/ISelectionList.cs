@@ -42,7 +42,7 @@ namespace Open.Core.UI.Controls
         ObservableCollection<object> Items { get; }
 
         /// <summary>Gets or sets the currently selected item.</summary>
-        object SelectedItem { get; }
+        object SelectedItem { get; set; }
 
         /// <summary>Gets or sets the View shown when the list is empty (null to use default).</summary>
         object EmptyMessage { get; set; }

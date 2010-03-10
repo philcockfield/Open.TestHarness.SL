@@ -59,8 +59,8 @@ namespace Open.Core.UI.Controls
                 // Override the 'ContentTemplate' if an explicit 'Content' value has been specified.
                 if (Content == null) return ContentTemplate;
                 return Content.GetType().IsA<UIElement>() 
-                    ? null // Explicitly set UI elements are inserted and removed manually by control listeneing to this view-model.
-                    : DefaultTemplate;
+                            ? null // Explicitly set UI elements are inserted and removed manually by the control that this view-model is bound to.
+                            : DefaultTemplate;
             }
         }
         #endregion
