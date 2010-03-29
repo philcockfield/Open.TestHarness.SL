@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows;
 using Open.Core.Common;
 
@@ -10,6 +11,20 @@ namespace Open.Core.UI.Controls
     [Export(typeof(IContentContainer))]
     public class ContentContainerViewModel : ViewModelBase, IContentContainer
     {
+        #region Event Handlers
+        /// <summary>Fires when the 'Content' value changes.</summary>
+        public event EventHandler ContentChanged;
+        private void FireContentChanged(){if (ContentChanged != null) ContentChanged(this, new EventArgs());}
+
+        /// <summary>Fires when the 'ContentTemplate' value changes.</summary>
+        public event EventHandler ContentTemplateChanged;
+        private void FireContentTemplateChanged(){if (ContentTemplateChanged != null) ContentTemplateChanged(this, new EventArgs());}
+
+        /// <summary>Fires when the 'Model' value changes.</summary>
+        public event EventHandler ModelChanged;
+        private void FireModelChanged(){if (ModelChanged != null) ModelChanged(this, new EventArgs());}
+        #endregion
+
         #region Head
         private static readonly DataTemplate defaultTemplate = Templates.Instance.Dictionary["ContentContainer.DefaultTemplate"] as DataTemplate;
 
@@ -25,7 +40,12 @@ namespace Open.Core.UI.Controls
         public DataTemplate ContentTemplate
         {
             get { return GetPropertyValue<T, DataTemplate>(m => m.ContentTemplate); }
-            set { SetPropertyValue<T, DataTemplate>(m => m.ContentTemplate, value, m => m.RenderTemplate); }
+            set
+            {
+                if (Equals(value, ContentTemplate)) return;
+                SetPropertyValue<T, DataTemplate>(m => m.ContentTemplate, value, m => m.RenderTemplate);
+                FireContentTemplateChanged();
+            }
         }
 
         /// <summary>Gets or sets a specific UI element to render (overrides 'ContentTemplate').</summary>
@@ -34,7 +54,9 @@ namespace Open.Core.UI.Controls
             get { return GetPropertyValue<T, object>(m => m.Content); }
             set
             {
+                if (Equals(value, Content)) return;
                 SetPropertyValue<T, object>(m => m.Content, value, m => m.RenderTemplate);
+                FireContentChanged();
             }
         }
 
@@ -42,7 +64,12 @@ namespace Open.Core.UI.Controls
         public object Model
         {
             get { return GetPropertyValue<T, object>(m => m.Model); }
-            set { SetPropertyValue<T, object>(m => m.Model, value, m => m.BindingModel); }
+            set
+            {
+                if (Equals(value, Model)) return;
+                SetPropertyValue<T, object>(m => m.Model, value, m => m.BindingModel);
+                FireModelChanged();
+            }
         }
         #endregion
 

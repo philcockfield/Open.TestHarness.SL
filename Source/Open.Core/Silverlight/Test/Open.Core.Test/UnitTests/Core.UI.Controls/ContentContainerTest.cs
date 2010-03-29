@@ -112,6 +112,42 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls
             viewModel.Dispose();
             viewModel.RenderTemplate.ShouldBe(null);
         }
+
+        [Tag("current")]
+        [TestMethod]
+        public void ShouldFireChangeEvents()
+        {
+            var contentChangedCount = 0;
+            var contentTemplateChangedCount = 0;
+            var modelChangedCount = 0;
+
+            viewModel = new ContentContainerViewModel();
+            viewModel.ContentChanged += delegate { contentChangedCount++; };
+            viewModel.ContentTemplateChanged += delegate { contentTemplateChangedCount++; };
+            viewModel.ModelChanged += delegate { modelChangedCount++; };
+
+            var content = new Border();
+            var template = new DataTemplate();
+            var model = "My Model";
+
+            viewModel.Content = content;
+            viewModel.Content = content;
+            viewModel.Content = null;
+            viewModel.Content = null;
+            contentChangedCount.ShouldBe(2);
+
+            viewModel.ContentTemplate = template;
+            viewModel.ContentTemplate = template;
+            viewModel.ContentTemplate = null;
+            viewModel.ContentTemplate = null;
+            contentTemplateChangedCount.ShouldBe(2);
+
+            viewModel.Model = model;
+            viewModel.Model = model;
+            viewModel.Model = null;
+            viewModel.Model = null;
+            contentTemplateChangedCount.ShouldBe(2);
+        }
         #endregion
     }
 }
