@@ -33,7 +33,7 @@ namespace Open.Core.Common
     ///   executing callback methods (i.e. handlers) registered for properties of that object.
     /// </summary>
     /// <typeparam name="TPropertySource">The type of object to monitor for property changes.</typeparam>
-    public partial class PropertyObserver<TPropertySource> : INotifyDisposed where TPropertySource : INotifyPropertyChanged
+    public partial class PropertyObserver<TPropertySource> : DisposableBase where TPropertySource : INotifyPropertyChanged
     {
         #region Head
         private readonly Dictionary<string, Action<TPropertySource>> propertyNameToHandlerMap;
@@ -50,53 +50,24 @@ namespace Open.Core.Common
             if (IsNull(propertySource)) throw new ArgumentNullException("propertySource");
 
             // Store values.
-            propertySourceRef = new WeakReference(propertySource);
+            propertySourceRef = new WeakReference(propertySource, false);
             propertyNameToHandlerMap = new Dictionary<string, Action<TPropertySource>>();
 
             // Wire up events.
             var disposableSource = propertySource as INotifyDisposed;
             if (disposableSource != null) disposableSource.Disposed += Handle_Source_Disposed;
         }
-        #endregion
 
-        #region Dispose | Finalize
-        ~PropertyObserver()
+        protected override void OnDisposed()
         {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool isDisposing)
-        {
-            // Setup initial conditions.
-            if (IsDisposed) return;
-
-            // Perform disposal or managed resources.
-            if (isDisposing)
+            base.OnDisposed();
+            
+            // Unregister all handlers.
+            foreach (var propertyName in propertyNameToHandlerMap.Keys.ToArray())
             {
-                // Unregister all handlers.
-                foreach (var propertyName in propertyNameToHandlerMap.Keys.ToArray())
-                {
-                    UnregisterHandler(propertyName);
-                }
+                UnregisterHandler(propertyName);
             }
-
-            // Finish up.
-            IsDisposed = true;
-            OnDisposed();
         }
-
-        /// <summary>Gets whether the object has been disposed.</summary>
-        public bool IsDisposed { get; private set; }
-
-        /// <summary>Fires when the object has been disposed of (via the 'Dispose' method.  See 'IDisposable' interface).</summary>
-        public event EventHandler Disposed;
-        private void OnDisposed(){if (Disposed != null) Disposed(this, new EventArgs());}
         #endregion
 
         #region Event Handlers
@@ -114,9 +85,34 @@ namespace Open.Core.Common
         #region Properties
         /// <summary>Gets the number of handlers that have been registered.</summary>
         public int Count { get { return propertyNameToHandlerMap.Count; } }
+
+        /// <summary>Gets the object being monitored.</summary>
+        public TPropertySource PropertySource
+        {
+            get
+            {
+                if (IsDisposed) return default(TPropertySource);
+                return propertySourceRef.IsAlive
+                                ? (TPropertySource)propertySourceRef.Target 
+                                : default(TPropertySource);
+            }
+        }
         #endregion
 
         #region Methods
+                /// <summary>
+        ///   Registers a callback to be invoked when the PropertyChanged event has been raised for the specified property.
+        /// </summary>
+        /// <param name="expression">A lambda expression like 'n => n.PropertyName'.</param>
+        /// <param name="handler">The callback to invoke when the property has changed.</param>
+        /// <returns>The object on which this method was invoked, to allow for multiple invocations chained together.</returns>
+        public PropertyObserver<TPropertySource> RegisterHandler(
+                            Expression<Func<TPropertySource, object>> expression,
+                            Action handler)
+        {
+            return RegisterHandler(expression, m => { if (handler != null) handler(); });
+        }
+
         /// <summary>
         ///   Registers a callback to be invoked when the PropertyChanged event has been raised for the specified property.
         /// </summary>
@@ -124,8 +120,8 @@ namespace Open.Core.Common
         /// <param name="handler">The callback to invoke when the property has changed.</param>
         /// <returns>The object on which this method was invoked, to allow for multiple invocations chained together.</returns>
         public PropertyObserver<TPropertySource> RegisterHandler(
-                        Expression<Func<TPropertySource, object>> expression,
-                        Action<TPropertySource> handler)
+                            Expression<Func<TPropertySource, object>> expression,
+                            Action<TPropertySource> handler)
         {
             // Setup initial conditions.
             if (expression == null) throw new ArgumentNullException("expression");
@@ -136,7 +132,7 @@ namespace Open.Core.Common
             if (handler == null) throw new ArgumentNullException("handler");
 
             // Register the property.
-            var propertySource = GetPropertySource();
+            var propertySource = PropertySource;
             if (!IsNull(propertySource))
             {
                 propertyNameToHandlerMap[propertyName] = handler;
@@ -170,25 +166,13 @@ namespace Open.Core.Common
         private void UnregisterHandler(string propertyName)
         {
             // Setup initial conditions.
-            var propertySource = GetPropertySource();
+            var propertySource = PropertySource;
             if (IsNull(propertySource)) return;
             if (!propertyNameToHandlerMap.ContainsKey(propertyName)) return;
 
             // Perform the unregistration.
             propertyNameToHandlerMap.Remove(propertyName);
             UnregisterHandler(propertySource, propertyName); // NB: This calls out to partial-class implementations.
-        }
-
-        private TPropertySource GetPropertySource()
-        {
-            try
-            {
-                return (TPropertySource)propertySourceRef.Target;
-            }
-            catch
-            {
-                return default(TPropertySource);
-            }
         }
 
         private static bool IsNull(TPropertySource source)

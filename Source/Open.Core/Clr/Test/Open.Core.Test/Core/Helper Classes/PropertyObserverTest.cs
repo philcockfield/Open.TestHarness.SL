@@ -62,6 +62,28 @@ namespace Open.Core.Common.Test.Core.Common.Helper_Classes
         }
 
         [TestMethod]
+        public void ShouldRegisterHandlerWithParameterlessAction()
+        {
+            var stub = new Stub();
+
+            var fireCount = 0;
+            var observer = new PropertyObserver<Stub>(stub).RegisterHandler(s => s.Text, () => { fireCount++; });
+            observer.Count.ShouldBe(1);
+
+            stub.Text = "Hello";
+            fireCount.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldRegisterHandlerWithNullCallbackAction()
+        {
+            var stub = new Stub();
+            var observer = new PropertyObserver<Stub>(stub).RegisterHandler(s => s.Text, () => { });
+            observer.Count.ShouldBe(1);
+            stub.Text = "Hello";
+        }
+
+        [TestMethod]
         public void ShouldUnregisterHandler()
         {
             var stub = new Stub();
@@ -183,6 +205,26 @@ namespace Open.Core.Common.Test.Core.Common.Helper_Classes
             stub.Dispose();
             count.ShouldBe(1);
         }
+
+        [TestMethod]
+        public void ShouldReturnPropertySource()
+        {
+            var stub = new Stub();
+            var observer = new PropertyObserver<Stub>(stub);
+            observer.PropertySource.ShouldBe(stub);
+        }
+
+        [TestMethod]
+        public void ShouldNotReturnPropertySource()
+        {
+            var stub = new Stub();
+            var observer = new PropertyObserver<Stub>(stub);
+
+            stub = null;
+            GC.Collect();
+            observer.PropertySource.ShouldBe(null);
+        }
+
         #endregion
 
         #region Stubs
