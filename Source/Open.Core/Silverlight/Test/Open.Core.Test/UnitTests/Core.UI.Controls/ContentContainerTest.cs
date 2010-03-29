@@ -47,6 +47,17 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls
         }
 
         [TestMethod]
+        public void ShouldCreateViewModelFromView()
+        {
+            view = new ContentContainer();
+            view.ViewModel.ShouldBe(null);
+
+            var model = view.CreateViewModel();
+            model.ShouldBeInstanceOfType<IContentContainer>();
+            view.ViewModel.ShouldBe(model);
+        }
+
+        [TestMethod]
         public void ShouldFirePropertyChanged()
         {
             viewModel.ShouldFirePropertyChanged<T>(

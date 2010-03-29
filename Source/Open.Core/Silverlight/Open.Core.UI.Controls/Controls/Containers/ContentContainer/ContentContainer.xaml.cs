@@ -77,6 +77,19 @@ namespace Open.Core.UI.Controls
         }
         #endregion
 
+        #region Methods
+        /// <summary>Creates a fresh view-model and assigns it to the ViewModel property.</summary>
+        /// <remarks>
+        ///     Typically the a view-model is bound to this property, and so for performance reasons
+        ///     a default view-model is not created.  This method allows a "View First" usage of the control.
+        /// </remarks>
+        public IContentContainer CreateViewModel()
+        {
+            ViewModel = new ContentContainerViewModel();
+            return ViewModel;
+        }
+        #endregion
+
         #region Internal
         private void ClearContentElement()
         {
