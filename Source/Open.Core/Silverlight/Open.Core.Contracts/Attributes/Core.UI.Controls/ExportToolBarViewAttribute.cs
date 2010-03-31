@@ -14,6 +14,6 @@ namespace Open.Core.UI.Controls
         }
 
         /// <summary>Gets the key that uniquely identifies the ToolBar view.</summary>
-        public object Key { get; set; }
+        public object Id { get; set; }
     }
 }

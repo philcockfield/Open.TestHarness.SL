@@ -76,7 +76,7 @@ namespace Open.Core.UI.Controls
         public override FrameworkElement CreateView()
         {
             if (importer == null) importer = new Importer();
-            var viewImport = importer.Views.FirstOrDefault(m => Equals(m.Metadata.Key, ViewImportKey));
+            var viewImport = importer.Views.FirstOrDefault(m => Equals(m.Metadata.Id, ViewImportKey));
             var view = viewImport == null ? null : viewImport.Value as FrameworkElement;
             if (view != null) view.DataContext = this;
             return view;

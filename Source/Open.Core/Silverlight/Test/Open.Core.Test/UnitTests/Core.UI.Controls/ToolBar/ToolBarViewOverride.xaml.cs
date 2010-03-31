@@ -4,7 +4,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
-    [ExportToolBarView(Key = ExportKey)]
+    [ExportToolBarView(Id = ExportKey)]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ToolBarViewOverride : UserControl, IToolBarView
     {

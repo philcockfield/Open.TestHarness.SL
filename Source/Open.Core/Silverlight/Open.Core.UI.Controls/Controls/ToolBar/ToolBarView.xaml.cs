@@ -28,7 +28,7 @@ using Open.Core.Common;
 namespace Open.Core.UI.Controls
 {
     /// <summary>Renders a toolbar.</summary>
-    [ExportToolBarView(Key = ToolBarModel.DefaultViewExportKey)]
+    [ExportToolBarView(Id = ToolBarModel.DefaultViewExportKey)]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ToolBarView : UserControl, IToolBarView
     {
