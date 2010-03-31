@@ -19,7 +19,6 @@ using T = Open.Core.UI.Controls.ContentContainerViewModel;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls
 {
-    [Tag("current")]
     [TestClass]
     public class ContentContainerTest
     {
@@ -113,7 +112,6 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls
             viewModel.RenderTemplate.ShouldBe(null);
         }
 
-        [Tag("current")]
         [TestMethod]
         public void ShouldFireChangeEvents()
         {

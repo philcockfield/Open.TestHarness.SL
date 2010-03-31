@@ -49,11 +49,10 @@ namespace Open.Core.Common.Test.Attributes
             Assert.AreEqual("My Name", ViewTestClassAttribute.GetDisplayName(instance));
         }
 
-
-        [TestMethod][ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void ShouldThrowErrorWhenNonDecoratedClassPassedToGetDisplayName()
         {
-            ViewTestClassAttribute.GetDisplayName("not an instance");
+            Should.Throw<ArgumentException>(() => ViewTestClassAttribute.GetDisplayName("not an instance"));
         }
 
         [TestMethod]

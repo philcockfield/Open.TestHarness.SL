@@ -80,11 +80,14 @@
     </Compile>
     <Compile Include="Attributes\Core.UI.Controls\ExportToolBarViewAttribute.cs" />
     <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IContentContainer.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
-    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />
     <Compile Include="Interfaces\Core\IError.cs" />
     <Compile Include="Interfaces\Core\ICallback.cs" />
@@ -97,9 +100,6 @@
     <Compile Include="Interfaces\Core\IViewTemplate.cs" />
     <Compile Include="Interfaces\Core.Composite\IDelegateCommand.cs" />
     <Compile Include="Interfaces\Core.Composite\IActiveAware.cs" />
-    <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
-    <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
-    <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core\IDomainCredential.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
   </ItemGroup>

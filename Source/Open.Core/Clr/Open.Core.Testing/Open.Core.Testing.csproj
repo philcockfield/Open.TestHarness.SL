@@ -55,10 +55,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
-      <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts %28Open.Core\Clr\Open.Core.Contracts%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
       <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>

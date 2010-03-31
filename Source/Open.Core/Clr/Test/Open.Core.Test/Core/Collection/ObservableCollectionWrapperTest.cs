@@ -223,12 +223,11 @@ namespace Open.Core.Common.Test.Collection
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
         public void ShouldThrowWhenCleared()
         {
             var collectionA = new ObservableCollection<Model>();
             var wrapper = new ObservableCollectionWrapper<Model, ModelWrapper>(collectionA, item => new ModelWrapper(item));
-            collectionA.Clear();
+            Should.Throw<NotSupportedException>(collectionA.Clear);
         }
 
 

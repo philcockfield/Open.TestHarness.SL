@@ -45,13 +45,11 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void ShouldThowErrorWhenGettingDoubleChildInWrongFormat()
         {
             var root = new XElement("root", new XElement("child", "text value"));
-            root.GetChildValueAsDouble("child", 0);
+            Should.Throw<FormatException>(() => root.GetChildValueAsDouble("child", 0));
         }
-
 
         [TestMethod]
         public void ShouldGetAttributeValue()

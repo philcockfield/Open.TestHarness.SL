@@ -34,13 +34,11 @@ namespace Open.Core.Common.Test.Extensions
     {
         #region Tests
         [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
         public void ShouldFailToGetResourceDictionaryFromAssembly()
         {
             var assembly = GetType().Assembly;
-            var dictionary = assembly.GetResourceDictionary("PathNotExist/Dictionary.xaml");
+            Should.Throw<NotFoundException>(() => assembly.GetResourceDictionary("PathNotExist/Dictionary.xaml"));
         }
-
 
         [TestMethod]
         public void ShouldDetermineIfATypeIsNumeric()

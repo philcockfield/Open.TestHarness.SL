@@ -40,12 +40,11 @@ namespace Open.Core.Common.Test.Extensions
             nullValue.ShouldBe(null);
         }
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldThrowErrorFromShouldBeAssertion()
         {
-            "one".ShouldBe("two");
+            Should.Throw<AssertionException>(() => "one".ShouldBe("two"));
             const string nullValue = null;
-            nullValue.ShouldBe("value");
+            Should.Throw<AssertionException>(() => nullValue.ShouldBe("value"));
         }
 
         [TestMethod]
@@ -56,12 +55,11 @@ namespace Open.Core.Common.Test.Extensions
             nullValue.ShouldNotBe("value");
         }
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldThrowErrorFromShouldNotBeAssertion()
         {
-            "one".ShouldNotBe("one");
+            Should.Throw<AssertionException>(() => "one".ShouldNotBe("one"));
             const string nullValue = null;
-            nullValue.ShouldNotBe(null);
+            Should.Throw<AssertionException>(() => nullValue.ShouldNotBe(null));
         }
 
         [TestMethod]
@@ -114,11 +112,10 @@ namespace Open.Core.Common.Test.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldContainThrow()
         {
             var list = new List<string> { "one", "two", "three" };
-            list.ShouldContain("eight");
+            Should.Throw<AssertionException>(() => list.ShouldContain("eight"));
         }
 
         [TestMethod]
@@ -130,19 +127,17 @@ namespace Open.Core.Common.Test.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldNotContainThrow()
         {
             var list = new List<string> { "one", "two", "three" };
-            list.ShouldNotContain("one");
+            Should.Throw<AssertionException>(() => list.ShouldNotContain("one"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldNotContainMultipleThrow()
         {
             var list = new List<string> { "one", "two", "three" };
-            list.ShouldNotContain("one", "two", "three", "nine");
+            Should.Throw<AssertionException>(() => list.ShouldNotContain("one", "two", "three", "nine"));
         }
 
         [TestMethod]
@@ -153,11 +148,10 @@ namespace Open.Core.Common.Test.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldBeEmptyThrow()
         {
             var list = new List<string> { "one", "two", "three" };
-            list.ShouldBeEmpty();
+            Should.Throw<AssertionException>(() => list.ShouldBeEmpty());
         }
 
         [TestMethod]
@@ -168,11 +162,10 @@ namespace Open.Core.Common.Test.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldNotBeEmptyThrow()
         {
             var list = new List<string>();
-            list.ShouldNotBeEmpty();
+            Should.Throw<AssertionException>(() => list.ShouldNotBeEmpty());
         }
         #endregion
 
@@ -191,14 +184,13 @@ namespace Open.Core.Common.Test.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AssertionException))]
         public void ShouldThrowWhenMultiplePropertiesPassedButOneDidNotFire()
         {
             var model = new SampleModel();
-            model.ShouldFirePropertyChanged(() =>
-                        {
-                            model.Text = "Hello";
-                        }, SampleModel.PropText, SampleModel.PropNumber);
+            Should.Throw<AssertionException>(() => model.ShouldFirePropertyChanged(() =>
+                                                                                       {
+                                                                                           model.Text = "Hello";
+                                                                                       }, SampleModel.PropText, SampleModel.PropNumber));
         }
 
         [TestMethod]

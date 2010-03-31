@@ -132,12 +132,12 @@ namespace Open.Core.UI.Silverlight.Test.Common.Collection
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
         public void ShouldThrowWhenClearCalled()
         {
             var collection = new ObservableCollection<Sample>();
             var monitor = new ObservableCollectionMonitor<Sample>(collection, (c, item) => WireEvent(item, true), (c, item) => WireEvent(item, false));
-            collection.Clear();
+
+            Should.Throw<NotSupportedException>(collection.Clear);
         }
         #endregion
 

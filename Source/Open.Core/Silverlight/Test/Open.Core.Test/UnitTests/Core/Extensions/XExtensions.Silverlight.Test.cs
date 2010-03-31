@@ -50,11 +50,10 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void ShouldThowErrorWhenGettingStreamChildInWrongFormat()
         {
             var root = new XElement("root", new XElement("child", "text value"));
-            root.GetChildValueAsStream("child");
+            Should.Throw<FormatException>(() => root.GetChildValueAsStream("child"));
         }
         #endregion
     }

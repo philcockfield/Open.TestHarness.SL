@@ -69,10 +69,12 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void ShouldFailWhenBadFormattedStringWhenLoadingImageFromBase64EncodedString()
         {
-            var image = "not an image".FromBase64ToImage();
+            Should.Throw<FormatException>(() =>
+                                              {
+                                                  var image = "not an image".FromBase64ToImage();
+                                              });
         }
 
         [TestMethod]
@@ -124,10 +126,9 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ShouldThrowWhenIncompleteColorPassed()
         {
-            var color = "   1, 2, 3   ".FromColorString();
+            Should.Throw<ArgumentOutOfRangeException>(() => "   1, 2, 3   ".FromColorString());
         }
 
         [TestMethod]
@@ -200,13 +201,6 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
             margin.Right.ShouldBe(0d);
             margin.Bottom.ShouldBe(0d);
         }
-
-        //[TestMethod]
-        //[ExpectedException(typeof(ArgumentOutOfRangeException))]
-        //public void ShouldThrowWhenIncompleteThicknessPassed()
-        //{
-        //    var color = "   1, 2, 3   ".FromThicknessString();
-        //}
         #endregion
     }
 }

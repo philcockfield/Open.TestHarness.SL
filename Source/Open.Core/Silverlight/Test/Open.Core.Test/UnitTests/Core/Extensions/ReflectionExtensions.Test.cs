@@ -44,11 +44,14 @@ namespace Open.Core.Common.Test.Extensions
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
         public void ShouldFailToGetResourceDictionaryFromAssembly()
         {
             var assembly = GetType().Assembly;
-            var dictionary = assembly.GetResourceDictionary("PathNotExist/Dictionary.xaml");
+
+            Should.Throw<NotFoundException>(() => 
+                    {
+                        var dictionary = assembly.GetResourceDictionary("PathNotExist/Dictionary.xaml"); 
+                    });
         }
 
         public enum MyEnum
