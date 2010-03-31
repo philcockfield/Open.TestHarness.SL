@@ -21,8 +21,8 @@
 //------------------------------------------------------
 
 using System;
-using System.Net;
 using System.ComponentModel;
+using System.Net;
 
 namespace Open.Core.Common
 {
@@ -40,6 +40,9 @@ namespace Open.Core.Common
 
         /// <summary>Gets or sets the password.</summary>
         string Password { get; set; }
+
+        /// <summary>Gets the 'NetworkCredential' object based on the current settings.</summary>
+        NetworkCredential NetworkCredential { get; }
 
         /// <summary>Gets or sets whether the credentials are valid (null means validity has not been determined).</summary>
         bool? IsValid { get; set; }

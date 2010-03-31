@@ -44,12 +44,12 @@ namespace Open.Core.Common.Test.Core.Common.Model
             credential = new DomainCredential();
         }
         #endregion
-        
+
         #region Tests
         [TestMethod]
         public void ShouldTurnNullIntoEmptyStringOnNetworkCredential()
         {
-            var nc = new NetworkCredential {UserName = null};
+            var nc = new NetworkCredential { UserName = null };
             nc.UserName.ShouldBe(String.Empty);
 
             nc.UserName = "Value";
@@ -65,11 +65,10 @@ namespace Open.Core.Common.Test.Core.Common.Model
             credential.IsValid.ShouldBe(null);
             credential.IsDomainRequired.ShouldBe(true);
 
-            //TEMP 
-            //credential.NetworkCredential.ShouldNotBe(null);
-            //credential.NetworkCredential.UserName.ShouldBe(String.Empty);
-            //credential.NetworkCredential.Domain.ShouldBe(String.Empty);
-            //credential.NetworkCredential.Password.ShouldBe(String.Empty);
+            credential.NetworkCredential.ShouldNotBe(null);
+            credential.NetworkCredential.UserName.ShouldBe(String.Empty);
+            credential.NetworkCredential.Domain.ShouldBe(String.Empty);
+            credential.NetworkCredential.Password.ShouldBe(String.Empty);
         }
 
         [TestMethod]
@@ -79,10 +78,9 @@ namespace Open.Core.Common.Test.Core.Common.Model
             credential.Password = "Password";
             credential.Domain = "Domain";
 
-            //TEMP 
-            //credential.NetworkCredential.UserName.ShouldBe("Name");
-            //credential.NetworkCredential.Password.ShouldBe("Password");
-            //credential.NetworkCredential.Domain.ShouldBe("Domain");
+            credential.NetworkCredential.UserName.ShouldBe("Name");
+            credential.NetworkCredential.Password.ShouldBe("Password");
+            credential.NetworkCredential.Domain.ShouldBe("Domain");
         }
 
         [TestMethod]
@@ -99,24 +97,22 @@ namespace Open.Core.Common.Test.Core.Common.Model
             credential.Domain.ShouldBe(null);
             credential.Password.ShouldBe(null);
 
-            //TEMP 
-            //credential.NetworkCredential.UserName.ShouldBe("");
-            //credential.NetworkCredential.Domain.ShouldBe("");
-            //credential.NetworkCredential.Password.ShouldBe("");
+            credential.NetworkCredential.UserName.ShouldBe("");
+            credential.NetworkCredential.Domain.ShouldBe("");
+            credential.NetworkCredential.Password.ShouldBe("");
         }
 
-        //TEMP 
-        //[TestMethod]
-        //public void ShouldFireNetworkCredentialChanged()
-        //{
-        //    credential.ShouldFirePropertyChanged<T>(() => credential.UserName = "Name", m => m.NetworkCredential);
-        //    credential.ShouldFirePropertyChanged<T>(() => credential.Password = "Password", m => m.NetworkCredential);
-        //    credential.ShouldFirePropertyChanged<T>(() => credential.Domain = "Domain", m => m.NetworkCredential);
+        [TestMethod]
+        public void ShouldFireNetworkCredentialChanged()
+        {
+            credential.ShouldFirePropertyChanged<T>(() => credential.UserName = "Name", m => m.NetworkCredential);
+            credential.ShouldFirePropertyChanged<T>(() => credential.Password = "Password", m => m.NetworkCredential);
+            credential.ShouldFirePropertyChanged<T>(() => credential.Domain = "Domain", m => m.NetworkCredential);
 
-        //    credential.ShouldNotFirePropertyChanged<T>(() => credential.UserName = "Name", m => m.NetworkCredential);
-        //    credential.ShouldNotFirePropertyChanged<T>(() => credential.Password = "Password", m => m.NetworkCredential);
-        //    credential.ShouldNotFirePropertyChanged<T>(() => credential.Domain = "Domain", m => m.NetworkCredential);
-        //}
+            credential.ShouldNotFirePropertyChanged<T>(() => credential.UserName = "Name", m => m.NetworkCredential);
+            credential.ShouldNotFirePropertyChanged<T>(() => credential.Password = "Password", m => m.NetworkCredential);
+            credential.ShouldNotFirePropertyChanged<T>(() => credential.Domain = "Domain", m => m.NetworkCredential);
+        }
 
         [TestMethod]
         public void ShouldReportIsPopulatedWithDomain()
@@ -165,11 +161,11 @@ namespace Open.Core.Common.Test.Core.Common.Model
             // --
 
             credential = new DomainCredential
-                             {
-                                 IsDomainRequired = false,
-                                 UserName = "name",
-                                 Password = "1234",
-                             };
+            {
+                IsDomainRequired = false,
+                UserName = "name",
+                Password = "1234",
+            };
             credential.IsPopulated.ShouldBe(true);
             credential.ShouldFirePropertyChanged<T>(() => credential.IsDomainRequired = true, m => m.IsPopulated);
             credential.IsPopulated.ShouldBe(false);
@@ -177,11 +173,11 @@ namespace Open.Core.Common.Test.Core.Common.Model
             // --
 
             credential = new DomainCredential
-                            {
-                                IsDomainRequired = true,
-                                UserName = "name",
-                                Password = "1234",
-                            };
+            {
+                IsDomainRequired = true,
+                UserName = "name",
+                Password = "1234",
+            };
             credential.IsPopulated.ShouldBe(false);
             credential.ShouldFirePropertyChanged<T>(() => credential.IsDomainRequired = false, m => m.IsPopulated);
             credential.IsPopulated.ShouldBe(true);
@@ -189,12 +185,12 @@ namespace Open.Core.Common.Test.Core.Common.Model
             // --
 
             credential = new DomainCredential
-                        {
-                            IsDomainRequired = true,
-                            UserName = "name",
-                            Password = "1234",
-                            Domain = "domain"
-                        };
+            {
+                IsDomainRequired = true,
+                UserName = "name",
+                Password = "1234",
+                Domain = "domain"
+            };
             credential.IsPopulated.ShouldBe(true);
             credential.ShouldFirePropertyChanged<T>(() => credential.UserName = null, m => m.IsPopulated);
         }
