@@ -29,7 +29,7 @@ using Open.Core.Composition;
 namespace Open.Core.Common.Test.Core.MEF
 {
     [TestClass]
-    public class DirectoryPartInitializerTest
+    public class DirectoryCompositionInitializerTest
     {
         #region Head
         [TestInitialize]
