@@ -98,7 +98,8 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y  "$(ProjectDir)\ClientBin\Open.TestHarness.xap" "$(ProjectDir)\..\..\..\Bin\Bin.Silverlight\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

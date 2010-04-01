@@ -25,9 +25,14 @@ using System;
 namespace Open.Core
 {
     /// <summary>A uniquely identifiable object.</summary>
-    public interface IIdentifiable
+    public interface IIdentifiable<out T>
     {
         /// <summary>Gets the key that uniquely identifies the object.</summary>
-        Object Id { get; set; }
+        T Id { get; }
+    }
+
+    /// <summary>A uniquely identifiable object.</summary>
+    public interface IIdentifiable : IIdentifiable<object>
+    {
     }
 }
