@@ -386,7 +386,7 @@ namespace Open.Core.Common.Test.Collection
             public void Dispose() { IsDisposed = true; }
         }
 
-        private class StringWrapper : ViewModelBase
+        private class StringWrapper : ModelBase
         {
             public string Source { get; private set; }
             public StringWrapper(string source)

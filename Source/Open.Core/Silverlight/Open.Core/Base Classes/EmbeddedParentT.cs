@@ -44,7 +44,7 @@ namespace Open.Core.Common
     ///    3. Bind elements to the control properties using a path like this: {Binding Parent.PropertyName}
     ///        Make sure the property(s) you bind to are declared as a DependencyProperty.
     /// </remarks>
-    public class EmbeddedParent<T> : ViewModelBase where T : Control
+    public class EmbeddedParent<T> : ModelBase where T : Control
     {
         #region Head
         /// <summary>Constructor.</summary>

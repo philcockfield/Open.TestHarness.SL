@@ -207,9 +207,6 @@
     <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.cs">
       <Link>Model\Base Classes\ModelBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ViewModelBase.cs">
-      <Link>Model\Base Classes\ViewModelBase.cs</Link>
-    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Model\DomainCredential.cs">
       <Link>Model\DomainCredential.cs</Link>
     </Compile>

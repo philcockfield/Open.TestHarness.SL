@@ -120,7 +120,6 @@
     <Compile Include="Base Classes\NotifyPropertyChangedBase.cs" />
     <Compile Include="Base Classes\NotifyPropertyChangedInvoker.cs" />
     <Compile Include="Model\Base Classes\SettingsModelBase.cs" />
-    <Compile Include="Model\Base Classes\ViewModelBase.cs" />
     <Compile Include="Collection\ChildPropertyChangedEventArgs.cs" />
     <Compile Include="Collection\ObservableCollectionWrapperEventArgs.cs" />
     <Compile Include="Collection\NotifyPropertyChangedCollectionMonitor.cs" />

@@ -401,7 +401,7 @@ namespace Open.Core.Common.Test.Extensions
         #endregion
 
         #region Sample Data
-        public class Stub1 : ViewModelBase
+        public class Stub1 : ModelBase
         {
             public const string OtherConstant = "Not a match";
             public const string propText = "Not a match";
@@ -415,7 +415,7 @@ namespace Open.Core.Common.Test.Extensions
             }
         }
 
-        private class Stub2 : ViewModelBase
+        private class Stub2 : ModelBase
         {
             public const string PropNumber = "Numbr";
             public const string PropText = "Txt";
@@ -433,7 +433,7 @@ namespace Open.Core.Common.Test.Extensions
             }
         }
 
-        private class Stub3 : ViewModelBase
+        private class Stub3 : ModelBase
         {
             public const string PropText = "Text";
         }
