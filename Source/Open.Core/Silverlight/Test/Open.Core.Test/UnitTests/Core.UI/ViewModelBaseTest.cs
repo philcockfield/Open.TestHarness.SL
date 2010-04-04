@@ -8,7 +8,6 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.Test.UnitTests.Core.UI
 {
-    [Tag("current")]
     [TestClass]
     public class ViewModelBaseTest
     {

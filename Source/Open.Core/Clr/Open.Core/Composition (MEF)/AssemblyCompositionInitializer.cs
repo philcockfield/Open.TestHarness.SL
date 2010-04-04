@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace Open.Core.Composition
 {
+    /// <summary>Provides 'SatisfyImports' functionality for an assembly catalog.</summary>
     public static class AssemblyCompositionInitializer
     {
         #region Head
