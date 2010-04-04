@@ -29,5 +29,6 @@ namespace Open.Core.Common
     {
         public AssertionException(){}
         public AssertionException(string message) : base(message) { }
+        public AssertionException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
