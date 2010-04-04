@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Open.Core.Common.Testing
@@ -76,7 +77,33 @@ namespace Open.Core.Common.Testing
             }
             throw new AssertionException(string.Format("The following properties were did not return values:\n{0}", msg));
         }
-        #endregion
 
+
+        public static void ShouldSupportAllEnumValues<TClass>(this object self, Expression<Func<TClass, object>> property)
+        {
+            // Setup initial conditions.
+            if (self == null) throw new ArgumentNullException("self", "Cannot check for enum values on a null reference.");
+            var prop = typeof (TClass).GetProperty(property.GetPropertyName());
+            if (!prop.PropertyType.IsEnum) throw new ArgumentOutOfRangeException("property", "The property type is not an enum.");
+
+            // Enumerate the collection of enum values.
+            var enumValues = prop.PropertyType.GetEnumValues();
+            foreach (Enum enumValue in enumValues)
+            {
+                try
+                {
+                    prop.SetValue(self, enumValue, null);
+                }
+                catch (Exception error)
+                {
+                    throw new AssertionException(
+                        string.Format("Failed to set the enum value '{0}' on object '{1}'.", 
+                                            enumValue, 
+                                            self.GetType().Name),
+                        error);
+                }
+            }
+        }
+        #endregion
     }
 }

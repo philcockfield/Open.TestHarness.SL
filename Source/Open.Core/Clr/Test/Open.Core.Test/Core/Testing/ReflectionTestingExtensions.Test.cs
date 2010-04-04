@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
@@ -93,6 +94,32 @@ namespace Open.Core.Common.Test.Core.Common.Testing
         {
             Should.Throw<ArgumentNullException>(() => ReflectionTestingExtensions.ShouldHaveValuesForAllProperties(null));
         }
+
+        [TestMethod]
+        public void ShouldTestAllEnumValues()
+        {
+            var stub = new StubEnum();
+            stub.ShouldSupportAllEnumValues<StubEnum>(m => m.Prop1);
+
+            stub.Prop1SetValues.Count.ShouldBe(3);
+            stub.Prop1SetValues.ShouldContain(MyEnum.One);
+            stub.Prop1SetValues.ShouldContain(MyEnum.Two);
+            stub.Prop1SetValues.ShouldContain(MyEnum.Three);
+        }
+
+        [TestMethod]
+        public void ShouldThrowEnumErrorIfPropertyNotEnum()
+        {
+            var stub = new StubEnum();
+            Should.Throw<ArgumentOutOfRangeException>(() => stub.ShouldSupportAllEnumValues<StubEnum>(m => m.Text));
+        }
+
+        [TestMethod]
+        public void ShouldThrowAssertionErrorWhenNonSupportedEnumIsSet()
+        {
+            var stub = new StubEnum();
+            Should.Throw<AssertionException>(() => stub.ShouldSupportAllEnumValues<StubEnum>(m => m.Prop2));
+        }
         #endregion
 
         #region Stubs
@@ -127,6 +154,36 @@ namespace Open.Core.Common.Test.Core.Common.Testing
         {
             public string Text { get; set; }
             public Stub1 Stub { get; set; }
+        }
+
+        public enum MyEnum { One, Two, Three }
+        public class StubEnum
+        {
+            private MyEnum prop1;
+            private MyEnum prop2;
+            public List<MyEnum> Prop1SetValues = new List<MyEnum>();
+
+            public string Text { get; set; }
+
+            public MyEnum Prop1
+            {
+                get { return prop1; }
+                set
+                {
+                    prop1 = value;
+                    Prop1SetValues.Add(value);
+                }
+            }
+
+            public MyEnum Prop2
+            {
+                get { return prop2; }
+                set
+                {
+                    prop2 = value;
+                    if (value == MyEnum.Two) throw new NotSupportedException();
+                }
+            }
         }
         #endregion
     }
