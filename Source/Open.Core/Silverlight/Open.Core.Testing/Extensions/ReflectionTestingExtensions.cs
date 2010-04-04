@@ -78,7 +78,16 @@ namespace Open.Core.Common.Testing
             throw new AssertionException(string.Format("The following properties were did not return values:\n{0}", msg));
         }
 
-
+        /// <summary>
+        ///     Unit-testing assertion that ensures all Enum property values can be set.
+        ///     Guards against future addition of enum values where corresponding property logic is not expecting it.
+        /// </summary>
+        /// <typeparam name="TClass">The type of the class exposing the property.</typeparam>
+        /// <param name="self">The object instance exposing the property.</param>
+        /// <param name="property">
+        ///     An expression representing the property (for example 'n => n.PropertyName').
+        ///     Property must be of type Enum.
+        /// </param>
         public static void ShouldSupportAllEnumValues<TClass>(this object self, Expression<Func<TClass, object>> property)
         {
             // Setup initial conditions.
