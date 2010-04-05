@@ -1,0 +1,16 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.Controls.ToolBar.ButtonToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ContentControl 
+            x:Name="root" 
+            x:FieldModifier="private"
+            ContentTemplate="{Binding ButtonStructureTemplate}" 
+            HorizontalContentAlignment="Stretch" 
+            VerticalContentAlignment="Stretch"
+            ToolTipService.ToolTip="{Binding Model.ToolTip}">
+        <ContentPresenter />
+    </ContentControl>
+
+</UserControl>

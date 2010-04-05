@@ -153,6 +153,34 @@ namespace Open.Core.Test.UnitTests.Core.UI
                 CommandExecuteCount++;
             }
         }
+
+
+
+        public class Sample : ViewModelBase
+        {
+            public ICommand MyCommand
+            {
+                get
+                {
+                    return GetCommand<Sample, Button>(
+                        m => m.MyCommand, 
+                        m => m.IsEnabled, 
+                        OnExecute);
+                }
+            }
+
+            public bool IsEnabled
+            {
+                get { return GetPropertyValue<Sample, bool>(m => m.IsEnabled); }
+                set { SetPropertyValue<Sample, bool>(m => m.IsEnabled, value); }
+            }
+
+            private void OnExecute()
+            {
+                // .. Command handler here.
+            }
+        }
+
         #endregion
     }
 }

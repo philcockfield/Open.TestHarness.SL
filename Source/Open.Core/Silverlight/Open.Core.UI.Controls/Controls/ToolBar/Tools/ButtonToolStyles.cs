@@ -22,34 +22,47 @@
 
 using System.Windows;
 using Open.Core.Common;
-using T = Open.Core.UI.Controls.ToolBase;
 
-namespace Open.Core.UI.Controls
+using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonToolStyles;
+
+namespace Open.Core.UI.Controls.Controls.ToolBar
 {
-    /// <summary>The base class for tools.</summary>
-    public abstract class ToolBase : ModelBase, ITool
+    /// <summary>The default styles elements for the ButtonTool.</summary>
+    public class ButtonToolStyles : ModelBase, IButtonToolStyles
     {
         #region Properties
-        /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
-        public IToolBar Parent
+        public DataTemplate BackgroundDefault
         {
-            get { return GetPropertyValue<T, IToolBar>(m => m.Parent); }
-            set { SetPropertyValue<T, IToolBar>(m => m.Parent, value); }
+            get { return GetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDefault); }
+            set { SetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDefault, value); }
         }
 
-        /// <summary>Gets or sets whether the tool is enabled.</summary>
-        public bool IsEnabled
+        public DataTemplate BackgroundOver
         {
-            get { return GetPropertyValue<T, bool>(m => m.IsEnabled, true); }
-            set { SetPropertyValue<T, bool>(m => m.IsEnabled, value, true); }
+            get { return GetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundOver); }
+            set { SetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundOver, value); }
+        }
+
+        public DataTemplate BackgroundDown
+        {
+            get { return GetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDown); }
+            set { SetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDown, value); }
         }
         #endregion
 
         #region Methods
-        /// <summary>Creates a new instance of the tool's view.</summary>
-        public virtual FrameworkElement CreateView()
+        public void SetDefaults()
         {
-            return null;
+            BackgroundDefault = GetTemplate("ButtonTool.Background.Default");
+            BackgroundOver = GetTemplate("ButtonTool.Background.Over");
+            BackgroundDown = GetTemplate("ButtonTool.Background.Down");
+        }
+        #endregion
+
+        #region Internal
+        private static DataTemplate GetTemplate(string key)
+        {
+            return Templates.Instance.GetDataTemplate(key);
         }
         #endregion
     }

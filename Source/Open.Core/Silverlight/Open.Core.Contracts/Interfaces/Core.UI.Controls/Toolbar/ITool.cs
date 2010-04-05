@@ -20,18 +20,18 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.Windows.Input;
+using System.ComponentModel;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
 {
     /// <summary>Represents a single tool in a toolbar.</summary>
-    public interface ITool : IViewFactory
+    public interface ITool : IViewFactory, INotifyPropertyChanged
     {
         /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
         IToolBar Parent { get; set; }
 
-        /// <summary>Gets the action command for the tool.</summary>
-        ICommand Command { get; }
+        /// <summary>Gets or sets whether the tool is enabled.</summary>
+        bool IsEnabled { get; set; }
     }
 }

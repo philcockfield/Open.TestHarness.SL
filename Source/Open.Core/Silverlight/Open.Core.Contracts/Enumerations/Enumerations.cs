@@ -58,6 +58,14 @@ namespace Open.Core
         DoubleClick
     }
 
+    /// <summary>The various kinds of mouse-related states a button can be in.</summary>
+    public enum ButtonMouseState
+    {
+        Default,
+        MouseOver,
+        Pressed,
+    }
+
     /// <summary>A unit of file size.</summary>
     public enum FileSizeUnit
     {

@@ -86,6 +86,8 @@
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonToolStyles.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />

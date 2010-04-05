@@ -26,6 +26,9 @@
 
         <!--Lists-->
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Lists/SelectionListTemplates.xaml" />
+        
+        <!--ToolBar-->
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/ToolBar/Tools/ButtonToolTemplates.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

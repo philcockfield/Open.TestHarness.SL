@@ -54,7 +54,7 @@ namespace Open.Core.UI.Controls
         {
             // Create the view.
             var view = tool.CreateView();
-            view.DataContext = tool;
+            if (view.DataContext == null) view.DataContext = tool;
             view.HorizontalAlignment = HorizontalAlignment.Left;
             view.VerticalAlignment = VerticalAlignment.Top;
 

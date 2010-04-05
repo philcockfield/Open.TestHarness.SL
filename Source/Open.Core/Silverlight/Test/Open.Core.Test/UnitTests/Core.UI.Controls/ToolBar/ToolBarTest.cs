@@ -10,7 +10,7 @@ using Open.Core.UI.Controls;
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
     [TestClass]
-    public class ToolBarModelTest
+    public class ToolBarTest
     {
         #region Head
         private IToolBar toolbar;
@@ -18,7 +18,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestInitialize]
         public void TestSetup()
         {
-            toolbar = new ToolBarModel();
+            toolbar = new Open.Core.UI.Controls.ToolBar();
         }
         #endregion
         
@@ -40,8 +40,8 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         {
             CompositionInitializer.SatisfyImports(this);
 
-            ImportedToolBar1.ShouldBeInstanceOfType<ToolBarModel>();
-            ImportedToolBar2.ShouldBeInstanceOfType<ToolBarModel>();
+            ImportedToolBar1.ShouldBeInstanceOfType<Open.Core.UI.Controls.ToolBar>();
+            ImportedToolBar2.ShouldBeInstanceOfType<Open.Core.UI.Controls.ToolBar>();
 
             ImportedToolBar1.ShouldNotBe(ImportedToolBar2);
         }

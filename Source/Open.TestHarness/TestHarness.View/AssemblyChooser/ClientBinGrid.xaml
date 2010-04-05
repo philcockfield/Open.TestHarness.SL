@@ -25,7 +25,7 @@
             <i:Interaction.Behaviors>
                 <ab:DataGridFillerColumn ColumnIndex="0" />
             </i:Interaction.Behaviors>
-
+           
             <dg:DataGrid.Columns>
                 <dg:DataGridTemplateColumn Header="Assembly Name" IsReadOnly="True">
                     <dg:DataGridTemplateColumn.CellTemplate>

@@ -207,11 +207,21 @@
     </Compile>
     <Compile Include="Controls\Text\CoreTextBox.cs" />
     <Compile Include="Controls\ToolBar\Controllers\ToolLayoutController.cs" />
-    <Compile Include="Controls\ToolBar\ToolBarModel.cs" />
+    <Compile Include="Controls\ToolBar\ToolBar.cs" />
     <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
       <DependentUpon>ToolBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToolBar\ToolBase.cs" />
+    <Compile Include="Controls\ToolBar\Tools\ButtonTool.cs" />
+    <Page Include="Controls\ToolBar\Tools\ButtonToolTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Controls\ToolBar\Tools\ButtonToolStyles.cs" />
+    <Compile Include="Controls\ToolBar\Tools\ButtonToolView.xaml.cs">
+      <DependentUpon>ButtonToolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolBar\Tools\ButtonToolViewModel.cs" />
     <Compile Include="Templates\Templates.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -373,6 +383,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ToolBar\Tools\ButtonToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Templates\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -399,6 +413,9 @@
     <Resource Include="Images\Icon.Class.17x17.png" />
     <Resource Include="Images\Icon.Hierarchy.16x19.png" />
     <Resource Include="Images\Icon.NoHierarchy.16x19.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icon.ToolButton.DropDownPointer.5x4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

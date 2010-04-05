@@ -110,8 +110,9 @@
     <Compile Include="UnitTests\Core.UI.Controls\ContentContainerTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ButtonToolTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\Mocks.cs" />
-    <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarModelTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewOverride.xaml.cs">
       <DependentUpon>ToolBarViewOverride.xaml</DependentUpon>
     </Compile>
@@ -134,6 +135,7 @@
     <Compile Include="ViewTests\Code.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Containers\ContentContainerViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Lists\SelectionList.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.Controls\ToolBar\ButtonToolViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehavior.ViewTest.cs" />
@@ -450,6 +452,9 @@
     <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Disabled.png" />
     <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Down.png" />
     <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icon.Clipboard.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

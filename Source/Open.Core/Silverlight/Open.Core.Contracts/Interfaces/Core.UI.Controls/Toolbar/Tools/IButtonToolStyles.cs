@@ -1,4 +1,4 @@
-//------------------------------------------------------
+﻿//------------------------------------------------------
 //    Copyright (c) 2010 TestHarness.org
 //
 //    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,27 +20,20 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows;
 
-namespace Open.Core.Common
+namespace Open.Core.UI.Controls
 {
-    /// <summary>Extensions for accessing icon images.</summary>
-    public static partial class IconExtensions
+    /// <summary>A set of styles for an IButtonTool.</summary>
+    public interface IButtonToolStyles
     {
-        /// <summary>Converts the icon to an a value that can be used as the 'Source' of an Image.</summary>
-        /// <param name="icon">The flag of the icon to convert.</param>
-        public static BitmapImage ToImageSource(this IconImage icon)
-        {
-            return new BitmapImage { UriSource = icon.ToUri() };
-        }
+        /// <summary>Gets or sets the default background of the tool.</summary>
+        DataTemplate BackgroundDefault { get; set; }
 
-        /// <summary>Converts the icon to an Image.</summary>
-        /// <param name="icon">The flag of the icon to convert.</param>
-        public static Image ToImage(this IconImage icon)
-        {
-            return new Image { Source = icon.ToImageSource(), Stretch = Stretch.None };
-        }
+        /// <summary>Gets or sets the background of the tool when the mouse is over it.</summary>
+        DataTemplate BackgroundOver { get; set; }
+
+        /// <summary>Gets or sets the background of the tool when the mouse is pressed.</summary>
+        DataTemplate BackgroundDown { get; set; }
     }
 }

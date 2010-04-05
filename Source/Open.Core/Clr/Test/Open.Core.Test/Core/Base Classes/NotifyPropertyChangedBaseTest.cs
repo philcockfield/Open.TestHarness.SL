@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 
@@ -64,6 +65,16 @@ namespace Open.Core.Common.Test
         #endregion
 
         #region Stubs
+
+        private class Sample : NotifyPropertyChangedBase
+        {
+            public bool IsEnabled
+            {
+                get { return GetPropertyValue<Sample, bool>(m => m.IsEnabled, true); }
+                set { SetPropertyValue<Sample, bool>(m => m.IsEnabled, value, true); }
+            }
+        }
+
         private class Stub : NotifyPropertyChangedBase
         {
             #region Head

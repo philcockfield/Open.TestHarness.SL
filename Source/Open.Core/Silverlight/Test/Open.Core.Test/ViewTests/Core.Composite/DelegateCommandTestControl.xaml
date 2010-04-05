@@ -11,6 +11,6 @@
                 Padding="30,10,30,10" 
                 FontSize="24" 
                 cmd:Click.Command="{Binding MyCommand}"  />
-        
+
     </Grid>
 </UserControl>

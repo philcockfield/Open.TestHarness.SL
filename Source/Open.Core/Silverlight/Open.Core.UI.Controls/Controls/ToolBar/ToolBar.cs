@@ -27,13 +27,11 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using Open.Core.Common;
 
-using T = Open.Core.UI.Controls.ToolBarModel;
-
 namespace Open.Core.UI.Controls
 {
     /// <summary>A laid up structure of tools.</summary>
     [Export(typeof(IToolBar))]
-    public class ToolBarModel : ToolBase, IToolBar
+    public class ToolBar : ToolBase, IToolBar
     {
         #region Event Handlers
         /// <summary>Fires when the 'UpdateLayout' method is invoked.</summary>
@@ -57,8 +55,8 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the key used to import the ToolBar view (via MEF).</summary>
         public object ViewImportKey
         {
-            get { return GetPropertyValue<T, object>(m => m.ViewImportKey, DefaultViewExportKey); }
-            set { SetPropertyValue<T, object>(m => m.ViewImportKey, value, DefaultViewExportKey); }
+            get { return GetPropertyValue<ToolBar, object>(m => m.ViewImportKey, DefaultViewExportKey); }
+            set { SetPropertyValue<ToolBar, object>(m => m.ViewImportKey, value, DefaultViewExportKey); }
         }
 
         /// <summary>
@@ -67,8 +65,8 @@ namespace Open.Core.UI.Controls
         /// </summary>
         public Thickness DefaultToolMargin
         {
-            get { return GetPropertyValue<T, Thickness>(m => m.DefaultToolMargin, new Thickness(3)); }
-            set { SetPropertyValue<T, Thickness>(m => m.DefaultToolMargin, value, new Thickness(3)); }
+            get { return GetPropertyValue<ToolBar, Thickness>(m => m.DefaultToolMargin, new Thickness(3)); }
+            set { SetPropertyValue<ToolBar, Thickness>(m => m.DefaultToolMargin, value, new Thickness(3)); }
         }
         #endregion
 
