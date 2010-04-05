@@ -29,7 +29,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             tool.ToolTip = "A tooltip that explains what this button does";
             Set_Text__Short(control);
             Set_Icon_Small__Next(control);
-            iconLarge = new Image { Source = "/Images/Icon.Clipboard.png".ToImageSource(), Stretch = Stretch.None};
+            iconLarge = "/Images/Icon.Clipboard.png".ToImageSource().ToImage();
 
             // Wire up events.
             tool.Click += delegate { Output.Write("!! Click"); };

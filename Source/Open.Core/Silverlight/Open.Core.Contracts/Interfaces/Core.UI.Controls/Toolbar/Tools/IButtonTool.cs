@@ -22,7 +22,6 @@
 
 using System;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Open.Core.UI.Controls
 {
@@ -32,7 +31,7 @@ namespace Open.Core.UI.Controls
         /// <summary>Fires when tool is clicked.</summary>
         event EventHandler Click;
 
-        /// <summary>Gets or sets the orentation of the label relative to the icon.</summary>
+        /// <summary>Gets or sets the orientation of the label relative to the icon.</summary>
         Orientation Orientation { get; set; }
 
         /// <summary>Gets or sets the XAML elements that make up the tool.</summary>

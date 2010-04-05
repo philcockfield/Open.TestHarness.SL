@@ -65,8 +65,8 @@ namespace Open.Core.UI.Controls
         /// </summary>
         public Thickness DefaultToolMargin
         {
-            get { return GetPropertyValue<ToolBar, Thickness>(m => m.DefaultToolMargin, new Thickness(3)); }
-            set { SetPropertyValue<ToolBar, Thickness>(m => m.DefaultToolMargin, value, new Thickness(3)); }
+            get { return GetPropertyValue<ToolBar, Thickness>(m => m.DefaultToolMargin, new Thickness(0)); }
+            set { SetPropertyValue<ToolBar, Thickness>(m => m.DefaultToolMargin, value, new Thickness(0)); }
         }
         #endregion
 

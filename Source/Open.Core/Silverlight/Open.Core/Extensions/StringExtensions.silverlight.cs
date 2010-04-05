@@ -126,6 +126,13 @@ namespace Open.Core.Common
             return new BitmapImage { UriSource = ToComponentUri(resourcePath, assembly) };
         }
 
+        /// <summary>Converts the given source to an Image.</summary>
+        /// <param name="source">The source of the image.</param>
+        public static Image ToImage(this ImageSource source)
+        {
+            return new Image{Source = source, Stretch = Stretch.None};
+        }
+
         /// <summary>Creates an image setting the 'Source' to the specified image path.</summary>
         /// <param name="url">The URL path to the image.</param>
         /// <param name="uriKind">The kind of URI passed in the 'url' string.</param>

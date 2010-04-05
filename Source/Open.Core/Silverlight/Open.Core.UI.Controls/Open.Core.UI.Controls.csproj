@@ -208,6 +208,7 @@
     <Compile Include="Controls\Text\CoreTextBox.cs" />
     <Compile Include="Controls\ToolBar\Controllers\ToolLayoutController.cs" />
     <Compile Include="Controls\ToolBar\ToolBar.cs" />
+    <Compile Include="Controls\ToolBar\ToolBarExtensions.cs" />
     <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
       <DependentUpon>ToolBarView.xaml</DependentUpon>
     </Compile>

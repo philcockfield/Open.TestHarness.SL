@@ -34,11 +34,39 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             defaultToolMargin = ToolBar.DefaultToolMargin;
 
-            Add_Tools_Two_Rows(control);
+            Add_ButtonTools(control);
         }
         #endregion
 
         #region Tests
+        [ViewTest]
+        public void Add_ButtonTools(ContentControl control)
+        {
+            ToolBar.Clear();
+
+            //var buttonTool = ToolCreator.CreateExport().Value;
+            //buttonTool.Text = "My Label";
+            //buttonTool.Icon = IconImage.SilkAccept.ToImage();
+
+            ToolBar.Clear();
+            ToolBar.AddButton(
+                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(), 
+                    "Paste", 
+                    Orientation.Vertical, 
+                    column: 0, 
+                    rowSpan: 3);
+            ToolBar.AddButton(IconImage.SilkCut, "Cut", column: 1, row: 0, columnSpan: 3);
+            ToolBar.AddButton(IconImage.SilkPageCopy, "Copy", column: 1, row: 1, columnSpan: 3);
+            ToolBar.AddButton(IconImage.SilkClock, "Something", column: 1, row: 2, columnSpan: 3);
+            ToolBar.UpdateLayout();
+
+            //ToolBar.AddButton(IconImage.SilkAccept, showDefaultBackground: false, column: 1);
+            //ToolBar.AddButton(IconImage.SilkCake, showDefaultBackground: true, column: 2);
+            //ToolBar.AddButton(IconImage.SilkConnect, showDefaultBackground: true, column: 3);
+
+        }
+
+
         [ViewTest]
         public void Add_Tools_Single_Row(ContentControl control)
         {
@@ -62,26 +90,6 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             ToolBar.UpdateLayout();
         }
-
-        [ViewTest]
-        public void Add_ButtonTool(ContentControl control)
-        {
-            ToolBar.Clear();
-
-            var buttonTool = ToolCreator.CreateExport().Value;
-            buttonTool.Text = "My Label";
-            buttonTool.Icon = IconImage.SilkAccept.ToImage();
-
-            ToolBar.Clear();
-            ToolBar.Add(MockTool.Create(54, 54), column: 0, rowSpan: 2);
-            ToolBar.Add(MockTool.Create(), column: 1);
-            ToolBar.Add(MockTool.Create(), column: 2);
-            ToolBar.Add(MockTool.Create(), column: 3);
-            ToolBar.Add(buttonTool, column: 1, row: 1, columnSpan: 3);
-
-            ToolBar.UpdateLayout();
-        }
-
 
         [ViewTest]
         public void UpdateLayout(ContentControl control)

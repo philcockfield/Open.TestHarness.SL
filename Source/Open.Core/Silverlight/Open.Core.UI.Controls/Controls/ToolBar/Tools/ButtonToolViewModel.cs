@@ -99,6 +99,7 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
             }
         }
         public bool IsIconVisible { get { return Model.Icon != null; } }
+        public bool IsTextVisible { get { return Model.Text.AsNullWhenEmpty() != null; } }
         #endregion
 
         #region Properties - Templates
@@ -132,6 +133,7 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
                             m => m.ButtonStructureTemplate,
                             m => m.BackgroundTemplate,
                             m => m.IsIconVisible,
+                            m => m.IsTextVisible,
                             m => m.IsDropDownPointerVisible
                             );
         }

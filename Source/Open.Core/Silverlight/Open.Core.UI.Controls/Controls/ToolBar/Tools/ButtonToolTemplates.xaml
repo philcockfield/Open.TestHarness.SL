@@ -99,7 +99,13 @@
                 VerticalAlignment="Center" />
 
             <!--Button Label-->
-            <TextBlock Grid.Column="1" Text="{Binding Model.Text}" Margin="4,0,0,0" Opacity="0.8" VerticalAlignment="Center" />
+            <TextBlock 
+                Grid.Column="1" 
+                Text="{Binding Model.Text}" 
+                Visibility="{Binding IsTextVisible, Converter={StaticResource visibilityConverter}}"
+                Margin="4,0,0,0" 
+                Opacity="0.8" 
+                VerticalAlignment="Center" />
 
             <!--Drop Down Pointer-->
             <Image 
@@ -139,11 +145,11 @@
             <TextBlock 
                 Grid.Row="1" 
                 Text="{Binding Model.Text}" 
+                Visibility="{Binding IsTextVisible, Converter={StaticResource visibilityConverter}}"
                 Margin="0,0,0,0" 
                 Opacity="0.8" 
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Center" />
-
         </Grid>
     </DataTemplate>
 
@@ -183,8 +189,9 @@
         </Grid>
     </DataTemplate>
 
-
-        <!--Button Structures-->
+    
+    
+    <!--Button Structures-->
     <DataTemplate x:Key="ButtonTool.Default.Horizontal">
         <ContentControl ContentTemplate="{StaticResource ButtonTool.Horizontal}" Style="{StaticResource StretchFill}">
             <ContentPresenter />
