@@ -68,6 +68,7 @@
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ISelectable.cs">
       <Link>Interfaces\Core\ISelectable.cs</Link>
     </Compile>
+    <Compile Include="Interfaces\Core.Ria\ICompositionChild.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

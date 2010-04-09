@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reflection;
 using Open.Core.Common;
 
 namespace Open.Core.Composite
@@ -116,7 +117,7 @@ namespace Open.Core.Composite
             if (collection == null) return new List<Action<TEvent>>(); // Empty collection.
 
             // Return the handlers.
-            return collection.Handlers.Select(m => m.Target).Cast<Action<TEvent>>();
+            return collection.Handlers.Select(m => m.GetAction<TEvent>());
         }
 
         /// <summary>
@@ -133,7 +134,7 @@ namespace Open.Core.Composite
             if (collection == null) return false;
 
             // Determine if the action exists.
-            return collection.Handlers.Count(m => (Action<TEvent>) m.Target == action) != 0;
+            return collection.Handlers.Count(m => m.IsMatch(action)) != 0;
         }
 
         /// <summary>Gets the number of handlers for the given event-type that have subscribed.</summary>
@@ -157,7 +158,7 @@ namespace Open.Core.Composite
         private EventTypeHandlers GetHandlerCollection<TEvent>()
         {
             var eventType = typeof(TEvent);
-            return typeHandlers.FirstOrDefault(m => m.Type == eventType);
+            return typeHandlers.FirstOrDefault(m => m.Type.FullName == eventType.FullName);
         }
 
         private EventTypeHandlers GetOrCreateHandlerCollection<TEvent>()
@@ -178,10 +179,11 @@ namespace Open.Core.Composite
         private class EventTypeHandlers : DisposableBase
         {
             #region Head
+
             public EventTypeHandlers(Type type)
             {
                 Type = type;
-                Handlers = new List<WeakReference>();
+                Handlers = new List<ActionReference>();
             }
 
             protected override void OnDisposed()
@@ -192,19 +194,19 @@ namespace Open.Core.Composite
 
             #region Properties
             public Type Type { get; private set; }
-            public List<WeakReference> Handlers { get; private set; }
+            public List<ActionReference> Handlers { get; private set; }
             public long  InvokeCount { get; private set; }
             #endregion
 
             #region Methods
             public void Add<TEvent>(Action<TEvent> action)
             {
-                Handlers.Add(new WeakReference(action, false));
+                Handlers.Add(ActionReference.Create(action));
             }
 
             public void Remove<TEvent>(Action<TEvent> action)
             {
-                var reference = Handlers.FirstOrDefault(m => (Action<TEvent>) m.Target == action);
+                var reference = Handlers.FirstOrDefault(m => m.IsMatch(action));
                 if (reference != null) Handlers.Remove(reference);
             }
 
@@ -212,10 +214,8 @@ namespace Open.Core.Composite
             {
                 foreach (var reference in Handlers.ToList())
                 {
-                    var action = reference.Target as Action<TEvent>;
-                    if (action != null)
+                    if (reference.Invoke(message))
                     {
-                        action(message);
                         InvokeCount++;
                     }
                     else
@@ -223,6 +223,82 @@ namespace Open.Core.Composite
                         Handlers.Remove(reference);
                     }
                 }
+            }
+            #endregion
+        }
+
+        public class ActionReference
+        {
+            #region Head
+            private ActionReference() { }
+            public static ActionReference Create<TEvent>(Action<TEvent> action)
+            {
+                return new ActionReference
+                                   {
+                                       Method = action.Method,
+                                       ActionType = action.GetType(),
+                                       TargetWeakReference = new WeakReference(action.Target, false)
+                                   };
+            }
+            #endregion
+
+            #region Properties
+            public WeakReference TargetWeakReference { get; private set; }
+            public MethodInfo Method { get; private set; }
+            public Type ActionType { get; private set; }
+            #endregion
+
+            #region Methods
+            public bool IsMatch<TEvent>(Action<TEvent> action)
+            {
+                if (action == null) return false;
+
+                if (action.Target != TargetWeakReference.Target) return false;
+                if (action.GetType() != ActionType) return false;
+                if (action.Method != Method) return false;
+
+                return true;
+            }
+            
+            public bool Invoke<TEvent>(TEvent message)
+            {
+                // Setup initial conditions.
+                if (!TargetWeakReference.IsAlive) return false;
+
+                // Get the action to invoke.
+                var @delegate = TryGetDelegate();
+                if (@delegate == null) return false;
+                var action = (Action<TEvent>)@delegate;
+
+                // Invoke the delegate.
+                action(message);
+
+                // Finish up.
+                return true;
+            }
+
+            public Action<TEvent> GetAction<TEvent>()
+            {
+                var @delegate = TryGetDelegate();
+                return @delegate == null 
+                                ? null 
+                                : (Action<TEvent>) @delegate;
+            }
+            #endregion
+
+            #region Internal
+            private Delegate TryGetDelegate()
+            {
+                if (Method.IsStatic)
+                {
+                    return Delegate.CreateDelegate(ActionType, null, Method);
+                }
+                var target = TargetWeakReference.Target;
+                if (target != null)
+                {
+                    return Delegate.CreateDelegate(ActionType, target, Method);
+                }
+                return null;
             }
             #endregion
         }

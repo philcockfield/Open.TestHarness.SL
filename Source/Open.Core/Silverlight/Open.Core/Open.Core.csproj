@@ -202,9 +202,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Ria\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
       <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>

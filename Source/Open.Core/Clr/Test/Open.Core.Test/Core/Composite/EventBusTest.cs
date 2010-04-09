@@ -29,7 +29,7 @@ namespace Open.Core.Common.Test.Core.Composite
             fireCount++;
         }
         #endregion
-        
+
         #region Tests
         [Import(typeof(IEventBus))]
         public IEventBus EventBus { get; set; }
@@ -63,7 +63,7 @@ namespace Open.Core.Common.Test.Core.Composite
         [TestMethod]
         public void ShouldSubscribe()
         {
-            Action<Event1> handler = e => {};
+            Action<Event1> handler = e => { };
             eventBus.Subscribe(handler);
             eventBus.GetActions<Event1>().ShouldContain(handler);
         }
@@ -183,7 +183,7 @@ namespace Open.Core.Common.Test.Core.Composite
 
             // ---
 
-            var publishArgs = new Event1 {Message = "My Message"};
+            var publishArgs = new Event1 { Message = "My Message" };
             eventBus.Publish(publishArgs);
 
             firedArgs.ShouldBe(publishArgs);
@@ -199,7 +199,7 @@ namespace Open.Core.Common.Test.Core.Composite
                                 {
                                     var publishArgs = new Event1 { Message = "My Message" };
                                     var fired = false;
-                                    Action<Event1> handler = e => 
+                                    Action<Event1> handler = e =>
                                                         {
                                                             fired = true;
                                                             e.ShouldBe(publishArgs);
@@ -220,15 +220,21 @@ namespace Open.Core.Common.Test.Core.Composite
             var mock = new HandlerContainer();
             eventBus.Subscribe<Event1>(mock.OnFire);
 
+            eventBus.SubscribedCount<Event1>().ShouldBe(1);
+
             // ---
 
             mock.Dispose();
             GC.Collect();
 
             eventBus.Publish(new Event1());
-            mock.FireCount.ShouldBe(0);
-            eventBus.IsSubscribed<Event1>(mock.OnFire).ShouldBe(false);
-            eventBus.GetActions<Event1>().Count().ShouldBe(0);
+            eventBus.SubscribedCount<Event1>().ShouldBe(1);
+
+            mock = null;
+            GC.Collect(); // Only become stale after variable ref is released.
+
+            eventBus.Publish(new Event1());
+            eventBus.SubscribedCount<Event1>().ShouldBe(0);
         }
 
         [TestMethod]
