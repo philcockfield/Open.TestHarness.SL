@@ -38,6 +38,9 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the key used to import the ToolBar view (via MEF).</summary>
         object ViewImportKey { get; set; }
 
+        /// <summary>Gets or sets the margin of the toolbar.</summary>
+        Thickness Margin { get; set; } 
+
         /// <summary>
         ///     Gets or sets the default margin to apply to tools within the toolbar. This is overridden by the tool itself,
         ///     if the CreateView() method yeilds a control which as a pre-defined Margin value.
