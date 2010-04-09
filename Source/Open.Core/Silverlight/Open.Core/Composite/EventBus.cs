@@ -265,12 +265,8 @@ namespace Open.Core.Composite
                 // Setup initial conditions.
                 if (!TargetWeakReference.IsAlive) return false;
 
-                // Get the action to invoke.
-                var @delegate = TryGetDelegate();
-                if (@delegate == null) return false;
-                var action = (Action<TEvent>)@delegate;
-
-                // Invoke the delegate.
+                // Invoke the Action.
+                var action = GetAction<TEvent>();
                 action(message);
 
                 // Finish up.
@@ -296,7 +292,18 @@ namespace Open.Core.Composite
                 var target = TargetWeakReference.Target;
                 if (target != null)
                 {
-                    return Delegate.CreateDelegate(ActionType, target, Method);
+                    try
+                    {
+                        return Delegate.CreateDelegate(ActionType, target, Method);
+                    }
+                    catch (MethodAccessException error)
+                    {
+                        throw new MethodAccessException(
+                            string.Format(
+                                "The EventBus cannot invoke the delegate method named '{0}' because it cannot access it.  If running in Silverlight ensure that the delegate end-point is public.", 
+                                Method.Name), 
+                                error);
+                    }
                 }
                 return null;
             }

@@ -405,19 +405,27 @@ namespace Open.Core.Common.Testing
             self.IsAsynchronous = false;
 
             // Wire up the event.
-            var count = 0;
-            Action<TEvent> handler = e => { count++; };
-            self.Subscribe(handler);
+            var eventTester = new EventBusTester<TEvent>();
+            self.Subscribe<TEvent>(eventTester.OnFire);
 
             // Invoke the action.
             action();
 
             // Reset state.
             self.IsAsynchronous = originalAsyncValue;
-            self.Unsubscribe(handler);
+            self.Unsubscribe<TEvent>(eventTester.OnFire);
 
             // Finish up.
-            return count;
+            return eventTester.FireCount;
+        }
+
+        public class EventBusTester<TEvent>
+        {
+            public int FireCount { get; private set; }
+            public void OnFire(TEvent e)
+            {
+                FireCount++;
+            }
         }
         #endregion
 

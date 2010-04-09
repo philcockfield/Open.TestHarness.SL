@@ -21,9 +21,10 @@ namespace Open.Core.Test.UnitTests.Core.Composite
             eventBus = new EventBus();
         }
 
-        private void OnFire(MyEvent e)
+        public void OnFire(MyEvent e)
         {
             fireCount++;
+            if (e.Callback != null) e.Callback();
         }
         #endregion
 
@@ -44,27 +45,38 @@ namespace Open.Core.Test.UnitTests.Core.Composite
         {
             eventBus.IsAsynchronous.ShouldBe(true);
 
-            var publishArgs = new MyEvent { Message = "My Message" };
-            var fired = false;
-            Action<MyEvent> handler = e =>
-                                        {
-                                            fired = true;
-                                            e.ShouldBe(publishArgs);
-                                            EnqueueTestComplete();
-                                        };
+            Action callback = () =>
+                                  {
+                                      fireCount.ShouldBe(1);
+                                      EnqueueTestComplete();
+                                  };
 
-                eventBus.Subscribe(handler);
-                eventBus.Publish(publishArgs);
-                fired.ShouldBe(false);
+            var publishArgs = new MyEvent
+                      {
+                          Message = "My Message",
+                          Callback = callback,
+                      };
+
+            eventBus.Subscribe<MyEvent>(OnFire);
+            eventBus.Publish(publishArgs);
+            fireCount.ShouldBe(0);
         }
 
+
         [TestMethod]
-        public void ShouldFireOnPrivateHandler()
+        public void ShouldFireOnHandler()
         {
             eventBus.IsAsynchronous = false;
             eventBus.Subscribe<MyEvent>(OnFire);
             eventBus.Publish(new MyEvent());
             fireCount.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldFireAssertion()
+        {
+            eventBus.IsAsynchronous = false;
+            eventBus.ShouldFire<MyEvent>(() => eventBus.Publish(new MyEvent()));
         }
         #endregion
 
@@ -72,6 +84,7 @@ namespace Open.Core.Test.UnitTests.Core.Composite
         public class MyEvent
         {
             public string Message { get; set; }
+            public Action Callback { get; set; }
         }
         #endregion
     }
