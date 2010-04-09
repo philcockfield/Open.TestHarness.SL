@@ -1,0 +1,8 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.ImageIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Image x:Name="iconImage" Stretch="None" x:FieldModifier="private" />
+    
+</UserControl>
