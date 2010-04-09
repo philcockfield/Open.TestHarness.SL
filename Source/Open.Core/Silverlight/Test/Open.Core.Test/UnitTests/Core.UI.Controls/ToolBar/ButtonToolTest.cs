@@ -11,7 +11,6 @@ using Open.Core.UI.Controls.Controls.ToolBar;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
-    [Tag("current")]
     [TestClass]
     public class ButtonToolTest : SilverlightUnitTest
     {

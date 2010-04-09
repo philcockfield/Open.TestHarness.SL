@@ -8,13 +8,14 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 {
+    
     [ViewTestClass]
     public class ToolBarViewTest
     {
         #region Head
         private Thickness defaultToolMargin;
 
-        [Import(typeof(IButtonTool))]
+        [Import]
         public ExportFactory<IButtonTool> ToolCreator { get; set; }
 
         [Import(RequiredCreationPolicy = CreationPolicy.NonShared)]
@@ -98,13 +99,21 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Toggle_DefaultMargin(ContentControl control)
+        public void Toggle__DefaultMargin(ContentControl control)
         {
-            ToolBar.DefaultToolMargin = ToolBar.DefaultToolMargin.Left == 0 
-                            ? ToolBar.DefaultToolMargin = defaultToolMargin 
+            ToolBar.DefaultToolMargin = ToolBar.DefaultToolMargin.Left == 0
+                            ? defaultToolMargin 
                             : new Thickness(0);
             UpdateLayout(control);
             Output.Write("DefaultToolMargin: " + ToolBar.DefaultToolMargin); 
+        }
+
+        [ViewTest]
+        public void Toggle__Toolbar_Margin(ContentControl control)
+        {
+            ToolBar.Margin = ToolBar.Margin.Left == 0
+                            ? new Thickness(10)
+                            : new Thickness(0);
         }
 
         [ViewTest]

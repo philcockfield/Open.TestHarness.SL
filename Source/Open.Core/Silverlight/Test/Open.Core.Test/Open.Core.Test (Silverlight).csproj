@@ -86,6 +86,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.ComponentModel.Composition.Initialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -134,6 +135,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Containers\ContentContainerViewTest.cs" />
+    <Compile Include="ViewTests\Core.Controls\Icon.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ToolBar\ButtonToolViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
@@ -359,6 +361,10 @@
     <ProjectReference Include="..\..\Open.Core.Contracts\Open.Core.Contracts.csproj">
       <Project>{D9F73EA0-6276-444E-BF44-EFCF68AAB5A9}</Project>
       <Name>Open.Core.Contracts %28Open.Core\Silverlight\Open.Core.Contracts%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.Ria\Open.Core.Ria.csproj">
+      <Project>{B77F47B8-F4FB-4108-A408-F7FB3373749B}</Project>
+      <Name>Open.Core.Ria</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core.UI.Controls\Open.Core.UI.Controls.csproj">
       <Project>{D1373094-30F7-42F8-AD04-5647D19859C9}</Project>
