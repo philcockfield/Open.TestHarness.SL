@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonTool;
+
+[assembly: InternalsVisibleTo("Open.Core.Test")]
 
 namespace Open.Core.UI.Controls.Controls.ToolBar
 {
@@ -14,7 +16,11 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         #region Events
         /// <summary>Fires when the button is clicked.</summary>
         public event EventHandler Click;
-        internal void FireClick(){if (Click != null) Click(this, new EventArgs());}
+        internal void FireClick()
+        {
+            if (Click != null) Click(this, new EventArgs());
+            FireExecuedEvent();
+        }
         #endregion
 
         #region Head

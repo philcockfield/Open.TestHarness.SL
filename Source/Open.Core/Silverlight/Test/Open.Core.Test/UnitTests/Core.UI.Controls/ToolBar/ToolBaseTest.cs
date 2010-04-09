@@ -20,7 +20,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
     [Tag("current")]
     [TestClass]
-    public class ToolBaseTest
+    public class ToolBaseTest : SilverlightUnitTest
     {
         #region Head
         private MockTool mockTool;
@@ -43,17 +43,9 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestMethod]
         public void ShouldFireEventFromEventBus()
         {
-            var eventBus = new Importer().EventBus;
-            eventBus.IsAsynchronous = false;
-            eventBus.ShouldFire<IToolEvent>(() => mockTool.FireExecutedEventPublic());
+            EventBus.IsAsynchronous = false;
+            EventBus.ShouldFire<IToolEvent>(() => mockTool.FireExecutedEventPublic());
         }
         #endregion
-
-        public class Importer : ImporterBase
-        {
-            [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
-            public IEventBus EventBus { get; set; }
-        }
-
     }
 }

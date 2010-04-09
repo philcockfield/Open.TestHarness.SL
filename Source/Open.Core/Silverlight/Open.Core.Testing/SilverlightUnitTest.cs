@@ -21,14 +21,29 @@
 //------------------------------------------------------
 
 using System;
+using System.ComponentModel.Composition;
 using System.Windows;
 using Microsoft.Silverlight.Testing;
+using Open.Core.Composite;
 
 namespace Open.Core.Common.Testing
 {
     /// <summary>Base class for silverlight unit-tests.</summary>
     public abstract class SilverlightUnitTest : SilverlightTest
     {
+        #region Head
+        private static IEventBus eventBus;
+
+        protected SilverlightUnitTest()
+        {
+            if (eventBus == null) eventBus = new Importer().EventBus;
+        }
+        #endregion
+
+        #region Properties
+        public IEventBus EventBus { get { return eventBus; } }
+        #endregion
+
         #region Methods
         /// <summary>Adds the given element to the 'TestPanel' and waits for the 'Loaded' event to fire.</summary>
         /// <typeparam name="T">The type of the element.</typeparam>
@@ -94,5 +109,11 @@ namespace Open.Core.Common.Testing
             EnqueueConditional(() => eventRaised);
         }
         #endregion
+
+        public class Importer : ImporterBase
+        {
+            [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
+            public IEventBus EventBus { get; set; }
+        }
     }
 }
