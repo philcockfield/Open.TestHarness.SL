@@ -20,6 +20,10 @@ namespace Open.Core.Ria
         /// <summary>Fires when the client-side changes have been reverted.</summary>
         public event EventHandler Reverted;
         private void OnReverted() { if (Reverted != null) Reverted(this, new EventArgs()); }
+
+        /// <summary>Fires when either loading starts or stops.  See related 'IsLoading', 'IsBusy', 'IsIdle' properties.</summary>
+        public event EventHandler LoadStateChanged;
+        private void FireLoadStateChanged(){if (LoadStateChanged != null) LoadStateChanged(this, new EventArgs());}
         #endregion
 
         #region Head
@@ -176,6 +180,7 @@ namespace Open.Core.Ria
             OnPropertyChanged<TClass>(o => o.IsLoading);
             FireBusyIdle();
             previousIsLoading = IsLoading;
+            FireLoadStateChanged();
         }
 
         private void FireIsSavingChanged()

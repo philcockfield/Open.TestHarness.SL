@@ -9,6 +9,9 @@ namespace Open.Core.Ria
         /// <summary>Fires when the client-side changes have been reverted.</summary>
         event EventHandler Reverted;
 
+        /// <summary>Fires when either loading starts or stops.  See related 'IsLoading', 'IsBusy', 'IsIdle' properties.</summary>
+        event EventHandler LoadStateChanged;
+
         /// <summary>Gets or sets whether the service is currently loading.</summary>
         bool IsLoading { get; }
 
