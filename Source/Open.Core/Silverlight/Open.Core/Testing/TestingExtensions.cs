@@ -371,7 +371,7 @@ namespace Open.Core.Common.Testing
         /// <typeparam name="TEvent">The event type.</typeparam>
         /// <param name="self">The event-bus to monitor.</param>
         /// <param name="action"></param>
-        public static void ShouldFire<TEvent>(this EventBus self, Action action)
+        public static void ShouldFire<TEvent>(this IEventBus self, Action action)
         {
             if (GetFireCount<TEvent>(self, action) == 0) throw new AssertionException(string.Format("Expected the event '{0}' to be fired at least once.", typeof(TEvent).Name));
         }
@@ -381,7 +381,7 @@ namespace Open.Core.Common.Testing
         /// <param name="self">The event-bus to monitor.</param>
         /// <param name="total">The total number of times the event should have fired.</param>
         /// <param name="action"></param>
-        public static void ShouldFire<TEvent>(this EventBus self, int total, Action action)
+        public static void ShouldFire<TEvent>(this IEventBus self, int total, Action action)
         {
             var fireCount = GetFireCount<TEvent>(self, action);
             if (fireCount != total) throw new AssertionException(string.Format("Expected the event '{0}' to be fired {1} times. Instead it fired {2} times.", typeof(TEvent).Name, total, fireCount));
@@ -391,12 +391,12 @@ namespace Open.Core.Common.Testing
         /// <param name="self">The event-bus to monitor.</param>
         /// <typeparam name="TEvent">The event type.</typeparam>
         /// <param name="action"></param>
-        public static void ShouldNotFire<TEvent>(this EventBus self, Action action)
+        public static void ShouldNotFire<TEvent>(this IEventBus self, Action action)
         {
             if (GetFireCount<TEvent>(self, action) != 0) throw new AssertionException(string.Format("Expected the event '{0}' to not fire.", typeof(TEvent).Name));
         }
 
-        private static int GetFireCount<TEvent>(EventBus self, Action action)
+        private static int GetFireCount<TEvent>(IEventBus self, Action action)
         {
             // Setup initial conditions.
             if (self == null) throw new ArgumentNullException("self");

@@ -20,8 +20,10 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.ComponentModel.Composition;
 using System.Windows;
 using Open.Core.Common;
+using Open.Core.Composite;
 using T = Open.Core.UI.Controls.ToolBase;
 
 namespace Open.Core.UI.Controls
@@ -29,7 +31,18 @@ namespace Open.Core.UI.Controls
     /// <summary>The base class for tools.</summary>
     public abstract class ToolBase : ModelBase, ITool
     {
+        #region Head
+        private static IEventBus eventBus;
+        #endregion
+
         #region Properties
+        /// <summary>Gets or sets the unique identifier of the tool.</summary>
+        public object Id
+        {
+            get { return GetPropertyValue<T, object>(m => m.Id); }
+            set { SetPropertyValue<T, object>(m => m.Id, value); }
+        }
+
         /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
         public IToolBar Parent
         {
@@ -51,6 +64,19 @@ namespace Open.Core.UI.Controls
         {
             return null;
         }
+
+        /// <summary>Fires the executed event through the EventBus.</summary>
+        protected virtual void FireExecuedEvent() 
+        {
+            if (eventBus == null) eventBus = new Importer().EventBus;
+            eventBus.Publish<IToolEvent>(new ToolEvent { Tool = this });
+        }
         #endregion
+
+        public class Importer : ImporterBase
+        {
+            [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
+            public IEventBus EventBus { get; set; }
+        }
     }
 }

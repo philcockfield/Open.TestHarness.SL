@@ -216,6 +216,7 @@
       <DependentUpon>ToolBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToolBar\ToolBase.cs" />
+    <Compile Include="Controls\ToolBar\ToolEvent.cs" />
     <Compile Include="Controls\ToolBar\Tools\ButtonTool.cs" />
     <Page Include="Controls\ImageIcon.xaml">
       <SubType>Designer</SubType>

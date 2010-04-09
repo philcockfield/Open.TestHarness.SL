@@ -28,6 +28,9 @@ namespace Open.Core.UI.Controls
     /// <summary>Represents a single tool in a toolbar.</summary>
     public interface ITool : IViewFactory, INotifyPropertyChanged
     {
+        /// <summary>Gets or sets the unique identifier of the tool.</summary>
+        object Id { get; set; }
+
         /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
         IToolBar Parent { get; set; }
 

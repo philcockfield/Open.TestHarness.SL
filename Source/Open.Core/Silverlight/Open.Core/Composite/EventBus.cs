@@ -105,8 +105,9 @@ namespace Open.Core.Composite
             // Ensure the action is public.
             // NB: This is because reflection in Silverlight can only work against public members.
             if (!action.Method.IsPublic) throw new ArgumentOutOfRangeException(
-                            "action", 
-                            string.Format("Cannot subscribe to event because the callback delegate end-point is not a public method."));
+                            "action",
+                            string.Format("Cannot subscribe to event '{0}' because the callback delegate end-point is not a public method.", 
+                            typeof(TEvent).Name));
 #endif
 
             var collection = GetOrCreateHandlerCollection<TEvent>();

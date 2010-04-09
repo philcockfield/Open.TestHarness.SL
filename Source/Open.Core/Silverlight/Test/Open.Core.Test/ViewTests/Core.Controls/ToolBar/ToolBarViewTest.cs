@@ -51,20 +51,16 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             ToolBar.Clear();
             ToolBar.AddButton(
+                    1,
                     "/Images/Icon.Clipboard.png".ToImageSource().ToImage(), 
                     "Paste", 
                     Orientation.Vertical, 
                     column: 0, 
                     rowSpan: 3);
-            ToolBar.AddButton(IconImage.SilkCut, "Cut", column: 1, row: 0, columnSpan: 3);
-            ToolBar.AddButton(IconImage.SilkPageCopy, "Copy", column: 1, row: 1, columnSpan: 3);
-            ToolBar.AddButton(IconImage.SilkClock, "Something", column: 1, row: 2, columnSpan: 3);
+            ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 1, row: 0, columnSpan: 3);
+            ToolBar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 1, row: 1, columnSpan: 3);
+            ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 1, row: 2, columnSpan: 3);
             ToolBar.UpdateLayout();
-
-            //ToolBar.AddButton(IconImage.SilkAccept, showDefaultBackground: false, column: 1);
-            //ToolBar.AddButton(IconImage.SilkCake, showDefaultBackground: true, column: 2);
-            //ToolBar.AddButton(IconImage.SilkConnect, showDefaultBackground: true, column: 3);
-
         }
 
 

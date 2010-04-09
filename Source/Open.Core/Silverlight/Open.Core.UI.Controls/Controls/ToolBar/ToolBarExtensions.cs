@@ -14,6 +14,7 @@ namespace Open.Core.UI.Controls
         #region Methods
         /// <summary>Adds a button tool to the toolbar.</summary>
         /// <param name="toolbar">The toolbar to add to.</param>
+        /// <param name="id">The unique identifier of the tool.</param>
         /// <param name="icon">The icon.</param>
         /// <param name="text">The text label.</param>
         /// <param name="orientation">The orientation of the label relative to the icon.</param>
@@ -25,6 +26,7 @@ namespace Open.Core.UI.Controls
         /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         public static IButtonTool AddButton(
                     this IToolBar toolbar,
+                    object id = null,
                     IconImage icon = IconImage.SilkAccept,
                     String text = null,
                     Orientation orientation = Orientation.Horizontal,
@@ -36,14 +38,15 @@ namespace Open.Core.UI.Controls
                     int? rowSpan = 1)
         {
             return toolbar.AddButton(
+                                    id,                    
                                     icon.ToImage(), text, 
                                     orientation, showDefaultBackground, toolTip,
                                     column, row, columnSpan, rowSpan);
         }
 
-
         /// <summary>Adds a button tool to the toolbar.</summary>
         /// <param name="toolbar">The toolbar to add to.</param>
+        /// <param name="id">The unique identifier of the tool.</param>
         /// <param name="icon">The icon.</param>
         /// <param name="text">The text label.</param>
         /// <param name="orientation">The orientation of the label relative to the icon.</param>
@@ -55,6 +58,7 @@ namespace Open.Core.UI.Controls
         /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         public static IButtonTool AddButton(
                     this IToolBar toolbar,
+                    object id = null,
                     Image icon = null,
                     String text = null,
                     Orientation orientation = Orientation.Horizontal,
@@ -71,6 +75,7 @@ namespace Open.Core.UI.Controls
 
             // Create and configure the button.
             var tool = toolCreator.CreateExport().Value;
+            tool.Id = id;
             tool.Icon = icon;
             tool.Text = text;
             tool.ToolTip = toolTip;
@@ -80,7 +85,7 @@ namespace Open.Core.UI.Controls
             // Add to the toolbar.
             toolbar.Add(tool, column, row, columnSpan, rowSpan);
 
-            // Finish up.);
+            // Finish up.
             return tool;
         }
         #endregion
@@ -89,8 +94,6 @@ namespace Open.Core.UI.Controls
         {
             [Import(typeof(IButtonTool))]
             public ExportFactory<IButtonTool> ToolCreator { get; set; }
-            
         }
-
     }
 }
