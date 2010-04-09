@@ -97,8 +97,18 @@ namespace Open.Core.Composite
         /// <param name="action">The action that is performed when the event fires (event handler).</param>
         public void Subscribe<TEvent>(Action<TEvent> action)
         {
-            if (Equals(action, default(TEvent))) throw new ArgumentNullException("action");
+            // Setup initial conditions.
+            if (action == null) throw new ArgumentNullException("action");
             if (IsSubscribed(action)) return;
+
+#if SILVERLIGHT
+            // Ensure the action is public.
+            // NB: This is because reflection in Silverlight can only work against public members.
+            if (!action.Method.IsPublic) throw new ArgumentOutOfRangeException(
+                            "action", 
+                            string.Format("Cannot subscribe to event because the callback delegate end-point is not a public method."));
+#endif
+
             var collection = GetOrCreateHandlerCollection<TEvent>();
             lock (collection)
             {

@@ -7,6 +7,7 @@ using Open.Core.Composite;
 
 namespace Open.Core.Test.UnitTests.Core.Composite
 {
+    [Tag("current")]
     [TestClass]
     public class EventBusTest : SilverlightUnitTest
     {
@@ -77,6 +78,12 @@ namespace Open.Core.Test.UnitTests.Core.Composite
         {
             eventBus.IsAsynchronous = false;
             eventBus.ShouldFire<MyEvent>(() => eventBus.Publish(new MyEvent()));
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfCallbackDelegateIsNotPublic()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => eventBus.Subscribe<MyEvent>(@event => { }));  
         }
         #endregion
 
