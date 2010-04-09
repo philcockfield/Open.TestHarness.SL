@@ -31,23 +31,27 @@ namespace Open.Core.Common.Collection
     /// <summary>A collection of wrapper objects for an observable collection that keeps itself in sync with it's parent collection.</summary>
     /// <typeparam name="TSource">The type of collection being wrapped.</typeparam>
     /// <typeparam name="TWrapper">The type of wrapper.</typeparam>
-    public class ObservableCollectionWrapper<TSource, TWrapper> : ObservableCollection<TWrapper>, IDisposable
+    public partial class ObservableCollectionWrapper<TSource, TWrapper> : ObservableCollection<TWrapper>, IDisposable
     {
         #region Events
         /// <summary>Fires when an item is added to the collection.</summary>
         public event EventHandler<ObservableCollectionWrapperEventArgs<TSource, TWrapper>> ItemAdded;
-        private void OnItemAdded(TSource source, TWrapper wrapper){if (ItemAdded != null) ItemAdded(this, new ObservableCollectionWrapperEventArgs<TSource, TWrapper>(source, wrapper));}
+        private void FireItemAdded(TSource source, TWrapper wrapper){if (ItemAdded != null) ItemAdded(this, new ObservableCollectionWrapperEventArgs<TSource, TWrapper>(source, wrapper));}
         
         /// <summary>Fires when an item is removed from the collection.</summary>
         public event EventHandler<ObservableCollectionWrapperEventArgs<TSource, TWrapper>> ItemRemoved;
-        private void OnItemRemoved(TSource source, TWrapper wrapper) { if (ItemRemoved != null) ItemRemoved(this, new ObservableCollectionWrapperEventArgs<TSource, TWrapper>(source, wrapper)); }
+        private void FireItemRemoved(TSource source, TWrapper wrapper) { if (ItemRemoved != null) ItemRemoved(this, new ObservableCollectionWrapperEventArgs<TSource, TWrapper>(source, wrapper)); }
         #endregion
 
         #region Head
         private Func<TSource, TWrapper> createWrapper;
         private readonly List<KeyValuePair<TWrapper, TSource>> mapping = new List<KeyValuePair<TWrapper, TSource>>();
 
-        public ObservableCollectionWrapper(ObservableCollection<TSource> source, Func<TSource, TWrapper> createWrapper)
+        public ObservableCollectionWrapper(ObservableCollection<TSource> source, Func<TSource, TWrapper> createWrapper) : this(source, source, createWrapper)
+        {
+        }
+
+        protected ObservableCollectionWrapper(IEnumerable<TSource> source, INotifyCollectionChanged collectionChangeNotification, Func<TSource, TWrapper> createWrapper)
         {
             // Setup initial conditions.
             if (source == null) throw new ArgumentNullException("source");
@@ -59,13 +63,13 @@ namespace Open.Core.Common.Collection
             DisposeOfWrapperOnRemoval = true;
 
             // Add existing items.
-            for (var i = 0; i < source.Count; i++)
+            for (var i = 0; i < source.Count(); i++)
             {
-                AddWrapperItem(source[i], i);
+                AddWrapperItem(source.ElementAt(i), i);
             }
 
             // Wire up events.
-            source.CollectionChanged += Handle_Source_CollectionChanged;
+            collectionChangeNotification.CollectionChanged += OnSourceCollectionChanged;
         }
         #endregion
 
@@ -99,7 +103,7 @@ namespace Open.Core.Common.Collection
         #endregion
 
         #region Event Handlers
-        void Handle_Source_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -124,7 +128,7 @@ namespace Open.Core.Common.Collection
 
         #region Properties
         /// <summary>Gets the source collection that is being wrapped.</summary>
-        public ObservableCollection<TSource> Source { get; private set; }
+        public IEnumerable<TSource> Source { get; private set; }
 
         /// <summary>Gets or sets the function used to create a wrapper when the source collection is added to.</summary>
         public Func<TSource, TWrapper> CreateWrapper
@@ -181,7 +185,7 @@ namespace Open.Core.Common.Collection
             var wrapper = CreateWrapper(sourceItem);
             Insert(index, wrapper);
             mapping.Add(new KeyValuePair<TWrapper, TSource>(wrapper, sourceItem));
-            OnItemAdded(sourceItem, wrapper);
+            FireItemAdded(sourceItem, wrapper);
         }
 
         private void RemoveWrapperItem(int index)
@@ -194,7 +198,7 @@ namespace Open.Core.Common.Collection
             mapping.Remove(match);
             if (DisposeOfWrapperOnRemoval) DisposeOfItem(match.Key);
 
-            OnItemRemoved(match.Value, match.Key);
+            FireItemRemoved(match.Value, match.Key);
         }
 
         private static bool IsNull(KeyValuePair<TWrapper, TSource> item)
