@@ -100,6 +100,25 @@ namespace Open.Core.Common.Test.Extensions
             "string".ShouldBeInstanceOfType<string>(() => failedCount++);
             failedCount.ShouldBe(0);
         }
+
+        [TestMethod]
+        public void ShouldBeGuid()
+        {
+            var guid = Guid.NewGuid();
+            guid.ShouldBeGuid();
+
+            var guidString = Guid.NewGuid().ToString();
+            guidString.ShouldBeGuid();
+        }
+
+        [TestMethod]
+        public void ShouldNotBeGuid()
+        {
+            var guid = new Guid();
+            Should.Throw<AssertionException>(() => guid.ShouldBeGuid());
+            Should.Throw<AssertionException>(() => ((object)null).ShouldBeGuid());
+            Should.Throw<AssertionException>(() => ("1234").ShouldBeGuid());
+        }
         #endregion
 
         #region Collection Assertions

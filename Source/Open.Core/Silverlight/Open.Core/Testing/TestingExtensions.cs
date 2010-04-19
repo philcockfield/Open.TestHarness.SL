@@ -95,6 +95,31 @@ namespace Open.Core.Common.Testing
             if (o is T) return;
             if (onFailed != null) onFailed();
         }
+
+        /// <summary>Asserts that the given object is a GUID.</summary>
+        /// <param name="o">The object to examine.</param>
+        /// <remarks>Throws an error if the given object is an Empty GUID type.</remarks>
+        public static void ShouldBeGuid(this object o)
+        {
+            Action throwError = () =>
+                                    {
+                                        throw new AssertionException( "The given object is not a GUID and cannot be parsed as a GUID.");
+                                    };
+            if (o is Guid)
+            {
+                if (Equals(o, Guid.Empty)) throwError();
+            }
+            else if (o is string)
+            {
+                var guidString = o as string;
+                try
+                {
+                    new Guid(guidString);
+                }
+                catch (Exception) { throwError(); }
+            }
+            else { throwError(); }
+        }
         #endregion
 
         #region Methods - Collection Assertions
@@ -309,7 +334,7 @@ namespace Open.Core.Common.Testing
         #endregion
 
         #region Methods - Assembly Assertions
-                /// <summary>Attempts to instantiate all instances of the given type within an assembly (that has a parameterless constructor).</summary>
+        /// <summary>Attempts to instantiate all instances of the given type within an assembly (that has a parameterless constructor).</summary>
         /// <typeparam name="T">The base type of classes to include in the set.</typeparam>
         /// <param name="assembly">The assembly to look within.</param>
         public static void ShouldIntantiateAllTypes<T>(this Assembly assembly)
@@ -332,8 +357,8 @@ namespace Open.Core.Common.Testing
 
             // Get the types.
             var types = from t in assembly.GetTypes()
-                            where t.IsA(baseType) && t.IsPublic
-                            select t;
+                        where t.IsA(baseType) && t.IsPublic
+                        select t;
 
             // Attempt to instantiate the types.
             var failedTypes = new Dictionary<Type, Exception>();
@@ -357,8 +382,8 @@ namespace Open.Core.Common.Testing
 
             // Throw the failed error.
             var msg = failedTypes.Aggregate("", (current, failedType)
-                            => current + string.Format("\r- {0}",
-                                    failedType.Key.FullName));
+                                                => current + string.Format("\r- {0}",
+                                                                           failedType.Key.FullName));
             errorMessage = string.Format("Failed to intantiate the following types:\r{0}", msg);
 
             // Finish up.

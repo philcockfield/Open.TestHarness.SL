@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.Common.Network;
 
@@ -143,7 +144,19 @@ namespace Open.TestHarness.Model
                                              }
 
                                              // Finish up.
-                                             if (callback != null) callback();
+                                             if (callback != null)
+                                             {
+                                                 try
+                                                 {
+                                                     callback();
+                                                 }
+                                                 catch (Exception error)
+                                                 {
+                                                     Unload();
+                                                     Output.Write(Colors.Red, string.Format("Failed to load the XAP file '{0}'.  The assembly has been unloaded.", XapFileName));
+                                                     Output.WriteException(error);
+                                                 }
+                                             }
                                          });
         }
 
