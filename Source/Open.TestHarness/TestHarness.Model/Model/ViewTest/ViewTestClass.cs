@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Reflection;
@@ -320,6 +321,7 @@ namespace Open.TestHarness.Model
                 Initialize(GetAssembly().GetType(TypeName, true), XapFileName);
             }
             catch (TypeLoadException) { return false; }
+            catch (FileNotFoundException) { return false; }
 
             // Finish up.
             OnPropertyChanged<T>(m => m.DisplayName);
