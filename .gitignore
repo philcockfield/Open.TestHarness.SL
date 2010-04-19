@@ -28,3 +28,5 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 *.xap
+Source/Open.TestHarness/Test/TestHarness.Sample/Lib/Open.Core/Clr/*
+Source/Open.TestHarness/Test/TestHarness.Sample/Lib/Open.Core/Silverlight/*
