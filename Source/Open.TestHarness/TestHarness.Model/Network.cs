@@ -78,8 +78,7 @@ namespace Open.TestHarness.Model
                                         Output.WriteTitle(Colors.Red, "Load Failure");
                                         Output.Write(
                                             Colors.Red, 
-                                            string.Format("Failed to load assembly '{0}' while downloading the XAP file: '{1}'", 
-                                                    assembly.GetName(), 
+                                            string.Format("Failed to load assembly while downloading the XAP file: '{0}'", 
                                                     xapFileName));
                                         Output.WriteException(error);
                                         break;
