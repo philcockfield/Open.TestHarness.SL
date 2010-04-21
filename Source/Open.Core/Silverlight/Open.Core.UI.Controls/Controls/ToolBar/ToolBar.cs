@@ -44,7 +44,7 @@ namespace Open.Core.UI.Controls
         #region Head
         internal const string DefaultViewExportKey = "Open.Core.UI.Controls.ToolBarView.Default";
         private readonly List<ToolItem> toolItems = new List<ToolItem>();
-        private Importer importer;
+        private ToolBarImporter importer;
         #endregion
 
         #region Properties
@@ -82,7 +82,7 @@ namespace Open.Core.UI.Controls
         #region Methods
         public override FrameworkElement CreateView()
         {
-            if (importer == null) importer = new Importer();
+            if (importer == null) importer = new ToolBarImporter();
             var viewImport = importer.Views.FirstOrDefault(m => Equals(m.Metadata.Id, ViewImportKey));
             var view = viewImport == null ? null : viewImport.Value as FrameworkElement;
             if (view != null) view.DataContext = this;
@@ -185,7 +185,7 @@ namespace Open.Core.UI.Controls
             public int RowSpan { get; set; }
         }
 
-        public class Importer : ImporterBase
+        public class ToolBarImporter : ImporterBase
         {
             [ImportMany(RequiredCreationPolicy = CreationPolicy.NonShared)]
             public IEnumerable<Lazy<IToolBarView, IIdentifiable>> Views { get; set; }

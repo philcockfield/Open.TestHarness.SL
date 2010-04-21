@@ -145,8 +145,11 @@
             <TextBlock 
                 Grid.Row="1" 
                 Text="{Binding Model.Text}" 
+                TextAlignment="Center"
+                LineHeight="13"
+                LineStackingStrategy="BlockLineHeight"
                 Visibility="{Binding IsTextVisible, Converter={StaticResource visibilityConverter}}"
-                Margin="0,0,0,0" 
+                Margin="0,1,0,0" 
                 Opacity="0.8" 
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Center" />
@@ -180,7 +183,7 @@
             <ContentControl 
                                 ContentTemplate="{StaticResource ButtonTool.VerticalContent}" 
                                 Style="{StaticResource StretchFill}"
-                                Margin="3">
+                                Margin="3,3,3,2">
                 <ContentPresenter />
             </ContentControl>
 

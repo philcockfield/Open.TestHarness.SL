@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -52,8 +53,8 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             ToolBar.Clear();
             ToolBar.AddButton(
                     1,
-                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(), 
-                    "Paste", 
+                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(),
+                    "Paste" + Environment.NewLine + "Something", 
                     Orientation.Vertical, 
                     column: 0, 
                     rowSpan: 3);
