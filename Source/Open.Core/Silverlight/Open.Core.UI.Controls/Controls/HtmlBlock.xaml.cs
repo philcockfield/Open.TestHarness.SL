@@ -59,7 +59,6 @@ namespace Open.Core.UI.Controls
     public partial class HtmlBlock : UserControl, INotifyDisposed
     {
         #region Head
-        private readonly string elementId;
         private HtmlElement htmlElement;
         private readonly DelayedAction updateDelay;
 
@@ -67,7 +66,7 @@ namespace Open.Core.UI.Controls
         {
             // Setup initial conditions.
             InitializeComponent();
-            elementId = Guid.NewGuid().ToString();
+            HtmlElementId = Guid.NewGuid().ToString();
 
             // Create update delay.
             // NB: This is put on a delay (of zero, which causes it to be invoked asynchronously)
@@ -136,6 +135,9 @@ namespace Open.Core.UI.Controls
         #region Properties
         /// <summary>Gets the absolute position of the control relative to the visual root (or null if it's not within the tree).</summary>
         public Point? AbsolutePosition { get { return this.GetAbsolutePosition(); } }
+
+        /// <summary>Gets the unique identifier of the embedded HTML element.</summary>
+        public string HtmlElementId { get; private set; }
 
         /// <summary>Gets the HTML element.</summary>
         public HtmlElement HtmlElement
@@ -247,7 +249,7 @@ namespace Open.Core.UI.Controls
             htmlElement = HtmlPage.Document.CreateElement("DIV");
 
             // Apply attributes.
-            htmlElement.SetAttribute("id", elementId);
+            htmlElement.SetAttribute("id", HtmlElementId);
             htmlElement.SetStyleAttribute("position", "absolute");
             UpdateInnerHtml();
             UpdateStyle();
