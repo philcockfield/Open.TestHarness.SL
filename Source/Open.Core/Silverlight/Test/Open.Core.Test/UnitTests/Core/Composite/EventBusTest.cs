@@ -31,13 +31,13 @@ namespace Open.Core.Test.UnitTests.Core.Composite
 
         #region Tests
         [Import(typeof(IEventBus))]
-        public IEventBus EventBus { get; set; }
+        public IEventBus EventBusImport { get; set; }
 
         [TestMethod]
         public void ShouldImport()
         {
             CompositionInitializer.SatisfyImports(this);
-            EventBus.ShouldNotBe(null);
+            EventBusImport.ShouldNotBe(null);
         }
 
         [TestMethod]
