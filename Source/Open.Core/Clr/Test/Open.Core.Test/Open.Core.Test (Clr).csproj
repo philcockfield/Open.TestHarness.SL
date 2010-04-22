@@ -95,6 +95,7 @@
     <Compile Include="Core\Attributes\ViewTestClassAttributeTest.cs" />
     <Compile Include="Core\Base Classes\DisposableBaseTest.cs" />
     <Compile Include="Core\Base Classes\NotifyPropertyChangedBaseTest.cs" />
+    <Compile Include="Core\Base Classes\ParserBaseTest.cs" />
     <Compile Include="Core\Collection\CollectionChangedEventBatch.Test.cs" />
     <Compile Include="Core\Collection\ObservableCollectionWrapperTest.cs" />
     <Compile Include="Core\Collection\ProcessQueueTest.cs" />
@@ -169,7 +170,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Base Classes\Sample Data\ParseSample.csv" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

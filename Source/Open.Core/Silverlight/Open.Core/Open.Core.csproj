@@ -93,6 +93,7 @@
     <Compile Include="Attributes\SyncValueToAttribute.cs" />
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\DisposableBase.cs" />
+    <Compile Include="Base Classes\ParserBase.cs" />
     <Compile Include="Composite\EventBus.cs" />
     <Compile Include="Composite\EventBus.silverlight.cs" />
     <Compile Include="Base Classes\ImporterBase.cs" />

@@ -105,6 +105,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Base Classes\NotifyPropertyChangedInvoker.cs">
       <Link>Base Classes\NotifyPropertyChangedInvoker.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Base Classes\ParserBase.cs">
+      <Link>Base Classes\ParserBase.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Collection\ChildPropertyChangedEventArgs.cs">
       <Link>Collection\ChildPropertyChangedEventArgs.cs</Link>
     </Compile>
