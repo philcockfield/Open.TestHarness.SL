@@ -17,35 +17,36 @@
 	    text-align:center;
     }
     </style>
-    
-    <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
     try {
         var pageTracker = _gat._getTracker("UA-12869850-1");
         pageTracker._trackPageview();
-    } catch (err) { }</script>
-    
+    } catch (err) { }
+</script>
+
     <script type="text/javascript" src="Silverlight.js"></script>
     <script type="text/javascript">
         function onSilverlightError(sender, args) {
             var appSource = "";
             if (sender != null && sender != 0) {
-              appSource = sender.getHost().Source;
+                appSource = sender.getHost().Source;
             }
-            
+
             var errorType = args.ErrorType;
             var iErrorCode = args.ErrorCode;
 
             if (errorType == "ImageError" || errorType == "MediaError") {
-              return;
+                return;
             }
 
-            var errMsg = "Unhandled Error in Silverlight Application " +  appSource + "\n" ;
+            var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
 
-            errMsg += "Code: "+ iErrorCode + "    \n";
+            errMsg += "Code: " + iErrorCode + "    \n";
             errMsg += "Category: " + errorType + "       \n";
             errMsg += "Message: " + args.ErrorMessage + "     \n";
 
@@ -54,10 +55,10 @@
                 errMsg += "Line: " + args.lineNumber + "     \n";
                 errMsg += "Position: " + args.charPosition + "     \n";
             }
-            else if (errorType == "RuntimeError") {           
+            else if (errorType == "RuntimeError") {
                 if (args.lineNumber != 0) {
                     errMsg += "Line: " + args.lineNumber + "     \n";
-                    errMsg += "Position: " +  args.charPosition + "     \n";
+                    errMsg += "Position: " + args.charPosition + "     \n";
                 }
                 errMsg += "MethodName: " + args.methodName + "     \n";
             }
@@ -70,20 +71,14 @@
     <form id="form1" runat="server" style="height:100%">
     <div id="silverlightControlHost">
         <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
-		  <param name="source" value="ClientBin/Open.TestHarness.xap?6"/>
+		  <param name="source" value="ClientBin/Open.TestHarness.xap"/>
 		  <param name="onError" value="onSilverlightError" />
           <param name="windowless" value="true"/>
-		  <param name="minRuntimeVersion" value="3.0.40624.0" />
+		  <param name="minRuntimeVersion" value="4.0.50401.0" />
 		  <param name="autoUpgrade" value="true" />
-          <div style="font-family:tahoma, verdana; font-size:9pt;">
-            <p/>
+		  <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration:none">
  			  <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
-            <p/>
-              Requires Version 4.  
-              <a href="http://silverlight.dlservice.microsoft.com/download/F/6/5/F653F7FD-AD4D-411D-8B1F-9C4B1BD69881/Silverlight_Developer.exe">Mac</a> 
-              | 
-              <a href="http://silverlight.dlservice.microsoft.com/download/F/6/5/F653F7FD-AD4D-411D-8B1F-9C4B1BD69881/Silverlight_Developer.exe">Windows</a>
-          </div>
+		  </a>
 	    </object><iframe id="_sl_historyFrame" style="visibility:hidden;height:0px;width:0px;border:0px"></iframe></div>
     </form>
 </body>
