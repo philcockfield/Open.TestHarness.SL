@@ -20,10 +20,9 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-
 1. System Requirements
-    - Visual Studio 2010 (Release Candidate)
-    - Silverlight 4 (and associated Visual Studio tools)
+    - Visual Studio 2010
+    - Silverlight 4 (and associated Visual Studio tools) see: http://www.silverlight.net/getstarted/      
 
 2. Information
 For more information about working with the TestHarness (and Open.Core) see: http://TestHarness.org
