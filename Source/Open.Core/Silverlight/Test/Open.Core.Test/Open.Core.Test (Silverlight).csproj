@@ -121,6 +121,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBaseTest.cs" />
     <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
     <Compile Include="UnitTests\Core.UI\ViewModelBaseTest.cs" />
+    <Compile Include="UnitTests\Core\Base Classes\ParserBaseTest.cs" />
     <Compile Include="UnitTests\Core\Behavior\AutoRowDefinitionsTest.cs" />
     <Compile Include="UnitTests\Core\Behavior\BehaviorTest.cs" />
     <Compile Include="UnitTests\Core\Behavior\ExecuteMethodTest.cs" />
