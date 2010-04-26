@@ -231,6 +231,9 @@
       <DependentUpon>ButtonToolView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToolBar\Tools\ButtonToolViewModel.cs" />
+    <Compile Include="Controls\ViewFactoryContent.xaml.cs">
+      <DependentUpon>ViewFactoryContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Templates.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +396,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ToolBar\Tools\ButtonToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ViewFactoryContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
