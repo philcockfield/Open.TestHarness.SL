@@ -15,6 +15,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
     {
         #region Head
         private Thickness defaultToolMargin;
+        private IButtonTool largeButton;
 
         [Import]
         public ExportFactory<IButtonTool> ToolCreator { get; set; }
@@ -46,18 +47,14 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         {
             ToolBar.Clear();
 
-            //var buttonTool = ToolCreator.CreateExport().Value;
-            //buttonTool.Text = "My Label";
-            //buttonTool.Icon = IconImage.SilkAccept.ToImage();
-
             ToolBar.Clear();
-            ToolBar.AddButton(
-                    1,
-                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(),
-                    "Paste" + Environment.NewLine + "Something", 
-                    Orientation.Vertical, 
-                    column: 0, 
-                    rowSpan: 3);
+            largeButton = ToolBar.AddButton(
+                                    1,
+                                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(),
+                                    "Paste" + Environment.NewLine + "Something", 
+                                    Orientation.Vertical, 
+                                    column: 0, 
+                                    rowSpan: 3);
             ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 1, row: 0, columnSpan: 3);
             ToolBar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 1, row: 1, columnSpan: 3);
             ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 1, row: 2, columnSpan: 3);
@@ -120,16 +117,49 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             Output.WriteCollection(ToolBar.Tools);
             Output.Break();
         }
+
+        [ViewTest]
+        public void Register_RegisterFileSaveDialog(ContentControl control)
+        {
+            if (largeButton == null) return;
+            largeButton.RegisterFileSaveDialog(
+                                setupDialog =>
+                                                {
+                                                    setupDialog.DefaultExt = ".xml";
+                                                    setupDialog.Filter = "XML (.xml)|*.xml";
+                                                }, 
+                                acceptedDialog =>
+                                    {
+                                        Output.Write("SafeFileName: " + acceptedDialog.SafeFileName);
+                                        Output.Break();
+                                    });
+        }
+
+        [ViewTest]
+        public void Register_RegisterFileOpenDialog(ContentControl control)
+        {
+            if (largeButton == null) return;
+            largeButton.RegisterFileOpenDialog(
+                                setupDialog =>
+                                                {
+                                                    setupDialog.MultiSelect = true;
+                                                    setupDialog.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
+                                                    setupDialog.FilterIndex = 2;
+                                                },
+                                acceptedDialog =>
+                                    {
+                                        Output.Write("File: " + acceptedDialog.File);
+                                        Output.Write("Files: " + acceptedDialog.Files);
+                                        Output.WriteCollection(acceptedDialog.Files);
+                                        Output.Break();
+                                    });
+        }
         #endregion
 
         public class MockTool : ToolBase
         {
             public double Width = 16;
             public double Height = 16;
-
-            public MockTool()
-            {
-            }
 
             public override FrameworkElement CreateView()
             {

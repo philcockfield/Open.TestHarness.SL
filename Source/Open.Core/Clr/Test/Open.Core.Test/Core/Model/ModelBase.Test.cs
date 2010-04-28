@@ -117,7 +117,6 @@ namespace Open.Core.Common.Test.Model
             public const string PropText2 = "Text2";
 
             private string text1;
-            private string text2;
 
             public int DisposeOfManagedResourcesCount;
             #endregion

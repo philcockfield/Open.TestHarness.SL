@@ -122,7 +122,7 @@ namespace Open.Core.Common
             var red = Colors.Red;
             if (exception == null)
             {
-                WriteTitle(red, "Error: " + NullText);
+                WriteTitle(Colors.Green, "No Error");
                 return;
             }
 

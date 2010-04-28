@@ -86,6 +86,9 @@
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\ISaveFileDialog.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\IFileSystemDialog.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\IOpenFileDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolEvent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonToolStyles.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonTool.cs" />

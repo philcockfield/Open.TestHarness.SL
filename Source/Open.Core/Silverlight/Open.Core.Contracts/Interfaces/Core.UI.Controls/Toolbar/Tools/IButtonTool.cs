@@ -60,6 +60,16 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets whether the default background is rendered when the mouse is not over the tool (see 'Styles').</summary>
         bool IsDefaultBackgroundVisible { get; set; }
+
+        /// <summary>Turns the button into a SaveFile dialog invoker.</summary>
+        /// <param name="setupDialog">Invoked before the dialog is shown to get setup information.</param>
+        /// <param name="onAccepted">Invoked after the dialog is accepted (OK).</param>
+        void RegisterFileSaveDialog(Action<ISaveFileDialog> setupDialog, Action<ISaveFileDialog> onAccepted);
+
+        /// <summary>Turns the button into a OpenFile dialog invoker.</summary>
+        /// <param name="setupDialog">Invoked before the dialog is shown to get setup information.</param>
+        /// <param name="onAccepted">Invoked after the dialog is accepted (OK).</param>
+        void RegisterFileOpenDialog(Action<IOpenFileDialog> setupDialog, Action<IOpenFileDialog> onAccepted);
     }
 
     /// <summary>The various types of button behavior a ButtonTool can express.</summary>
@@ -69,5 +79,4 @@ namespace Open.Core.UI.Controls
         DropDown,
         Split,
     }
-
 }

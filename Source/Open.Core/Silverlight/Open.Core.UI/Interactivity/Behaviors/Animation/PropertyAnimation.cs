@@ -171,7 +171,7 @@ namespace Open.Core.Common.AttachedBehavior
                 returnValue = ViewModel.GetType().GetProperty(propertyName).GetValue(ViewModel, null);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

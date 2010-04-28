@@ -22,6 +22,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using Open.Core.Common;
 
 using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonToolViewModel;

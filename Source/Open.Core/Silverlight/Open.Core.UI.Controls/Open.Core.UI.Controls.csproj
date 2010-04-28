@@ -234,6 +234,9 @@
     <Compile Include="Controls\ViewFactoryContent.xaml.cs">
       <DependentUpon>ViewFactoryContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\SystemDialogs\OpenFileDialog.cs" />
+    <Compile Include="Models\SystemDialogs\SaveFileDialog.cs" />
+    <Compile Include="Models\SystemDialogs\FileSystemDialog.cs" />
     <Compile Include="Templates\Templates.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +436,7 @@
   <ItemGroup>
     <Resource Include="Images\Icon.ToolButton.DropDownPointer.5x4.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
