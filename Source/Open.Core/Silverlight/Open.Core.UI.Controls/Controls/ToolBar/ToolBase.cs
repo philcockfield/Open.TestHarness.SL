@@ -56,6 +56,12 @@ namespace Open.Core.UI.Controls
             get { return GetPropertyValue<T, bool>(m => m.IsEnabled, true); }
             set { SetPropertyValue<T, bool>(m => m.IsEnabled, value, true); }
         }
+
+        /// <summary>Gets the static reference to the global EventBux.</summary>
+        protected IEventBus EventBus
+        {
+            get { return eventBus ?? (eventBus = new Importer().EventBus); }
+        }
         #endregion
 
         #region Methods
@@ -66,10 +72,9 @@ namespace Open.Core.UI.Controls
         }
 
         /// <summary>Fires the executed event through the EventBus.</summary>
-        protected virtual void FireExecuedEvent() 
+        protected virtual void PublishToolEvent() 
         {
-            if (eventBus == null) eventBus = new Importer().EventBus;
-            eventBus.Publish<IToolEvent>(new ToolEvent { Tool = this });
+            EventBus.Publish<IToolEvent>(new ToolEvent { Tool = this });
         }
         #endregion
 

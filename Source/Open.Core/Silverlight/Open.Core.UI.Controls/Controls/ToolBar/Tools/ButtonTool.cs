@@ -1,9 +1,34 @@
-﻿using System;
+﻿//------------------------------------------------------
+//    Copyright (c) 2010 TestHarness.org
+//
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the 'Software'), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//
+//    The above copyright notice and this permission notice shall be included in
+//    all copies or substantial portions of the Software.
+//
+//    THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//    THE SOFTWARE.
+//------------------------------------------------------
+
+using System;
 using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
+using Open.Core.UI.Controls.Models;
+using OpenFileDialog = System.Windows.Controls.OpenFileDialog;
+using SaveFileDialog = System.Windows.Controls.SaveFileDialog;
 using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonTool;
 
 [assembly: InternalsVisibleTo("Open.Core.Test")]
@@ -21,7 +46,7 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         {
             ShowDialog();
             if (Click != null) Click(this, new EventArgs());
-            FireExecuedEvent();
+            PublishToolEvent();
         }
         #endregion
 
@@ -135,39 +160,49 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         {
             return new ButtonToolView { ViewModel = new ButtonToolViewModel(this) };
         }
+        #endregion
 
-        public void RegisterFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted)
+        #region Methods - Dialog Registration
+        public void RegisterAsFileOpenDialog(string filter = null, int filterIndex = 1, bool multiSelect = false, Action<IOpenFileDialog> dialogAccepted = null)
         {
-            // Setup initial conditions.
-            if (dialogSetup == null) throw new ArgumentNullException("dialogSetup");
-            if (dialogAccepted == null) throw new ArgumentNullException("dialogAccepted");
-            if (openFileDialog != null) throw new InitializationException("The button has already been registered as a file-open dialog.");
-            if (saveFileDialog != null) throw new InitializationException("The file-save dialog handlers have already been registered.");
-
-            // Store state.
-            saveFileDialog = new DialogInvoker<ISaveFileDialog>
-                                 {
-                                     DialogInfo = new Models.SaveFileDialog(),
-                                     SetupDialog = dialogSetup,
-                                     OnAccepted = dialogAccepted,
-                                 };
+            RegisterAsFileOpenDialog(dialog =>
+                                         {
+                                             dialog.Filter = filter;
+                                             dialog.FilterIndex = filterIndex.WithinBounds(1, int.MaxValue);
+                                             dialog.MultiSelect = multiSelect;
+                                         }, dialogAccepted);
         }
 
-        public void RegisterFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted)
+        public void RegisterAsFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted = null)
         {
             // Setup initial conditions.
-            if (dialogSetup == null) throw new ArgumentNullException("dialogSetup");
-            if (dialogAccepted == null) throw new ArgumentNullException("dialogAccepted");
-            if (saveFileDialog != null) throw new InitializationException("The button has already been registered as a file-save dialog.");
+            if (saveFileDialog != null) throw new InitializationException("This button has already been registered as a file-save dialog.");
             if (openFileDialog != null) throw new InitializationException("The file-open dialog handlers have already been registered.");
 
             // Store state.
-            openFileDialog = new DialogInvoker<IOpenFileDialog>
-                                {
-                                    DialogInfo = new Models.OpenFileDialog(),
-                                    SetupDialog = dialogSetup,
-                                    OnAccepted = dialogAccepted,
-                                };
+            openFileDialog = new DialogInvoker<IOpenFileDialog>(new Models.OpenFileDialog(), dialogSetup, dialogAccepted);
+        }
+
+        public void RegisterAsFileSaveDialog(string filter, int filterIndex, string defaultExtension, Action<ISaveFileDialog> dialogAccepted)
+        {
+            RegisterAsFileSaveDialog(dialog =>
+                                         {
+                                             dialog.Filter = filter;
+                                             dialog.FilterIndex = filterIndex.WithinBounds(1, int.MaxValue);
+                                             dialog.DefaultExtension = defaultExtension;
+                                         }, 
+                dialogAccepted);
+            
+        }
+
+        public void RegisterAsFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted = null)
+        {
+            // Setup initial conditions.
+            if (openFileDialog != null) throw new InitializationException("This button has already been registered as a file-open dialog.");
+            if (saveFileDialog != null) throw new InitializationException("The file-save dialog handlers have already been registered.");
+
+            // Store state.
+            saveFileDialog = new DialogInvoker<ISaveFileDialog>(new Models.SaveFileDialog(), dialogSetup, dialogAccepted);
         }
         #endregion
 
@@ -196,6 +231,7 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
                 invoker.DialogInfo.File = dialog.File;
                 invoker.DialogInfo.Files = dialog.Files;
                 invoker.AfterAccepted();
+                EventBus.Publish<IOpenFileDialogEvent>(new OpenFileDialogEvent { Dialog = invoker.DialogInfo, Tool = this });
             }
         }
 
@@ -210,23 +246,31 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
                                 {
                                     Filter = invoker.DialogInfo.Filter,
                                     FilterIndex = invoker.DialogInfo.FilterIndex,
-                                    DefaultExt = invoker.DialogInfo.DefaultExt,
+                                    DefaultExt = invoker.DialogInfo.DefaultExtension,
                                 };
             if (dialog.ShowDialog() == true)
             {
                 invoker.AfterAccepted();
+                EventBus.Publish<ISaveFileDialogEvent>(new SaveFileDialogEvent { Dialog = invoker.DialogInfo, Tool = this});
             }
         }
         #endregion
 
-        internal class DialogInvoker<TDialog> where TDialog : IFileSystemDialog
+        private class DialogInvoker<TDialog> where TDialog : IFileSystemDialog
         {
-            public TDialog DialogInfo { get; set; }
-            public Action<TDialog> SetupDialog { get; set; }
-            public Action<TDialog> OnAccepted { get; set; }
+            public DialogInvoker(TDialog dialogInfo, Action<TDialog> setupDialog, Action<TDialog> onAccepted)
+            {
+                DialogInfo = dialogInfo;
+                setupDialogAction = setupDialog;
+                onAcceptedAction = onAccepted;
+            }
 
-            public void BeforeShow() { SetupDialog(DialogInfo); }
-            public void AfterAccepted() { OnAccepted(DialogInfo); }
+            public TDialog DialogInfo { get; private set; }
+            private readonly Action<TDialog> setupDialogAction;
+            private readonly Action<TDialog> onAcceptedAction;
+
+            public void BeforeShow() { if (setupDialogAction != null) setupDialogAction(DialogInfo); }
+            public void AfterAccepted() { if (onAcceptedAction != null) onAcceptedAction(DialogInfo); }
         }
     }
 }

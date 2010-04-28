@@ -4,12 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
-using Open.Core.Composite.Command;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 {
-    
     [ViewTestClass]
     public class ToolBarViewTest
     {
@@ -60,7 +58,6 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 1, row: 2, columnSpan: 3);
             ToolBar.UpdateLayout();
         }
-
 
         [ViewTest]
         public void Add_Tools_Single_Row(ContentControl control)
@@ -122,12 +119,8 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         public void Register_RegisterFileSaveDialog(ContentControl control)
         {
             if (largeButton == null) return;
-            largeButton.RegisterFileSaveDialog(
-                                setupDialog =>
-                                                {
-                                                    setupDialog.DefaultExt = ".xml";
-                                                    setupDialog.Filter = "XML (.xml)|*.xml";
-                                                }, 
+            largeButton.RegisterAsFileSaveDialog(
+                                "XML (.xml)|*.xml", 1, ".xml",
                                 acceptedDialog =>
                                     {
                                         Output.Write("SafeFileName: " + acceptedDialog.SafeFileName);
@@ -139,13 +132,10 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         public void Register_RegisterFileOpenDialog(ContentControl control)
         {
             if (largeButton == null) return;
-            largeButton.RegisterFileOpenDialog(
-                                setupDialog =>
-                                                {
-                                                    setupDialog.MultiSelect = true;
-                                                    setupDialog.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
-                                                    setupDialog.FilterIndex = 2;
-                                                },
+            largeButton.RegisterAsFileOpenDialog(
+                                "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*",
+                                2,
+                                true,
                                 acceptedDialog =>
                                     {
                                         Output.Write("File: " + acceptedDialog.File);

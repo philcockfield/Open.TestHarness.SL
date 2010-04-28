@@ -234,6 +234,8 @@
     <Compile Include="Controls\ViewFactoryContent.xaml.cs">
       <DependentUpon>ViewFactoryContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\SystemDialogs\Events\SaveFileDialogEvent.cs" />
+    <Compile Include="Models\SystemDialogs\Events\OpenFileDialogEvent.cs" />
     <Compile Include="Models\SystemDialogs\OpenFileDialog.cs" />
     <Compile Include="Models\SystemDialogs\SaveFileDialog.cs" />
     <Compile Include="Models\SystemDialogs\FileSystemDialog.cs" />

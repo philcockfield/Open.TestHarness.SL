@@ -6,7 +6,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
     {
         public void FireExecutedEventPublic()
         {
-            base.FireExecuedEvent();
+            base.PublishToolEvent();
         }
     }
 }
