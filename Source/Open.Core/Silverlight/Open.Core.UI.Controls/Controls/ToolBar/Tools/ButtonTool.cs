@@ -136,11 +136,11 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
             return new ButtonToolView { ViewModel = new ButtonToolViewModel(this) };
         }
 
-        public void RegisterFileSaveDialog(Action<ISaveFileDialog> setupDialog, Action<ISaveFileDialog> onAccepted)
+        public void RegisterFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted)
         {
             // Setup initial conditions.
-            if (setupDialog == null) throw new ArgumentNullException("setupDialog");
-            if (onAccepted == null) throw new ArgumentNullException("onAccepted");
+            if (dialogSetup == null) throw new ArgumentNullException("dialogSetup");
+            if (dialogAccepted == null) throw new ArgumentNullException("dialogAccepted");
             if (openFileDialog != null) throw new InitializationException("The button has already been registered as a file-open dialog.");
             if (saveFileDialog != null) throw new InitializationException("The file-save dialog handlers have already been registered.");
 
@@ -148,16 +148,16 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
             saveFileDialog = new DialogInvoker<ISaveFileDialog>
                                  {
                                      DialogInfo = new Models.SaveFileDialog(),
-                                     SetupDialog = setupDialog,
-                                     OnAccepted = onAccepted,
+                                     SetupDialog = dialogSetup,
+                                     OnAccepted = dialogAccepted,
                                  };
         }
 
-        public void RegisterFileOpenDialog(Action<IOpenFileDialog> setupDialog, Action<IOpenFileDialog> onAccepted)
+        public void RegisterFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted)
         {
             // Setup initial conditions.
-            if (setupDialog == null) throw new ArgumentNullException("setupDialog");
-            if (onAccepted == null) throw new ArgumentNullException("onAccepted");
+            if (dialogSetup == null) throw new ArgumentNullException("dialogSetup");
+            if (dialogAccepted == null) throw new ArgumentNullException("dialogAccepted");
             if (saveFileDialog != null) throw new InitializationException("The button has already been registered as a file-save dialog.");
             if (openFileDialog != null) throw new InitializationException("The file-open dialog handlers have already been registered.");
 
@@ -165,8 +165,8 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
             openFileDialog = new DialogInvoker<IOpenFileDialog>
                                 {
                                     DialogInfo = new Models.OpenFileDialog(),
-                                    SetupDialog = setupDialog,
-                                    OnAccepted = onAccepted,
+                                    SetupDialog = dialogSetup,
+                                    OnAccepted = dialogAccepted,
                                 };
         }
         #endregion

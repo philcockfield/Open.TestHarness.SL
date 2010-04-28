@@ -62,14 +62,14 @@ namespace Open.Core.UI.Controls
         bool IsDefaultBackgroundVisible { get; set; }
 
         /// <summary>Turns the button into a SaveFile dialog invoker.</summary>
-        /// <param name="setupDialog">Invoked before the dialog is shown to get setup information.</param>
-        /// <param name="onAccepted">Invoked after the dialog is accepted (OK).</param>
-        void RegisterFileSaveDialog(Action<ISaveFileDialog> setupDialog, Action<ISaveFileDialog> onAccepted);
+        /// <param name="dialogSetup">Invoked before the dialog is shown to get setup information.</param>
+        /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
+        void RegisterFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted);
 
         /// <summary>Turns the button into a OpenFile dialog invoker.</summary>
-        /// <param name="setupDialog">Invoked before the dialog is shown to get setup information.</param>
-        /// <param name="onAccepted">Invoked after the dialog is accepted (OK).</param>
-        void RegisterFileOpenDialog(Action<IOpenFileDialog> setupDialog, Action<IOpenFileDialog> onAccepted);
+        /// <param name="dialogSetup">Invoked before the dialog is shown to get setup information.</param>
+        /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
+        void RegisterFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted);
     }
 
     /// <summary>The various types of button behavior a ButtonTool can express.</summary>
