@@ -29,11 +29,11 @@ using Open.Core.Common;
 using Open.Core.UI.Controls.Models;
 using OpenFileDialog = System.Windows.Controls.OpenFileDialog;
 using SaveFileDialog = System.Windows.Controls.SaveFileDialog;
-using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonTool;
+using T = Open.Core.UI.Controls.ButtonTool;
 
 [assembly: InternalsVisibleTo("Open.Core.Test")]
 
-namespace Open.Core.UI.Controls.Controls.ToolBar
+namespace Open.Core.UI.Controls
 {
     /// <summary>A ToolBar tool which behaves like a button.</summary>
     [Export(typeof(IButtonTool))]
@@ -72,8 +72,8 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         /// <summary>Gets or sets the orentation of the label relative to the icon.</summary>
         public Orientation Orientation
         {
-            get { return GetPropertyValue<T, Orientation>(m => m.Orientation, Orientation.Horizontal); }
-            set { SetPropertyValue<T, Orientation>(m => m.Orientation, value, Orientation.Horizontal); }
+            get { return GetPropertyValue<ButtonTool, Orientation>(m => m.Orientation, Orientation.Horizontal); }
+            set { SetPropertyValue<ButtonTool, Orientation>(m => m.Orientation, value, Orientation.Horizontal); }
         }
 
         /// <summary>Gets or sets the XAML elements that make up the tool.</summary>
@@ -81,9 +81,9 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         {
             get
             {
-                var value = GetPropertyValue<T, IButtonToolStyles>(m => m.Styles);
+                var value = GetPropertyValue<ButtonTool, IButtonToolStyles>(m => m.Styles);
                 if (value == null) Styles = null; // Cause default styles to be created in setter.
-                return GetPropertyValue<T, IButtonToolStyles>(m => m.Styles);
+                return GetPropertyValue<ButtonTool, IButtonToolStyles>(m => m.Styles);
             }
             set
             {
@@ -92,43 +92,43 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
                     value = new ButtonToolStyles();
                     ((ButtonToolStyles)value).SetDefaults();
                 }
-                SetPropertyValue<T, IButtonToolStyles>(m => m.Styles, value);
+                SetPropertyValue<ButtonTool, IButtonToolStyles>(m => m.Styles, value);
             }
         }
 
         /// <summary>Gets or sets the style of behavior the button expresses.</summary>
         public ButtonToolType ButtonType
         {
-            get { return GetPropertyValue<T, ButtonToolType>(m => m.ButtonType); }
-            set { SetPropertyValue<T, ButtonToolType>(m => m.ButtonType, value); }
+            get { return GetPropertyValue<ButtonTool, ButtonToolType>(m => m.ButtonType); }
+            set { SetPropertyValue<ButtonTool, ButtonToolType>(m => m.ButtonType, value); }
         }
 
         /// <summary>Gets or sets the icon image.</summary>
         public Image Icon
         {
-            get { return GetPropertyValue<T, Image>(m => m.Icon); }
-            set { SetPropertyValue<T, Image>(m => m.Icon, value); }
+            get { return GetPropertyValue<ButtonTool, Image>(m => m.Icon); }
+            set { SetPropertyValue<ButtonTool, Image>(m => m.Icon, value); }
         }
 
         /// <summary>Gets or sets the text label of the button.</summary>
         public string Text
         {
-            get { return GetPropertyValue<T, string>(m => m.Text); }
-            set { SetPropertyValue<T, string>(m => m.Text, value); }
+            get { return GetPropertyValue<ButtonTool, string>(m => m.Text); }
+            set { SetPropertyValue<ButtonTool, string>(m => m.Text, value); }
         }
 
         /// <summary>Gets or sets the tooltip of the button.</summary>
         public string ToolTip
         {
-            get { return GetPropertyValue<T, string>(m => m.ToolTip); }
-            set { SetPropertyValue<T, string>(m => m.ToolTip, value); }
+            get { return GetPropertyValue<ButtonTool, string>(m => m.ToolTip); }
+            set { SetPropertyValue<ButtonTool, string>(m => m.ToolTip, value); }
         }
 
         /// <summary>Gets or sets the mouse related state of the button.</summary>
         public ButtonMouseState MouseState
         {
-            get { return GetPropertyValue<T, ButtonMouseState>(m => m.MouseState); }
-            set { SetPropertyValue<T, ButtonMouseState>(m => m.MouseState, value, m => m.IsMouseOver, m => m.IsMouseDown); }
+            get { return GetPropertyValue<ButtonTool, ButtonMouseState>(m => m.MouseState); }
+            set { SetPropertyValue<ButtonTool, ButtonMouseState>(m => m.MouseState, value, m => m.IsMouseOver, m => m.IsMouseDown); }
         }
 
         /// <summary>Gets whether the mouse is currently over the button.</summary>
@@ -146,8 +146,8 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         /// <summary>Gets or sets whether the default background is rendered when the mouse is not over the tool (see 'Styles').</summary>
         public bool IsDefaultBackgroundVisible
         {
-            get { return GetPropertyValue<T, bool>(m => m.IsDefaultBackgroundVisible); }
-            set { SetPropertyValue<T, bool>(m => m.IsDefaultBackgroundVisible, value); }
+            get { return GetPropertyValue<ButtonTool, bool>(m => m.IsDefaultBackgroundVisible); }
+            set { SetPropertyValue<ButtonTool, bool>(m => m.IsDefaultBackgroundVisible, value); }
         }
         #endregion
 

@@ -97,6 +97,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
     <Compile Include="Interfaces\Core\IError.cs" />
     <Compile Include="Interfaces\Core\ICallback.cs" />
     <Compile Include="Interfaces\Core\IIdentifiable.cs" />

@@ -7,7 +7,6 @@ using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.UI.Controls;
 using Open.Core.Common.Testing;
-using Open.Core.UI.Controls.Controls.ToolBar;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {

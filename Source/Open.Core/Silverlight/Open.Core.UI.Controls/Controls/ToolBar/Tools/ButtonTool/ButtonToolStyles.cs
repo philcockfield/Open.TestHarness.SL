@@ -23,9 +23,9 @@
 using System.Windows;
 using Open.Core.Common;
 
-using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonToolStyles;
+using T = Open.Core.UI.Controls.ButtonToolStyles;
 
-namespace Open.Core.UI.Controls.Controls.ToolBar
+namespace Open.Core.UI.Controls
 {
     /// <summary>The default styles elements for the ButtonTool.</summary>
     public class ButtonToolStyles : ModelBase, IButtonToolStyles

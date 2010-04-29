@@ -217,20 +217,20 @@
     </Compile>
     <Compile Include="Controls\ToolBar\ToolBase.cs" />
     <Compile Include="Controls\ToolBar\ToolEvent.cs" />
-    <Compile Include="Controls\ToolBar\Tools\ButtonTool.cs" />
+    <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonTool.cs" />
     <Page Include="Controls\ImageIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ToolBar\Tools\ButtonToolTemplates.xaml">
+    <Page Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Controls\ToolBar\Tools\ButtonToolStyles.cs" />
-    <Compile Include="Controls\ToolBar\Tools\ButtonToolView.xaml.cs">
+    <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolStyles.cs" />
+    <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolView.xaml.cs">
       <DependentUpon>ButtonToolView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ToolBar\Tools\ButtonToolViewModel.cs" />
+    <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolViewModel.cs" />
     <Compile Include="Controls\ViewFactoryContent.xaml.cs">
       <DependentUpon>ViewFactoryContent.xaml</DependentUpon>
     </Compile>
@@ -400,7 +400,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ToolBar\Tools\ButtonToolView.xaml">
+    <Page Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -438,7 +438,9 @@
   <ItemGroup>
     <Resource Include="Images\Icon.ToolButton.DropDownPointer.5x4.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\ToolBar\Tools\ToolDivider\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

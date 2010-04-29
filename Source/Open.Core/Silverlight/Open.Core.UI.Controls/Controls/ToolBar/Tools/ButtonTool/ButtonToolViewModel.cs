@@ -25,9 +25,9 @@ using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
 
-using T = Open.Core.UI.Controls.Controls.ToolBar.ButtonToolViewModel;
+using T = Open.Core.UI.Controls.ButtonToolViewModel;
 
-namespace Open.Core.UI.Controls.Controls.ToolBar
+namespace Open.Core.UI.Controls
 {
     public class ButtonToolViewModel : ViewModelBase
     {
@@ -92,10 +92,10 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         public double EnabledOpacity { get { return IsEnabled ? 1 : 0.3; } }
         public bool IsViewEnabled
         {
-            get { return GetPropertyValue<T, bool>(m => m.IsViewEnabled, true); }
+            get { return GetPropertyValue<ButtonToolViewModel, bool>(m => m.IsViewEnabled, true); }
             set
             {
-                SetPropertyValue<T, bool>(m => m.IsViewEnabled, value, true);
+                SetPropertyValue<ButtonToolViewModel, bool>(m => m.IsViewEnabled, value, true);
                 FireIsEnabledChanged();
             }
         }
