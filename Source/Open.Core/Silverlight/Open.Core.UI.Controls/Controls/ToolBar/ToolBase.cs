@@ -36,6 +36,14 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Properties
+        /// <summary>Gets the static reference to the global EventBux.</summary>
+        protected IEventBus EventBus
+        {
+            get { return eventBus ?? (eventBus = new Importer().EventBus); }
+        }
+        #endregion
+
+        #region Properties - ITool
         /// <summary>Gets or sets the unique identifier of the tool.</summary>
         public object Id
         {
@@ -57,10 +65,11 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<T, bool>(m => m.IsEnabled, value, true); }
         }
 
-        /// <summary>Gets the static reference to the global EventBux.</summary>
-        protected IEventBus EventBus
+        /// <summary>Gets or sets the minimum width the tool can be.</summary>
+        public double MinWidth
         {
-            get { return eventBus ?? (eventBus = new Importer().EventBus); }
+            get { return GetPropertyValue<T, double>(m => m.MinWidth); }
+            set { SetPropertyValue<T, double>(m => m.MinWidth, value); }
         }
         #endregion
 

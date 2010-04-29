@@ -81,7 +81,7 @@
     
     <!--Button Content-->
     <DataTemplate x:Key="ButtonTool.HorizontalContent">
-        <Grid IsHitTestVisible="False" Opacity="{Binding EnabledOpacity}">
+        <Grid IsHitTestVisible="False" Opacity="{Binding EnabledOpacity}" MinWidth="{Binding Model.MinWidth}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -120,7 +120,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ButtonTool.VerticalContent">
-        <Grid>
+        <Grid Opacity="{Binding EnabledOpacity}" MinWidth="{Binding Model.MinWidth}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="26" />

@@ -53,10 +53,13 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
                                     Orientation.Vertical, 
                                     column: 0, 
                                     rowSpan: 3);
-            ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 1, row: 0, columnSpan: 3);
+            var smallButton = ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 1, row: 0, columnSpan: 3);
             ToolBar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 1, row: 1, columnSpan: 3);
             ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 1, row: 2, columnSpan: 3);
             ToolBar.UpdateLayout();
+
+            //largeButton.MinWidth = 150;
+            //smallButton.MinWidth = 250;
         }
 
         [ViewTest]

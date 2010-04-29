@@ -26,6 +26,7 @@ namespace Open.Core.UI.Controls
     public interface IFileSystemDialog
     {
         /// <summary>Gets or sets a filter string that specifies the files types and descriptions to display in the dialog.</summary>
+        /// <example>Image Files(*.BMP;*.JPG;*.GIF) |*.BMP;*.JPG;*.GIF|All files (*.*)|*.*</example>
         string Filter { get; set; }
 
         /// <summary>Gets or sets the index of the selected item in the Save as type drop-down list.</summary>

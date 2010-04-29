@@ -27,5 +27,9 @@ namespace Open.Core.UI.Controls
     {
         /// <summary>Gets the tool that caused the event to fire.</summary>
         ITool Tool { get; }
+
+        /// <summary>Performs a match of the given ID with the unique identifier of the Tool.</summary>
+        /// <param name="id">The unique identifier to match.</param>
+        bool IsMatch(object id);
     }
 }

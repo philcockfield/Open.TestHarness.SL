@@ -68,16 +68,12 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         }
         #endregion
 
-        #region Properties
-
-        #endregion
-
         #region Properties - IButtonTool
         /// <summary>Gets or sets the orentation of the label relative to the icon.</summary>
         public Orientation Orientation
         {
-            get { return GetPropertyValue<ButtonTool, Orientation>(m => m.Orientation, Orientation.Horizontal); }
-            set { SetPropertyValue<ButtonTool, Orientation>(m => m.Orientation, value, Orientation.Horizontal); }
+            get { return GetPropertyValue<T, Orientation>(m => m.Orientation, Orientation.Horizontal); }
+            set { SetPropertyValue<T, Orientation>(m => m.Orientation, value, Orientation.Horizontal); }
         }
 
         /// <summary>Gets or sets the XAML elements that make up the tool.</summary>
@@ -85,9 +81,9 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
         {
             get
             {
-                var value = GetPropertyValue<ButtonTool, IButtonToolStyles>(m => m.Styles);
+                var value = GetPropertyValue<T, IButtonToolStyles>(m => m.Styles);
                 if (value == null) Styles = null; // Cause default styles to be created in setter.
-                return GetPropertyValue<ButtonTool, IButtonToolStyles>(m => m.Styles);
+                return GetPropertyValue<T, IButtonToolStyles>(m => m.Styles);
             }
             set
             {
@@ -96,7 +92,7 @@ namespace Open.Core.UI.Controls.Controls.ToolBar
                     value = new ButtonToolStyles();
                     ((ButtonToolStyles)value).SetDefaults();
                 }
-                SetPropertyValue<ButtonTool, IButtonToolStyles>(m => m.Styles, value);
+                SetPropertyValue<T, IButtonToolStyles>(m => m.Styles, value);
             }
         }
 

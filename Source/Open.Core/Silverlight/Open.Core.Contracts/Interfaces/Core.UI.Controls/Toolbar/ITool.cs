@@ -36,5 +36,8 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets whether the tool is enabled.</summary>
         bool IsEnabled { get; set; }
+
+        /// <summary>Gets or sets the minimum width the tool can be.</summary>
+        double MinWidth { get; set; }
     }
 }

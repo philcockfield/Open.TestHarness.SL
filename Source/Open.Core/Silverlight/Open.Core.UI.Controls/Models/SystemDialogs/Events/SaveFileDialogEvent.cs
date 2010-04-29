@@ -1,8 +1,7 @@
 ﻿namespace Open.Core.UI.Controls.Models
 {
-    internal class SaveFileDialogEvent : ISaveFileDialogEvent
+    internal class SaveFileDialogEvent : ToolEvent, ISaveFileDialogEvent
     {
-        public ITool Tool { get; set; }
         public ISaveFileDialog Dialog { get; set; }
     }
 }
