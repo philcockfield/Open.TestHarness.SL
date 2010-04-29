@@ -20,14 +20,41 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.ComponentModel.Composition;
 using System.Windows;
+using T = Open.Core.UI.Controls.ToolDivider;
 
 namespace Open.Core.UI.Controls
 {
-    /// <summary>A divider of tools witin a toolbar.</summary>
-    public interface IToolDivider : ITool
+    /// <summary>A divider of tools within a toolbar.</summary>
+    [Export(typeof(IToolDivider))]
+    public class ToolDivider : ToolBase, IToolDivider
     {
+        #region Head
+        private static readonly DataTemplate defaultTemplate = Templates.Instance.GetDataTemplate("ToolDivider.Default");
+
+        public ToolDivider()
+        {
+            // Set default values.
+            VerticalAlignment = VerticalAlignment.Stretch;
+            MinWidth = 9;
+        }
+        #endregion
+
+        #region Properties
         /// <summary>Gets or sets the template that renders the divider visuals.</summary>
-        DataTemplate Template { get; set; }
+        public DataTemplate Template
+        {
+            get { return GetPropertyValue<T, DataTemplate>(m => m.Template, defaultTemplate); }
+            set { SetPropertyValue<T, DataTemplate>(m => m.Template, value, defaultTemplate); }
+        }
+        #endregion
+
+        #region Methods
+        public override FrameworkElement CreateView()
+        {
+            return new ToolDividerView { ViewModel = this };
+        }
+        #endregion
     }
 }

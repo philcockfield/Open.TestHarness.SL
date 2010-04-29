@@ -8,7 +8,14 @@ namespace Open.Core.UI.Controls
     public static class ToolBarExtensions
     {
         #region Head
-        private static ExportFactory<IButtonTool> toolCreator;
+        private static Importer factoryImporter;
+        #endregion
+
+        #region Properties
+        private static Importer FactoryImporter
+        {
+            get { return factoryImporter ?? (factoryImporter = new Importer()); }
+        }
         #endregion
 
         #region Methods
@@ -71,10 +78,9 @@ namespace Open.Core.UI.Controls
         {
             // Setup initial conditions.
             if (toolbar == null) throw new ArgumentNullException("toolbar");
-            if (toolCreator == null) toolCreator = new Importer().ToolCreator;
 
             // Create and configure the button.
-            var tool = toolCreator.CreateExport().Value;
+            var tool = FactoryImporter.ButtonFactory.CreateExport().Value;
             tool.Id = id;
             tool.Icon = icon;
             tool.Text = text;
@@ -88,12 +94,40 @@ namespace Open.Core.UI.Controls
             // Finish up.
             return tool;
         }
+
+        /// <summary>Adds a divider to the toolbar.</summary>
+        /// <param name="toolbar">The toolbar to add to.</param>
+        /// <param name="id">The unique identifier of the tool.</param>
+        /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
+        /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
+        /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        public static IToolDivider AddDivider(
+                    this IToolBar toolbar, object id = null,
+                    int? column = null,
+                    int? row = null,
+                    int? columnSpan = 1,
+                    int? rowSpan = 1)
+        {
+            // Setup initial conditions.
+            if (toolbar == null) throw new ArgumentNullException("toolbar");
+
+            // Create the divider.
+            var divider = FactoryImporter.DividerFactory.CreateExport().Value;
+            toolbar.Add(divider, column, row, columnSpan, rowSpan);
+
+            // Finish up.);
+            return divider;
+        }
         #endregion
 
         public class Importer : ImporterBase
         {
             [Import(typeof(IButtonTool))]
-            public ExportFactory<IButtonTool> ToolCreator { get; set; }
+            public ExportFactory<IButtonTool> ButtonFactory { get; set; }
+
+            [Import(typeof(IToolDivider))]
+            public ExportFactory<IToolDivider> DividerFactory { get; set; }
         }
     }
 }

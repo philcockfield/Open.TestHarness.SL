@@ -71,6 +71,20 @@ namespace Open.Core.UI.Controls
             get { return GetPropertyValue<T, double>(m => m.MinWidth); }
             set { SetPropertyValue<T, double>(m => m.MinWidth, value); }
         }
+
+        /// <summary>Gets or sets the horizontal-alignment of the tool.</summary>
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get { return GetPropertyValue<T, HorizontalAlignment>(m => m.HorizontalAlignment, HorizontalAlignment.Left); }
+            set { SetPropertyValue<T, HorizontalAlignment>(m => m.HorizontalAlignment, value, HorizontalAlignment.Left); }
+        }
+
+        /// <summary>Gets or sets the vertical-alignment of the tool.</summary>
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return GetPropertyValue<T, VerticalAlignment>(m => m.VerticalAlignment, VerticalAlignment.Top); }
+            set { SetPropertyValue<T, VerticalAlignment>(m => m.VerticalAlignment, value, VerticalAlignment.Top); }
+        }
         #endregion
 
         #region Methods

@@ -231,6 +231,14 @@
       <DependentUpon>ButtonToolView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolViewModel.cs" />
+    <Page Include="Controls\ToolBar\Tools\ToolDivider\ToolDividerTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Controls\ToolBar\Tools\ToolDivider\ToolDivider.cs" />
+    <Compile Include="Controls\ToolBar\Tools\ToolDivider\ToolDividerView.xaml.cs">
+      <DependentUpon>ToolDividerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ViewFactoryContent.xaml.cs">
       <DependentUpon>ViewFactoryContent.xaml</DependentUpon>
     </Compile>
@@ -404,6 +412,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ToolBar\Tools\ToolDivider\ToolDividerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ViewFactoryContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -438,9 +450,7 @@
   <ItemGroup>
     <Resource Include="Images\Icon.ToolButton.DropDownPointer.5x4.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\ToolBar\Tools\ToolDivider\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

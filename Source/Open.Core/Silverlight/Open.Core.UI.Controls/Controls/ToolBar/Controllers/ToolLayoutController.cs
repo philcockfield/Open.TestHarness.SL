@@ -55,8 +55,8 @@ namespace Open.Core.UI.Controls
             // Create the view.
             var view = tool.CreateView();
             if (view.DataContext == null) view.DataContext = tool;
-            view.HorizontalAlignment = HorizontalAlignment.Left;
-            view.VerticalAlignment = VerticalAlignment.Top;
+            view.HorizontalAlignment = tool.HorizontalAlignment;
+            view.VerticalAlignment = tool.VerticalAlignment;
 
             // Assign the margin (if the generated view did not arrive with an explicitly set value).
             if (view.Margin == default(Thickness)) view.Margin = tool.Parent.DefaultToolMargin;

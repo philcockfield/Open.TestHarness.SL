@@ -7,7 +7,6 @@ using Open.Core.Composite;
 
 namespace Open.Core.Test.UnitTests.Core.Composite
 {
-    [Tag("current")]
     [TestClass]
     public class EventBusTest : SilverlightUnitTest
     {

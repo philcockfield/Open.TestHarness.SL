@@ -1,35 +1,22 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Silverlight.Testing;
+﻿using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
-using Open.Core.Composite;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
-    [Tag("current")]
     [TestClass]
     public class ToolBaseTest : SilverlightUnitTest
     {
         #region Head
-        private MockTool mockTool;
+        private MockTool tool;
 
 
         [TestInitialize]
         public void TestSetup()
         {
-            mockTool = new MockTool();
+            tool = new MockTool();
         }
         #endregion
         
@@ -37,14 +24,21 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestMethod]
         public void ShouldBeModel()
         {
-            mockTool.ShouldBeInstanceOfType<ModelBase>();
+            tool.ShouldBeInstanceOfType<ModelBase>();
+        }
+
+        [TestMethod]
+        public void ShouldHaveDefaultValues()
+        {
+            tool.HorizontalAlignment.ShouldBe(HorizontalAlignment.Left);
+            tool.VerticalAlignment.ShouldBe(VerticalAlignment.Top);
         }
 
         [TestMethod]
         public void ShouldFireEventFromEventBus()
         {
             EventBus.IsAsynchronous = false;
-            EventBus.ShouldFire<IToolEvent>(() => mockTool.FireExecutedEventPublic());
+            EventBus.ShouldFire<IToolEvent>(() => tool.FireExecutedEventPublic());
         }
         #endregion
     }

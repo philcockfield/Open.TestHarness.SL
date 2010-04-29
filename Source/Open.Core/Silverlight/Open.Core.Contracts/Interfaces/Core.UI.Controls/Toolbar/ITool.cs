@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System.ComponentModel;
+using System.Windows;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
@@ -39,5 +40,11 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets the minimum width the tool can be.</summary>
         double MinWidth { get; set; }
+
+        /// <summary>Gets or sets the horizontal-alignment of the tool.</summary>
+        HorizontalAlignment HorizontalAlignment { get; set; }
+
+        /// <summary>Gets or sets the vertical-alignment of the tool.</summary>
+        VerticalAlignment VerticalAlignment { get; set; }
     }
 }

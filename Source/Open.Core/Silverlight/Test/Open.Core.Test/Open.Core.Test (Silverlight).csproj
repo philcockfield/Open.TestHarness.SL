@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBaseTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolDividerTest.cs" />
     <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
     <Compile Include="UnitTests\Core.UI\ViewModelBaseTest.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ParserBaseTest.cs" />
