@@ -61,8 +61,15 @@ namespace Open.Core.Common
             return new string(array);
         }
 
+        /// <summary>Converts the given object to a string, or returns null if the source object is null.</summary>
+        /// <param name="value">The object to convert.</param>
+        public static string ToStringOrDefault(this object value)
+        {
+            return value == null ? null : value.ToString();
+        }
+
         /// <summary>Capitalizes the first letter in the string.</summary>
-        /// <param name="value>The string to capitalize.</param>
+        /// <param name="value">The string to capitalize.</param>
         public static string ToSentenceCase(this string value)
         {
             // Setup initial conditions.
@@ -107,9 +114,9 @@ namespace Open.Core.Common
         /// <param name="keyValueDelimiter">The delimiter between the key and value (eg. key=value, or key:value).</param>
         /// <param name="pairDelimiter">The delimiter between each key:value pair (eg. key1=value&key2=value)</param>
         public static IEnumerable<KeyValuePair<string, string>> ToKeyValuePairs(
-                    this string self, 
-                    string keyValueDelimiter = "=", 
-                    string pairDelimiter = "&" )
+            this string self, 
+            string keyValueDelimiter = "=", 
+            string pairDelimiter = "&" )
         {
             // Setup initial conditions.
             if (keyValueDelimiter.IsNullOrEmpty(true)) throw new ArgumentNullException("keyValueDelimiter");
