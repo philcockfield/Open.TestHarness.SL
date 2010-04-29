@@ -36,7 +36,7 @@ namespace Open.Core.Common
         private static readonly string defaultDelimiter = string.Format("\t");
 
         /// <summary>Constructor.</summary>
-        /// <param name="stream">Stream containing the CSV file.</param>
+        /// <param name="stream">Stream containing the CSV file (NB: This will cause the stream to be closed).</param>
         protected ParserBase(Stream stream) : this(ReadStream(stream)) { }
 
         /// <summary>Constructor.</summary>
@@ -85,8 +85,13 @@ namespace Open.Core.Common
         private static string ReadStream(Stream stream)
         {
             if (stream == null) throw new ArgumentNullException("stream");
-            var reader = new StreamReader(stream);
-            return reader.ReadToEnd();
+            using (stream)
+            {
+                var reader = new StreamReader(stream);
+                var value = reader.ReadToEnd();
+                reader.Close();
+                return value;
+            }
         }
 
         private IEnumerable<TModel> Parse()
