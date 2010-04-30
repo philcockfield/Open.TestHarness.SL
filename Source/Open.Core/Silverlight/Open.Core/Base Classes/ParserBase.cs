@@ -74,11 +74,14 @@ namespace Open.Core.Common
         public IEnumerable<TModel> Models { get { return models ?? (models = Parse()); } }
         #endregion
 
-        #region Methods
-
+        #region Methods - Protected
         /// <summary>Implemented in the deriving class to convert the fields from the given line into it's corresonding model.</summary>
         /// <param name="fields">The collection of fields split from a single line within the CSV file.</param>
         protected abstract TModel CreateModel(string[] fields);
+
+
+
+
         #endregion
 
         #region Internal

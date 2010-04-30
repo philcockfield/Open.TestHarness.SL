@@ -23,6 +23,9 @@ namespace Open.Core.Test.UnitTests.Core.Base_Classes
             parser.Models.ElementAt(1).Value.ShouldBe("Two");
         }
 
+
+
+
         public class MockParser : ParserBase<MyModel>
         {
             public MockParser(Stream stream) : base(stream) { }

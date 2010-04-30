@@ -83,7 +83,7 @@ namespace Open.Core.Common.Test.Core.Base_Classes
         }
 
         [TestMethod]
-        public void ShouldParseModels()
+        public void ShouldParseModelsFromFile()
         {
             var parser = new Mock(GetStream());
             parser.Models.ElementAt(0).Name.ShouldBe("Fred");
