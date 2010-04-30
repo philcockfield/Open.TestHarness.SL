@@ -58,7 +58,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             
             var smallButton = ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 2, row: 0, columnSpan: 3);
             ToolBar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 2, row: 1, columnSpan: 3);
-            ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 2, row: 2, columnSpan: 3);
+            ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 2, row: 2, columnSpan: 3).IsEnabled = false;
             ToolBar.UpdateLayout();
 
             //largeButton.MinWidth = 150;

@@ -151,7 +151,11 @@ namespace Open.Core.UI.Controls
 
         private void UpdateMouseState()
         {
-            if (isMouseOver && isMouseDown)
+            if (! IsEnabled)
+            {
+                Model.MouseState = ButtonMouseState.Default;
+            }
+            else if (isMouseOver && isMouseDown)
             {
                 Model.MouseState = ButtonMouseState.Pressed;
             }
@@ -163,7 +167,6 @@ namespace Open.Core.UI.Controls
             {
                 Model.MouseState = ButtonMouseState.Default;
             }
-
         }
         #endregion
     }
