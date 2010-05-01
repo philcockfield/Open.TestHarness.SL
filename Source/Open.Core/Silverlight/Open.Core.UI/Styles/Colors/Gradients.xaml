@@ -2,22 +2,46 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
 
-  <LinearGradientBrush x:Key="Gradient.Vertical.Black-Transparent" EndPoint="0.5,1" StartPoint="0.5,0">
+    <!-- ========== Vertical ========== -->
+
+    <LinearGradientBrush x:Key="Gradient.Vertical.Black-Transparent" StartPoint="0.5,0" EndPoint="0.5,1">
     <GradientStop Color="#FF000000"/>
     <GradientStop Color="#00000000" Offset="1"/>
   </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="Gradient.Vertical.Transparent-Black" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="Gradient.Vertical.Transparent-Black" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#00000000"/>
         <GradientStop Color="#FF000000" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="Gradient.Vertical.White-Transparent" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="Gradient.Vertical.White-Transparent" StartPoint="0.5,0" EndPoint="0.5,1">
     <GradientStop Color="#FFFFFFFF"/>
     <GradientStop Color="#00FFFFFF" Offset="1"/>
   </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="Gradient.Vertical.Transparent-White" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="Gradient.Vertical.Transparent-White" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#00FFFFFF"/>
+        <GradientStop Color="#FFFFFFFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- ========== Horizontal ========== -->
+
+    <LinearGradientBrush x:Key="Gradient.Horizontal.Black-Transparent" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Color="#FF000000"/>
+        <GradientStop Color="#00000000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Gradient.Horizontal.Transparent-Black" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Color="#00000000"/>
+        <GradientStop Color="#FF000000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Gradient.Horizontal.White-Transparent" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Color="#FFFFFFFF"/>
+        <GradientStop Color="#00FFFFFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Gradient.Horizontal.Transparent-White" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Color="#00FFFFFF"/>
         <GradientStop Color="#FFFFFFFF" Offset="1"/>
     </LinearGradientBrush>

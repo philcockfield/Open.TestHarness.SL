@@ -143,6 +143,7 @@
     <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ViewFactoryContentViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\StyleViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehavior.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehaviorTestControl.xaml.cs">
       <DependentUpon>AnimationBehaviorTestControl.xaml</DependentUpon>
