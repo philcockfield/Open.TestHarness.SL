@@ -31,3 +31,6 @@ _ReSharper*/
 */ClientBin/*
 Source/Open.TestHarness/Test/TestHarness.Sample/Lib/Open.Core/Clr/*.dll
 Source/Open.TestHarness/Test/TestHarness.Sample/Lib/Open.Core/Silverlight/*.dll
+*.vsmdi
+Source/Solution/Local.testsettings
+Source/Solution/TraceAndTestImpact.testsettings
