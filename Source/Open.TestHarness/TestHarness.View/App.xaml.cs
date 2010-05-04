@@ -23,8 +23,6 @@
 using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
-using Open.Core.Common;
-using Open.TestHarness.Automation;
 using Open.TestHarness.Model;
 
 namespace Open.TestHarness.View
@@ -39,38 +37,36 @@ namespace Open.TestHarness.View
             InitializeComponent();
 
             // Wire up events.
-            Startup += Application_Startup;
-            Exit += Application_Exit;
-            UnhandledException += Application_UnhandledException;
+            Startup += OnStartup;
+            Exit += OnExit;
+            UnhandledException += OnUnhandledException;
+
         }
         #endregion
 
         #region Event Handlers
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private void OnStartup(object sender, StartupEventArgs e)
         {
             // Setup MEF.
             Network.DownloadCatalog = new AggregateCatalog();
             CompositionHost.Initialize(new DeploymentCatalog(), Network.DownloadCatalog);
 
             // Load the view.
-            var viewModel = new RootViewModel();
-            RootVisual = new Root { ViewModel = viewModel };
+            var rootView = new RootViewModel().CreateView();
+            RootVisual = rootView;
 
             // Process any instructions in the query-string.
             var queryString = new QueryString();
-            queryString.StartTestRun(() =>
-                                     {
-                                         
-                                     });
+            queryString.StartTestRun();
         }
 
-        private void Application_Exit(object sender, EventArgs e)
+        private void OnExit(object sender, EventArgs e)
         {
         }
         #endregion
 
         #region Event Handler - Error
-        private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
+        private void OnUnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
             // If the app is running outside of the debugger then report the exception using
             // the browser's exception mechanism. On IE this will display it a yellow alert 

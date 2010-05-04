@@ -84,7 +84,7 @@ namespace Open.TestHarness.Model
 
         /// <summary>Executes tests.</summary>
         /// <param name="callback">Callback to invoke when test run is complete.</param>
-        public void StartTestRun(Action callback)
+        public void StartTestRun(Action callback = null)
         {
             // Setup initial conditions.
             if (! RunTests)

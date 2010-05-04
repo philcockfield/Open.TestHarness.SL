@@ -99,6 +99,7 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Model\ClientBin\XapFile.cs" />
+    <Compile Include="Model\Settings\OutOfBrowserSettings.cs" />
     <Compile Include="Model\TestHarness\TestHarnessModel.cs" />
     <Compile Include="Model\TestHarness\ModuleLoader.cs" />
     <Compile Include="Model\QueryString.cs" />

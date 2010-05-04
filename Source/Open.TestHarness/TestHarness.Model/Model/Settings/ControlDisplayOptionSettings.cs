@@ -30,6 +30,7 @@ namespace Open.TestHarness.Model
     public class ControlDisplayOptionSettings : SettingsModelBase
     {
         #region Head
+        /// <summary>Constructor.</summary>
         public ControlDisplayOptionSettings() : base(SettingsStoreType.Application, "TestHarness.ControlDisplayOptionSettings")
         {
         }

@@ -6,7 +6,8 @@
     xmlns:Selector="clr-namespace:Open.TestHarness.View.Selector"
     xmlns:c="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
     xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI"
-    xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI">
+    xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI" 
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -16,6 +17,7 @@
                 <ResourceDictionary Source="/Open.TestHarness.View;component/Resources/Templates.xaml" />
                 <ResourceDictionary Source="/Open.TestHarness.View;component/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Converter:VisibilityConverter x:Name="visibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -47,6 +49,7 @@
                             cmd:Click.Command="{Binding AutoRunTestsCommand}"
                             Source="../../Images/Icon.AutoRunTests.23x16.png"
                             ToolTipService.ToolTip="{Binding Strings.ToolTip_AutoRunTests}"
+                            Visibility="{Binding IsRunTestsButtonVisible, Converter={StaticResource visibilityConverter}}"
                             HorizontalAlignment="Left"
                             Padding="0,0,3,0"
                             Width="30"

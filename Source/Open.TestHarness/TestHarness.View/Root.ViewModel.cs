@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.Windows;
 using Open.Core.Common;
 using Open.TestHarness.Model;
@@ -32,7 +33,7 @@ using Open.TestHarness.View.Selector;
 namespace Open.TestHarness.View
 {
     /// <summary>Logical representation the TestHarness.</summary>
-    public class RootViewModel : ViewModelBase
+    public class RootViewModel : ViewModelBase, IViewFactory
     {
         #region Head
         public const string PropNavigationPaneWidth = "NavigationPaneWidth";
@@ -122,5 +123,13 @@ namespace Open.TestHarness.View
         /// <summary>Gets the view-model for the middle footer panel.</summary>
         public FooterPanelContainerViewModel FooterPanelContainer{ get; private set; }
         #endregion
+
+        #region Methods
+        public FrameworkElement CreateView()
+        {
+            return new Root { ViewModel = this };
+        }
+        #endregion
+
     }
 }

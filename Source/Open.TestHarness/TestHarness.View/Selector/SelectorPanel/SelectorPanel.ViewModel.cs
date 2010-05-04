@@ -21,7 +21,6 @@
 //------------------------------------------------------
 
 using System;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Browser;
@@ -104,6 +103,9 @@ namespace Open.TestHarness.View.Selector
 
         /// <summary>Gets the command for the 'Auto Run Tests' button.</summary>
         public DelegateCommand<string> AutoRunTestsCommand { get; private set; }
+
+        /// <summary>Gets whether the 'Run Tests' button is visible (only available when running within the browser).</summary>
+        public bool IsRunTestsButtonVisible { get { return !Application.Current.IsRunningOutOfBrowser; } }
         #endregion
 
         #region Internal

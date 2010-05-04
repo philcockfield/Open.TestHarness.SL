@@ -20,7 +20,9 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows;
 using System.Windows.Controls;
+using Open.Core.Common;
 
 namespace Open.TestHarness.View
 {
@@ -37,6 +39,37 @@ namespace Open.TestHarness.View
             leftColumnPersister.ColumnDefinition = columnLeft;
             rightColumnPersister.ColumnDefinition = columnRight;
             rowFooterPanelPersister.RowDefinition = rowFooterPanel;
+
+
+            // Wire up events.
+            //TEMP 
+//            Loaded += delegate
+//                          {
+//                              var app = Application.Current;
+//                              //TEMP 
+//                              Output.Write("IsRunningOutOfBrowser" + Application.Current.IsRunningOutOfBrowser);
+
+//                              if (app.IsRunningOutOfBrowser)
+//                              {
+//                                  var settings = new Model.OutOfBrowserSettings();
+
+//                                  Output.Write("WindowSize: " + settings.WindowSize);
+
+//                                  settings.InitializeWindow();
+
+////                                  app.MainWindow.
+
+
+//                                  app.MainWindow.Closing += delegate
+//                                                      {
+//                                                          MessageBox.Show("CLOSING");
+
+//                                                          settings.SaveWindowState();
+//                                                      };
+                                  
+//                              }
+                              
+//                          };
         }
         #endregion
 
