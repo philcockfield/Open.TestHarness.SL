@@ -60,6 +60,15 @@ namespace Open.Core.Common.Test.Attributes
             mock.ViewTestAttribute2.AllowAutoRun.ShouldBe(false);
         }
 
+        [TestMethod]
+        public void ShouldBeManualSizeByDefault()
+        {
+            var mock = new Mock();
+            mock.ViewTestAttribute1.SizeMode.ShouldBe(TestControlSize.Manual);
+        }
+
+
+
         [ViewTestClass]
         private class Mock
         {

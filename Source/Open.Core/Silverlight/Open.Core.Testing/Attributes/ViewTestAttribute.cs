@@ -24,6 +24,14 @@ using System;
 
 namespace Open.Core.Common
 {
+    /// <summary>Flags that define how a control under test is sized.</summary>
+    public enum TestControlSize
+    {
+        Manual,
+        Fill
+    }
+
+
     /// <summary>
     ///    Declares a method as being test that exercises a control within the TestHarness.
     ///    Test methods must be void and take parameters of type UIElement.
@@ -57,6 +65,9 @@ namespace Open.Core.Common
 
         /// <summary>Gets or sets whether the test can be automatically run from the TestRunner.</summary>
         public bool AllowAutoRun { get; set; }
+
+        /// <summary>Gets or sets how the control under test is sized within the TestHarness.</summary>
+        public TestControlSize SizeMode { get; set; }
         #endregion
     }
 }

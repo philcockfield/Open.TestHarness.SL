@@ -11,24 +11,33 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <ScrollViewer Grid.Row="1" BorderBrush="Transparent" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="White">
-        <ItemsControl ItemsSource="{Binding CurrentControls}" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    
-                    <Border    
-                        BorderBrush="{StaticResource Brush.Black.010}"
-                        BorderThickness="{Binding Border}" 
-                        Margin="0,20,0,20">
-                        <ContentControl 
+    <ScrollViewer Grid.Row="1" 
+                  BorderBrush="Transparent" 
+                  BorderThickness="{Binding ScrollViewerBorderThickness}"
+                  VerticalScrollBarVisibility="{Binding ScrollBarVisibility}" 
+                  HorizontalScrollBarVisibility="{Binding ScrollBarVisibility}" 
+                  Background="White" 
+                  Padding="0">
+        <Border x:Name="itemsControlBorder" x:FieldModifier="private">
+
+            <ItemsControl ItemsSource="{Binding CurrentControls}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Border    
+                            BorderBrush="{StaticResource Brush.Black.010}"
+                            BorderThickness="{Binding Border}" 
+                            Margin="{Binding Margin}">
+                            <ContentControl 
                                     Content="{Binding ControlContainer}" 
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Center" />
-                    </Border>
-                    
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
     </ScrollViewer>
 
 </UserControl>

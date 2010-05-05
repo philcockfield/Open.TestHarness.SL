@@ -92,7 +92,7 @@ namespace Open.TestHarness.View.AssemblyChooser
             }
         }
 
-        /// <summary>Gets whether the data is currently being loaded.summary>
+        /// <summary>Gets whether the data is currently being loaded.</summary>
         public bool IsLoading { get; private set; }
 
         /// <summary>Gets or sets QueryString singleton (requires MEF to initialize).</summary>

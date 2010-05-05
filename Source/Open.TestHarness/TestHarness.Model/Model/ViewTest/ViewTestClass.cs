@@ -39,7 +39,7 @@ namespace Open.TestHarness.Model
         #region Head
         /// <summary>Fires when a view test needs to be executed (see ExecuteTest method).</summary>
         public event EventHandler<TestExecuteEventArgs> ExecuteRequest;
-        protected void OnExecuteRequest(ViewTest test) { if (ExecuteRequest != null) ExecuteRequest(this, new TestExecuteEventArgs{ViewTest = test}); }
+        private void FireExecuteRequest(ViewTest test) { if (ExecuteRequest != null) ExecuteRequest(this, new TestExecuteEventArgs{ViewTest = test}); }
 
         private ObservableCollection<ViewTest> viewTests;
         private Type type;
@@ -103,7 +103,7 @@ namespace Open.TestHarness.Model
             currentControls.Populate(currentViewTest.Parameters);
 
             // Alert listeners.
-            OnExecuteRequest(currentViewTest);
+            FireExecuteRequest(currentViewTest);
             OnPropertyChanged<T>(m => m.CurrentViewTest, m => m.CurrentControls);
 
             // Pass execution back to the ViewTest with the set of controls.

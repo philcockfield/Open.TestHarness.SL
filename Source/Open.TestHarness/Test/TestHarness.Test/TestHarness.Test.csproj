@@ -172,7 +172,7 @@
     <Compile Include="ViewTests\ModuleSelector.ViewTest.cs" />
     <Compile Include="ViewTests\PropertyExplorerPanel.ViewTest.cs" />
     <Compile Include="ViewTests\SelectorPanel.ViewTest.cs" />
-    <Compile Include="ViewTests\TEMP.cs" />
+    <Compile Include="ViewTests\SizeModeViewTest.cs" />
     <Compile Include="ViewTests\TestSelector.ViewTest.cs" />
   </ItemGroup>
   <ItemGroup>

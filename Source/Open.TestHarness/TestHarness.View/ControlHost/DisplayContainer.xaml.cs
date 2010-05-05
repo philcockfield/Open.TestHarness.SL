@@ -20,7 +20,6 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Open.TestHarness.View.ControlHost
@@ -28,11 +27,17 @@ namespace Open.TestHarness.View.ControlHost
     /// <summary>Hosts the control(s) under test.</summary>
     public partial class DisplayContainer : UserControl
     {
-        #region Head
+        /// <summary>Constructor.</summary>
         public DisplayContainer()
         {
             InitializeComponent();
         }
-        #endregion
+
+        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
+        public DisplayContainerViewModel ViewModel
+        {
+            get { return DataContext as DisplayContainerViewModel; }
+            set { DataContext = value; }
+        }
     }
 }
