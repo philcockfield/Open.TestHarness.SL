@@ -73,11 +73,5 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Extensions
             " ".LoadEmbeddedResource().ShouldBe(null);
             ((string)null).LoadEmbeddedResource().ShouldBe(null);
         }
-
-        [TestMethod]
-        public void ShouldReturnDummyUrlFromGetServerUrlWhenNotServed()
-        {
-            Application.Current.GetServerUrl().ShouldBe("http://not-from-server/Open.Core.UI.Test.xap");
-        }
     }
 }

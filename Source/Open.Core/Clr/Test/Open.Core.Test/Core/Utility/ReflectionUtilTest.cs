@@ -47,7 +47,7 @@ namespace Core.Common.Test.Utility
         public void ShouldExtractNameFromAssembly()
         {
             var assembly = GetType().Assembly;
-            const string name = "Open.Core.Common.Test";
+            const string name = "Open.Core.Common.Test.Clr";
 
             (null as Assembly).GetAssemblyName().ShouldBe(null);
             assembly.GetAssemblyName().ShouldBe(name);
