@@ -56,6 +56,16 @@
                             Opacity="0.9"
                             Style="{StaticResource toolbarButtonStyle}"/>
                     <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
+                    <c:ImageButton 
+                            cmd:Click.Command="{Binding RunUnitTests}"
+                            Source="../../Images/Icon.AutoRunTests.23x16.png"
+                            ToolTipService.ToolTip="{Binding Strings.ToolTip_RunUnitTests}"
+                            HorizontalAlignment="Left"
+                            Padding="0,0,3,0"
+                            Width="30"
+                            Opacity="0.9"
+                            Style="{StaticResource toolbarButtonStyle}"/>
+                    <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
                 </StackPanel>
 
 

@@ -126,6 +126,7 @@ namespace Open.TestHarness.View.ControlHost
                 ControlContainer.Child = null;
                 displaySettingsObserver.Dispose();
                 viewTestClassObserver.Dispose();
+                WireUpEvents(false);
 
                 // Finish up.
                 base.OnDisposed();
@@ -174,6 +175,7 @@ namespace Open.TestHarness.View.ControlHost
 
             private void WireUpEvents(bool addHandler)
             {
+                if (ItemsControlBorder == null) return;
                 if (addHandler)
                 {
                     ItemsControlBorder.SizeChanged += OnItemsControlBorderSizeChanged;
@@ -191,8 +193,9 @@ namespace Open.TestHarness.View.ControlHost
 
             private void SetContainerSizeToFill()
             {
-                ControlContainer.Width = itemsControlBorder.ActualWidth;
-                ControlContainer.Height = itemsControlBorder.ActualHeight;
+                if (ItemsControlBorder == null) return;
+                ControlContainer.Width = ItemsControlBorder.ActualWidth;
+                ControlContainer.Height = ItemsControlBorder.ActualHeight;
             }
             #endregion
         }

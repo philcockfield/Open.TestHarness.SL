@@ -74,7 +74,7 @@ namespace Open.TestHarness.View.Selector
         #endregion
 
         #region Event Handlers
-        private void Handle_Click( )
+        private void OnClick( )
         {
             if (! IsCurrent) OnSelected();
             OnPropertyChanged(PropIsCurrent, PropTextColor);
@@ -99,7 +99,7 @@ namespace Open.TestHarness.View.Selector
         {
             get
             {
-                if (clickCommand == null) clickCommand = new DelegateCommand<Button>(button => Handle_Click(), button => true);
+                if (clickCommand == null) clickCommand = new DelegateCommand<Button>(button => OnClick(), button => true);
                 return clickCommand;
             }
         }

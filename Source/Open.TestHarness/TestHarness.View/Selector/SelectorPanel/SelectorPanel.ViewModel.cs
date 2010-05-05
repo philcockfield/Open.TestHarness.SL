@@ -24,6 +24,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Browser;
+using System.Windows.Controls;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 using Open.Core.Composite.Command;
@@ -50,8 +51,9 @@ namespace Open.TestHarness.View.Selector
             Strings = new StringLibrary();
 
             // Create commands.
-            AddAssemblyCommand = new DelegateCommand<string>(param => OnAddAssemblyClick(), param => true);
-            AutoRunTestsCommand = new DelegateCommand<string>(param => OnAutoRunTestsClick(), param => true);
+            AddAssemblyCommand = new DelegateCommand<Button>(param => OnAddAssemblyClick());
+            AutoRunTestsCommand = new DelegateCommand<Button>(param => OnAutoRunTestsClick());
+            RunUnitTests = new DelegateCommand<Button>(param => OnRunUnitTests());
 
             // Wire up events.
             model.PropertyChanged += (sender, e) =>
@@ -86,6 +88,16 @@ namespace Open.TestHarness.View.Selector
             // Navigate to the auto-run URL.
             HtmlPage.Window.Navigate(new Uri(url));
         }
+
+        private void OnRunUnitTests()
+        {
+
+            var viewTestClass = ViewTestClass.GetSingleton(typeof (UnitTestRunner), null);
+
+            viewTestClass.Activate();
+            viewTestClass.IsCurrent = true;
+
+        }
         #endregion
 
         #region Properties
@@ -99,10 +111,13 @@ namespace Open.TestHarness.View.Selector
         public StringLibrary Strings { get; private set; }
 
         /// <summary>Gets the command for the 'Add Assembly' button.</summary>
-        public DelegateCommand<string> AddAssemblyCommand { get; private set; }
+        public DelegateCommand<Button> AddAssemblyCommand { get; private set; }
 
         /// <summary>Gets the command for the 'Auto Run Tests' button.</summary>
-        public DelegateCommand<string> AutoRunTestsCommand { get; private set; }
+        public DelegateCommand<Button> AutoRunTestsCommand { get; private set; }
+
+        /// <summary>Gets the command for that runs unit tests.</summary>
+        public DelegateCommand<Button> RunUnitTests { get; private set; }
 
         /// <summary>Gets whether the 'Run Tests' button is visible (only available when running within the browser).</summary>
         public bool IsRunTestsButtonVisible { get { return !Application.Current.IsRunningOutOfBrowser; } }
