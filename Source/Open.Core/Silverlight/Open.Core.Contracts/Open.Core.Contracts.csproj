@@ -100,6 +100,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
     <Compile Include="Interfaces\Core\IError.cs" />
     <Compile Include="Interfaces\Core\ICallback.cs" />
+    <Compile Include="Interfaces\Core\IErrorInfo.cs" />
     <Compile Include="Interfaces\Core\IIdentifiable.cs" />
     <Compile Include="Interfaces\Core\INotifyDisposed.cs" />
     <Compile Include="Interfaces\Core\IOutput.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Interfaces\Core.Composite\IActiveAware.cs" />
     <Compile Include="Interfaces\Core\IDomainCredential.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
+    <Compile Include="Interfaces\Core\Filter\IPageFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
