@@ -98,6 +98,8 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
+    <Compile Include="Interfaces\Core.UI\IImage.cs" />
+    <Compile Include="Interfaces\Core.UI\IDropShadowEffect.cs" />
     <Compile Include="Interfaces\Core\IError.cs" />
     <Compile Include="Interfaces\Core\ICallback.cs" />
     <Compile Include="Interfaces\Core\IErrorInfo.cs" />

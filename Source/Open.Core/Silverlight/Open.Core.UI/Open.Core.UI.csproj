@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -160,6 +161,7 @@
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Helper Classes\ScrollViewerMonitor.cs" />
+    <Compile Include="Model\DropShadowEffect.cs" />
     <Compile Include="Model\ViewModelBase.cs" />
     <Compile Include="Styles\Shapes.cs" />
     <Compile Include="Styles\StyleResources.cs" />

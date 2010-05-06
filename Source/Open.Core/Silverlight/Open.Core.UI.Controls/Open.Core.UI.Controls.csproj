@@ -101,6 +101,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Controls\Containers\ContentContainer\ContentContainerViewModel.cs" />
+    <Compile Include="Controls\CoreImage\CoreImage.xaml.cs">
+      <DependentUpon>CoreImage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\CoreImage\CoreImageViewModel.cs" />
     <Compile Include="Controls\Dialogs\DialogContent\DialogContent.cs" />
     <Compile Include="Controls\Dialogs\DialogExtensions.cs" />
     <Compile Include="Controls\Dialogs\ExceptionDialog\ExceptionDialog.cs" />
@@ -218,6 +223,10 @@
     <Compile Include="Controls\ToolBar\ToolBase.cs" />
     <Compile Include="Controls\ToolBar\ToolEvent.cs" />
     <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonTool.cs" />
+    <Page Include="Controls\CoreImage\CoreImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ImageIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

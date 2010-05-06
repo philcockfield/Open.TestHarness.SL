@@ -32,7 +32,6 @@ using System.IO;
 
 namespace Open.Core.UI.Test
 {
-    [Tag("current")]
     [TestClass]
     public class ModelBaseINotifyDataErrorInfoTest
     {

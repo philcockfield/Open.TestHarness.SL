@@ -120,8 +120,9 @@
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBaseTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolDividerTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Models\ImageModelTest.cs" />
     <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
-    <Compile Include="UnitTests\Core.UI\ViewModelBaseTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Models\ViewModelBaseTest.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ModelBase.INotifyDataErrorInfo.Test.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ParserBaseTest.cs" />
     <Compile Include="UnitTests\Core\Behavior\AutoRowDefinitionsTest.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Containers\ContentContainerViewTest.cs" />
+    <Compile Include="ViewTests\Core.Controls\CoreImageViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\IconImage.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ToolBar\ButtonToolViewTest.cs" />
