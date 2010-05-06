@@ -28,7 +28,8 @@ namespace Open.Core.Common
     public enum TestControlSize
     {
         Manual,
-        Fill
+        Fill,
+        FillWithMargin
     }
 
 

@@ -1,4 +1,6 @@
-﻿using Open.Core.Common;
+﻿using System.Linq;
+using System.Collections.Generic;
+using Open.Core.Common;
 using Open.Core.UI.Controls;
 
 namespace Open.TestHarness.Test.ViewTests
@@ -21,6 +23,11 @@ namespace Open.TestHarness.Test.ViewTests
 
         [ViewTest(SizeMode = TestControlSize.Fill)]
         public void SizeMode__Fill(Placeholder control)
+        {
+        }
+
+        [ViewTest(SizeMode = TestControlSize.FillWithMargin)]
+        public void SizeMode__FillWithMargin(Placeholder control)
         {
         }
         #endregion

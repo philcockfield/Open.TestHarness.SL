@@ -22,7 +22,6 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 using Open.TestHarness.Model;
@@ -86,7 +85,16 @@ namespace Open.TestHarness.View.ControlHost
 
         #region Properties - Internal
         private ViewTestAttribute CurrentViewTestAttribute { get { return model.CurrentViewTest == null ? null : model.CurrentViewTest.Attribute; } }
-        private bool IsFillMode { get { return CurrentViewTestAttribute == null ? false : CurrentViewTestAttribute.SizeMode == TestControlSize.Fill; } }
+        private bool IsFillMode
+        {
+            get
+            {
+                return CurrentViewTestAttribute == null 
+                    ? false
+                    : CurrentViewTestAttribute.SizeMode == TestControlSize.Fill || CurrentViewTestAttribute.SizeMode == TestControlSize.FillWithMargin;
+            }
+        }
+        private bool IsFillWithMargin { get { return CurrentViewTestAttribute.SizeMode == TestControlSize.FillWithMargin; } }
         #endregion
 
         public class DisplayItemViewModel : ViewModelBase
@@ -136,13 +144,27 @@ namespace Open.TestHarness.View.ControlHost
             #region Properties
             public UIElement Control { get; private set; }
             public Border ControlContainer { get; private set; }
-            public Thickness Border { get { return displaySettings.ShowBorder && !IsFillMode ? new Thickness(1) : new Thickness(0); } }
-            public Thickness Margin { get { return IsFillMode ? new Thickness(0) : new Thickness(0, 20, 0, 20); } }
+            public Thickness Border
+            {
+                get
+                {
+                    return !displaySettings.ShowBorder || (parent.IsFillMode && !parent.IsFillWithMargin)
+                                ? new Thickness(0) 
+                                : new Thickness(1);
+                }
+            }
+            public Thickness Margin
+            {
+                get
+                {
+                    return parent.IsFillMode
+                        ? new Thickness(0)
+                        : new Thickness(0, 20, 0, 20);
+                }
+            }
             #endregion
 
             #region Properties - Internal
-            private bool IsFillMode { get { return parent.IsFillMode; } }
-
             private Border ItemsControlBorder
             {
                 get
@@ -156,7 +178,7 @@ namespace Open.TestHarness.View.ControlHost
             private void InitializeContainerSize()
             {
                 // Update size.
-                if (IsFillMode)
+                if (parent.IsFillMode)
                 {
                     WireUpEvents(false);
                     WireUpEvents(true);
@@ -193,9 +215,21 @@ namespace Open.TestHarness.View.ControlHost
 
             private void SetContainerSizeToFill()
             {
+                // Setup initial conditions.
                 if (ItemsControlBorder == null) return;
-                ControlContainer.Width = ItemsControlBorder.ActualWidth;
-                ControlContainer.Height = ItemsControlBorder.ActualHeight;
+
+                // Calculate size.
+                var width = ItemsControlBorder.ActualWidth;
+                var height = ItemsControlBorder.ActualHeight;
+                if (parent.IsFillWithMargin)
+                {
+                    width -= 80;
+                    height -= 80;
+                }
+
+                // Apply size.
+                ControlContainer.Width = width;
+                ControlContainer.Height = height;
             }
             #endregion
         }
