@@ -101,6 +101,10 @@
     <Compile Include="Exceptions\NotInitializedException.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="Model\Base Classes\ModelBase.INotifyDataErrorInfo.partial.cs" />
+    <Compile Include="Model\Base Classes\____TEMP.cs" />
+    <Compile Include="Model\ErrorInfo.cs" />
+    <Compile Include="Model\Filter\PageFilter.cs" />
     <Compile Include="Network\PackageDownloadService.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
