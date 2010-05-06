@@ -213,6 +213,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Model\DomainCredential.cs">
       <Link>Model\DomainCredential.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Model\Filter\PageFilter.cs">
+      <Link>Model\Filter\PageFilter.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Network\Callback.cs">
       <Link>Network\Callback.cs</Link>
     </Compile>

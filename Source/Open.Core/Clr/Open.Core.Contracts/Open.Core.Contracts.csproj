@@ -50,6 +50,9 @@
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core.Composite\IEventBus.cs">
       <Link>Interfaces\Core.Composite\IEventBus.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\Filter\IPageFilter.cs">
+      <Link>Interfaces\Core\Filter\IPageFilter.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ICallback.cs">
       <Link>Interfaces\Core\ICallback.cs</Link>
     </Compile>

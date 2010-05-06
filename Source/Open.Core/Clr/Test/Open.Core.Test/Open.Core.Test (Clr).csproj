@@ -120,6 +120,7 @@
     <Compile Include="Core\Model\ControllerBase.Test.cs" />
     <Compile Include="Core\Model\DomainCredentialTest.cs" />
     <Compile Include="Core\Base Classes\NotifyPropertyChangedBase.AutoProperty.Test.cs" />
+    <Compile Include="Core\Model\Filter\PageFilterTest.cs" />
     <Compile Include="Core\Model\ModelBase.Test.cs" />
     <Compile Include="Core\Model\ModelBase.BeginInvoke.Test.cs" />
     <Compile Include="Core\Testing\AsyncTest.Test.cs" />
