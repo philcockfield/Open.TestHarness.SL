@@ -20,29 +20,20 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Media;
-using Open.Core.Common;
+using System;
 
-namespace Open.Core.UI
+
+namespace Open.Core.Common
 {
-    /// <summary>Defines an image.</summary>
-    public interface IImage : IViewFactory, IVisiblity, INotifyPropertyChanged
+    /// <summary>Collection of general extensions.</summary>
+    public static class Extensions
     {
-        /// <summary>Gets or sets the source for the image.</summary>
-        ImageSource Source { get; set; }
+        /// <summary>Invokes an action, or does nothing if the Action is null.</summary>
+        /// <param name="action">The action to invoke.</param>
+        public static void InvokeOrDefault(this Action action)
+        {
+            if (action != null) action();
+        }
 
-        /// <summary>
-        ///     Gets or sets a value that describes how an Image should 
-        ///     be stretched to fill the destination rectangle.
-        /// </summary>
-        Stretch Stretch { get; set; }
-
-        /// <summary>Gets the shadow definition (0 opacity by default, not visible).</summary>
-        IDropShadowEffect DropShadow { get; }
-
-        /// <summary>Gets or sets the margin offset to apply to the image.</summary>
-        Thickness Margin { get; set; }
     }
 }

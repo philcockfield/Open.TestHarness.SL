@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Windows;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.UI;
@@ -21,7 +22,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls
             control.ViewFactory = Image;
 
             Set__Source(control);
-            Set__DropShadow(control);
+            Toggle__DropShadow(control);
         }
         #endregion
 
@@ -39,9 +40,23 @@ namespace Open.Core.Test.ViewTests.Core.Controls
         }
 
         [ViewTest]
-        public void Set__DropShadow(ViewFactoryContent control)
+        public void Toggle__DropShadow(ViewFactoryContent control)
         {
             Image.DropShadow.Opacity = Image.DropShadow.Opacity == 0 ? 0.3 : 0;
+            Output.Write("DropShadow: " + Image.DropShadow);
+        }
+
+        [ViewTest]
+        public void Toggle__Margin(ViewFactoryContent control)
+        {
+            Image.Margin = Image.Margin.Left == 0 ? new Thickness(10, 10, 0, 0) : new Thickness(0);
+            Output.Write("Margin: " + Image.Margin);
+        }
+
+        [ViewTest]
+        public void Toggle__IsVisible(ViewFactoryContent control)
+        {
+            Image.IsVisible = !Image.IsVisible;
         }
         #endregion
     }

@@ -34,7 +34,7 @@ using Open.Core.UI.Controls;
 namespace Open.Core.UI.Silverlight.Test.Common.Extensions
 {
     [TestClass]
-    public class FrameworkElementExtensionsTest : SilverlightTest
+    public class FrameworkElementExtensionsTest : SilverlightUnitTest
     {
         [TestMethod]
         public void ShouldSetPosition()
@@ -66,7 +66,5 @@ namespace Open.Core.UI.Silverlight.Test.Common.Extensions
             var shape = new Rectangle();
             shape.GetDataContext().ShouldBe(null);
         }
-
-
     }
 }

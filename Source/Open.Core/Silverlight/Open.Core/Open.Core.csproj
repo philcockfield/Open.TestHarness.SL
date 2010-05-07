@@ -99,6 +99,7 @@
     <Compile Include="Base Classes\ImporterBase.cs" />
     <Compile Include="Enumerations\Icons %28Enum%29.cs" />
     <Compile Include="Exceptions\NotInitializedException.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Model\Base Classes\ModelBase.INotifyDataErrorInfo.partial.cs" />

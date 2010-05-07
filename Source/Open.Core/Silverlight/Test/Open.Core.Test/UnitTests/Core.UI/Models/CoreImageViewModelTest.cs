@@ -19,14 +19,14 @@ namespace Open.Core.Test.UnitTests.Core.UI.Models
 {
     [Tag("current")]
     [TestClass]
-    public class ImageModelTest
+    public class CoreImageViewModelTest
     {
         #region Head
         [Import]
         public ExportFactory<IImage> ImageFactory { get; set; }
         private IImage image;
 
-        public ImageModelTest()
+        public CoreImageViewModelTest()
         {
             CompositionInitializer.SatisfyImports(this);
         }
@@ -52,11 +52,23 @@ namespace Open.Core.Test.UnitTests.Core.UI.Models
         }
 
         [TestMethod]
+        public void ShouldHaveNoOffsetByDefault()
+        {
+            image.Margin.ShouldBe(new Thickness(0));
+        }
+
+        [TestMethod]
         public void ShouldCreateView()
         {
             var control = image.CreateView();
             control.ShouldBeInstanceOfType<CoreImage>();
             control.DataContext.ShouldBeInstanceOfType<CoreImageViewModel>();
+        }
+
+        [TestMethod]
+        public void ShouldBeVisibleByDefault()
+        {
+            image.IsVisible.ShouldBe(true);
         }
         #endregion
     }

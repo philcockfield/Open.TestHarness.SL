@@ -1,11 +1,13 @@
 ﻿<UserControl 
     x:Class="Open.Core.UI.Controls.CoreImage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Margin="{Binding Margin}">
 
     <Image 
-        x:Name="image" x:FieldModifier="private" 
-        Source="{Binding Source}"
-        Stretch="{Binding Stretch}" />
+            x:Name="image" x:FieldModifier="private" 
+            Source="{Binding Source}"
+            Stretch="{Binding Stretch}"
+            Visibility="{Binding Visibility}" />
     
 </UserControl>

@@ -166,6 +166,13 @@ namespace Open.Core.Common
                        ? default(Point)
                        : childElement.TransformToVisual(self).Transform(new Point(0, 0));
         }
+
+        /// <summary>Gets the center position of the element (relative to it's self).</summary>
+        /// <param name="self">The element to examine.</param>
+        public static Point GetActualCenter(this FrameworkElement self)
+        {
+            return new Point(self.ActualWidth * 0.5, self.ActualHeight * 0.5);
+        }
         #endregion
 
         #region ItemsControl

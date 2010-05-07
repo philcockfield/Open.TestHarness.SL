@@ -168,6 +168,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Extensions\EnumExtensions.cs">
       <Link>Extensions\EnumExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\Extensions.cs">
+      <Link>Exceptions\Extensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Extensions\KeyExtensions.cs">
       <Link>Extensions\KeyExtensions.cs</Link>
     </Compile>

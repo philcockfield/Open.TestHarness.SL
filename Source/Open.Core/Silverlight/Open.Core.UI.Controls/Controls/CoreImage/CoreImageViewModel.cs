@@ -20,10 +20,8 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System;
 using System.ComponentModel.Composition;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.UI.Model;
@@ -56,6 +54,20 @@ namespace Open.Core.UI.Controls
         {
             get { return shadow ?? (shadow = new DropShadowEffect { Opacity = 0 }); }
         }
+
+        public Thickness Margin
+        {
+            get { return GetPropertyValue<T, Thickness>(m => m.Margin, new Thickness(0)); }
+            set { SetPropertyValue<T, Thickness>(m => m.Margin, value, new Thickness(0)); }
+        }
+
+        public bool IsVisible
+        {
+            get { return GetPropertyValue<T, bool>(m => m.IsVisible, true); }
+            set { SetPropertyValue<T, bool>(m => m.IsVisible, value, true, m => m.Visibility); }
+        }
+
+        public Visibility Visibility { get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; } }
         #endregion
 
         #region Methods

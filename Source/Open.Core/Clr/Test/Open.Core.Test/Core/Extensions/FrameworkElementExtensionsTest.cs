@@ -52,5 +52,6 @@ namespace Open.Core.Common.Test.Extensions
             child3.FindFirstVisualAncestor<Border>().ShouldNotBe(child1b);
             child3.FindFirstVisualAncestor<StackPanel>().ShouldBe(null);
         }
+
     }
 }

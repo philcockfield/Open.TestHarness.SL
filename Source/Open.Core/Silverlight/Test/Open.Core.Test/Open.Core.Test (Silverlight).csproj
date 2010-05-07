@@ -120,7 +120,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBaseTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolDividerTest.cs" />
-    <Compile Include="UnitTests\Core.UI\Models\ImageModelTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Models\CoreImageViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
     <Compile Include="UnitTests\Core.UI\Models\ViewModelBaseTest.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ModelBase.INotifyDataErrorInfo.Test.cs" />

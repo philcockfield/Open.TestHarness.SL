@@ -104,6 +104,7 @@
     <Compile Include="Core\Composition %28MEF%29\DirectoryCompositionInitializerTest.cs" />
     <Compile Include="Core\Extensions\CollectionExtensionsTest.cs" />
     <Compile Include="Core\Extensions\EnumExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\ExtensionsTest.cs" />
     <Compile Include="Core\Extensions\FrameworkElementExtensionsTest.cs" />
     <Compile Include="Core\Extensions\KeyExtensionsTest.cs" />
     <Compile Include="Core\Extensions\LinqExtensionsTest.cs" />
