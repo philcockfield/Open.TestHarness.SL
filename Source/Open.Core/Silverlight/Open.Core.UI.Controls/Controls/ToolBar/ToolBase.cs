@@ -33,6 +33,13 @@ namespace Open.Core.UI.Controls
     {
         #region Head
         private static IEventBus eventBus;
+        private EventHanders eventHanders;
+
+        /// <summary>Constructor.</summary>
+        protected ToolBase()
+        {
+            eventHanders = new EventHanders(this);
+        }
         #endregion
 
         #region Properties
@@ -97,9 +104,35 @@ namespace Open.Core.UI.Controls
         /// <summary>Fires the executed event through the EventBus.</summary>
         protected virtual void PublishToolEvent() 
         {
-            EventBus.Publish<IToolEvent>(new ToolEvent { Tool = this });
+            EventBus.Publish<IToolEvent>(new ToolEvent { ToolId = Id });
         }
         #endregion
+
+        // NB: These event handlers are encapsulated in a child-class because the EventBus requires
+        // that the callback methods are public.  This prevents these methods being exposed as public
+        // on the root class.
+        public class EventHanders 
+        { 
+            #region Head
+            private readonly ToolBase parent;
+            public EventHanders(ToolBase parent)
+            {
+                this.parent = parent;
+                parent.EventBus.Subscribe<IToolStateEvent>(OnEventStateChanged);
+            }
+            #endregion
+
+            #region Event Handlers
+            public void OnEventStateChanged(IToolStateEvent e)
+            {
+                // Setup initial conditions.
+                if (!e.IsMatch(parent.Id)) return;
+
+                // Sync state.
+                if (e.IsEnabled != null) parent.IsEnabled = e.IsEnabled.Value;
+            }
+            #endregion
+        }
 
         public class Importer : ImporterBase
         {

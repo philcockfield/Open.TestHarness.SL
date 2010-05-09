@@ -44,6 +44,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             tool.Styles.ShouldBeInstanceOfType<ButtonToolStyles>();
             tool.ButtonType.ShouldBe(ButtonToolType.Default);
             tool.IsDefaultBackgroundVisible.ShouldBe(false);
+            tool.IsEnabled.ShouldBe(true);
             tool.MouseState.ShouldBe(ButtonMouseState.Default);
         }
 

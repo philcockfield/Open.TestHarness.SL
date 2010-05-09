@@ -227,7 +227,7 @@ namespace Open.Core.UI.Controls
                 invoker.DialogInfo.File = dialog.File;
                 invoker.DialogInfo.Files = dialog.Files;
                 invoker.AfterAccepted();
-                EventBus.Publish<IOpenFileDialogEvent>(new OpenFileDialogEvent { Dialog = invoker.DialogInfo, Tool = this });
+                EventBus.Publish<IOpenFileDialogEvent>(new OpenFileDialogEvent { Dialog = invoker.DialogInfo, ToolId = Id });
             }
         }
 
@@ -247,7 +247,7 @@ namespace Open.Core.UI.Controls
             if (dialog.ShowDialog() == true)
             {
                 invoker.AfterAccepted();
-                EventBus.Publish<ISaveFileDialogEvent>(new SaveFileDialogEvent { Dialog = invoker.DialogInfo, Tool = this});
+                EventBus.Publish<ISaveFileDialogEvent>(new SaveFileDialogEvent { Dialog = invoker.DialogInfo, ToolId = Id});
             }
         }
         #endregion

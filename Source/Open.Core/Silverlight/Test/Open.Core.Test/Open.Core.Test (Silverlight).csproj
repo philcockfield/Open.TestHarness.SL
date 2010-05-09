@@ -112,6 +112,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ButtonToolTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\ToolBar\Events\ToolStateEventTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\Mocks.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewOverride.xaml.cs">
@@ -120,6 +121,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolBaseTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ToolDividerTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\ToolBar\Events\ToolEventTest.cs" />
     <Compile Include="UnitTests\Core.UI\Models\CoreImageViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI\Shapes.Test.cs" />
     <Compile Include="UnitTests\Core.UI\Models\ViewModelBaseTest.cs" />

@@ -215,13 +215,14 @@
     </Compile>
     <Compile Include="Controls\Text\CoreTextBox.cs" />
     <Compile Include="Controls\ToolBar\Controllers\ToolLayoutController.cs" />
+    <Compile Include="Controls\ToolBar\Events\ToolStateEvent.cs" />
     <Compile Include="Controls\ToolBar\ToolBar.cs" />
     <Compile Include="Controls\ToolBar\ToolBarExtensions.cs" />
     <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
       <DependentUpon>ToolBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToolBar\ToolBase.cs" />
-    <Compile Include="Controls\ToolBar\ToolEvent.cs" />
+    <Compile Include="Controls\ToolBar\Events\ToolEvent.cs" />
     <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonTool.cs" />
     <Page Include="Controls\CoreImage\CoreImage.xaml">
       <SubType>Designer</SubType>

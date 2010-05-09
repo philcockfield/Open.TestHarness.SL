@@ -22,14 +22,10 @@
 
 namespace Open.Core.UI.Controls
 {
-    /// <summary>Event argument information (fired from the EventBus) when a tool is executed.</summary>
-    public interface IToolEvent 
+    /// <summary>Event argument (fired via the EventBus) used to indicate a change in a tools state..</summary>
+    public interface IToolStateEvent : IToolEvent
     {
-        /// <summary>Gets the tool that caused the event to fire.</summary>
-        ITool Tool { get; }
-
-        /// <summary>Performs a match of the given ID with the unique identifier of the Tool.</summary>
-        /// <param name="id">The unique identifier to match.</param>
-        bool IsMatch(object id);
+        /// <summary>Gets or sets whether the tool is enabled (null indicates no change from current state).</summary>
+        bool? IsEnabled { get; set; }
     }
 }

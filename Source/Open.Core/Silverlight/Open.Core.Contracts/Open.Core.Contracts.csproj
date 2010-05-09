@@ -66,6 +66,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -79,6 +80,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Attributes\Core.UI.Controls\ExportToolBarViewAttribute.cs" />
+    <Compile Include="Event Helpers\ToolState.cs" />
     <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
@@ -91,7 +93,8 @@
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\ISaveFileDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\IFileSystemDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\IOpenFileDialog.cs" />
-    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolEvent.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Events\IToolEvent.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Events\IToolStateEvent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonToolStyles.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />
