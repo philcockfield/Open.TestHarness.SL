@@ -63,9 +63,18 @@ namespace Open.Core.Composite
         /// <param name="message">The payload of the event.</param>
         public void Publish<TEvent>(TEvent message)
         {
+            Publish(message, IsAsynchronous);
+        }
+
+        /// <summary>Publishes (fires) an event to all subscribed (listening) parties.</summary>
+        /// <typeparam name="TEvent">The type of the event to publish.</typeparam>
+        /// <param name="message">The payload of the event.</param>
+        /// <param name="isAsynchronous">Flag indicating if the event should be published asynchronously.</param>
+        public void Publish<TEvent>(TEvent message, bool isAsynchronous)
+        {
             var handlers = GetHandlerCollection<TEvent>();
             if (handlers == null) return;
-            if (IsAsynchronous)
+            if (isAsynchronous)
             {
                 PublishAsynchronously(() => handlers.InvokeActions(message));
             }

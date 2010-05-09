@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Composite;
 using Open.Core.Composition;
@@ -173,7 +171,7 @@ namespace Open.Core.Common.Test.Core.Composite
         }
 
         [TestMethod]
-        public void ShouldPublishSynchronously()
+        public void ShouldPublishEventSynchronously()
         {
             eventBus.IsAsynchronous = false;
             Event1 firedArgs = null;
@@ -189,6 +187,25 @@ namespace Open.Core.Common.Test.Core.Composite
             firedArgs.ShouldBe(publishArgs);
             eventBus.PublishedCount<Event1>().ShouldBe(1L);
             eventBus.PublishedCount<Event2>().ShouldBe(0L);
+        }
+
+        [TestMethod]
+        public void ShouldPublishEventSynchronouslyFromMethodParam()
+        {
+            eventBus.IsAsynchronous.ShouldBe(true);
+
+            Event1 firedArgs = null;
+            Action<Event1> handler = e => { firedArgs = e; };
+            eventBus.Subscribe(handler);
+
+            // ---
+
+            var publishArgs = new Event1 { Message = "My Message" };
+            eventBus.Publish(publishArgs, isAsynchronous: false);
+
+            firedArgs.ShouldBe(publishArgs);
+            eventBus.PublishedCount<Event1>().ShouldBe(1L);
+            eventBus.IsAsynchronous.ShouldBe(true);
         }
 
         [TestMethod]
@@ -208,6 +225,27 @@ namespace Open.Core.Common.Test.Core.Composite
 
                                     eventBus.Subscribe(handler);
                                     eventBus.Publish(publishArgs);
+                                    fired.ShouldBe(false);
+                                });
+        }
+
+        [TestMethod]
+        public void ShouldPublishEventAsynchronouslyFromMethodParam()
+        {
+            eventBus.IsAsynchronous = false;
+            AsyncTest.Start(test =>
+                                {
+                                    var publishArgs = new Event1 { Message = "My Message" };
+                                    var fired = false;
+                                    Action<Event1> handler = e =>
+                                                    {
+                                                        fired = true;
+                                                        e.ShouldBe(publishArgs);
+                                                        test.Complete();
+                                                    };
+
+                                    eventBus.Subscribe(handler);
+                                    eventBus.Publish(publishArgs, isAsynchronous:true);
                                     fired.ShouldBe(false);
                                 });
         }
