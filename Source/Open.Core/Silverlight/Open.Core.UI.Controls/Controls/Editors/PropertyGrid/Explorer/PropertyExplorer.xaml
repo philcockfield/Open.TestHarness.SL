@@ -53,9 +53,9 @@
                         
                         <!--Textbox-->
                         <Controls:CoreTextBox Grid.Column="0" Text="{Binding FilterByPropertyName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Margin="5">
-                            <ab:Behaviors.UpdateOnKeyPress>
-                                <ab:UpdateOnKeyPress />
-                            </ab:Behaviors.UpdateOnKeyPress>
+                            <ab:Behaviors.UpdateTextBoxOnKeyPress>
+                                <ab:UpdateTextBoxOnKeyPress />
+                            </ab:Behaviors.UpdateTextBoxOnKeyPress>
                         </Controls:CoreTextBox>
 
                         <!--Inheritance Option-->

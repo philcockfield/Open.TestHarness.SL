@@ -21,42 +21,27 @@
 //------------------------------------------------------
 
 using System.Windows.Controls;
-using Open.Core.Common.AttachedBehavior;
 
-namespace Open.Core.Common.Controls.Editors.PropertyGridStructure.Editors
+namespace Open.Core.Common.AttachedBehavior
 {
-    /// <summary>A property-grid editor for String values.</summary>
-    public partial class StringEditor : UserControl
+    /// <summary>Updates a textbox's source databinding value on key-press.</summary>
+    /// <remarks>
+    ///    Without this behavior, focus has to be removed from the textbox before the data-binding is syncronized.<BR/>
+    ///    When using the behavior you may want ot use the 'UpdateSourceTrigger=Explicit' flag in the binding, for example:<BR/>
+    ///    <BR/>
+    ///    Text="{Binding Mode=TwoWay, Path=PropertyName, UpdateSourceTrigger=Explicit}"
+    /// </remarks>
+    public class UpdateTextBoxOnKeyPress : UpdateCharacterFieldOnKeyPressBase<TextBox>
     {
-        #region Head
-        private UpdateTextBoxOnKeyPress updateOnKeyPress;
-
-        public StringEditor()
+        public UpdateTextBoxOnKeyPress() : base(TextBox.TextProperty)
         {
-            InitializeComponent();
-            GotFocus += delegate { textbox.Focus(); };
         }
-        #endregion
 
-        #region Properties
-        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
-        public StringEditorViewModel ViewModel
+        /// <summary>Updates the data-source that is bound to the 'Text' property with the current value of the textbox.</summary>
+        /// <param name="textbox">The textbox to update the data-source of.</param>
+        public static void UpdateDataSource(TextBox textbox)
         {
-            get { return DataContext as StringEditorViewModel; }
-            set
-            {
-                DataContext = value;
-                if (value.UpdateOnKeyPress) CreateUpdateOnKeyPress();
-            }
+            UpdateDataSource(textbox, TextBox.TextProperty);
         }
-        #endregion
-
-        #region Internal
-        private void CreateUpdateOnKeyPress()
-        {
-            updateOnKeyPress = new UpdateTextBoxOnKeyPress();
-            Behaviors.SetUpdateTextBoxOnKeyPress(textbox, updateOnKeyPress);
-        }
-        #endregion
     }
 }

@@ -132,6 +132,24 @@ namespace Open.Core.UI.Controls
             tool.Parent = this;
         }
 
+        /// <summary>Gets the tool with the specified ID.</summary>
+        /// <param name="toolId">The unique identifier of the tool.</param>
+        public ITool GetTool(object toolId)
+        {
+            return toolId == null 
+                        ? null 
+                        : toolItems.Where(m => Equals(m.Tool.Id, toolId)).Select(m => m.Tool).FirstOrDefault();
+        }
+
+        /// <summary>Gets the tool with the specified ID.</summary>
+        /// <typeparam name="TTool">The type of the tool.</typeparam>
+        /// <param name="toolId">The unique identifier of the tool.</param>
+        public TTool GetTool<TTool>(object toolId) where TTool : ITool
+        {
+            var tool = GetTool(toolId);
+            return tool == null ? default(TTool) : (TTool)tool;
+        }
+
         /// <summary>Gets the column value for the given tool.</summary>
         /// <param name="tool">The tool to look up.</param>
         /// <exception cref="NotFoundException">If the given tool has not been added to the toolbar.</exception>

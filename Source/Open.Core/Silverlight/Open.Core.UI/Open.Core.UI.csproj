@@ -151,7 +151,9 @@
     <Compile Include="Interactivity\Behaviors\SyncSizeRatio.cs" />
     <Compile Include="Interactivity\Behaviors\SyncWithScrollViewerWidth.cs" />
     <Compile Include="Interactivity\Behaviors\TextMouseHighlight.cs" />
-    <Compile Include="Interactivity\Behaviors\UpdateOnKeyPress.cs" />
+    <Compile Include="Interactivity\Behaviors\Text\UpdatePasswordBoxOnKeyPress.cs" />
+    <Compile Include="Interactivity\Behaviors\Text\UpdateCharacterFieldOnKeyPressBase.cs" />
+    <Compile Include="Interactivity\Behaviors\Text\UpdateTextBoxOnKeyPress.cs" />
     <Compile Include="Interactivity\Behaviors.cs" />
     <Compile Include="Base Classes\ResourcesBase.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />

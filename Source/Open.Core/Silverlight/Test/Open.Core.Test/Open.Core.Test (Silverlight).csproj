@@ -174,10 +174,12 @@
     <Compile Include="ViewTests\Core\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml.cs">
       <DependentUpon>SyncWithScrollViewerWidthTestControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdatePasswordBoxOnKeyPressViewTest.cs" />
+    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateOnKeyPressViewTestBase.cs" />
     <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml.cs">
       <DependentUpon>UpdateOnKeyPressTestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateOnKeyPressViewTest.cs" />
+    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateTextBoxOnKeyPressViewTest.cs" />
     <Compile Include="ViewTests\Core\Extensions\ColorExtensions.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Extensions\FocusChild\FocusChild.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Extensions\FocusChild\FocusChildTestControl.xaml.cs">

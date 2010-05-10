@@ -84,14 +84,23 @@ namespace Open.Core.Common.AttachedBehavior
         public static PositionSlider GetPositionSlider(UIElement element) { return (PositionSlider)element.GetValue(PositionSliderProperty); }
         public static void SetPositionSlider(UIElement element, PositionSlider value) { element.SetValue(PositionSliderProperty, value); }
 
-        public static readonly DependencyProperty UpdateOnKeyPressProperty =
+        public static readonly DependencyProperty UpdateTextBoxOnKeyPressProperty =
             DependencyProperty.RegisterAttached(
-                "UpdateOnKeyPress",
-                typeof(UpdateOnKeyPress),
+                "UpdateTextBoxOnKeyPress",
+                typeof(UpdateTextBoxOnKeyPress),
                 typeof(Behaviors),
                 new PropertyMetadata(HandleAttachedBehaviorPropertyChanged));
-        public static UpdateOnKeyPress GetUpdateOnKeyPress(TextBox element) { return (UpdateOnKeyPress)element.GetValue(UpdateOnKeyPressProperty); }
-        public static void SetUpdateOnKeyPress(TextBox element, UpdateOnKeyPress value) { element.SetValue(UpdateOnKeyPressProperty, value); }
+        public static UpdateTextBoxOnKeyPress GetUpdateTextBoxOnKeyPress(TextBox element) { return (UpdateTextBoxOnKeyPress)element.GetValue(UpdateTextBoxOnKeyPressProperty); }
+        public static void SetUpdateTextBoxOnKeyPress(TextBox element, UpdateTextBoxOnKeyPress value) { element.SetValue(UpdateTextBoxOnKeyPressProperty, value); }
+
+        public static readonly DependencyProperty UpdatePasswordBoxOnKeyPressProperty =
+            DependencyProperty.RegisterAttached(
+                "UpdatePasswordBoxOnKeyPress",
+                typeof(UpdatePasswordBoxOnKeyPress),
+                typeof(Behaviors),
+                new PropertyMetadata(HandleAttachedBehaviorPropertyChanged));
+        public static UpdatePasswordBoxOnKeyPress GetUpdatePasswordBoxOnKeyPress(PasswordBox element) { return (UpdatePasswordBoxOnKeyPress)element.GetValue(UpdatePasswordBoxOnKeyPressProperty); }
+        public static void SetUpdatePasswordBoxOnKeyPress(PasswordBox element, UpdatePasswordBoxOnKeyPress value) { element.SetValue(UpdatePasswordBoxOnKeyPressProperty, value); }
 
         public static readonly DependencyProperty AutoRowDefinitionsProperty =
             DependencyProperty.RegisterAttached(

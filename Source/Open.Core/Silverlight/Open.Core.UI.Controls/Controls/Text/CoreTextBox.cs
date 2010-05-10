@@ -53,7 +53,7 @@ namespace Open.Core.UI.Controls
             if (e.Key == Key.Enter)
             {
                 OnEnterPress(e);
-                if (UpdateDataSourceOnEnterPress) UpdateOnKeyPress.UpdateDataSource(this);
+                if (UpdateDataSourceOnEnterPress) UpdateTextBoxOnKeyPress.UpdateDataSource(this);
             }
         }
         #endregion

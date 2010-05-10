@@ -21,42 +21,20 @@
 //------------------------------------------------------
 
 using System.Windows.Controls;
-using Open.Core.Common.AttachedBehavior;
 
-namespace Open.Core.Common.Controls.Editors.PropertyGridStructure.Editors
+namespace Open.Core.Common.AttachedBehavior
 {
-    /// <summary>A property-grid editor for String values.</summary>
-    public partial class StringEditor : UserControl
+    /// <summary>Updates a textbox's source databinding value on key-press.</summary>
+    /// <remarks>
+    ///    Without this behavior, focus has to be removed from the textbox before the data-binding is syncronized.<BR/>
+    ///    When using the behavior you may want ot use the 'UpdateSourceTrigger=Explicit' flag in the binding, for example:<BR/>
+    ///    <BR/>
+    ///    Text="{Binding Mode=TwoWay, Path=PropertyName, UpdateSourceTrigger=Explicit}"
+    /// </remarks>
+    public class UpdatePasswordBoxOnKeyPress : UpdateCharacterFieldOnKeyPressBase<PasswordBox>
     {
-        #region Head
-        private UpdateTextBoxOnKeyPress updateOnKeyPress;
-
-        public StringEditor()
+        public UpdatePasswordBoxOnKeyPress() : base(PasswordBox.PasswordProperty)
         {
-            InitializeComponent();
-            GotFocus += delegate { textbox.Focus(); };
         }
-        #endregion
-
-        #region Properties
-        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
-        public StringEditorViewModel ViewModel
-        {
-            get { return DataContext as StringEditorViewModel; }
-            set
-            {
-                DataContext = value;
-                if (value.UpdateOnKeyPress) CreateUpdateOnKeyPress();
-            }
-        }
-        #endregion
-
-        #region Internal
-        private void CreateUpdateOnKeyPress()
-        {
-            updateOnKeyPress = new UpdateTextBoxOnKeyPress();
-            Behaviors.SetUpdateTextBoxOnKeyPress(textbox, updateOnKeyPress);
-        }
-        #endregion
     }
 }

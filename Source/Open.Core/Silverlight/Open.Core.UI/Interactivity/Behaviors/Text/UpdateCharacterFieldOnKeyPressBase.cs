@@ -22,41 +22,41 @@
 
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
+using T = Open.Core.Common.AttachedBehavior.UpdateCharacterFieldOnKeyPressBase<System.Windows.FrameworkElement>;
+
 namespace Open.Core.Common.AttachedBehavior
 {
-    /// <summary>Updates a textbox's source databinding value on key-press.</summary>
+    /// <summary>Updates a text fields (TextBox / PasswordBox) source databinding value on key-press.</summary>
     /// <remarks>
     ///    Without this behavior, focus has to be removed from the textbox before the data-binding is syncronized.<BR/>
     ///    When using the behavior you may want ot use the 'UpdateSourceTrigger=Explicit' flag in the binding, for example:<BR/>
     ///    <BR/>
     ///    Text="{Binding Mode=TwoWay, Path=PropertyName, UpdateSourceTrigger=Explicit}"
     /// </remarks>
-    public class UpdateOnKeyPress : Behavior<TextBox>
+    public abstract class UpdateCharacterFieldOnKeyPressBase<TControl> : Behavior<TControl> where TControl : FrameworkElement
     {
-        #region Events
+        #region Head
         /// <summary>Fires when the data-source has been updated by the behavior.</summary>
         public event EventHandler Updated;
         protected void OnUpdated() { if (Updated != null) Updated(this, new EventArgs()); }
-        #endregion
-
-        #region Head
-        public const string PropIsActive = "IsActive";
-        public const string PropDelay = "Delay";
 
         /// <summary>The default delay time (in seconds).</summary>
         public const double DefaultDelay = 0.2;
-        private readonly DelayedAction delayedAction;
 
-        public UpdateOnKeyPress()
+        private readonly DelayedAction delayedAction;
+        private readonly DependencyProperty bindingProperty;
+
+        /// <summary>Constructor.</summary>
+        protected UpdateCharacterFieldOnKeyPressBase(DependencyProperty bindingProperty)
         {
+            this.bindingProperty = bindingProperty;
             delayedAction = new DelayedAction(DefaultDelay, OnDelayTimeout);
         }
         #endregion
-        
+
         #region Event Handlers
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -68,12 +68,24 @@ namespace Open.Core.Common.AttachedBehavior
         private void OnDelayTimeout()
         {
             if (!IsActive) return;
-            UpdateDataSource(AssociatedObject);
+            UpdateDataSource();
             OnUpdated();
+        }
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            AssociatedObject.KeyUp += HandleKeyPress;
+        }
+
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
+            AssociatedObject.KeyUp -= HandleKeyPress;
         }
         #endregion
 
-        #region Properties
+        #region Dependency Properties
         /// <summary>Gets or sets the time delay in delay (in seconds) before the data-source is updated.</summary>
         /// <remarks>
         ///    This is useful for not overloading the updating system when the user is typing several characters or words.
@@ -91,10 +103,10 @@ namespace Open.Core.Common.AttachedBehavior
         /// </remarks>
         public static readonly DependencyProperty DelayProperty =
             DependencyProperty.Register(
-                PropDelay,
+                LinqExtensions.GetPropertyName<T>(m => m.Delay),
                 typeof (double),
-                typeof (UpdateOnKeyPress),
-                new PropertyMetadata(DefaultDelay, (sender, e) => ((UpdateOnKeyPress)sender).delayedAction.Delay = (double)e.NewValue));
+                typeof (T),
+                new PropertyMetadata(DefaultDelay));
 
 
         /// <summary>Gets or sets whether updates are initiated on keypress.</summary>
@@ -106,30 +118,25 @@ namespace Open.Core.Common.AttachedBehavior
         /// <summary>Gets or sets whether updates are initiated on keypress.</summary>
         public static readonly DependencyProperty IsActiveProperty =
             DependencyProperty.Register(
-                PropIsActive,
+                LinqExtensions.GetPropertyName<T>(m => m.IsActive),
                 typeof (bool),
-                typeof (UpdateOnKeyPress),
+                typeof (T),
                 new PropertyMetadata(true));
         #endregion
 
         #region Methods
-        protected override void OnAttached()
+        /// <summary>Updates the data-source that is bound to the 'Text' property with the current value of the textbox.</summary>
+        public void UpdateDataSource()
         {
-            base.OnAttached();
-            AssociatedObject.KeyUp += HandleKeyPress;
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            AssociatedObject.KeyUp -= HandleKeyPress;
+            UpdateDataSource(AssociatedObject, bindingProperty);
         }
 
         /// <summary>Updates the data-source that is bound to the 'Text' property with the current value of the textbox.</summary>
-        /// <param name="textbox">The textbox to update the data-source of.</param>
-        public static void UpdateDataSource(TextBox textbox)
+        /// <param name="element">The text field element.</param>
+        /// <param name="property">The dependency property to update.</param>
+        public static void UpdateDataSource(FrameworkElement element, DependencyProperty property)
         {
-            var binding = textbox.GetBindingExpression(TextBox.TextProperty);
+            var binding = element.GetBindingExpression(property);
             if (binding == null) return;
             binding.UpdateSource();
         }
