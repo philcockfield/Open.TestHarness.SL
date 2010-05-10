@@ -61,6 +61,15 @@ namespace Open.Core.UI.Controls
                     int? columnSpan = 1,
                     int? rowSpan = 1) where T : ITool;
 
+        /// <summary>Gets the tool with the specified ID.</summary>
+        /// <param name="toolId">The unique identifier of the tool.</param>
+        ITool GetTool(object toolId);
+
+        /// <summary>Gets the tool with the specified ID.</summary>
+        /// <typeparam name="TTool">The type of the tool.</typeparam>
+        /// <param name="toolId">The unique identifier of the tool.</param>
+        TTool GetTool<TTool>(object toolId) where TTool : ITool;
+
         /// <summary>Causes the toolbar to re-build it's tool layout.</summary>
         void UpdateLayout();
 

@@ -9,6 +9,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
+    [Tag("current")]
     [TestClass]
     public class ToolBarTest
     {
@@ -21,7 +22,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             toolbar = new Open.Core.UI.Controls.ToolBar();
         }
         #endregion
-        
+
         #region Tests
         [Import(RequiredCreationPolicy = CreationPolicy.NonShared)]
         public IToolBar ImportedToolBar1 { get; set; }
@@ -142,7 +143,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             toolbar.Add(new MockTool());
             toolbar.Add(new MockTool());
             toolbar.Tools.Count().ShouldBe(3);
-            
+
             toolbar.Clear();
             toolbar.Tools.Count().ShouldBe(0);
         }
@@ -154,6 +155,33 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(1);
             FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(0);
             FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldGetTool()
+        {
+            var tool = new MockTool { Id = "MyId" };
+            toolbar.Add(tool);
+            toolbar.GetTool("MyId").ShouldBe(tool);
+        }
+
+        [TestMethod]
+        public void ShouldGetTypedTool()
+        {
+            var buttonTool = new ButtonTool { Id = "MyButtonTool" };
+            toolbar.Add<IButtonTool>(buttonTool);
+            toolbar.GetTool<IButtonTool>("MyButtonTool").ShouldBe(buttonTool);
+        }
+
+        [TestMethod]
+        public void ShouldNotGetTool()
+        {
+            var tool = new MockTool { Id = "MyId" };
+            toolbar.Add(tool);
+            toolbar.GetTool("MyId2").ShouldBe(null);
+
+            toolbar.GetTool(null).ShouldBe(null);
+            toolbar.GetTool<IButtonTool>(null).ShouldBe(null);
         }
         #endregion
 
