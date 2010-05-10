@@ -189,6 +189,7 @@ namespace Open.Core.Ria
             OnPropertyChanged<TClass>(o => o.IsSaving);
             FireBusyIdle();
             previousIsSaving = IsSaving;
+            FireLoadStateChanged();
         }
 
         private void FireBusyIdle()

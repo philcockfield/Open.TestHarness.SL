@@ -36,7 +36,7 @@ namespace Open.Core.Common.Testing
 
         protected SilverlightUnitTest()
         {
-            if (eventBus == null) eventBus = new Importer().EventBus;
+            if (eventBus == null) eventBus = new SilverlightUnitTestImporter().EventBus;
         }
         #endregion
 
@@ -110,7 +110,7 @@ namespace Open.Core.Common.Testing
         }
         #endregion
 
-        public class Importer : ImporterBase
+        public class SilverlightUnitTestImporter : ImporterBase
         {
             [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
             public IEventBus EventBus { get; set; }
