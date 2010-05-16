@@ -89,14 +89,9 @@ namespace Open.TestHarness.View.Selector
             HtmlPage.Window.Navigate(new Uri(url));
         }
 
-        private void OnRunUnitTests()
+        private static void OnRunUnitTests()
         {
-
-            var viewTestClass = ViewTestClass.GetSingleton(typeof (UnitTestRunner), null);
-
-            viewTestClass.Activate();
-            viewTestClass.IsCurrent = true;
-
+            UnitTestRunner.Run();
         }
         #endregion
 

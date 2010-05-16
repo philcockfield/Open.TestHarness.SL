@@ -76,13 +76,11 @@ namespace Open.TestHarness.Test.ViewModel.ControlHost
         [TestMethod]
         public void ShouldChangeCurrentControls()
         {
-            PropertyChangedEventArgs args = null;
-            viewModel.PropertyChanged += (sender, e) => args = e;
-
             viewModel.CurrentControls.Count.ShouldBe(3);
-            classModel.ViewTests[0].Execute();
-
-            args.PropertyName.ShouldBe(LinqExtensions.GetPropertyName<DisplayContainerViewModel>(m => m.CurrentControls));
+            classModel.ShouldFirePropertyChanged<DisplayContainerViewModel>(()=>
+                                                                                {
+                                                                                    classModel.ViewTests[0].Execute();
+                                                                                }, m => m.CurrentControls);
 
             viewModel.CurrentControls.Count.ShouldBe(1);
         }

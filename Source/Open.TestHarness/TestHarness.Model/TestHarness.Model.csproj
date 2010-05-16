@@ -95,6 +95,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringLibrary.resx</DependentUpon>
     </Compile>
+    <Compile Include="Automation\TestRunHtmlOutputWriter.cs" />
     <Compile Include="Automation\TestRunner.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />

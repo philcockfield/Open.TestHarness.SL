@@ -24,9 +24,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Windows.Browser;
 using System.Windows.Media;
-using System.Xml.Linq;
 using Open.Core.Common;
 using Open.TestHarness.Model;
 
@@ -36,7 +34,6 @@ namespace Open.TestHarness.Automation
     public class TestRunner
     {
         #region Head
-        public const string HtmlOutputId = "TestHarness.Output";
         private double interval = 0.3;
         private readonly List<MethodItem> methods = new List<MethodItem>();
         private readonly List<MethodInfo> passed = new List<MethodInfo>();
@@ -229,47 +226,9 @@ namespace Open.TestHarness.Automation
 
         private void WriteToHtmlPage(TimeSpan elapsedTime)
         {
-            // Create the DIV element.
-            var doc = HtmlPage.Document;
-            var div = doc.GetElementById(HtmlOutputId) ?? CreateElement("div");
-            div.SetAttribute("id", HtmlOutputId);
-            doc.Body.AppendChild(div);
-
-            // Insert root XML element.
-            var xml = CreateElement("results");
-            xml.SetAttribute("passed", Passed.Count.ToString());
-            xml.SetAttribute("failed", Failed.Count.ToString());
-            xml.SetAttribute("duration", elapsedTime.ToString());
-            div.AppendChild(xml);
-
-            // Insert method report.
-            InsertMethods(xml, "passed", Passed);
-            InsertMethods(xml, "failed", Failed);
+            var writer = new TestRunHtmlOutputWriter("results.view-test", elapsedTime, Passed, Failed);
+            writer.Write();
         }
-
-        private static void InsertMethods(HtmlElement parent, string name, IEnumerable<MethodInfo> methods)
-        {
-            // Setup initial conditions.
-            if (methods.IsEmpty()) return;
-
-            // Create the method container.
-            var methodContainer = CreateElement(name);
-            parent.AppendChild(methodContainer);
-
-            // Insert each method.
-            foreach (var methodInfo in methods)
-            {
-                var htmMethod = CreateElement("method");
-                htmMethod.SetAttribute("name", methodInfo.Name);
-                htmMethod.SetAttribute("class", methodInfo.DeclaringType.FullName);
-                methodContainer.AppendChild(htmMethod);
-            }
-        }
-
-        private static HtmlElement CreateElement(string tag)
-        {
-            return HtmlPage.Document.CreateElement(tag);
-        }
-       #endregion
+        #endregion
     }
 }
