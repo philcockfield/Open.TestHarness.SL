@@ -150,6 +150,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Exceptions\AssertionException.cs">
       <Link>Exceptions\AssertionException.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Exceptions\CodeGenerationException.cs">
+      <Link>Exceptions\CodeGenerationException.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Exceptions\ExistsException.cs">
       <Link>Exceptions\ExistsException.cs</Link>
     </Compile>

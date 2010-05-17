@@ -98,6 +98,7 @@
     <Compile Include="Composite\EventBus.silverlight.cs" />
     <Compile Include="Base Classes\ImporterBase.cs" />
     <Compile Include="Enumerations\Icons %28Enum%29.cs" />
+    <Compile Include="Exceptions\CodeGenerationException.cs" />
     <Compile Include="Exceptions\NotInitializedException.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
