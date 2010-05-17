@@ -20,10 +20,6 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         public void TestSetup()
         {
             generator = new TableStorageModelEntityTemplate();
-
-            generator = new TableStorageModelEntityTemplate{ModelType = typeof(MockEntity1)};
-            var codeString = generator.TransformText();
-            // Save to file here...
         }
         #endregion
         

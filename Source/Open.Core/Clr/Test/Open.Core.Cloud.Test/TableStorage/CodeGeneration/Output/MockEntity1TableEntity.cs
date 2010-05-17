@@ -1,7 +1,7 @@
 // ---------------------------------------------
 //   Generated code.  
 //   Changes will be overwritten next time this code is generated.
-//   Created: 05/16/2010 19:40:55
+//   Created: 05/17/2010 13:29:52
 // ---------------------------------------------
 using System;
 using Microsoft.WindowsAzure.StorageClient;

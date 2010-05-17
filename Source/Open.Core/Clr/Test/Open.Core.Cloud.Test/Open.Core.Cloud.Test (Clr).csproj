@@ -50,7 +50,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TableStorage\CodeGeneration\Output\MockEntity1TableEntity.cs" />
     <Compile Include="TableStorage\CodeGeneration\Output\OutputFileWriter.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplateTest.cs" />
     <Compile Include="TableStorage\TableStorageModelBaseTest.cs" />
