@@ -20,6 +20,8 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
+using System.Windows.Media;
 using Open.Core.Common;
 using System.Diagnostics;
 using Open.Core.Common.Testing;
@@ -36,7 +38,7 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
         public void Initialize()
         {
             stub = new SettingsStub();
-            stub.Saved += delegate { Debug.WriteLine("!! Saved"); };
+            stub.Saved += delegate { Output.Write(Colors.Green, "!! Saved"); };
             Read_Properties();
         }
         #endregion
@@ -76,50 +78,57 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
         [ViewTest]
         public void Increase_Quota_by_1_Megabyte()
         {
-            Debug.WriteLine("IncreaseQuotaBy(1): " + stub.IncreaseQuotaBy(1));
+            Output.Write("IncreaseQuotaBy(1): " + stub.IncreaseQuotaBy(1));
         }
 
         [ViewTest]
         public void Increase_Quota_by_10_Megabytes()
         {
-            Debug.WriteLine("IncreaseQuotaBy(10): " + stub.IncreaseQuotaBy(10));
+            Output.Write("IncreaseQuotaBy(10): " + stub.IncreaseQuotaBy(10));
         }
 
         [ViewTest]
         public void Increase_Quota_to_10_Megabytes()
         {
-            Debug.WriteLine("IncreaseQuotaTo(10): " + stub.IncreaseQuotaTo(10));
+            try
+            {
+                Output.Write("IncreaseQuotaTo(10): " + stub.IncreaseQuotaTo(10));
+            }
+            catch (Exception error)
+            {
+                Output.WriteException(error);
+            }
         }
 
         [ViewTest]
         public void Toggle__AutoSave()
         {
             stub.AutoSave = !stub.AutoSave;
-            Debug.WriteLine("AutoSave: " + stub.AutoSave);
+            Output.Write("AutoSave: " + stub.AutoSave);
         }
 
         [ViewTest]
         public void Read_Properties()
         {
-            Debug.WriteLine("> Id: " + stub.Id);
-            Debug.WriteLine("> AutoSave: " + stub.AutoSave);
-            Debug.WriteLine("> AvailableFreeBytes: " + stub.AvailableFreeBytes + " Bytes");
-            Debug.WriteLine("> AvailableFreeMegabytes: " + stub.AvailableFreeMegabytes + " MB");
-            Debug.WriteLine("> QuotaBytes: " + stub.QuotaBytes + " Bytes");
-            Debug.WriteLine("> QuotaMegabytes: " + stub.QuotaMegabytes + " MB");
-            Debug.WriteLine("> Store: " + stub.Store);
-            Debug.WriteLine("> StoreType: " + stub.StoreType);
+            Output.Write("> Id: " + stub.Id);
+            Output.Write("> AutoSave: " + stub.AutoSave);
+            Output.Write("> AvailableFreeBytes: " + stub.AvailableFreeBytes + " Bytes");
+            Output.Write("> AvailableFreeMegabytes: " + stub.AvailableFreeMegabytes + " MB");
+            Output.Write("> QuotaBytes: " + stub.QuotaBytes + " Bytes");
+            Output.Write("> QuotaMegabytes: " + stub.QuotaMegabytes + " MB");
+            Output.Write("> Store: " + stub.Store);
+            Output.Write("> StoreType: " + stub.StoreType);
 
             if (stub.Text == null)
             {
-                Debug.WriteLine("- Text.Length: null");
+                Output.Write("- Text.Length: null");
             }
             else
             {
-                Debug.WriteLine("- Text.Length: " + stub.Text.Length);
+                Output.Write("- Text.Length: " + stub.Text.Length);
             }
 
-            Debug.WriteLine("");
+            Output.Break();
         }
         #endregion
 

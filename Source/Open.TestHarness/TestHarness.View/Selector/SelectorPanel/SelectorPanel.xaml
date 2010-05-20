@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI"
     xmlns:Selector="clr-namespace:Open.TestHarness.View.Selector"
     xmlns:c="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
-    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI"
     xmlns:cmd="clr-namespace:Open.Core.Composite.Command;assembly=Open.Core.UI" 
     xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
 
@@ -55,7 +55,20 @@
                             Width="30"
                             Opacity="0.9"
                             Style="{StaticResource toolbarButtonStyle}"/>
+                    
                     <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
+                    
+                    <TextBox 
+                        Text="{Binding UnitTestTag, Mode=TwoWay}"
+                        ToolTipService.ToolTip="{Binding Strings.ToolTip_UnitTestTag}"
+                        Margin="1,2,1,2" 
+                        Width="100">
+                        <i:Interaction.Behaviors>
+                            <ab:UpdateTextBoxOnKeyPress />
+                            <ab:SelectTextOnFocus />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    
                     <c:ImageButton 
                             cmd:Click.Command="{Binding RunUnitTests}"
                             Source="../../Images/Icon.AutoRunTests.23x16.png"

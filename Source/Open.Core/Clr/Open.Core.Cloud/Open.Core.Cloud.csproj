@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudConfiguration.cs" />
     <Compile Include="TableStorage\Attributes\PersistAttribute.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.cs">
       <AutoGen>True</AutoGen>
@@ -63,7 +64,9 @@
       <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

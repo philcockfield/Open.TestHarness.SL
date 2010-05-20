@@ -159,7 +159,7 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Methods - Dialog Registration
-        public void RegisterAsFileOpenDialog(string filter = null, int filterIndex = 1, bool multiSelect = false, Action<IOpenFileDialog> dialogAccepted = null)
+        public IButtonTool RegisterAsFileOpenDialog(string filter = null, int filterIndex = 1, bool multiSelect = false, Action<IOpenFileDialog> dialogAccepted = null)
         {
             RegisterAsFileOpenDialog(dialog =>
                                          {
@@ -167,9 +167,10 @@ namespace Open.Core.UI.Controls
                                              dialog.FilterIndex = filterIndex.WithinBounds(1, int.MaxValue);
                                              dialog.MultiSelect = multiSelect;
                                          }, dialogAccepted);
+            return this;
         }
 
-        public void RegisterAsFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted = null)
+        public IButtonTool RegisterAsFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted = null)
         {
             // Setup initial conditions.
             if (saveFileDialog != null) throw new InitializationException("This button has already been registered as a file-save dialog.");
@@ -177,9 +178,12 @@ namespace Open.Core.UI.Controls
 
             // Store state.
             openFileDialog = new DialogInvoker<IOpenFileDialog>(new Models.OpenFileDialog(), dialogSetup, dialogAccepted);
+
+            // Finish up.
+            return this;
         }
 
-        public void RegisterAsFileSaveDialog(string filter, int filterIndex, string defaultExtension, Action<ISaveFileDialog> dialogAccepted)
+        public IButtonTool RegisterAsFileSaveDialog(string filter, int filterIndex, string defaultExtension, Action<ISaveFileDialog> dialogAccepted)
         {
             RegisterAsFileSaveDialog(dialog =>
                                          {
@@ -188,10 +192,10 @@ namespace Open.Core.UI.Controls
                                              dialog.DefaultExtension = defaultExtension;
                                          }, 
                 dialogAccepted);
-            
+            return this;
         }
 
-        public void RegisterAsFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted = null)
+        public IButtonTool RegisterAsFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted = null)
         {
             // Setup initial conditions.
             if (openFileDialog != null) throw new InitializationException("This button has already been registered as a file-open dialog.");
@@ -199,6 +203,9 @@ namespace Open.Core.UI.Controls
 
             // Store state.
             saveFileDialog = new DialogInvoker<ISaveFileDialog>(new Models.SaveFileDialog(), dialogSetup, dialogAccepted);
+
+            // Finish up.
+            return this;
         }
         #endregion
 

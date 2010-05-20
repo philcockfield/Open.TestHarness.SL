@@ -37,10 +37,7 @@ namespace Open.TestHarness.Automation
         public void Write()
         {
             // Create the DIV element.
-            var doc = HtmlPage.Document;
-            var div = doc.GetElementById(HtmlOutputId) ?? CreateElement("div");
-            div.SetAttribute("id", HtmlOutputId);
-            doc.Body.AppendChild(div);
+            var div = CreateRootDiv();
 
             // Insert root XML element.
             var xml = CreateElement(tagName);
@@ -74,6 +71,22 @@ namespace Open.TestHarness.Automation
                 methodContainer.AppendChild(htmMethod);
             }
         }
+
+        private static HtmlElement CreateRootDiv()
+        {
+            var doc = HtmlPage.Document;
+
+            var div = doc.GetElementById(HtmlOutputId);
+            if (div != null) return div;
+                
+            div =  CreateElement("div");
+            div.SetAttribute("id", HtmlOutputId);
+            div.SetStyleAttribute("display", "none");
+            
+            doc.Body.AppendChild(div);
+            return div;
+        }
+
 
         private static HtmlElement CreateElement(string tag)
         {

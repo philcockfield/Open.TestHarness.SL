@@ -30,6 +30,7 @@ using Open.Core.Common.Collection;
 using Open.Core.Composite.Command;
 using Open.TestHarness.Model;
 using Open.TestHarness.View.Assets;
+using T = Open.TestHarness.View.Selector.SelectorPanelViewModel;
 
 namespace Open.TestHarness.View.Selector
 {
@@ -89,9 +90,9 @@ namespace Open.TestHarness.View.Selector
             HtmlPage.Window.Navigate(new Uri(url));
         }
 
-        private static void OnRunUnitTests()
+        private void OnRunUnitTests()
         {
-            UnitTestRunner.Run();
+            UnitTestRunner.Run(UnitTestTag);
         }
         #endregion
 
@@ -113,6 +114,13 @@ namespace Open.TestHarness.View.Selector
 
         /// <summary>Gets the command for that runs unit tests.</summary>
         public DelegateCommand<Button> RunUnitTests { get; private set; }
+
+        /// <summary>Gets or sets the tag to limit the unit-test run to.</summary>
+        public string UnitTestTag
+        {
+            get { return TestHarnessModel.Instance.Settings.ControlDisplayOptionSettings.UnitTestTag; }
+            set { TestHarnessModel.Instance.Settings.ControlDisplayOptionSettings.UnitTestTag = value; }
+        }
 
         /// <summary>Gets whether the 'Run Tests' button is visible (only available when running within the browser).</summary>
         public bool IsRunTestsButtonVisible { get { return !Application.Current.IsRunningOutOfBrowser; } }

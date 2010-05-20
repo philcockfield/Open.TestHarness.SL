@@ -21,7 +21,6 @@
 //------------------------------------------------------
 
 using Open.Core.Common;
-
 using T = Open.TestHarness.Model.ControlDisplayOptionSettings;
 
 namespace Open.TestHarness.Model
@@ -40,22 +39,29 @@ namespace Open.TestHarness.Model
         /// <summary>Gets or sets whether the border is visible.</summary>
         public bool ShowBorder
         {
-            get { return GetPropertyValue<ControlDisplayOptionSettings, bool>(m => m.ShowBorder, true); }
-            set { SetPropertyValue<ControlDisplayOptionSettings, bool>(m => m.ShowBorder, value, true); }
+            get { return GetPropertyValue<T, bool>(m => m.ShowBorder, true); }
+            set { SetPropertyValue<T, bool>(m => m.ShowBorder, value, true); }
         }
 
         /// <summary>Gets or sets whether the output log is writing entries.</summary>
         public bool IsOutputLogActive
         {
-            get { return GetPropertyValue<ControlDisplayOptionSettings, bool>(m => m.IsOutputLogActive, true); }
-            set { SetPropertyValue<ControlDisplayOptionSettings, bool>(m => m.IsOutputLogActive, value, true); }
+            get { return GetPropertyValue<T, bool>(m => m.IsOutputLogActive, true); }
+            set { SetPropertyValue<T, bool>(m => m.IsOutputLogActive, value, true); }
         }
 
         /// <summary>Gets or sets whether the time-stamp is shown for output log items.</summary>
         public bool ShowTimeStampOnOutputLog
         {
-            get { return GetPropertyValue<ControlDisplayOptionSettings, bool>(m => m.ShowTimeStampOnOutputLog); }
-            set { SetPropertyValue<ControlDisplayOptionSettings, bool>(m => m.ShowTimeStampOnOutputLog, value); }
+            get { return GetPropertyValue<T, bool>(m => m.ShowTimeStampOnOutputLog); }
+            set { SetPropertyValue<T, bool>(m => m.ShowTimeStampOnOutputLog, value); }
+        }
+
+        /// <summary>Gets or sets the tag to limit the unit-test run to.</summary>
+        public string UnitTestTag
+        {
+            get { return GetPropertyValue<T, string>(m => m.UnitTestTag); }
+            set { SetPropertyValue<T, string>(m => m.UnitTestTag, value); }
         }
         #endregion
     }

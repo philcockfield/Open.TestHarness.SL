@@ -64,7 +64,7 @@ namespace Open.Core.UI.Controls
         /// <summary>Turns the button into a OpenFile dialog invoker.</summary>
         /// <param name="dialogSetup">Invoked before the dialog is shown to get setup information.</param>
         /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
-        void RegisterAsFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted = null);
+        IButtonTool RegisterAsFileOpenDialog(Action<IOpenFileDialog> dialogSetup, Action<IOpenFileDialog> dialogAccepted = null);
 
         /// <summary>Turns the button into a OpenFile dialog invoker.</summary>
         /// <param name="filter">
@@ -74,12 +74,12 @@ namespace Open.Core.UI.Controls
         /// <param name="filterIndex">The index of the selected item in the dialog's filter drop-down list (1-based).</param>
         /// <param name="multiSelect">Flag indicating whether the OpenFileDialog allows users to select multiple files.</param>
         /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
-        void RegisterAsFileOpenDialog(string filter = null, int filterIndex = 1, bool multiSelect = false, Action<IOpenFileDialog> dialogAccepted = null);
+        IButtonTool RegisterAsFileOpenDialog(string filter = null, int filterIndex = 1, bool multiSelect = false, Action<IOpenFileDialog> dialogAccepted = null);
 
         /// <summary>Turns the button into a SaveFile dialog invoker.</summary>
         /// <param name="dialogSetup">Invoked before the dialog is shown to get setup information.</param>
         /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
-        void RegisterAsFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted = null);
+        IButtonTool RegisterAsFileSaveDialog(Action<ISaveFileDialog> dialogSetup, Action<ISaveFileDialog> dialogAccepted = null);
 
         /// <summary>Turns the button into a SaveFile dialog invoker.</summary>
         /// <param name="filter">
@@ -89,7 +89,7 @@ namespace Open.Core.UI.Controls
         /// <param name="filterIndex">The index of the selected item in the dialog's filter drop-down list (1-based).</param>
         /// <param name="defaultExtension">Gets or sets the default file name extension applied to files that are saved with the SaveFileDialog.</param>
         /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
-        void RegisterAsFileSaveDialog(string filter = null, int filterIndex = 1, string defaultExtension = null, Action<ISaveFileDialog> dialogAccepted = null);
+        IButtonTool RegisterAsFileSaveDialog(string filter = null, int filterIndex = 1, string defaultExtension = null, Action<ISaveFileDialog> dialogAccepted = null);
     }
 
     /// <summary>The various types of button behavior a ButtonTool can express.</summary>

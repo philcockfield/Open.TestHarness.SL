@@ -149,5 +149,14 @@ namespace Open.TestHarness.View.Assets {
                 return ResourceManager.GetString("ToolTip_RunUnitTests", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Test Tag.
+        /// </summary>
+        public static string ToolTip_UnitTestTag {
+            get {
+                return ResourceManager.GetString("ToolTip_UnitTestTag", resourceCulture);
+            }
+        }
     }
 }

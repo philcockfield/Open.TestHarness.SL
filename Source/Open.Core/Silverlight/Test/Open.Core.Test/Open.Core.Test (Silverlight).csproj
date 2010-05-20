@@ -127,10 +127,10 @@
     <Compile Include="UnitTests\Core.UI\Models\ViewModelBaseTest.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ModelBase.INotifyDataErrorInfo.Test.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ParserBaseTest.cs" />
-    <Compile Include="UnitTests\Core\Behavior\AutoRowDefinitionsTest.cs" />
-    <Compile Include="UnitTests\Core\Behavior\BehaviorTest.cs" />
-    <Compile Include="UnitTests\Core\Behavior\ExecuteMethodTest.cs" />
-    <Compile Include="UnitTests\Core\Behavior\PositionSliderTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Behavior\AutoRowDefinitionsTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Behavior\BehaviorTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Behavior\ExecuteMethodTest.cs" />
+    <Compile Include="UnitTests\Core.UI\Behavior\PositionSliderTest.cs" />
     <Compile Include="UnitTests\Core\Composite\EventBusTest.cs" />
     <Compile Include="UnitTests\Core\Extensions\FrameworkElementExtensions.Test.cs" />
     <Compile Include="UnitTests\Core\Extensions\NumberExtensionsTest.cs" />
@@ -148,38 +148,42 @@
     <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.Controls\ViewFactoryContentViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetter.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetterTestControl.xaml.cs">
+      <DependentUpon>ViewModelSetterTestControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewTests\Core.UI\StyleViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehavior.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehaviorTestControl.xaml.cs">
       <DependentUpon>AnimationBehaviorTestControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewTests\Core\Animation\AnimationMove.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\AutoRowDefinitions.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\DataGridFillerColumn.ViewTest.cs">
+    <Compile Include="ViewTests\Core.UI\Behavior\AutoRowDefinitions.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\DataGridFillerColumn.ViewTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewTests\Core\Behavior\DisposeWithViewModel\DisposeWithViewModel.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\DisposeWithViewModel\DisposeWithViewModelTestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI\Behavior\DisposeWithViewModel\DisposeWithViewModel.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\DisposeWithViewModel\DisposeWithViewModelTestControl.xaml.cs">
       <DependentUpon>DisposeWithViewModelTestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core\Behavior\Draggable.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\MouseWheelScroller.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\PositionSlider.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\Resizer\Resizer.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\Resizer\ResizerTestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI\Behavior\Draggable.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\MouseWheelScroller.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\PositionSlider.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\Resizer\Resizer.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\Resizer\ResizerTestControl.xaml.cs">
       <DependentUpon>ResizerTestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core\Behavior\SelectTextOnFocus.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidth.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI\Behavior\SelectTextOnFocus.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidth.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml.cs">
       <DependentUpon>SyncWithScrollViewerWidthTestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdatePasswordBoxOnKeyPressViewTest.cs" />
-    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateOnKeyPressViewTestBase.cs" />
-    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI\Behavior\UpdateOnKeyPress\UpdatePasswordBoxOnKeyPressViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\UpdateOnKeyPress\UpdateOnKeyPressViewTestBase.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml.cs">
       <DependentUpon>UpdateOnKeyPressTestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateTextBoxOnKeyPressViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\Behavior\UpdateOnKeyPress\UpdateTextBoxOnKeyPressViewTest.cs" />
     <Compile Include="ViewTests\Core\Extensions\ColorExtensions.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Extensions\FocusChild\FocusChild.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Extensions\FocusChild\FocusChildTestControl.xaml.cs">
@@ -292,23 +296,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetterTestControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewTests\Core\Animation\AnimationBehaviorTestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core\Behavior\DisposeWithViewModel\DisposeWithViewModelTestControl.xaml">
+    <Page Include="ViewTests\Core.UI\Behavior\DisposeWithViewModel\DisposeWithViewModelTestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core\Behavior\Resizer\ResizerTestControl.xaml">
+    <Page Include="ViewTests\Core.UI\Behavior\Resizer\ResizerTestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml">
+    <Page Include="ViewTests\Core.UI\Behavior\SyncWithScrollViewerWidth\SyncWithScrollViewerWidthTestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml">
+    <Page Include="ViewTests\Core.UI\Behavior\UpdateOnKeyPress\UpdateOnKeyPressTestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

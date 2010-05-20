@@ -147,4 +147,7 @@
   <data name="ToolTip_RunUnitTests" xml:space="preserve">
     <value>Run Unit Tests</value>
   </data>
+  <data name="ToolTip_UnitTestTag" xml:space="preserve">
+    <value>Unit Test Tag</value>
+  </data>
 </root>

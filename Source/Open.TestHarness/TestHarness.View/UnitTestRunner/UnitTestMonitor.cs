@@ -82,6 +82,7 @@ namespace Open.TestHarness.Automation
         private void OnTestMethodCompleted(object sender, TestMethodCompletedEventArgs e)
         {
             // Setup initial conditions.
+            if (runState == null || !IsRunning) return;
             var methodInfo = e.Result.TestMethod.Method;
             var success = e.Result.Exception == null;
 

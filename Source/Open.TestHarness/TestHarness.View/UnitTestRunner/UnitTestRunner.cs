@@ -18,30 +18,39 @@ namespace Open.TestHarness.View
     {
         #region Head
         private static UnitTestMonitor monitor;
+        private ContentControl container;
 
         [ViewTest(Default = true, IsVisible = false, SizeMode = TestControlSize.Fill)]
         public void Initialize(ContentControl control)
         {
-            // Setup the display.
-            control.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            control.VerticalContentAlignment = VerticalAlignment.Stretch;
-
-            // Retrieve the test assemblies.
-            GetAssemblies(assemblies =>
-                              {
-                                  if (assemblies.Count() == 0)
-                                  {
-                                      Output.Write("No test assemblies to run");
-                                  }
-
-                                  // Embed the control.
-                                  control.Content = UnitTestSystem.CreateTestPage(CreateSettings(assemblies));
-                              });
+            container = control;
+            container.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            container.VerticalContentAlignment = VerticalAlignment.Stretch;
         }
         #endregion
 
-        #region Methods
-        public static void Run()
+        #region Methods - Run
+        public void RunTests(string tag = null)
+        {
+            // Retrieve the test assemblies.
+            GetAssemblies(assemblies =>
+                        {
+                            if (assemblies.Count() == 0)
+                            {
+                                Output.Write("No test assemblies to run");
+                            }
+
+                            // Embed the control.
+                            container.Content = UnitTestSystem.CreateTestPage(CreateSettings(tag, assemblies));
+                        });
+        }
+
+        public void RunTests(IEnumerable<Assembly> assemblies, string tag = null)
+        {
+            container.Content = UnitTestSystem.CreateTestPage(CreateSettings(tag, assemblies));
+        }
+
+        public static void Run(string tag = null)
         {
             var viewTestClass = ViewTestClass.GetSingleton(typeof(UnitTestRunner), null);
             if (!viewTestClass.IsCurrent)
@@ -53,11 +62,18 @@ namespace Open.TestHarness.View
             {
                 viewTestClass.Reload();
             }
+            Run(viewTestClass, tag);
+        }
+
+        private static void Run(ViewTestClass viewTestClass, string tag)
+        {
+            var runner = viewTestClass.Instance as UnitTestRunner;
+            runner.RunTests(tag);
         }
         #endregion
 
         #region Internal
-        private static UnitTestSettings CreateSettings(IEnumerable<Assembly> assemblies)
+        private static UnitTestSettings CreateSettings(string tag, IEnumerable<Assembly> assemblies)
         {
             // Setup initial conditions.
             var settings = UnitTestSystem.CreateDefaultSettings();
@@ -68,7 +84,8 @@ namespace Open.TestHarness.View
 
             // Create auto-run settings.
             settings.StartRunImmediately = true;
-            CollectionExtensions.AddRange(settings.TestAssemblies, assemblies);
+            settings.TestAssemblies.AddRange(assemblies);
+            settings.TagExpression = tag.AsNullWhenEmpty();
 
             // Finish up.
             return settings;

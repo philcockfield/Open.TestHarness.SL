@@ -210,6 +210,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\SyncValueToHandler.cs">
       <Link>Helper Classes\SyncValueToHandler.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\WeakDelegateReference.cs">
+      <Link>Helper Classes\WeakDelegateReference.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Model\Base Classes\ModelBase.BeginInvoke.partial.cs">
       <Link>Model\Base Classes\ModelBase.BeginInvoke.partial.cs</Link>
     </Compile>

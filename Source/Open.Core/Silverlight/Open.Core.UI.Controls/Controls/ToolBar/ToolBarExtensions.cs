@@ -27,6 +27,7 @@ namespace Open.Core.UI.Controls
         /// <param name="orientation">The orientation of the label relative to the icon.</param>
         /// <param name="showDefaultBackground">Flag indicating whether the default background is rendered when the mouse is not over the tool.</param>
         /// <param name="toolTip">The tooltip</param>
+        /// <param name="minWidth">The minimum width of the tool.</param>
         /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
         /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
@@ -39,6 +40,7 @@ namespace Open.Core.UI.Controls
                     Orientation orientation = Orientation.Horizontal,
                     bool showDefaultBackground = false,
                     string toolTip = null,
+                    int minWidth = 0,
                     int? column = null,
                     int? row = null,
                     int? columnSpan = 1,
@@ -47,7 +49,7 @@ namespace Open.Core.UI.Controls
             return toolbar.AddButton(
                                     id,                    
                                     icon.ToImage(), text, 
-                                    orientation, showDefaultBackground, toolTip,
+                                    orientation, showDefaultBackground, toolTip, minWidth,
                                     column, row, columnSpan, rowSpan);
         }
 
@@ -59,6 +61,7 @@ namespace Open.Core.UI.Controls
         /// <param name="orientation">The orientation of the label relative to the icon.</param>
         /// <param name="showDefaultBackground">Flag indicating whether the default background is rendered when the mouse is not over the tool.</param>
         /// <param name="toolTip">The tooltip</param>
+        /// <param name="minWidth">The minimum width of the tool.</param>
         /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
         /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
@@ -71,6 +74,7 @@ namespace Open.Core.UI.Controls
                     Orientation orientation = Orientation.Horizontal,
                     bool showDefaultBackground = false,
                     string toolTip = null,
+                    int minWidth = 0,
                     int? column = null,
                     int? row = null,
                     int? columnSpan = 1,
@@ -85,6 +89,7 @@ namespace Open.Core.UI.Controls
             tool.Icon = icon;
             tool.Text = text;
             tool.ToolTip = toolTip;
+            tool.MinWidth = minWidth;
             tool.IsDefaultBackgroundVisible = showDefaultBackground;
             tool.Orientation = orientation;
 

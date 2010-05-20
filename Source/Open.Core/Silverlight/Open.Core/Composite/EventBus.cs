@@ -137,7 +137,7 @@ namespace Open.Core.Composite
             if (collection == null) return new List<Action<TEvent>>(); // Empty collection.
 
             // Return the handlers.
-            return collection.Handlers.Select(m => m.GetAction<TEvent>());
+            return collection.Handlers.Select(m => m.TryGetDelegate() as Action<TEvent>);
         }
 
         /// <summary>
@@ -247,85 +247,32 @@ namespace Open.Core.Composite
             #endregion
         }
 
-        public class ActionReference
+        public class ActionReference : WeakDelegateReference
         {
             #region Head
-            private ActionReference() { }
+            private ActionReference(object actionTarget, MethodInfo actionMethod, Type actionType) 
+                : base(actionTarget, actionMethod, actionType)
+            {
+            }
+
             public static ActionReference Create<TEvent>(Action<TEvent> action)
             {
-                return new ActionReference
-                                   {
-                                       Method = action.Method,
-                                       ActionType = action.GetType(),
-                                       TargetWeakReference = new WeakReference(action.Target, false)
-                                   };
+                return new ActionReference(action.Target, action.Method, action.GetType());
             }
-            #endregion
-
-            #region Properties
-            public WeakReference TargetWeakReference { get; private set; }
-            public MethodInfo Method { get; private set; }
-            public Type ActionType { get; private set; }
             #endregion
 
             #region Methods
-            public bool IsMatch<TEvent>(Action<TEvent> action)
-            {
-                if (action == null) return false;
-
-                if (action.Target != TargetWeakReference.Target) return false;
-                if (action.GetType() != ActionType) return false;
-                if (action.Method != Method) return false;
-
-                return true;
-            }
-            
             public bool Invoke<TEvent>(TEvent message)
             {
                 // Setup initial conditions.
                 if (!TargetWeakReference.IsAlive) return false;
 
                 // Invoke the Action.
-                var action = GetAction<TEvent>();
-                action(message);
+                var action = TryGetDelegate() as Action<TEvent>;
+                if (action != null) action(message);
 
                 // Finish up.
                 return true;
-            }
-
-            public Action<TEvent> GetAction<TEvent>()
-            {
-                var @delegate = TryGetDelegate();
-                return @delegate == null 
-                                ? null 
-                                : (Action<TEvent>) @delegate;
-            }
-            #endregion
-
-            #region Internal
-            private Delegate TryGetDelegate()
-            {
-                if (Method.IsStatic)
-                {
-                    return Delegate.CreateDelegate(ActionType, null, Method);
-                }
-                var target = TargetWeakReference.Target;
-                if (target != null)
-                {
-                    try
-                    {
-                        return Delegate.CreateDelegate(ActionType, target, Method);
-                    }
-                    catch (MethodAccessException error)
-                    {
-                        throw new MethodAccessException(
-                            string.Format(
-                                "The EventBus cannot invoke the delegate method named '{0}' because it cannot access it.  If running in Silverlight ensure that the delegate end-point is public.", 
-                                Method.Name), 
-                                error);
-                    }
-                }
-                return null;
             }
             #endregion
         }

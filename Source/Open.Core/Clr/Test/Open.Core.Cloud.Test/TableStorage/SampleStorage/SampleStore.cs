@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using Open.Core.Cloud.Test.TableStorage.CodeGeneration;
 
@@ -15,22 +16,28 @@ namespace Open.Core.Cloud.TableStorage.SampleStorage
     [TestClass]
     public class SampleStore
     {
+        public SampleStore()
+        {
+            CloudConfiguration.InitializeCloudStorageAccount();
+        }
 
         [TestMethod]
+        [Ignore]
         public void ShouldInsertEntity()
         {
             var dataSource = new MockDataSource();
             var entity = new MockEntity {Number = 1, Text = "Hello"};
             dataSource.Insert(entity);
         }
-
     }
 
 
+    #region Sample Context and DataSource
     public class MockServiceContext : TableServiceContext
     {
         public const string TableName = "MockEntityTable";
-        public MockServiceContext(string baseAddress, StorageCredentials credentials) : base(baseAddress, credentials)
+        public MockServiceContext(string baseAddress, StorageCredentials credentials)
+            : base(baseAddress, credentials)
         {
         }
         public IQueryable<MockEntity> Table { get { return CreateQuery<MockEntity>(TableName); } }
@@ -78,8 +85,5 @@ namespace Open.Core.Cloud.TableStorage.SampleStorage
         }
         #endregion
     }
-
-
-
-
+    #endregion
 }
