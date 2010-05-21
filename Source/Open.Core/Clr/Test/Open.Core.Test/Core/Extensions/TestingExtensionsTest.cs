@@ -119,6 +119,20 @@ namespace Open.Core.Common.Test.Extensions
             Should.Throw<AssertionException>(() => ((object)null).ShouldBeGuid());
             Should.Throw<AssertionException>(() => ("1234").ShouldBeGuid());
         }
+
+        [TestMethod]
+        public void ShouldEqual()
+        {
+            1.ShouldEqual(1);
+            Should.Throw<AssertionException>(() => 1.ShouldEqual(2));
+        }
+
+        [TestMethod]
+        public void ShouldNotEqual()
+        {
+            2.ShouldNotEqual(1);
+            Should.Throw<AssertionException>(() => 1.ShouldNotEqual(1));
+        }
         #endregion
 
         #region Collection Assertions

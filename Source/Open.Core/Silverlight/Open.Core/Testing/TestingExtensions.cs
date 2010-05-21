@@ -120,6 +120,23 @@ namespace Open.Core.Common.Testing
             }
             else { throwError(); }
         }
+
+        /// <summary>Asserts equality.</summary>
+        /// <param name="self">The source value.</param>
+        /// <param name="value">The value to compare with.</param>
+        public static void ShouldEqual(this object self, object value)
+        {
+            if (!Equals(self, value)) throw new AssertionException("The given values are not equal, and they were expected to be equal.");
+        }
+
+        /// <summary>Asserts inequality.</summary>
+        /// <param name="self">The source value.</param>
+        /// <param name="value">The value to compare with.</param>
+        public static void ShouldNotEqual(this object self, object value)
+        {
+            if (Equals(self, value)) throw new AssertionException("The given values are equal, and they were expected to not be equal.");
+        }
+
         #endregion
 
         #region Methods - Collection Assertions
