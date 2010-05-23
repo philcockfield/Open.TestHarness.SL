@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure;
+﻿using System.Data.Services.Client;
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace Open.Core.Cloud.TableStorage
@@ -25,6 +26,9 @@ namespace Open.Core.Cloud.TableStorage
         #region Properties
         /// <summary>Gets the name of the storage table.</summary>
         public string TableName { get { return typeof(T).Name; } }
+
+        /// <summary>Gets a typed service query provider for the table.</summary>
+        public DataServiceQuery<T> Query { get { return CreateQuery<T>(TableName); } }
 
         private static CloudStorageAccount StorageAccount
         {

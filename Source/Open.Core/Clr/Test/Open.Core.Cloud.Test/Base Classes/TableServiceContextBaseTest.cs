@@ -24,6 +24,12 @@ namespace Open.Core.Cloud.Test.Base_Classes
             client = CloudSettings.CreateTableClient();
         }
 
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            DeleteTable();
+        }
+
         private void DeleteTable()
         {
             client.DeleteTableIfExist(tableName);
@@ -59,10 +65,7 @@ namespace Open.Core.Cloud.Test.Base_Classes
             context.AddObject(entity);
             context.SaveChanges();
 
-            var query = context.CreateQuery<TestEntity>(context.TableName);
-            query.Where(m => m.Text == entity.Text).ToList().Count().ShouldBe(1);
-
-            DeleteTable();
+            context.Query.Where(m => m.Text == entity.Text).ToList().Count().ShouldBe(1);
         }
         #endregion
 

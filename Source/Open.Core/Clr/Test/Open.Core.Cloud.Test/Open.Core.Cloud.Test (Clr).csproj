@@ -62,9 +62,6 @@
     <Compile Include="TableStorage\CodeGeneration\Output\MockEntity1TableEntity.cs" />
     <Compile Include="TableStorage\CodeGeneration\Output\OutputFileWriter.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplateTest.cs" />
-    <Compile Include="TableStorage\SampleStorage\SampleStore.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TableStorage\SampleStorage\UnitTest1.cs" />
     <Compile Include="TableStorage\TableExtensionsTest.cs" />
     <Compile Include="TableStorage\TableStorageModelBaseTest.cs" />
