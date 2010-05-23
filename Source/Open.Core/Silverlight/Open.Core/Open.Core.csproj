@@ -182,7 +182,6 @@
     <Compile Include="Network\TestableOpenReadCompletedEventArgs.cs" />
     <Compile Include="Network\TestableWebClient.cs" />
     <Compile Include="Helper Classes\DelayedAction.cs" />
-    <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Util\ReflectionUtil.cs" />
     <Compile Include="Util\ServiceUtil.cs" />
   </ItemGroup>

@@ -35,7 +35,9 @@ namespace Open.Core.Common
         /// <returns>The given value unchanged (if within bounds) otherwise the min or max value.</returns>
         public static double WithinBounds(this double self, double min, double max)
         {
-            return MathUtil.ToWithinBounds(self, min, max);
+            if (self < min) self = min;
+            if (self > max) self = max;
+            return self;
         }
 
         /// <summary>Ensures a value is within the given bounds.</summary>
@@ -45,7 +47,7 @@ namespace Open.Core.Common
         /// <returns>The given value unchanged (if within bounds) otherwise the min or max value.</returns>
         public static int WithinBounds(this int self, int min, int max)
         {
-            return (int)MathUtil.ToWithinBounds(self, min, max);
+            return (int) ((double) self).WithinBounds(min, max);
         }
 
         /// <summary>Converts the value to a number with comma formatting (eg. 1,000).</summary>
@@ -99,6 +101,16 @@ namespace Open.Core.Common
         public static bool IsEven(this int value)
         {
             return value % 2 == 0;
+        }
+
+        /// <summary>Expontial falloff using the equation: e^(-decayConstant * value).</summary>
+        /// <param name="value">The x value (for example time)</param>
+        /// <param name="decayConstant">A positive value. The higher the value, the sharper the falloff.</param>
+        /// <remarks>A constant decay value of 7 will yield a falloff  [value=0, 1] [value=1, 0.0009]</remarks>
+        public static double ExponentialDecay(this double value, double decayConstant)
+        {
+            decayConstant.WithinBounds(0, double.MaxValue);
+            return Math.Pow(Math.E, -decayConstant * value);
         }
         #endregion
 

@@ -237,9 +237,6 @@
     <Compile Include="..\..\Silverlight\Open.Core\Testing\TestingExtensions.cs">
       <Link>Testing\TestingExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core\Util\MathUtil.cs">
-      <Link>Util\MathUtil.cs</Link>
-    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Util\ReflectionUtil.cs">
       <Link>Util\ReflectionUtil.cs</Link>
     </Compile>

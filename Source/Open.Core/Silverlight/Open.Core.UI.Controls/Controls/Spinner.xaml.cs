@@ -154,14 +154,14 @@ namespace Open.Core.UI.Controls
         public double MaxOpacity
         {
             get { return maxOpacity; }
-            set { maxOpacity = MathUtil.ToWithinBounds(value, 0, 1); }
+            set { maxOpacity = value.WithinBounds(0, 1); }
         }
 
         /// <summary>Gets or sets the minumum opacity of a stem (default).</summary>
         public double MinOpacity
         {
             get { return minOpacity; }
-            set { minOpacity = MathUtil.ToWithinBounds(value, 0, 1); }
+            set { minOpacity = value.WithinBounds(0, 1); }
         }
 
         /// <summary>Gets or sets the duration between each tick change when animating (in seconds).</summary>
@@ -170,7 +170,7 @@ namespace Open.Core.UI.Controls
             get { return speed; }
             set
             {
-                speed = MathUtil.ToWithinBounds(value, 0, double.MaxValue);
+                speed = value.WithinBounds(0, double.MaxValue);
                 var msecs = (int) (speed*1000);
                 timer.Interval = new TimeSpan(0, 0, 0, 0, msecs);
             }
@@ -181,7 +181,7 @@ namespace Open.Core.UI.Controls
         public double FadeInDuration
         {
             get { return fadeInDuration; }
-            set { fadeInDuration = MathUtil.ToWithinBounds(value, 0, double.MaxValue); }
+            set { fadeInDuration = value.WithinBounds(0, double.MaxValue); }
         }
 
         /// <summary>Gets or sets the fade-in duration for the spinner when starting.</summary>
@@ -189,10 +189,10 @@ namespace Open.Core.UI.Controls
         public double FadeOutDuration
         {
             get { return fadeOutDuration; }
-            set { fadeOutDuration = MathUtil.ToWithinBounds(value, 0, double.MaxValue); }
+            set { fadeOutDuration = value.WithinBounds(0, double.MaxValue); }
         }
 
-        private ScaleTransform containerScaleTransform
+        private ScaleTransform ContainerScaleTransform
         {
             get { return container.RenderTransform as ScaleTransform; }
         }
@@ -258,9 +258,9 @@ namespace Open.Core.UI.Controls
         private void OnScaleChange()
         {
             var value = Scale;
-            value = MathUtil.ToWithinBounds(value, 0, double.MaxValue);
-            containerScaleTransform.ScaleX = value;
-            containerScaleTransform.ScaleY = value;
+            value = value.WithinBounds(0, double.MaxValue);
+            ContainerScaleTransform.ScaleX = value;
+            ContainerScaleTransform.ScaleY = value;
             SyncContainerSize();
         }
 
@@ -436,8 +436,8 @@ namespace Open.Core.UI.Controls
 
             // Adjust the center position around which scaling is calculated.
             var transformCenter = (side * 0.5);
-            containerScaleTransform.CenterX = transformCenter;
-            containerScaleTransform.CenterY = transformCenter;
+            ContainerScaleTransform.CenterX = transformCenter;
+            ContainerScaleTransform.CenterY = transformCenter;
         }
 
         private void SetMinOpacity()
@@ -472,7 +472,7 @@ namespace Open.Core.UI.Controls
             for (var i = 0; i < total; i++)
             {
                 var x = ((double)Decimal.Divide(i + 1, total));
-                var opacity = MathUtil.ExponentialDecay(x, 3);
+                var opacity = x.ExponentialDecay(3);
                 opacity = Math.Min(MaxOpacity, MaxOpacity * opacity + MinOpacity);
                 returnList.Add(opacity);
             }
