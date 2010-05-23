@@ -148,7 +148,8 @@
     <Compile Include="Interactivity\Behaviors\RoundedCorners.cs" />
     <Compile Include="Interactivity\Behaviors\ScrollWheel\ListBoxMouseWheelScroller.cs" />
     <Compile Include="Interactivity\Behaviors\ScrollWheel\MouseWheelScroller.cs" />
-    <Compile Include="Interactivity\Behaviors\SelectTextOnFocus.cs" />
+    <Compile Include="Interactivity\Behaviors\SelectOnFocus\SelectPasswordOnFocus.cs" />
+    <Compile Include="Interactivity\Behaviors\SelectOnFocus\SelectTextOnFocus.cs" />
     <Compile Include="Interactivity\Behaviors\SyncSizeRatio.cs" />
     <Compile Include="Interactivity\Behaviors\SyncWithScrollViewerWidth.cs" />
     <Compile Include="Interactivity\Behaviors\TextMouseHighlight.cs" />

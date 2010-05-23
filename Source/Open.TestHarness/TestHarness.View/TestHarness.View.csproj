@@ -163,8 +163,6 @@
       <DependentUpon>ViewTestParameters.xaml</DependentUpon>
     </Compile>
     <Compile Include="Selector\TestSelector\ViewTestParameters.ViewModel.cs" />
-    <Compile Include="UnitTestRunner\UnitTestMonitor.cs" />
-    <Compile Include="UnitTestRunner\UnitTestRunner.cs" />
     <Page Include="Resources\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -316,6 +314,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icon.TestHarness.32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icon.AutoRunUnitTests.16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

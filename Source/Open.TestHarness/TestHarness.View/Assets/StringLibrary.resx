@@ -142,12 +142,12 @@
     <value>Add Assembly...</value>
   </data>
   <data name="ToolTip_AutoRunTests" xml:space="preserve">
-    <value>Auto Run Tests</value>
+    <value>Run View Tests</value>
   </data>
   <data name="ToolTip_RunUnitTests" xml:space="preserve">
     <value>Run Unit Tests</value>
   </data>
-  <data name="ToolTip_UnitTestTag" xml:space="preserve">
-    <value>Unit Test Tag</value>
+  <data name="ToolTip_TestTag" xml:space="preserve">
+    <value>Tag to filter tests by</value>
   </data>
 </root>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Silverlight.Testing;
 using Open.Core.Common;
 
 namespace Open.TestHarness
@@ -78,14 +79,23 @@ namespace Open.TestHarness
         }
 
 
-        //TEMP 
-        ///// <summary>Get test-methods that have either been specifically tagged, or are in a class that has been tagged with the given tag.</summary>
-        ///// <param name="tags"></param>
-        ///// <returns></returns>
-        //public static IEnumerable<MethodInfo> GetTaggedViewTestMethods(params string[] tags)
-        //{
-            
-        //}
+        /// <summary>Retrieves the tag elements from the given type.</summary>
+        /// <param name="member">The type to examine.</param>
+        public static IEnumerable<string> GetTags(this MemberInfo member)
+        {
+            // Setup initial conditions.
+            var attributes = member.GetCustomAttributes(typeof(TagAttribute), true);
+            if (attributes.Count() == 0) return new string[] { };
 
+            // Build the tag list.
+            var list = new List<string>();
+            foreach (TagAttribute item in attributes)
+            {
+                if (!list.Contains(item.Tag)) list.Add(item.Tag);
+            }
+
+            // Finish up.
+            return list;
+        }
     }
 }

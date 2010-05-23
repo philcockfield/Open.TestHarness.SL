@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Diagnostics;
+using Microsoft.Silverlight.Testing;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
@@ -49,6 +50,7 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
             control.Color = Colors.Red;
         }
 
+        [Tag("MyTag")]
         [ViewTest]
         public void Color_Green(Placeholder control)
         {

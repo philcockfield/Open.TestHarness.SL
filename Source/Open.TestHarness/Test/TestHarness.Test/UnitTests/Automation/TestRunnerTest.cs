@@ -17,7 +17,7 @@ namespace Open.TestHarness.Test.UnitTests.Automation
     public class TestRunnerTest : SilverlightUnitTest
     {
         #region Head
-        private TestRunner testRunner;
+        private ViewTestRunner viewTestRunner;
         private ViewTestClassesAssemblyModule module;
         private ViewTestClass testClass;
         private MethodInfo testMethodInfo;
@@ -28,7 +28,7 @@ namespace Open.TestHarness.Test.UnitTests.Automation
             TestHarnessModel.ResetSingleton();
             TestRunnerMockViewTest.InvokeCount = 0;
 
-            testRunner = new TestRunner { Interval = 0.01 };
+            viewTestRunner = new ViewTestRunner { Interval = 0.01 };
 
             module = new ViewTestClassesAssemblyModule(new ModuleSetting());
             module.LoadAssembly(GetType().Assembly);
@@ -42,25 +42,25 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         [TestMethod]
         public void ShouldAddOneTestMethod()
         {
-            testRunner.Add(testClass, testMethodInfo);
-            testRunner.GetMethods().Count(m => m.MethodInfo == testMethodInfo).ShouldBe(1);
+            viewTestRunner.Add(testClass, testMethodInfo);
+            viewTestRunner.GetMethods().Count(m => m.MethodInfo == testMethodInfo).ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldNotAddTheSameMethodTwice()
         {
-            testRunner.Add(testClass, testMethodInfo);
-            testRunner.Add(testClass, testMethodInfo);
-            testRunner.Add(testClass, testMethodInfo);
-            testRunner.GetMethods().Count().ShouldBe(1);
+            viewTestRunner.Add(testClass, testMethodInfo);
+            viewTestRunner.Add(testClass, testMethodInfo);
+            viewTestRunner.Add(testClass, testMethodInfo);
+            viewTestRunner.GetMethods().Count().ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldAddAllTestMethodsInClass()
         {
-            testRunner.Add(testClass);
-            testRunner.GetMethods().Count().ShouldBe(testClass.ViewTests.Count);
-            foreach (var method in testRunner.GetMethods())
+            viewTestRunner.Add(null, testClass);
+            viewTestRunner.GetMethods().Count().ShouldBe(testClass.ViewTests.Count);
+            foreach (var method in viewTestRunner.GetMethods())
             {
                 testClass.ViewTests.ShouldContain(method);
             }
@@ -70,24 +70,24 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         public void ShouldAddAllTestMethodsInAssembly()
         {
             var types = module.Assembly.GetViewTestMethods();
-            testRunner.Add(module);
+            viewTestRunner.Add(null, module);
 
-            testRunner.GetMethods().Count().ShouldBe(types.Count());
+            viewTestRunner.GetMethods().Count().ShouldBe(types.Count());
         }
 
         [TestMethod]
         public void ShouldThrowIfAddingUnloadedModule()
         {
             module.Unload();
-            Should.Throw<ArgumentOutOfRangeException>(() => testRunner.Add(module));
+            Should.Throw<ArgumentOutOfRangeException>(() => viewTestRunner.Add(null, module));
         }
 
         [TestMethod]
         [Asynchronous]
         public void ShouldRunTests()
         {
-            testRunner.Add(testClass);
-            testRunner.Start(() =>
+            viewTestRunner.Add(null, testClass);
+            viewTestRunner.Start(() =>
                          {
                              TestRunnerMockViewTest.InvokeCount.ShouldBe(4); // NB: default test executed for each test.
                              var instance = testClass.Instance as TestRunnerMockViewTest;
@@ -100,9 +100,9 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         [Asynchronous]
         public void ShouldSetTestClassAsCurrentOnRootModel()
         {
-            testRunner.Add(testClass);
+            viewTestRunner.Add(null, testClass);
             TestHarnessModel.Instance.CurrentClass.ShouldBe(null);
-            testRunner.Start(() =>
+            viewTestRunner.Start(() =>
                             {
                                 TestHarnessModel.Instance.CurrentClass.ShouldBe(testClass);
                                 EnqueueTestComplete();
@@ -113,22 +113,22 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         [Asynchronous]
         public void ShouldReportWhenRunning()
         {
-            testRunner.Add(testClass);
-            testRunner.IsRunning.ShouldBe(false);
-            testRunner.Start(() =>
+            viewTestRunner.Add(null, testClass);
+            viewTestRunner.IsRunning.ShouldBe(false);
+            viewTestRunner.Start(() =>
                         {
-                            testRunner.IsRunning.ShouldBe(false);
+                            viewTestRunner.IsRunning.ShouldBe(false);
                             EnqueueTestComplete();
                         });
-            testRunner.IsRunning.ShouldBe(true);
+            viewTestRunner.IsRunning.ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldThrowIfRunnerStartedWhileAlreadyRunning()
         {
-            testRunner.Add(testClass);
-            testRunner.Start(null);
-            Should.Throw<Exception>(() => testRunner.Start(null));
+            viewTestRunner.Add(null, testClass);
+            viewTestRunner.Start(null);
+            Should.Throw<Exception>(() => viewTestRunner.Start(null));
         }
 
         [TestMethod]
@@ -139,15 +139,15 @@ namespace Open.TestHarness.Test.UnitTests.Automation
             var method2 = testClass.GetTestMethod("AnotherTestRunnerMethod").MethodInfo;
             var method3 = testClass.GetTestMethod("ThrowError").MethodInfo;
 
-            testRunner.Add(testClass);
-            testRunner.Start(() =>
+            viewTestRunner.Add(null, testClass);
+            viewTestRunner.Start(() =>
                                 {
-                                    testRunner.Passed.Count.ShouldBe(2);
-                                    testRunner.Failed.Count.ShouldBe(1);
+                                    viewTestRunner.Passed.Count.ShouldBe(2);
+                                    viewTestRunner.Failed.Count.ShouldBe(1);
 
-                                    testRunner.Passed.ShouldContain(method1);
-                                    testRunner.Passed.ShouldContain(method2);
-                                    testRunner.Failed.ShouldContain(method3);
+                                    viewTestRunner.Passed.ShouldContain(method1);
+                                    viewTestRunner.Passed.ShouldContain(method2);
+                                    viewTestRunner.Failed.ShouldContain(method3);
 
                                     EnqueueTestComplete();
                                 });
@@ -157,16 +157,16 @@ namespace Open.TestHarness.Test.UnitTests.Automation
         [Asynchronous]
         public void ShouldResetPassAndFailCollectionUponStart()
         {
-            testRunner.Add(testClass);
-            testRunner.Start(() =>
+            viewTestRunner.Add(null, testClass);
+            viewTestRunner.Start(() =>
                         {
-                            testRunner.Passed.Count.ShouldBe(2);
-                            testRunner.Failed.Count.ShouldBe(1);
+                            viewTestRunner.Passed.Count.ShouldBe(2);
+                            viewTestRunner.Failed.Count.ShouldBe(1);
 
-                            testRunner.Start(() => EnqueueTestComplete());
+                            viewTestRunner.Start(() => EnqueueTestComplete());
 
-                            testRunner.Passed.Count.ShouldBe(0);
-                            testRunner.Failed.Count.ShouldBe(0);
+                            viewTestRunner.Passed.Count.ShouldBe(0);
+                            viewTestRunner.Failed.Count.ShouldBe(0);
                         });
         }
         #endregion

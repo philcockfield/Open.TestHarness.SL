@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Browser;
@@ -28,6 +29,7 @@ using System.Windows.Controls;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 using Open.Core.Composite.Command;
+using Open.TestHarness.Automation;
 using Open.TestHarness.Model;
 using Open.TestHarness.View.Assets;
 using T = Open.TestHarness.View.Selector.SelectorPanelViewModel;
@@ -71,28 +73,14 @@ namespace Open.TestHarness.View.Selector
             parent.ClientBinGrid.LoadAsync(true);
         }
 
-        private static void OnAutoRunTestsClick()
+        private void OnAutoRunTestsClick()
         {
-            // Setup initial conditions.
-            var modules = TestHarnessModel.Instance.Settings.LoadedModules;
-            if (modules.IsEmpty()) return;
-
-            // Build query string.
-            var xapQuery = string.Empty;
-            foreach (var assembly in modules)
-            {
-                xapQuery += string.Format("xap={0}&", assembly.XapFileName);
-            }
-            var query = string.Format("?runTests=true&{0}", xapQuery.RemoveEnd("&"));
-            var url = HtmlPage.Document.DocumentUri.ToString().SubstringBeforeLast("?") + query;
-
-            // Navigate to the auto-run URL.
-            HtmlPage.Window.Navigate(new Uri(url));
+            HtmlPage.Window.Navigate(ViewTestRunner.CreateUrl(GetTags()));
         }
 
         private void OnRunUnitTests()
         {
-            UnitTestRunner.Run(UnitTestTag);
+            UnitTestRunner.Run(GetTags());
         }
         #endregion
 
@@ -116,10 +104,10 @@ namespace Open.TestHarness.View.Selector
         public DelegateCommand<Button> RunUnitTests { get; private set; }
 
         /// <summary>Gets or sets the tag to limit the unit-test run to.</summary>
-        public string UnitTestTag
+        public string TestTag
         {
-            get { return TestHarnessModel.Instance.Settings.ControlDisplayOptionSettings.UnitTestTag; }
-            set { TestHarnessModel.Instance.Settings.ControlDisplayOptionSettings.UnitTestTag = value; }
+            get { return TestHarnessModel.Instance.Settings.ControlDisplayOptionSettings.TestTag; }
+            set { TestHarnessModel.Instance.Settings.ControlDisplayOptionSettings.TestTag = value; }
         }
 
         /// <summary>Gets whether the 'Run Tests' button is visible (only available when running within the browser).</summary>
@@ -134,6 +122,18 @@ namespace Open.TestHarness.View.Selector
             ViewTestClass value = null;
             if (module != null && module.CurrentClass != null) value = module.CurrentClass.Model;
             TestSelector.Model = value;
+        }
+
+        private IEnumerable<string>GetTags()
+        {
+            if (TestTag.IsNullOrEmpty(true)) return new string[] { };
+            var list = new List<string>();
+            foreach (var item in TestTag.Split(" ".ToCharArray()))
+            {
+                if (item.IsNullOrEmpty(true)) continue;
+                list.Add(item);
+            }
+            return list;
         }
         #endregion
     }

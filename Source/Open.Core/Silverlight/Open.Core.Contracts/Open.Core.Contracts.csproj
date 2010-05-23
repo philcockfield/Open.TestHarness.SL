@@ -101,6 +101,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
+    <Compile Include="Interfaces\Core.UI\IButton.cs" />
     <Compile Include="Interfaces\Core.UI\IImage.cs" />
     <Compile Include="Interfaces\Core.UI\IDropShadowEffect.cs" />
     <Compile Include="Interfaces\Core.UI\IVisiblity.cs" />
@@ -137,7 +138,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

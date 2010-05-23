@@ -133,7 +133,7 @@ namespace Open.TestHarness.View.Assets {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto Run Tests.
+        ///   Looks up a localized string similar to Run View Tests.
         /// </summary>
         public static string ToolTip_AutoRunTests {
             get {
@@ -151,11 +151,11 @@ namespace Open.TestHarness.View.Assets {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unit Test Tag.
+        ///   Looks up a localized string similar to Tag to filter tests by.
         /// </summary>
-        public static string ToolTip_UnitTestTag {
+        public static string ToolTip_TestTag {
             get {
-                return ResourceManager.GetString("ToolTip_UnitTestTag", resourceCulture);
+                return ResourceManager.GetString("ToolTip_TestTag", resourceCulture);
             }
         }
     }

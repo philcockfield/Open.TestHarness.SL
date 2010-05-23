@@ -41,6 +41,10 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets the hit target shape for the Remove button.</summary>
         public static DataTemplate RemoveButtonHitTarget { get { return Instance.GetDataTemplate("RemoveButtonHitTarget"); } }
+
+        /// <summary>Gets the hit target shape for the Remove button.</summary>
+        public static DataTemplate ButtonModelDefault { get { return Instance.GetDataTemplate("ButtonModel.Default"); } }
+
         #endregion
     }
 }

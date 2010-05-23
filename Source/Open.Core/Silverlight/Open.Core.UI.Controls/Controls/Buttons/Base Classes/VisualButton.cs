@@ -37,7 +37,6 @@ namespace Open.Core.UI.Controls
         protected void OnVisualStateChanged() { if (VisualStateChanged != null) VisualStateChanged(this, new EventArgs()); }
         #endregion
 
-
         #region Head
         private bool isInitialized;
 

@@ -20,57 +20,33 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Silverlight.Testing;
-using Open.Core.Common;
-using Open.Core.UI.Controls;
+using System.Windows.Interactivity;
 
-namespace Open.TestHarness.Test.Model
+namespace Open.Core.Common.AttachedBehavior
 {
-    [Tag("One")]
-    [Tag("Three")]
-    [ViewTestClass]
-    public class SampleViewTestClass1
+    /// <summary>Selects the text within a PasswordBox when the control recieves focus.</summary>
+    public class SelectPasswordOnFocus : Behavior<PasswordBox>
     {
-        #region Properties
-        public const string PropMethod_1 = "Method_1";
-        public const string PropMethod2 = "Method2";
-        public const string PropMethod_Invisible = "Method_Invisible";
-
-        public string MyProperty { get; set; }
+        #region Event Handlers
+        private void OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            AssociatedObject.SelectAll();
+        }
         #endregion
 
-        #region Methods
-        [Tag("One")]
-        [Tag("Two")]
-        [Tag("One")]
-        [ViewTest]
-        public void Method_1(Placeholder control)
+        #region Methods - Override
+        protected override void OnAttached()
         {
+            base.OnAttached();
+            AssociatedObject.GotFocus += OnGotFocus;
         }
 
-        [ViewTest(Default = true)]
-        public void Method2(Placeholder control1, Border control2, Placeholder control3)
+        protected override void OnDetaching()
         {
-        }
-
-        public void Method3(Placeholder control)
-        {
-        }
-
-        [ViewTest(IsVisible = false)]
-        public void Method_Invisible(Placeholder control1, Placeholder control2)
-        {
-        }
-
-        [ViewTest]
-        public static void Static_Method(Placeholder control)
-        {
-        }
-
-        [ViewTest]
-        private void PrivateMethod(Placeholder control)
-        {
+            base.OnDetaching();
+            AssociatedObject.GotFocus -= OnGotFocus;
         }
         #endregion
     }

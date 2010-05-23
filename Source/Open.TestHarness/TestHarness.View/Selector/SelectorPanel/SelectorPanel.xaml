@@ -45,6 +45,18 @@
 
                 <!--Left Aligned Buttons-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,1">
+                    <TextBox 
+                        Text="{Binding TestTag, Mode=TwoWay}"
+                        ToolTipService.ToolTip="{Binding Strings.ToolTip_TestTag}"
+                        Padding="2,1,2,0"
+                        Margin="3,2,1,2" 
+                        Width="100">
+                        <i:Interaction.Behaviors>
+                            <ab:UpdateTextBoxOnKeyPress />
+                            <ab:SelectTextOnFocus />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+
                     <c:ImageButton 
                             cmd:Click.Command="{Binding AutoRunTestsCommand}"
                             Source="../../Images/Icon.AutoRunTests.23x16.png"
@@ -55,23 +67,11 @@
                             Width="30"
                             Opacity="0.9"
                             Style="{StaticResource toolbarButtonStyle}"/>
-                    
                     <ContentControl ContentTemplate="{StaticResource ToolbarDivider}" Style="{StaticResource StretchedContent}" />
-                    
-                    <TextBox 
-                        Text="{Binding UnitTestTag, Mode=TwoWay}"
-                        ToolTipService.ToolTip="{Binding Strings.ToolTip_UnitTestTag}"
-                        Margin="1,2,1,2" 
-                        Width="100">
-                        <i:Interaction.Behaviors>
-                            <ab:UpdateTextBoxOnKeyPress />
-                            <ab:SelectTextOnFocus />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                    
+
                     <c:ImageButton 
                             cmd:Click.Command="{Binding RunUnitTests}"
-                            Source="../../Images/Icon.AutoRunTests.23x16.png"
+                            Source="../../Images/Icon.AutoRunUnitTests.16x16.png"
                             ToolTipService.ToolTip="{Binding Strings.ToolTip_RunUnitTests}"
                             HorizontalAlignment="Left"
                             Padding="0,0,3,0"

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Silverlight.Testing;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
 

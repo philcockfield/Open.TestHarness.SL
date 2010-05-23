@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Silverlight.Testing;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
 using Open.TestHarness.Model;
@@ -56,7 +57,6 @@ namespace Open.TestHarness.Test.ViewTests
         #endregion
 
         #region Tests
-
         [ViewTest]
         public void ViewModel_LoadAsync(ClientBinGrid control)
         {

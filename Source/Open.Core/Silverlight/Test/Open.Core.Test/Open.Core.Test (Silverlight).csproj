@@ -108,6 +108,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UnitTests\Core.UI.Controls\Buttons\ButtonModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ContentContainerTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
@@ -140,13 +141,15 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyGridViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\ContentContainerViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\CoreImageViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\IconImage.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Lists\SelectionList.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\ToolBar\ButtonToolViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\ToolBar\ToolBarViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\ViewFactoryContentViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\IButtonViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\ContentContainerViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\CoreImageViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\IconImage.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Lists\SelectionList.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\PostItViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ButtonToolViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\ViewFactoryContentViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetter.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetterTestControl.xaml.cs">
@@ -200,57 +203,57 @@
     <Compile Include="ViewTests\Core.Composite\DelegateCommandTestControl.xaml.cs">
       <DependentUpon>DelegateCommandTestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Primitives\AutoGrid\AutoGrid.TestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\AutoGrid\AutoGrid.TestControl.xaml.cs">
       <DependentUpon>AutoGrid.TestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Primitives\AutoGrid\AutoGrid.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls.Primitives\Buttons\CoreComboBox.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls.Primitives\Buttons\TextButton\TextButton.TestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\AutoGrid\AutoGrid.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\CoreComboBox.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\TextButton\TextButton.TestControl.xaml.cs">
       <DependentUpon>TextButton.TestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Primitives\Buttons\TextButton\TextButton.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls.Primitives\Buttons\VisualButton.TestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\TextButton\TextButton.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\VisualButton.TestControl.xaml.cs">
       <DependentUpon>VisualButton.TestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Primitives\Buttons\VisualButton.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls.Primitives\ScrollViewer\ScrollIntoView.TestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\VisualButton.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\ScrollViewer\ScrollIntoView.TestControl.xaml.cs">
       <DependentUpon>ScrollIntoView.TestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Primitives\ScrollViewer\ScrollIntoView.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls.Primitives\TextBox\CoreTextBox.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\AcceptCancelDialog.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\AcceptCancelPresenter.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\CollapsingContent.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\DialogPresenter.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\DraggableStackPanel\DraggableStackPanel.TestControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\ScrollViewer\ScrollIntoView.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\TextBox\CoreTextBox.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\AcceptCancelDialog.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\AcceptCancelPresenter.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\CollapsingContent.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\DialogPresenter.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\DraggableStackPanel\DraggableStackPanel.TestControl.xaml.cs">
       <DependentUpon>DraggableStackPanel.TestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls\Containers\DraggableStackPanel\DraggableStackPanel.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\TitleContainer.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Containers\WidgetGroup.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Dialogs\ContentDialog.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Dialogs\Dialog.ViewTest.Base.cs" />
-    <Compile Include="ViewTests\Core.Controls\Dialogs\ExceptionDialog.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Dialogs\QuestionDialog.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\DropShadowViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\HtmlBlock.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\HtmlDocument.ViewTest.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\DraggableStackPanel\DraggableStackPanel.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\TitleContainer.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Containers\WidgetGroup.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Dialogs\ContentDialog.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Dialogs\Dialog.ViewTest.Base.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Dialogs\ExceptionDialog.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Dialogs\QuestionDialog.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\DropShadowViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\HtmlBlock.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\HtmlDocument.ViewTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls\Panels\StackArranger.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Placeholder.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\ProgressBarFlat.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\Spinner.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\StatusIcon.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\TestCanvas.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls\TestCanvas.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls\Panels\StackArranger.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Placeholder.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\ProgressBarFlat.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Spinner.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\StatusIcon.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\TestCanvas.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\TestCanvas.xaml.cs">
       <DependentUpon>TestCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Editors\ColorSelector.ViewTest.cs" />
-    <Compile Include="ViewTests\Core.Controls.Editors\PropertyGrid\TestModels.cs">
+    <Compile Include="ViewTests\Core.UI.Controls.Editors\ColorSelector.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls.Editors\PropertyGrid\TestModels.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewTests\Core.Controls.Editors\Test Controls\DatabindingControl.xaml.cs">
+    <Compile Include="ViewTests\Core.UI.Controls.Editors\Test Controls\DatabindingControl.xaml.cs">
       <DependentUpon>DatabindingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewTests\TestControl.xaml.cs">
@@ -332,31 +335,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls.Primitives\AutoGrid\AutoGrid.TestControl.xaml">
+    <Page Include="ViewTests\Core.UI.Controls\AutoGrid\AutoGrid.TestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls.Primitives\Buttons\TextButton\TextButton.TestControl.xaml">
+    <Page Include="ViewTests\Core.UI.Controls\Buttons\TextButton\TextButton.TestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls.Primitives\Buttons\VisualButton.TestControl.xaml">
+    <Page Include="ViewTests\Core.UI.Controls\Buttons\VisualButton.TestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls.Primitives\ScrollViewer\ScrollIntoView.TestControl.xaml">
+    <Page Include="ViewTests\Core.UI.Controls\ScrollViewer\ScrollIntoView.TestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls\Containers\DraggableStackPanel\DraggableStackPanel.TestControl.xaml">
+    <Page Include="ViewTests\Core.UI.Controls\Containers\DraggableStackPanel\DraggableStackPanel.TestControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls\TestCanvas.xaml">
+    <Page Include="ViewTests\Core.UI.Controls\TestCanvas.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewTests\Core.Controls.Editors\Test Controls\DatabindingControl.xaml">
+    <Page Include="ViewTests\Core.UI.Controls.Editors\Test Controls\DatabindingControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -473,10 +476,10 @@
     <Folder Include="UnitTests\Core\Functional Adorners\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Default.png" />
-    <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Disabled.png" />
-    <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Down.png" />
-    <Resource Include="ViewTests\Core.Controls.Primitives\Buttons\Images\Button.Over.png" />
+    <Resource Include="ViewTests\Core.UI.Controls\Buttons\Images\Button.Default.png" />
+    <Resource Include="ViewTests\Core.UI.Controls\Buttons\Images\Button.Disabled.png" />
+    <Resource Include="ViewTests\Core.UI.Controls\Buttons\Images\Button.Down.png" />
+    <Resource Include="ViewTests\Core.UI.Controls\Buttons\Images\Button.Over.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icon.Clipboard.png" />

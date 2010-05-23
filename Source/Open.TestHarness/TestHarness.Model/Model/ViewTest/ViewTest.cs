@@ -38,6 +38,7 @@ namespace Open.TestHarness.Model
 
         public const string PropExecuteCount = "ExecuteCount";
         private int executeCount;
+        private IEnumerable<string> tags;
 
         public ViewTest(MethodInfo methodInfo)
         {
@@ -55,11 +56,16 @@ namespace Open.TestHarness.Model
         #endregion
 
         #region Properties
+        public ViewTestClass Parent { get; private set; }
+
         /// <summary>Gets the reflection of the method this model represents.</summary>
         public MethodInfo MethodInfo{ get; private set; }
 
         /// <summary>Gets the [ViewTest] attribute adorning the method.</summary>
         public ViewTestAttribute Attribute { get; private set; }
+
+        /// <summary>Gets the collection of tags that have been defined on the method with the [Tag] attribute.</summary>
+        public IEnumerable<string> Tags { get { return tags ?? (tags = GetTags()); } }
 
         /// <summary>Gets the number of times the command has been executed.</summary>
         public int ExecuteCount
@@ -116,6 +122,15 @@ namespace Open.TestHarness.Model
 
             // Finish up.
             return list;
+        }
+        #endregion
+
+        #region Internal
+        private IEnumerable<string> GetTags()
+        {
+            var methodTags = MethodInfo.GetTags();
+            var parentTags = MethodInfo.DeclaringType.GetTags();
+            return methodTags.Union(parentTags);
         }
         #endregion
     }

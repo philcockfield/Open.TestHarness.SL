@@ -20,4 +20,8 @@
         <Ellipse Stretch="Fill" Fill="Transparent"/>
     </DataTemplate>
 
+    <DataTemplate x:Key="ButtonModel.Default">
+        <Button Content="{Binding Label}" Command="{Binding Command}" />
+    </DataTemplate>
+
 </ResourceDictionary>

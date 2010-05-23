@@ -9,6 +9,13 @@ using Open.TestHarness.Automation;
 
 namespace Open.TestHarness.Model
 {
+    /// <summary>Flags representing the type of test.</summary>
+    public enum TestType
+    {
+        ViewTest,
+        UnitTest
+    }
+
     /// <summary>Interprets the query string.</summary>
     [Export]
     [PartCreationPolicy(CreationPolicy.Shared)]
@@ -18,6 +25,8 @@ namespace Open.TestHarness.Model
         private const string keyXap = "xap";
         private const string keyClass = "class";
         private const string keyRunTests = "runTests";
+        private const string keyTestType = "testType";
+        private const string keyTag = "tag";
 
         /// <summary>Constructor.</summary>
         public QueryString() : this(Application.Current.GetQueryString()){}
@@ -32,8 +41,10 @@ namespace Open.TestHarness.Model
 
             // Extract values from query string.
             RunTests = ExtractRunTests();
+            TestType = ExtractTestType();
             ExtractXapFiles();
             ExtractClassNames();
+            ExtractsTags();
 
             // Initialize.
             LoadXapModules();
@@ -50,8 +61,14 @@ namespace Open.TestHarness.Model
         /// <summary>Gets the collection of class names that are specified within the query-string.</summary>
         public IEnumerable<string> ClassNames { get; private set; }
 
+        /// <summary>Gets the collection of space-delimited tags that are specified within the query-string.</summary>
+        public IEnumerable<string> Tags { get; private set; }
+
         /// <summary>Gets whether the tests should be run.</summary>
         public bool RunTests { get; private set; }
+
+        /// <summary>Gets the type of test specified within the query-string.</summary>
+        public TestType TestType { get; private set; }
         #endregion
 
         #region Methods
@@ -75,13 +92,15 @@ namespace Open.TestHarness.Model
             foreach (var item in modules)
             {
                 item.LoadAssembly(() =>
-                              {
-                                  loadedCount++;
-                                  if (loadedCount == modules.Count() && callback != null) callback(modules);
-                              });
+                                      {
+                                          loadedCount++;
+                                          if (loadedCount == modules.Count() && callback != null) callback(modules);
+                                      });
             }
         }
+        #endregion
 
+        #region Methods - Run Tests
         /// <summary>Executes tests.</summary>
         /// <param name="callback">Callback to invoke when test run is complete.</param>
         public void StartTestRun(Action callback = null)
@@ -89,22 +108,39 @@ namespace Open.TestHarness.Model
             // Setup initial conditions.
             if (! RunTests)
             {
-                if (callback != null) callback();
+                callback.InvokeOrDefault();
                 return;
             }
 
             LoadAssemblies(modules =>
-                   {
-                       // Create and populate the test-runner.
-                       var testRunner = new TestRunner();
-                       Populate(testRunner, modules);
+                               {
+                                   // Create and populate the test-runner.
+                                   var testRunner = new ViewTestRunner();
+                                   Populate(testRunner, modules);
 
-                       // Start the test run.
-                       testRunner.Start(() =>
-                                            {
-                                                if (callback != null) callback();
-                                            });
-                   });
+                                   // Start the test run.
+                                   switch (TestType)
+                                   {
+                                       case TestType.ViewTest: RunViewTests(modules, callback); break;
+                                       case TestType.UnitTest: RunUnitTests(modules, callback); break;
+                                       default: throw new NotSupportedException(TestType.ToString());
+                                   }
+                                });
+        }
+
+        private void RunViewTests(IEnumerable<ViewTestClassesAssemblyModule> modules, Action callback)
+        {
+            // Create and populate the test-runner.
+            var testRunner = new ViewTestRunner();
+            Populate(testRunner, modules);
+            testRunner.Start(() => callback.InvokeOrDefault());
+        }
+
+        private void RunUnitTests(IEnumerable<ViewTestClassesAssemblyModule> modules, Action callback)
+        {
+            var assemblies = modules.Select(m => m.Assembly);
+            var testRunner = new UnitTestRunner();
+            testRunner.RunTests(assemblies);
         }
         #endregion
 
@@ -112,8 +148,8 @@ namespace Open.TestHarness.Model
         private IEnumerable<KeyValuePair<string, string>> GetItems(string key)
         {
             return Items.Where(m => 
-                                m.Key.ToLower() == key.ToLower() 
-                                && !m.Value.IsNullOrEmpty(true));
+                               m.Key.ToLower() == key.ToLower() 
+                               && !m.Value.IsNullOrEmpty(true));
         }
 
         private void ExtractXapFiles()
@@ -129,13 +165,23 @@ namespace Open.TestHarness.Model
 
         private void ExtractClassNames()
         {
+            ClassNames = GetDelimitedValues(keyClass);
+        }
+
+        private void ExtractsTags()
+        {
+            Tags = GetDelimitedValues(keyTag);
+        }
+
+        private IEnumerable<string> GetDelimitedValues(string key)
+        {
             var list = new List<string>();
-            foreach (var item in GetItems(keyClass))
+            foreach (var item in GetItems(key))
             {
                 var value = item.Value.Trim(" ".ToCharArray());
                 list.Add(value);
             }
-            ClassNames = list;
+            return list;
         }
 
         private bool ExtractRunTests()
@@ -144,6 +190,22 @@ namespace Open.TestHarness.Model
             if (items.Count() == 0) return false;
             var value = items.First().Value.Trim(" ".ToCharArray());
             return Convert.ToBoolean(value);
+        }
+
+
+        private TestType ExtractTestType()
+        {
+            var items = GetItems(keyTestType);
+            if (items.Count() == 0) return default(TestType);
+            var value = items.First().Value.Trim(" ".ToCharArray());
+            try
+            {
+                return (TestType)Enum.Parse(typeof(TestType), value, true);
+            }
+            catch (Exception)
+            {
+                return default(TestType);
+            }
         }
 
         private void LoadXapModules()
@@ -164,11 +226,11 @@ namespace Open.TestHarness.Model
         private static IEnumerable<ViewTestClassesAssemblyModule> GetAssemblyModules()
         {
             return TestHarnessModel.Instance.Modules
-                            .Where(m => m.GetType() == typeof(ViewTestClassesAssemblyModule))
-                            .Cast<ViewTestClassesAssemblyModule>();
+                .Where(m => m.GetType() == typeof(ViewTestClassesAssemblyModule))
+                .Cast<ViewTestClassesAssemblyModule>();
         }
 
-        private void Populate(TestRunner testRunner, IEnumerable<ViewTestClassesAssemblyModule> modules)
+        private void Populate(ViewTestRunner viewTestRunner, IEnumerable<ViewTestClassesAssemblyModule> modules)
         {
             // Only add complete modules if a more narrow criteria has not been specified.
             var addModules = ClassNames.IsEmpty();
@@ -177,21 +239,21 @@ namespace Open.TestHarness.Model
             {
                 if (addModules)
                 {
-                    testRunner.Add(module);
+                    viewTestRunner.Add(Tags, module);
                 }
                 else
                 {
-                    AddClasses(testRunner, module);
+                    AddClasses(viewTestRunner, module);
                 }
             }
         }
 
-        private void AddClasses(TestRunner testRunner, ViewTestClassesAssemblyModule module)
+        private void AddClasses(ViewTestRunner viewTestRunner, ViewTestClassesAssemblyModule module)
         {
             foreach (var className in ClassNames)
             {
                 var testClasses = module.GetTestClasses(className);
-                testRunner.Add(testClasses.ToArray());
+                viewTestRunner.Add(Tags, testClasses.ToArray());
             }
         }
         #endregion

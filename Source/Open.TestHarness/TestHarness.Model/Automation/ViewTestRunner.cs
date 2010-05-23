@@ -24,6 +24,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Windows.Browser;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.TestHarness.Model;
@@ -31,7 +32,7 @@ using Open.TestHarness.Model;
 namespace Open.TestHarness.Automation
 {
     /// <summary>Manages automatically running [ViewTest]'s.</summary>
-    public class TestRunner
+    public class ViewTestRunner
     {
         #region Head
         private double interval = 0.3;
@@ -70,27 +71,33 @@ namespace Open.TestHarness.Automation
         public IEnumerable<ViewTest> GetMethods() { return methods.Select(m => m.Method); }
 
         /// <summary>Adds all test methods within the given assembly to the execution queue.</summary>
+        /// <param name="tags">Tags to filter by.</param>
         /// <param name="modules">The assembly module(s) to add methods from.</param>
-        public void Add(params ViewTestClassesAssemblyModule[] modules)
+        public void Add(IEnumerable<string> tags = null, params ViewTestClassesAssemblyModule[] modules)
         {
             if (modules == null) return;
             foreach (var module in modules)
             {
                 if (!module.IsLoaded) throw new ArgumentOutOfRangeException("modules", "Module must be loaded before adding to the test runner");
-                Add(module.Classes.ToArray());
+                Add(tags, module.Classes.ToArray());
             }
         }
 
         /// <summary>Adds all test method within the given class to the execution queue.</summary>
+        /// <param name="tags">Tags to filter by.</param>
         /// <param name="testClasses">The class(s) to add methods from.</param>
-        public void Add(params ViewTestClass[] testClasses)
+        public void Add(IEnumerable<string> tags = null, params ViewTestClass[] testClasses)
         {
             if (testClasses == null) return;
             foreach (var testClass in testClasses)
             {
+                // Add all methds within the class.
                 foreach (var method in testClass.ViewTests)
                 {
-                    Add(testClass, method.MethodInfo);
+                    if (!IsTagExcluded(method.Tags, tags))
+                    {
+                        Add(testClass, method.MethodInfo);
+                    }
                 }
             }
         }
@@ -108,6 +115,25 @@ namespace Open.TestHarness.Automation
                                 TestClass = testClass,
                                 MethodInfo = method
                             });
+        }
+
+        /// <summary>Constructs a URL that will auto run the view-tests.</summary>
+        /// <param name="tags">The tags to apply</param>
+        public static Uri CreateUrl(IEnumerable<string> tags = null)
+        {
+            // Setup initial conditions.
+            var modules = TestHarnessModel.Instance.Settings.LoadedModules;
+            if (modules.IsEmpty()) return null;
+
+            // Build query string.
+            var xapQuery = CreateXapQueryString(modules);
+            var tagQuery = CreateTagQueryString(tags);
+            if (!tagQuery.IsNullOrEmpty(true)) xapQuery += "&";
+            var query = string.Format("?runTests=true&testType=ViewTest&{0}{1}", xapQuery, tagQuery);
+            var url = HtmlPage.Document.DocumentUri.ToString().SubstringBeforeLast("?") + query;
+
+            // Navigate to the auto-run URL.
+            return new Uri(url);
         }
         #endregion
 
@@ -133,18 +159,18 @@ namespace Open.TestHarness.Automation
             IsRunning = true;
             var startTime = DateTime.Now;
             DelayedRunTest(methods.First(), () =>
-                                               {
-                                                   // Update state.
-                                                   IsRunning = false;
-                                                   var elapsed = DateTime.Now.Subtract(startTime);
+                                                {
+                                                    // Update state.
+                                                    IsRunning = false;
+                                                    var elapsed = DateTime.Now.Subtract(startTime);
 
-                                                   // Write results.
-                                                   WriteToOutput(elapsed);
-                                                   WriteToHtmlPage(elapsed);
+                                                    // Write results.
+                                                    WriteToOutput(elapsed);
+                                                    WriteToHtmlPage(elapsed);
 
-                                                   // Finish up.
-                                                   if (callback != null) callback();
-                                               });
+                                                    // Finish up.
+                                                    if (callback != null) callback();
+                                                });
         }
 
         private void DelayedRunTest(MethodItem item, Action callback)
@@ -204,9 +230,9 @@ namespace Open.TestHarness.Automation
             // Write summary.
             Output.WriteTitle(color, "Automated Test Run Results:");
             Output.Write(color, string.Format("{0} tests ran {1} taking {2} seconds", 
-                                                                        GetMethods().Count(), 
-                                                                        successOfFailureText,
-                                                                        elapsedTime.TotalSeconds.Round(1)));
+                                              GetMethods().Count(), 
+                                              successOfFailureText,
+                                              elapsedTime.TotalSeconds.Round(1)));
             if (failedCount > 0)
             {
                 Output.Write(Colors.Green, string.Format("Passed: {0}", passedCount));
@@ -228,6 +254,50 @@ namespace Open.TestHarness.Automation
         {
             var writer = new TestRunHtmlOutputWriter("results.view-test", elapsedTime, Passed, Failed);
             writer.Write();
+        }
+
+        private static bool IsTagExcluded(IEnumerable<string> memberTags, IEnumerable<string> filterOnTags)
+        {
+            // Setup initial conditions.
+            if (filterOnTags == null || filterOnTags.Count() == 0) return false;
+            var filter = from n in filterOnTags
+                         select n.ToLower();
+
+            // Ensure at least one of the member's tags is contained within the filter.
+            foreach (var memberTag in memberTags)
+            {
+                if (memberTag.IsNullOrEmpty(true)) continue;
+                if (filter.Contains(memberTag.ToLower()))
+                {
+                    return false;
+                }
+            }
+
+            // Finish up.
+            return true;
+        }
+        #endregion
+
+        #region Internal
+        private static string CreateXapQueryString(IEnumerable<ModuleSetting> modules)
+        {
+            var query = string.Empty;
+            foreach (var assembly in modules)
+            {
+                query += string.Format("xap={0}&", assembly.XapFileName);
+            }
+            return query.RemoveEnd("&");
+        }
+
+        private static string CreateTagQueryString(IEnumerable<string> tags )
+        {
+            var query = string.Empty;
+            if (tags == null) return query;
+            foreach (var tag in tags)
+            {
+                query += string.Format("tag={0}&", tag.Trim());
+            }
+            return query.RemoveEnd("&");
         }
         #endregion
     }

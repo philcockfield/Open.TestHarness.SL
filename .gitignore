@@ -39,3 +39,4 @@ Source/Open.TestHarness/Test/TestHarness.Sample/Lib/Open.Core/Clr/Open.Core.Clr.
 Source/Open.TestHarness/TestHarness.Web/ClientBin/Open.Core.UI.Test.xap
 Source/Open.TestHarness/TestHarness.Web/ClientBin/Open.TestHarness.xap
 Source/Open.Core/Clr/Test/Open.Core.Cloud.Test/TableStorage/CodeGeneration/Output/MockEntity1TableEntity.cs
+Source/Open.Core/Clr/Test/Open.Core.Cloud.Test/TableStorage/CodeGeneration/Output/*

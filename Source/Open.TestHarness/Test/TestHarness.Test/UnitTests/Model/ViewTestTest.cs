@@ -21,10 +21,7 @@
 //------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Controls;
 using Open.Core.Common;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -101,6 +98,28 @@ namespace Open.TestHarness.Test.Model
         {
             testModel.Parameters.Items.Count().ShouldBe(1);
             testModel.Parameters.Items.ElementAt(0).Type.ShouldBe(typeof(Placeholder));
+        }
+
+        [TestMethod]
+        public void ShouldHaveThreeTagsOneInheristedFromParent()
+        {
+            testModel.Tags.Count().ShouldBe(3);
+            testModel.Tags.ElementAt(0).ShouldBe("One");
+            testModel.Tags.ElementAt(1).ShouldBe("Two");
+            testModel.Tags.ElementAt(2).ShouldBe("Three");
+        }
+
+        [TestMethod]
+        public void ShouldHaveNoTagsOnlyFromParentClass()
+        {
+            classModel.ViewTests[1].Tags.Count().ShouldBe(2);
+        }
+
+        [TestMethod]
+        public void ShouldHaveNoTags()
+        {
+            classModel = new ViewTestClass(typeof(SampleViewTestClass2), "File.xap");
+            classModel.ViewTests[0].Tags.Count().ShouldBe(0);
         }
         #endregion
     }

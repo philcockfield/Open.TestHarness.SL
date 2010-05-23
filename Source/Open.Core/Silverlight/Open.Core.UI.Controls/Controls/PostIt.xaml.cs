@@ -23,39 +23,51 @@
 using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
+using T = Open.Core.UI.Controls.PostIt;
 
 namespace Open.Core.UI.Controls
 {
-    /// <summary>A simple way of rendering an 'IconImage' in XAML.</summary>
-    public partial class ImageIcon : UserControl
+    /// <summary>Renders a simple post-it.</summary>
+    public partial class PostIt : UserControl
     {
         #region Head
-        /// <summary>Constructor.</summary>
-        public ImageIcon()
+        public PostIt()
         {
             InitializeComponent();
-            OnSourceChanged();
+            root.DataContext = this;
         }
         #endregion
 
         #region Dependency Properties
-        /// <summary>Gets or sets the enum representing the icon image.</summary>
-        public IconImage Source
+        
+        /// <summary>Gets or sets the text in the post-it.</summary>
+        public string Text
         {
-            get { return (IconImage)(GetValue(SourceProperty)); }
-            set { SetValue(SourceProperty, value); }
+            get { return (string) (GetValue(TextProperty)); }
+            set { SetValue(TextProperty, value); }
         }
-        /// <summary>Gets or sets the enum representing the icon image.</summary>
-        public static readonly DependencyProperty SourceProperty =
+        /// <summary>Gets or sets the text in the post-it.</summary>
+        public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(
-                LinqExtensions.GetPropertyName<ImageIcon>(m => m.Source),
-                typeof(IconImage),
-                typeof(ImageIcon),
-                new PropertyMetadata(IconImage.SilkAccept, (s, e) => ((ImageIcon)s).OnSourceChanged()));
-        private void OnSourceChanged()
+                LinqExtensions.GetPropertyName<T>(m => m.Text),
+                typeof (string),
+                typeof (T),
+                new PropertyMetadata(null));
+
+
+        /// <summary>Gets or sets the angle of the post-it.</summary>
+        public double Angle
         {
-            iconImage.Source = Source.ToImageSource();
+            get { return (double) (GetValue(AngleProperty)); }
+            set { SetValue(AngleProperty, value); }
         }
+        /// <summary>Gets or sets the angle of the post-it.</summary>
+        public static readonly DependencyProperty AngleProperty =
+            DependencyProperty.Register(
+                LinqExtensions.GetPropertyName<PostIt>(m => m.Angle),
+                typeof (double),
+                typeof (T),
+                new PropertyMetadata(0d));
         #endregion
     }
 }

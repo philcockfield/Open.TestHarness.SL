@@ -9,6 +9,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.TestHarness.Test.UnitTests.Model
 {
+    [Tag("current")]
     [TestClass]
     public class QueryStringTest
     {
@@ -110,6 +111,62 @@ namespace Open.TestHarness.Test.UnitTests.Model
             modules.ElementAt(0).XapFileName.ShouldBe("One");
             modules.ElementAt(1).XapFileName.ShouldBe("Two");
             modules.ElementAt(2).XapFileName.ShouldBe("Three");
+        }
+
+        [TestMethod]
+        public void ShouldHaveDefaultTestTypeWhenNotSpecified()
+        {
+            var uri = new Uri("/TestHarness.htm", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+            model.TestType.ShouldBe(TestType.ViewTest);
+        }
+
+        [TestMethod]
+        public void ShouldHaveDefaultTestTypeWhenUnknownValueSpecified()
+        {
+            var uri = new Uri("/TestHarness.htm?testType=UNKNOWN", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+            model.TestType.ShouldBe(TestType.ViewTest);
+        }
+
+        [TestMethod]
+        public void ShouldReadViewTestType()
+        {
+            var uri = new Uri("/TestHarness.htm?testType=  viewtest ", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+            model.TestType.ShouldBe(TestType.ViewTest);
+        }
+
+        [TestMethod]
+        public void ShouldReadUnitTestType()
+        {
+            var uri = new Uri("/TestHarness.htm?testType=unitTest", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+            model.TestType.ShouldBe(TestType.UnitTest);
+        }
+
+        [TestMethod]
+        public void ShouldHaveThreeTags()
+        {
+            var uri = new Uri("/TestHarness.htm?tag=one&tag=   two   &tag= three&", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+
+            model.Tags.Count().ShouldBe(3);
+            model.Tags.ElementAt(0).ShouldBe("one");
+            model.Tags.ElementAt(1).ShouldBe("two");
+            model.Tags.ElementAt(2).ShouldBe("three");
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveTags()
+        {
+            var uri = new Uri("/TestHarness.htm?tag=   ", UriKind.Relative);
+            var model = new QueryString(uri.GetQueryString());
+            model.Tags.Count().ShouldBe(0);
+
+            uri = new Uri("/TestHarness.htm", UriKind.Relative);
+            model = new QueryString(uri.GetQueryString());
+            model.Tags.Count().ShouldBe(0);
         }
         #endregion
     }

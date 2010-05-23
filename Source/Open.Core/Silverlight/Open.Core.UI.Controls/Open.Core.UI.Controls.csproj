@@ -70,6 +70,7 @@
     <Compile Include="Controls\AutoGrid\AutoColumnDefinition.cs" />
     <Compile Include="Controls\AutoGrid\AutoGrid.cs" />
     <Compile Include="Controls\Buttons\Base Classes\VisualButton.cs" />
+    <Compile Include="Controls\Buttons\IButton Implementation\ButtonModel.cs" />
     <Compile Include="Controls\Buttons\ImageButton\ImageButton.cs" />
     <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\ArrowPointerButtonBase.cs" />
     <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\RoundedPointerButton.cs" />
@@ -206,6 +207,9 @@
     <Compile Include="Controls\Dropdowns\ComboBox.ViewModel.cs" />
     <Compile Include="Controls\Dropdowns\ComboBoxItem.ViewModel.cs" />
     <Compile Include="Controls\Dropdowns\CoreComboBox.cs" />
+    <Compile Include="Controls\PostIt.xaml.cs">
+      <DependentUpon>PostIt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ProgressBar\ProgressBarFlat.cs" />
     <Compile Include="Controls\Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
@@ -229,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ImageIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PostIt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.ComponentModel.Composition;
 
 namespace Open.Core

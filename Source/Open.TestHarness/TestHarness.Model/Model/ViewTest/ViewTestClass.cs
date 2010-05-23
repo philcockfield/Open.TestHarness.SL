@@ -21,11 +21,13 @@
 //------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Silverlight.Testing;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 
@@ -50,6 +52,7 @@ namespace Open.TestHarness.Model
         private object instance;
         private static readonly List<ViewTestClass> singletonInstances = new List<ViewTestClass>();
         private readonly string customName;
+        private IEnumerable<string> tags;
 
         public ViewTestClass(Type classType, string xapFileName)
         {
@@ -174,6 +177,9 @@ namespace Open.TestHarness.Model
                 return attribute;
             }
         }
+
+        /// <summary>Gets the collection of tags that have been defined on the class with the [Tag] attribute.</summary>
+        public IEnumerable<string> Tags { get { return tags ?? (tags = Type.GetTags()); } }
 
         /// <summary>Gets the module that this class is contained within.</summary>
         public ViewTestClassesAssemblyModule ParentModule { get { return TestHarnessModel.Instance.GetModule(XapFileName); } }

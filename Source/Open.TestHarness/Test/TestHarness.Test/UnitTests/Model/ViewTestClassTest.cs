@@ -22,6 +22,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Controls;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -260,6 +261,26 @@ namespace Open.TestHarness.Test.Model
         }
         #endregion
 
+        #region Test - Tags
+
+        [Tag("tag")]
+        [TestMethod]
+        public void ShouldHaveNoTags()
+        {
+            var model = new ViewTestClass((new Sample().GetType()), "File.xap");
+            model.Tags.Count().ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldHaveTwoTags()
+        {
+            var model = new ViewTestClass((new TwoTags().GetType()), "File.xap");
+            model.Tags.Count().ShouldBe(2);
+            model.Tags.ElementAt(0).ShouldBe("One");
+            model.Tags.ElementAt(1).ShouldBe("Two");
+        }
+        #endregion
+
         #region Test - Current Controls
         [TestMethod]
         public void ShouldExposeCurrentControls()
@@ -355,6 +376,12 @@ namespace Open.TestHarness.Test.Model
             {
             }
         }
+
+        [Tag("One")]
+        [Tag("Two")]
+        [Tag("One")]
+        [ViewTestClass]
+        private class TwoTags { }
         #endregion
     }
 }

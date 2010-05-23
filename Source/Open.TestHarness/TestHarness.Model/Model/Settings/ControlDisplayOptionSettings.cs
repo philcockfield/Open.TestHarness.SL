@@ -58,10 +58,10 @@ namespace Open.TestHarness.Model
         }
 
         /// <summary>Gets or sets the tag to limit the unit-test run to.</summary>
-        public string UnitTestTag
+        public string TestTag
         {
-            get { return GetPropertyValue<T, string>(m => m.UnitTestTag); }
-            set { SetPropertyValue<T, string>(m => m.UnitTestTag, value); }
+            get { return GetPropertyValue<T, string>(m => m.TestTag); }
+            set { SetPropertyValue<T, string>(m => m.TestTag, value); }
         }
         #endregion
     }
