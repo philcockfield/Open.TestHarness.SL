@@ -20,17 +20,11 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Open.Core.Common;
-
-using T = Open.Core.Cloud.TableStorage.TableStorageModelBase;
 
 namespace Open.Core.Cloud.TableStorage
 {
-    public class TableStorageModelBase : ModelBase
+    public class TableEntityBase : ModelBase
     {
     }
 }

@@ -37,11 +37,17 @@
     <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Lib\Moq.CLR\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Services" />
     <Reference Include="System.Data.Services.Client" />
   </ItemGroup>
   <ItemGroup>
@@ -50,10 +56,17 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base Classes\CloudTestBase.cs" />
+    <Compile Include="Base Classes\TableServiceContextBaseTest.cs" />
+    <Compile Include="CloudSettingsTest.cs" />
     <Compile Include="TableStorage\CodeGeneration\Output\MockEntity1TableEntity.cs" />
     <Compile Include="TableStorage\CodeGeneration\Output\OutputFileWriter.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplateTest.cs" />
-    <Compile Include="TableStorage\SampleStorage\SampleStore.cs" />
+    <Compile Include="TableStorage\SampleStorage\SampleStore.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableStorage\SampleStorage\UnitTest1.cs" />
+    <Compile Include="TableStorage\TableExtensionsTest.cs" />
     <Compile Include="TableStorage\TableStorageModelBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

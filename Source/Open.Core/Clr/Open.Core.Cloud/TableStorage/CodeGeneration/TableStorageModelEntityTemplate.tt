@@ -5,12 +5,15 @@
 //   Created: <#= DateTime.Now #>
 // ---------------------------------------------
 using System;
+using System.ComponentModel.Composition;
 using Microsoft.WindowsAzure.StorageClient;
+using Open.Core.Cloud.TableStorage;
 
 namespace <#= this.Namespace #>
 {
     /// <summary>Backing entity used to persist values on the model '<#= this.ModelType.Name #>' to TableStorage.</summary>
-    public class <#= this.ClassName #> : TableServiceEntity
+    [Export(typeof(<#= this.InterfaceName #>))]
+	public class <#= this.ClassName #> : TableServiceEntity, <#= this.InterfaceName #>
     {
         #region Head
         // Constructors.
@@ -26,4 +29,17 @@ namespace <#= this.Namespace #>
 <# } #>
         #endregion
     }
+
+	public interface <#= this.InterfaceName #>
+	{
+<# foreach (var propertyInfo in Properties)
+{ 
+#>
+        <#= propertyInfo.ToString() #> { get; set; }
+<# } #>
+	}
+
+	public class <#= this.ContextName #> : TableServiceContextBase<<#= this.ClassName #>>
+	{
+	}
 }

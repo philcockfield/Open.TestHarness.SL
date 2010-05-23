@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.TableStorage.CodeGeneration;
-using Open.Core.Common;
 using Open.Core.Common.Testing;
 
 namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 {
     [TestClass]
-    public class TableStorageModelEntityTemplateTest
+    public class TableStorageModelEntityTemplateTest : CloudTestBase
     {
         #region Head
         private TableStorageModelEntityTemplate generator;
@@ -99,9 +96,37 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.Properties.Count().ShouldBe(0);
         }
+
+        [TestMethod]
+        public void ShouldHaveInterfaceName()
+        {
+            generator.ModelType = null;
+            generator.InterfaceName.ShouldBe(null);
+
+            generator.ModelType = typeof(MockEntity1);
+            generator.InterfaceName.ShouldBe("IMockEntity1TableEntity");
+        }
+
+        [TestMethod]
+        public void ShouldEmitEntityWithExportTag()
+        {
+            generator.ModelType = typeof(MockEntity1);
+            var code = generator.TransformText();
+            code.Contains("[Export(typeof(IMockEntity1TableEntity))]").ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldHaveContextName()
+        {
+            generator.ModelType = null;
+            generator.ContextName.ShouldBe(null);
+
+            generator.ModelType = typeof(MockEntity1);
+            generator.ContextName.ShouldBe("MockEntity1Context");
+        }
         #endregion
 
-        public class MockEntity1 : TableStorageModelBase
+        public class MockEntity1 : TableEntityBase
         {
             [Persist]
             public string Text { get; set; }

@@ -39,17 +39,17 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
 
         #region Properties
         /// <summary>Gets or sets the type of the model.</summary>
-        /// <exception cref="ArgumentOutOfRangeException">If the type is not derived from [TableStorageModelBase].</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the type is not derived from [TableEntityBase].</exception>
         public Type ModelType
         {
             get { return modelType; }
             set
             {
-                if (value != null && !value.IsA<TableStorageModelBase>())
+                if (value != null && !value.IsA<TableEntityBase>())
                 {
                     throw new ArgumentOutOfRangeException(
                         "value", 
-                        string.Format("The type '{0}' does not derive for '{1}'.", value.Name, typeof(TableStorageModelBase).Name));
+                        string.Format("The type '{0}' does not derive for '{1}'.", value.Name, typeof(TableEntityBase).Name));
                 }
                 modelType = value;
             }
@@ -61,6 +61,11 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         /// <summary>Gets the name of the entity class.</summary>
         public string ClassName { get { return GetClassName(ModelType); } }
 
+        /// <summary>Gets the name of the entity interface.</summary>
+        public string InterfaceName { get { return GetInterfaceName(ModelType); } }
+
+        /// <summary>Gets the name of the entity's table Context.</summary>
+        public string ContextName { get { return GetContextName(ModelType); } }
 
         /// <summary>Gets the collection of properties that require persisting.</summary>
         public IEnumerable<PropertyInfo> Properties { get { return properties ?? (properties = GetProperties()); } }
@@ -74,11 +79,25 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             return modelType == null ? null : string.Format("{0}.Generated", modelType.Namespace);
         }
 
-        /// <summary>Retrieves the class name to nane generated entity.</summary>
+        /// <summary>Retrieves the class name for the generated entity.</summary>
         /// <param name="modelType">The type of the model.</param>
         public static string GetClassName(Type modelType)
         {
             return modelType == null ? null : string.Format("{0}TableEntity", modelType.Name);
+        }
+
+        /// <summary>Retrieves the interface name for the generated entity.</summary>
+        /// <param name="modelType">The type of the model.</param>
+        public static string GetInterfaceName(Type modelType)
+        {
+            return modelType == null ? null : "I" + GetClassName(modelType);
+        }
+
+        /// <summary>Retrieves the context name for the generated entity.</summary>
+        /// <param name="modelType">The type of the model.</param>
+        public static string GetContextName(Type modelType)
+        {
+            return modelType == null ? null : string.Format("{0}Context", modelType.Name);
         }
         #endregion
 

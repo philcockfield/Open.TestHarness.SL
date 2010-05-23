@@ -9,7 +9,7 @@ using Open.Core.Common.Testing;
 namespace Open.Core.Cloud.Test.TableStorage
 {
     [TestClass]
-    public class TableStorageModelBaseTest
+    public class TableStorageModelBaseTest : CloudTestBase
     {
         #region Head
 
@@ -25,11 +25,11 @@ namespace Open.Core.Cloud.Test.TableStorage
         public void ShouldBeModel()
         {
             var mock = new Mock();
-            mock.ShouldBeInstanceOfType<TableStorageModelBase>();
+            mock.ShouldBeInstanceOfType<TableEntityBase>();
         }
         #endregion
 
-        public class Mock : TableStorageModelBase
+        public class Mock : TableEntityBase
         {
             
         }

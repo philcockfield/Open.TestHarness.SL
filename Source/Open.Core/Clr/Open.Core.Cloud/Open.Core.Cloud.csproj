@@ -35,7 +35,9 @@
     <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,15 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudConfiguration.cs" />
+    <Compile Include="CloudSettings.cs" />
     <Compile Include="TableStorage\Attributes\PersistAttribute.cs" />
+    <Compile Include="TableStorage\Base Classes\TableServiceContextBase.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TableStorageModelEntityTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.partial.cs" />
-    <Compile Include="TableStorage\TableStorageModelBase.cs" />
+    <Compile Include="TableStorage\TableExtensions.cs" />
+    <Compile Include="TableStorage\TableStorageConstants.cs" />
+    <Compile Include="TableStorage\Base Classes\TableEntityBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
