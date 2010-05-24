@@ -24,36 +24,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Open.Core.Common;
 
 namespace Open.Core.Cloud.TableStorage.CodeGeneration
 {
-    /// <summary>Generates code for a single TableStorage model.</summary>
-    public partial class TableStorageModelEntityTemplate
+    /// <summary>Generates code for a single backing entity for a TableStorageModel.</summary>
+    public partial class TableEntityTemplate
     {
         #region Head
         private Type modelType;
         private IEnumerable<PropertyInfo> properties;
+
+        /// <summary>Constructor.</summary>
+        public TableEntityTemplate()
+        {
+            IncludeHeaderDirectives = true;
+        }
         #endregion
 
         #region Properties
         /// <summary>Gets or sets the type of the model.</summary>
-        /// <exception cref="ArgumentOutOfRangeException">If the type is not derived from [TableEntityBase].</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the type is not derived from [TableModelBase].</exception>
         public Type ModelType
         {
             get { return modelType; }
             set
             {
-                if (value != null && !value.IsA<TableEntityBase>())
+                if (value != null && !value.IsA<TableModelBase>())
                 {
                     throw new ArgumentOutOfRangeException(
                         "value", 
-                        string.Format("The type '{0}' does not derive for '{1}'.", value.Name, typeof(TableEntityBase).Name));
+                        string.Format("The type '{0}' does not derive for '{1}'.", value.Name, typeof(TableModelBase).Name));
                 }
                 modelType = value;
             }
         }
+
+        /// <summary>Gets or sets whether the header (using and comments) are generated.</summary>
+        public bool IncludeHeaderDirectives { get; set; }
 
         /// <summary>Gets the namespace of the entity.</summary>
         public string Namespace { get { return GetNamespace(ModelType); } }

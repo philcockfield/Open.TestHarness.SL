@@ -17,7 +17,7 @@ namespace Open.Core.Cloud.Test
         {
             if (!isMefInitialized)
             {
-                AssemblyCompositionInitializer.RegisterAssembly<TableEntityBase>();
+                AssemblyCompositionInitializer.RegisterAssembly<TableModelBase>();
                 isMefInitialized = true;
             }
 

@@ -25,11 +25,11 @@ namespace Open.Core.Cloud.Test.TableStorage
         public void ShouldBeModel()
         {
             var mock = new Mock();
-            mock.ShouldBeInstanceOfType<TableEntityBase>();
+            mock.ShouldBeInstanceOfType<TableModelBase>();
         }
         #endregion
 
-        public class Mock : TableEntityBase
+        public class Mock : TableModelBase
         {
             
         }

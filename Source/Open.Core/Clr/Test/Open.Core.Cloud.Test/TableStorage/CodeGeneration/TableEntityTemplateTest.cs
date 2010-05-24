@@ -8,24 +8,24 @@ using Open.Core.Common.Testing;
 namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 {
     [TestClass]
-    public class TableStorageModelEntityTemplateTest : CloudTestBase
+    public class TableEntityTemplateTest : CloudTestBase
     {
         #region Head
-        private TableStorageModelEntityTemplate generator;
+        private TableEntityTemplate generator;
 
         [TestInitialize]
         public void TestSetup()
         {
-            generator = new TableStorageModelEntityTemplate();
+            generator = new TableEntityTemplate();
         }
         #endregion
         
         #region Tests
         [TestMethod]
-        public void ShouldWriteToFile()
+        public void WriteToFile()
         {
-            generator.ModelType = typeof(MockEntity1);
-            OutputFileWriter.Write(generator);
+            generator.ModelType = typeof(MockEntityA);
+            OutputFileWriter.Write("MockEntityA.g.cs", generator.TransformText());
         }
 
         [TestMethod]
@@ -40,14 +40,14 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.Namespace.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntity1);
+            generator.ModelType = typeof(MockEntityA);
             generator.Namespace.ShouldBe(GetType().Namespace + ".Generated");
         }
 
         [TestMethod]
         public void ShouldEmitEntityWithinNamespace()
         {
-            generator.ModelType = typeof (MockEntity1);
+            generator.ModelType = typeof (MockEntityA);
             generator.TransformText().Contains("namespace " + generator.Namespace).ShouldBe(true);
         }
 
@@ -57,30 +57,30 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.ClassName.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntity1);
-            generator.ClassName.ShouldBe("MockEntity1TableEntity");
+            generator.ModelType = typeof(MockEntityA);
+            generator.ClassName.ShouldBe("MockEntityATableEntity");
         }
 
         [TestMethod]
         public void ShouldEmitEntityWithCorrectClassName()
         {
-            generator.ModelType = typeof(MockEntity1);
-            generator.TransformText().Contains("public class " + generator.ClassName).ShouldBe(true);
+            generator.ModelType = typeof(MockEntityA);
+            generator.TransformText().Contains("public partial class " + generator.ClassName).ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldEmitConstructors()
         {
-            generator.ModelType = typeof(MockEntity1);
+            generator.ModelType = typeof(MockEntityA);
             var code = generator.TransformText();
-            code.Contains("public MockEntity1TableEntity()").ShouldBe(true);
-            code.Contains("public MockEntity1TableEntity(string partitionKey, string rowKey) : base(partitionKey, rowKey)").ShouldBe(true);
+            code.Contains("public MockEntityATableEntity()").ShouldBe(true);
+            code.Contains("public MockEntityATableEntity(string partitionKey, string rowKey)").ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldFindPropertiesDecoratedWithPersistAttribute()
         {
-            var type = typeof (MockEntity1);
+            var type = typeof (MockEntityA);
             generator.ModelType = type;
 
             var propText = type.GetProperty("Text");
@@ -103,16 +103,8 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.InterfaceName.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntity1);
-            generator.InterfaceName.ShouldBe("IMockEntity1TableEntity");
-        }
-
-        [TestMethod]
-        public void ShouldEmitEntityWithExportTag()
-        {
-            generator.ModelType = typeof(MockEntity1);
-            var code = generator.TransformText();
-            code.Contains("[Export(typeof(IMockEntity1TableEntity))]").ShouldBe(true);
+            generator.ModelType = typeof(MockEntityA);
+            generator.InterfaceName.ShouldBe("IMockEntityATableEntity");
         }
 
         [TestMethod]
@@ -121,21 +113,37 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.ContextName.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntity1);
-            generator.ContextName.ShouldBe("MockEntity1Context");
+            generator.ModelType = typeof(MockEntityA);
+            generator.ContextName.ShouldBe("MockEntityAContext");
+        }
+
+        [TestMethod]
+        public void ShouldIncludeHeaderDirectivesByDefault()
+        {
+            generator.IncludeHeaderDirectives.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldEmitHeaderDirectives()
+        {
+            generator.ModelType = typeof (MockEntityA);
+            generator.IncludeHeaderDirectives = true;
+            var code = generator.TransformText();
+
+            code.Contains("//   Generated code.").ShouldBe(true);
+            code.Contains("using Open.Core.Cloud.TableStorage;").ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldNotEmitHeaderDirectives()
+        {
+            generator.ModelType = typeof(MockEntityA);
+            generator.IncludeHeaderDirectives = false;
+            var code = generator.TransformText();
+
+            code.Contains("//   Generated code.").ShouldBe(false);
+            code.Contains("using Open.Core.Cloud.TableStorage;").ShouldBe(false);
         }
         #endregion
-
-        public class MockEntity1 : TableEntityBase
-        {
-            [Persist]
-            public string Text { get; set; }
-
-            [Persist]
-            public int Number { get; private set; }
-
-            public string NotPersisted { get; set; }
-        }
-
     }
 }

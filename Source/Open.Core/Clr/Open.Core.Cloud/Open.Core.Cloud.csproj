@@ -48,15 +48,21 @@
     <Compile Include="CloudSettings.cs" />
     <Compile Include="TableStorage\Attributes\PersistAttribute.cs" />
     <Compile Include="TableStorage\Base Classes\TableServiceContextBase.cs" />
-    <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.cs">
+    <Compile Include="TableStorage\CodeGeneration\TableEntitiesTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TableStorageModelEntityTemplate.tt</DependentUpon>
+      <DependentUpon>TableEntitiesTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.partial.cs" />
+    <Compile Include="TableStorage\CodeGeneration\TableEntitiesTemplate.partial.cs" />
+    <Compile Include="TableStorage\CodeGeneration\TableEntityTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TableEntityTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TableStorage\CodeGeneration\TableEntityTemplate.partial.cs" />
     <Compile Include="TableStorage\TableExtensions.cs" />
     <Compile Include="TableStorage\TableStorageConstants.cs" />
-    <Compile Include="TableStorage\Base Classes\TableEntityBase.cs" />
+    <Compile Include="TableStorage\Base Classes\TableModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +79,13 @@
     <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplate.tt">
+    <None Include="TableStorage\CodeGeneration\TableEntitiesTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TableStorageModelEntityTemplate.cs</LastGenOutput>
+      <LastGenOutput>TableEntitiesTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="TableStorage\CodeGeneration\TableEntityTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TableEntityTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

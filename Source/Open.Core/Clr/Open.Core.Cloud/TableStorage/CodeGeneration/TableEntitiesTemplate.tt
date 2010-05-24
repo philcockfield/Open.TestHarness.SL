@@ -1,0 +1,17 @@
+﻿<#@ template language="C#" #>
+// -----------------------------------------------------------------------
+//   Generated code.
+//   Changes will be overwritten next time this code is generated.
+//   Created: <#= DateTime.Now #>
+// -----------------------------------------------------------------------
+using System;
+using Open.Core.Cloud.TableStorage;
+
+<# foreach (var item in GetGenerators())
+{ 
+#>
+#region Model: <#= item.ModelType.Name #>
+<#= item.Code #>
+#endregion
+
+<# } #>

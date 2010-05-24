@@ -1,0 +1,52 @@
+﻿<#@ template language="C#" #>
+<# if(IncludeHeaderDirectives) 
+{ 
+#>
+// -----------------------------------------------------------------------
+//   Generated code.
+//   Changes will be overwritten next time this code is generated.
+//   Created: <#= DateTime.Now #>
+// -----------------------------------------------------------------------
+using System;
+using Open.Core.Cloud.TableStorage;
+
+<# } #>
+namespace <#= this.Namespace #>
+{
+    /// <summary>An entity used to persist values on the '<#= this.ModelType.Name #>' model to TableStorage.</summary>
+	public partial class <#= this.ClassName #> : <#= this.InterfaceName #>
+    {
+        // Constructors.
+        public <#= this.ClassName #>() : this(Guid.NewGuid().ToString(), String.Empty) { }
+        public <#= this.ClassName #>(string partitionKey, string rowKey)
+		{
+            PartitionKey = partitionKey;
+            RowKey = rowKey;
+		}
+
+        // Properties
+		public string PartitionKey { get; set; }
+		public string RowKey { get; set; }
+		public DateTime Timestamp { get; set; }
+<# foreach (var propertyInfo in Properties)
+{ 
+#>
+        public <#= propertyInfo.ToString() #> { get; set; }
+<# } #>
+    }
+
+    /// <summary>An entity used to persist values on the '<#= this.ModelType.Name #>' model to TableStorage.</summary>
+	public partial interface <#= this.InterfaceName #> : ITableServiceEntity
+	{
+<# foreach (var propertyInfo in Properties)
+{ 
+#>
+        <#= propertyInfo.ToString() #> { get; set; }
+<# } #>
+	}
+
+    /// <summary>The table-service-context used to access the backing entity for the '<#= this.ModelType.Name #>' model.</summary>
+	public partial class <#= this.ContextName #> : TableServiceContextBase<<#= this.ClassName #>>
+	{
+	}
+}

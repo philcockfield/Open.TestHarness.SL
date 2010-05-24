@@ -24,7 +24,7 @@ using Open.Core.Common;
 
 namespace Open.Core.Cloud.TableStorage
 {
-    public class TableEntityBase : ModelBase
+    public class TableModelBase : ModelBase
     {
     }
 }

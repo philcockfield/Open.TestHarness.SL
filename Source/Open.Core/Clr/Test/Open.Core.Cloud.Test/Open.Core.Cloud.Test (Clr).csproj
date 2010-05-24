@@ -59,10 +59,10 @@
     <Compile Include="Base Classes\CloudTestBase.cs" />
     <Compile Include="Base Classes\TableServiceContextBaseTest.cs" />
     <Compile Include="CloudSettingsTest.cs" />
-    <Compile Include="TableStorage\CodeGeneration\Output\MockEntity1TableEntity.cs" />
+    <Compile Include="TableStorage\CodeGeneration\Mocks.cs" />
     <Compile Include="TableStorage\CodeGeneration\Output\OutputFileWriter.cs" />
-    <Compile Include="TableStorage\CodeGeneration\TableStorageModelEntityTemplateTest.cs" />
-    <Compile Include="TableStorage\SampleStorage\UnitTest1.cs" />
+    <Compile Include="TableStorage\CodeGeneration\TableEntitiesTemplateTest.cs" />
+    <Compile Include="TableStorage\CodeGeneration\TableEntityTemplateTest.cs" />
     <Compile Include="TableStorage\TableExtensionsTest.cs" />
     <Compile Include="TableStorage\TableStorageModelBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,7 +85,9 @@
       <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TableStorage\CodeGeneration\Output\g\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
