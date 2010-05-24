@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.TableStorage.CodeGeneration;
 using Open.Core.Common.Testing;
 
@@ -48,6 +49,14 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         }
 
         [TestMethod]
+        public void ShouldAllowDifferentModelTypesToBeAdded()
+        {
+            generator.AddModelType<MockEntityA>();
+            generator.AddModelType<MockEntityB>();
+            generator.ModelTypes.Count().ShouldBe(2);
+        }
+
+        [TestMethod]
         public void ShouldRemoveModelType()
         {
             generator.AddModelType<MockEntityA>();
@@ -58,6 +67,20 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 
             generator.RemoveModelType<MockEntityA>();
             generator.RemoveModelType<MockEntityA>();
+        }
+
+        [TestMethod]
+        public void ShouldAddMultipleClassesFromAssembly()
+        {
+            var types = GetType().Assembly.GetTableModelTypes();
+            generator.AddModelTypes(GetType().Assembly);
+            generator.AddModelTypes(GetType().Assembly); // Should not add types more than once.
+
+            generator.ModelTypes.Count().ShouldBe(types.Count());
+            foreach (var type in types)
+            {
+                generator.ModelTypes.Contains(type).ShouldBe(true);
+            }
         }
         #endregion
     }

@@ -75,9 +75,7 @@
       <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="TableStorage\CodeGeneration\TableEntitiesTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

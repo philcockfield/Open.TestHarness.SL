@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Open.Core.Cloud.TableStorage.CodeGeneration
@@ -51,8 +52,23 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         /// <typeparam name="T">The type of the model</typeparam>
         public void AddModelType<T>() where T : TableModelBase
         {
-            var type = typeof (T);
+            AddModelType(typeof(T));
+        }
+        private void AddModelType(Type type)
+        {
             if (!modelTypes.Contains(type)) modelTypes.Add(type);
+        }
+
+        /// <summary>Adds all TableModelBase types from the given assembly.</summary>
+        /// <param name="assembly">The assembly to look within.</param>
+        public void AddModelTypes(Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            var types = assembly.GetTableModelTypes();
+            foreach (var type in types)
+            {
+                AddModelType(type);
+            }
         }
 
         /// <summary>Removes a model type from code generation.</summary>
@@ -79,10 +95,10 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             {
                 ModelType = modelType;
                 var generator = new TableEntityTemplate
-                                                    {
-                                                        ModelType = modelType,
-                                                        IncludeHeaderDirectives = false,
-                                                    };
+                                    {
+                                        ModelType = modelType,
+                                        IncludeHeaderDirectives = false,
+                                    };
                 Code = generator.TransformText();
             }
             #endregion

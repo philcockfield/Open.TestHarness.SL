@@ -20,4 +20,9 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         public DateTime Date { get; set; }
     }
 
+    public class NoPersistableValues : TableModelBase
+    {
+        public string Text { get; set; }
+    }
+
 }

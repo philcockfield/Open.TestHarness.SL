@@ -3,6 +3,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using Moq;
 using Open.Core.Cloud.Test;
+using Open.Core.Cloud.Test.TableStorage.CodeGeneration;
 using Open.Core.Common.Testing;
 
 namespace Open.Core.Cloud.TableStorage
@@ -49,6 +50,15 @@ namespace Open.Core.Cloud.TableStorage
 
             var client = mockCloudSettings.Object.GetStorageAccount();
             client.ShouldBeInstanceOfType<CloudStorageAccount>();
+        }
+
+        [TestMethod]
+        public void ShouldGetTableModelsFromAssembly()
+        {
+            var types = GetType().Assembly.GetTableModelTypes();
+            types.ShouldContain(typeof(MockEntityA));
+            types.ShouldContain(typeof(MockEntityB));
+            types.ShouldContain(typeof(NoPersistableValues));
         }
         #endregion
     }
