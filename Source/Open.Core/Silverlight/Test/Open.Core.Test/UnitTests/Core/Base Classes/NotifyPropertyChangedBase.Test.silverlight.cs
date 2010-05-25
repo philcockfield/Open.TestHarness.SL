@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,9 +79,26 @@ namespace Open.Core.UI.Silverlight.Test.Common.Base_Classes
             var model = new Stub();
             model.SyncContext.ShouldNotBe(null);
         }
+
+        [TestMethod]
+        public void ShouldReturnSameInstanceAfterCreatingDefaultValue()
+        {
+            var stub = new Sample();
+            var value1 = stub.Child;
+            var value2 = stub.Child;
+            value1.ShouldBe(value2);
+        }
         #endregion
 
         #region Stubs
+        private class Sample : NotifyPropertyChangedBase
+        {
+            public List<string> Child
+            {
+                get { return GetPropertyValue<Sample, List<string>>(m => m.Child, new List<string>()); }
+            }
+        }
+
         private class Stub : NotifyPropertyChangedBase
         {
             #region Head

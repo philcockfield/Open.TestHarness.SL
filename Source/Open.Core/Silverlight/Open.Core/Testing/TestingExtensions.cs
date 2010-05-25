@@ -136,7 +136,56 @@ namespace Open.Core.Common.Testing
         {
             if (Equals(self, value)) throw new AssertionException("The given values are equal, and they were expected to not be equal.");
         }
+        #endregion
 
+        #region Methods - Property Equality
+        /// <summary>Asserts that all the properties on the object equal the corresponding properties on the given object.</summary>
+        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <param name="self">The source object.</param>
+        /// <param name="value">The object to examine.</param>
+        public static void ShouldHaveEqualProperties<T>(this T self, T value)
+        {
+            // Setup initial conditions.
+            if (Equals(self, default(T))) throw new ArgumentNullException("self");
+            if (Equals(value, default(T))) throw new ArgumentNullException("value");
+
+            // Compare properties.
+            foreach (var propertyInfo in self.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                AssertValuesAreEqual(propertyInfo, self, value);
+            }
+        }
+
+        /// <summary>Asserts that all the specified properties on the object equal the corresponding properties on the given object.</summary>
+        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <param name="self">The source object.</param>
+        /// <param name="value">The object to examine.</param>
+        /// <param name="properties">
+        ///     The collection of properties to match.<br/>
+        ///     Each expression represents a property (for example 'n => n.PropertyName')
+        /// </param>
+        public static void ShouldHaveEqualProperties<T>(this T self, T value, params Expression<Func<T, object>>[] properties)
+        {
+            // Setup initial conditions.
+            if (Equals(self, default(T))) throw new ArgumentNullException("self");
+            if (Equals(value, default(T))) throw new ArgumentNullException("value");
+            if (properties == null || properties.Count() == 0) return;
+            var selfType = self.GetType();
+
+            // Compare properties.
+            foreach (var propertyExpression in properties)
+            {
+                var propertyInfo = selfType.GetProperty(propertyExpression.GetPropertyName());
+                AssertValuesAreEqual(propertyInfo, self, value);
+            }
+        }
+
+        private static void AssertValuesAreEqual<T>(PropertyInfo property, T obj1, T obj2)
+        {
+            var value1 = property.GetGetMethod(true).Invoke(obj1, null);
+            var value2 = property.GetGetMethod(true).Invoke(obj2, null);
+            value1.ShouldEqual(value2);
+        }
         #endregion
 
         #region Methods - Collection Assertions
@@ -354,10 +403,10 @@ namespace Open.Core.Common.Testing
         /// <summary>Attempts to instantiate all instances of the given type within an assembly (that has a parameterless constructor).</summary>
         /// <typeparam name="T">The base type of classes to include in the set.</typeparam>
         /// <param name="assembly">The assembly to look within.</param>
-        public static void ShouldIntantiateAllTypes<T>(this Assembly assembly)
+        public static void ShouldInstantiateAllTypes<T>(this Assembly assembly)
         {
             string errorMessage;
-            if (!assembly.ShouldIntantiateAllTypes<T>(out errorMessage)) throw new AssertionException(errorMessage);
+            if (!assembly.ShouldInstantiateAllTypes<T>(out errorMessage)) throw new AssertionException(errorMessage);
         }
 
         /// <summary>Attempts to instantiate all instances of the given type within an assembly (that has a parameterless constructor).</summary>
@@ -365,7 +414,7 @@ namespace Open.Core.Common.Testing
         /// <param name="assembly">The assembly to look within.</param>
         /// <param name="errorMessage">The error message to return (null if no error).</param>
         /// <returns>True if the types were all instantiated successfully, otherwise False.</returns>
-        public static bool ShouldIntantiateAllTypes<T>(this Assembly assembly, out string errorMessage)
+        public static bool ShouldInstantiateAllTypes<T>(this Assembly assembly, out string errorMessage)
         {
             // Setup initial conditions.
             if (assembly == null) throw new ArgumentNullException("assembly");
@@ -401,7 +450,7 @@ namespace Open.Core.Common.Testing
             var msg = failedTypes.Aggregate("", (current, failedType)
                                                 => current + string.Format("\r- {0}",
                                                                            failedType.Key.FullName));
-            errorMessage = string.Format("Failed to intantiate the following types:\r{0}", msg);
+            errorMessage = string.Format("Failed to instantiate the following types:\r{0}", msg);
 
             // Finish up.
             return false;

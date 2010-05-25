@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -48,6 +49,7 @@ namespace Open.Core.Common.Test.Model
             var stub = new Stub();
             stub.SetPropertyValueTest<Stub, string>(m => m.MyText, "Value", null);
             stub.WritePropertyValueCount.ShouldBe(2); // NB: 2 times.  First time is stored the default value.
+            stub.IsDefaultWriteValueCount.ShouldBe(1);
         }
 
         [TestMethod]
@@ -168,14 +170,33 @@ namespace Open.Core.Common.Test.Model
             stub.SetPropertyValueTest<Stub, string>(m => m.MyText, "Value", null).ShouldBe(true);
             stub.SetPropertyValueTest<Stub, string>(m => m.MyText, "Value", null).ShouldBe(false);
         }
+
+        [TestMethod]
+        public void ShouldReturnSameInstanceAfterCreatingDefaultValue()
+        {
+            var stub = new Sample();
+            var value1 = stub.Child;
+            var value2 = stub.Child;
+            value1.ShouldBe(value2);
+        }
         #endregion
 
         #region Stubs
+        private class Sample : NotifyPropertyChangedBase
+        {
+            public List<string> Child
+            {
+                get { return GetPropertyValue<Sample, List<string>>(m => m.Child, new List<string>()); }
+            }
+        }
+
+
         public class Stub : NotifyPropertyChangedBase
         {
             #region Head
             public int ReadPropertyValueCount { get; set; }
             public int WritePropertyValueCount { get; set; }
+            public int IsDefaultWriteValueCount { get; set; }
             #endregion
 
             #region Properties
@@ -217,10 +238,11 @@ namespace Open.Core.Common.Test.Model
                 return base.ReadPropertyValue(key, out value);
             }
 
-            protected override void WritePropertyValue<T>(string key, T value)
+            protected override void WritePropertyValue<T>(string key, T value, bool isDefault)
             {
                 WritePropertyValueCount++;
-                base.WritePropertyValue(key, value);
+                if (isDefault) IsDefaultWriteValueCount++;
+                base.WritePropertyValue(key, value, isDefault);
             }
             #endregion
         }

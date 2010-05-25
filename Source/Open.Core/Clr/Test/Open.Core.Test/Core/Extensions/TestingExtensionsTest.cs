@@ -133,6 +133,57 @@ namespace Open.Core.Common.Test.Extensions
             2.ShouldNotEqual(1);
             Should.Throw<AssertionException>(() => 1.ShouldNotEqual(1));
         }
+
+        [TestMethod]
+        public void ShouldHaveEqualProperties()
+        {
+            var child = new ConstructorStub();
+            var stub1 = new Stub { Text = "Foo", Child = child };
+            var stub2 = new Stub { Text = "Foo", Child = child };
+            stub1.ShouldHaveEqualProperties(stub2);
+        }
+
+        [TestMethod]
+        public void ShouldHaveEqualPropertiesWhereExplicitPropertiesAreDeclared()
+        {
+            var child = new ConstructorStub();
+            var stub1 = new Stub { Text = "Foo", Child = child };
+            var stub2 = new Stub { Text = "Foo", Child = child };
+            stub1.ShouldHaveEqualProperties(stub2, m => m.Text, m => m.Text);
+
+            stub1 = new Stub();
+            stub2 = new Stub();
+            stub1.ShouldHaveEqualProperties(stub2, m => m.Text, m => m.Text);
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveEqualProperties()
+        {
+            Should.Throw<AssertionException>(() =>
+                            {
+                                var stub1 = new Stub { Text = "Foo", Child = new ConstructorStub() };
+                                var stub2 = new Stub { Text = "Foo", Child = new ConstructorStub() };
+                                stub1.ShouldHaveEqualProperties(stub2);
+                            });
+
+            Should.Throw<AssertionException>(() =>
+                            {
+                                var stub1 = new Stub { Text = "Foo" };
+                                var stub2 = new Stub { Text = "Bar" };
+                                stub1.ShouldHaveEqualProperties(stub2);
+                            });
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveEqualPropertiesWhereExplicitPropertiesAreDeclared()
+        {
+            Should.Throw<AssertionException>(() =>
+                            {
+                                var stub1 = new Stub { Text = "Foo1", Child = new ConstructorStub() };
+                                var stub2 = new Stub { Text = "Foo", Child = new ConstructorStub() };
+                                stub1.ShouldHaveEqualProperties(stub2, m => m.Text, m => m.Text);
+                            });
+        }
         #endregion
 
         #region Collection Assertions
@@ -341,18 +392,18 @@ namespace Open.Core.Common.Test.Extensions
 
         #region Assembly Assertions
         [TestMethod]
-        public void ShouldIntantiateAllTypes()
+        public void ShouldInstantiateAllTypes()
         {
             var assembly = GetType().Assembly;
-            assembly.ShouldIntantiateAllTypes<ConstructorStub>();
-            assembly.ShouldIntantiateAllTypes<ConstructorStubChild>();
+            assembly.ShouldInstantiateAllTypes<ConstructorStub>();
+            assembly.ShouldInstantiateAllTypes<ConstructorStubChild>();
         }
 
         [TestMethod]
-        public void ShouldFailToIntantiateTypes()
+        public void ShouldFailInstantiateAllTypes()
         {
             var assembly = GetType().Assembly;
-            Should.Throw<AssertionException>(() => assembly.ShouldIntantiateAllTypes<ConstructorStubFailureChild>());
+            Should.Throw<AssertionException>(() => assembly.ShouldInstantiateAllTypes<ConstructorStubFailureChild>());
         }
         #endregion
 
@@ -483,6 +534,13 @@ namespace Open.Core.Common.Test.Extensions
         }
     }
     public class ConstructorStubFailureChild : ConstructorStubFailure{}
+
+
+    public class Stub
+    {
+        public string Text { get; set; }
+        public ConstructorStub Child { get; set; }
+    }
 
 
 }

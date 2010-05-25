@@ -34,7 +34,7 @@ namespace Open.TestHarness.Test.UnitTests.ViewModel
         public void ShouldInstatiateAllFrameworkElements()
         {
             var assembly = typeof (View.Root).Assembly;
-            assembly.ShouldIntantiateAllTypes<FrameworkElement>();
+            assembly.ShouldInstantiateAllTypes<FrameworkElement>();
         }
     }
 }

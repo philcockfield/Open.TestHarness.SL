@@ -58,8 +58,8 @@ namespace Open.Core.Common
         #endregion
 
         #region Head
-        private const string KeyDivider = ":~:";
-        private const int BytesInMegabyte = 1048576;
+        private const string keyDivider = ":~:";
+        private const int bytesInMegabyte = 1048576;
         private DelayedAction saveDelayedAction;
 
         /// <summary>Constructor.</summary>
@@ -134,7 +134,7 @@ namespace Open.Core.Common
         /// <summary>Gets the available free space within the store (in MB).</summary>
         public double AvailableFreeMegabytes
         {
-            get { return (double)AvailableFreeBytes / BytesInMegabyte; }
+            get { return (double)AvailableFreeBytes / bytesInMegabyte; }
         }
 
         /// <summary>Gets the storage quota (in Bytes).</summary>
@@ -152,7 +152,7 @@ namespace Open.Core.Common
         /// <summary>Gets the storage quota (in MB).</summary>
         public double QuotaMegabytes
         {
-            get { return (double)QuotaBytes / BytesInMegabyte; }
+            get { return (double)QuotaBytes / bytesInMegabyte; }
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Open.Core.Common
                 Store.Keys.CopyTo(keys, 0);
                 foreach (var key in keys)
                 {
-                    if (key.StartsWith(Id + KeyDivider)) Store.Remove(key);
+                    if (key.StartsWith(Id + keyDivider)) Store.Remove(key);
                 }
             }
 
@@ -211,7 +211,7 @@ namespace Open.Core.Common
         /// <returns>True if the user accepted the incrase, otherwise False.</returns>
         public bool IncreaseQuotaBy(double megabytes)
         {
-            var bytes = (long)(megabytes * BytesInMegabyte);
+            var bytes = (long)(megabytes * bytesInMegabyte);
             return IncreaseQuotaTo(bytes + AvailableFreeBytes);
         }
 
@@ -219,7 +219,7 @@ namespace Open.Core.Common
         /// <returns>True if the user accepted the incrase, otherwise False.</returns>
         public bool IncreaseQuotaTo(double megabytes)
         {
-            return IncreaseQuotaTo((long)(megabytes * BytesInMegabyte));
+            return IncreaseQuotaTo((long)(megabytes * bytesInMegabyte));
         }
 
         /// <summary>Starts the delayed Save action.</summary>
@@ -321,7 +321,7 @@ namespace Open.Core.Common
         }
 
         // NB: Inject IsolatedStorage as the backing property store.
-        protected override void WritePropertyValue<T>(string key, T value)
+        protected override void WritePropertyValue<T>(string key, T value, bool isDefault)
         {
             object storeValue = null;
             if (!Equals(value, default(T)))
@@ -374,7 +374,7 @@ namespace Open.Core.Common
 
         private string GetFullyQualifiedKey(string sourceKey)
         {
-            return string.Format("{0}{1}{2}", Id, KeyDivider, sourceKey);
+            return string.Format("{0}{1}{2}", Id, keyDivider, sourceKey);
         }
         #endregion
     }

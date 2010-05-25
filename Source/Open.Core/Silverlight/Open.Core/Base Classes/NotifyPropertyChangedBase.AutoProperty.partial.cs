@@ -74,7 +74,7 @@ namespace Open.Core.Common
             if (ReadPropertyValue(propertyName, out value)) return value;
 
             // Value not stored already.  Return the default value, and register it in the store (silently, without raising event).
-            WritePropertyValue(propertyName, defaultValue);
+            WritePropertyValue(propertyName, defaultValue, true);
             return defaultValue;
         }
         #endregion
@@ -127,7 +127,7 @@ namespace Open.Core.Common
             if (Equals(currentValue, value)) return false;
 
             // Store the value.
-            WritePropertyValue(property.GetPropertyName(), value);
+            WritePropertyValue(property.GetPropertyName(), value, false);
 
             // Alert listeners.
             OnPropertyChanged(name);
@@ -158,7 +158,8 @@ namespace Open.Core.Common
         /// <summary>Stores a property value in the dictionary (DO NOT USE unless overriding auto-backing-field store).</summary>
         /// <param name="key">The unique identifier of the value.</param>
         /// <param name="value">The value to write.</param>
-        protected virtual void WritePropertyValue<T>(string key, T value)
+        /// <param name="isDefaultValue">Flag indicating if</param>
+        protected virtual void WritePropertyValue<T>(string key, T value, bool isDefaultValue)
         {
             PropertyStore[key] = value;
         }

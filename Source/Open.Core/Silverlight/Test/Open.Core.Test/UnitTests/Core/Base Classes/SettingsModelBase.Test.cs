@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.IsolatedStorage;
 using Microsoft.Silverlight.Testing;
@@ -30,6 +31,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
 {
+    [Tag("store")]
     [TestClass]
     public class SettingsModelBaseTest : SilverlightUnitTest
     {
@@ -233,13 +235,32 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             readCollection[0].ToString().ShouldBe("http://site.com/");
         }
 
+        [Tag("foo")]
         [TestMethod]
-        public void ShouldSetValueToNullWhenSerializingValues()
+        public void ShouldReturnSameInstanceAfterCreatingDefaultValue()
         {
             var stub = new Stub(SettingsStoreType.Application) { AutoSave = false, StoreAsXml = true };
-            var collection = stub.SiteAddresses;
-            stub.SiteAddresses = null;
+            var value1 = stub.List;
+            var value2 = stub.List;
+            value1.ShouldBe(value2);
         }
+
+
+        [Tag("list")]
+        [TestMethod]
+        public void ShouldSerializeList()
+        {
+            var stub = new Stub(SettingsStoreType.Application) { AutoSave = false, StoreAsXml = true };
+            stub.List.ShouldBeInstanceOfType<List<string>>();
+
+            stub.List.Add("one");
+            stub.List.Add("two");
+            stub.List.Count.ShouldBe(2);
+
+            stub.Save();
+            stub.List.Count.ShouldBe(2);
+        }
+
         #endregion
 
         #region Stubs
@@ -266,6 +287,11 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             public ObservableCollection<string> TextCollection
             {
                 get { return GetPropertyValue<Stub, ObservableCollection<string>>(m => m.TextCollection, new ObservableCollection<string>()); }
+            }
+
+            public List<string> List
+            {
+                get { return GetPropertyValue<Stub, List<string>>(m => m.List, new List<string>()); }
             }
             #endregion
         }

@@ -46,7 +46,7 @@ namespace Open.Core.UI.Silverlight.Test.UnitTests.Core.UI.Controls
         [TestMethod]
         public void ShouldInstantiateAllFrameworkElementsInControlsAssembly()
         {
-            typeof(Placeholder).Assembly.ShouldIntantiateAllTypes<FrameworkElement>();
+            typeof(Placeholder).Assembly.ShouldInstantiateAllTypes<FrameworkElement>();
         }
 
     }

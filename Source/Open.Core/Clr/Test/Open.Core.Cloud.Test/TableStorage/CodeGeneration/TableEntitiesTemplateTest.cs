@@ -26,8 +26,8 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         [TestMethod]
         public void WriteToFile()
         {
-            generator.AddModelType<MockEntityA>();
-            generator.AddModelType<MockEntityB>();
+            generator.Add<MockEntityA>();
+            generator.Add<MockEntityB>();
             OutputFileWriter.Write("TableEntities.g.cs", generator.TransformText());
         }
 
@@ -35,46 +35,46 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         public void ShouldAddModelType()
         {
             generator.ModelTypes.Count().ShouldBe(0);
-            generator.AddModelType<MockEntityA>();
+            generator.Add<MockEntityA>();
             generator.ModelTypes.Count().ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldNotInsertSameModelTypeTwice()
         {
-            generator.AddModelType<MockEntityA>();
-            generator.AddModelType<MockEntityA>();
-            generator.AddModelType<MockEntityA>();
+            generator.Add<MockEntityA>();
+            generator.Add<MockEntityA>();
+            generator.Add<MockEntityA>();
             generator.ModelTypes.Count().ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldAllowDifferentModelTypesToBeAdded()
         {
-            generator.AddModelType<MockEntityA>();
-            generator.AddModelType<MockEntityB>();
+            generator.Add<MockEntityA>();
+            generator.Add<MockEntityB>();
             generator.ModelTypes.Count().ShouldBe(2);
         }
 
         [TestMethod]
         public void ShouldRemoveModelType()
         {
-            generator.AddModelType<MockEntityA>();
+            generator.Add<MockEntityA>();
             generator.ModelTypes.Count().ShouldBe(1);
 
-            generator.RemoveModelType<MockEntityA>();
+            generator.Remove<MockEntityA>();
             generator.ModelTypes.Count().ShouldBe(0);
 
-            generator.RemoveModelType<MockEntityA>();
-            generator.RemoveModelType<MockEntityA>();
+            generator.Remove<MockEntityA>();
+            generator.Remove<MockEntityA>();
         }
 
         [TestMethod]
         public void ShouldAddMultipleClassesFromAssembly()
         {
             var types = GetType().Assembly.GetTableModelTypes();
-            generator.AddModelTypes(GetType().Assembly);
-            generator.AddModelTypes(GetType().Assembly); // Should not add types more than once.
+            generator.Add(GetType().Assembly);
+            generator.Add(GetType().Assembly); // Should not add types more than once.
 
             generator.ModelTypes.Count().ShouldBe(types.Count());
             foreach (var type in types)

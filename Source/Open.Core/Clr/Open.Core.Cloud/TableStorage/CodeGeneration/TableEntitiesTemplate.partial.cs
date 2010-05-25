@@ -49,33 +49,33 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
 
         #region Methods
         /// <summary>Adds a model type to include in code generation.</summary>
-        /// <typeparam name="T">The type of the model</typeparam>
-        public void AddModelType<T>() where T : TableModelBase
+        /// <typeparam name="TModel">The type of the model</typeparam>
+        public void Add<TModel>() where TModel : TableModelBase
         {
-            AddModelType(typeof(T));
+            Add(typeof(TModel));
         }
-        private void AddModelType(Type type)
+        private void Add(Type type)
         {
             if (!modelTypes.Contains(type)) modelTypes.Add(type);
         }
 
         /// <summary>Adds all TableModelBase types from the given assembly.</summary>
         /// <param name="assembly">The assembly to look within.</param>
-        public void AddModelTypes(Assembly assembly)
+        public void Add(Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             var types = assembly.GetTableModelTypes();
             foreach (var type in types)
             {
-                AddModelType(type);
+                Add(type);
             }
         }
 
         /// <summary>Removes a model type from code generation.</summary>
-        /// <typeparam name="T">The type of the model</typeparam>
-        public void RemoveModelType<T>() where T : TableModelBase
+        /// <typeparam name="TModel">The type of the model</typeparam>
+        public void Remove<TModel>() where TModel : TableModelBase
         {
-            var type = typeof(T);
+            var type = typeof(TModel);
             modelTypes.Remove(type);
         }
         #endregion
