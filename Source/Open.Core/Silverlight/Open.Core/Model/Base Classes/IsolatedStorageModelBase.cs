@@ -21,13 +21,15 @@
 //------------------------------------------------------
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
 
 namespace Open.Core.Common
 {
     /// <summary>Flags indicating the kind of settings store.</summary>
-    public enum SettingsStoreType
+    public enum IsolatedStorageType
     {
         /// <summary>Settings scoped at the application level.</summary>
         Application,
@@ -37,7 +39,7 @@ namespace Open.Core.Common
     }
 
     /// <summary>Base class for settings that are persisted to isolated storage on the client.</summary>
-    public abstract class SettingsModelBase : ModelBase
+    public abstract class IsolatedStorageModelBase : ModelBase
     {
         #region Events
         /// <summary>Fires when immediately before the model settings are saved.</summary>
@@ -61,11 +63,12 @@ namespace Open.Core.Common
         private const string keyDivider = ":~:";
         private const int bytesInMegabyte = 1048576;
         private DelayedAction saveDelayedAction;
+        private Dictionary<string, object> memoryStore;
 
         /// <summary>Constructor.</summary>
         /// <param name="storeType">The type of persistence store.</param>
         /// <param name="id">The unique identifier of the settings (used as a prefix).</param>
-        protected SettingsModelBase(SettingsStoreType storeType, string id)
+        protected IsolatedStorageModelBase(IsolatedStorageType storeType, string id)
         {
             // Setup initial conditions.
             if (id.AsNullWhenEmpty() == null) throw new ArgumentNullException("id");
@@ -86,10 +89,15 @@ namespace Open.Core.Common
         public string Id { get; private set; }
 
         /// <summary>Gets the type of persistence store this model is using.</summary>
-        public SettingsStoreType StoreType { get; private set; }
+        public IsolatedStorageType StoreType { get; private set; }
 
         /// <summary>Gets the persistence store.</summary>
         public IsolatedStorageSettings Store { get; private set; }
+
+        private Dictionary<string, object> MemoryStore
+        {
+            get { return memoryStore ?? (memoryStore = new Dictionary<string, object>()); }
+        }
 
         /// <summary>Gets or sets whether values written to the Store are automatically saved.</summary>
         public bool AutoSave { get; set; }
@@ -106,7 +114,7 @@ namespace Open.Core.Common
                 try
                 {
                     // Attempt to retrieve the store.  Will throw if disabled.
-                    var store = GetStore(SettingsStoreType.Application);
+                    var store = GetStore(IsolatedStorageType.Application);
                     store.Save();
                     return true;
                 }
@@ -166,11 +174,7 @@ namespace Open.Core.Common
         #region Properties - Internal
         private DelayedAction SaveDelayedAction
         {
-            get
-            {
-                if (saveDelayedAction ==null) saveDelayedAction = new DelayedAction(0.1, () => Save());
-                return saveDelayedAction;
-            }
+            get { return saveDelayedAction ?? (saveDelayedAction = new DelayedAction(0.1, () => Save())); }
         }
         #endregion
 
@@ -196,6 +200,7 @@ namespace Open.Core.Common
                 {
                     if (key.StartsWith(Id + keyDivider)) Store.Remove(key);
                 }
+                MemoryStore.Clear();
             }
 
             // Finish up.
@@ -277,6 +282,10 @@ namespace Open.Core.Common
             return true;
         }
 
+
+
+
+
         /// <summary>Invoked immediately before the Save operation.  Use this to perform pre-save operations.</summary>
         /// <remarks>This method is not called if a listener to the 'Saving' event cancelled the operation.</remarks>
         protected virtual void OnBeforeSave() { }
@@ -303,6 +312,15 @@ namespace Open.Core.Common
         // NB: Inject IsolatedStorage as the backing property store.
         protected override bool ReadPropertyValue<TResult>(string key, out TResult value)
         {
+            // Check if value exists in memory store.
+            //object storeValue;
+            //if (MemoryStore.TryGetValue(key, out storeValue))
+            //{
+            //    value = (TResult)storeValue;
+            //    return true;
+            //}
+
+            // Reconstruct from isolated storage.
             object returnValue;
             if (Store.TryGetValue(GetFullyQualifiedKey(key), out returnValue))
             {
@@ -312,8 +330,8 @@ namespace Open.Core.Common
                     value = StoreAsXml
                                 ? (TResult)((string)returnValue).Deserialize(typeof(TResult))
                                 : (TResult)returnValue;
+                    MemoryStore[GetFullyQualifiedKey(key)] = value;
                 }
-
                 return true;
             }
             value = default(TResult);
@@ -323,6 +341,10 @@ namespace Open.Core.Common
         // NB: Inject IsolatedStorage as the backing property store.
         protected override void WritePropertyValue<T>(string key, T value, bool isDefault)
         {
+            // Store value (in memory).
+            MemoryStore[GetFullyQualifiedKey(key)] = value;
+
+            // Store in isloated store.
             object storeValue = null;
             if (!Equals(value, default(T)))
             {
@@ -331,7 +353,34 @@ namespace Open.Core.Common
                                  : value as object;
             }
             Store[GetFullyQualifiedKey(key)] = storeValue;
+
+            // Finish up.
             ProcessAutoSave();
+        }
+
+        //TEMP 
+        //private void SyncIsolatedStoreWithMemoryStore()
+        //{
+        //    foreach (var key in MemoryStore.Keys)
+        //    {
+        //        var value = MemoryStore[key];
+        //        Store[GetFullyQualifiedKey(key)] = ProcessStoreValue(value);
+        //    }
+        //}
+
+        //private void SyncMemoryStoreWithIsolatedStore()
+        //{
+        //    foreach (string key in Store.Keys)
+        //    {
+        //        MemoryStore[key] = Store[key];
+        //    }
+        //}
+
+        private object ProcessStoreValue(object value)
+        {
+            return StoreAsXml
+                             ? value.ToSerializedXml()
+                             : value as object;
         }
         #endregion
 
@@ -349,24 +398,24 @@ namespace Open.Core.Common
             if (AutoSave) DelaySave();
         }
 
-        private static IsolatedStorageSettings GetStore(SettingsStoreType storeType)
+        private static IsolatedStorageSettings GetStore(IsolatedStorageType storeType)
         {
             switch (storeType)
             {
-                case SettingsStoreType.Application: return IsolatedStorageSettings.ApplicationSettings;
-                case SettingsStoreType.Site: return IsolatedStorageSettings.SiteSettings;
+                case IsolatedStorageType.Application: return IsolatedStorageSettings.ApplicationSettings;
+                case IsolatedStorageType.Site: return IsolatedStorageSettings.SiteSettings;
                 
                 default: throw new NotSupportedException(storeType.ToString());
             }
         }
 
         // Use the return value from this method within a 'Using' statement to release resources when done.
-        private static IsolatedStorageFile GetStoreFile(SettingsStoreType storeType)
+        private static IsolatedStorageFile GetStoreFile(IsolatedStorageType storeType)
         {
             switch (storeType)
             {
-                case SettingsStoreType.Application: return IsolatedStorageFile.GetUserStoreForApplication();
-                case SettingsStoreType.Site: return IsolatedStorageFile.GetUserStoreForSite();
+                case IsolatedStorageType.Application: return IsolatedStorageFile.GetUserStoreForApplication();
+                case IsolatedStorageType.Site: return IsolatedStorageFile.GetUserStoreForSite();
 
                 default: throw new NotSupportedException(storeType.ToString());
             }

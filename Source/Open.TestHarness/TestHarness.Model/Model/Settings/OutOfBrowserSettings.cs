@@ -26,11 +26,11 @@ using T = Open.TestHarness.Model.OutOfBrowserSettings;
 namespace Open.TestHarness.Model
 {
     /// <summary>Settings related to the out of browser window.</summary>
-    public class OutOfBrowserSettings : SettingsModelBase
+    public class OutOfBrowserSettings : IsolatedStorageModelBase
     {
         #region Head
         /// <summary>Constructor.</summary>
-        public OutOfBrowserSettings() : base(SettingsStoreType.Application, "TestHarness.OutOfBrowserSettings")
+        public OutOfBrowserSettings() : base(IsolatedStorageType.Application, "TestHarness.OutOfBrowserSettings")
         {
         }
         #endregion

@@ -27,10 +27,10 @@ using T = Open.TestHarness.Model.PropertyExplorerSettings;
 namespace Open.TestHarness.Model
 {
     /// <summary>Stored settings for the PropertyExplorerPanel.</summary>
-    public class PropertyExplorerSettings : SettingsModelBase
+    public class PropertyExplorerSettings : IsolatedStorageModelBase
     {
         #region Head
-        public PropertyExplorerSettings() : base(SettingsStoreType.Application, "TestHarness.PropertyExplorerSettings")
+        public PropertyExplorerSettings() : base(IsolatedStorageType.Application, "TestHarness.PropertyExplorerSettings")
         {
         }
         #endregion

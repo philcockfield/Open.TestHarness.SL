@@ -111,7 +111,7 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
         [ViewTest]
         public void IsApplicationStorageEnabled()
         {
-            Debug.WriteLine("IsApplicationStorageEnabled: " + SettingsModelBase.IsApplicationStorageEnabled);
+            Debug.WriteLine("IsApplicationStorageEnabled: " + IsolatedStorageModelBase.IsApplicationStorageEnabled);
         }
 
         [ViewTest(AllowAutoRun = false)]
@@ -204,9 +204,9 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
 
         #endregion
 
-        public class Settings : SettingsModelBase
+        public class Settings : IsolatedStorageModelBase
         {
-            public Settings(Uri uri) : base(SettingsStoreType.Application, "Model-" + uri){}
+            public Settings(Uri uri) : base(IsolatedStorageType.Application, "Model-" + uri){}
             public string Text
             {
                 get { return GetPropertyValue<Settings, string>(m => m.Text); }

@@ -23,15 +23,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Open.Core.Cloud.TableStorage.CodeGeneration
 {
-    /// <summary>Generates code for a collection of backing entities that support TableStorageModel's.</summary>
-    public partial class TableEntitiesTemplate
+    /// <summary>Generates code for a collection TableService contexts for reading and writing entities to Table Storage.</summary>
+    public partial class TableServiceContextsTemplate
     {
         #region Head
         /// <summary>Constructor.</summary>
-        public TableEntitiesTemplate()
+        public TableServiceContextsTemplate()
         {
             ModelTypes = new ModelTypes();
         }
@@ -40,6 +41,15 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         #region Properties
         /// <summary>Gets the collection of models the template is building code for.</summary>
         public ModelTypes ModelTypes { get; private set; }
+        #endregion
+
+        #region Methods
+        /// <summary>Retrieves the context name for the generated entity.</summary>
+        /// <param name="modelType">The type of the model.</param>
+        public static string GetContextName(Type modelType)
+        {
+            return modelType == null ? null : string.Format("{0}Context", modelType.Name);
+        }
         #endregion
 
         #region Internal
@@ -56,18 +66,13 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             public EntityGenerator(Type modelType)
             {
                 ModelType = modelType;
-                var generator = new TableEntityTemplate
-                                    {
-                                        ModelType = modelType,
-                                        IncludeHeaderDirectives = false,
-                                    };
-                Code = generator.TransformText();
             }
             #endregion
 
             #region Properties
             public Type ModelType { get; private set; }
-            public string Code { get; private set; }
+            public string ClassName { get { return TableEntityTemplate.GetClassName(ModelType); } }
+            public string ContextName { get { return GetContextName(ModelType); } }
             #endregion
         }
     }

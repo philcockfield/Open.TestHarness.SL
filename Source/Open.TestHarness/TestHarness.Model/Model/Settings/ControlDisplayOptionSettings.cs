@@ -26,11 +26,11 @@ using T = Open.TestHarness.Model.ControlDisplayOptionSettings;
 namespace Open.TestHarness.Model
 {
     /// <summary>The Settings for how the test control(s) are displayed.</summary>
-    public class ControlDisplayOptionSettings : SettingsModelBase
+    public class ControlDisplayOptionSettings : IsolatedStorageModelBase
     {
         #region Head
         /// <summary>Constructor.</summary>
-        public ControlDisplayOptionSettings() : base(SettingsStoreType.Application, "TestHarness.ControlDisplayOptionSettings")
+        public ControlDisplayOptionSettings() : base(IsolatedStorageType.Application, "TestHarness.ControlDisplayOptionSettings")
         {
         }
         #endregion

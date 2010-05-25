@@ -273,7 +273,7 @@
       <DependentUpon>StringLibrary.resx</DependentUpon>
     </Compile>
     <Compile Include="UnitTests\Core\Base Classes\ResourceBase\Stubs\StubTemplates.cs" />
-    <Compile Include="UnitTests\Core\Base Classes\SettingsModelBase.Test.cs" />
+    <Compile Include="UnitTests\Core\Base Classes\IsolatedStorageModelBase.Test.cs" />
     <Compile Include="UnitTests\Core\Base Classes\ModelBase.BeginInvoke.Test.cs">
       <SubType>Code</SubType>
     </Compile>

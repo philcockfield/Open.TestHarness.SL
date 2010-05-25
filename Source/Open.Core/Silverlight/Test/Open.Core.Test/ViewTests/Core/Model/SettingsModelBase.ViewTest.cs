@@ -134,9 +134,9 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
 
         #region Stubs
 
-        public class SettingsStub : SettingsModelBase
+        public class SettingsStub : IsolatedStorageModelBase
         {
-            public SettingsStub() : base(SettingsStoreType.Application, "SettingsModelBase.ViewTest")
+            public SettingsStub() : base(IsolatedStorageType.Application, "IsolatedStorageModelBase.ViewTest")
             {
                 AutoSave = false;
             }

@@ -37,11 +37,7 @@ namespace Open.Core.Common
         #region Properties - Internal
         private Dictionary<string, object> PropertyStore
         {
-            get
-            {
-                if (propertyStore == null) propertyStore = new Dictionary<string, object>();
-                return propertyStore;
-            }
+            get { return propertyStore ?? (propertyStore = new Dictionary<string, object>()); }
         }
         #endregion
 

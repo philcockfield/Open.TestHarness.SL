@@ -108,16 +108,6 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         }
 
         [TestMethod]
-        public void ShouldHaveContextName()
-        {
-            generator.ModelType = null;
-            generator.ContextName.ShouldBe(null);
-
-            generator.ModelType = typeof(MockEntityA);
-            generator.ContextName.ShouldBe("MockEntityAContext");
-        }
-
-        [TestMethod]
         public void ShouldIncludeHeaderDirectivesByDefault()
         {
             generator.IncludeHeaderDirectives.ShouldBe(true);

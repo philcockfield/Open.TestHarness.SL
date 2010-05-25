@@ -8,13 +8,19 @@
 using System;
 using Open.Core.Cloud.TableStorage;
 
-/// <summary>Backing table entities for Table-Storage-Models.</summary>
+/// <summary>Table-Service-Contexts for the backing table entities that support Table-Storage-Models.</summary>
 
 <# foreach (var item in GetGenerators())
 { 
 #>
 #region Model: <#= item.ModelType.Name #>
-<#= item.Code #>
+namespace <#= item.ModelType.Namespace #>
+{
+    /// <summary>The table-service-context used to access the backing entity for the '<#= item.ModelType.Name #>' model.</summary>
+    public partial class <#= item.ContextName #> : TableServiceContextBase<<#= item.ClassName #>>
+    {
+    }
+}
 #endregion
 
 <# } #>
