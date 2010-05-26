@@ -461,57 +461,57 @@ namespace Open.Core.Common.Testing
         }
         #endregion
 
-        #region Method - ShouldHaveValidRequiredAttributes
+        #region Method - ShouldHaveValidValidationAttributes
         /// <summary>
-        ///     Ensures that any property or field decorated with the [Required] attribute
+        ///     Ensures that any property or field decorated with the [Validation] attribute
         ///     that references a language resource (via the 'ErrorMessageResourceType' 
         ///     and 'ErrorMessageResourceName' properties) points to an existing
         ///     language resource.
         /// </summary>
         /// <param name="assembly">The assembly containing the types to examine.</param>
-        public static void ShouldHaveValidRequiredAttributes(this Assembly assembly)
+        public static void ShouldHaveValidValidationAttributes(this Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             foreach (var type in assembly.GetTypes())
             {
-                ShouldHaveValidRequiredAttributes(type);
+                ShouldHaveValidValidationAttributes(type);
             }
         }
 
         /// <summary>
-        ///     Ensures that any property or field decorated with the [Required] attribute
+        ///     Ensures that any property or field decorated with the [Validation] attribute
         ///     that references a language resource (via the 'ErrorMessageResourceType' 
         ///     and 'ErrorMessageResourceName' properties) points to an existing
         ///     language resource.
         /// </summary>
         /// <param name="type">The type to examine.</param>
-        public static void ShouldHaveValidRequiredAttributes(this Type type)
+        public static void ShouldHaveValidValidationAttributes(this Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
 
             foreach (var memberInfo in type.GetMembers())
             {
-                memberInfo.ShouldHaveValidRequiredAttribute();
+                memberInfo.ShouldHaveValidValidationAttribute();
             }
         }
 
         /// <summary>
-        ///     Ensures that the [Required] attribute
+        ///     Ensures that the [Validation] attribute
         ///     that references a language resource (via the 'ErrorMessageResourceType' 
         ///     and 'ErrorMessageResourceName' properties) points to an existing
         ///     language resource.
         /// </summary>
         /// <param name="member">The member to examine.</param>
         /// <param name="ignoreIfAttributeNotPresent">Flag indicating if no exception should be thrown if the member does not have a [Required] attribute.</param>
-        public static void ShouldHaveValidRequiredAttribute(this MemberInfo member, bool ignoreIfAttributeNotPresent = true)
+        public static void ShouldHaveValidValidationAttribute(this MemberInfo member, bool ignoreIfAttributeNotPresent = true)
         {
             // Setup initial conditions.
             if (member == null) throw new ArgumentNullException("member");
-            var attribute = member.GetCustomAttributes(typeof(RequiredAttribute), true).FirstOrDefault() as RequiredAttribute;
+            var attribute = member.GetCustomAttributes(typeof(ValidationAttribute), true).FirstOrDefault() as ValidationAttribute;
             if (attribute == null)
             {
                 if (ignoreIfAttributeNotPresent) return;
-                throw new AssertionException(string.Format("{0} is not present.", GetRequiredAttributeErrorMessage(member)));
+                throw new AssertionException(string.Format("{0} is not present.", GetValidationAttributeErrorMessage(member, attribute)));
             }
 
             // Extract key and type.
@@ -520,7 +520,7 @@ namespace Open.Core.Common.Testing
             if (type == null && key == null) return;
 
             // Check for existence of key and type.
-            var errorMessage = GetRequiredAttributeErrorMessage(member);
+            var errorMessage = GetValidationAttributeErrorMessage(member, attribute);
             if (type == null && key != null) throw new AssertionException(string.Format("{0} references an resource-key but not a resource-type.", errorMessage));
             if (type != null && key == null) throw new AssertionException(string.Format("{0} references an resource-type but not a resource-key.", errorMessage));
 
@@ -529,9 +529,14 @@ namespace Open.Core.Common.Testing
             if (value == null) throw new AssertionException(string.Format("{0} does not have a corresponding entry in a resource (resx) file.", errorMessage));
         }
 
-        private static string GetRequiredAttributeErrorMessage(this MemberInfo member)
+        private static string GetValidationAttributeErrorMessage(this MemberInfo member, Attribute attribute)
         {
-            return string.Format("The [Required] attribute on member '{0}' in class '{1}'", member.Name, member.DeclaringType.Name);
+            var attributeName = attribute == null ? typeof (ValidationAttribute).Name : attribute.GetType().Name;
+            var msg = string.Format("The [{0}] on member '{1}' in class '{2}'",
+                            attributeName,
+                            member.Name, 
+                            member.DeclaringType.Name);
+            return msg;
         }
         #endregion
 

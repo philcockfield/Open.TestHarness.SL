@@ -412,7 +412,7 @@ namespace Open.Core.Common.Test.Extensions
         [TestMethod]
         public void ShouldHaveRequiredAttributeLanguageResourceOnType()
         {
-            typeof (ResourceStub).ShouldHaveValidRequiredAttributes();
+            typeof (ResourceStub).ShouldHaveValidValidationAttributes();
         }
 
         [TestMethod]
@@ -425,18 +425,25 @@ namespace Open.Core.Common.Test.Extensions
             var prop3 = type.GetProperty("Prop3");
             var prop4 = type.GetProperty("Prop4");
             var prop5 = type.GetProperty("Prop5");
+            var prop6 = type.GetProperty("Prop6");
+            var prop7 = type.GetProperty("Prop7");
 
-            prop1.ShouldHaveValidRequiredAttribute();
-            Should.Throw<AssertionException>(() => prop2.ShouldHaveValidRequiredAttribute());
-            Should.Throw<AssertionException>(() => prop3.ShouldHaveValidRequiredAttribute());
-            prop4.ShouldHaveValidRequiredAttribute();
-            Should.Throw<AssertionException>(() => prop5.ShouldHaveValidRequiredAttribute());
+            // [Required]
+            prop1.ShouldHaveValidValidationAttribute();
+            Should.Throw<AssertionException>(() => prop2.ShouldHaveValidValidationAttribute());
+            Should.Throw<AssertionException>(() => prop3.ShouldHaveValidValidationAttribute());
+            prop4.ShouldHaveValidValidationAttribute();
+            Should.Throw<AssertionException>(() => prop5.ShouldHaveValidValidationAttribute());
+
+            // [RegularExpression]
+            prop6.ShouldHaveValidValidationAttribute(false);
+            Should.Throw<AssertionException>(() => prop7.ShouldHaveValidValidationAttribute());
         }
 
         [TestMethod]
         public void ShouldNotHaveRequiredAttributeLanguageResourceFromAssembly()
         {
-            Should.Throw<AssertionException>(() => GetType().Assembly.ShouldHaveValidRequiredAttributes());
+            Should.Throw<AssertionException>(() => GetType().Assembly.ShouldHaveValidValidationAttributes());
         }
 
         [TestMethod]
@@ -444,7 +451,7 @@ namespace Open.Core.Common.Test.Extensions
         {
             var type = typeof(Stub);
             var prop4 = type.GetProperties().First();
-            Should.Throw<AssertionException>(() => prop4.ShouldHaveValidRequiredAttribute(false));
+            Should.Throw<AssertionException>(() => prop4.ShouldHaveValidValidationAttribute(false));
         }
         #endregion
 
@@ -604,5 +611,11 @@ namespace Open.Core.Common.Test.Extensions
 
         [Required(ErrorMessageResourceType = typeof(string), ErrorMessageResourceName = "MyKey")]
         public string Prop5 { get; set; }
+
+        [RegularExpression("[0.9]", ErrorMessageResourceType = typeof(TestStrings), ErrorMessageResourceName = "MyKey")]
+        public string Prop6 { get; set; }
+
+        [RegularExpression("[0.9]", ErrorMessageResourceType = typeof(TestStrings), ErrorMessageResourceName = "FOO")]
+        public string Prop7 { get; set; }
     }
 }
