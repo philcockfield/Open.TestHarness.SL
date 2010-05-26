@@ -22,7 +22,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Common.Test.Core.Extensions.Resource_File;
 using Open.Core.Common.Testing;
 using Open.Core.Composite;
 
@@ -405,6 +408,44 @@ namespace Open.Core.Common.Test.Extensions
             var assembly = GetType().Assembly;
             Should.Throw<AssertionException>(() => assembly.ShouldInstantiateAllTypes<ConstructorStubFailureChild>());
         }
+
+        [TestMethod]
+        public void ShouldHaveRequiredAttributeLanguageResourceOnType()
+        {
+            typeof (ResourceStub).ShouldHaveValidRequiredAttributes();
+        }
+
+        [TestMethod]
+        public void ShouldCheckRequiredAttributeLanguageResourceOnAttribute()
+        {
+            var type = typeof (ResourceStubSamples);
+
+            var prop1 = type.GetProperty("Prop1");
+            var prop2 = type.GetProperty("Prop2");
+            var prop3 = type.GetProperty("Prop3");
+            var prop4 = type.GetProperty("Prop4");
+            var prop5 = type.GetProperty("Prop5");
+
+            prop1.ShouldHaveValidRequiredAttribute();
+            Should.Throw<AssertionException>(() => prop2.ShouldHaveValidRequiredAttribute());
+            Should.Throw<AssertionException>(() => prop3.ShouldHaveValidRequiredAttribute());
+            prop4.ShouldHaveValidRequiredAttribute();
+            Should.Throw<AssertionException>(() => prop5.ShouldHaveValidRequiredAttribute());
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveRequiredAttributeLanguageResourceFromAssembly()
+        {
+            Should.Throw<AssertionException>(() => GetType().Assembly.ShouldHaveValidRequiredAttributes());
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfAttributeNotPresent()
+        {
+            var type = typeof(Stub);
+            var prop4 = type.GetProperties().First();
+            Should.Throw<AssertionException>(() => prop4.ShouldHaveValidRequiredAttribute(false));
+        }
         #endregion
 
         #region EventBus Assertions
@@ -535,12 +576,33 @@ namespace Open.Core.Common.Test.Extensions
     }
     public class ConstructorStubFailureChild : ConstructorStubFailure{}
 
-
     public class Stub
     {
         public string Text { get; set; }
         public ConstructorStub Child { get; set; }
     }
 
+    public class ResourceStub
+    {
+        [Required(ErrorMessageResourceType = typeof(TestStrings), ErrorMessageResourceName = "MyKey")]
+        public string Text { get; set; }
+    }
 
+    public class ResourceStubSamples
+    {
+        [Required(ErrorMessageResourceType = typeof(TestStrings), ErrorMessageResourceName = "MyKey")]
+        public string Prop1 { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(TestStrings))]
+        public string Prop2 { get; set; }
+
+        [Required(ErrorMessageResourceName = "MyKey")]
+        public string Prop3 { get; set; }
+
+        [Required]
+        public string Prop4 { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(string), ErrorMessageResourceName = "MyKey")]
+        public string Prop5 { get; set; }
+    }
 }

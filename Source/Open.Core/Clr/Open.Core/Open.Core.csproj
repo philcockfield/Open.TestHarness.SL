@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -170,6 +171,9 @@
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Extensions\EnumExtensions.cs">
       <Link>Extensions\EnumExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Extensions\EventExtensions.cs">
+      <Link>Extensions\EventExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Extensions\Extensions.cs">
       <Link>Exceptions\Extensions.cs</Link>

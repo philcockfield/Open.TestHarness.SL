@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
@@ -235,32 +236,41 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             readCollection[0].ToString().ShouldBe("http://site.com/");
         }
 
-        [TestMethod]
-        [Ignore]
-        public void ShouldReturnSameInstanceAfterCreatingDefaultValue()
-        {
-            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false, StoreAsXml = true };
-            var value1 = stub.List;
-            var value2 = stub.List;
-            value1.ShouldBe(value2);
-        }
+        //[TestMethod]
+        //[Ignore]
+        //public void ShouldReturnSameInstanceAfterCreatingDefaultValue()
+        //{
+        //    var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false, StoreAsXml = true };
+        //    var value1 = stub.List;
+        //    var value2 = stub.List;
+        //    value1.ShouldBe(value2);
+        //}
 
 
+        [Tag("foo")]
         [TestMethod]
         [Ignore]
         public void ShouldSerializeList()
         {
-            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false, StoreAsXml = true };
-            stub.List.ShouldBeInstanceOfType<List<string>>();
+            // TODO : Phil
 
-            stub.List.Add("one");
-            stub.List.Add("two");
-            stub.List.Count.ShouldBe(2);
+            var mock = new ListMock();
+            mock.List.Count().ShouldBe(0);
 
-            stub.Save();
-            stub.List.Count.ShouldBe(2);
+            mock.Add("one");
+            mock.Add("two");
+            mock.List.Count().ShouldBe(2);
+
+            mock.Save();
+            mock.List.Count().ShouldBe(2);
+
+            // ---
+
+            mock = new ListMock();
+            mock.List.Count().ShouldBe(2);
+            mock.List.ShouldContain("one");
+            mock.List.ShouldContain("two");
         }
-
         #endregion
 
         #region Stubs
@@ -288,12 +298,30 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             {
                 get { return GetPropertyValue<Stub, ObservableCollection<string>>(m => m.TextCollection, new ObservableCollection<string>()); }
             }
-
-            public List<string> List
-            {
-                get { return GetPropertyValue<Stub, List<string>>(m => m.List, new List<string>()); }
-            }
             #endregion
+        }
+
+        private class ListMock : IsolatedStorageModelBase
+        {
+            private readonly List<string> list;
+            public ListMock() : base(IsolatedStorageType.Application, "Test.IsoStore.ListMock")
+            {
+                list = GetList();
+                StoreAsXml = true;
+                AutoSave = false;
+            }
+            public IEnumerable<string> List { get { return list; } }
+            public void Add(string value) { list.Add(value); }
+
+            private List<string> GetList()
+            {
+                return GetPropertyValue<ListMock, List<string>>(m => m.List, new List<string>());
+            }
+            protected override void OnBeforeSave()
+            {
+                base.OnBeforeSave();
+                SetPropertyValue<ListMock, List<string>>(m => m.List, list);
+            }
         }
         #endregion
     }

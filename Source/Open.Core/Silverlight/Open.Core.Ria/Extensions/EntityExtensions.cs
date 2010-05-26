@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,7 +7,7 @@ using Open.Core.Common;
 
 namespace Open.Core.Ria
 {
-    public static class EntityExtensions
+    public static partial class EntityExtensions
     {
         /// <summary>Adds a validation-error to the given entity.</summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
@@ -78,25 +76,6 @@ namespace Open.Core.Ria
             else
             {
                 RemoveValidationError(entity, properties);
-            }
-        }
-
-        /// <summary>Fires the 'PropertyChanged' event for the specified properties on the Entity.</summary>
-        /// <typeparam name="T">The tpe of the entity.</typeparam>
-        /// <param name="entity">The entity to fire from.</param>
-        /// <param name="onPropertyChangedMethod">Pointer to the 'OnPropertyChanged' method on the entity.</param>
-        /// <param name="properties">
-        ///    The collection of expressions that represent the properties 
-        ///    that have changed (for example 'n => n.PropertyName'.)
-        /// </param>
-        public static void FirePropertyChanged<T>(
-            this Entity entity, 
-            Action<PropertyChangedEventArgs> onPropertyChangedMethod, 
-            params Expression<Func<T, object>>[] properties)
-        {
-            foreach (var expression in properties)
-            {
-                onPropertyChangedMethod(new PropertyChangedEventArgs(expression.GetPropertyName()));
             }
         }
     }

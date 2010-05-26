@@ -68,6 +68,7 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.ComponentModel.Composition.Initialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=2.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows" />
@@ -100,6 +101,7 @@
     <Compile Include="Enumerations\Icons %28Enum%29.cs" />
     <Compile Include="Exceptions\CodeGenerationException.cs" />
     <Compile Include="Exceptions\NotInitializedException.cs" />
+    <Compile Include="Extensions\EventExtensions.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />

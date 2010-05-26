@@ -100,6 +100,13 @@ namespace Open.Core.Common
                 OnPropertyChanged(property.GetPropertyName());
             }
         }
+
+        /// <summary>Fires the 'PropertyChanged' event.</summary>
+        /// <param name="e">The event args.</param>
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            Invoker.OnPropertyChanged(e);
+        }
         #endregion
     }
 }

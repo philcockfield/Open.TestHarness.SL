@@ -48,19 +48,12 @@ namespace Open.Core.Common
         #endregion
 
         #region Methods
-
         /// <summary>Fires the 'PropertyChanged' event.</summary>
         /// <param name="propertyName">The name of the property that has changed.</param>
         public void OnPropertyChanged(string propertyName)
         {
-            if (syncContext != null)
-            {
-                syncContext.Send(obj => FirePropertyChanged(propertyName), null);
-            }
-            else
-            {
-                FirePropertyChanged(propertyName);
-            }
+            if (propertyName.IsNullOrEmpty(true)) throw new ArgumentNullException("propertyName");
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>Fires the 'PropertyChanged' event for a collection of properties.</summary>
@@ -73,13 +66,21 @@ namespace Open.Core.Common
                 OnPropertyChanged(name);
             }
         }
-        #endregion
 
-        #region Internal
-        private void FirePropertyChanged(string propertyName)
+        /// <summary>Fires the 'PropertyChanged' event.</summary>
+        /// <param name="e">The event args.</param>
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (propertyName.AsNullWhenEmpty() == null) throw new ArgumentNullException("propertyName");
-            fireEvent(new PropertyChangedEventArgs(propertyName));
+            if (e == null) throw new ArgumentNullException("e");
+
+            if (syncContext != null)
+            {
+                syncContext.Send(obj => fireEvent(e), null);
+            }
+            else
+            {
+                fireEvent(e);
+            }
         }
         #endregion
     }

@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -184,7 +185,10 @@ namespace Open.Core.Common.Testing
         {
             var value1 = property.GetGetMethod(true).Invoke(obj1, null);
             var value2 = property.GetGetMethod(true).Invoke(obj2, null);
-            value1.ShouldEqual(value2);
+            if (!Equals(value1, value2))
+            {
+                throw new AssertionException(string.Format("The property '{0}' is not the same on both objects.", property.Name));
+            }
         }
         #endregion
 
@@ -454,6 +458,80 @@ namespace Open.Core.Common.Testing
 
             // Finish up.
             return false;
+        }
+        #endregion
+
+        #region Method - ShouldHaveValidRequiredAttributes
+        /// <summary>
+        ///     Ensures that any property or field decorated with the [Required] attribute
+        ///     that references a language resource (via the 'ErrorMessageResourceType' 
+        ///     and 'ErrorMessageResourceName' properties) points to an existing
+        ///     language resource.
+        /// </summary>
+        /// <param name="assembly">The assembly containing the types to examine.</param>
+        public static void ShouldHaveValidRequiredAttributes(this Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            foreach (var type in assembly.GetTypes())
+            {
+                ShouldHaveValidRequiredAttributes(type);
+            }
+        }
+
+        /// <summary>
+        ///     Ensures that any property or field decorated with the [Required] attribute
+        ///     that references a language resource (via the 'ErrorMessageResourceType' 
+        ///     and 'ErrorMessageResourceName' properties) points to an existing
+        ///     language resource.
+        /// </summary>
+        /// <param name="type">The type to examine.</param>
+        public static void ShouldHaveValidRequiredAttributes(this Type type)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+
+            foreach (var memberInfo in type.GetMembers())
+            {
+                memberInfo.ShouldHaveValidRequiredAttribute();
+            }
+        }
+
+        /// <summary>
+        ///     Ensures that the [Required] attribute
+        ///     that references a language resource (via the 'ErrorMessageResourceType' 
+        ///     and 'ErrorMessageResourceName' properties) points to an existing
+        ///     language resource.
+        /// </summary>
+        /// <param name="member">The member to examine.</param>
+        /// <param name="ignoreIfAttributeNotPresent">Flag indicating if no exception should be thrown if the member does not have a [Required] attribute.</param>
+        public static void ShouldHaveValidRequiredAttribute(this MemberInfo member, bool ignoreIfAttributeNotPresent = true)
+        {
+            // Setup initial conditions.
+            if (member == null) throw new ArgumentNullException("member");
+            var attribute = member.GetCustomAttributes(typeof(RequiredAttribute), true).FirstOrDefault() as RequiredAttribute;
+            if (attribute == null)
+            {
+                if (ignoreIfAttributeNotPresent) return;
+                throw new AssertionException(string.Format("{0} is not present.", GetRequiredAttributeErrorMessage(member)));
+            }
+
+            // Extract key and type.
+            var type = attribute.ErrorMessageResourceType;
+            var key = attribute.ErrorMessageResourceName.AsNullWhenEmpty();
+            if (type == null && key == null) return;
+
+            // Check for existence of key and type.
+            var errorMessage = GetRequiredAttributeErrorMessage(member);
+            if (type == null && key != null) throw new AssertionException(string.Format("{0} references an resource-key but not a resource-type.", errorMessage));
+            if (type != null && key == null) throw new AssertionException(string.Format("{0} references an resource-type but not a resource-key.", errorMessage));
+
+            // Check that the resource exists.
+            var value = type.GetProperty(key, BindingFlags.Public | BindingFlags.Static);
+            if (value == null) throw new AssertionException(string.Format("{0} does not have a corresponding entry in a resource (resx) file.", errorMessage));
+        }
+
+        private static string GetRequiredAttributeErrorMessage(this MemberInfo member)
+        {
+            return string.Format("The [Required] attribute on member '{0}' in class '{1}'", member.Name, member.DeclaringType.Name);
         }
         #endregion
 
