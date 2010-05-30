@@ -3,13 +3,11 @@ using System.Linq;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
-using Open.TestHarness.Automation;
 using Open.TestHarness.Model;
 using Open.Core.Common.Testing;
 
 namespace Open.TestHarness.Test.UnitTests.Model
 {
-    [Tag("current")]
     [TestClass]
     public class QueryStringTest
     {

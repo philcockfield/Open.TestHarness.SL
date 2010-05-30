@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Open.Core.Common
 {

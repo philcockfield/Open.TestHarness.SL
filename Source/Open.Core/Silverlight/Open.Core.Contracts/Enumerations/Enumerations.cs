@@ -104,4 +104,17 @@ namespace Open.Core
         Left,
         Right
     }
+
+    /// <summary>Possible responses to a prompt (eg. within a dialog box.</summary>
+    public enum PromptResult
+    {
+        /// <summary>The user accepts the prompt or new state configuration(OK, Yes).</summary>
+        Accept,
+
+        /// <summary>The user rejects the prompt or current state (No).</summary>
+        Decline,
+
+        /// <summary>The user cancels the operation leaving the current state unchanged (Cancel, Ignore).</summary>
+        Cancel
+    }
 }

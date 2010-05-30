@@ -1,14 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.ComponentModel.Composition;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
@@ -17,7 +7,6 @@ using Open.Core.UI.Controls.Controls.ToolBar.Events;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar.Events
 {
-    [Tag("current")]
     [TestClass]
     public class ToolStateEventTest : SilverlightUnitTest
     {

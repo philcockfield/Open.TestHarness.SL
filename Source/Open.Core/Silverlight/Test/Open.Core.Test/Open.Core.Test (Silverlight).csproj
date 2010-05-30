@@ -111,6 +111,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\Buttons\ButtonModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ContentContainerTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
+    <Compile Include="UnitTests\Core.UI.Controls\Prompts\PromptButtonsViewModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\TemplatesTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\ButtonToolTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ToolBar\Events\ToolStateEventTest.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="ViewTests\Core.UI.Controls\IconImage.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\PostItViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Prompts\PromptButtonsViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ButtonToolViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\ViewFactoryContentViewTest.cs" />

@@ -88,6 +88,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Prompts\IPromptButtons.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\Events\ISaveFileDialogEvent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\Events\IOpenFileDialogEvent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\ISaveFileDialog.cs" />

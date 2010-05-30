@@ -1,16 +1,11 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Windows;
-using Microsoft.Silverlight.Testing;
+﻿using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
-using Open.Core.Composite;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
-    [Tag("current")]
     [TestClass]
     public class ToolBaseTest : SilverlightUnitTest
     {

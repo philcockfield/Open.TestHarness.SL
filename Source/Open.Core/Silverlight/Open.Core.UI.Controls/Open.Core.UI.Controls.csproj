@@ -211,6 +211,10 @@
       <DependentUpon>PostIt.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProgressBar\ProgressBarFlat.cs" />
+    <Compile Include="Controls\Prompts\PromptButtons.xaml.cs">
+      <DependentUpon>PromptButtons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Prompts\PromptButtonsViewModel.cs" />
     <Compile Include="Controls\Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
@@ -237,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PostIt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Prompts\PromptButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

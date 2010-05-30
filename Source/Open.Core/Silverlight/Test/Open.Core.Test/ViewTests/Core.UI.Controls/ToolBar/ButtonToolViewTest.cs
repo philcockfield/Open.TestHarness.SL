@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
+using Open.Core.Composite;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
@@ -12,6 +13,9 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         #region Head
         [Import(typeof(IButtonTool))]
         public ExportFactory<IButtonTool> ToolCreator { get; set; }
+
+        [Import]
+        public IEventBus EventBus { get; set; }
 
         private IButtonTool tool;
         private IconImage currentSmallIcon;
@@ -32,8 +36,15 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             iconLarge = "/Images/Icon.Clipboard.png".ToImageSource().ToImage();
 
             // Wire up events.
-            tool.Click += delegate { Output.Write("!! Click"); };
+//            tool.Click += delegate { Output.Write("!! Click"); };
+            EventBus.Subscribe<IToolEvent>(OnClick);
         }
+
+        public void OnClick(IToolEvent e)
+        {
+            Output.Write("!! Click");
+        }
+
         #endregion
 
         #region Tests

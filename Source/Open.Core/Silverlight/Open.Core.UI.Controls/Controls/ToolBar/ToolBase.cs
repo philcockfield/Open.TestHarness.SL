@@ -102,8 +102,13 @@ namespace Open.Core.UI.Controls
         }
 
         /// <summary>Fires the executed event through the EventBus.</summary>
-        protected virtual void PublishToolEvent() 
+        /// <param name="force">
+        ///     The event is not fired if the tool is not enabled.  
+        ///     Setting force to true will cause the event to fire even if the button is disabled.
+        /// </param>
+        protected virtual void PublishToolEvent(bool force = false) 
         {
+            if (!IsEnabled && !force) return;
             EventBus.Publish<IToolEvent>(new ToolEvent { ToolId = Id });
         }
         #endregion
