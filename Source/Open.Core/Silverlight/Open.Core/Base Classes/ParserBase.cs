@@ -37,11 +37,13 @@ namespace Open.Core.Common
 
         /// <summary>Constructor.</summary>
         /// <param name="stream">Stream containing the CSV file (NB: This will cause the stream to be closed).</param>
-        protected ParserBase(Stream stream) : this(ReadStream(stream)) { }
+        /// <param name="autoParse">Flag indicating if the parse method is called suring construction.</param>
+        protected ParserBase(Stream stream, bool autoParse = true) : this(ReadStream(stream), autoParse) { }
 
         /// <summary>Constructor.</summary>
         /// <param name="rawText">The raw CSV text.</param>
-        protected ParserBase(string rawText)
+        /// <param name="autoParse">Flag indicating if the parse method is called suring construction.</param>
+        protected ParserBase(string rawText, bool autoParse = true)
         {
             RawText = rawText.AsNullWhenEmpty();
             Lines = RawText == null 
@@ -49,6 +51,8 @@ namespace Open.Core.Common
                                 : RawText.Split(Environment.NewLine.ToCharArray()).Where(m => !m.IsNullOrEmpty(true));
 
             Delimiter = defaultDelimiter;
+
+            if (autoParse) Parse();
         }
         #endregion
 
@@ -71,7 +75,14 @@ namespace Open.Core.Common
         public IEnumerable<string> Lines { get; private set; }
 
         /// <summary>Gets the collection of models parsed out of the CSV file.</summary>
-        public IEnumerable<TModel> Models { get { return models ?? (models = Parse()); } }
+        public IEnumerable<TModel> Models
+        {
+            get
+            {
+                if (models == null) Parse();
+                return models;
+            }
+        }
         #endregion
 
         #region Methods - Protected
@@ -79,9 +90,15 @@ namespace Open.Core.Common
         /// <param name="fields">The collection of fields split from a single line within the CSV file.</param>
         protected abstract TModel CreateModel(string[] fields);
 
+        /// <summary>Invoked after the parser operation completes.</summary>
+        protected virtual void OnParsed(){}
 
-
-
+        /// <summary>Forces the parser to parse content (this is automatically called when accessing the 'Models' property).</summary>
+        public void Parse()
+        {
+            models = GetParsedModels();
+            OnParsed();
+        }
         #endregion
 
         #region Internal
@@ -97,7 +114,7 @@ namespace Open.Core.Common
             }
         }
 
-        private IEnumerable<TModel> Parse()
+        private IEnumerable<TModel> GetParsedModels()
         {
             // Setup initial conditions.
             if (Lines.Count() == 0) return new TModel[] { };

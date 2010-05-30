@@ -94,12 +94,41 @@ namespace Open.Core.Common.Test.Core.Base_Classes
             parser.Models.ElementAt(1).Value.ShouldBe("Two");
             parser.Models.ElementAt(2).Value.ShouldBe(null);
         }
+
+        [TestMethod]
+        public void ShouldInvokeOnParsedFromModelsCall()
+        {
+            var parser = new Mock(GetStream(), false);
+            parser.OnParsedCount.ShouldBe(0);
+
+            var m = parser.Models;
+            parser.OnParsedCount.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldInvokeOnParsedFromParseMethodCall()
+        {
+            var parser = new Mock(GetStream(), false);
+            parser.OnParsedCount.ShouldBe(0);
+
+            parser.Parse();
+            parser.OnParsedCount.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldParseOnConstruction()
+        {
+            var parser = new Mock(GetStream(), autoParse:true);
+            parser.OnParsedCount.ShouldBe(1);
+        }
         #endregion
 
         public class Mock : ParserBase<MyModel>
         {
-            public Mock(Stream stream) : base(stream){}
-            public Mock(string rawText) : base(rawText){}
+            public Mock(Stream stream, bool autoParse = true) : base(stream, autoParse) { }
+            public Mock(string rawText, bool autoParse = true) : base(rawText, autoParse) { }
+
+            public int OnParsedCount;
 
             protected override MyModel CreateModel(string[] fields)
             {
@@ -108,6 +137,12 @@ namespace Open.Core.Common.Test.Core.Base_Classes
                                Name = fields.ElementAtOrDefault(0).AsNullWhenEmpty(),
                                Value = fields.ElementAtOrDefault(1).AsNullWhenEmpty(),
                            };
+            }
+
+            protected override void OnParsed()
+            {
+                base.OnParsed();
+                OnParsedCount++;
             }
         }
 
