@@ -31,12 +31,12 @@ namespace Open.Core.Common
 {
     public static partial class LinqExtensions
     {
-        /// <summary>Extracts the property name that is referenced in the given from lambda expression.</summary>
+        /// <summary>Extracts the PropertyInfo that is referenced in the given from lambda expression.</summary>
         /// <typeparam name="T">The type of object that exposes the property.</typeparam>
         /// <param name="expression">The property expression to evaluate (for example 'n => n.PropertyName').</param>
         /// <returns>The name of the property, or null if a property could not be derived from the expression.</returns>
         /// <exception cref="ArgumentException">Is thrown if an expression that does not take the property form is passed.</exception>
-        public static string GetPropertyName<T>(this Expression<Func<T, object>> expression)
+        public static PropertyInfo GetPropertyInfo<T>(this Expression<Func<T, object>> expression)
         {
             // Setup initial conditions.
             if (expression == null) throw new ArgumentNullException("expression");
@@ -56,7 +56,18 @@ namespace Open.Core.Common
             if (memberExpression == null) throw new ArgumentException("Please provide a lambda expression like 'n => n.PropertyName'", "expression");
 
             // Extract the name from the expression.
-            var propertyInfo = memberExpression.Member as PropertyInfo;
+            return memberExpression.Member as PropertyInfo;
+        }
+
+
+        /// <summary>Extracts the property name that is referenced in the given from lambda expression.</summary>
+        /// <typeparam name="T">The type of object that exposes the property.</typeparam>
+        /// <param name="expression">The property expression to evaluate (for example 'n => n.PropertyName').</param>
+        /// <returns>The name of the property, or null if a property could not be derived from the expression.</returns>
+        /// <exception cref="ArgumentException">Is thrown if an expression that does not take the property form is passed.</exception>
+        public static string GetPropertyName<T>(this Expression<Func<T, object>> expression)
+        {
+            var propertyInfo = expression.GetPropertyInfo();
             return propertyInfo == null ? null : propertyInfo.Name;
         }
 

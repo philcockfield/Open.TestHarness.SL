@@ -455,6 +455,48 @@ namespace Open.Core.Common.Test.Extensions
         }
         #endregion
 
+        #region Tests - Serialization
+        [TestMethod]
+        public void ShouldSerializeTwoTypes()
+        {
+            SerializeMockBase.CreatedCount = 0;
+            GetType().Assembly.ShouldSerializeAllTypesOf<SerializeMockBase>();
+            SerializeMockBase.CreatedCount.ShouldBe(2);
+        }
+
+        [TestMethod]
+        public void ShouldSerializeOneType()
+        {
+            SerializeMockBase.CreatedCount = 0;
+            GetType().Assembly.ShouldSerializeAllTypesOf<SerializeMock2>();
+            SerializeMockBase.CreatedCount.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldFailToSerializeOneType()
+        {
+            Should.Throw<AssertionException>(() => GetType().Assembly.ShouldSerializeAllTypesOf<SerializeMockError>());
+        }
+
+        public abstract class SerializeMockBase : ModelBase
+        {
+            public static int CreatedCount;
+            protected SerializeMockBase()
+            {
+                CreatedCount++;
+            }
+        }
+        public class SerializeMock1 : SerializeMockBase { }
+        public class SerializeMock2 : SerializeMock1 { }
+        private class SerializeMock3 : SerializeMockBase { }
+        private abstract class SerializeMock4 : SerializeMockBase { }
+
+        public class SerializeMockError
+        {
+            public SerializeMockError(string value) { }
+        }
+        #endregion
+
         #region EventBus Assertions
         [TestMethod]
         public void ShouldDoNothingWhenUnsubscribingFromEventThatHasNotBeenSubscribedTo()

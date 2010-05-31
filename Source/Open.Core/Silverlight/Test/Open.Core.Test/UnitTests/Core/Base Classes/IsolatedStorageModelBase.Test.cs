@@ -236,18 +236,6 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             readCollection[0].ToString().ShouldBe("http://site.com/");
         }
 
-        //[TestMethod]
-        //[Ignore]
-        //public void ShouldReturnSameInstanceAfterCreatingDefaultValue()
-        //{
-        //    var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false, StoreAsXml = true };
-        //    var value1 = stub.List;
-        //    var value2 = stub.List;
-        //    value1.ShouldBe(value2);
-        //}
-
-
-        [Tag("foo")]
         [TestMethod]
         [Ignore]
         public void ShouldSerializeList()

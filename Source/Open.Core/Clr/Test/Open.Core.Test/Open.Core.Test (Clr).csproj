@@ -94,6 +94,7 @@
     <Compile Include="Core.UI\IconTest.cs" />
     <Compile Include="Core\Attributes\ViewTestAttributeTest.cs" />
     <Compile Include="Core\Attributes\ViewTestClassAttributeTest.cs" />
+    <Compile Include="Core\Base Classes\AutoPropertyManagerTest.cs" />
     <Compile Include="Core\Base Classes\DisposableBaseTest.cs" />
     <Compile Include="Core\Base Classes\NotifyPropertyChangedBaseTest.cs" />
     <Compile Include="Core\Base Classes\ParserBaseTest.cs" />

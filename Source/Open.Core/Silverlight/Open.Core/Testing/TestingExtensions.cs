@@ -422,7 +422,7 @@ namespace Open.Core.Common.Testing
         {
             // Setup initial conditions.
             if (assembly == null) throw new ArgumentNullException("assembly");
-            var baseType = typeof (T);
+            var baseType = typeof(T);
             errorMessage = null;
 
             // Get the types.
@@ -531,10 +531,10 @@ namespace Open.Core.Common.Testing
 
         private static string GetValidationAttributeErrorMessage(this MemberInfo member, Attribute attribute)
         {
-            var attributeName = attribute == null ? typeof (ValidationAttribute).Name : attribute.GetType().Name;
+            var attributeName = attribute == null ? typeof(ValidationAttribute).Name : attribute.GetType().Name;
             var msg = string.Format("The [{0}] on member '{1}' in class '{2}'",
                             attributeName,
-                            member.Name, 
+                            member.Name,
                             member.DeclaringType.Name);
             return msg;
         }
@@ -599,6 +599,95 @@ namespace Open.Core.Common.Testing
             public void OnFire(TEvent e)
             {
                 FireCount++;
+            }
+        }
+        #endregion
+
+        #region Methods - Serialization
+        /// <summary>Asserts that all public (non-abstract) classes deriving from the given type within the assembly can be serialized.</summary>
+        /// <typeparam name="TBase">The base type.</typeparam>
+        /// <param name="assembly">The assembly to look within.</param>
+        /// <returns>The types that were checked.</returns>
+        public static IEnumerable<Type> ShouldSerializeAllTypesOf<TBase>(this Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            var types = assembly.GetTypes()
+                            .Where(m => !m.IsAbstract && m.IsA<TBase>() && (m.IsNestedPublic || m.IsPublic));
+            types.ShouldSerialize();
+            return types;
+        }
+
+        /// <summary>Asserts that all the given types can be serialized.</summary>
+        /// <param name="types">The collection of types to examine.</param>
+        public static void ShouldSerialize(this IEnumerable<Type> types)
+        {
+            // Setup initial conditions.
+            if (types == null) throw new ArgumentNullException("types");
+            var errorList = new List<string>();
+
+            // Attempt to serialize each type.
+            const string bullet = "- ";
+            foreach (var type in types)
+            {
+                try
+                {
+                    type.ShouldSerialize();
+                }
+                catch (Exception error)
+                {
+                    errorList.Add(string.Format("{0}{1}{2}", bullet, error.Message, Environment.NewLine));
+                }
+            }
+
+            // Raise assertion error if required.
+            if (errorList.IsEmpty()) return;
+            if (errorList.Count == 1)
+            {
+                var message = errorList.First().RemoveStart(bullet).RemoveEnd(Environment.NewLine);
+                throw new AssertionException(message);
+            }
+            else
+            {
+                var message = string.Format("The following types could not be serialized:\r\n{0}", errorList.ToLines());
+                throw new AssertionException(message);
+            }
+        }
+
+        /// <summary>Asserts that an instance of the given object can be serialized.</summary>
+        /// <param name="type">The type to serialize ().</param>
+        public static void ShouldSerialize(this Type type)
+        {
+            // Create the instance to serialize.
+            object instance = null;
+            try
+            {
+                instance = Activator.CreateInstance(type);
+            }
+            catch (Exception error)
+            {
+                var message = string.Format(
+                        "The type '{0}' could not be instantiated.  Ensure it is public and has a parameterless constructor.{1}",
+                        type.FullName,
+                        Environment.NewLine);
+                throw new AssertionException(message, error);
+            }
+
+            // Assert that it can be serialized.
+            instance.ShouldSerialize();
+        }
+
+        /// <summary>Asserts that the given object can be serialized.</summary>
+        /// <param name="self">The object instance to serialize.</param>
+        public static void ShouldSerialize(this object self)
+        {
+            if (self == null) throw new ArgumentNullException("self");
+            try
+            {
+                self.ToSerializedXml().Length.ShouldNotBe(0);
+            }
+            catch (Exception error)
+            {
+                throw new AssertionException(string.Format("The type '{0}' could not be serialized.", self.GetType().FullName), error);
             }
         }
         #endregion

@@ -20,7 +20,10 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 using System.IO;
@@ -31,12 +34,6 @@ namespace Open.Core.Common.Test.Model
     public class ModelBaseTest
     {
         #region Test
-        [TestMethod]
-        public void ShouldExist()
-        {
-            var model = new ModelStub();
-        }
-
         [TestMethod]
         public void ShouldDispose()
         {
@@ -96,8 +93,9 @@ namespace Open.Core.Common.Test.Model
             model.TestOnPropertyChanged("Name1", "Name2");
             eventCount.ShouldBe(2);
         }
+        #endregion
 
-
+        #region Tests - Serializable
         [TestMethod]
         public void ShouldBeSerializable()
         {
@@ -106,10 +104,37 @@ namespace Open.Core.Common.Test.Model
             var stream = new MemoryStream();
 
             dcs.WriteObject(stream, model);
+            stream.Length.ShouldNotBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldBeSerializableToXml()
+        {
+            var model = new ModelStub();
+            var xml = model.ToSerializedXml();
+            xml.Length.ShouldNotBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldSerializeModelsWithNoMembers()
+        {
+            var model = new ModelEmpty();
+            model.ShouldSerialize();
+        }
+
+        [TestMethod]
+        public void AllDerivedModelsShouldBeSerializable()
+        {
+            GetType().Assembly.ShouldSerializeAllTypesOf<ModelBase>();
         }
         #endregion
 
         #region Stubs
+        public class ModelEmpty : ModelBase
+        {
+        }
+
+
         public class ModelStub : ModelBase
         {
             #region Head

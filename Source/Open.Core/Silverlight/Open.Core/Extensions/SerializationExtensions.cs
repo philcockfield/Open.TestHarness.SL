@@ -31,7 +31,7 @@ using System.Xml;
 
 namespace Open.Core.Common
 {
-    public static class SerializationExtensions
+    public static partial class SerializationExtensions
     {
         #region XML Serialization (Data Contract)
         /// <summary>Takes a WCF serialized XML string, and deserializes it into an object.</summary>
@@ -58,21 +58,6 @@ namespace Open.Core.Common
         #endregion
 
         #region Base64 and Stream Encoding
-        /// <summary>Converts a Base64 encoded string into a bitmap image.</summary>
-        /// <param name="self">The string containing the byte data (typically a string created from the 'Convert.ToBase64' method).</param>
-        /// <returns>The data as an image.</returns>
-        public static BitmapImage FromBase64ToImage(this string self)
-        {
-            var stream = self.FromBase64ToStream();
-            if (stream == null) return null;
-
-            var bitmap = new BitmapImage();
-            bitmap.SetSource(stream);
-
-            stream.Close();
-            return bitmap;
-        }
-
         /// <summary>Converts a Base64 encoded string into a bitmap memory stream.</summary>
         /// <param name="self">The string containing the byte data (typically a string created from the 'Convert.ToBase64' method).</param>
         /// <returns></returns>

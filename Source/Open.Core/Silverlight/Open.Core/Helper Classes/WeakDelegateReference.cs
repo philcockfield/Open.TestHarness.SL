@@ -22,7 +22,6 @@ namespace Open.Core.Common
         #endregion
 
         #region Methods
-
         public bool IsMatch(Delegate action)
         {
             if (action == null) return false;

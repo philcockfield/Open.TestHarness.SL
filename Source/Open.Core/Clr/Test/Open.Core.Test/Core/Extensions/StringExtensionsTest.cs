@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
@@ -161,6 +162,16 @@ namespace Open.Core.Common.Test.Extensions
             Should.Throw<ArgumentNullException>(() => new[] { "One"}.ToString("; ", null));
         }
 
+        [TestMethod]
+        public void ShouldConvertToLinesOfText()
+        {
+            ((IEnumerable<string> )null).ToLines().ShouldBe(null);
+            (new string[] { }).ToLines().ShouldBe(null);
+
+            new[] { "one" }.ToLines().ShouldBe("one");
+            new[] { "one", "two" }.ToLines().ShouldBe(string.Format("one\r\ntwo"));
+            new[] { "one", "two" }.ToLines().ShouldBe("one\r\ntwo");
+        }
 
         [TestMethod]
         public void ShouldLoadEmbeddedResourceFile()

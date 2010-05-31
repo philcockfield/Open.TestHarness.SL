@@ -36,23 +36,6 @@ namespace Open.Core.Common.Test.Model
     {
         #region Tests
         [TestMethod]
-        public void ShouldInvokeReadPropertyValue()
-        {
-            var stub = new Stub();
-            stub.GetPropertyValueTest<Stub, string>(m => m.MyText, null);
-            stub.ReadPropertyValueCount.ShouldBe(1);
-        }
-
-        [TestMethod]
-        public void ShouldInvokeWritePropertyValue()
-        {
-            var stub = new Stub();
-            stub.SetPropertyValueTest<Stub, string>(m => m.MyText, "Value", null);
-            stub.WritePropertyValueCount.ShouldBe(2); // NB: 2 times.  First time is stored the default value.
-            stub.IsDefaultWriteValueCount.ShouldBe(1);
-        }
-
-        [TestMethod]
         public void ShouldReturnDefaultValue()
         {
             var stub = new Stub();
@@ -232,18 +215,19 @@ namespace Open.Core.Common.Test.Model
                 return SetPropertyValue(property, value, defaultValue, fireAlso);
             }
 
-            protected override bool ReadPropertyValue<TResult>(string key, out TResult value)
-            {
-                ReadPropertyValueCount++;
-                return base.ReadPropertyValue(key, out value);
-            }
+            //TEMP 
+            //protected override bool ReadPropertyValue<TResult>(string key, out TResult value)
+            //{
+            //    ReadPropertyValueCount++;
+            //    return base.ReadPropertyValue(key, out value);
+            //}
 
-            protected override void WritePropertyValue<T>(string key, T value, bool isDefault)
-            {
-                WritePropertyValueCount++;
-                if (isDefault) IsDefaultWriteValueCount++;
-                base.WritePropertyValue(key, value, isDefault);
-            }
+            //protected override void WritePropertyValue<T>(string key, T value, bool isDefault)
+            //{
+            //    WritePropertyValueCount++;
+            //    if (isDefault) IsDefaultWriteValueCount++;
+            //    base.WritePropertyValue(key, value, isDefault);
+            //}
             #endregion
         }
         #endregion

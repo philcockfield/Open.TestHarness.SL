@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Open.Core.Common
@@ -30,14 +31,13 @@ namespace Open.Core.Common
     public partial class NotifyPropertyChangedBase
     {
         #region Head
-        private AutoPropertyManager propertyManager;
+        private Dictionary<string, object> propertyStore;
         #endregion
 
         #region Properties - Internal
-        /// <summary>Gets the manager used to store property values.</summary>
-        protected virtual AutoPropertyManager Property
+        private Dictionary<string, object> PropertyStore
         {
-            get { return propertyManager ?? (propertyManager = new AutoPropertyManager(OnPropertyChanged)); }
+            get { return propertyStore ?? (propertyStore = new Dictionary<string, object>()); }
         }
         #endregion
 
@@ -48,7 +48,8 @@ namespace Open.Core.Common
         /// <param name="property">An expression representing the property (for example 'n => n.PropertyName').</param>
         protected TResult GetPropertyValue<T, TResult>(Expression<Func<T, object>> property)
         {
-            return Property.GetValue<T, TResult>(property);
+            if (property == null) throw new ArgumentNullException("property");
+            return GetPropertyValue(property.GetPropertyName(), default(TResult));
         }
 
         /// <summary>Gets the value for the specified property from the auto-property backing store.</summary>
@@ -58,7 +59,19 @@ namespace Open.Core.Common
         /// <param name="defaultValue">The default value to use if the property has not already been stored.</param>
         protected TResult GetPropertyValue<T, TResult>(Expression<Func<T, object>> property, TResult defaultValue)
         {
-            return Property.GetValue(property, defaultValue);
+            if (property == null) throw new ArgumentNullException("property");
+            return GetPropertyValue(property.GetPropertyName(), defaultValue);
+        }
+
+        private TResult GetPropertyValue<TResult>(string propertyName, TResult defaultValue)
+        {
+            // Attempt to read the value.
+            TResult value;
+            if (ReadPropertyValue(propertyName, out value)) return value;
+
+            // Value not stored already.  Return the default value, and register it in the store (silently, without raising event).
+            WritePropertyValue(propertyName, defaultValue, true);
+            return defaultValue;
         }
         #endregion
 
@@ -80,7 +93,7 @@ namespace Open.Core.Common
         /// <returns>True if the given value was different from the current value (and therefore events were fired), otherwise False.</returns>
         protected bool SetPropertyValue<T, TResult>(Expression<Func<T, object>> property, TResult value, params Expression<Func<T, object>>[] fireAlso)
         {
-            return Property.SetValue(property, value, default(TResult), fireAlso);
+            return SetPropertyValue(property, value, default(TResult), fireAlso);
         }
 
         /// <summary>
@@ -101,15 +114,67 @@ namespace Open.Core.Common
         /// <returns>True if the given value was different from the current value (and therefore events were fired), otherwise False.</returns>
         protected bool SetPropertyValue<T, TResult>(Expression<Func<T, object>> property, TResult value, TResult defaultValue, params Expression<Func<T, object>>[] fireAlso)
         {
-            return Property.SetValue(property, value, defaultValue, fireAlso);
+            // Setup initial conditions.
+            if (property == null) throw new ArgumentNullException("property");
+            var name = property.GetPropertyName();
+
+            // Retrieve the current value.
+            var currentValue = GetPropertyValue(name, defaultValue);
+            if (Equals(currentValue, value)) return false;
+
+            // Store the value.
+            WritePropertyValue(property.GetPropertyName(), value, false);
+
+            // Alert listeners.
+            OnPropertyChanged(name);
+            FirePropertyChangedEvents(name, fireAlso);
+
+            // Finish up.
+            return true;
+        }
+        #endregion
+
+        #region Methods - Read/Write (used internally for overriding the data-store).
+        /// <summary>Gets a property value in the dictionary (DO NOT USE unless overriding auto-backing-field store).</summary>
+        /// <param name="key">The unique identifier of the value.</param>
+        /// <param name="value">The variable to return the value within</param>
+        /// <returns>True if the value exists within the store, otherwise False.</returns>
+        protected virtual bool ReadPropertyValue<T>(string key, out T value)
+        {
+            object storeValue;
+            if (PropertyStore.TryGetValue(key, out storeValue))
+            {
+                value = (T)storeValue;
+                return true;
+            }
+            value = default(T);
+            return false;
+        }
+
+        /// <summary>Stores a property value in the dictionary (DO NOT USE unless overriding auto-backing-field store).</summary>
+        /// <param name="key">The unique identifier of the value.</param>
+        /// <param name="value">The value to write.</param>
+        /// <param name="isDefaultValue">Flag indicating if</param>
+        protected virtual void WritePropertyValue<T>(string key, T value, bool isDefaultValue)
+        {
+            PropertyStore[key] = value;
         }
         #endregion
 
         #region Internal
         private void DisposeOfAutoProperties()
         {
-            if (propertyManager != null) propertyManager.Dispose();
-            propertyManager = null;
+            if (propertyStore == null) return;
+            propertyStore.Clear();
+        }
+
+        private void FirePropertyChangedEvents<T>(string excludeProperty, params Expression<Func<T, object>>[] properties)
+        {
+            foreach (var expression in properties)
+            {
+                var propertyName = expression.GetPropertyName();
+                if (propertyName != excludeProperty) OnPropertyChanged(propertyName);
+            }
         }
         #endregion
     }

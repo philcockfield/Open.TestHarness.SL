@@ -21,11 +21,9 @@
 //------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 
@@ -35,6 +33,13 @@ namespace Open.Core.Common.Test.Core.Common.Extensions
     public class LinqExtensionsTest
     {
         #region Tests
+        [TestMethod]
+        public void ShouldGetPropertyInfo()
+        {
+            var propInfo = typeof (MyStub).GetProperty("MyProp");
+            LinqExtensions.GetPropertyInfo<MyStub>(m => m.MyProp).ShouldEqual(propInfo);
+        }
+
         [TestMethod]
         public void ShouldGetPropertyName()
         {

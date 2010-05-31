@@ -361,7 +361,7 @@ namespace Open.Core.Common
         #endregion
 
         #region String - IEnumerable
-        /// <summary>Converts the collection to a comma seperated string.</summary>
+        /// <summary>Converts the collection to a comma seperated strings.</summary>
         /// <typeparam name="T">The type of object within the collection.</typeparam>
         /// <param name="self">The collection.</param>
         /// <param name="convert">Function used to convert each item to a string.</param>
@@ -370,7 +370,7 @@ namespace Open.Core.Common
             return ToString(self, ", ", convert);
         }
 
-        /// <summary>Converts the collection to a delimiter seperated string.</summary>
+        /// <summary>Converts the collection to a delimiter seperated strings.</summary>
         /// <typeparam name="T">The type of object within the collection.</typeparam>
         /// <param name="self">The collection.</param>
         /// <param name="delimiter">The delimiter to use.</param>
@@ -390,6 +390,29 @@ namespace Open.Core.Common
 
             // Finish up.
             return sb.ToString().RemoveEnd(delimiter);
+        }
+
+        /// <summary>
+        ///     Converts the collection of strings into a string with each item in the collection 
+        ///     seperated by a new-line character.
+        /// </summary>
+        /// <param name="self">The collection to convert.</param>
+        /// <param name="newLineCharacter">Option. The new line character to use. Leave null to use default Environment.NewLine</param>
+        public static string ToLines(this IEnumerable<string> self, string newLineCharacter = null)
+        {
+            // Setup initial conditions.
+            if (self == null || self.Count() == 0) return null;
+            if (newLineCharacter == null) newLineCharacter = Environment.NewLine;
+
+            // Build the string.
+            var builder = new StringBuilder();
+            foreach (var item in self)
+            {
+                builder.Append(item + newLineCharacter);
+            }
+
+            // Finish up.
+            return builder.ToString().RemoveEnd(newLineCharacter);
         }
         #endregion
 

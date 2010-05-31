@@ -101,10 +101,12 @@
     <Compile Include="Enumerations\Icons %28Enum%29.cs" />
     <Compile Include="Exceptions\CodeGenerationException.cs" />
     <Compile Include="Exceptions\NotInitializedException.cs" />
+    <Compile Include="Extensions\SerializationExtensions.silverlight.cs" />
     <Compile Include="Extensions\EventExtensions.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="Helper Classes\AutoPropertyManager.cs" />
     <Compile Include="Helper Classes\WeakDelegateReference.cs" />
     <Compile Include="Model\Base Classes\ModelBase.INotifyDataErrorInfo.partial.cs" />
     <Compile Include="Model\ErrorInfo.cs" />

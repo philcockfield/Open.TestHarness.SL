@@ -26,6 +26,7 @@ using System.Runtime.Serialization;
 namespace Open.Core.Common
 {
     /// <summary>Base class that implements the IDisposable pattern.</summary>
+    [DataContract]
     public abstract class DisposableBase : INotifyDisposed
     {
         #region Events

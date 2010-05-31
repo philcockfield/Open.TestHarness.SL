@@ -21,10 +21,10 @@
 //------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
+using System.Reflection;
 
 namespace Open.Core.Common
 {
@@ -64,6 +64,7 @@ namespace Open.Core.Common
         private const int bytesInMegabyte = 1048576;
         private DelayedAction saveDelayedAction;
         private Dictionary<string, object> memoryStore;
+        private PropertyManager propertyManager;
 
         /// <summary>Constructor.</summary>
         /// <param name="storeType">The type of persistence store.</param>
@@ -176,6 +177,11 @@ namespace Open.Core.Common
         {
             get { return saveDelayedAction ?? (saveDelayedAction = new DelayedAction(0.1, () => Save())); }
         }
+
+        protected override AutoPropertyManager Property
+        {
+            get { return propertyManager ?? (propertyManager = new PropertyManager(this, OnPropertyChanged)); }
+        }
         #endregion
 
         #region Methods
@@ -282,10 +288,6 @@ namespace Open.Core.Common
             return true;
         }
 
-
-
-
-
         /// <summary>Invoked immediately before the Save operation.  Use this to perform pre-save operations.</summary>
         /// <remarks>This method is not called if a listener to the 'Saving' event cancelled the operation.</remarks>
         protected virtual void OnBeforeSave() { }
@@ -305,82 +307,6 @@ namespace Open.Core.Common
             }
             OnSaved();
             return null;
-        }
-        #endregion
-
-        #region Methods - Override
-        // NB: Inject IsolatedStorage as the backing property store.
-        protected override bool ReadPropertyValue<TResult>(string key, out TResult value)
-        {
-            // Check if value exists in memory store.
-            //object storeValue;
-            //if (MemoryStore.TryGetValue(key, out storeValue))
-            //{
-            //    value = (TResult)storeValue;
-            //    return true;
-            //}
-
-            // Reconstruct from isolated storage.
-            object returnValue;
-            if (Store.TryGetValue(GetFullyQualifiedKey(key), out returnValue))
-            {
-                value = default(TResult);
-                if (returnValue != null)
-                {
-                    value = StoreAsXml
-                                ? (TResult)((string)returnValue).Deserialize(typeof(TResult))
-                                : (TResult)returnValue;
-                    MemoryStore[GetFullyQualifiedKey(key)] = value;
-                }
-                return true;
-            }
-            value = default(TResult);
-            return false;
-        }
-
-        // NB: Inject IsolatedStorage as the backing property store.
-        protected override void WritePropertyValue<T>(string key, T value, bool isDefault)
-        {
-            // Store value (in memory).
-            MemoryStore[GetFullyQualifiedKey(key)] = value;
-
-            // Store in isloated store.
-            object storeValue = null;
-            if (!Equals(value, default(T)))
-            {
-                storeValue = StoreAsXml
-                                 ? value.ToSerializedXml()
-                                 : value as object;
-            }
-            Store[GetFullyQualifiedKey(key)] = storeValue;
-
-            // Finish up.
-            ProcessAutoSave();
-        }
-
-        //TEMP 
-        //private void SyncIsolatedStoreWithMemoryStore()
-        //{
-        //    foreach (var key in MemoryStore.Keys)
-        //    {
-        //        var value = MemoryStore[key];
-        //        Store[GetFullyQualifiedKey(key)] = ProcessStoreValue(value);
-        //    }
-        //}
-
-        //private void SyncMemoryStoreWithIsolatedStore()
-        //{
-        //    foreach (string key in Store.Keys)
-        //    {
-        //        MemoryStore[key] = Store[key];
-        //    }
-        //}
-
-        private object ProcessStoreValue(object value)
-        {
-            return StoreAsXml
-                             ? value.ToSerializedXml()
-                             : value as object;
         }
         #endregion
 
@@ -420,11 +346,70 @@ namespace Open.Core.Common
                 default: throw new NotSupportedException(storeType.ToString());
             }
         }
-
-        private string GetFullyQualifiedKey(string sourceKey)
-        {
-            return string.Format("{0}{1}{2}", Id, keyDivider, sourceKey);
-        }
         #endregion
+
+        private class PropertyManager : AutoPropertyManager
+        {
+            #region Head
+            private readonly IsolatedStorageModelBase parent;
+            public PropertyManager(IsolatedStorageModelBase parent, Action<PropertyChangedEventArgs> firePropertyChanged) : base(firePropertyChanged)
+            {
+                this.parent = parent;
+            }
+            #endregion
+
+            #region Methods - Override
+            // NB: Inject IsolatedStorage as the backing property store.
+            protected override bool OnReadValue<T>(PropertyInfo property, out T value)
+            {
+                // Reconstruct from isolated storage.
+                var key = property.Name;
+                object returnValue;
+                if (parent.Store.TryGetValue(GetFullyQualifiedKey(key), out returnValue))
+                {
+                    value = default(T);
+                    if (returnValue != null)
+                    {
+                        value = parent.StoreAsXml
+                                    ? (T)((string)returnValue).Deserialize(typeof(T))
+                                    : (T)returnValue;
+                        parent.MemoryStore[GetFullyQualifiedKey(key)] = value;
+                    }
+                    return true;
+                }
+                value = default(T);
+                return false;
+            }
+
+            // NB: Inject IsolatedStorage as the backing property store.
+            protected override void OnWriteValue<T>(PropertyInfo property, T value, bool isDefaultValue)
+            {
+                // Store value (in memory).
+                var key = property.Name;
+                parent.MemoryStore[GetFullyQualifiedKey(key)] = value;
+
+                // Store in isloated store.
+                object storeValue = null;
+                if (!Equals(value, default(T)))
+                {
+                    storeValue = parent.StoreAsXml
+                                             ? value.ToSerializedXml()
+                                             : value as object;
+                }
+                parent.Store[GetFullyQualifiedKey(key)] = storeValue;
+
+                // Finish up.
+                parent.ProcessAutoSave();
+            }
+            #endregion
+
+            #region Internal
+            private string GetFullyQualifiedKey(string sourceKey)
+            {
+                return string.Format("{0}{1}{2}", parent.Id, keyDivider, sourceKey);
+            }
+            #endregion
+        }
+
     }
 }

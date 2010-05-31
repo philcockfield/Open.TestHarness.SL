@@ -23,11 +23,13 @@
 using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Threading;
 
 namespace Open.Core.Common
 {
     /// <summary>Base class that implements INotifyPropertyChanged.</summary>
+    [DataContract]
     public abstract partial class NotifyPropertyChangedBase : DisposableBase, INotifyPropertyChanged
     {
         #region Head
