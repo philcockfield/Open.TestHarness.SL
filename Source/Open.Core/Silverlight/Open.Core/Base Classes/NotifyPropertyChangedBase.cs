@@ -66,11 +66,7 @@ namespace Open.Core.Common
 
         private NotifyPropertyChangedInvoker Invoker
         {
-            get
-            {
-                if (invoker == null) invoker = new NotifyPropertyChangedInvoker(SynchronizationContext, FirePropertyChangedEvent);
-                return invoker;
-            }
+            get { return invoker ?? (invoker = new NotifyPropertyChangedInvoker(SynchronizationContext, FirePropertyChangedEvent)); }
         }
         #endregion
 
