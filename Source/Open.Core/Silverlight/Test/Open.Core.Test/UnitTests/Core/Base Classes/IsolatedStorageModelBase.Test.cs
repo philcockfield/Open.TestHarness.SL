@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Runtime.Serialization;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
@@ -32,13 +33,11 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
 {
-    [Tag("store")]
+    [Tag("s")]
     [TestClass]
     public class IsolatedStorageModelBaseTest : SilverlightUnitTest
     {
         #region Head
-        private const string PropKeyMyString = "TestId:~:MyString";
-        private const string PropKeySiteAddresses = "TestId:~:SiteAddresses";
         private IsolatedStorageSettings appSettings;
 
         [TestInitialize]
@@ -115,22 +114,22 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
         public void ShouldStoreValueInIsolatedStorage()
         {
             var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            appSettings.Contains(PropKeyMyString).ShouldBe(false);
+            appSettings.Contains(stub.Id).ShouldBe(false);
 
             stub.MyString = "Hello";
 
-            appSettings.Contains(PropKeyMyString).ShouldBe(true);
-            appSettings[PropKeyMyString].ShouldBe("Hello");
+            appSettings.Contains(stub.Id).ShouldBe(false);
+            stub.Save();
+            appSettings.Contains(stub.Id).ShouldBe(true);
 
-            stub.MyString.ShouldBe("Hello");
+            var stub2 = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub2.MyString.ShouldBe("Hello");
         }
 
         [TestMethod]
         public void ShouldFirePropertyChanged()
         {
             var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            appSettings.Contains(PropKeyMyString).ShouldBe(false);
-
             stub.ShouldFirePropertyChanged<Stub>(1, () =>
                                                         {
                                                             stub.MyString = "Fire";
@@ -168,21 +167,26 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
         public void ShouldClearOnlySpecificStub()
         {
             var stub1 = new Stub(IsolatedStorageType.Application, "Stub") {AutoSave = false, MyString = "value"};
-            stub1.Store.Count.ShouldNotBe(0);
-
             var stub2 = new Stub(IsolatedStorageType.Application, "Stub/1") { AutoSave = false, MyString = "value" };
-            stub2.Store.Count.ShouldNotBe(0);
-
             var stub3 = new Stub(IsolatedStorageType.Application, "Stub.MyString") { AutoSave = false, MyString = "value" };
-            stub3.Store.Count.ShouldNotBe(0);
+
+            stub1.Save();
+            stub2.Save();
+            stub3.Save();
+
+            var store = stub1.Store;
+            store.Keys.ShouldContain(stub1.Id);
+            store.Keys.ShouldContain(stub2.Id);
+            store.Keys.ShouldContain(stub3.Id);
 
             // ---
 
             stub1.Store.ShouldBe(stub2.Store);
-            stub1.Store.Count.ShouldBe(3);
 
             stub1.Clear();
-            stub1.Store.Count.ShouldBe(2);
+            store.Keys.ShouldNotContain(stub1.Id);
+            store.Keys.ShouldContain(stub2.Id);
+            store.Keys.ShouldContain(stub3.Id);
         }
 
         [TestMethod]
@@ -201,14 +205,13 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             var xml = collection.ToSerializedXml();
             xml.ShouldNotBe(null);
 
-            var deserialized = xml.Deserialize(typeof (ObservableCollection<Uri>));
+            var deserialized = xml.FromSerializedXml(typeof (ObservableCollection<Uri>));
             deserialized.ShouldNotBe(null);
         }
 
         [TestMethod]
         public void ShouldStoreValuesInSerializedForm()
         {
-            appSettings.Contains(PropKeySiteAddresses).ShouldBe(false);
             var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false, StoreAsXml =  true};
 
             var collection = stub.SiteAddresses;
@@ -216,9 +219,12 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             var xml = collection.ToSerializedXml();
 
             stub.SiteAddresses = collection;
+            stub.Save();
 
-            appSettings.Contains(PropKeySiteAddresses).ShouldBe(true);
-            appSettings[PropKeySiteAddresses].ShouldBe(xml);
+            appSettings.Contains(stub.Id).ShouldBe(true);
+
+            var stub2 = new Stub(IsolatedStorageType.Application) { AutoSave = false, StoreAsXml = true };
+            stub2.SiteAddresses.ToSerializedXml().ShouldBe(xml);
         }
 
         [TestMethod]
@@ -237,12 +243,22 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
         }
 
         [TestMethod]
-        [Ignore]
+        public void ListShouldBeSerializableToJson()
+        {
+            var list = new List<ListItem>();
+            list.Add(new ListItem { Text = "Foo" });
+            list.ToSerializedJson();
+        }
+
+
+        [TestMethod]
         public void ShouldSerializeList()
         {
             // TODO : Phil
 
             var mock = new ListMock();
+            mock.StoreAsXml.ShouldBe(true);
+
             mock.List.Count().ShouldBe(0);
 
             mock.Add("one");
@@ -256,8 +272,8 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
 
             mock = new ListMock();
             mock.List.Count().ShouldBe(2);
-            mock.List.ShouldContain("one");
-            mock.List.ShouldContain("two");
+            mock.List.ElementAt(0).Text.ShouldBe("one");
+            mock.List.ElementAt(1).Text.ShouldBe("two");
         }
         #endregion
 
@@ -291,26 +307,28 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
 
         private class ListMock : IsolatedStorageModelBase
         {
-            private readonly List<string> list;
             public ListMock() : base(IsolatedStorageType.Application, "Test.IsoStore.ListMock")
             {
-                list = GetList();
                 StoreAsXml = true;
                 AutoSave = false;
             }
-            public IEnumerable<string> List { get { return list; } }
-            public void Add(string value) { list.Add(value); }
-
-            private List<string> GetList()
+            public void Add(string text) { List.Add(new ListItem { Text = text, Time = DateTime.Now }); }
+            public List<ListItem> List
             {
-                return GetPropertyValue<ListMock, List<string>>(m => m.List, new List<string>());
-            }
-            protected override void OnBeforeSave()
-            {
-                base.OnBeforeSave();
-                SetPropertyValue<ListMock, List<string>>(m => m.List, list);
+                get { return GetPropertyValue<ListMock, List<ListItem>>(m => m.List, new List<ListItem>()); }
             }
         }
+
+        [DataContract]
+        public class ListItem
+        {
+            [DataMember]
+            public DateTime Time { get; set; }
+
+            [DataMember]
+            public string Text { get; set; }
+        }
+
         #endregion
     }
 }

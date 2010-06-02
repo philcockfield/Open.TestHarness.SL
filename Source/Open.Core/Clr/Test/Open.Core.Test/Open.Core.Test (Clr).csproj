@@ -118,6 +118,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Core\Extensions\SerializationExtensionsTest.cs" />
     <Compile Include="Core\Extensions\StringExtensionsTest.cs" />
     <Compile Include="Core\Extensions\TestingExtensionsTest.cs" />
     <Compile Include="Core\Extensions\UriExtensionsTest.cs" />

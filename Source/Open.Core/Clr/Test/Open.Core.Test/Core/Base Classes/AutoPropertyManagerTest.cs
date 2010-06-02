@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
@@ -142,11 +143,97 @@ namespace Open.Core.Common.Test.Core.Base_Classes
             mock.Property.OnReadValueCount.ShouldBe(6); // Read on each write operation + the 3 reads.
             mock.Property.OnSetValueCount.ShouldBe(4); // Additional write operation on the first write, where the default value is stored.
         }
+
+        [TestMethod]
+        public void ShouldFirePropertySetEvent()
+        {
+            var mock = new Mock1();
+
+            var fireCount = 0;
+            AutoPropertySetEventArgs args = null;
+            mock.Property.PropertySet += (s, e) =>
+                                             {
+                                                 fireCount++;
+                                                 args = e;
+                                             };
+
+            mock.Text = "1";
+            mock.Text = "1";
+            mock.Text = "1";
+            mock.Text = "2";
+
+            fireCount.ShouldBe(2);
+            args.Property.ShouldBe(typeof(Mock1).GetProperty("Text"));
+            args.Value.ShouldBe("2");
+        }
+
+        [TestMethod]
+        public void ShouldGetSerializedValues()
+        {
+            var manager = new AutoPropertyManager();
+            manager.GetSerializedValues().Length.ShouldNotBe(0);
+
+            var mock = new Mock1 { Text = "cat" };
+
+            var serializedValues = mock.Property.GetSerializedValues();
+            serializedValues.Length.ShouldNotBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldPopulateFromSerializedString()
+        {
+            var child = new MockSimple2{ Text = "Hello", Date = DateTime.Now, Number = 42};
+            var manager = new AutoPropertyManager();
+            manager.SetValue<MockSimple1, MockSimple2>(m => m.Child, child);
+
+            var json = manager.GetSerializedValues();
+            Debug.WriteLine("GetSerializedValues: ");
+            Debug.WriteLine(json);
+            Debug.WriteLine("");
+
+            // ---
+
+            var rebuild = new Mock2();
+            rebuild.Property.Populate(json);
+            var childRebuilt = manager.GetValue<MockSimple1, MockSimple2>(m => m.Child);
+            childRebuilt.Text.ShouldBe("Hello");
+        }
+
+        [TestMethod]
+        public void ShouldCreateFromSerializedString()
+        {
+            var child = new MockSimple2 { Text = "Hello", Date = DateTime.Now, Number = 42 };
+            var manager1 = new AutoPropertyManager();
+            manager1.SetValue<MockSimple1, MockSimple2>(m => m.Child, child);
+
+            var json = manager1.GetSerializedValues();
+            var manager2 = AutoPropertyManager.Create(json);
+
+            var rebuild = new Mock2();
+            rebuild.Property.Populate(json);
+            var childRebuilt = manager2.GetValue<MockSimple1, MockSimple2>(m => m.Child);
+            childRebuilt.Text.ShouldBe("Hello");
+        }
         #endregion
+
+        #region Stubs
+        public class MockSimple1
+        {
+            public DateTime Date { get; set; }
+            public MockSimple2 Child { get; set; }
+        }
+
+        public class MockSimple2
+        {
+            public string Text { get; set; }
+            public double Number { get; set; }
+            public DateTime Date { get; set; }
+        }
 
         public class AutoPropertyManagerTester : AutoPropertyManager
         {
-            public AutoPropertyManagerTester(Action<PropertyChangedEventArgs> firePropertyChanged) : base(firePropertyChanged)
+            public AutoPropertyManagerTester(Action<PropertyChangedEventArgs> firePropertyChanged)
+                : base(firePropertyChanged)
             {
             }
             public int OnReadValueCount;
@@ -167,7 +254,7 @@ namespace Open.Core.Common.Test.Core.Base_Classes
                 OnSetValueProperty = property;
                 base.OnWriteValue(property, value, isDefaultValue);
             }
-        } 
+        }
 
         public abstract class MockBase : INotifyPropertyChanged
         {
@@ -206,5 +293,6 @@ namespace Open.Core.Common.Test.Core.Base_Classes
                 set { Property.SetValue<Mock3, string>(m => m.MyText, value, "foo"); }
             }
         }
+        #endregion
     }
 }

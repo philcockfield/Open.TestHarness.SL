@@ -60,11 +60,8 @@ namespace Open.Core.Common
         #endregion
 
         #region Head
-        private const string keyDivider = ":~:";
         private const int bytesInMegabyte = 1048576;
         private DelayedAction saveDelayedAction;
-        private Dictionary<string, object> memoryStore;
-        private PropertyManager propertyManager;
 
         /// <summary>Constructor.</summary>
         /// <param name="storeType">The type of persistence store.</param>
@@ -82,6 +79,17 @@ namespace Open.Core.Common
             // Set default values.
             AutoSave = true;
             AutoIncrementQuotaBy = 2;
+
+            // Populate property values from store (if they exist).
+            var propertyManager = Property;
+            string serializedValues;
+            if (Store.TryGetValue(id, out serializedValues))
+            {
+                propertyManager.Populate(serializedValues);
+            }
+
+            // Wire up events.
+            propertyManager.PropertySet += delegate { ProcessAutoSave(); };
         }
         #endregion
 
@@ -95,11 +103,6 @@ namespace Open.Core.Common
         /// <summary>Gets the persistence store.</summary>
         public IsolatedStorageSettings Store { get; private set; }
 
-        private Dictionary<string, object> MemoryStore
-        {
-            get { return memoryStore ?? (memoryStore = new Dictionary<string, object>()); }
-        }
-
         /// <summary>Gets or sets whether values written to the Store are automatically saved.</summary>
         public bool AutoSave { get; set; }
 
@@ -107,7 +110,7 @@ namespace Open.Core.Common
         public bool StoreAsXml { get; set; }
 
         /// <summary>Gets whether the client-side isolated storage service is enabled.</summary>
-        /// <remarks>This an be disabled from the 'Silverlight Settings' Application Storage tab.</remarks>
+        /// <remarks>This can be disabled from the 'Silverlight Settings' Application Storage tab.</remarks>
         public static bool IsApplicationStorageEnabled
         {
             get
@@ -177,11 +180,6 @@ namespace Open.Core.Common
         {
             get { return saveDelayedAction ?? (saveDelayedAction = new DelayedAction(0.1, () => Save())); }
         }
-
-        protected override AutoPropertyManager Property
-        {
-            get { return propertyManager ?? (propertyManager = new PropertyManager(this, OnPropertyChanged)); }
-        }
         #endregion
 
         #region Methods
@@ -204,9 +202,8 @@ namespace Open.Core.Common
                 Store.Keys.CopyTo(keys, 0);
                 foreach (var key in keys)
                 {
-                    if (key.StartsWith(Id + keyDivider)) Store.Remove(key);
+                    if (key == Id) Store.Remove(key);
                 }
-                MemoryStore.Clear();
             }
 
             // Finish up.
@@ -232,20 +229,14 @@ namespace Open.Core.Common
         {
             return IncreaseQuotaTo((long)(megabytes * bytesInMegabyte));
         }
-
-        /// <summary>Starts the delayed Save action.</summary>
-        public void DelaySave()
-        {
-            SaveDelayedAction.Start();
-        }
         #endregion
 
         #region Method - Save
+        /// <summary>Starts the delayed Save action.</summary>
+        public void DelaySave() { SaveDelayedAction.Start(); }
+
         /// <summary>Saves the settings to disk.</summary>
-        public bool Save()
-        {
-            return Save(AutoIncrementQuotaBy);
-        }
+        public bool Save() { return Save(AutoIncrementQuotaBy); }
 
         /// <summary>Saves the settings to disk.</summary>
         /// <param name="autoIncrementQuotaBy">The value to attempt to auto increment the quota by if there is not enough space to save.</param>
@@ -298,6 +289,7 @@ namespace Open.Core.Common
             {
                 try
                 {
+                    Store[Id] = Property.GetSerializedValues();
                     Store.Save();
                 }
                 catch (IsolatedStorageException e)
@@ -347,69 +339,5 @@ namespace Open.Core.Common
             }
         }
         #endregion
-
-        private class PropertyManager : AutoPropertyManager
-        {
-            #region Head
-            private readonly IsolatedStorageModelBase parent;
-            public PropertyManager(IsolatedStorageModelBase parent, Action<PropertyChangedEventArgs> firePropertyChanged) : base(firePropertyChanged)
-            {
-                this.parent = parent;
-            }
-            #endregion
-
-            #region Methods - Override
-            // NB: Inject IsolatedStorage as the backing property store.
-            protected override bool OnReadValue<T>(PropertyInfo property, out T value)
-            {
-                // Reconstruct from isolated storage.
-                var key = property.Name;
-                object returnValue;
-                if (parent.Store.TryGetValue(GetFullyQualifiedKey(key), out returnValue))
-                {
-                    value = default(T);
-                    if (returnValue != null)
-                    {
-                        value = parent.StoreAsXml
-                                    ? (T)((string)returnValue).Deserialize(typeof(T))
-                                    : (T)returnValue;
-                        parent.MemoryStore[GetFullyQualifiedKey(key)] = value;
-                    }
-                    return true;
-                }
-                value = default(T);
-                return false;
-            }
-
-            // NB: Inject IsolatedStorage as the backing property store.
-            protected override void OnWriteValue<T>(PropertyInfo property, T value, bool isDefaultValue)
-            {
-                // Store value (in memory).
-                var key = property.Name;
-                parent.MemoryStore[GetFullyQualifiedKey(key)] = value;
-
-                // Store in isloated store.
-                object storeValue = null;
-                if (!Equals(value, default(T)))
-                {
-                    storeValue = parent.StoreAsXml
-                                             ? value.ToSerializedXml()
-                                             : value as object;
-                }
-                parent.Store[GetFullyQualifiedKey(key)] = storeValue;
-
-                // Finish up.
-                parent.ProcessAutoSave();
-            }
-            #endregion
-
-            #region Internal
-            private string GetFullyQualifiedKey(string sourceKey)
-            {
-                return string.Format("{0}{1}{2}", parent.Id, keyDivider, sourceKey);
-            }
-            #endregion
-        }
-
     }
 }

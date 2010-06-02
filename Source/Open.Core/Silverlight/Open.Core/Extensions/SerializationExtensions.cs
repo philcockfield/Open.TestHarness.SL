@@ -23,37 +23,91 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Xml;
 
 namespace Open.Core.Common
 {
     public static partial class SerializationExtensions
     {
-        #region XML Serialization (Data Contract)
-        /// <summary>Takes a WCF serialized XML string, and deserializes it into an object.</summary>
-        /// <param name="self">The serialzied XML string.</param>
-        /// <param name="type">The type of the object within the string.</param>
-        /// <returns>The deserialized object.</returns>
-        public static object Deserialize(this string self, Type type)
-        {
-            var reader = new StringReader(self);
-            var serializer = new DataContractSerializer(type);
-            return serializer.ReadObject(XmlReader.Create(reader));
-        }
-
+        #region XML Serialization (DataContract)
         /// <summary>Serializes an object into an XML string.</summary>
         /// <param name="self">The object to serialize.</param>
         /// <returns>The serialized XML.</returns>
         public static string ToSerializedXml(this object self)
         {
-            var serializer = new DataContractSerializer(self.GetType());
-            var stream = new MemoryStream();
-            serializer.WriteObject(stream, self);
-            return Encoding.UTF8.GetString(stream.ToArray(), 0, (int)stream.Length);
+            using (var stream = new MemoryStream())
+            {
+                var serializer = new DataContractSerializer(self.GetType());
+                serializer.WriteObject(stream, self);
+                return Encoding.UTF8.GetString(stream.ToArray(), 0, (int)stream.Length);
+            }
+        }
+
+        /// <summary>Takes a WCF serialized XML string, and deserializes it into an object.</summary>
+        /// <param name="serializedXml">The serialized XML string.</param>
+        /// <param name="knownTypes">The collection of known types to use when de-serializing.</param>
+        /// <returns>The deserialized object.</returns>
+        public static T FromSerializedXml<T>(this string serializedXml, params Type[] knownTypes)
+        {
+            return (T)serializedXml.FromSerializedXml(typeof(T), knownTypes);
+        }
+
+        /// <summary>Takes a WCF serialized XML string, and deserializes it into an object.</summary>
+        /// <param name="serializedXml">The serialized XML string.</param>
+        /// <param name="type">The type of the object within the string.</param>
+        /// <param name="knownTypes">The collection of known types to use when de-serializing.</param>
+        /// <returns>The deserialized object.</returns>
+        public static object FromSerializedXml(this string serializedXml, Type type, params Type[] knownTypes)
+        {
+            using (var reader = new StringReader(serializedXml))
+            {
+                var serializer = new DataContractSerializer(type);
+                serializer.KnownTypes.AddRange(knownTypes);
+                return serializer.ReadObject(XmlReader.Create(reader));
+            }
+        }
+        #endregion
+
+        #region JSON Serialization (DataContract)
+        /// <summary>Serializes an object into a JSON string.</summary>
+        /// <param name="self">The object to serialize.</param>
+        /// <returns>The serialized JSON.</returns>
+        public static string ToSerializedJson(this object self)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var serializer = new DataContractJsonSerializer(self.GetType());
+                serializer.WriteObject(stream, self);
+                return Encoding.UTF8.GetString(stream.ToArray(), 0, (int)stream.Length);
+            }
+        }
+
+        /// <summary>Takes a JSON serialized string, and deserializes it into an object.</summary>
+        /// <param name="json">The serialized JSON string.</param>
+        /// <param name="knownTypes">The collection of known types to use when de-serializing.</param>
+        /// <returns>The deserialized object.</returns>
+        public static T FromSerializedJson<T>(this string json, params Type[] knownTypes)
+        {
+            return (T)json.FromSerializedJson(typeof(T), knownTypes);
+        }
+
+        /// <summary>Takes a JSON serialized string, and deserializes it into an object.</summary>
+        /// <param name="json">The serialized JSON string.</param>
+        /// <param name="type">The type of the object within the string.</param>
+        /// <param name="knownTypes">The collection of known types to use when de-serializing.</param>
+        /// <returns>The deserialized object.</returns>
+        public static object FromSerializedJson(this string json, Type type, params Type[] knownTypes)
+        {
+            using (var stream = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            {
+                var serializer = new DataContractJsonSerializer(type);
+                serializer.KnownTypes.AddRange(knownTypes);
+                return serializer.ReadObject(stream);
+            }
         }
         #endregion
 
