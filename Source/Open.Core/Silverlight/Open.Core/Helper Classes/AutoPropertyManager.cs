@@ -40,18 +40,26 @@ namespace Open.Core.Common
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            foreach (var item in values)
-            {
-                item.PropertyInfo = null;
-                item.Value = null;
-            }
-            values.Clear();
+            Clear();
         }
         #endregion
 
         #region Properties
         /// <summary>Gets the number of values that are currently stored in the manager.</summary>
         public int ValueCount { get { return values.Count; } }
+        #endregion
+
+        #region Methods
+        /// <summary>Clears all stored property values.</summary>
+        public void Clear()
+        {
+            foreach (var item in values)
+            {
+                item.Key = null;
+                item.Value = null;
+            }
+            values.Clear();
+        }
         #endregion
 
         #region Methods - Serialization
@@ -212,7 +220,7 @@ namespace Open.Core.Common
             // Create the new item reference and store it.
             if (item == null)
             {
-                item = new ItemReference { PropertyInfo = property };
+                item = new ItemReference { Key = ItemReference.GetKey(property) };
                 values.Add(item);
             }
 
@@ -246,9 +254,10 @@ namespace Open.Core.Common
 
         public class ItemReference
         {
-            public PropertyInfo PropertyInfo { get; set; }
+            public string Key { get; set; }
             public object Value { get; set; }
-            public bool IsMatch(PropertyInfo property) { return Equals(PropertyInfo, property); }
+            public bool IsMatch(PropertyInfo property) { return Equals(Key, GetKey(property)); }
+            public static string GetKey(PropertyInfo property) { return string.Format("{0}:{1}", property.DeclaringType.FullName, property.Name); }
         }
         
         [DataContract]
@@ -258,16 +267,14 @@ namespace Open.Core.Common
             public SerializedItemReference() { }
             public SerializedItemReference(ItemReference item, Dictionary<string, int> typeLibrary)
             {
-                PropertyName = item.PropertyInfo.Name;
-                PropertyType = StoreType(item.PropertyInfo.DeclaringType, typeLibrary);
+                Key = item.Key;
                 if (item.Value != null) ValueType = StoreType(item.Value.GetType(), typeLibrary);
                 ValueAsJson = item.Value == null ? null : item.Value.ToSerializedJson();
             }
             #endregion
 
             #region Properties
-            [DataMember] public string PropertyName { get; set; }
-            [DataMember] public int PropertyType { get; set; }
+            [DataMember] public string Key { get; set; }
             [DataMember] public int? ValueType { get; set; }
             [DataMember] public string ValueAsJson { get; set; }
             #endregion
@@ -276,10 +283,9 @@ namespace Open.Core.Common
             public ItemReference ToItemReference(Dictionary<string, int> typeLibrary)
             {
                 var valueType = ValueType == null ? null : GetType(ValueType.Value, typeLibrary);
-                var propertyType = GetType(PropertyType, typeLibrary);
                 return new ItemReference
                            {
-                               PropertyInfo = propertyType.GetProperty(PropertyName),
+                               Key = Key,
                                Value = ValueAsJson == null ? null : ValueAsJson.FromSerializedJson(valueType)
                            };
             }

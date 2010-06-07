@@ -21,10 +21,9 @@
 //------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
-using System.Reflection;
 
 namespace Open.Core.Common
 {
@@ -106,8 +105,8 @@ namespace Open.Core.Common
         /// <summary>Gets or sets whether values written to the Store are automatically saved.</summary>
         public bool AutoSave { get; set; }
 
-        /// <summary>Gets or sets whether the data is serialized to XML before being stored.</summary>
-        public bool StoreAsXml { get; set; }
+        /// <summary>Gets or sets whether the data is serialized to a string before being stored.</summary>
+        public bool StoreAsSerializedString { get; set; }
 
         /// <summary>Gets whether the client-side isolated storage service is enabled.</summary>
         /// <remarks>This can be disabled from the 'Silverlight Settings' Application Storage tab.</remarks>
@@ -198,12 +197,11 @@ namespace Open.Core.Common
             // Remove items.
             lock(Store)
             {
-                var keys = new string[Store.Keys.Count];
-                Store.Keys.CopyTo(keys, 0);
-                foreach (var key in keys)
-                {
-                    if (key == Id) Store.Remove(key);
-                }
+                Store.Remove(Id);
+            }
+            lock (Property)
+            {
+                Property.Clear();
             }
 
             // Finish up.

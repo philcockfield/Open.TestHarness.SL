@@ -197,7 +197,7 @@
     </Compile>
     <Compile Include="ViewTests\Core\Functional Adorners\HtmlWindowCloseMonitor.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Model\ModelBase.ViewTest.cs" />
-    <Compile Include="ViewTests\Core\Model\SettingsModelBase.ViewTest.cs" />
+    <Compile Include="ViewTests\Core\Model\IsolatedStorageModelBase.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Trigger\ExecuteMethod.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Trigger\ExecuteMethodTestControl.xaml.cs">
       <DependentUpon>ExecuteMethodTestControl.xaml</DependentUpon>

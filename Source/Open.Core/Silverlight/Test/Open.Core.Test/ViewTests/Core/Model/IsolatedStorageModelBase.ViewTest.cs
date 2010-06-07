@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using Open.Core.Common;
 using System.Diagnostics;
@@ -29,7 +30,7 @@ using Open.Core.Common.Testing;
 namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
 {
     [ViewTestClass]
-    public class Model__SettingsModelBaseViewTest
+    public class Model__IsolatedStorageModelBase
     {
         #region Head
         private SettingsStub stub;
@@ -62,6 +63,13 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
             stub.Text += RandomData.LoremIpsum(100000);
             Read_Properties();
         }
+
+        [ViewTest]
+        public void Add_To_List()
+        {
+            stub.Add(RandomData.LoremIpsum(2));
+        }
+
 
         [ViewTest]
         public void Save()
@@ -118,22 +126,14 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
             Output.Write("> QuotaMegabytes: " + stub.QuotaMegabytes + " MB");
             Output.Write("> Store: " + stub.Store);
             Output.Write("> StoreType: " + stub.StoreType);
-
-            if (stub.Text == null)
-            {
-                Output.Write("- Text.Length: null");
-            }
-            else
-            {
-                Output.Write("- Text.Length: " + stub.Text.Length);
-            }
-
+            Output.Write(stub.Text == null ? "- Text.Length: null" : "- Text.Length: " + stub.Text.Length);
+            Output.Write("- List");
+            Output.WriteCollection(stub.List);
             Output.Break();
         }
         #endregion
 
         #region Stubs
-
         public class SettingsStub : IsolatedStorageModelBase
         {
             public SettingsStub() : base(IsolatedStorageType.Application, "IsolatedStorageModelBase.ViewTest")
@@ -146,6 +146,16 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Common
                 get { return GetPropertyValue<SettingsStub, string>(m => m.Text); }
                 set { SetPropertyValue<SettingsStub, string>(m => m.Text, value); }
             }
+
+            public IEnumerable<string> List { get { return ListInternal; } }
+
+            private List<string> ListInternal
+            {
+                get { return GetPropertyValue<SettingsStub, List<string>>(m => m.ListInternal, new List<string>()); }
+            }
+
+            public void Add(string text) { ListInternal.Add(text); }
+
         }
         #endregion
     }

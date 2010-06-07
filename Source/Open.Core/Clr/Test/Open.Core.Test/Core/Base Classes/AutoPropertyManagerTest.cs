@@ -214,6 +214,31 @@ namespace Open.Core.Common.Test.Core.Base_Classes
             var childRebuilt = manager2.GetValue<MockSimple1, MockSimple2>(m => m.Child);
             childRebuilt.Text.ShouldBe("Hello");
         }
+
+        [TestMethod]
+        public void ShouldClear()
+        {
+            var mock = new Mock1 { Text = "cat" };
+            mock.Text.ShouldBe("cat");
+
+            mock.Property.Clear();
+            mock.Text.ShouldBe(null);
+
+            mock.Property.Clear();
+            mock.Text.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldChangeSerializationWhenCleared()
+        {
+            var mock = new Mock1 { Text = "cat" };
+            var serialzied1 = mock.Property.GetSerializedValues();
+            
+            mock.Property.Clear();
+            var serialzied2 = mock.Property.GetSerializedValues();
+
+            serialzied1.ShouldNotBe(serialzied2);
+        }
         #endregion
 
         #region Stubs
