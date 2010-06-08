@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
 {
+    /// <summary>Extensions for working with the Toolbar.</summary>
     public static class ToolBarExtensions
     {
         #region Head
@@ -33,24 +35,24 @@ namespace Open.Core.UI.Controls
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         public static IButtonTool AddButton(
-                    this IToolBar toolbar,
-                    object id = null,
-                    IconImage icon = IconImage.SilkAccept,
-                    String text = null,
-                    Orientation orientation = Orientation.Horizontal,
-                    bool showDefaultBackground = false,
-                    string toolTip = null,
-                    int minWidth = 0,
-                    int? column = null,
-                    int? row = null,
-                    int? columnSpan = 1,
-                    int? rowSpan = 1)
+            this IToolBar toolbar,
+            object id = null,
+            IconImage icon = IconImage.SilkAccept,
+            String text = null,
+            Orientation orientation = Orientation.Horizontal,
+            bool showDefaultBackground = false,
+            string toolTip = null,
+            int minWidth = 0,
+            int? column = null,
+            int? row = null,
+            int? columnSpan = 1,
+            int? rowSpan = 1)
         {
             return toolbar.AddButton(
-                                    id,                    
-                                    icon.ToImage(), text, 
-                                    orientation, showDefaultBackground, toolTip, minWidth,
-                                    column, row, columnSpan, rowSpan);
+                id,                    
+                icon.ToImage(), text, 
+                orientation, showDefaultBackground, toolTip, minWidth,
+                column, row, columnSpan, rowSpan);
         }
 
         /// <summary>Adds a button tool to the toolbar.</summary>
@@ -67,18 +69,18 @@ namespace Open.Core.UI.Controls
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         public static IButtonTool AddButton(
-                    this IToolBar toolbar,
-                    object id = null,
-                    Image icon = null,
-                    String text = null,
-                    Orientation orientation = Orientation.Horizontal,
-                    bool showDefaultBackground = false,
-                    string toolTip = null,
-                    int minWidth = 0,
-                    int? column = null,
-                    int? row = null,
-                    int? columnSpan = 1,
-                    int? rowSpan = 1)
+            this IToolBar toolbar,
+            object id = null,
+            Image icon = null,
+            String text = null,
+            Orientation orientation = Orientation.Horizontal,
+            bool showDefaultBackground = false,
+            string toolTip = null,
+            int minWidth = 0,
+            int? column = null,
+            int? row = null,
+            int? columnSpan = 1,
+            int? rowSpan = 1)
         {
             // Setup initial conditions.
             if (toolbar == null) throw new ArgumentNullException("toolbar");
@@ -108,21 +110,88 @@ namespace Open.Core.UI.Controls
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
         public static IToolDivider AddDivider(
-                    this IToolBar toolbar, object id = null,
-                    int? column = null,
-                    int? row = null,
-                    int? columnSpan = 1,
-                    int? rowSpan = 1)
+            this IToolBar toolbar, 
+            object id = null,
+            int? column = null,
+            int? row = null,
+            int? columnSpan = 1,
+            int? rowSpan = 1)
         {
             // Setup initial conditions.
             if (toolbar == null) throw new ArgumentNullException("toolbar");
 
             // Create the divider.
             var divider = FactoryImporter.DividerFactory.CreateExport().Value;
+            divider.Id = id;
             toolbar.Add(divider, column, row, columnSpan, rowSpan);
 
             // Finish up.);
             return divider;
+        }
+
+        /// <summary>Adds a custom tool to the toolbar.</summary>
+        /// <param name="toolbar">The toolbar to add to.</param>
+        /// <param name="viewModel">The view-model for the custom tool UI.</param>
+        /// <param name="id">The unique identifier of the tool.</param>
+        /// <param name="minWidth">The minimum width of the tool.</param>
+        /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
+        /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
+        /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        public static ICustomTool AddCustomTool(
+            this IToolBar toolbar,
+            IViewFactory viewModel,
+            object id = null,
+            int minWidth = 0,
+            int? column = null,
+            int? row = null,
+            int? columnSpan = 1,
+            int? rowSpan = 1)
+        {
+            // Setup initial conditions.
+            if (toolbar == null) throw new ArgumentNullException("toolbar");
+            if (viewModel == null) throw new ArgumentNullException("viewModel");
+
+            // Create the tool and add it to the toolbar.
+            var tool = new CustomTool(viewModel)
+                           {
+                               Id = id, 
+                               MinWidth = minWidth
+                           };
+            toolbar.Add(tool, column, row, columnSpan, rowSpan);
+
+            // Finish up.
+            return tool;
+        }
+
+        /// <summary>Adds a spacer to the toolbar.</summary>
+        /// <param name="toolbar">The toolbar to add to.</param>
+        /// <param name="id">The unique identifier of the tool.</param>
+        /// <param name="starAmount">The amount of star multiplications (*) to apply.</param>
+        /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
+        /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
+        /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        public static ISpacerTool AddSpacer(
+            this IToolBar toolbar,
+            object id = null,
+            int starAmount = 1,
+            int? column = null,
+            int? row = null,
+            int? columnSpan = 1,
+            int? rowSpan = 1)
+        {
+            // Setup initial conditions.
+            if (toolbar == null) throw new ArgumentNullException("toolbar");
+
+            // Create the spacer.
+            var tool = FactoryImporter.SpacerFactory.CreateExport().Value;
+            tool.Id = id;
+            tool.ColumnWidth = new GridLength(starAmount.WithinBounds(1, int.MaxValue), GridUnitType.Star);
+            toolbar.Add(tool, column, row, columnSpan, rowSpan);
+
+            // Finish up.
+            return tool;
         }
         #endregion
 
@@ -133,6 +202,10 @@ namespace Open.Core.UI.Controls
 
             [Import(typeof(IToolDivider))]
             public ExportFactory<IToolDivider> DividerFactory { get; set; }
+
+            [Import(typeof(ISpacerTool))]
+            public ExportFactory<ISpacerTool> SpacerFactory { get; set; }
+
         }
     }
 }

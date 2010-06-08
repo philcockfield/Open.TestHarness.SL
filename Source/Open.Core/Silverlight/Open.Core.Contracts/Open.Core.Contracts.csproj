@@ -101,8 +101,11 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBar.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarView.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ICustomTool.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ISpacerTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
     <Compile Include="Interfaces\Core.UI\IButton.cs" />
+    <Compile Include="Interfaces\Core.UI\IGridCellWidth.cs" />
     <Compile Include="Interfaces\Core.UI\IImage.cs" />
     <Compile Include="Interfaces\Core.UI\IDropShadowEffect.cs" />
     <Compile Include="Interfaces\Core.UI\IVisiblity.cs" />

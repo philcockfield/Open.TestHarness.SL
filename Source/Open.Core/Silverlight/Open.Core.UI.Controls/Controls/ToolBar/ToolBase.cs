@@ -131,6 +131,7 @@ namespace Open.Core.UI.Controls
             public void OnEventStateChanged(IToolStateEvent e)
             {
                 // Setup initial conditions.
+                if (parent.IsDisposed) return;
                 if (!e.IsMatch(parent.Id)) return;
 
                 // Sync state.

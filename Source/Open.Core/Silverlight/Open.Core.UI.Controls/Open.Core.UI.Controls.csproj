@@ -261,6 +261,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Controls\ToolBar\Tools\CustomTool.cs" />
+    <Compile Include="Controls\ToolBar\Tools\SpacerTool.cs" />
     <Compile Include="Controls\ToolBar\Tools\ToolDivider\ToolDivider.cs" />
     <Compile Include="Controls\ToolBar\Tools\ToolDivider\ToolDividerView.xaml.cs">
       <DependentUpon>ToolDividerView.xaml</DependentUpon>

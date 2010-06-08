@@ -40,11 +40,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             EventBus.Subscribe<IToolEvent>(OnClick);
         }
 
-        public void OnClick(IToolEvent e)
-        {
-            Output.Write("!! Click");
-        }
-
+        public void OnClick(IToolEvent e) { Output.Write(Colors.Green, "!! Click"); }
         #endregion
 
         #region Tests

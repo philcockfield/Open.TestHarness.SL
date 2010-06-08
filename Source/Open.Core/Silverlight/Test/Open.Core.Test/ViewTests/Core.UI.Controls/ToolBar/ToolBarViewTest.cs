@@ -27,7 +27,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         {
             CompositionInitializer.SatisfyImports(this);
 
-            control.Width = 300;
+            control.Width = 600;
             control.StretchContent();
             control.Background = Colors.Black.ToBrush(0.08);
 
@@ -43,26 +43,35 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         [ViewTest]
         public void Add_ButtonTools(ContentControl control)
         {
+            // Setup initial conditions.
             ToolBar.Clear();
 
-            ToolBar.Clear();
-            largeButton = ToolBar.AddButton(
-                                    1,
-                                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(),
-                                    "Paste" + Environment.NewLine + "Something", 
-                                    Orientation.Vertical, 
-                                    column: 0, 
-                                    rowSpan: 3);
-
+            // Add buttons.
+            largeButton = AddLargeButton(1, 0);
             ToolBar.AddDivider(column: 1, rowSpan: 3);
             
             var smallButton = ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 2, row: 0, columnSpan: 3);
             ToolBar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 2, row: 1, columnSpan: 3);
             ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 2, row: 2, columnSpan: 3).IsEnabled = false;
-            ToolBar.UpdateLayout();
 
-            //largeButton.MinWidth = 150;
-            //smallButton.MinWidth = 250;
+            ToolBar.AddCustomTool(new PlaceholderTool(), column: 5, rowSpan: 3);
+
+            ToolBar.AddSpacer(column:6);
+            AddLargeButton(null, 7);
+
+            // Finish up.
+            ToolBar.UpdateLayout();
+        }
+
+        private IButtonTool AddLargeButton(object id, int column)
+        {
+            return ToolBar.AddButton(
+                                    id,
+                                    "/Images/Icon.Clipboard.png".ToImageSource().ToImage(),
+                                    "Paste" + Environment.NewLine + "Something",
+                                    Orientation.Vertical,
+                                    column: column,
+                                    rowSpan: 3);
         }
 
         [ViewTest]
@@ -166,6 +175,19 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             public static MockTool Create(int width = 24, int height = 24)
             {
                 return new MockTool { Width = width, Height = height };
+            }
+        }
+
+        public class PlaceholderTool : IViewFactory
+        {
+            public FrameworkElement CreateView()
+            {
+                return new Placeholder
+                           {
+                               Text = "Custom Tool", 
+                               Width = 180,
+                               Height = 66
+                           };
             }
         }
     }

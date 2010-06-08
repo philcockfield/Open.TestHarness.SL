@@ -61,9 +61,16 @@ namespace Open.Core.UI.Controls
             // Assign the margin (if the generated view did not arrive with an explicitly set value).
             if (view.Margin == default(Thickness)) view.Margin = tool.Parent.DefaultToolMargin;
 
+            // Get the column (and update it's width if required).
+            var columnIndex = tool.Parent.GetColumn(tool);
+            if (tool is IGridCellWidth)
+            {
+                toolContainer.ColumnDefinitions[columnIndex].Width = ((IGridCellWidth) tool).ColumnWidth;
+            }
+
             // Assign Row/Column position.
             Grid.SetRow(view, tool.Parent.GetRow(tool));
-            Grid.SetColumn(view, tool.Parent.GetColumn(tool));
+            Grid.SetColumn(view, columnIndex);
 
             // Set spans.
             Grid.SetRowSpan(view, tool.Parent.GetRowSpan(tool));
