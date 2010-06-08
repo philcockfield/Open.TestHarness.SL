@@ -33,12 +33,12 @@ namespace Open.Core.UI.Controls
     {
         #region Head
         private static IEventBus eventBus;
-        private EventHanders eventHanders;
+        private EventHandlers eventHandlers;
 
         /// <summary>Constructor.</summary>
         protected ToolBase()
         {
-            eventHanders = new EventHanders(this);
+            eventHandlers = new EventHandlers(this);
         }
         #endregion
 
@@ -116,11 +116,11 @@ namespace Open.Core.UI.Controls
         // NB: These event handlers are encapsulated in a child-class because the EventBus requires
         // that the callback methods are public.  This prevents these methods being exposed as public
         // on the root class.
-        public class EventHanders 
+        public class EventHandlers 
         { 
             #region Head
             private readonly ToolBase parent;
-            public EventHanders(ToolBase parent)
+            public EventHandlers(ToolBase parent)
             {
                 this.parent = parent;
                 parent.EventBus.Subscribe<IToolStateEvent>(OnEventStateChanged);
