@@ -40,7 +40,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             EventBus.Subscribe<IToolEvent>(OnClick);
         }
 
-        public void OnClick(IToolEvent e) { Output.Write(Colors.Green, "!! Click"); }
+        public void OnClick(IToolEvent e) { Output.Write(Colors.Green, "!! Click - IsPressed: " + tool.IsPressed); }
         #endregion
 
         #region Tests
@@ -136,6 +136,20 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         {
             control.IsEnabled = !control.IsEnabled;
             Output.Write("control.IsEnabled: " + control.IsEnabled);
+        }
+
+        [ViewTest]
+        public void Toggle__IsToggleButton(ContentControl control)
+        {
+            tool.IsToggleButton = !tool.IsToggleButton;
+            Output.Write("IsToggleButton: " + tool.IsToggleButton);
+        }
+
+        [ViewTest]
+        public void Toggle__IsPressed(ContentControl control)
+        {
+            tool.IsPressed = !tool.IsPressed;
+            Output.Write("IsPressed: " + tool.IsPressed);
         }
 
         [ViewTest]

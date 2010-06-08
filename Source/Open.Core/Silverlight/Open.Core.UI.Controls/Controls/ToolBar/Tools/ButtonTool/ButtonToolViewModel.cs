@@ -22,7 +22,6 @@
 
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using Open.Core.Common;
 
 using T = Open.Core.UI.Controls.ButtonToolViewModel;
@@ -47,7 +46,8 @@ namespace Open.Core.UI.Controls
             // Wire up events.
             model.PropertyChanged += delegate { FireChanged(); };
             modelObserver = new PropertyObserver<ButtonTool>(model)
-                        .RegisterHandler(m => m.IsEnabled, FireIsEnabledChanged);
+                .RegisterHandler(m => m.IsEnabled, FireIsEnabledChanged)
+                .RegisterHandler(m => m.IsPressed, () => OnPropertyChanged<T>(o => o.BackgroundTemplate));
         }
 
         protected override void OnDisposed()
@@ -81,7 +81,11 @@ namespace Open.Core.UI.Controls
             var wasMouseDown = isMouseDown;
             isMouseDown = false;
             UpdateMouseState();
-            if (isMouseOver && wasMouseDown) Model.FireClick();
+            if (IsEnabled && isMouseOver && wasMouseDown)
+            {
+                if (Model.IsToggleButton) Model.IsPressed = !Model.IsPressed;
+                Model.FireClick();
+            }
         }
         #endregion
 
@@ -119,7 +123,7 @@ namespace Open.Core.UI.Controls
         {
             get
             {
-                if (Model.IsMouseDown) return Model.Styles.BackgroundDown;
+                if (Model.IsMouseDown || Model.IsPressed) return Model.Styles.BackgroundDown;
                 if (Model.IsMouseOver) return Model.Styles.BackgroundOver;
                 if (Model.IsDefaultBackgroundVisible) return Model.Styles.BackgroundDefault;
                 return null;

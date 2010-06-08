@@ -52,6 +52,15 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the mouse related state of the button.</summary>
         ButtonMouseState MouseState { get; set; }
 
+        /// <summary>
+        ///     Gets or sets whether the button is currently pressed 
+        ///     (see also IsMouseDown.  Relevant when IsToggleButton is True).
+        /// </summary>
+        bool IsPressed { get; set; }
+
+        /// <summary>Gets or sets whether the button retains it's state on each click.</summary>
+        bool IsToggleButton { get; set; }
+
         /// <summary>Gets whether the mouse is currently over the button.</summary>
         bool IsMouseOver { get; }
 

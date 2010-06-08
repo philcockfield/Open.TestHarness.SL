@@ -46,6 +46,8 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             tool.IsDefaultBackgroundVisible.ShouldBe(false);
             tool.IsEnabled.ShouldBe(true);
             tool.MouseState.ShouldBe(ButtonMouseState.Default);
+            tool.IsPressed.ShouldBe(false);
+            tool.IsToggleButton.ShouldBe(false);
         }
 
         [TestMethod]
@@ -133,6 +135,42 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         {
             EventBus.IsAsynchronous = false;
             EventBus.ShouldFire<IToolEvent>(() => ((ButtonTool)tool).FireClick());
+        }
+
+        [TestMethod]
+        public void ShouldUpdateIsPressedWhenNotToggleButton()
+        {
+            tool.IsToggleButton = false;
+            tool.IsPressed.ShouldBe(false);
+            viewModel.OnMouseEnter();
+
+            viewModel.OnMouseDown();
+            tool.IsPressed.ShouldBe(false);
+
+            viewModel.OnMouseUp();
+            tool.IsPressed.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldUpdateIsPressedWhenToggleButton()
+        {
+            tool.IsToggleButton = true;
+            tool.IsPressed.ShouldBe(false);
+            viewModel.OnMouseEnter();
+
+            // Press one (toggle on).
+            viewModel.OnMouseDown();
+            tool.IsPressed.ShouldBe(false);
+
+            viewModel.OnMouseUp();
+            tool.IsPressed.ShouldBe(true);
+
+            // Press two (toggle off).
+            viewModel.OnMouseDown();
+            tool.IsPressed.ShouldBe(true);
+
+            viewModel.OnMouseUp();
+            tool.IsPressed.ShouldBe(false);
         }
         #endregion
     }

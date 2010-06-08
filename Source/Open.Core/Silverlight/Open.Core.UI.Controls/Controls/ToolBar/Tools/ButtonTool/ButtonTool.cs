@@ -128,7 +128,24 @@ namespace Open.Core.UI.Controls
         public ButtonMouseState MouseState
         {
             get { return GetPropertyValue<ButtonTool, ButtonMouseState>(m => m.MouseState); }
-            set { SetPropertyValue<ButtonTool, ButtonMouseState>(m => m.MouseState, value, m => m.IsMouseOver, m => m.IsMouseDown); }
+            set { SetPropertyValue<ButtonTool, ButtonMouseState>(m => m.MouseState, value, m => m.IsMouseOver, m => m.IsMouseDown); } 
+        }
+
+        /// <summary>
+        ///     Gets or sets whether the button is currently pressed 
+        ///     (see also IsMouseDown.  Relevant when IsToggleButton is True).
+        /// </summary>
+        public bool IsPressed
+        {
+            get { return GetPropertyValue<T, bool>(m => m.IsPressed, false); }
+            set { SetPropertyValue<T, bool>(m => m.IsPressed, value, false); }
+        }
+
+        /// <summary>Gets or sets whether the button retains it's state on each click.</summary>
+        public bool IsToggleButton
+        {
+            get { return GetPropertyValue<T, bool>(m => m.IsToggleButton, false); }
+            set { SetPropertyValue<T, bool>(m => m.IsToggleButton, value, false); }
         }
 
         /// <summary>Gets whether the mouse is currently over the button.</summary>
