@@ -38,9 +38,10 @@ namespace Open.Core.Common.Testing
         /// <summary>Asserts that the expected value is the same as the source object.</summary>
         /// <param name="o">The source object.</param>
         /// <param name="expected">The expected value.</param>
-        public static void ShouldBe(this object o, object expected)
+        /// <param name="message">Optional message to use for the assertion.</param>
+        public static void ShouldBe(this object o, object expected, string message = null)
         {
-            o.ShouldBe(expected, () => ThrowExpectedError(o, expected));
+            o.ShouldBe(expected, () => ThrowExpectedError(o, expected, message));
         }
 
         /// <summary>Asserts that the expected value is the same as the source object.</summary>
@@ -57,9 +58,10 @@ namespace Open.Core.Common.Testing
         /// <summary>Asserts that the expected value is not the same as the source object.</summary>
         /// <param name="o">The source object.</param>
         /// <param name="notExpected">The value that is not expected.</param>
-        public static void ShouldNotBe(this object o, object notExpected)
+        /// <param name="message">Optional message to use for the assertion.</param>
+        public static void ShouldNotBe(this object o, object notExpected, string message = null)
         {
-            o.ShouldNotBe(notExpected, () => ThrowNotExpectedError(o));
+            o.ShouldNotBe(notExpected, () => ThrowNotExpectedError(o, message));
         }
 
         /// <summary>Asserts that the expected value is not the same as the source object.</summary>
@@ -75,14 +77,18 @@ namespace Open.Core.Common.Testing
         /// <summary>Asserts that the given object is of a particular type.</summary>
         /// <typeparam name="T">The expected type.</typeparam>
         /// <param name="o">The object to examine.</param>
-        public static void ShouldBeInstanceOfType<T>(this object o)
+        /// <param name="message">Optional message to use for the assertion.</param>
+        public static void ShouldBeInstanceOfType<T>(this object o, string message = null)
         {
             o.ShouldBeInstanceOfType<T>(() =>
                         {
-                            throw new AssertionException(
-                                            string.Format("Expected type was <{0}>, but actual type was <{1}>.",
-                                                        typeof(T).FullName,
-                                                        o.GetType().FullName));
+                            if (message.IsNullOrEmpty(true))
+                            {
+                                message = string.Format("Expected type was <{0}>, but actual type was <{1}>.",
+                                                        typeof (T).FullName,
+                                                        o.GetType().FullName);
+                            }
+                            throw new AssertionException(message);
                         });
         }
 
@@ -100,11 +106,16 @@ namespace Open.Core.Common.Testing
         /// <summary>Asserts that the given object is a GUID.</summary>
         /// <param name="o">The object to examine.</param>
         /// <remarks>Throws an error if the given object is an Empty GUID type.</remarks>
-        public static void ShouldBeGuid(this object o)
+        /// <param name="message">Optional message to use for the assertion.</param>
+        public static void ShouldBeGuid(this object o, string message = null)
         {
             Action throwError = () =>
                                     {
-                                        throw new AssertionException( "The given object is not a GUID and cannot be parsed as a GUID.");
+                                        if (message.IsNullOrEmpty(true))
+                                        {
+                                            message = "The given object is not a GUID and cannot be parsed as a GUID.";
+                                        }
+                                        throw new AssertionException(message);
                                     };
             if (o is Guid)
             {
@@ -125,17 +136,25 @@ namespace Open.Core.Common.Testing
         /// <summary>Asserts equality.</summary>
         /// <param name="self">The source value.</param>
         /// <param name="value">The value to compare with.</param>
-        public static void ShouldEqual(this object self, object value)
+        /// <param name="message">Optional message to use for the assertion.</param>
+        public static void ShouldEqual(this object self, object value, string message = null)
         {
-            if (!Equals(self, value)) throw new AssertionException("The given values are not equal, and they were expected to be equal.");
+            if (!Equals(self, value)) throw new AssertionException(
+                                                message.IsNullOrEmpty(true) 
+                                                                    ? "The given values are not equal, and they were expected to be equal." 
+                                                                    : message);
         }
 
         /// <summary>Asserts inequality.</summary>
         /// <param name="self">The source value.</param>
         /// <param name="value">The value to compare with.</param>
-        public static void ShouldNotEqual(this object self, object value)
+        /// <param name="message">Optional message to use for the assertion.</param>
+        public static void ShouldNotEqual(this object self, object value, string message = null)
         {
-            if (Equals(self, value)) throw new AssertionException("The given values are equal, and they were expected to not be equal.");
+            if (Equals(self, value)) throw new AssertionException(
+                                            message.IsNullOrEmpty(true) 
+                                                                ? "The given values are equal, and they were expected to not be equal."
+                                                                : message);
         }
         #endregion
 
@@ -693,18 +712,24 @@ namespace Open.Core.Common.Testing
         #endregion
 
         #region Internal
-        private static void ThrowNotExpectedError(object obj)
+        private static void ThrowNotExpectedError(object obj, string message = null)
         {
-            var objectText = obj == null ? "<null>" : string.Format("<{0}>", obj);
-            var message = string.Format("Expected any value other than {0}.", objectText);
+            if (message.AsNullWhenEmpty() == null)
+            {
+                var objectText = obj == null ? "<null>" : string.Format("<{0}>", obj);
+                message = string.Format("Expected any value other than {0}.", objectText);
+            }
             throw new AssertionException(message);
         }
 
-        private static void ThrowExpectedError(object obj, object expected)
+        private static void ThrowExpectedError(object obj, object expected, string message = null)
         {
-            var objectText = obj == null ? "<null>" : string.Format("<{0}>", obj);
-            var expectedText = expected == null ? "<null>" : string.Format("<{0}>", expected);
-            var message = string.Format("Expected {0} but was {1}.", expectedText, objectText);
+            if (message.AsNullWhenEmpty() == null)
+            {
+                var objectText = obj == null ? "<null>" : string.Format("<{0}>", obj);
+                var expectedText = expected == null ? "<null>" : string.Format("<{0}>", expected);
+                message = string.Format("Expected {0} but was {1}.", expectedText, objectText);
+            }
             throw new AssertionException(message);
         }
         #endregion
