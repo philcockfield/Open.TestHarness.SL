@@ -9,6 +9,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
+    [Tag("t")]
     [TestClass]
     public class ToolBarTest
     {
@@ -156,12 +157,15 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             FireUpdateLayoutCount(() => toolbar.Clear()).ShouldBe(0);
         }
 
+
+        public enum MyEnum { One, Two }
         [TestMethod]
         public void ShouldGetTool()
         {
-            var tool = new MockTool { Id = "MyId" };
+            var tool = new MockTool { Id = MyEnum.One };
             toolbar.Add(tool);
-            toolbar.GetTool("MyId").ShouldBe(tool);
+            toolbar.GetTool(MyEnum.One).ShouldBe(tool);
+            toolbar.GetTool(MyEnum.Two).ShouldBe(null);
         }
 
         [TestMethod]

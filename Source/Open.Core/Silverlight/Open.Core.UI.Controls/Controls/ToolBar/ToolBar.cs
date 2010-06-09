@@ -138,7 +138,7 @@ namespace Open.Core.UI.Controls
         {
             return toolId == null 
                         ? null 
-                        : toolItems.Where(m => Equals(m.Tool.Id, toolId)).Select(m => m.Tool).FirstOrDefault();
+                        : Tools.Where(m => Equals(m.Id, toolId)).FirstOrDefault();
         }
 
         /// <summary>Gets the tool with the specified ID.</summary>
