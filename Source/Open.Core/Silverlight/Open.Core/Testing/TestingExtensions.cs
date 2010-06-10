@@ -563,33 +563,36 @@ namespace Open.Core.Common.Testing
         /// <summary>Asserts that when the specified action was invoked the event was fired at least once.</summary>
         /// <typeparam name="TEvent">The event type.</typeparam>
         /// <param name="self">The event-bus to monitor.</param>
-        /// <param name="action"></param>
-        public static void ShouldFire<TEvent>(this IEventBus self, Action action)
+        /// <param name="triggerAction">The action that causes the event to fire.</param>
+        /// <param name="onEvent">Option action which is invoked when the event fires (passing in the event args).</param>
+        public static void ShouldFire<TEvent>(this IEventBus self, Action triggerAction, Action<TEvent> onEvent = null)
         {
-            if (GetFireCount<TEvent>(self, action) == 0) throw new AssertionException(string.Format("Expected the event '{0}' to be fired at least once.", typeof(TEvent).Name));
+            if (GetFireCount(self, triggerAction, onEvent) == 0) throw new AssertionException(string.Format("Expected the event '{0}' to be fired at least once.", typeof(TEvent).Name));
         }
 
         /// <summary>Asserts that when the specified action is invoked the event was fired a specific number of times.</summary>
         /// <typeparam name="TEvent">The event type.</typeparam>
         /// <param name="self">The event-bus to monitor.</param>
         /// <param name="total">The total number of times the event should have fired.</param>
-        /// <param name="action"></param>
-        public static void ShouldFire<TEvent>(this IEventBus self, int total, Action action)
+        /// <param name="triggerAction">The action that causes the event to fire.</param>
+        /// <param name="onEvent">Option action which is invoked when the event fires (passing in the event args).</param>
+        public static void ShouldFire<TEvent>(this IEventBus self, int total, Action triggerAction, Action<TEvent> onEvent = null)
         {
-            var fireCount = GetFireCount<TEvent>(self, action);
+            var fireCount = GetFireCount(self, triggerAction, onEvent);
             if (fireCount != total) throw new AssertionException(string.Format("Expected the event '{0}' to be fired {1} times. Instead it fired {2} times.", typeof(TEvent).Name, total, fireCount));
         }
 
         /// <summary>Asserts that when the specified action was invoked the event was not fired.</summary>
         /// <param name="self">The event-bus to monitor.</param>
         /// <typeparam name="TEvent">The event type.</typeparam>
-        /// <param name="action"></param>
-        public static void ShouldNotFire<TEvent>(this IEventBus self, Action action)
+        /// <param name="triggerAction">The action that causes the event to fire.</param>
+        /// <param name="onEvent">Option action which is invoked when the event fires (passing in the event args).</param>
+        public static void ShouldNotFire<TEvent>(this IEventBus self, Action triggerAction, Action<TEvent> onEvent = null)
         {
-            if (GetFireCount<TEvent>(self, action) != 0) throw new AssertionException(string.Format("Expected the event '{0}' to not fire.", typeof(TEvent).Name));
+            if (GetFireCount(self, triggerAction, onEvent) != 0) throw new AssertionException(string.Format("Expected the event '{0}' to not fire.", typeof(TEvent).Name));
         }
 
-        private static int GetFireCount<TEvent>(IEventBus self, Action action)
+        private static int GetFireCount<TEvent>(IEventBus self, Action action, Action<TEvent> onEvent)
         {
             // Setup initial conditions.
             if (self == null) throw new ArgumentNullException("self");
@@ -598,7 +601,7 @@ namespace Open.Core.Common.Testing
             self.IsAsynchronous = false;
 
             // Wire up the event.
-            var eventTester = new EventBusTester<TEvent>();
+            var eventTester = new EventBusTester<TEvent> { OnEvent = onEvent };
             self.Subscribe<TEvent>(eventTester.OnFire);
 
             // Invoke the action.
@@ -614,10 +617,12 @@ namespace Open.Core.Common.Testing
 
         public class EventBusTester<TEvent>
         {
+            public Action<TEvent> OnEvent { get; set; }
             public int FireCount { get; private set; }
             public void OnFire(TEvent e)
             {
                 FireCount++;
+                if (OnEvent != null) OnEvent(e);
             }
         }
         #endregion
