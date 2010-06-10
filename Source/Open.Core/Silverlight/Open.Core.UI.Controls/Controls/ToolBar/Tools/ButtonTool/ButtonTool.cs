@@ -31,8 +31,6 @@ using OpenFileDialog = System.Windows.Controls.OpenFileDialog;
 using SaveFileDialog = System.Windows.Controls.SaveFileDialog;
 using T = Open.Core.UI.Controls.ButtonTool;
 
-[assembly: InternalsVisibleTo("Open.Core.Test")]
-
 namespace Open.Core.UI.Controls
 {
     /// <summary>A ToolBar tool which behaves like a button.</summary>
@@ -41,13 +39,7 @@ namespace Open.Core.UI.Controls
     {
         #region Events
         /// <summary>Fires when the button is clicked.</summary>
-        public event EventHandler Click;
-        internal void FireClick()
-        {
-            ShowDialog();
-            if (Click != null) Click(this, new EventArgs());
-            PublishToolEvent();
-        }
+        public event EventHandler Clicked;
         #endregion
 
         #region Head
@@ -169,6 +161,14 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Methods
+        /// <summary>Simulates a click of the button (used internally and for testing).</summary>
+        public void Click()
+        {
+            ShowDialog();
+            if (Clicked != null) Clicked(this, new EventArgs());
+            PublishToolEvent();
+        }
+
         public override FrameworkElement CreateView()
         {
             return new ButtonToolView { ViewModel = new ButtonToolViewModel(this) };
@@ -208,7 +208,7 @@ namespace Open.Core.UI.Controls
                                              dialog.FilterIndex = filterIndex.WithinBounds(1, int.MaxValue);
                                              dialog.DefaultExtension = defaultExtension;
                                          }, 
-                dialogAccepted);
+                                     dialogAccepted);
             return this;
         }
 
@@ -263,11 +263,11 @@ namespace Open.Core.UI.Controls
 
             // Show the dialog.
             var dialog = new SaveFileDialog
-                                {
-                                    Filter = invoker.DialogInfo.Filter,
-                                    FilterIndex = invoker.DialogInfo.FilterIndex,
-                                    DefaultExt = invoker.DialogInfo.DefaultExtension,
-                                };
+                             {
+                                 Filter = invoker.DialogInfo.Filter,
+                                 FilterIndex = invoker.DialogInfo.FilterIndex,
+                                 DefaultExt = invoker.DialogInfo.DefaultExtension,
+                             };
             if (dialog.ShowDialog() == true)
             {
                 invoker.AfterAccepted();

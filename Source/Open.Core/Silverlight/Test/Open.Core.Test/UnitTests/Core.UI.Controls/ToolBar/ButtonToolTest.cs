@@ -134,7 +134,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         public void ShouldFireEventFromEventBus()
         {
             EventBus.IsAsynchronous = false;
-            EventBus.ShouldFire<IToolEvent>(() => ((ButtonTool)tool).FireClick());
+            EventBus.ShouldFire<IToolEvent>(() => ((ButtonTool)tool).Click());
         }
 
         [TestMethod]

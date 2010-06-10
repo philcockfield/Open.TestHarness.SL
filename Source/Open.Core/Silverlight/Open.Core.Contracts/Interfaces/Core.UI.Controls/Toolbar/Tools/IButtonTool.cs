@@ -29,7 +29,7 @@ namespace Open.Core.UI.Controls
     public interface IButtonTool : ITool
     {
         /// <summary>Fires when tool is clicked.</summary>
-        event EventHandler Click;
+        event EventHandler Clicked;
 
         /// <summary>Gets or sets the orientation of the label relative to the icon.</summary>
         Orientation Orientation { get; set; }
@@ -99,6 +99,9 @@ namespace Open.Core.UI.Controls
         /// <param name="defaultExtension">Gets or sets the default file name extension applied to files that are saved with the SaveFileDialog.</param>
         /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
         IButtonTool RegisterAsFileSaveDialog(string filter = null, int filterIndex = 1, string defaultExtension = null, Action<ISaveFileDialog> dialogAccepted = null);
+
+        /// <summary>Simulates a click of the button (used internally and for testing).</summary>
+        void Click();
     }
 
     /// <summary>The various types of button behavior a ButtonTool can express.</summary>
