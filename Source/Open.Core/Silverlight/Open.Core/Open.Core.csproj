@@ -110,6 +110,7 @@
     <Compile Include="Helper Classes\AutoPropertyManager.cs" />
     <Compile Include="Helper Classes\WeakDelegateReference.cs" />
     <Compile Include="Model\Base Classes\ModelBase.INotifyDataErrorInfo.partial.cs" />
+    <Compile Include="Base Classes\NotifyPropertyChangedBase.partial.silverlight.cs" />
     <Compile Include="Model\ErrorInfo.cs" />
     <Compile Include="Model\Filter\PageFilter.cs" />
     <Compile Include="Network\PackageDownloadService.cs" />
