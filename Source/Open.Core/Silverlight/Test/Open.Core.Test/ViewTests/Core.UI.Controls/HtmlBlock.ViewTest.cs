@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
@@ -81,6 +82,30 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
             var html = new Uri("Test/HtmlContent.xml", UriKind.Relative);
             control.SourceUri = html;
         }
+
+        [ViewTest]
+        public void Visibility__Collapsed(HtmlBlock control) { control.Visibility = Visibility.Collapsed; }
+
+        [ViewTest]
+        public void Visibility__Visible(HtmlBlock control) { control.Visibility = Visibility.Visible; }
+
+        [ViewTest]
+        public void TEMP(HtmlBlock control)
+        {
+            var child = new Border();
+            var parent = new Border {Child = child};
+
+            Output.Write("parent: " + parent.Visibility);
+            Output.Write("child: " + child.Visibility);
+           Output.Break();
+
+            parent.Visibility = Visibility.Collapsed;
+
+           Output.Write("parent: " + parent.Visibility);
+           Output.Write("child: " + child.Visibility);
+
+        }
+
 
         [ViewTest]
         public void Dispose(HtmlBlock control)

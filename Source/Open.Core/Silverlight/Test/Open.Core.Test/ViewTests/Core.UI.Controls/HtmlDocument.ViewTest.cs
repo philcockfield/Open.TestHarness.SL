@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Windows;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
 
@@ -57,6 +58,12 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
         {
             control.SourceUri = null;
         }
+
+        [ViewTest]
+        public void Visibility__Collapsed(HtmlDocument control) { control.Visibility = Visibility.Collapsed; }
+
+        [ViewTest]
+        public void Visibility__Visible(HtmlDocument control) { control.Visibility = Visibility.Visible; }
 
         [ViewTest]
         public void Dispose(HtmlDocument control)
