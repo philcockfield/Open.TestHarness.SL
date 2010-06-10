@@ -274,15 +274,15 @@ namespace Open.Core.UI.Controls
         private void UpdateDimensions()
         {
             // Setup initial conditions.
-            var position = AbsolutePosition;
+            var position = GetPosition();
             if (position == null)
             {
                 RemoveElement();
                 return;
             }
-            var div = HtmlElement;
 
             // Update position and size.
+            var div = HtmlElement;
             div.SetAbsolutePosition(position.Value.X, position.Value.Y);
             div.SetSize(ActualWidth, ActualHeight);
         }
@@ -298,6 +298,13 @@ namespace Open.Core.UI.Controls
         {
             if (htmlElement ==null) return;
             htmlElement.SetInnerHtml(InnerHtml);
+        }
+
+        private Point? GetPosition()
+        {
+            return this.IsVisibleToRoot()
+                                ? AbsolutePosition
+                                : new Point(-50000, -50000); // Off screen if control is not visible.
         }
         #endregion
     }

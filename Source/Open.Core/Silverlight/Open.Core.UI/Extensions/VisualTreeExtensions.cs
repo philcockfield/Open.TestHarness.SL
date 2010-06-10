@@ -29,7 +29,7 @@ namespace Open.Core.Common
 {
     public static partial class VisualTreeExtensions
     {
-        #region Methods - Find/Retrieve Elements from Tree
+        #region Methods - Find / Retrieve Elements from Tree
         /// <summary>Gets the elements parent in the VisualTree.</summary>
         /// <param name="element">The source element.</param>
         /// <returns>The parent element, or null if the element does not exist.</returns>
@@ -147,6 +147,21 @@ namespace Open.Core.Common
 
             // Finish up - not found.
             return null;
+        }
+        #endregion
+
+        #region Methods - Visibility
+        /// <summary>Walks up the tree to determine whether all parents within the object chain are visible.</summary>
+        /// <param name="element">The element to examine.</param>
+        /// <returns>True if all parents in the visual hierarchy are visible, otherwise False.</returns>
+        public static bool IsVisibleToRoot(this UIElement element)
+        {
+            do
+            {
+                if (element == null || element.Visibility != Visibility.Visible) return false;
+                element = VisualTreeHelper.GetParent(element) as UIElement;
+            } while (element != null);
+            return true;
         }
         #endregion
     }

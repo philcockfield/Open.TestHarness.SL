@@ -112,6 +112,26 @@ namespace Open.Core.Common.Test.Core.Common.Extensions
             ((UIElement)null).RemoveFromVisualTree();
            new TextBlock().RemoveFromVisualTree();
         }
+
+        [TestMethod]
+        public void ShouldDetermineVisibilityBasedOnParentHierarchy()
+        {
+            var element3 = new Border();
+            var element2 = new Border { Child = element3 };
+            var element1 = new Border { Child = element2 };
+            element3.IsVisibleToRoot().ShouldBe(true);
+
+            element1.Visibility = Visibility.Collapsed;
+            element1.IsVisibleToRoot().ShouldBe(false);
+            element3.IsVisibleToRoot().ShouldBe(false);
+
+            element1.Visibility = Visibility.Visible;
+            element2.Visibility = Visibility.Collapsed;
+            element3.IsVisibleToRoot().ShouldBe(false);
+
+            element2.Visibility = Visibility.Visible;
+            element3.IsVisibleToRoot().ShouldBe(true);
+        }
         #endregion
     }
 }
