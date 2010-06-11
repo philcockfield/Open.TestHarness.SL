@@ -123,8 +123,16 @@ namespace Open.Core.UI.Controls
         {
             get
             {
-                if (Model.IsMouseDown || Model.IsPressed) return Model.Styles.BackgroundDown;
-                if (Model.IsMouseOver) return Model.Styles.BackgroundOver;
+                if (Model.IsMouseDown) return Model.Styles.BackgroundDown;
+                if (Model.IsToggleButton)
+                {
+                    if (Model.IsPressed) return Model.Styles.BackgroundTogglePressed;
+                    if (Model.IsMouseOver) return Model.Styles.BackgroundOver;
+                }
+                else
+                {
+                    if (Model.IsMouseOver) return Model.Styles.BackgroundOver;
+                }
                 if (Model.IsDefaultBackgroundVisible) return Model.Styles.BackgroundDefault;
                 return null;
             }

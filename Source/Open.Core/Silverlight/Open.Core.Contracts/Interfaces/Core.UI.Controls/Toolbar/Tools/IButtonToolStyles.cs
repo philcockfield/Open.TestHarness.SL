@@ -35,5 +35,9 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets the background of the tool when the mouse is pressed.</summary>
         DataTemplate BackgroundDown { get; set; }
+
+        /// <summary>Gets or sets the background of the tool when the button is pressed (and the mouse is not over or down).</summary>
+        /// <remarks>Only used when the button is in toggle mode (IsToggleButton == true)</remarks>
+        DataTemplate BackgroundTogglePressed { get; set; }
     }
 }

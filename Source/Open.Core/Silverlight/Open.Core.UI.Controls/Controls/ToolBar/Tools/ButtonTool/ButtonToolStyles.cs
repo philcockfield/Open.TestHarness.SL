@@ -33,20 +33,26 @@ namespace Open.Core.UI.Controls
         #region Properties
         public DataTemplate BackgroundDefault
         {
-            get { return GetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDefault); }
-            set { SetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDefault, value); }
+            get { return GetPropertyValue<T, DataTemplate>(m => m.BackgroundDefault); }
+            set { SetPropertyValue<T, DataTemplate>(m => m.BackgroundDefault, value); }
         }
 
         public DataTemplate BackgroundOver
         {
-            get { return GetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundOver); }
-            set { SetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundOver, value); }
+            get { return GetPropertyValue<T, DataTemplate>(m => m.BackgroundOver); }
+            set { SetPropertyValue<T, DataTemplate>(m => m.BackgroundOver, value); }
         }
 
         public DataTemplate BackgroundDown
         {
-            get { return GetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDown); }
-            set { SetPropertyValue<ButtonToolStyles, DataTemplate>(m => m.BackgroundDown, value); }
+            get { return GetPropertyValue<T, DataTemplate>(m => m.BackgroundDown); }
+            set { SetPropertyValue<T, DataTemplate>(m => m.BackgroundDown, value); }
+        }
+
+        public DataTemplate BackgroundTogglePressed
+        {
+            get { return GetPropertyValue<T, DataTemplate>(m => m.BackgroundTogglePressed); }
+            set { SetPropertyValue<T, DataTemplate>(m => m.BackgroundTogglePressed, value); }
         }
         #endregion
 
@@ -56,6 +62,7 @@ namespace Open.Core.UI.Controls
             BackgroundDefault = GetTemplate("ButtonTool.Background.Default");
             BackgroundOver = GetTemplate("ButtonTool.Background.Over");
             BackgroundDown = GetTemplate("ButtonTool.Background.Down");
+            BackgroundTogglePressed = GetTemplate("ButtonTool.Background.TogglePressed");
         }
         #endregion
 

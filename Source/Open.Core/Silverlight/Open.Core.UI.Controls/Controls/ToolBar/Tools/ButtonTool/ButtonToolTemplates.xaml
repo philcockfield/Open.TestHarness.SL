@@ -77,7 +77,27 @@
         </Grid>
     </DataTemplate>
 
-    
+    <DataTemplate x:Key="ButtonTool.Background.TogglePressed">
+        <Grid>
+            <Border Background="#ffd844" CornerRadius="2">
+                <Grid>
+                    <ContentControl 
+                            ContentTemplate="{StaticResource ButtonTool.Horizontal.ReflectionOverlay}" 
+                            Style="{StaticResource StretchFill}"
+                            Opacity="0.6" />
+                    <Border 
+                            Height="3"
+                            Background="{StaticResource Gradient.Vertical.Black-Transparent}" 
+                            CornerRadius="2,2,0,0"
+                            VerticalAlignment="Top"
+                            Opacity="0.4" />
+                </Grid>
+            </Border>
+            <Border CornerRadius="2" BorderBrush="{StaticResource Brush.Black.025}" BorderThickness="1" />
+        </Grid>
+    </DataTemplate>
+
+
     <!--Button Content-->
     <DataTemplate x:Key="ButtonTool.HorizontalContent">
         <Grid IsHitTestVisible="False" Opacity="{Binding EnabledOpacity}" MinWidth="{Binding Model.MinWidth}">
