@@ -22,6 +22,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Browser;
 using System.Windows.Controls;
 using Open.Core.Common;
 
@@ -76,6 +77,13 @@ namespace Open.Core.UI.Controls
         /// <summary>Fires when the object has been disposed of (via the 'Dispose' method.  See 'IDisposable' interface).</summary>
         public event EventHandler Disposed;
         private void OnDisposed() { if (Disposed != null) Disposed(this, new EventArgs()); }
+        #endregion
+
+        #region Properties
+        /// <summary>Gets the IFrame HTML element.</summary>
+        // ReSharper disable InconsistentNaming
+        public HtmlElement IFrame { get { return htmlBlock.HtmlElement; } }
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Dependency Properties
