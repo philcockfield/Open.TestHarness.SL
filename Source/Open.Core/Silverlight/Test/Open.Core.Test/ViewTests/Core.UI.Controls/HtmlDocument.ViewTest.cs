@@ -40,6 +40,18 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
         }
         #endregion
 
+        [ViewTest]
+        public void TEMP(HtmlDocument control)
+        {
+//            var html = new HtmlBlock();
+
+            Output.Write(control.IFrame.GetProperty("title"));
+
+//            html.HtmlElement.
+//            control.
+        }
+
+
         #region Tests
         [ViewTest]
         public void Set_SourceUri__Url_1(HtmlDocument control)
