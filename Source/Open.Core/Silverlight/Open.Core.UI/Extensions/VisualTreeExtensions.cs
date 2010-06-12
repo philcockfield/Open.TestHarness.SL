@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -96,8 +97,8 @@ namespace Open.Core.Common
         }
 
         /// <summary>Walks down the visual tree looking for the first child element that matches the given type.</summary>
-        /// <param name="element">The source element.</param>
         /// <typeparam name="T">The type of the child to retrieve.</typeparam>
+        /// <param name="element">The source element.</param>
         /// <returns>The specified type of element, otherwise Null.</returns>
         public static T FindFirstChildOfType<T>(this DependencyObject element) where T : DependencyObject
         {
@@ -117,6 +118,33 @@ namespace Open.Core.Common
             }
 
             return null;
+        }
+
+        /// <summary>Retrieves all children of the given type that are descendents of the given element.</summary>
+        /// <typeparam name="T">The type of the children to retrieve.</typeparam>
+        /// <param name="element">The source element.</param>
+        public static IEnumerable<T> FindChildrenOfType<T>(this DependencyObject element) where T : DependencyObject
+        {
+            var list = new List<T>();
+            element.FindChildrenOfType(list);
+            return list;
+        }
+        private static void FindChildrenOfType<T>(this DependencyObject element, List<T> list) where T : DependencyObject
+        {
+            var count = VisualTreeHelper.GetChildrenCount(element);
+            var type = typeof(T);
+
+            for (var i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+                if (type.IsAssignableFrom(child.GetType())) list.Add(child as T);
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+                child.FindChildrenOfType(list);
+            }
         }
 
         /// <summary>Walks up the tree looking for the first occurance of the named element.</summary>

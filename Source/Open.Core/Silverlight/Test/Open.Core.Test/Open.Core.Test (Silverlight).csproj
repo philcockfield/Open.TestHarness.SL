@@ -159,6 +159,7 @@
     <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetterTestControl.xaml.cs">
       <DependentUpon>ViewModelSetterTestControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewTests\Core.UI\ScrollBarTemplates\ScrollBarFlatViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\StyleViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehavior.ViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehaviorTestControl.xaml.cs">

@@ -30,8 +30,6 @@
         </Border>
     </ControlTemplate>
 
-    
-
     <ControlTemplate x:Key="Background.Toolbar.Shiny">
         <Grid>
             <Border Background="{StaticResource Gradient.Vertical.White-Transparent}" Opacity="0.7" />

@@ -5,6 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Open.Core.UI;component/Styles/ControlStyles/Button.xaml" />
         <ResourceDictionary Source="/Open.Core.UI;component/Styles/ControlStyles/GridSplitter.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI;component/Styles/ControlStyles/ScrollBar.Flat.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ListBox.Item.FullWidth" TargetType="ListBoxItem">
