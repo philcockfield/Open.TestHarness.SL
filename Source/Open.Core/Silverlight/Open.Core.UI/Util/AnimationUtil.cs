@@ -68,7 +68,7 @@ namespace Open.Core.UI.Common
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void FadeOut(FrameworkElement element, double seconds, IEasingFunction easing, Action callback)
+        public static void FadeOut(FrameworkElement element, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             Fade(element, element.Opacity, 0, seconds, easing, callback);
         }
@@ -78,7 +78,7 @@ namespace Open.Core.UI.Common
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void FadeIn(FrameworkElement element, double seconds, IEasingFunction easing, Action callback)
+        public static void FadeIn(FrameworkElement element, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             Fade(element, element.Opacity, 1, seconds, easing, callback);
         }
@@ -89,7 +89,7 @@ namespace Open.Core.UI.Common
         /// <param name="toOpacity">The ending opacity value (0-1).</param>
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void Fade(FrameworkElement element, double fromOpacity, double toOpacity, double seconds, IEasingFunction easing, Action callback)
+        public static void Fade(FrameworkElement element, double fromOpacity, double toOpacity, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             DoubleAnimate(element, fromOpacity, toOpacity, seconds, PropOpacity, easing, callback);
         }
@@ -100,7 +100,7 @@ namespace Open.Core.UI.Common
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void Fade(FrameworkElement element, bool fadeInOut, double seconds, IEasingFunction easing, Action callback)
+        public static void Fade(FrameworkElement element, bool fadeInOut, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             if (fadeInOut)
             {
@@ -119,7 +119,7 @@ namespace Open.Core.UI.Common
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
         /// <remarks>Make sure the element you're fading to is at zero opacity before calling this method.</remarks>
-        public static void CrossFade(FrameworkElement from, FrameworkElement to, double seconds, IEasingFunction easing, Action callback)
+        public static void CrossFade(FrameworkElement from, FrameworkElement to, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             // Construct 2 animations for fading in and out.
             var animationFadeOut = CreateDoubleAnimation(from.Opacity, 0, seconds, easing);
@@ -140,7 +140,7 @@ namespace Open.Core.UI.Common
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static MoveAnimation Move(FrameworkElement element, Point start, Point end, double seconds, IEasingFunction easing, Action callback)
+        public static MoveAnimation Move(FrameworkElement element, Point start, Point end, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             var x = DoubleAnimate(element, start.X, end.X, seconds, "(Canvas.Left)", easing, callback);
             var y = DoubleAnimate(element, start.Y, end.Y, seconds, "(Canvas.Top)", easing, null);
@@ -153,7 +153,7 @@ namespace Open.Core.UI.Common
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void Rotate(FrameworkElement element, double toAngle, double seconds, IEasingFunction easing, Action callback)
+        public static void Rotate(FrameworkElement element, double toAngle, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             // Add a transform if one doesn't already exist.
             if ((element.RenderTransform as RotateTransform) == null) element.RenderTransform = new RotateTransform();
@@ -172,7 +172,7 @@ namespace Open.Core.UI.Common
         /// <param name="propertyPath">The path to the property to animate (eg. "Opacity" or "(Canvas.Left)").</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static DoubleAnimation DoubleAnimate(FrameworkElement element, double fromValue, double toValue, double seconds, string propertyPath, IEasingFunction easing, Action callback)
+        public static DoubleAnimation DoubleAnimate(FrameworkElement element, double fromValue, double toValue, double seconds, string propertyPath, IEasingFunction easing = null, Action callback = null)
         {
             // Construct the animation.
             var animation = CreateDoubleAnimation(fromValue, toValue, seconds, easing);
