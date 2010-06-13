@@ -96,6 +96,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\IOpenFileDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Events\IToolEvent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Events\IToolStateEvent.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Toolbar\IToolBarTitle.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonToolStyles.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IButtonTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\ITool.cs" />

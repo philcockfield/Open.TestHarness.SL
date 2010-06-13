@@ -15,11 +15,13 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
     {
         #region Head
         private IToolBar toolbar;
+        private ToolBarViewModel viewModel;
 
         [TestInitialize]
         public void TestSetup()
         {
-            toolbar = new Open.Core.UI.Controls.ToolBar();
+            viewModel = new ToolBarViewModel(); ;
+            toolbar = viewModel;
         }
         #endregion
 
@@ -41,8 +43,8 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         {
             CompositionInitializer.SatisfyImports(this);
 
-            ImportedToolBar1.ShouldBeInstanceOfType<Open.Core.UI.Controls.ToolBar>();
-            ImportedToolBar2.ShouldBeInstanceOfType<Open.Core.UI.Controls.ToolBar>();
+            ImportedToolBar1.ShouldBeInstanceOfType<ToolBarViewModel>();
+            ImportedToolBar2.ShouldBeInstanceOfType<ToolBarViewModel>();
 
             ImportedToolBar1.ShouldNotBe(ImportedToolBar2);
         }
@@ -58,6 +60,47 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         public void ShouldNotHaveParentByDefault()
         {
             toolbar.Parent.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotShowDividersByDefault()
+        {
+            toolbar.Dividers.ShouldBe(RectEdgeFlag.None);
+            viewModel.IsLeftDividerVisible.ShouldBe(false);
+            viewModel.IsRightDividerVisible.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldShowLeftDivider()
+        {
+            viewModel.Dividers = RectEdgeFlag.Left;
+            viewModel.IsLeftDividerVisible.ShouldBe(true);
+            viewModel.IsRightDividerVisible.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldShowRightDivider()
+        {
+            viewModel.Dividers = RectEdgeFlag.Right;
+            viewModel.IsLeftDividerVisible.ShouldBe(false);
+            viewModel.IsRightDividerVisible.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldShowBothDividers()
+        {
+            viewModel.Dividers = RectEdgeFlag.Left | RectEdgeFlag.Right;
+            viewModel.IsLeftDividerVisible.ShouldBe(true);
+            viewModel.IsRightDividerVisible.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldFireDividerVisibilityProperties()
+        {
+            viewModel.ShouldFirePropertyChanged<ToolBarViewModel>(
+                        () => toolbar.Dividers = RectEdgeFlag.Left, 
+                        m => m.IsLeftDividerVisible, 
+                        m => m.IsRightDividerVisible);
         }
 
         [TestMethod]
@@ -185,6 +228,28 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 
             toolbar.GetTool(null).ShouldBe(null);
             toolbar.GetTool<IButtonTool>(null).ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldReturnTitleByDefault()
+        {
+            var title = toolbar.Title;
+            toolbar.Title = null;
+            toolbar.Title.ShouldBe(title);
+
+            var newTitle = new ToolBarTitleViewModel();
+            toolbar.Title = newTitle;
+            toolbar.Title.ShouldBe(newTitle);
+
+            toolbar.Title = null;
+            toolbar.Title.ShouldBe(title);
+        }
+
+        [TestMethod]
+        public void TitleShouldNotBeVisibleByDefault()
+        {
+            new ToolBarTitleViewModel().IsVisible.ShouldBe(true);
+            toolbar.Title.IsVisible.ShouldBe(false);
         }
         #endregion
 

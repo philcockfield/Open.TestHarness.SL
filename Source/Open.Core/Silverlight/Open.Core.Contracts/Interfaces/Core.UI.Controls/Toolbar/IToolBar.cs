@@ -47,6 +47,12 @@ namespace Open.Core.UI.Controls
         /// </summary>
         Thickness DefaultToolMargin { get; set; }
 
+        /// <summary>Gets or sets which dividers to display (None | Left | Right.  Top/Bottom values are ignored).</summary>
+        RectEdgeFlag Dividers { get; set; }
+
+        /// <summary>Gets or sets the title for the toolbar (guaranteed to return a default object).</summary>
+        IToolBarTitle Title { get; set; }
+
         /// <summary>Adds a tool to the toolbar.</summary>
         /// <typeparam name="T">The type of the tool.</typeparam>
         /// <param name="tool">The instance of the tool model being added.</param>

@@ -224,7 +224,11 @@
     <Compile Include="Controls\Text\CoreTextBox.cs" />
     <Compile Include="Controls\ToolBar\Controllers\ToolLayoutController.cs" />
     <Compile Include="Controls\ToolBar\Events\ToolStateEvent.cs" />
-    <Compile Include="Controls\ToolBar\ToolBar.cs" />
+    <Compile Include="Controls\ToolBar\Title\ToolBarTitle.xaml.cs">
+      <DependentUpon>ToolBarTitle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolBar\Title\ToolBarTitleViewModel.cs" />
+    <Compile Include="Controls\ToolBar\ToolBarViewModel.cs" />
     <Compile Include="Controls\ToolBar\ToolBarExtensions.cs" />
     <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
       <DependentUpon>ToolBarView.xaml</DependentUpon>
@@ -245,6 +249,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Prompts\PromptButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ToolBar\Title\ToolBarTitle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

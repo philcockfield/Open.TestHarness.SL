@@ -1,0 +1,25 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.ToolBarTitle"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
+    
+    <UserControl.Resources>
+        <Converter:VisibilityConverter x:Name="visibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Height="17" Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}">
+
+        <!--Footer Border-->
+        <Border BorderBrush="White" BorderThickness="0,0,0,1" />
+        
+        <!--Title Text-->
+        <TextBlock 
+            Text="{Binding Name}" 
+            Opacity="0.5" 
+            FontSize="11" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" />
+        
+    </Grid>
+</UserControl>

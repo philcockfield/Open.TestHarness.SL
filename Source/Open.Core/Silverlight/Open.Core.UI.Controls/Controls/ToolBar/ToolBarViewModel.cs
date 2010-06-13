@@ -26,14 +26,13 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows;
 using Open.Core.Common;
-
-using T = Open.Core.UI.Controls.ToolBar;
+using T = Open.Core.UI.Controls.ToolBarViewModel;
 
 namespace Open.Core.UI.Controls
 {
     /// <summary>A laid up structure of tools.</summary>
     [Export(typeof(IToolBar))]
-    public class ToolBar : ToolBase, IToolBar
+    public class ToolBarViewModel : ToolBase, IToolBar
     {
         #region Event Handlers
         /// <summary>Fires when the 'UpdateLayout' method is invoked.</summary>
@@ -41,10 +40,11 @@ namespace Open.Core.UI.Controls
         private void FireUpdateLayoutRequest(){if (UpdateLayoutRequest != null) UpdateLayoutRequest(this, new EventArgs());}
         #endregion
 
-        #region Head
+        #region Head : IToolBar
         internal const string DefaultViewExportKey = "Open.Core.UI.Controls.ToolBarView.Default";
         private readonly List<ToolItem> toolItems = new List<ToolItem>();
         private ToolBarImporter importer;
+        private IToolBarTitle defaultTitle;
         #endregion
 
         #region Properties
@@ -77,13 +77,42 @@ namespace Open.Core.UI.Controls
             get { return GetPropertyValue<T, Thickness>(m => m.DefaultToolMargin, new Thickness(0)); }
             set { SetPropertyValue<T, Thickness>(m => m.DefaultToolMargin, value, new Thickness(0)); }
         }
+
+        /// <summary>Gets or sets which dividers to display (None | Left | Right.  Top/Bottom values are ignored).</summary>
+        public RectEdgeFlag Dividers
+        {
+            get { return GetPropertyValue<T, RectEdgeFlag>(m => m.Dividers, RectEdgeFlag.None); }
+            set
+            {
+                SetPropertyValue<T, RectEdgeFlag>(
+                            m => m.Dividers, value, 
+                            RectEdgeFlag.None,
+                            m => m.IsLeftDividerVisible, 
+                            m => m.IsRightDividerVisible);
+            }
+        }
+
+        /// <summary>Gets or sets the title for the toolbar (guaranteed to return a default object).</summary>
+        public IToolBarTitle Title
+        {
+            get
+            {
+                var value = GetPropertyValue<T, IToolBarTitle>(m => m.Title);
+                return value ?? GetDefaultTitle();
+            }
+            set { SetPropertyValue<T, IToolBarTitle>(m => m.Title, value); }
+        }
+        #endregion
+
+        #region Properties - ViewModel
+        public bool IsLeftDividerVisible { get { return (Dividers & RectEdgeFlag.Left) == RectEdgeFlag.Left; } }
+        public bool IsRightDividerVisible { get { return (Dividers & RectEdgeFlag.Right) == RectEdgeFlag.Right; } }
         #endregion
 
         #region Methods
         public override FrameworkElement CreateView()
         {
-            if (importer == null) importer = new ToolBarImporter();
-            var viewImport = importer.Views.FirstOrDefault(m => Equals(m.Metadata.Id, ViewImportKey));
+            var viewImport = GetImporter().Views.FirstOrDefault(m => Equals(m.Metadata.Id, ViewImportKey));
             var view = viewImport == null ? null : viewImport.Value as FrameworkElement;
             if (view != null) view.DataContext = this;
             return view;
@@ -192,6 +221,18 @@ namespace Open.Core.UI.Controls
         {
             return toolItems.FirstOrDefault(m => m.Tool == tool);
         }
+
+        private ToolBarImporter GetImporter() { return importer ?? (importer = new ToolBarImporter()); }
+        private IToolBarTitle GetDefaultTitle()
+        {
+            return defaultTitle ?? (defaultTitle = CreateTitle());
+        }
+        private IToolBarTitle CreateTitle()
+        {
+            var title = GetImporter().TitleFactory.CreateExport().Value;
+            title.IsVisible = true;
+            return title;
+        }
         #endregion
 
         private class ToolItem
@@ -207,6 +248,9 @@ namespace Open.Core.UI.Controls
         {
             [ImportMany(RequiredCreationPolicy = CreationPolicy.NonShared)]
             public IEnumerable<Lazy<IToolBarView, IIdentifiable>> Views { get; set; }
+
+            [Import]
+            public ExportFactory<IToolBarTitle> TitleFactory { get; set; }
         }
     }
 }

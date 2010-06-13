@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
+using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
@@ -23,15 +24,13 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
 
         [ViewTest(Default = true, IsVisible = false)]
-        public void Initialize(ContentControl control)
+        public void Initialize(Border control)
         {
             CompositionInitializer.SatisfyImports(this);
 
             control.Width = 600;
-            control.StretchContent();
-            control.Background = Colors.Black.ToBrush(0.08);
-
-            control.Content = ToolBar.CreateView();
+            control.Background = Colors.Black.ToBrush(0.03);
+            control.Child = ToolBar.CreateView();
 
             defaultToolMargin = ToolBar.DefaultToolMargin;
 
@@ -41,7 +40,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
         #region Tests
         [ViewTest]
-        public void Add_ButtonTools(ContentControl control)
+        public void Add_ButtonTools(Border control)
         {
             // Setup initial conditions.
             ToolBar.Clear();
@@ -61,6 +60,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             // Finish up.
             ToolBar.UpdateLayout();
+            Show__Both_Dividers(control);
         }
 
         private IButtonTool AddLargeButton(object id, int column)
@@ -75,7 +75,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Add_Tools_Single_Row(ContentControl control)
+        public void Add_Tools_Single_Row(Border control)
         {
             ToolBar.Clear();
             ToolBar.Add(MockTool.Create());
@@ -86,7 +86,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Add_Tools_Two_Rows(ContentControl control)
+        public void Add_Tools_Two_Rows(Border control)
         {
             ToolBar.Clear();
             ToolBar.Add(MockTool.Create(54, 54), column: 0, rowSpan: 2);
@@ -99,13 +99,13 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void UpdateLayout(ContentControl control)
+        public void UpdateLayout(Border control)
         {
             ToolBar.UpdateLayout();
         }
 
         [ViewTest]
-        public void Toggle__DefaultMargin(ContentControl control)
+        public void Toggle__DefaultMargin(Border control)
         {
             ToolBar.DefaultToolMargin = ToolBar.DefaultToolMargin.Left == 0
                             ? defaultToolMargin 
@@ -115,7 +115,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Toggle__Toolbar_Margin(ContentControl control)
+        public void Toggle__Toolbar_Margin(Border control)
         {
             ToolBar.Margin = ToolBar.Margin.Left == 0
                             ? new Thickness(10)
@@ -123,7 +123,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Write_Properties(ContentControl control)
+        public void Write_Properties(Border control)
         {
             Output.WriteProperties(ToolBar);
             Output.WriteCollection(ToolBar.Tools);
@@ -131,7 +131,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Register_RegisterFileSaveDialog(ContentControl control)
+        public void Register_RegisterFileSaveDialog(Border control)
         {
             if (largeButton == null) return;
             largeButton.RegisterAsFileSaveDialog(
@@ -144,7 +144,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Register_RegisterFileOpenDialog(ContentControl control)
+        public void Register_RegisterFileOpenDialog(Border control)
         {
             if (largeButton == null) return;
             largeButton.RegisterAsFileOpenDialog(
@@ -158,6 +158,37 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
                                         Output.WriteCollection(acceptedDialog.Files);
                                         Output.Break();
                                     });
+        }
+
+        [ViewTest]
+        public void Show__Left_Divider(Border control) { ToolBar.Dividers = RectEdgeFlag.Left; }
+
+        [ViewTest]
+        public void Show__Right_Divider(Border control) { ToolBar.Dividers = RectEdgeFlag.Right; }
+
+        [ViewTest]
+        public void Show__Both_Dividers(Border control) { ToolBar.Dividers = RectEdgeFlag.Left | RectEdgeFlag.Right; }
+
+        [ViewTest]
+        public void Show__No_Dividers(Border control) { ToolBar.Dividers = RectEdgeFlag.None; }
+
+        [ViewTest]
+        public void Toggle__Title_IsVisible(Border control)
+        {
+            ToolBar.Title.IsVisible = !ToolBar.Title.IsVisible;
+            Output.Write("IsVisible: " + ToolBar.Title.IsVisible);
+        }
+
+        [ViewTest]
+        public void Change_Title__Name(Border control)
+        {
+            ToolBar.Title.Name = RandomData.LoremIpsum(1, 3);
+        }
+
+        [ViewTest]
+        public void Create_New_Title(Border control)
+        {
+            ToolBar.Title = new ToolBarTitleViewModel();
         }
         #endregion
 
