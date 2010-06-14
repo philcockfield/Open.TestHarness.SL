@@ -34,25 +34,35 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             defaultToolMargin = ToolBar.DefaultToolMargin;
 
-            Add_ButtonTools(control);
+//            Add_ButtonTools(control);
+            Add_ToolGroups(control);
         }
         #endregion
 
         #region Tests
+        [ViewTest]
+        public void Add_ToolGroups(Border control)
+        {
+            // Setup initial conditions.
+            ToolBar.Clear();
+            ToolBar.Title.IsVisible = false;
+
+            var group1 = ToolBar.AddToolGroup(title:"Group One", column:0, rowSpan:3);
+            var group2 = ToolBar.AddToolGroup(title: "Group Two", column: 1, rowSpan: 3);
+
+            AddButtonSet(group1);
+            AddButtonSet(group2);
+
+            ToolBar.UpdateLayout();
+        }
+
         [ViewTest]
         public void Add_ButtonTools(Border control)
         {
             // Setup initial conditions.
             ToolBar.Clear();
 
-            // Add buttons.
-            largeButton = AddLargeButton(1, 0);
-            ToolBar.AddDivider(column: 1, rowSpan: 3);
-            
-            var smallButton = ToolBar.AddButton(2, IconImage.SilkCut, "Cut", column: 2, row: 0, columnSpan: 3);
-            ToolBar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 2, row: 1, columnSpan: 3);
-            ToolBar.AddButton(4, IconImage.SilkClock, "Something", column: 2, row: 2, columnSpan: 3).IsEnabled = false;
-
+            AddButtonSet(ToolBar);
             ToolBar.AddCustomTool(new PlaceholderTool(), column: 5, rowSpan: 3);
 
             ToolBar.AddSpacer(column:6);
@@ -63,9 +73,20 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             Show__Both_Dividers(control);
         }
 
-        private IButtonTool AddLargeButton(object id, int column)
+        private void AddButtonSet(IToolBar toolbar)
         {
-            return ToolBar.AddButton(
+            largeButton = AddLargeButton(1, 0, toolbar);
+            toolbar.AddDivider(column: 1, rowSpan: 3);
+
+            var smallButton = toolbar.AddButton(2, IconImage.SilkCut, "Cut", column: 2, row: 0, columnSpan: 3);
+            toolbar.AddButton(3, IconImage.SilkPageCopy, "Copy", column: 2, row: 1, columnSpan: 3);
+            toolbar.AddButton(4, IconImage.SilkClock, "Something", column: 2, row: 2, columnSpan: 3).IsEnabled = false;
+        }
+
+        private IButtonTool AddLargeButton(object id, int column, IToolBar toolbar = null)
+        {
+            if (toolbar == null) toolbar = ToolBar;
+            return toolbar.AddButton(
                                     id,
                                     "/Images/Icon.Clipboard.png".ToImageSource().ToImage(),
                                     "Paste" + Environment.NewLine + "Something",

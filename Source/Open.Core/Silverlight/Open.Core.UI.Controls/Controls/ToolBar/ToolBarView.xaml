@@ -15,6 +15,7 @@
             <Style x:Key="dividerStyle" TargetType="ContentControl">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="Margin" Value="4,0,4,0" />
             </Style>
 
             <ControlTemplate x:Key="edgeDivider" TargetType="ContentControl">
@@ -52,8 +53,7 @@
                 Grid.RowSpan="2"
                 Visibility="{Binding IsLeftDividerVisible, Converter={StaticResource visibilityConverter}}"
                 Style="{StaticResource dividerStyle}" 
-                Template="{StaticResource edgeDivider}" 
-                Margin="0,0,4,0" />
+                Template="{StaticResource edgeDivider}" />
 
         <!--Tools-->
         <Grid 
@@ -69,8 +69,7 @@
                 Grid.RowSpan="2"
                 Visibility="{Binding IsRightDividerVisible, Converter={StaticResource visibilityConverter}}"
                 Style="{StaticResource dividerStyle}" 
-                Template="{StaticResource edgeDivider}" 
-                Margin="4,0,0,0" />
+                Template="{StaticResource edgeDivider}" />
         
         <!--Title-->
         <c:ViewFactoryContent 

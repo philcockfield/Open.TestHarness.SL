@@ -121,7 +121,15 @@ namespace Open.Core.UI.Controls
         /// <summary>Causes the toolbar to re-build it's tool layout.</summary>
         public void UpdateLayout()
         {
+            // Update this toolbar.
             FireUpdateLayoutRequest();
+
+            // Update child toolbars.
+            var childToolbars = Tools.Where(m => m is IToolBar);
+            foreach (IToolBar toolbar in childToolbars)
+            {
+                toolbar.UpdateLayout();
+            }
         }
 
         /// <summary>Removes all tools.</summary>

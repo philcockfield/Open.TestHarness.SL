@@ -193,19 +193,46 @@ namespace Open.Core.UI.Controls
             // Finish up.
             return tool;
         }
+
+        /// <summary>Adds a tool-group (a named child-toolbar).</summary>
+        /// <param name="toolbar">The toolbar to add to.</param>
+        /// <param name="id">The unique identifier of the tool.</param>
+        /// <param name="title">The display title of the tool-group (displayed under the toolbar).</param>
+        /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
+        /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
+        /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        /// <param name="rowSpan">The number of columns the tool spans (1-based, one by default.  Must be 1 or greater).</param>
+        public static IToolBar AddToolGroup(
+            this IToolBar toolbar,
+            object id = null,
+            string title = "Name",
+            int? column = null,
+            int? row = null,
+            int? columnSpan = 1,
+            int? rowSpan = 1)
+        {
+            // Setup initial conditions.
+            if (toolbar == null) throw new ArgumentNullException("toolbar");
+
+            // Create the toolbar.
+            var toolGroup = FactoryImporter.ToolBarFactory.CreateExport().Value;
+            toolGroup.Id = id;
+            toolGroup.Title.Name = title;
+            toolGroup.Title.IsVisible = true;
+            toolGroup.Dividers = RectEdgeFlag.Right;
+            toolbar.Add(toolGroup, column, row, columnSpan, rowSpan);
+
+            // Finish up.);
+            return toolGroup;
+        }
         #endregion
 
         public class Importer : ImporterBase
         {
-            [Import(typeof(IButtonTool))]
-            public ExportFactory<IButtonTool> ButtonFactory { get; set; }
-
-            [Import(typeof(IToolDivider))]
-            public ExportFactory<IToolDivider> DividerFactory { get; set; }
-
-            [Import(typeof(ISpacerTool))]
-            public ExportFactory<ISpacerTool> SpacerFactory { get; set; }
-
+            [Import] public ExportFactory<IToolBar> ToolBarFactory { get; set; }
+            [Import] public ExportFactory<IButtonTool> ButtonFactory { get; set; }
+            [Import] public ExportFactory<IToolDivider> DividerFactory { get; set; }
+            [Import] public ExportFactory<ISpacerTool> SpacerFactory { get; set; }
         }
     }
 }

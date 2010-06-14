@@ -24,10 +24,11 @@ using System.Windows;
 
 namespace Open.Core.Common
 {
-    /// <summary>Defines an object which can create it's own view.</summary>
+    /// <summary>An object which can create its own view.</summary>
     public interface IViewFactory
     {
         /// <summary>Creates a new instance of the view.</summary>
+        /// <remarks>Each call to this method yeilds a new instance of the view.</remarks>
         FrameworkElement CreateView();
     }
 }
