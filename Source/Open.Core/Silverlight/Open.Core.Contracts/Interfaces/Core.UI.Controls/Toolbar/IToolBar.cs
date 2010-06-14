@@ -43,7 +43,7 @@ namespace Open.Core.UI.Controls
 
         /// <summary>
         ///     Gets or sets the default margin to apply to tools within the toolbar. This is overridden by the tool itself,
-        ///     if the CreateView() method yeilds a control which as a pre-defined Margin value.
+        ///     if the CreateView() method yields a control which as a pre-defined Margin value.
         /// </summary>
         Thickness DefaultToolMargin { get; set; }
 

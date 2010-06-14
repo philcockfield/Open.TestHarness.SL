@@ -28,7 +28,7 @@ namespace Open.Core.Common
     public interface IViewFactory
     {
         /// <summary>Creates a new instance of the view.</summary>
-        /// <remarks>Each call to this method yeilds a new instance of the view.</remarks>
+        /// <remarks>Each call to this method yields a new instance of the view.</remarks>
         FrameworkElement CreateView();
     }
 }
