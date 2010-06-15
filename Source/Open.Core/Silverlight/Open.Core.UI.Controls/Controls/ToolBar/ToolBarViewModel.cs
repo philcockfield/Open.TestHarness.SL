@@ -40,14 +40,14 @@ namespace Open.Core.UI.Controls
         private void FireUpdateLayoutRequest(){if (UpdateLayoutRequest != null) UpdateLayoutRequest(this, new EventArgs());}
         #endregion
 
-        #region Head : IToolBar
+        #region Head
         internal const string DefaultViewExportKey = "Open.Core.UI.Controls.ToolBarView.Default";
         private readonly List<ToolItem> toolItems = new List<ToolItem>();
         private ToolBarImporter importer;
         private IToolBarTitle defaultTitle;
         #endregion
 
-        #region Properties
+        #region Properties : IToolBar
         /// <summary>Gets the collection of tools within the toolbar.</summary>
         public IEnumerable<ITool> Tools
         {
@@ -104,7 +104,7 @@ namespace Open.Core.UI.Controls
         }
         #endregion
 
-        #region Properties - ViewModel
+        #region Properties
         public bool IsLeftDividerVisible { get { return (Dividers & RectEdgeFlag.Left) == RectEdgeFlag.Left; } }
         public bool IsRightDividerVisible { get { return (Dividers & RectEdgeFlag.Right) == RectEdgeFlag.Right; } }
         #endregion
@@ -238,7 +238,7 @@ namespace Open.Core.UI.Controls
         private IToolBarTitle CreateTitle()
         {
             var title = GetImporter().TitleFactory.CreateExport().Value;
-            title.IsVisible = true;
+            title.IsVisible = false;
             return title;
         }
         #endregion

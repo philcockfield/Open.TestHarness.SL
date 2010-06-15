@@ -109,13 +109,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="__Sample\Consumer\Consumer.xaml.cs">
-      <DependentUpon>Consumer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="__Sample\MyControl.xaml.cs">
-      <DependentUpon>MyControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="__Sample\IMyControl.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\Buttons\ButtonModelTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\ContentContainerTest.cs" />
     <Compile Include="UnitTests\Core.UI.Controls\DropShadowViewModelTest.cs" />
@@ -271,16 +264,6 @@
     <Compile Include="ViewTests\TestControl.xaml.cs">
       <DependentUpon>TestControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="__Sample\MyControl.ViewModel.cs" />
-    <Compile Include="__Sample\Consumer\TEMP.cs" />
-    <Page Include="__Sample\Consumer\Consumer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="__Sample\MyControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\SampleTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
