@@ -33,6 +33,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
 {
+    [Tag("foo")]
     [TestClass]
     public class IsolatedStorageModelBaseTest : SilverlightUnitTest
     {
@@ -150,17 +151,17 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             count.ShouldBe(1);
         }
 
-        [TestMethod]
-        [Asynchronous]
-        public void ShouldSaveAutomatically()
-        {
-            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = true };
-            stub.Saved += delegate
-                              {
-                                  EnqueueTestComplete();
-                              };
-            stub.MyString = "Value";
-        }
+        //[Asynchronous]
+        //[TestMethod]
+        //public void ShouldSaveAutomatically()
+        //{
+        //    var stub = new Stub(IsolatedStorageType.Application) { AutoSave = true };
+        //    stub.Saved += delegate
+        //                      {
+        //                          EnqueueTestComplete();
+        //                      };
+        //    stub.MyString = "Value";
+        //}
 
         [TestMethod]
         public void ShouldClearOnlySpecificStubInMemory()
@@ -314,6 +315,43 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             mock.List.Count().ShouldBe(2);
             mock.List.ElementAt(0).Text.ShouldBe("one");
             mock.List.ElementAt(1).Text.ShouldBe("two");
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveLastSavedDateTime()
+        {
+            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub.Store.Remove(stub.Id);
+            stub.Store.Save();
+
+            stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub.LastSaved.ShouldBe(default(DateTime));
+        }
+
+        [TestMethod]
+        public void ShouldHaveLastSavedDateTime()
+        {
+            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub.Clear();
+            stub.Save();
+
+            stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub.LastSaved.ShouldNotBe(default(DateTime));
+        }
+
+        [TestMethod]
+        public void ShouldDetermineIfIsFirstLoad()
+        {
+            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub.Store.Remove(stub.Id);
+            stub.Store.Save();
+
+            stub.IsFirstLoad.ShouldBe(true);
+            stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
+            stub.IsFirstLoad.ShouldBe(true);
+
+            stub.Save();
+            stub.IsFirstLoad.ShouldBe(false);
         }
         #endregion
 

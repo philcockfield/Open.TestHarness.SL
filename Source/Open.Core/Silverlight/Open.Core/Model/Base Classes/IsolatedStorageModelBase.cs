@@ -21,9 +21,9 @@
 //------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
+using T = Open.Core.Common.IsolatedStorageModelBase;
 
 namespace Open.Core.Common
 {
@@ -84,7 +84,7 @@ namespace Open.Core.Common
             string serializedValues;
             if (Store.TryGetValue(id, out serializedValues))
             {
-                propertyManager.Populate(serializedValues);
+                if (!serializedValues.IsNullOrEmpty(true)) propertyManager.Populate(serializedValues);
             }
 
             // Wire up events.
@@ -127,9 +127,19 @@ namespace Open.Core.Common
                 }
             }
         }
+
+        /// <summary>Gets or sets the last time the store was saved.</summary>
+        public DateTime LastSaved
+        {
+            get { return GetPropertyValue<T, DateTime>(m => m.LastSaved); }
+            set { SetPropertyValue<T, DateTime>(m => m.LastSaved, value); }
+        }
+
+        /// <summary>Gets whether this is the first time the storage model has been loaded (no content exists).</summary>
+        public bool IsFirstLoad { get { return LastSaved == default(DateTime); } }
         #endregion
 
-        #region Properties - Quota
+        #region Properties : Quota
         /// <summary>Gets the available free space within the store (in Bytes).</summary>
         public long AvailableFreeBytes
         {
@@ -174,7 +184,7 @@ namespace Open.Core.Common
         public double? AutoIncrementQuotaBy { get; set; }
         #endregion
 
-        #region Properties - Internal
+        #region Properties : Internal
         private DelayedAction SaveDelayedAction
         {
             get { return saveDelayedAction ?? (saveDelayedAction = new DelayedAction(0.1, () => Save())); }
@@ -229,7 +239,7 @@ namespace Open.Core.Common
         }
         #endregion
 
-        #region Method - Save
+        #region Method : Save
         /// <summary>Starts the delayed Save action.</summary>
         public void DelaySave() { SaveDelayedAction.Start(); }
 
@@ -287,6 +297,7 @@ namespace Open.Core.Common
             {
                 try
                 {
+                    LastSaved = DateTime.UtcNow;
                     Store[Id] = Property.GetSerializedValues();
                     Store.Save();
                 }
