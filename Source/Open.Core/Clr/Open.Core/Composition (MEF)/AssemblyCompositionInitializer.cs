@@ -44,7 +44,6 @@ namespace Open.Core.Composition
         /// <param name="assembly">One or more assemblies to register.</param>
         public static void RegisterAssembly(params Assembly[] assembly)
         {
-            // Setup initial conditions.
             if (assembly == null) return;
             foreach (var item in assembly)
             {
@@ -60,15 +59,18 @@ namespace Open.Core.Composition
             // Setup initial conditions.
             if (instance == null) return;
 
-            // Ensure the calling assembly has been added to the catalog.
-            var assembly = Assembly.GetCallingAssembly();
-            ProcessAssembly(assembly);
+            lock (Container)
+            {
+                // Ensure the calling assembly has been added to the catalog.
+                var assembly = Assembly.GetCallingAssembly();
+                ProcessAssembly(assembly);
 
-            // Ensure referenced assemblies have been added to the catalog.
-            RegisterAssembly(referencedAssemblies);
+                // Ensure referenced assemblies have been added to the catalog.
+                RegisterAssembly(referencedAssemblies);
 
-            // Compose.
-            Container.ComposeParts(instance);
+                // Compose.
+                Container.ComposeParts(instance);
+            }
         }
 
         /// <summary>Clears the composition container and resets it to it's initial state.</summary>
@@ -100,8 +102,14 @@ namespace Open.Core.Composition
 
             // Add the given assembly.
             var assemblyCatalog = new AssemblyCatalog(assembly);
-            AggregateCatalog.Catalogs.Add(assemblyCatalog);
-            assemblies.Add(assembly);
+            lock (AggregateCatalog)
+            {
+                lock (assemblies)
+                {
+                    AggregateCatalog.Catalogs.Add(assemblyCatalog);
+                    assemblies.Add(assembly);
+                }
+            }
         }
         #endregion
     }
