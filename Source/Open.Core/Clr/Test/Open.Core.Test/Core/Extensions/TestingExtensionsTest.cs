@@ -189,6 +189,33 @@ namespace Open.Core.Common.Test.Extensions
         }
         #endregion
 
+        #region DateTime Assertions
+        [TestMethod]
+        public void ShouldBeWithinTwoSecondsOfDate()
+        {
+            var date = new DateTime(1, 1, 1, 1, 1, 1);
+            var upper = new DateTime(1, 1, 1, 1, 1, 2);
+            var lower = new DateTime(1, 1, 1, 1, 1, 0);
+
+            date.ShouldBeWithin(2000, upper);
+            date.ShouldBeWithin(2000, lower);
+        }
+
+        [TestMethod]
+        public void ShouldNotBeWithinOneSecondOfDate()
+        {
+            var date = new DateTime(1, 1, 1, 1, 1, 1);
+            var upper = new DateTime(1, 1, 1, 1, 1, 2);
+            var lower = new DateTime(1, 1, 1, 1, 1, 0);
+
+            Should.Throw<AssertionException>(() => date.ShouldBeWithin(1000, upper));
+            Should.Throw<AssertionException>(() => date.ShouldBeWithin(1000, lower));
+
+            Should.Throw<AssertionException>(() => date.ShouldBeWithin(1999, upper));
+            Should.Throw<AssertionException>(() => date.ShouldBeWithin(1999, lower));
+        }
+        #endregion
+
         #region Collection Assertions
         [TestMethod]
         public void ShouldContain()
@@ -455,7 +482,7 @@ namespace Open.Core.Common.Test.Extensions
         }
         #endregion
 
-        #region Tests - Serialization
+        #region Serialization
         [TestMethod]
         public void ShouldSerializeTwoTypes()
         {

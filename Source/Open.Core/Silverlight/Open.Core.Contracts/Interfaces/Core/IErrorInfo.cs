@@ -6,9 +6,6 @@ namespace Open.Core.Common
         /// <summary>Gets or sets the unique identifier of the error.</summary>
         int ErrorCode { get; set; }
 
-        /// <summary>Gets or sets whether the error is a warning.</summary>
-        bool IsWarning { get; set; }
-
         /// <summary>Gets or sets the descriptive error message.</summary>
         string ErrorMessage { get; set; }
 

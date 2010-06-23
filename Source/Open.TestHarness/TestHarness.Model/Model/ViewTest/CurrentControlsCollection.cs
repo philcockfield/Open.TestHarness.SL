@@ -78,6 +78,7 @@ namespace Open.TestHarness.Model
             var index = 0;
             foreach (var parameter in parametersCollection.Items)
             {
+
                 if (!parameter.Type.IsA(typeof(UIElement))) continue;
                 parameter.Value = this[index];
                 index++;
@@ -96,7 +97,7 @@ namespace Open.TestHarness.Model
         private UIElement GetControl(Type type, int index)
         {
             // Setup initial conditions.
-            if (!(type.IsA(typeof(UIElement)))) return null;
+            if (!(type.IsA<UIElement>() && !type.IsA<IViewFactory>())) return null;
 
             // Determine if an instance of the control already exists.
             if (allControls.ContainsKey(type) && allControls[type].Count > index)
@@ -105,12 +106,36 @@ namespace Open.TestHarness.Model
             }
 
             // Construct the control and store a reference to it.
-            var control = Activator.CreateInstance(type) as UIElement;
+            var control = CreateControl(type);
             if (!allControls.ContainsKey(type)) allControls.Add(type, new List<object>());
             allControls[type].Add(control);
 
             // Finish up.
             return control;
+        }
+
+        private static UIElement CreateControl(Type type)
+        {
+            return type.IsA<IViewFactory>() 
+                                    ? CreateFromViewFactory(type) 
+                                    : Activator.CreateInstance(type) as UIElement;
+        }
+
+        private static UIElement CreateFromViewFactory(Type type)
+        {
+            if (type.IsInterface)
+            {
+                // Create from MEF.
+                // TODO - Phil : "Need to create abstract View-Factory from MEF"
+                throw new NotImplementedException("Need to create abstract View-Factory from MEF");
+            }
+            else
+            {
+                var viewModel = Activator.CreateInstance(type) as IViewFactory;
+                var view = viewModel.CreateView();
+                view.DataContext = viewModel;
+                return view;
+            }
         }
 
         private static IEnumerable<Type> GetParameterTypes(ViewTest test)

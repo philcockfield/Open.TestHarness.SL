@@ -79,13 +79,30 @@ namespace Open.Core.Common.Controls.Editors
         /// <summary>Gets the current value of the property.</summary>
         public object Value
         {
-            get { return Definition.GetValue(ParentInstance, null); }
+            get
+            {
+                try
+                {
+                    return Definition.GetValue(ParentInstance, null);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
             set
             {
                 if (isSettingValue) return; // Avoid circular callback loops with NotifyPropertyChanged.
                 isSettingValue = true;
 
-                Definition.SetValue(ParentInstance, value, null);
+                try
+                {
+                    Definition.SetValue(ParentInstance, value, null);
+                }
+                catch (Exception)
+                {
+                    // Ignore.
+                }
 
                 OnPropertyChanged(PropValue);
                 isSettingValue = false;

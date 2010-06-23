@@ -172,6 +172,7 @@
     <Compile Include="Helper Classes\ScrollViewerMonitor.cs" />
     <Compile Include="Interactivity\Behaviors\ViewModelSetter.cs" />
     <Compile Include="Model\DropShadowEffect.cs" />
+    <Compile Include="Model\FontSettings.cs" />
     <Compile Include="Model\ViewModelBase.cs" />
     <Compile Include="Styles\Shapes.cs" />
     <Compile Include="Styles\StyleResources.cs" />

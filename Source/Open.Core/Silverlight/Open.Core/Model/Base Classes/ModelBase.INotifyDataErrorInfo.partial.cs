@@ -29,7 +29,7 @@ using System.Linq.Expressions;
 
 namespace Open.Core.Common
 {
-    /// <summary>Implements INotifyDataErrorInfo  on the model.</summary>
+    /// <summary>Implements INotifyDataErrorInfo on the model.</summary>
     public abstract partial class ModelBase : INotifyDataErrorInfo  
     {
         #region Head
@@ -90,6 +90,22 @@ namespace Open.Core.Common
         #endregion
 
         #region Methods - Protected
+        /// <summary>Assigns the given error to the specified property.</summary>
+        /// <typeparam name="T">The type of model.</typeparam>
+        /// <param name="property">
+        ///    An expression that represents the property
+        ///    to assign the error to (for example 'n => n.PropertyName'.)
+        /// </param>
+        /// <param name="errorCode">The unique identifier of the error.</param>
+        /// <param name="message">The descriptive error message.</param>
+        protected void AddError<T>(Expression<Func<T, object>> property, 
+                int errorCode, 
+                string message)
+        {
+            AddError(property, new ErrorInfo { ErrorCode = errorCode, ErrorMessage = message});
+        }
+
+
         /// <summary>Assigns the given error to the specified property.</summary>
         /// <typeparam name="T">The type of model.</typeparam>
         /// <param name="property">

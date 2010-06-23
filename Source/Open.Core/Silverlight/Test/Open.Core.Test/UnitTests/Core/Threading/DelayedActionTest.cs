@@ -28,6 +28,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.UI.Silverlight.Test.Common.Threading
 {
+    [Tag("da")]
     [TestClass]
     public class DelayedActionTest : SilverlightUnitTest
     {

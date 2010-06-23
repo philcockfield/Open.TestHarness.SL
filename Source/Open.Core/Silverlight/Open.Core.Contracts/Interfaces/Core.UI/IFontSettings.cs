@@ -20,29 +20,39 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
-using Open.Core.Common;
 
 namespace Open.Core.UI
 {
-    /// <summary>An image.</summary>
-    public interface IImage : IViewFactory, IVisiblity, INotifyPropertyChanged
+    /// <summary>An element that renders type with a font.</summary>
+    public interface IFontSettings
     {
-        /// <summary>Gets or sets the source for the image.</summary>
-        ImageSource Source { get; set; }
+        /// <summary>Gets or sets the font used to display text in the control.</summary> 
+        FontFamily FontFamily { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value that describes how an Image should 
-        ///     be stretched to fill the destination rectangle.
-        /// </summary>
-        Stretch Stretch { get; set; }
+        /// <summary>Gets or sets the size of the text in this control.</summary> 
+        double FontSize { get; set; }
 
-        /// <summary>Gets the shadow definition (0 opacity by default, not visible).</summary>
-        IDropShadowEffect DropShadow { get; }
+        /// <summary>Gets or sets the degree to which a font is condensed or expanded on the screen.</summary> 
+        FontStretch FontStretch { get; set; }
 
-        /// <summary>Gets or sets the margin offset to apply to the image.</summary>
-        Thickness Margin { get; set; }
+        /// <summary>Gets or sets the style in which the text is rendered.</summary> 
+        FontStyle FontStyle { get; set; }
+
+        /// <summary>Gets or sets the thickness of the specified font.</summary> 
+        FontWeight FontWeight { get; set; }
+
+        /// <summary>Gets or sets the color of the font.</summary>
+        Brush Color { get; set; }
+
+        /// <summary>Gets or sets the opacity of the font (0..1).</summary>
+        double Opacity { get; set; }
+
+        /// <summary>Gets or sets the text-wrapping to apply to the font.</summary>
+        TextWrapping TextWrapping { get; set; }
+
+        /// <summary>Gets or sets the text-trimming to apply to the font.</summary>
+        TextTrimming TextTrimming { get; set; }
     }
 }

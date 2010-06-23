@@ -56,9 +56,7 @@ namespace Open.Core.Composition
         /// <param name="referencedAssemblies">Collection of referenced assemblies that contain the parts required to resolve.</param>
         public static void SatisfyImports(object instance, params Assembly[] referencedAssemblies)
         {
-            // Setup initial conditions.
             if (instance == null) return;
-
             lock (Container)
             {
                 // Ensure the calling assembly has been added to the catalog.
@@ -102,14 +100,8 @@ namespace Open.Core.Composition
 
             // Add the given assembly.
             var assemblyCatalog = new AssemblyCatalog(assembly);
-            lock (AggregateCatalog)
-            {
-                lock (assemblies)
-                {
-                    AggregateCatalog.Catalogs.Add(assemblyCatalog);
-                    assemblies.Add(assembly);
-                }
-            }
+            AggregateCatalog.Catalogs.Add(assemblyCatalog);
+            assemblies.Add(assembly);
         }
         #endregion
     }

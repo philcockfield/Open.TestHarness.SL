@@ -220,9 +220,11 @@ namespace Open.Core.UI.Controls
             toolGroup.Title.Name = title;
             toolGroup.Title.IsVisible = true;
             toolGroup.Dividers = RectEdgeFlag.Right;
+            toolGroup.DefaultToolMargin = new Thickness(0);
+            toolGroup.Margin = new Thickness(2);
             toolbar.Add(toolGroup, column, row, columnSpan, rowSpan);
 
-            // Finish up.);
+            // Finish up.
             return toolGroup;
         }
         #endregion

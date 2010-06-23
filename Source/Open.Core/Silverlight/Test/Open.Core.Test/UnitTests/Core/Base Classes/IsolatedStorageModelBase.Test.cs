@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -151,17 +152,17 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
             count.ShouldBe(1);
         }
 
-        //[Asynchronous]
-        //[TestMethod]
-        //public void ShouldSaveAutomatically()
-        //{
-        //    var stub = new Stub(IsolatedStorageType.Application) { AutoSave = true };
-        //    stub.Saved += delegate
-        //                      {
-        //                          EnqueueTestComplete();
-        //                      };
-        //    stub.MyString = "Value";
-        //}
+        [Asynchronous]
+        [TestMethod]
+        public void ShouldSaveAutomatically()
+        {
+            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = true };
+            stub.Saved += delegate
+                              {
+                                  EnqueueTestComplete();
+                              };
+            stub.MyString = "Value";
+        }
 
         [TestMethod]
         public void ShouldClearOnlySpecificStubInMemory()
@@ -318,32 +319,10 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
         }
 
         [TestMethod]
-        public void ShouldNotHaveLastSavedDateTime()
-        {
-            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            stub.Store.Remove(stub.Id);
-            stub.Store.Save();
-
-            stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            stub.LastSaved.ShouldBe(default(DateTime));
-        }
-
-        [TestMethod]
-        public void ShouldHaveLastSavedDateTime()
-        {
-            var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            stub.Clear();
-            stub.Save();
-
-            stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            stub.LastSaved.ShouldNotBe(default(DateTime));
-        }
-
-        [TestMethod]
         public void ShouldDetermineIfIsFirstLoad()
         {
             var stub = new Stub(IsolatedStorageType.Application) { AutoSave = false };
-            stub.Store.Remove(stub.Id);
+            stub.Clear();
             stub.Store.Save();
 
             stub.IsFirstLoad.ShouldBe(true);

@@ -1,0 +1,52 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.NamedControlList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:c="clr-namespace:Open.Core.UI.Controls">
+
+    <ScrollViewer 
+        Background="Transparent"
+        BorderBrush="Transparent" 
+        HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility}"
+        VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}">
+
+        <Border Background="Transparent">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid Margin="{Binding ItemMargin}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--Title-->
+                            <TextBlock 
+                                Grid.Row="0"
+                                Text="{Binding Title}" 
+                                FontFamily="{Binding Font.FontFamily}"
+                                FontSize="{Binding Font.FontSize}"
+                                FontStretch="{Binding Font.FontStretch}"
+                                FontStyle="{Binding Font.FontStyle}"
+                                FontWeight="{Binding Font.FontWeight}"
+                                Foreground="{Binding Font.Foreground}"
+                                Opacity="{Binding Font.Opacity}"
+                                TextWrapping="{Binding Font.TextWrapping}"
+                                TextTrimming="{Binding Font.TextTrimming}" />
+
+                            <!--Control-->
+                            <Border Margin="{Binding Parent.ControlMargin}" Grid.Row="1">
+                                <c:ViewFactoryContent 
+                                ViewFactory="{Binding Control}"
+                                Margin="{Binding Margin}" />
+                            </Border>
+                        </Grid>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+            
+    </ScrollViewer>
+</UserControl>

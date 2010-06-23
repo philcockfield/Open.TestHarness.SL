@@ -65,6 +65,7 @@
     <Compile Include="DataService\DataService.cs" />
     <Compile Include="DataService\IDataService.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
+    <Compile Include="Helpers\EntitySetWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">

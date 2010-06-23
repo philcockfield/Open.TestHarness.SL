@@ -58,6 +58,18 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         {
             firedArgs = e;
         }
+
+        [TestMethod]
+        public void ShouldBeEnabledByDefault()
+        {
+            tool.IsEnabled.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldBeVisibleByDefault()
+        {
+            tool.IsVisible.ShouldBe(true);
+        }
         #endregion
     }
 }

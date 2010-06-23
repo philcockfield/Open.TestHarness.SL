@@ -34,6 +34,7 @@ namespace Open.TestHarness.Model
         #region Head
         private readonly ObservableCollection<ViewTestClassesModule> modules = new ObservableCollection<ViewTestClassesModule>();
         private readonly TestHarnessModel testHarness;
+        private PropertyObserver<TestHarnessSettings> settingsoObserver;
 
         public ModuleLoader(TestHarnessModel testHarness)
         {
@@ -42,10 +43,8 @@ namespace Open.TestHarness.Model
 
             // Wire up events.
             testHarness.Settings.Cleared += delegate { AddModules(); };
-            testHarness.Settings.PropertyChanged += (s, e) =>
-                                                             {
-                                                                if (e.PropertyName == TestHarnessSettings.PropRecentSelections) LoadRecentSelectionsModule(RecentSelectionsModule);
-                                                             };
+            settingsoObserver = new PropertyObserver<TestHarnessSettings>(testHarness.Settings)
+                .RegisterHandler(m => m.RecentSelections, () => LoadRecentSelectionsModule(RecentSelectionsModule));
         }
         #endregion
 

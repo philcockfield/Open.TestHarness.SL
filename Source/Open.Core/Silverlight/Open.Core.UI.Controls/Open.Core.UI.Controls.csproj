@@ -193,10 +193,15 @@
     <Compile Include="Controls\ImageIcon.xaml.cs">
       <DependentUpon>ImageIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Lists\SelectionList.xaml.cs">
+    <Compile Include="Controls\Lists\NamedControlList\NamedControlList.xaml.cs">
+      <DependentUpon>NamedControlList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Lists\NamedControlList\NamedControlListItemViewModel.cs" />
+    <Compile Include="Controls\Lists\NamedControlList\NamedControlListViewModel.cs" />
+    <Compile Include="Controls\Lists\SelectionList\SelectionList.xaml.cs">
       <DependentUpon>SelectionList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Lists\SelectionListViewModel.cs" />
+    <Compile Include="Controls\Lists\SelectionList\SelectionListViewModel.cs" />
     <Compile Include="Controls\OutputLog\OutputLog.ViewModel.cs" />
     <Compile Include="Controls\OutputLog\OutputLog.xaml.cs">
       <DependentUpon>OutputLog.xaml</DependentUpon>
@@ -241,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ImageIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Lists\NamedControlList\NamedControlList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -412,11 +421,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Lists\SelectionList.xaml">
+    <Page Include="Controls\Lists\SelectionList\SelectionList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Lists\SelectionListTemplates.xaml">
+    <Page Include="Controls\Lists\SelectionList\SelectionListTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

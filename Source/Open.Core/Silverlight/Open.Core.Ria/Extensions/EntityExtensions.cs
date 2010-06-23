@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ServiceModel.DomainServices.Client;
 using System.Linq;
 using System.Linq.Expressions;
-using System.ServiceModel.DomainServices.Client;
 using Open.Core.Common;
 
 namespace Open.Core.Ria
@@ -77,6 +77,24 @@ namespace Open.Core.Ria
             {
                 RemoveValidationError(entity, properties);
             }
+        }
+
+        /// <summary>Determines whether the entity has any validation errors for the specified property.</summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="entity">The entity to examine.</param>
+        /// <param name="property">
+        ///    An expression that represents the property
+        ///    to examine(for example 'n => n.PropertyName'.)
+        /// </param>
+        public static bool HasValidationError<T>(this Entity entity, Expression<Func<T, object>> property)
+        {
+            // Setup initial conditions.
+            if (entity == null) throw new ArgumentNullException("entity");
+            if (property == null) throw new ArgumentNullException("property");
+
+            // Check if any errors have been assigned to the property.
+            var propertyName = property.GetPropertyName();
+            return entity.ValidationErrors.FirstOrDefault(m => m.MemberNames.Contains(propertyName)) != null;
         }
     }
 }

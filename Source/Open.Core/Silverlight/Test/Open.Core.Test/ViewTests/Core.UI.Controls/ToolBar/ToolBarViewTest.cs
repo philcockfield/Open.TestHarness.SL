@@ -28,7 +28,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         {
             CompositionInitializer.SatisfyImports(this);
 
-            control.Width = 600;
+            control.Width = 800;
             control.Background = Colors.Black.ToBrush(0.03);
             control.Child = ToolBar.CreateView();
 
@@ -49,9 +49,17 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             var group1 = ToolBar.AddToolGroup(title:"Group One", column:0, rowSpan:3);
             var group2 = ToolBar.AddToolGroup(title: "Group Two", column: 1, rowSpan: 3);
+            ToolBar.AddSpacer(column:2);
+            var group3 = ToolBar.AddToolGroup(title: "Group Three", column: 3, rowSpan: 3);
+            group3.Dividers = RectEdgeFlag.Left;
+
+            // ---
 
             AddButtonSet(group1);
             AddButtonSet(group2);
+            group3.AddCustomTool(new PlaceholderTool(), column: 0, rowSpan: 3);
+
+            // ---
 
             ToolBar.UpdateLayout();
         }
@@ -194,10 +202,17 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         public void Show__No_Dividers(Border control) { ToolBar.Dividers = RectEdgeFlag.None; }
 
         [ViewTest]
+        public void Toggle__IsVisible(Border control)
+        {
+            ToolBar.IsVisible = !ToolBar.IsVisible;
+            Output.Write("IsVisible: " + ToolBar.IsVisible);
+        }
+
+        [ViewTest]
         public void Toggle__Title_IsVisible(Border control)
         {
             ToolBar.Title.IsVisible = !ToolBar.Title.IsVisible;
-            Output.Write("IsVisible: " + ToolBar.Title.IsVisible);
+            Output.Write("ToolBar.IsVisible: " + ToolBar.Title.IsVisible);
         }
 
         [ViewTest]

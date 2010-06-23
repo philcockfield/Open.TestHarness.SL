@@ -25,12 +25,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using Open.Core.Common;
-using T = Open.TestHarness.Model.TestHarnessSettings;
 
 namespace Open.TestHarness.Model
 {
     /// <summary>Provides client-side persistence functionality for storing settings.</summary>
-    public class TestHarnessSettings : IsolatedStorageModelBase
+    public class TestHarnessSettings : NotifyPropertyChangedBase
     {
         #region Events
         /// <summary>Fires when the TestHarness settings are cleared.</summary>
@@ -39,11 +38,22 @@ namespace Open.TestHarness.Model
         #endregion
 
         #region Head
+        public const string PropLoadedModules = "LoadedModules";
+        public const string PropRecentSelections = "RecentSelections";
+
         private const int recentSelectionMax = 8;
+
+        private const string keyLoadedApplicationNames = "TestHarness.Setting.LoadedModules";
+        private const string keyRecentSelections = "TestHarness.Setting.RecentSelections";
+
+        private readonly IsolatedStorageSettings settings;//= IsolatedStorageSettings.ApplicationSettings;
         private readonly TestHarnessModel testHarness;
 
-        internal TestHarnessSettings(TestHarnessModel testHarness) : base(IsolatedStorageType.Application, "~~-TestHarness.Settings-~~")
+        internal TestHarnessSettings(TestHarnessModel testHarness)
         {
+            settings = IsolatedStorageSettings.ApplicationSettings;
+
+            // Setup initial conditions.
             this.testHarness = testHarness;
             PropertyExplorer = new PropertyExplorerSettings();
             ControlDisplayOptionSettings = new ControlDisplayOptionSettings();
@@ -54,15 +64,36 @@ namespace Open.TestHarness.Model
         /// <summary>Gets or sets the module's (XAP and Assembly Name) have been loaded.</summary>
         public ModuleSetting[] LoadedModules
         {
-            get { return GetPropertyValue<T, ModuleSetting[]>(m => m.LoadedModules, new ModuleSetting[]{}); }
-            set { SetPropertyValue<T, ModuleSetting[]>(m => m.LoadedModules, value, new ModuleSetting[]{}); }
+            get
+            {
+                return settings.Contains(keyLoadedApplicationNames)
+                                        ? settings[keyLoadedApplicationNames] as ModuleSetting[]
+                                        : new ModuleSetting[] { };
+            }
+            set
+            {
+                if (value == null || value.Length == 0)
+                {
+                    Remove(keyLoadedApplicationNames);
+                }
+                else
+                {
+                    settings[keyLoadedApplicationNames] = value;
+                }
+                OnPropertyChanged(PropLoadedModules);
+            }
         }
 
         /// <summary>Gets or sets the collection of recent selections.</summary>
         public RecentSelectionSetting[] RecentSelections
         {
-            get { return GetPropertyValue<T, RecentSelectionSetting[]>(m => m.RecentSelections, new RecentSelectionSetting[]{}); }
-            set { SetPropertyValue<T, RecentSelectionSetting[]>(m => m.RecentSelections, value, new RecentSelectionSetting[]{}); }
+            get
+            {
+                return settings.Contains(keyRecentSelections) 
+                                        ? settings[keyRecentSelections] as RecentSelectionSetting[] 
+                                        : new RecentSelectionSetting[] { };
+            }
+            set { SetRecentSelections(value, false); }
         }
 
         /// <summary>Gets the property explorer settings.</summary>
@@ -74,18 +105,19 @@ namespace Open.TestHarness.Model
 
         #region Methods
         /// <summary>Clears the settings from isloated storage.</summary>
-        public override void Clear()
+        public void Clear()
         {
-            base.Clear();
+            Remove(keyLoadedApplicationNames);
+            Remove(keyRecentSelections);
             OnCleared();
         }
 
         /// <summary>Persists the current settings.</summary>
-        public override bool Save()
+        public void Save()
         {
+            settings.Save();
             PropertyExplorer.Save();
             ControlDisplayOptionSettings.Save();
-            return base.Save();
         }
 
         /// <summary>Removes the specified item from the recent selections list.</summary>
@@ -94,7 +126,7 @@ namespace Open.TestHarness.Model
         public void RemoveRecentSelection(ViewTestClass item, bool silent)
         {
             var list = new List<RecentSelectionSetting>(RecentSelections);
-            if (RemoveItem(item, list)) SetRecentSelections(list.ToArray());
+            if (RemoveItem(item, list)) SetRecentSelections(list.ToArray(), true);
         }
 
         /// <summary>Syncs the 'Recent Selections' list with the current TestHarness selected class.</summary>
@@ -138,6 +170,11 @@ namespace Open.TestHarness.Model
         #endregion
 
         #region Internal
+        private void Remove(string key)
+        {
+            if (settings.Contains(key)) settings.Remove(key);
+        }
+
         private static bool RemoveItem(ViewTestClass item, ICollection<RecentSelectionSetting> collection)
         {
             var match = collection.FirstOrDefault(
@@ -149,9 +186,17 @@ namespace Open.TestHarness.Model
             return true;
         }
 
-        private void SetRecentSelections(IEnumerable<RecentSelectionSetting> value)
+        private void SetRecentSelections(ICollection<RecentSelectionSetting> value, bool silent)
         {
-            RecentSelections = value.ToArray();
+            if (value == null || value.Count == 0)
+            {
+                Remove(keyRecentSelections);
+            }
+            else
+            {
+                settings[keyRecentSelections] = value;
+            }
+            if (!silent) OnPropertyChanged(PropRecentSelections);
         }
         #endregion
     }

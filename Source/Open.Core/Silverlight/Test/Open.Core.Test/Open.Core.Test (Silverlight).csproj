@@ -148,6 +148,7 @@
     <Compile Include="ViewTests\Core.UI.Controls\Containers\ContentContainerViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\CoreImageViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\IconImage.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Lists\NamedControlListViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\PostItViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Prompts\PromptButtonsViewTest.cs" />

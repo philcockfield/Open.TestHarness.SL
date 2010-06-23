@@ -38,7 +38,7 @@ namespace Open.TestHarness.View.ControlHost
             Model = settings.ControlDisplayOptionSettings;
 
             // Setup the save delay.
-            saveDelay = new DelayedAction(0.2, settings.Save);
+            saveDelay = new DelayedAction(0.2, () => settings.Save());
 
             // Wire up events.
             Model.PropertyChanged += delegate { saveDelay.Start(); };

@@ -25,7 +25,7 @@
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Editors/PropertyGrid/Explorer/PropertyExplorer.xaml" />
 
         <!--Lists-->
-        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Lists/SelectionListTemplates.xaml" />
+        <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Lists/SelectionList/SelectionListTemplates.xaml" />
         
         <!--ToolBar-->
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/ToolBar/Tools/ButtonTool/ButtonToolTemplates.xaml" />

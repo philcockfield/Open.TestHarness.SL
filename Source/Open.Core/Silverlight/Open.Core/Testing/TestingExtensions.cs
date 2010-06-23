@@ -158,6 +158,35 @@ namespace Open.Core.Common.Testing
         }
         #endregion
 
+        #region Methods - DateTime
+        /// <summary>Asserts that date-time is within the specified number of milli-seconds of the given date-time.</summary>
+        /// <param name="self">The date.</param>
+        /// <param name="msecs">The number of milli-seconds the date must be within.</param>
+        /// <param name="dateTime">The date to compare</param>
+        public static void ShouldBeWithin(this DateTime self, int msecs, DateTime dateTime)
+        {
+            // Setup initial conditions.
+            if (msecs < 0) throw new ArgumentOutOfRangeException("msecs", "Must be greater than zero.");
+
+            // Get bounds.
+            var timeSpan = new TimeSpan(0, 0, 0, 0, (int) (msecs*0.5));
+            var upper = dateTime.Ticks + timeSpan.Ticks;
+            var lower = dateTime.Ticks - timeSpan.Ticks;
+
+            // Exception thrower.
+            Action throwError = () =>
+                                    {
+                                        throw new AssertionException(string.Format(
+                                                    "The date value '{0}' was not within {1} milliseconds of '{2}'.", 
+                                                    self, msecs, dateTime));
+                                    };
+
+            // Perform comparison.
+            if (self.Ticks > upper) throwError();
+            if (self.Ticks < lower) throwError();
+        }
+        #endregion
+
         #region Methods - Property Equality
         /// <summary>Asserts that all the properties on the object equal the corresponding properties on the given object.</summary>
         /// <typeparam name="T">The type of the object.</typeparam>
@@ -552,9 +581,9 @@ namespace Open.Core.Common.Testing
         {
             var attributeName = attribute == null ? typeof(ValidationAttribute).Name : attribute.GetType().Name;
             var msg = string.Format("The [{0}] on member '{1}' in class '{2}'",
-                            attributeName,
-                            member.Name,
-                            member.DeclaringType.Name);
+                                    attributeName,
+                                    member.Name,
+                                    member.DeclaringType.Name);
             return msg;
         }
         #endregion
@@ -636,7 +665,7 @@ namespace Open.Core.Common.Testing
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             var types = assembly.GetTypes()
-                            .Where(m => !m.IsAbstract && m.IsA<TBase>() && (m.IsNestedPublic || m.IsPublic));
+                .Where(m => !m.IsAbstract && m.IsA<TBase>() && (m.IsNestedPublic || m.IsPublic));
             types.ShouldSerialize();
             return types;
         }
@@ -690,9 +719,9 @@ namespace Open.Core.Common.Testing
             catch (Exception error)
             {
                 var message = string.Format(
-                        "The type '{0}' could not be instantiated.  Ensure it is public and has a parameterless constructor.{1}",
-                        type.FullName,
-                        Environment.NewLine);
+                    "The type '{0}' could not be instantiated.  Ensure it is public and has a parameterless constructor.{1}",
+                    type.FullName,
+                    Environment.NewLine);
                 throw new AssertionException(message, error);
             }
 

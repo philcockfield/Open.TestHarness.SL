@@ -20,29 +20,18 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Media;
-using Open.Core.Common;
+using System;
+using System.ServiceModel.DomainServices.Client;
 
-namespace Open.Core.UI
+namespace Open.Core.Common.Collection
 {
-    /// <summary>An image.</summary>
-    public interface IImage : IViewFactory, IVisiblity, INotifyPropertyChanged
+    /// <summary>A collection of wrapper objects for an EntitySet that keeps itself in sync with it's parent collection.</summary>
+    /// <typeparam name="TSource">The type of collection being wrapped.</typeparam>
+    /// <typeparam name="TWrapper">The type of wrapper.</typeparam>
+    public class EntitySetWrapper<TSource, TWrapper> : ObservableCollectionWrapper<TSource, TWrapper> where TSource : Entity
     {
-        /// <summary>Gets or sets the source for the image.</summary>
-        ImageSource Source { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value that describes how an Image should 
-        ///     be stretched to fill the destination rectangle.
-        /// </summary>
-        Stretch Stretch { get; set; }
-
-        /// <summary>Gets the shadow definition (0 opacity by default, not visible).</summary>
-        IDropShadowEffect DropShadow { get; }
-
-        /// <summary>Gets or sets the margin offset to apply to the image.</summary>
-        Thickness Margin { get; set; }
+        public EntitySetWrapper(EntitySet<TSource> source, Func<TSource, TWrapper> createWrapper) : base(source, source, createWrapper)
+        {
+        }
     }
 }

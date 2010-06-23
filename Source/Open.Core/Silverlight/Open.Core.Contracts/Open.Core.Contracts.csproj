@@ -87,6 +87,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IContentContainer.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Lists\INamedControlList.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Prompts\IPromptButtons.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\SystemDialogs\Events\ISaveFileDialogEvent.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ISpacerTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
     <Compile Include="Interfaces\Core.UI\IButton.cs" />
+    <Compile Include="Interfaces\Core.UI\IFontSettings.cs" />
     <Compile Include="Interfaces\Core.UI\IGridCellWidth.cs" />
     <Compile Include="Interfaces\Core.UI\IImage.cs" />
     <Compile Include="Interfaces\Core.UI\IDropShadowEffect.cs" />

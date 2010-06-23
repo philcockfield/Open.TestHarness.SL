@@ -125,6 +125,13 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
+        public void Toggle__IsVisible_on_Model(ContentControl control)
+        {
+            tool.IsVisible = !tool.IsVisible;
+            Output.Write("tool.IsVisible: " + tool.IsVisible);
+        }
+
+        [ViewTest]
         public void Toggle__IsEnabled_on_Model(ContentControl control)
         {
             tool.IsEnabled = !tool.IsEnabled;

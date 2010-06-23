@@ -72,6 +72,13 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<T, bool>(m => m.IsEnabled, value, true); }
         }
 
+        /// <summary>Gets or sets whether the tool is visible.</summary>
+        public bool IsVisible
+        {
+            get { return GetPropertyValue<T, bool>(m => m.IsVisible, true); }
+            set { SetPropertyValue<T, bool>(m => m.IsVisible, value, true); }
+        }
+
         /// <summary>Gets or sets the minimum width the tool can be.</summary>
         public double MinWidth
         {

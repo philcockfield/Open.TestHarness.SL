@@ -1,11 +1,17 @@
 ﻿<UserControl 
     x:Class="Open.Core.UI.Controls.ButtonToolView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
 
+    <UserControl.Resources>
+        <Converter:VisibilityConverter x:Name="visibilityConverter" />
+    </UserControl.Resources>
+    
     <ContentControl 
             x:Name="root" 
             x:FieldModifier="private"
+            Visibility="{Binding Model.IsVisible, Converter={StaticResource visibilityConverter}}"
             ContentTemplate="{Binding ButtonStructureTemplate}" 
             HorizontalContentAlignment="Stretch" 
             VerticalContentAlignment="Stretch"

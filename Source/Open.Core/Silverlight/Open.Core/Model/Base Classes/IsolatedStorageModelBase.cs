@@ -128,15 +128,8 @@ namespace Open.Core.Common
             }
         }
 
-        /// <summary>Gets or sets the last time the store was saved.</summary>
-        public DateTime LastSaved
-        {
-            get { return GetPropertyValue<T, DateTime>(m => m.LastSaved); }
-            set { SetPropertyValue<T, DateTime>(m => m.LastSaved, value); }
-        }
-
         /// <summary>Gets whether this is the first time the storage model has been loaded (no content exists).</summary>
-        public bool IsFirstLoad { get { return LastSaved == default(DateTime); } }
+        public bool IsFirstLoad { get { return !Store.Contains(Id); } }
         #endregion
 
         #region Properties : Quota
@@ -194,7 +187,7 @@ namespace Open.Core.Common
         #region Methods
         /// <summary>Removes all the model's items from the Store.</summary>
         /// <remarks>This does not clear the entire store, just the items associated with this model.</remarks>
-        public void Clear()
+        public virtual void Clear()
         {
             // Setup initial conditions.
             var e = new CancelEventArgs();
@@ -241,10 +234,13 @@ namespace Open.Core.Common
 
         #region Method : Save
         /// <summary>Starts the delayed Save action.</summary>
-        public void DelaySave() { SaveDelayedAction.Start(); }
+        public void DelaySave()
+        {
+            SaveDelayedAction.Start();
+        }
 
         /// <summary>Saves the settings to disk.</summary>
-        public bool Save() { return Save(AutoIncrementQuotaBy); }
+        public virtual bool Save() { return Save(AutoIncrementQuotaBy); }
 
         /// <summary>Saves the settings to disk.</summary>
         /// <param name="autoIncrementQuotaBy">The value to attempt to auto increment the quota by if there is not enough space to save.</param>
@@ -297,7 +293,6 @@ namespace Open.Core.Common
             {
                 try
                 {
-                    LastSaved = DateTime.UtcNow;
                     Store[Id] = Property.GetSerializedValues();
                     Store.Save();
                 }

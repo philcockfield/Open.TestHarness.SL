@@ -2,7 +2,8 @@
     x:Class="Open.Core.UI.Controls.ToolBarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI" xmlns:c="clr-namespace:Open.Core.UI.Controls">
+    xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI" 
+    xmlns:c="clr-namespace:Open.Core.UI.Controls">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -35,7 +36,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
