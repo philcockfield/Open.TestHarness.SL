@@ -156,10 +156,12 @@
     <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\ViewFactoryContentViewTest.cs" />
     <Compile Include="ViewTests\Core.Testing\Output.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI\AnimationExtensionsViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetter.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\Behavior\ViewModelSetter\ViewModelSetterTestControl.xaml.cs">
       <DependentUpon>ViewModelSetterTestControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewTests\Core.UI\ImageViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\ScrollBarTemplates\ScrollBarFlatViewTest.cs" />
     <Compile Include="ViewTests\Core.UI\StyleViewTest.cs" />
     <Compile Include="ViewTests\Core\Animation\AnimationBehavior.ViewTest.cs" />

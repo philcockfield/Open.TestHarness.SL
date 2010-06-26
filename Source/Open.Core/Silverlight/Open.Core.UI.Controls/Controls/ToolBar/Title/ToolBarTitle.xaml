@@ -3,13 +3,26 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Converter="clr-namespace:Open.Core.Common.Converter;assembly=Open.Core.UI">
-    
+
     <UserControl.Resources>
-        <Converter:VisibilityConverter x:Name="visibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Open.Core.UI;component/Styles/Colors/Gradients.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Converter:VisibilityConverter x:Name="visibilityConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
 
+
     <Grid Height="17" Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}">
-        
+
+        <!--Background-->
+        <Grid Visibility="{Binding ShowBackground, Converter={StaticResource visibilityConverter}}">
+            <Border Background="{StaticResource Gradient.Vertical.Transparent-Black}" Opacity="0.04" />
+            <Border Background="Black" Opacity="0.02" />
+            <Border BorderBrush="Black" BorderThickness="0,1,0,0" Opacity="0.03" />
+        </Grid>
+
         <!--Title Text-->
         <TextBlock 
             Text="{Binding Name}" 
@@ -17,6 +30,6 @@
             FontSize="11" 
             VerticalAlignment="Center"
             HorizontalAlignment="Center" />
-        
+
     </Grid>
 </UserControl>

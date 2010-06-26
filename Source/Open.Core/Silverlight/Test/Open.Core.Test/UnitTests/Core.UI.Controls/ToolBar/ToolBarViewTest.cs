@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
+    [Tag("foo")]
     [TestClass]
     public class ToolBarViewTest
     {
@@ -33,7 +35,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestMethod]
         public void ShouldSetDataContextOnCreatedView()
         {
-            var toolbar = new Open.Core.UI.Controls.ToolBarViewModel();
+            var toolbar = new ToolBarViewModel();
             var view = toolbar.CreateView();
             view.DataContext.ShouldBe(toolbar);
         }
@@ -41,21 +43,21 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestMethod]
         public void ShouldGetDefaultView()
         {
-            var toolbar = new Open.Core.UI.Controls.ToolBarViewModel();
+            var toolbar = new ToolBarViewModel();
             toolbar.CreateView().ShouldBeInstanceOfType<ToolBarView>();
         }
 
         [TestMethod]
         public void ShouldGetOveriddenView()
         {
-            var toolbar = new Open.Core.UI.Controls.ToolBarViewModel {ViewImportKey = ToolBarViewOverride.ExportKey};
+            var toolbar = new ToolBarViewModel {ViewImportKey = ToolBarViewOverride.ExportKey};
             toolbar.CreateView().ShouldBeInstanceOfType<ToolBarViewOverride>();
         }
 
         [TestMethod]
         public void ShouldNotReturnView()
         {
-            var toolbar = new Open.Core.UI.Controls.ToolBarViewModel { ViewImportKey = null };
+            var toolbar = new ToolBarViewModel { ViewImportKey = null };
             toolbar.CreateView().ShouldBe(null);
         }
         #endregion

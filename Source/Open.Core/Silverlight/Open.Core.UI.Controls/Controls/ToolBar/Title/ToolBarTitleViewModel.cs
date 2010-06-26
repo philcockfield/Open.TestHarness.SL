@@ -20,10 +20,10 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.ComponentModel.Composition;
 using System.Windows;
 using Open.Core.Common;
-
 using T = Open.Core.UI.Controls.ToolBarTitleViewModel;
 
 namespace Open.Core.UI.Controls
@@ -32,6 +32,9 @@ namespace Open.Core.UI.Controls
     public class ToolBarTitleViewModel : ViewModelBase, IToolBarTitle
     {
         #region Head
+        public event EventHandler IsVisibleChanged;
+        private void FireIsVisibleChanged(){if (IsVisibleChanged != null) IsVisibleChanged(this, new EventArgs());}
+
         private const string defaultTitle = "Name";
         #endregion
 
@@ -45,7 +48,16 @@ namespace Open.Core.UI.Controls
         public bool IsVisible
         {
             get { return GetPropertyValue<T, bool>(m => m.IsVisible, true); }
-            set { SetPropertyValue<T, bool>(m => m.IsVisible, value, true); }
+            set
+            {
+                if (SetPropertyValue<T, bool>(m => m.IsVisible, value, true)) FireIsVisibleChanged();
+            }
+        }
+
+        public bool ShowBackground
+        {
+            get { return GetPropertyValue<T, bool>(m => m.ShowBackground, true); }
+            set { SetPropertyValue<T, bool>(m => m.ShowBackground, value, true); }
         }
         #endregion
 

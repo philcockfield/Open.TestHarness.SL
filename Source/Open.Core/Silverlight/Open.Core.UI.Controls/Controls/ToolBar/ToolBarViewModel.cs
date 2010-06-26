@@ -34,10 +34,14 @@ namespace Open.Core.UI.Controls
     [Export(typeof(IToolBar))]
     public class ToolBarViewModel : ToolBase, IToolBar
     {
-        #region Event Handlers
+        #region Events
         /// <summary>Fires when the 'UpdateLayout' method is invoked.</summary>
         public event EventHandler UpdateLayoutRequest;
         private void FireUpdateLayoutRequest(){if (UpdateLayoutRequest != null) UpdateLayoutRequest(this, new EventArgs());}
+
+        /// <summary>Fires when the toolbar is cleared.</summary>
+        public event EventHandler Cleared;
+        private void FireCleared(){if (Cleared != null) Cleared(this, new EventArgs());}
         #endregion
 
         #region Head
@@ -45,6 +49,13 @@ namespace Open.Core.UI.Controls
         private readonly List<ToolItem> toolItems = new List<ToolItem>();
         private ToolBarImporter importer;
         private IToolBarTitle defaultTitle;
+        #endregion
+
+        #region Event Handlers
+        private void OnTitleIsVisibleChanged(object sender, EventArgs e)
+        {
+            OnPropertyChanged<T>(m => m.ToolContainerMargin);
+        }
         #endregion
 
         #region Properties : IToolBar
@@ -68,6 +79,13 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<T, Thickness>(m => m.Margin, value, new Thickness(0)); }
         }
 
+        /// <summary>Gets or sets the height of the toolbar (NaN by default).</summary>
+        public double Height
+        {
+            get { return GetPropertyValue<T, double>(m => m.Height, double.NaN); }
+            set { SetPropertyValue<T, double>(m => m.Height, value, double.NaN); }
+        }
+
         /// <summary>
         ///     Gets or sets the default margin to apply to tools within the toolbar. This is overridden by the tool itself,
         ///     if the CreateView() method yields a control which as a pre-defined Margin value.
@@ -87,7 +105,7 @@ namespace Open.Core.UI.Controls
                 SetPropertyValue<T, RectEdgeFlag>(
                             m => m.Dividers, value, 
                             RectEdgeFlag.None,
-                            m => m.IsLeftDividerVisible, 
+                            m => m.IsLeftDividerVisible,
                             m => m.IsRightDividerVisible);
             }
         }
@@ -104,9 +122,14 @@ namespace Open.Core.UI.Controls
         }
         #endregion
 
-        #region Properties
+        #region Properties : ViewModel
         public bool IsLeftDividerVisible { get { return (Dividers & RectEdgeFlag.Left) == RectEdgeFlag.Left; } }
         public bool IsRightDividerVisible { get { return (Dividers & RectEdgeFlag.Right) == RectEdgeFlag.Right; } }
+
+        public Thickness ToolContainerMargin
+        {
+            get { return Title.IsVisible ? new Thickness(4, 0, 4, 0) : new Thickness(0); }
+        }
         #endregion
 
         #region Methods
@@ -138,6 +161,7 @@ namespace Open.Core.UI.Controls
             if (toolItems.IsEmpty()) return;
             toolItems.Clear();
             FireUpdateLayoutRequest();
+            FireCleared();
         }
 
         /// <summary>Adds a tool to the toolbar.</summary>
@@ -171,11 +195,32 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets the tool with the specified ID.</summary>
         /// <param name="toolId">The unique identifier of the tool.</param>
-        public ITool GetTool(object toolId)
+        /// <param name="includeChildToolbars">Flag indicating if child toolbars (tool-groups) should be included within the search.</param>
+        public ITool GetTool(object toolId, bool includeChildToolbars = true)
         {
-            return toolId == null 
-                        ? null 
-                        : Tools.Where(m => Equals(m.Id, toolId)).FirstOrDefault();
+            return GetTool(this, toolId, includeChildToolbars);
+        }
+        private static ITool GetTool(IToolBar toolbar, object toolId, bool includeChildToolbars)
+        {
+            // Look for a matching tool.
+            var tool = toolId == null
+                        ? null
+                        : toolbar.Tools.Where(m => Equals(m.Id, toolId)).FirstOrDefault();
+            if (tool != null) return tool;
+
+            // Search child toolbars (Recursion).
+            if (includeChildToolbars)
+            {
+                var toolGroups = toolbar.Tools.OfType<IToolBar>();
+                foreach (var toolGroup in toolGroups)
+                {
+                    tool = GetTool(toolGroup, toolId, true);
+                    if (tool != null) return tool;
+                }
+            }
+
+            // Finish up.
+            return null;
         }
 
         /// <summary>Gets the tool with the specified ID.</summary>
@@ -239,9 +284,16 @@ namespace Open.Core.UI.Controls
         {
             var title = GetImporter().TitleFactory.CreateExport().Value;
             title.IsVisible = false;
+            WireTitleEvents(title);
             return title;
         }
-        #endregion
+
+        private void WireTitleEvents(IToolBarTitle title)
+        {
+            title.IsVisibleChanged -= OnTitleIsVisibleChanged;
+            title.IsVisibleChanged += OnTitleIsVisibleChanged;
+        }
+       #endregion
 
         private class ToolItem
         {

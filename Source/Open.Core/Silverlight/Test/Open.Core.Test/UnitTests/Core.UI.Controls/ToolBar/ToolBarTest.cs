@@ -9,7 +9,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
-    [Tag("t")]
+    [Tag("foo")]
     [TestClass]
     public class ToolBarTest
     {
@@ -60,6 +60,12 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         public void ShouldNotHaveParentByDefault()
         {
             toolbar.Parent.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotHaveHeightByDefault()
+        {
+            toolbar.Height.ShouldBe(double.NaN);
         }
 
         [TestMethod]
@@ -209,6 +215,28 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             toolbar.Add(tool);
             toolbar.GetTool(MyEnum.One).ShouldBe(tool);
             toolbar.GetTool(MyEnum.Two).ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldGetDeepChildTool()
+        {
+            var tool = new MockTool { Id = MyEnum.One };
+            var toolGroup = toolbar.AddToolGroup();
+            toolGroup.Add(tool);
+
+            toolbar.GetTool(MyEnum.One, includeChildToolbars:true).ShouldBe(tool);
+            toolbar.GetTool(MyEnum.Two, includeChildToolbars: true).ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldNotGetDeepChildTool()
+        {
+            var tool = new MockTool { Id = MyEnum.One };
+            var toolGroup = toolbar.AddToolGroup();
+            toolGroup.Add(tool);
+
+            toolbar.GetTool(MyEnum.One, includeChildToolbars: false).ShouldBe(null);
+            toolbar.GetTool(MyEnum.Two, includeChildToolbars: false).ShouldBe(null);
         }
 
         [TestMethod]

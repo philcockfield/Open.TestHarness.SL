@@ -34,7 +34,6 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Base_Classes
 {
-    [Tag("foo")]
     [TestClass]
     public class IsolatedStorageModelBaseTest : SilverlightUnitTest
     {

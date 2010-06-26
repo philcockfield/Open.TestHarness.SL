@@ -39,7 +39,17 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
         #endregion
 
-        #region Tests
+        #region Tests 
+        [ViewTest]
+        public void Add_Empty_ToolGroup(Border control)
+        {
+            ToolBar.Clear();
+            var group1 = ToolBar.AddToolGroup(title: "One");
+            var group2 = ToolBar.AddToolGroup(title: "Two");
+            var group3 = ToolBar.AddToolGroup(title: "Three");
+            ToolBar.UpdateLayout();
+        }
+
         [ViewTest]
         public void Add_ToolGroups(Border control)
         {
@@ -212,7 +222,14 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         public void Toggle__Title_IsVisible(Border control)
         {
             ToolBar.Title.IsVisible = !ToolBar.Title.IsVisible;
-            Output.Write("ToolBar.IsVisible: " + ToolBar.Title.IsVisible);
+            Output.Write("ToolBar.Title.IsVisible: " + ToolBar.Title.IsVisible);
+        }
+
+        [ViewTest]
+        public void Toggle__Title_ShowBackground(Border control)
+        {
+            ToolBar.Title.ShowBackground = !ToolBar.Title.ShowBackground;
+            Output.Write("ToolBar.Title.ShowBackground: " + ToolBar.Title.ShowBackground);
         }
 
         [ViewTest]

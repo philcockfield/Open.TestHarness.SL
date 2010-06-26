@@ -233,11 +233,12 @@
       <DependentUpon>ToolBarTitle.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToolBar\Title\ToolBarTitleViewModel.cs" />
-    <Compile Include="Controls\ToolBar\ToolBarViewModel.cs" />
-    <Compile Include="Controls\ToolBar\ToolBarExtensions.cs" />
     <Compile Include="Controls\ToolBar\ToolBarView.xaml.cs">
       <DependentUpon>ToolBarView.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\ToolBar\ToolBarViewModel.cs" />
+    <Compile Include="Controls\ToolBar\ToolBarExtensions.cs" />
     <Compile Include="Controls\ToolBar\ToolBase.cs" />
     <Compile Include="Controls\ToolBar\Events\ToolEvent.cs" />
     <Compile Include="Controls\ToolBar\Tools\ButtonTool\ButtonTool.cs" />
@@ -262,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ToolBar\Title\ToolBarTitle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ToolBar\ToolBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -448,10 +453,6 @@
     <Page Include="Controls\StatusIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ToolBar\ToolBarView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ToolBar\Tools\ButtonTool\ButtonToolView.xaml">
       <SubType>Designer</SubType>

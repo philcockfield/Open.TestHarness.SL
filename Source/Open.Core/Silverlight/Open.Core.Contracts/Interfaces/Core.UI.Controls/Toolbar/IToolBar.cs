@@ -32,6 +32,9 @@ namespace Open.Core.UI.Controls
         /// <summary>Fires when the 'UpdateLayout' method is invoked.</summary>
         event EventHandler UpdateLayoutRequest;
 
+        /// <summary>Fires when the toolbar is cleared.</summary>
+        event EventHandler Cleared;
+
         /// <summary>Gets the collection of tools within the toolbar.</summary>
         IEnumerable<ITool> Tools { get; }
 
@@ -53,6 +56,9 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the title for the toolbar (guaranteed to return a default object).</summary>
         IToolBarTitle Title { get; set; }
 
+        /// <summary>Gets or sets the height of the toolbar (NaN by default).</summary>
+        double Height { get; set; }
+
         /// <summary>Adds a tool to the toolbar.</summary>
         /// <typeparam name="T">The type of the tool.</typeparam>
         /// <param name="tool">The instance of the tool model being added.</param>
@@ -69,7 +75,8 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets the tool with the specified ID.</summary>
         /// <param name="toolId">The unique identifier of the tool.</param>
-        ITool GetTool(object toolId);
+        /// <param name="includeChildToolbars">Flag indicating if child toolbars (tool-groups) should be included within the search.</param>
+        ITool GetTool(object toolId, bool includeChildToolbars = true);
 
         /// <summary>Gets the tool with the specified ID.</summary>
         /// <typeparam name="TTool">The type of the tool.</typeparam>

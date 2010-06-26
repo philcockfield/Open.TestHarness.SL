@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.ComponentModel;
 using Open.Core.Common;
 
@@ -27,10 +28,16 @@ namespace Open.Core.UI.Controls
 {
     public interface IToolBarTitle : IViewFactory, INotifyPropertyChanged
     {
+        /// <summary>Fires when the IsVisible value changed.</summary>
+        event EventHandler IsVisibleChanged;
+
         /// <summary>Gets or sets the name/title of the toolbar.</summary>
         string Name { get; set; }
 
         /// <summary>Gets or sets whether the title is visible.</summary>
         bool IsVisible { get; set; }
+
+        /// <summary>Gets or sets whether the background is visible.</summary>
+        bool ShowBackground { get; set; }
     }
 }

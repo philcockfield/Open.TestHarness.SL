@@ -198,6 +198,7 @@ namespace Open.Core.UI.Controls
         /// <param name="toolbar">The toolbar to add to.</param>
         /// <param name="id">The unique identifier of the tool.</param>
         /// <param name="title">The display title of the tool-group (displayed under the toolbar).</param>
+        /// <param name="height">The height of the toolgroup (set to NaN for no explicit height).</param>
         /// <param name="column">The index of the column the tool is in (0-based, zero by default).</param>
         /// <param name="row">The index of the row the tool is in (0-based, zero by default).</param>
         /// <param name="columnSpan">The number of rows the tool spans (1-based, one by default.  Must be 1 or greater).</param>
@@ -206,6 +207,7 @@ namespace Open.Core.UI.Controls
             this IToolBar toolbar,
             object id = null,
             string title = "Name",
+            double height = 87,
             int? column = null,
             int? row = null,
             int? columnSpan = 1,
@@ -222,6 +224,7 @@ namespace Open.Core.UI.Controls
             toolGroup.Dividers = RectEdgeFlag.Right;
             toolGroup.DefaultToolMargin = new Thickness(0);
             toolGroup.Margin = new Thickness(2);
+            toolGroup.Height = height;
             toolbar.Add(toolGroup, column, row, columnSpan, rowSpan);
 
             // Finish up.

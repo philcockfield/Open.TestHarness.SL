@@ -63,16 +63,6 @@ namespace Open.Core.UI.Common
         #endregion
 
         #region Methods
-        /// <summary>Fades the given element in from it's current opacity to 0% opacity.</summary>
-        /// <param name="element">The element to animate.</param>
-        /// <param name="seconds">The duration in seconds.</param>
-        /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
-        /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void FadeOut(FrameworkElement element, double seconds, IEasingFunction easing = null, Action callback = null)
-        {
-            Fade(element, element.Opacity, 0, seconds, easing, callback);
-        }
-
         /// <summary>Fades the given element in from it's current opacity to 100% opacity.</summary>
         /// <param name="element">The element to animate.</param>
         /// <param name="seconds">The duration in seconds.</param>
@@ -83,13 +73,23 @@ namespace Open.Core.UI.Common
             Fade(element, element.Opacity, 1, seconds, easing, callback);
         }
 
+        /// <summary>Fades the given element in from it's current opacity to 0% opacity.</summary>
+        /// <param name="element">The element to animate.</param>
+        /// <param name="seconds">The duration in seconds.</param>
+        /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
+        /// <param name="callback">Method to execute when the animation is complete.</param>
+        public static void FadeOut(FrameworkElement element, double seconds, IEasingFunction easing = null, Action callback = null)
+        {
+            Fade(element, element.Opacity, 0, seconds, easing, callback);
+        }
+
         /// <summary>Animates the opacity property on the given element.</summary>
         /// <param name="element">The element to animate.</param>
         /// <param name="fromOpacity">The starting opacity value (0-1).</param>
         /// <param name="toOpacity">The ending opacity value (0-1).</param>
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static void Fade(FrameworkElement element, double fromOpacity, double toOpacity, double seconds, IEasingFunction easing = null, Action callback = null)
+        public static void Fade(DependencyObject element, double fromOpacity, double toOpacity, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             DoubleAnimate(element, fromOpacity, toOpacity, seconds, PropOpacity, easing, callback);
         }
@@ -140,7 +140,7 @@ namespace Open.Core.UI.Common
         /// <param name="seconds">The duration in seconds.</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static MoveAnimation Move(FrameworkElement element, Point start, Point end, double seconds, IEasingFunction easing = null, Action callback = null)
+        public static MoveAnimation Move(DependencyObject element, Point start, Point end, double seconds, IEasingFunction easing = null, Action callback = null)
         {
             var x = DoubleAnimate(element, start.X, end.X, seconds, "(Canvas.Left)", easing, callback);
             var y = DoubleAnimate(element, start.Y, end.Y, seconds, "(Canvas.Top)", easing, null);
@@ -172,7 +172,7 @@ namespace Open.Core.UI.Common
         /// <param name="propertyPath">The path to the property to animate (eg. "Opacity" or "(Canvas.Left)").</param>
         /// <param name="easing">The easing function to apply to the animation (Null if not required).</param>
         /// <param name="callback">Method to execute when the animation is complete.</param>
-        public static DoubleAnimation DoubleAnimate(FrameworkElement element, double fromValue, double toValue, double seconds, string propertyPath, IEasingFunction easing = null, Action callback = null)
+        public static DoubleAnimation DoubleAnimate(DependencyObject element, double fromValue, double toValue, double seconds, string propertyPath, IEasingFunction easing = null, Action callback = null)
         {
             // Construct the animation.
             var animation = CreateDoubleAnimation(fromValue, toValue, seconds, easing);
@@ -229,11 +229,11 @@ namespace Open.Core.UI.Common
         {
             #region Head
             private Storyboard Storyboard { get; set; }
-            private FrameworkElement[] Elements { get; set; }
+            private DependencyObject[] Elements { get; set; }
             private Action Callback { get; set; }
             private static readonly List<Animator> instanceList = new List<Animator>();
 
-            private Animator(Storyboard storyboard, Action callback, params FrameworkElement[] elements)
+            private Animator(Storyboard storyboard, Action callback, params DependencyObject[] elements)
             {
                 // Store values.
                 Storyboard = storyboard;
@@ -241,18 +241,18 @@ namespace Open.Core.UI.Common
                 Elements = elements;
 
                 // Wire up events.
-                Storyboard.Completed += Handle_Storyboard_Completed;
+                Storyboard.Completed += OnStoryboardCompleted;
             }
 
             public void Dispose()
             {
-                Storyboard.Completed -= Handle_Storyboard_Completed;
+                Storyboard.Completed -= OnStoryboardCompleted;
                 instanceList.Remove(this);
             }
             #endregion
 
             #region Event Handlers
-            private void Handle_Storyboard_Completed(object sender, EventArgs e)
+            private void OnStoryboardCompleted(object sender, EventArgs e)
             {
                 if (Callback != null) Callback();
                 Dispose();
@@ -260,7 +260,7 @@ namespace Open.Core.UI.Common
             #endregion
 
             #region Methods
-            public static void Animate(Storyboard storyboard, Action callback, params FrameworkElement[] elements)
+            public static void Animate(Storyboard storyboard, Action callback, params DependencyObject[] elements)
             {
                 var animator = new Animator(storyboard, callback, elements);
                 instanceList.Add(animator);

@@ -16,7 +16,6 @@
             <Style x:Key="dividerStyle" TargetType="ContentControl">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                <Setter Property="Margin" Value="4,0,4,0" />
             </Style>
 
             <ControlTemplate x:Key="edgeDivider" TargetType="ContentControl">
@@ -36,7 +35,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}">
+    <Grid Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}" Height="{Binding Height}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -57,11 +56,9 @@
                 Template="{StaticResource edgeDivider}" />
 
         <!--Tools-->
-        <Grid 
-              Grid.Column="1"  Grid.Row="0"
-              x:Name="toolContainer" 
-              x:FieldModifier="private" 
-              Margin="{Binding Margin}" />
+        <Border Grid.Column="1"  Grid.Row="0" Margin="{Binding ToolContainerMargin}">
+            <Grid x:Name="toolContainer" x:FieldModifier="private" Margin="{Binding Margin}" />
+        </Border>
 
         <!--Right Divider-->
         <ContentControl 
@@ -74,9 +71,10 @@
         
         <!--Title-->
         <c:ViewFactoryContent 
-            Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"  
-            HorizontalContentAlignment="Stretch"
-            ViewFactory="{Binding Title}" />
+                Grid.Column="1" 
+                Grid.Row="1" 
+                HorizontalContentAlignment="Stretch"
+                ViewFactory="{Binding Title}" />
         
     </Grid>
 </UserControl>

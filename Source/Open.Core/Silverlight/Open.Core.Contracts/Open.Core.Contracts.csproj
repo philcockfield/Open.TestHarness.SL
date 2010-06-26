@@ -117,6 +117,7 @@
     <Compile Include="Interfaces\Core\IErrorInfo.cs" />
     <Compile Include="Interfaces\Core\IIdentifiable.cs" />
     <Compile Include="Interfaces\Core\INotifyDisposed.cs" />
+    <Compile Include="Interfaces\Core.UI\IOpacity.cs" />
     <Compile Include="Interfaces\Core\IOutput.cs" />
     <Compile Include="Interfaces\Core\IPackageDownloadService.cs" />
     <Compile Include="Interfaces\Core\ISelectable.cs" />
