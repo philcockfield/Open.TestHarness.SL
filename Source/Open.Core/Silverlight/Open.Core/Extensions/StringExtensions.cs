@@ -190,6 +190,23 @@ namespace Open.Core.Common
             var last = self.SubstringAfterLast(character);
             return self.RemoveEnd(character + last);
         }
+
+        /// <summary>Repeats the character the specified number of times.</summary>
+        /// <param name="self">The character to repeat.</param>
+        /// <param name="total">The total number of times to repeat the character.</param>
+        public static string Repeat(this string self, int total)
+        {
+            if (string.IsNullOrEmpty(self)) return self;
+            if (total <= 0) return self;
+
+            var builder = new StringBuilder(total);
+            for (var i = 0; i < total; i++)
+            {
+                builder.Append(self);
+            }
+            return builder.ToString();
+        }
+
         #endregion
 
         #region String - Null Strings

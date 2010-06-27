@@ -405,5 +405,16 @@ namespace Open.Core.Common.Test.Extensions
             "One.".SubstringBeforeLast(".").ShouldBe("One");
             ".".SubstringBeforeLast(".").ShouldBe("");
         }
+
+        [TestMethod]
+        public void ShouldRepeatCharacter()
+        {
+            "".Repeat(3).ShouldBe("");
+            ((string)null).Repeat(3).ShouldBe(null);
+            " ".Repeat(3).ShouldBe("   ");
+
+            "1".Repeat(0).ShouldBe("1");
+            "1".Repeat(-1).ShouldBe("1");
+        }
     }
 }
