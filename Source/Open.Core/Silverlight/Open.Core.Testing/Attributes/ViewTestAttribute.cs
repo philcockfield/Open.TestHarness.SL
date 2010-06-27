@@ -27,6 +27,7 @@ namespace Open.Core.Common
     /// <summary>Flags that define how a control under test is sized.</summary>
     public enum TestControlSize
     {
+        Default,
         Manual,
         Fill,
         FillWithMargin

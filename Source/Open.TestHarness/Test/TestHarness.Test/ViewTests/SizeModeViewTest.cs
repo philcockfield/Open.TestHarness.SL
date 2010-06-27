@@ -6,7 +6,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.TestHarness.Test.ViewTests
 {
-    [ViewTestClass]
+    [ViewTestClass(SizeMode = TestControlSize.FillWithMargin)]
     public class SizeModeViewTest
     {
         #region Head
@@ -31,6 +31,12 @@ namespace Open.TestHarness.Test.ViewTests
         public void SizeMode__FillWithMargin(Placeholder control)
         {
         }
+
+        [ViewTest]
+        public void SizeMode__Default_BubbleToParent(Placeholder control)
+        {
+        }
+
         #endregion
     }
 }

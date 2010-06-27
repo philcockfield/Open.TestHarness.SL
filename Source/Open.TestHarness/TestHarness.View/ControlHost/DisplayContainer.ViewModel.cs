@@ -85,16 +85,32 @@ namespace Open.TestHarness.View.ControlHost
 
         #region Properties - Internal
         private ViewTestAttribute CurrentViewTestAttribute { get { return model.CurrentViewTest == null ? null : model.CurrentViewTest.Attribute; } }
+
         private bool IsFillMode
         {
             get
             {
-                return CurrentViewTestAttribute == null 
-                    ? false
-                    : CurrentViewTestAttribute.SizeMode == TestControlSize.Fill || CurrentViewTestAttribute.SizeMode == TestControlSize.FillWithMargin;
+                var mode = SizeMode;
+                return mode == TestControlSize.Fill || mode == TestControlSize.FillWithMargin;
             }
         }
-        private bool IsFillWithMargin { get { return CurrentViewTestAttribute.SizeMode == TestControlSize.FillWithMargin; } }
+        private bool IsFillWithMargin { get { return SizeMode == TestControlSize.FillWithMargin; } }
+
+        private TestControlSize SizeMode
+        {
+            get
+            {
+                // Check specific [ViewTest] first.
+                if (CurrentViewTestAttribute != null)
+                {
+                    var testMode = CurrentViewTestAttribute.SizeMode;
+                    if (testMode != TestControlSize.Default) return testMode;
+                }
+
+                // Bubble up to the parent.
+                return model.Attribute.SizeMode;
+            }
+        }
         #endregion
 
         public class DisplayItemViewModel : ViewModelBase

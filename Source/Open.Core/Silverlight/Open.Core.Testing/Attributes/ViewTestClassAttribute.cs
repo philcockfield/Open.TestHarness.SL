@@ -46,6 +46,9 @@ namespace Open.Core.Common
 
         /// <summary>Gets or sets a space-delimited category tag.</summary>
         public string Tag { get; set; }
+
+        /// <summary>Gets or sets how the control under test is sized within the TestHarness.</summary>
+        public TestControlSize SizeMode { get; set; }
         #endregion
 
         #region Methods - Static
