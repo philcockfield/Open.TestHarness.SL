@@ -34,5 +34,6 @@ namespace Open.Core.UI.Silverlight.Test
         public static DataTemplate Placeholder2 { get { return Instance.GetDataTemplate("Placeholder2"); } }
         public static DataTemplate PlaceholderText { get { return Instance.GetDataTemplate("Placeholder.Text"); } }
         public static DataTemplate TextBox { get { return Instance.GetDataTemplate("TextBox"); } }
+        public static DataTemplate Ellipse { get { return Instance.GetDataTemplate("Ellipse"); } }
     }
 }

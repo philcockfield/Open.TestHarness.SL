@@ -21,7 +21,6 @@
 //------------------------------------------------------
 
 using System.ComponentModel;
-using System.Windows;
 
 namespace Open.Core.UI
 {
@@ -30,8 +29,5 @@ namespace Open.Core.UI
     {
         /// <summary>Gets or sets the visibility of the element.</summary>
         bool IsVisible { get; set; }
-
-        /// <summary>Gets the corresponding enum.</summary>
-        Visibility Visibility { get; }
     }
 }

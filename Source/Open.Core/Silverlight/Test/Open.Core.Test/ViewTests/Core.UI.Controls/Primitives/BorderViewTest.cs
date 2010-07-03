@@ -5,7 +5,7 @@ using Open.Core.Common;
 using Open.Core.UI;
 using Open.Core.UI.Controls;
 
-namespace Open.Core.Test.ViewTests.Core.UI.Controls
+namespace Open.Core.Test.ViewTests.Core.UI.Controls.Primitives
 {
     [ViewTestClass(DisplayName = "Border : IBorder")]
     public class BorderViewTest 

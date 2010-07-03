@@ -138,6 +138,7 @@
     <Compile Include="Interactivity\Behaviors\Animation\RotateAnimation.cs" />
     <Compile Include="Interactivity\Behaviors\Animation\SizeAnimation.cs" />
     <Compile Include="Interactivity\Behaviors\AutoRowDefinitions.cs" />
+    <Compile Include="Interactivity\Behaviors\Clipping.cs" />
     <Compile Include="Interactivity\Behaviors\ClipToBounds.cs" />
     <Compile Include="Interactivity\Behaviors\CommonWidth.cs" />
     <Compile Include="Interactivity\Behaviors\DataGridFillerColumn.cs" />

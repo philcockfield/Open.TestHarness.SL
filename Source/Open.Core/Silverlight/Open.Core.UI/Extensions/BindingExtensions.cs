@@ -32,7 +32,7 @@ namespace Open.Core.UI
         #region Head
         // Property name constants.
         private static readonly string propOpacity = LinqExtensions.GetPropertyName<IOpacity>(m => m.Opacity);
-        private static readonly string propVisibility = LinqExtensions.GetPropertyName<IVisiblity>(m => m.Visibility);
+        private static readonly string propVisibility = "Visibility";
         private static readonly string propColor = LinqExtensions.GetPropertyName<IBorder>(m => m.Color);
         private static readonly string propThickness = LinqExtensions.GetPropertyName<IBorder>(m => m.Thickness);
         private static readonly string propCornerRadius = LinqExtensions.GetPropertyName<IBorder>(m => m.CornerRadius);

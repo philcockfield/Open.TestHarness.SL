@@ -38,5 +38,9 @@ namespace Open.Core.UI
 
         /// <summary>Gets or sets the rounded corder radius.</summary>
         CornerRadius CornerRadius { get; set; }
+
+        /// <summary>Converts the specified color to a Brush, and sets it as the Color property.</summary>
+        /// <param name="color">The color to apply.</param>
+        void SetColor(Color color);
     }
 }

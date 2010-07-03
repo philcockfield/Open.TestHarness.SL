@@ -1,0 +1,25 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.Background"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls" 
+    IsTabStop="False">
+    
+    <Grid Visibility="{Binding Visibility}">
+
+        <!--Background-->
+        <Grid Opacity="{Binding Opacity}">
+            <!--Background Color-->
+            <Border CornerRadius="{Binding CornerRadius}" Background="{Binding Color}" />
+
+            <!--XAML Template (Optional)-->
+            <ContentControl ContentTemplate="{Binding Template}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ContentPresenter />
+            </ContentControl>
+        </Grid>
+        
+        <!--Border-->
+        <Controls:ViewFactoryContent ViewFactory="{Binding Border}" />
+        
+    </Grid>
+</UserControl>

@@ -215,8 +215,11 @@
     <Compile Include="Controls\PostIt.xaml.cs">
       <DependentUpon>PostIt.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Primitive\Background\BackgroundModel.cs" />
-    <Compile Include="Controls\Primitive\BorderModel.cs" />
+    <Compile Include="Controls\Primitives\Background\Background.xaml.cs">
+      <DependentUpon>Background.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Primitives\Background\BackgroundModel.cs" />
+    <Compile Include="Controls\Primitives\BorderModel.cs" />
     <Compile Include="Controls\ProgressBar\ProgressBarFlat.cs" />
     <Compile Include="Controls\Prompts\PromptButtons.xaml.cs">
       <DependentUpon>PromptButtons.xaml</DependentUpon>
@@ -257,6 +260,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PostIt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Primitives\Background\Background.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

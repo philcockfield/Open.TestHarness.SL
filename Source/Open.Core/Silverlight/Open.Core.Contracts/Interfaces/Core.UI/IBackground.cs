@@ -38,5 +38,13 @@ namespace Open.Core.UI
 
         /// <summary>Gets or sets the border.</summary>
         IBorder Border { get; set; }
+
+        /// <summary>Gets or sets the rounded corder radius.</summary>
+        /// <remarks>Synced with the Border's corner radius.</remarks>
+        CornerRadius CornerRadius { get; set; }
+
+        /// <summary>Converts the specified color to a Brush, and sets it as the Color property.</summary>
+        /// <param name="color">The color to apply.</param>
+        void SetColor(Color color);
     }
 }

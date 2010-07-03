@@ -20,23 +20,24 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
-using T = Open.Core.UI.Controls.BackgroundModel;
+using T = Open.Core.UI.Controls.BorderModel;
 
 namespace Open.Core.UI.Controls
 {
-    [Export(typeof(IBackground))]
-    public class BackgroundModel : ModelBase, IBackground
+    [Export(typeof(IBorder))]
+    public class BorderModel : ModelBase, IBorder
     {
         #region Head
-        private static readonly Brush defaultColor = new SolidColorBrush(Colors.Black) { Opacity = 0.3 };
+        private static readonly Brush defaultColor = new SolidColorBrush(Colors.Black);
+        private static readonly Thickness defaultThickness = new Thickness(1);
         #endregion
 
-        #region Properties
+        #region Properties : IBorder
         public double Opacity
         {
             get { return GetPropertyValue<T, double>(m => m.Opacity, 1); }
@@ -49,43 +50,41 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<BorderModel, bool>(m => m.IsVisible, value, true, m => m.Visibility); }
         }
 
-        public Visibility Visibility { get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; } }
-
         public Brush Color
         {
             get { return GetPropertyValue<T, Brush>(m => m.Color, defaultColor); }
             set { SetPropertyValue<T, Brush>(m => m.Color, value, defaultColor); }
         }
 
-        public IBorder Border
+        public Thickness Thickness
         {
-            get { return GetPropertyValue<T, IBorder>(m => m.Border); }
-            set { SetPropertyValue<T, IBorder>(m => m.Border, value); }
+            get { return GetPropertyValue<T, Thickness>(m => m.Thickness, defaultThickness); }
+            set { SetPropertyValue<T, Thickness>(m => m.Thickness, value, defaultThickness); }
         }
 
-        public DataTemplate Template
+        public CornerRadius CornerRadius
         {
-            get { return GetPropertyValue<T, DataTemplate>(m => m.Template); }
-            set { SetPropertyValue<T, DataTemplate>(m => m.Template, value); }
+            get { return GetPropertyValue<T, CornerRadius>(m => m.CornerRadius); }
+            set { SetPropertyValue<T, CornerRadius>(m => m.CornerRadius, value); }
         }
         #endregion
 
+        #region Properties : ViewModel
+        public Visibility Visibility { get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; } }
+        #endregion
 
         #region Methods
+        public void SetColor(Color color)
+        {
+            Color = new SolidColorBrush(color);
+        }
+
         public FrameworkElement CreateView()
         {
-
-            return null;
+            var border = new Border{DataContext = this};
+            border.SetBindings<IBorder>();
+            return border;
         }
         #endregion
-
-        #region Internal
-
-        //private void IBorder GetDefaultBorder( )
-        //{
-        //}
-
-        #endregion
-
     }
 }

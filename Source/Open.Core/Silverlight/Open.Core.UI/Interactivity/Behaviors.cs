@@ -66,6 +66,15 @@ namespace Open.Core.Common.AttachedBehavior
         public static ClipToBounds GetClipToBounds(FrameworkElement element) { return (ClipToBounds)element.GetValue(ClipToBoundsProperty); }
         public static void SetClipToBounds(FrameworkElement element, ClipToBounds value) { element.SetValue(ClipToBoundsProperty, value); }
 
+        public static readonly DependencyProperty ClippingProperty =
+            DependencyProperty.RegisterAttached(
+                "Clipping",
+                typeof(Clipping),
+                typeof(Behaviors),
+                new PropertyMetadata(HandleAttachedBehaviorPropertyChanged));
+        public static Clipping GetClipping(FrameworkElement element) { return (Clipping)element.GetValue(ClippingProperty); }
+        public static void SetClipping(FrameworkElement element, Clipping value) { element.SetValue(ClippingProperty, value); }
+
         public static readonly DependencyProperty DraggableProperty =
             DependencyProperty.RegisterAttached(
                 "Draggable",

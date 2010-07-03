@@ -38,4 +38,8 @@
         <TextBox TextWrapping="Wrap" c:Focus.IsDefault="True" />
     </DataTemplate>
 
+    <DataTemplate x:Key="Ellipse">
+        <Ellipse Fill="HotPink" />
+    </DataTemplate>
+    
 </ResourceDictionary>
