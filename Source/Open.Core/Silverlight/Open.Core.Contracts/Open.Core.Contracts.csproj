@@ -106,7 +106,10 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ICustomTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ISpacerTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
+    <Compile Include="Interfaces\Core.UI\IBackground.cs" />
+    <Compile Include="Interfaces\Core.UI\IBorder.cs" />
     <Compile Include="Interfaces\Core.UI\IButton.cs" />
+    <Compile Include="Interfaces\Core.UI\IClickable.cs" />
     <Compile Include="Interfaces\Core.UI\IFontSettings.cs" />
     <Compile Include="Interfaces\Core.UI\IGridCellWidth.cs" />
     <Compile Include="Interfaces\Core.UI\IImage.cs" />

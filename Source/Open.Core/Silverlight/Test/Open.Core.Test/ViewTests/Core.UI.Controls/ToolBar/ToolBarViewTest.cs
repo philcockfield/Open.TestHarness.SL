@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
@@ -67,7 +68,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             AddButtonSet(group1);
             AddButtonSet(group2);
-            group3.AddCustomTool(new PlaceholderTool(), column: 0, rowSpan: 3);
+            group3.AddCustomTool(new PlaceholderTool(), "custom", column: 0, rowSpan: 3);
 
             // ---
 
@@ -81,7 +82,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             ToolBar.Clear();
 
             AddButtonSet(ToolBar);
-            ToolBar.AddCustomTool(new PlaceholderTool(), column: 5, rowSpan: 3);
+            ToolBar.AddCustomTool(new PlaceholderTool(), "custom", column: 5, rowSpan: 3);
 
             ToolBar.AddSpacer(column:6);
             AddLargeButton(null, 7);
@@ -212,6 +213,27 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         public void Show__No_Dividers(Border control) { ToolBar.Dividers = RectEdgeFlag.None; }
 
         [ViewTest]
+        public void Toggle__IsEnabled(Border control)
+        {
+            ToolBar.IsEnabled = !ToolBar.IsEnabled;
+            Output.Write("IsEnabled: " + ToolBar.IsEnabled);
+        }
+
+        [ViewTest]
+        public void Toggle_CustomTool__IsEnabled(Border control)
+        {
+            var tool = ToolBar.GetTool("custom");
+            if (tool ==null)
+            {
+                Output.Write("Custom Tool Not Found");
+                return;
+            }
+
+            tool.IsEnabled = !tool.IsEnabled;
+            Output.Write("IsEnabled: " + tool.IsEnabled);
+        }
+
+        [ViewTest]
         public void Toggle__IsVisible(Border control)
         {
             ToolBar.IsVisible = !ToolBar.IsVisible;
@@ -262,16 +284,26 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
             }
         }
 
-        public class PlaceholderTool : IViewFactory
+        public class PlaceholderTool : ViewModelBase, IViewFactory
         {
+            public bool IsEnabled
+            {
+                get { return GetPropertyValue<PlaceholderTool, bool>(m => m.IsEnabled, true); }
+                set { SetPropertyValue<PlaceholderTool, bool>(m => m.IsEnabled, value, true); }
+            }
+
             public FrameworkElement CreateView()
             {
-                return new Placeholder
-                           {
-                               Text = "Custom Tool", 
-                               Width = 180,
-                               Height = 66
-                           };
+                var checkbox = new CheckBox { Content = "My Custom Tool" };
+                var border = new Border
+                                 {
+                                     Background = new SolidColorBrush(Colors.Orange) {Opacity = 0.3},
+                                     Width = 180,
+                                     Height = 66,
+                                     Child = checkbox
+                                 };
+                checkbox.SetBinding(Control.IsEnabledProperty, new Binding("IsEnabled"));
+                return border;
             }
         }
     }

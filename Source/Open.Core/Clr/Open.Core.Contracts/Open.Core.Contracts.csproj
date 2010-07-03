@@ -53,9 +53,6 @@
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core.UI\IOpacity.cs">
       <Link>Interfaces\Core.UI\IOpacity.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core.UI\IVisiblity.cs">
-      <Link>Interfaces\Core.UI\IVisiblity.cs</Link>
-    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\Filter\IPageFilter.cs">
       <Link>Interfaces\Core\Filter\IPageFilter.cs</Link>
     </Compile>

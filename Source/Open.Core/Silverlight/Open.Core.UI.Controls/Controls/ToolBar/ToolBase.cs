@@ -69,14 +69,26 @@ namespace Open.Core.UI.Controls
         public bool IsEnabled
         {
             get { return GetPropertyValue<T, bool>(m => m.IsEnabled, true); }
-            set { SetPropertyValue<T, bool>(m => m.IsEnabled, value, true); }
+            set
+            {
+                if (SetPropertyValue<T, bool>(m => m.IsEnabled, value, true))
+                {
+                    OnIsEnabledChanged();
+                }
+            }
         }
 
         /// <summary>Gets or sets whether the tool is visible.</summary>
         public bool IsVisible
         {
             get { return GetPropertyValue<T, bool>(m => m.IsVisible, true); }
-            set { SetPropertyValue<T, bool>(m => m.IsVisible, value, true); }
+            set
+            {
+                if (SetPropertyValue<T, bool>(m => m.IsVisible, value, true))
+                {
+                    OnIsVisibleChanged();
+                }
+            }
         }
 
         /// <summary>Gets or sets the minimum width the tool can be.</summary>
@@ -118,6 +130,17 @@ namespace Open.Core.UI.Controls
             if (!IsEnabled && !force) return;
             EventBus.Publish<IToolEvent>(new ToolEvent { ToolId = Id });
         }
+
+        /// <summary>Invoked when the IsEnabled property changes.</summary>
+        protected virtual void OnIsEnabledChanged()
+        {
+        }
+
+        /// <summary>Invoked when the IsVisible property changes.</summary>
+        protected virtual void OnIsVisibleChanged()
+        {
+        }
+
         #endregion
 
         // NB: These event handlers are encapsulated in a child-class because the EventBus requires

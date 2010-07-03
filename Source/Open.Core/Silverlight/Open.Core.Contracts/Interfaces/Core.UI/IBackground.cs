@@ -22,16 +22,21 @@
 
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
+using Open.Core.Common;
 
 namespace Open.Core.UI
 {
-    /// <summary>Exposes a simple visibility switch.</summary>
-    public interface IVisiblity : INotifyPropertyChanged
+    /// <summary>Defines a background.</summary>
+    public interface IBackground : IOpacity, IVisiblity, IViewFactory, INotifyPropertyChanged
     {
-        /// <summary>Gets or sets the visibility of the element.</summary>
-        bool IsVisible { get; set; }
+        /// <summary>Gets or sets the color of the border.</summary>
+        Brush Color { get; set; }
 
-        /// <summary>Gets the corresponding enum.</summary>
-        Visibility Visibility { get; }
+        /// <summary>Gets or sets custom XAML to render into the background.</summary>
+        DataTemplate Template { get; set; }
+
+        /// <summary>Gets or sets the border.</summary>
+        IBorder Border { get; set; }
     }
 }

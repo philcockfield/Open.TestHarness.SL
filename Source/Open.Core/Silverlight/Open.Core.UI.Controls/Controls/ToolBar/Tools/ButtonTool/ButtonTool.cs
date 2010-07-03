@@ -39,7 +39,7 @@ namespace Open.Core.UI.Controls
     {
         #region Events
         /// <summary>Fires when the button is clicked.</summary>
-        public event EventHandler Clicked;
+        public event EventHandler Click;
         #endregion
 
         #region Head
@@ -162,10 +162,11 @@ namespace Open.Core.UI.Controls
 
         #region Methods
         /// <summary>Simulates a click of the button (used internally and for testing).</summary>
-        public void Click()
+        public void InvokeClick()
         {
+            if (!IsEnabled) return;
             ShowDialog();
-            if (Clicked != null) Clicked(this, new EventArgs());
+            if (Click != null) Click(this, new EventArgs());
             PublishToolEvent();
         }
 
@@ -229,6 +230,7 @@ namespace Open.Core.UI.Controls
         #region Internal - Dialog
         private void ShowDialog()
         {
+            if (!IsEnabled) return;
             if (saveFileDialog != null) ShowSaveFileDialog();
             if (openFileDialog != null) ShowOpenFileDialog();
         }

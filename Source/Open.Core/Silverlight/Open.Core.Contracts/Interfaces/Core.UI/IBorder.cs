@@ -22,16 +22,21 @@
 
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
+using Open.Core.Common;
 
 namespace Open.Core.UI
 {
-    /// <summary>Exposes a simple visibility switch.</summary>
-    public interface IVisiblity : INotifyPropertyChanged
+    /// <summary>Defines an abstract border.</summary>
+    public interface IBorder : IOpacity, IVisiblity, IViewFactory, INotifyPropertyChanged
     {
-        /// <summary>Gets or sets the visibility of the element.</summary>
-        bool IsVisible { get; set; }
+        /// <summary>Gets or sets the color of the border.</summary>
+        Brush Color { get; set; }
 
-        /// <summary>Gets the corresponding enum.</summary>
-        Visibility Visibility { get; }
+        /// <summary>Gets or sets the thickness of the border.</summary>
+        Thickness Thickness { get; set; }
+
+        /// <summary>Gets or sets the rounded corder radius.</summary>
+        CornerRadius CornerRadius { get; set; }
     }
 }

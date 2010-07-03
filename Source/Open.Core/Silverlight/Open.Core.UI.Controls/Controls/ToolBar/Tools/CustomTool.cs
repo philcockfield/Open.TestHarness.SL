@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Reflection;
 using System.Windows;
 using Open.Core.Common;
 using T = Open.Core.UI.Controls.CustomTool;
@@ -31,13 +32,19 @@ namespace Open.Core.UI.Controls
     public class CustomTool : ToolBase, ICustomTool
     {
         #region Head
+
+        private PropertyInfo isEnabledProperty;
+        private const string PropIsEnabled = "IsEnabled";
+
         /// <summary>Constructor.</summary>
         /// <param name="viewModel">The view-model for the custom tool UI (is a ViewFactory)</param>
         public CustomTool(IViewFactory viewModel)
         {
             if (viewModel == null) throw new ArgumentNullException("viewModel");
             ViewModel = viewModel;
+            isEnabledProperty = viewModel.GetType().GetProperty(PropIsEnabled);
         }
+
         #endregion
 
         #region Properties
@@ -51,6 +58,13 @@ namespace Open.Core.UI.Controls
             var view = ViewModel.CreateView();
             view.DataContext = ViewModel;
             return view;
+        }
+
+        protected override void OnIsEnabledChanged()
+        {
+            base.OnIsEnabledChanged();
+            if (isEnabledProperty == null) return;
+            isEnabledProperty.SetValue(ViewModel, IsEnabled, null);
         }
         #endregion
     }

@@ -7,12 +7,10 @@ using Open.Core.Common;
 namespace Open.Core.UI
 {
     /// <summary>Abstractly defines a simple button.</summary>
-    public interface IButton : IViewFactory, INotifyPropertyChanged
+    public interface IButton : IViewFactory, INotifyPropertyChanged, IClickable
     {
-        /// <summary>Fires when the button is clicked.</summary>
-        event EventHandler Click;
 
-        /// <summary>Gets or sets the command the button is bound to.</summary>
+        /// <summary>Gets the command the button is bound to.</summary>
         ICommand Command { get; }
 
         /// <summary>Gets or sets the enabled state of the button.</summary>

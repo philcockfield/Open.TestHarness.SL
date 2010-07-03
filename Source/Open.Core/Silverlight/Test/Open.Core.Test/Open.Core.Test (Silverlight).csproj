@@ -144,6 +144,7 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="UnitTests\Core\Base Classes\NotifyPropertyChangedBaseSilverlightTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\BorderViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Buttons\IButtonViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Containers\ContentContainerViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\CoreImageViewTest.cs" />

@@ -10,6 +10,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
 {
+    [Tag("button")]
     [TestClass]
     public class ButtonToolTest : SilverlightUnitTest
     {
@@ -131,10 +132,29 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         }
 
         [TestMethod]
-        public void ShouldFireEventFromEventBus()
+        public void ShouldFireEventFromEventBusOnceOnClick()
         {
             EventBus.IsAsynchronous = false;
-            EventBus.ShouldFire<IToolEvent>(() => ((ButtonTool)tool).Click());
+            EventBus.ShouldFire<IToolEvent>(1, () => ((ButtonTool)tool).InvokeClick());
+        }
+
+        [TestMethod]
+        public void ShouldFireEventOnceOnClick()
+        {
+            var fireCount = 0;
+            tool.Click += delegate { fireCount++; };
+            tool.InvokeClick();
+            fireCount.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldNotFireEventOnClickWhenDisabled()
+        {
+            var fireCount = 0;
+            tool.Click += delegate { fireCount++; };
+            tool.IsEnabled = false;
+            tool.InvokeClick();
+            fireCount.ShouldBe(0);
         }
 
         [TestMethod]

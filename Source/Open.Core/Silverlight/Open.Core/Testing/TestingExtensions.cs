@@ -588,7 +588,7 @@ namespace Open.Core.Common.Testing
         }
         #endregion
 
-        #region Methods - Should Fire
+        #region Methods - Should Fire (Event Bus)
         /// <summary>Asserts that when the specified action was invoked the event was fired at least once.</summary>
         /// <typeparam name="TEvent">The event type.</typeparam>
         /// <param name="self">The event-bus to monitor.</param>
@@ -611,6 +611,23 @@ namespace Open.Core.Common.Testing
             if (fireCount != total) throw new AssertionException(string.Format("Expected the event '{0}' to be fired {1} times. Instead it fired {2} times.", typeof(TEvent).Name, total, fireCount));
         }
 
+        /// <summary>
+        ///     Asserts that when the specified action was invoked the event was fired at least once (asynchronously).
+        /// </summary>
+        /// <typeparam name="TEvent">The event type.</typeparam>
+        /// <param name="self">The event-bus to monitor.</param>
+        /// <param name="triggerAction">The action that causes the event to fire.</param>
+        /// <param name="onEvent">Option action which is invoked when the event fires (passing in the event args).</param>
+        public static void ShouldFireAsync<TEvent>(this IEventBus self, Action triggerAction, Action<TEvent> onEvent = null)
+        {
+            GetFireCountAsync(self, triggerAction, onEvent, fireCount =>
+                        {
+                            if (fireCount == 0) throw new AssertionException(
+                                                string.Format("Expected the event '{0}' to be fired at least once.", 
+                                                typeof(TEvent).Name));
+                        });
+        }
+
         /// <summary>Asserts that when the specified action was invoked the event was not fired.</summary>
         /// <param name="self">The event-bus to monitor.</param>
         /// <typeparam name="TEvent">The event type.</typeparam>
@@ -623,25 +640,45 @@ namespace Open.Core.Common.Testing
 
         private static int GetFireCount<TEvent>(IEventBus self, Action action, Action<TEvent> onEvent)
         {
-            // Setup initial conditions.
-            if (self == null) throw new ArgumentNullException("self");
-            if (action == null) throw new ArgumentNullException("action", "A test action was not passed to the method");
+            // Set the event-bus to work synchonously.
             var originalAsyncValue = self.IsAsynchronous;
             self.IsAsynchronous = false;
 
-            // Wire up the event.
-            var eventTester = new EventBusTester<TEvent> { OnEvent = onEvent };
+            // Invoke test.
+            int returnValue = 0;
+            GetFireCountAsync(self, action, onEvent, i => returnValue = i);
+
+            // Finish up (reset state).
+            self.IsAsynchronous = originalAsyncValue;
+            return returnValue;
+        }
+
+        private static void GetFireCountAsync<TEvent>(IEventBus self, Action action, Action<TEvent> onEvent, Action<int> fireTotal)
+        {
+            // Setup initial conditions.
+            if (self == null) throw new ArgumentNullException("self");
+            if (action == null) throw new ArgumentNullException("action", "A test action was not passed to the method");
+
+            // Internal callback.
+            EventBusTester<TEvent> eventTester = null;
+            Action unsubscribe = () => { if (eventTester != null) self.Unsubscribe<TEvent>(eventTester.OnFire);};
+            Action<TEvent> onEventInternal = e =>
+                                         {
+                                             // Finish up.
+                                             if (onEvent != null) onEvent(e);
+                                             if (self.IsAsynchronous) unsubscribe(); // Is Async: Can only test for at least one event firing.
+                                             fireTotal(eventTester.FireCount);
+                                         };
+
+            // Setup up the event.
+            eventTester = new EventBusTester<TEvent> { OnEvent = onEventInternal };
             self.Subscribe<TEvent>(eventTester.OnFire);
 
             // Invoke the action.
             action();
 
-            // Reset state.
-            self.IsAsynchronous = originalAsyncValue;
-            self.Unsubscribe<TEvent>(eventTester.OnFire);
-
             // Finish up.
-            return eventTester.FireCount;
+            if (!self.IsAsynchronous) unsubscribe(); // Not async : Everything should be complete by now.
         }
 
         public class EventBusTester<TEvent>

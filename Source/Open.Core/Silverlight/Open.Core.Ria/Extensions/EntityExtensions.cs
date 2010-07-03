@@ -9,6 +9,7 @@ namespace Open.Core.Ria
 {
     public static partial class EntityExtensions
     {
+        #region Methods : Validation
         /// <summary>Adds a validation-error to the given entity.</summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="entity">The entity to add to.</param>
@@ -95,7 +96,22 @@ namespace Open.Core.Ria
             // Check if any errors have been assigned to the property.
             var propertyName = property.GetPropertyName();
             return entity.ValidationErrors.FirstOrDefault(m => m.MemberNames.Contains(propertyName)) != null;
+        }        
+        #endregion
+
+        #region Methods : Collection
+        /// <summary>Removes all items within the entity set.</summary>
+        /// <typeparam name="T">The type of entity.</typeparam>
+        /// <param name="collection">The collection to clear.</param>
+        public static void RemoveAll<T>(this EntitySet<T> collection) where T : Entity
+        {
+            if (collection == null) throw new ArgumentNullException("collection");
+            foreach (var entity in collection.ToArray())
+            {
+                collection.Remove(entity);
+            }
         }
+        #endregion
     }
 }
  

@@ -70,7 +70,7 @@
     <Compile Include="Controls\AutoGrid\AutoColumnDefinition.cs" />
     <Compile Include="Controls\AutoGrid\AutoGrid.cs" />
     <Compile Include="Controls\Buttons\Base Classes\VisualButton.cs" />
-    <Compile Include="Controls\Buttons\IButton Implementation\ButtonModel.cs" />
+    <Compile Include="Controls\Buttons\IButton %28Implementation%29\ButtonModel.cs" />
     <Compile Include="Controls\Buttons\ImageButton\ImageButton.cs" />
     <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\ArrowPointerButtonBase.cs" />
     <Compile Include="Controls\Buttons\ShapeButton\ArrowButtons\RoundedPointerButton.cs" />
@@ -215,6 +215,8 @@
     <Compile Include="Controls\PostIt.xaml.cs">
       <DependentUpon>PostIt.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Primitive\Background\BackgroundModel.cs" />
+    <Compile Include="Controls\Primitive\BorderModel.cs" />
     <Compile Include="Controls\ProgressBar\ProgressBarFlat.cs" />
     <Compile Include="Controls\Prompts\PromptButtons.xaml.cs">
       <DependentUpon>PromptButtons.xaml</DependentUpon>

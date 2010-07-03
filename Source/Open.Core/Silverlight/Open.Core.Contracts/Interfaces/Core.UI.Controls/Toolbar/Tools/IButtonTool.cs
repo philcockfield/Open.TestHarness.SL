@@ -26,11 +26,8 @@ using System.Windows.Controls;
 namespace Open.Core.UI.Controls
 {
     /// <summary>A ToolBar tool which behaves like a button.</summary>
-    public interface IButtonTool : ITool
+    public interface IButtonTool : ITool, IClickable
     {
-        /// <summary>Fires when tool is clicked.</summary>
-        event EventHandler Clicked;
-
         /// <summary>Gets or sets the orientation of the label relative to the icon.</summary>
         Orientation Orientation { get; set; }
 
@@ -99,9 +96,6 @@ namespace Open.Core.UI.Controls
         /// <param name="defaultExtension">Gets or sets the default file name extension applied to files that are saved with the SaveFileDialog.</param>
         /// <param name="dialogAccepted">Invoked after the dialog is accepted (OK).</param>
         IButtonTool RegisterAsFileSaveDialog(string filter = null, int filterIndex = 1, string defaultExtension = null, Action<ISaveFileDialog> dialogAccepted = null);
-
-        /// <summary>Simulates a click of the button (used internally and for testing).</summary>
-        void Click();
     }
 
     /// <summary>The various types of button behavior a ButtonTool can express.</summary>

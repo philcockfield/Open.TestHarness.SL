@@ -230,6 +230,55 @@ namespace Open.Core.Common.Test.Collection
             Should.Throw<NotSupportedException>(collectionA.Clear);
         }
 
+        [TestMethod]
+        public void ShouldNotAllowClearingByDefault()
+        {
+            var collectionA = new ObservableCollection<Model> { new Model(), new Model(), new Model() };
+            var wrapper = new ObservableCollectionWrapper<Model, ModelWrapper>(collectionA, item => new ModelWrapper(item));
+            wrapper.AllowClearing.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldAllowClearing()
+        {
+            var collectionA = new ObservableCollection<Model> { new Model(), new Model(), new Model() };
+            var wrapper = new ObservableCollectionWrapper<Model, ModelWrapper>(collectionA, item => new ModelWrapper(item));
+            wrapper.Count.ShouldBe(3);
+
+            wrapper.AllowClearing = true;
+            collectionA.Clear();
+            wrapper.Count.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldWorkNormallyAfterClearing()
+        {
+            var collectionA = new ObservableCollection<Model> { new Model(), new Model(), new Model() };
+            var wrapper = new ObservableCollectionWrapper<Model, ModelWrapper>(collectionA, item => new ModelWrapper(item));
+            wrapper.AllowClearing = true;
+            collectionA.Clear();
+
+            // ---
+
+            var item1 = new Model();
+            var item2 = new Model();
+
+            collectionA.Add(item1);
+            wrapper.Count.ShouldBe(1);
+            wrapper[0].Source.ShouldBe(item1);
+            wrapper.ContainsWrapper(item1).ShouldBe(true);
+
+            collectionA.Add(item2);
+            wrapper.Count.ShouldBe(2);
+            wrapper[1].Source.ShouldBe(item2);
+            wrapper.ContainsWrapper(item2).ShouldBe(true);
+
+            collectionA.Remove(item1);
+            wrapper.Count.ShouldBe(1);
+            wrapper[0].Source.ShouldBe(item2);
+            wrapper.ContainsWrapper(item2).ShouldBe(true);
+        }
+
 
         [TestMethod]
         public void ShouldBeDisposable()

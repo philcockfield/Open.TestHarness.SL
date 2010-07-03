@@ -61,12 +61,11 @@ namespace Open.Core.Common.Test.Attributes
         }
 
         [TestMethod]
-        public void ShouldBeManualSizeByDefault()
+        public void ShouldBeDefaultSizeByDefault()
         {
             var mock = new Mock();
-            mock.ViewTestAttribute1.SizeMode.ShouldBe(TestControlSize.Manual);
+            mock.ViewTestAttribute1.SizeMode.ShouldBe(TestControlSize.Default);
         }
-
 
 
         [ViewTestClass]

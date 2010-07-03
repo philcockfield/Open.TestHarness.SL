@@ -84,7 +84,7 @@ namespace Open.Core.UI.Controls
             if (IsEnabled && isMouseOver && wasMouseDown)
             {
                 if (Model.IsToggleButton) Model.IsPressed = !Model.IsPressed;
-                Model.Click();
+                Model.InvokeClick();
             }
         }
         #endregion

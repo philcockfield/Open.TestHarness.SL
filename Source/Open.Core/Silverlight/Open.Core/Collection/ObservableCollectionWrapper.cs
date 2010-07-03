@@ -94,7 +94,7 @@ namespace Open.Core.Common.Collection
             if (isDisposing)
             {
                 // Dispose of managed resources.
-                foreach (var item in this) DisposeOfItem(item);
+                foreach (var wrapper in this) DisposeOfItem(wrapper);
             }
 
             // Finish up.
@@ -120,7 +120,14 @@ namespace Open.Core.Common.Collection
                     AddWrapperItem((TSource)e.NewItems[0], e.NewStartingIndex);
                     break;
 
-                case NotifyCollectionChangedAction.Reset: throw new NotSupportedException("Use the 'RemoveAll' extension method to clear the collection.");
+                case NotifyCollectionChangedAction.Reset:
+                    if (!AllowClearing)
+                    {
+                        throw new NotSupportedException("Use the 'RemoveAll' extension method to clear the collection.");
+                    }
+                    ClearInternal();
+                    break;
+                    
                 default: throw new ArgumentOutOfRangeException(e.ToString());
             }
         }
@@ -147,6 +154,9 @@ namespace Open.Core.Common.Collection
 
         /// <summary>Gets whether the controller has been disposed.</summary>
         public bool IsDisposed { get; private set; }
+
+        /// <summary>Gets or sets whether the Clear method can be called on the source collection (if not allowed use the RemoveAll).</summary>
+        public bool AllowClearing { get; set; }
         #endregion
 
         #region Methods
@@ -209,6 +219,12 @@ namespace Open.Core.Common.Collection
         private static void DisposeOfItem(object item)
         {
             if (item is IDisposable) ((IDisposable)item).Dispose();
+        }
+
+        private void ClearInternal()
+        {
+            Clear();
+            mapping.Clear();
         }
         #endregion
     }
