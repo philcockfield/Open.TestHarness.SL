@@ -207,6 +207,13 @@ namespace Open.Core.Common
             return builder.ToString();
         }
 
+
+        /// <summary>Converts a byte array to a HEX string.</summary>
+        /// <param name="byteArray">The array top convert.</param>
+        public static string ToHexString(this byte[] byteArray)
+        {
+            return string.Join(string.Empty, byteArray.Select(b => b.ToString("X")).ToArray());
+        } 
         #endregion
 
         #region String - Null Strings

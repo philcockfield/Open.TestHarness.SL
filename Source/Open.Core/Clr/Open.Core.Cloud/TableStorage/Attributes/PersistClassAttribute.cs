@@ -20,11 +20,13 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using Open.Core.Common;
+using System;
 
 namespace Open.Core.Cloud.TableStorage
 {
-    public class TableModelBase : ModelBase
+    /// <summary>Declares a class to be persisted to table-storage.</summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class PersistClassAttribute : Attribute
     {
     }
 }

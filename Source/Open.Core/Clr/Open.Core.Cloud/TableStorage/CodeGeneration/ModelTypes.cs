@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Open.Core.Cloud.TableStorage.CodeGeneration
 {
@@ -20,14 +18,20 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
 
         #region Methods
         /// <summary>Adds a model type to include in code generation.</summary>
-        /// <typeparam name="TModel">The type of the model</typeparam>
-        public void Add<TModel>() where TModel : TableModelBase
+        /// <typeparam name="TModel">The type of the model (must be decorated with the [PersistClass] attribute.)</typeparam>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if 'TModel' is not decorated with the [PersistClass] attribute.</exception>
+        public void Add<TModel>()
         {
             Add(typeof(TModel));
         }
         private void Add(Type type)
         {
-            if (!types.Contains(type)) types.Add(type);
+            if (types.Contains(type)) return;
+            if (type.GetPersistAttribute() == null) throw new ArgumentOutOfRangeException(
+                                string.Format("Cannot add type '{0}' because it is not decorated with [{1}].",
+                                type.Name, 
+                                typeof(PersistClassAttribute).Name));
+            types.Add(type);
         }
 
         /// <summary>Adds all TableModelBase types from the given assembly.</summary>
@@ -42,8 +46,8 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         }
 
         /// <summary>Removes a model type from code generation.</summary>
-        /// <typeparam name="TModel">The type of the model</typeparam>
-        public void Remove<TModel>() where TModel : TableModelBase
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if 'TModel' is not decorated with the [PersistClass] attribute.</exception>
+        public void Remove<TModel>()
         {
             var type = typeof(TModel);
             types.Remove(type);

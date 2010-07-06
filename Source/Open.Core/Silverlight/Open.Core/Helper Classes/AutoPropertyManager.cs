@@ -15,6 +15,58 @@ namespace Open.Core.Common
         public Object Value { get; set; }
     }
 
+    /// <summary>Manages the storage of auto-properties.</summary>
+    /// <typeparam name="T">The type of the model that is having it's properties managed.</typeparam>
+    public class AutoPropertyManager<T> : AutoPropertyManager
+    {
+        /// <summary>Gets the value for the specified property from the auto-property backing store.</summary>
+        /// <typeparam name="TResult">The type of the property return value.</typeparam>
+        /// <param name="property">An expression representing the property (for example 'n => n.PropertyName').</param>
+        /// <param name="defaultValue">The default value to use if the property has not already been stored.</param>
+        public TResult GetValue<TResult>(Expression<Func<T, object>> property, TResult defaultValue = default(TResult))
+        {
+            return base.GetValue(property, defaultValue);
+        }
+
+        /// <summary>
+        ///    Sets the value for the specified property, storing it in the auto-property backing store and
+        ///    firing the corresponding 'PropertyChanged' event(s) as required.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the property return value.</typeparam>
+        /// <param name="property">An expression representing the property (for example 'n => n.PropertyName').</param>
+        /// <param name="value">The new value of the property.</param>
+        /// <param name="fireAlso">
+        ///    A collection of expressions that represent the properties 
+        ///    that have also changed as a result of this change and should
+        ///    therefore also have their PropertyChanged events fired.
+        ///    (for example 'n => n.PropertyName'.)
+        /// </param>
+        /// <returns>True if the given value was different from the current value (and therefore events were fired), otherwise False.</returns>
+        public bool SetValue<TResult>(Expression<Func<T, object>> property, TResult value, params Expression<Func<T, object>>[] fireAlso)
+        {
+            return base.SetValue(property, value, fireAlso);
+        }
+
+        /// <summary>
+        ///    Sets the value for the specified property, storing it in the auto-property backing store and
+        ///    firing the corresponding 'PropertyChanged' event(s) as required.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the property return value.</typeparam>
+        /// <param name="property">An expression representing the property (for example 'n => n.PropertyName').</param>
+        /// <param name="defaultValue">The default value to use if the property has not already been stored.</param>
+        /// <param name="value">The new value of the property.</param>
+        /// <param name="fireAlso">
+        ///    A collection of expressions that represent the properties 
+        ///    that have also changed as a result of this change and should
+        ///    therefore also have their PropertyChanged events fired.
+        ///    (for example 'n => n.PropertyName'.)
+        /// </param>
+        /// <returns>True if the given value was different from the current value (and therefore events were fired), otherwise False.</returns>
+        public bool SetValue<TResult>(Expression<Func<T, object>> property, TResult value, TResult defaultValue, params Expression<Func<T, object>>[] fireAlso)
+        {
+            return base.SetValue(property, value, defaultValue, fireAlso);
+        }
+    }
 
     /// <summary>Manages the storage of auto-properties.</summary>
     public class AutoPropertyManager : DisposableBase

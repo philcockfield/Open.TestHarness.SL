@@ -44,17 +44,18 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
 
         #region Properties
         /// <summary>Gets or sets the type of the model.</summary>
-        /// <exception cref="ArgumentOutOfRangeException">If the type is not derived from [TableModelBase].</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the type is not decorated with the [PersistClass] attribute.</exception>
         public Type ModelType
         {
             get { return modelType; }
             set
             {
-                if (value != null && !value.IsA<TableModelBase>())
+                if (value != null && value.GetPersistAttribute() == null)
                 {
                     throw new ArgumentOutOfRangeException(
-                        "value", 
-                        string.Format("The type '{0}' does not derive for '{1}'.", value.Name, typeof(TableModelBase).Name));
+                                                    string.Format("The type '{0}' is not decorated with [{1}].",
+                                                    value.Name,
+                                                    typeof(PersistClassAttribute).Name));
                 }
                 modelType = value;
             }
@@ -105,7 +106,7 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             if (ModelType == null) return new List<PropertyInfo>();
             return modelType
                         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Where(m => m.HasAttribute<PersistAttribute>());
+                        .Where(m => m.HasAttribute<PersistPropertyAttribute>());
         }
         #endregion
     }

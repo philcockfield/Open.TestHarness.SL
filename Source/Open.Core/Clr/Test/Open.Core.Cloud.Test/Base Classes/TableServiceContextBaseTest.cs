@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.StorageClient;
 using Open.Core.Cloud.TableStorage;
@@ -73,6 +70,7 @@ namespace Open.Core.Cloud.Test.Base_Classes
         private class MockContext : TableServiceContextBase<TestEntity>
         {
         }
+
 
         private class TestEntity : TableServiceEntity
         {

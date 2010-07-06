@@ -59,6 +59,35 @@ namespace Open.Core.Cloud.TableStorage
             types.ShouldContain(typeof(MockEntityA));
             types.ShouldContain(typeof(MockEntityB));
             types.ShouldContain(typeof(NoPersistableValues));
+            types.ShouldNotContain(typeof(NonPersistableClass));
+        }
+
+        [TestMethod]
+        public void ShouldGetPersistClassAttribute()
+        {
+            typeof(MockEntityA).GetPersistAttribute().ShouldBeInstanceOfType<PersistClassAttribute>();
+        }
+
+        [TestMethod]
+        public void ShouldNotGetPersistClassAttribute()
+        {
+            typeof(NonPersistableClass).GetPersistAttribute().ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldGetPersistPropertyAttribute()
+        {
+            var property = typeof (MockEntityA).GetProperty("Text");
+            property.ShouldNotBe(null);
+            property.GetPersistAttribute().ShouldBeInstanceOfType<PersistPropertyAttribute>();
+        }
+
+        [TestMethod]
+        public void ShouldNotGetPersistPropertyAttribute()
+        {
+            var property = typeof(MockEntityA).GetProperty("NotPersisted");
+            property.ShouldNotBe(null);
+            property.GetPersistAttribute().ShouldBe(null);
         }
         #endregion
     }

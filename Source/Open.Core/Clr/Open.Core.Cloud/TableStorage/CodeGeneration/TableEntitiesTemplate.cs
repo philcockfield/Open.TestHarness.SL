@@ -99,10 +99,10 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             #line default
             #line hidden
             this.Write(")\r\n// -----------------------------------------------------------------------\r\nus" +
-                    "ing System;\r\nusing Open.Core.Cloud.TableStorage;\r\n\r\n/// <summary>Backing table e" +
-                    "ntities for Table-Storage-Models.</summary>\r\n\r\n");
+                    "ing System;\r\nusing System.Data.Services.Common;\r\nusing Open.Core.Cloud.TableStor" +
+                    "age;\r\n\r\n");
             
-            #line 13 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
+            #line 12 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
  foreach (var item in GetGenerators())
 { 
 
@@ -111,21 +111,21 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             #line hidden
             this.Write("#region Model: ");
             
-            #line 16 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
+            #line 15 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.ModelType.Name));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 17 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
+            #line 16 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.Code));
             
             #line default
             #line hidden
             this.Write("\r\n#endregion\r\n\r\n");
             
-            #line 20 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
+            #line 19 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntitiesTemplate.tt"
  } 
             
             #line default

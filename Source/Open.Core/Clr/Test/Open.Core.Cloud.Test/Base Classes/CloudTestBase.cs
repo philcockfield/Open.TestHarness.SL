@@ -11,14 +11,16 @@ namespace Open.Core.Cloud.Test
     public abstract class CloudTestBase
     {
         #region Head
-        private static bool isMefInitialized;
+        private static bool IsMefInitialized;
+
+        // Example connection string: "AccountName=azurestorage;AccountKey=base64key;DefaultEndpointsProtocol=https"
 
         protected CloudTestBase()
         {
-            if (!isMefInitialized)
+            if (!IsMefInitialized)
             {
-                AssemblyCompositionInitializer.RegisterAssembly<TableModelBase>();
-                isMefInitialized = true;
+                AssemblyCompositionInitializer.RegisterAssembly<PersistClassAttribute>();
+                IsMefInitialized = true;
             }
 
             AssemblyCompositionInitializer.SatisfyImports(this);

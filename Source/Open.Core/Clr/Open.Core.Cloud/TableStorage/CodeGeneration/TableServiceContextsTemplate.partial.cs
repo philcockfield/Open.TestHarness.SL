@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Open.Core.Cloud.TableStorage.CodeGeneration
 {
-    /// <summary>Generates code for a collection TableService contexts for reading and writing entities to Table Storage.</summary>
+    /// <summary>Generates code for a collection of TableService contexts for reading and writing entities to Table Storage.</summary>
     public partial class TableServiceContextsTemplate
     {
         #region Head

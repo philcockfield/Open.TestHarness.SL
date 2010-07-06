@@ -3,26 +3,34 @@ using Open.Core.Cloud.TableStorage;
 
 namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 {
-    public class MockEntityA : TableModelBase
+    [PersistClass]
+    public class MockEntityA
     {
-        [Persist]
+        [PersistProperty]
         public string Text { get; set; }
 
-        [Persist]
+        [PersistProperty]
         public int Number { get; private set; }
 
         public string NotPersisted { get; set; }
     }
 
-    public class MockEntityB : TableModelBase
+    [PersistClass]
+    public class MockEntityB
     {
-        [Persist]
+        [PersistProperty]
         public DateTime Date { get; set; }
     }
 
-    public class NoPersistableValues : TableModelBase
+    [PersistClass]
+    public class NoPersistableValues
     {
         public string Text { get; set; }
     }
 
+    public class NonPersistableClass
+    {
+        [PersistProperty]
+        public string Text { get; set; }
+    }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.TableStorage.CodeGeneration;
@@ -10,7 +8,7 @@ using Open.Core.Common.Testing;
 namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 {
     [TestClass]
-    public class ModelTypesTest
+    public class ModelTypesTest : CloudTestBase
     {
         #region Head
         private ModelTypes modelTypes;
@@ -74,7 +72,12 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
                 modelTypes.Types.Contains(type).ShouldBe(true);
             }
         }
-        #endregion
 
+        [TestMethod]
+        public void ShouldThrowIfTypeNotDecoratedWithPersistClassAttribute()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => modelTypes.Add<NonPersistableClass>());
+        }
+        #endregion
     }
 }

@@ -25,12 +25,28 @@ namespace Open.Core.Cloud.TableStorage
             return settings.GetStorageAccount().CreateCloudTableClient();
         }
 
-        /// <summary>Retrieves all the TableModelBase types within the given assembly.</summary>
+        /// <summary>Retrieves all the types decorated with the [PersistClass] attribute within the given assembly.</summary>
         /// <param name="assembly">The assembly to look within.</param>
         public static IEnumerable<Type> GetTableModelTypes(this Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
-            return assembly.GetTypes().Where(m => m.IsA<TableModelBase>());
+            return assembly.GetTypes().Where(m => m.GetPersistAttribute() != null);
+        }
+
+        /// <summary>Retrieves the [PersistClass] attribute from the given type.</summary>
+        /// <param name="type">The type to examine.</param>
+        /// <returns>The attribute, or null if the class is not decorated with the [PersistClass] attribute.</returns>
+        public static PersistClassAttribute GetPersistAttribute(this Type type)
+        {
+            return type.GetCustomAttributes(typeof(PersistClassAttribute), true).FirstOrDefault() as PersistClassAttribute;
+        }
+
+        /// <summary>Retrieves the [PersistProperty] attribute from the given property.</summary>
+        /// <param name="property">The property to examine.</param>
+        /// <returns>The attribute, or null if the property is not decorated with the [PersistProperty] attribute.</returns>
+        public static PersistPropertyAttribute GetPersistAttribute(this PropertyInfo property)
+        {
+            return property.GetCustomAttributes(typeof(PersistPropertyAttribute), true).FirstOrDefault() as PersistPropertyAttribute;
         }
     }
 }

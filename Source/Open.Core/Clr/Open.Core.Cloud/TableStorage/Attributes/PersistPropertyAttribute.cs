@@ -26,7 +26,18 @@ namespace Open.Core.Cloud.TableStorage
 {
     /// <summary>Declares a property to be persisted to table-storage.</summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class PersistAttribute : Attribute
+    public class PersistPropertyAttribute : Attribute
     {
+        /// <summary>Gets or sets whether the property maps to the RowKey.</summary>
+        public bool IsRowKey { get; set; }
+
+        /// <summary>Gets or sets the name of the property on the backing entity to map to.</summary>
+        public string MapTo { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the IConverter to use to convert the value.
+        ///     (On the IConverter, TSource is the model property's type, TTarget is the backing-entity property's type.)
+        /// </summary>
+        public Type Converter { get; set; }
     }
 }

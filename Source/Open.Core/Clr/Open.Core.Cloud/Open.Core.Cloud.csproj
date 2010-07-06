@@ -46,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudSettings.cs" />
-    <Compile Include="TableStorage\Attributes\PersistAttribute.cs" />
+    <Compile Include="TableStorage\Attributes\PersistClassAttribute.cs" />
+    <Compile Include="TableStorage\Attributes\PersistPropertyAttribute.cs" />
     <Compile Include="TableStorage\Base Classes\TableServiceContextBase.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableEntitiesTemplate.cs">
       <AutoGen>True</AutoGen>
@@ -67,9 +68,14 @@
       <DependentUpon>TableServiceContextsTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="TableStorage\CodeGeneration\TableServiceContextsTemplate.partial.cs" />
+    <Compile Include="TableStorage\Converters\EnumToIntConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableStorage\PropertyManager\PropertyMapCache.cs" />
+    <Compile Include="TableStorage\PropertyManager\PropertyMetadata.cs" />
+    <Compile Include="TableStorage\PropertyManager\TableEntityPropertyManager.cs" />
     <Compile Include="TableStorage\TableExtensions.cs" />
     <Compile Include="TableStorage\TableStorageConstants.cs" />
-    <Compile Include="TableStorage\Base Classes\TableModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

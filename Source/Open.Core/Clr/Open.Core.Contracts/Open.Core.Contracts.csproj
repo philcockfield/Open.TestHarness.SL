@@ -59,6 +59,9 @@
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ICallback.cs">
       <Link>Interfaces\Core\ICallback.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IConverter.cs">
+      <Link>Interfaces\Core\IConverter.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IDomainCredential.cs">
       <Link>Interfaces\Core\IDomainCredential.cs</Link>
     </Compile>

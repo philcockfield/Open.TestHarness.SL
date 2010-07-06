@@ -20,30 +20,17 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.ComponentModel.Composition;
-using Open.Core.Composite;
-
-namespace Open.Core.Common
+namespace Open.Core
 {
-    // Silverlight only.
-    public partial class NotifyPropertyChangedBase
+    /// <summary>Converts a source value to a target value (and vice versa).</summary>
+    public interface IConverter
     {
-        #region Head
-        private static NotifyPropertyChangedBaseImporter Importer;
-        #endregion
+        /// <summary>Converts the source value to the target value.</summary>
+        /// <param name="source">The source value to convert.</param>
+        object ToTarget(object source);
 
-        #region Properties
-        /// <summary>Gets the shared EventBus (singleton).</summary>
-        protected IEventBus EventBus { get { return GetImporter().EventBus; } }
-        #endregion
-
-        #region Internal
-        private static NotifyPropertyChangedBaseImporter GetImporter() { return Importer ?? (Importer = new NotifyPropertyChangedBaseImporter()); }
-        #endregion
-
-        public class NotifyPropertyChangedBaseImporter : ImporterBase
-        {
-            [Import] public IEventBus EventBus { get; set; }
-        }
+        /// <summary>Converts the target value to the source value.</summary>
+        /// <param name="target">The target value to convert.</param>
+        object ToSource(object target);
     }
 }

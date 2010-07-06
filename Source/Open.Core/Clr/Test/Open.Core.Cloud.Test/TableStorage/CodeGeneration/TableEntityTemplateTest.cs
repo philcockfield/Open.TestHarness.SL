@@ -29,9 +29,9 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         }
 
         [TestMethod]
-        public void ShouldThrowIfModelTypeIsNotATableStorageModelBase()
+        public void ShouldThrowIfModelTypeIsNotDecoratedWithPersistClassAttribute()
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => generator.ModelType = typeof(string));
+            Should.Throw<ArgumentOutOfRangeException>(() => generator.ModelType = typeof(NonPersistableClass));
         }
 
         [TestMethod]
