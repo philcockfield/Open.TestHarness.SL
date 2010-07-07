@@ -2,11 +2,12 @@
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using Moq;
+using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.Test;
 using Open.Core.Cloud.Test.TableStorage.CodeGeneration;
 using Open.Core.Common.Testing;
 
-namespace Open.Core.Cloud.TableStorage
+namespace Open.Core.Cloud.Test.TableStorage
 {
     [TestClass]
     public class TableExtensionsTest : CloudTestBase

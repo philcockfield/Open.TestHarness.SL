@@ -62,12 +62,6 @@
     </Compile>
     <Compile Include="TableStorage\CodeGeneration\TableEntityTemplate.partial.cs" />
     <Compile Include="TableStorage\CodeGeneration\ModelTypes.cs" />
-    <Compile Include="TableStorage\CodeGeneration\TableServiceContextsTemplate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TableServiceContextsTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TableStorage\CodeGeneration\TableServiceContextsTemplate.partial.cs" />
     <Compile Include="TableStorage\Converters\EnumToIntConverter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -97,10 +91,6 @@
     <None Include="TableStorage\CodeGeneration\TableEntityTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TableEntityTemplate.cs</LastGenOutput>
-    </None>
-    <None Include="TableStorage\CodeGeneration\TableServiceContextsTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TableServiceContextsTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

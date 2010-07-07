@@ -144,33 +144,55 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             
             #line default
             #line hidden
-            this.Write("\r\n    {\r\n        // Constructors.\r\n        public ");
+            this.Write("\r\n    {\r\n        // Constructors.\r\n\t\tpublic ");
             
             #line 23 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.ClassName));
             
             #line default
             #line hidden
-            this.Write("() : this(Guid.NewGuid().ToString(), String.Empty) { }\r\n        public ");
+            this.Write("() : this(String.Empty, Guid.NewGuid().ToString()) { }\r\n\t\tpublic ");
             
             #line 24 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.ClassName));
             
             #line default
             #line hidden
+            this.Write("(string partitionKey) : this(partitionKey, Guid.NewGuid().ToString()) { Partition" +
+                    "Key = partitionKey; }\r\n        public ");
+            
+            #line 25 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.ClassName));
+            
+            #line default
+            #line hidden
             this.Write(@"(string partitionKey, string rowKey)
         {
+            if (partitionKey == null) throw new ArgumentNullException(""partitionKey"");
+            if (rowKey == null) throw new ArgumentNullException(""rowKey"");
             PartitionKey = partitionKey;
             RowKey = rowKey;
         }
 
+        // Fields
+        private string partitionKey;
+        private string rowKey;
+
         // Properties
-        public string PartitionKey { get; set; }
-        public string RowKey { get; set; }
+        public string PartitionKey
+        {
+            get { return string.IsNullOrEmpty(partitionKey) ? string.Empty : partitionKey; }
+            set { partitionKey = value; }
+        }
+        public string RowKey
+        {
+            get { return string.IsNullOrEmpty(rowKey) ? string.Empty : rowKey; }
+            set { rowKey = value; }
+        }
         public DateTime Timestamp { get; set; }
 ");
             
-            #line 34 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 49 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
  foreach (var propertyInfo in Properties)
 { 
 
@@ -179,35 +201,35 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             #line hidden
             this.Write("        public ");
             
-            #line 37 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 52 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyInfo.ToString()));
             
             #line default
             #line hidden
             this.Write(" { get; set; }\r\n");
             
-            #line 38 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 53 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("    }\r\n\r\n    /// <summary>An entity used to persist values on the \'");
             
-            #line 41 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 56 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.ModelType.Name));
             
             #line default
             #line hidden
             this.Write("\' model to TableStorage.</summary>\r\n    public partial interface ");
             
-            #line 42 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 57 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.InterfaceName));
             
             #line default
             #line hidden
             this.Write(" : ITableServiceEntity\r\n    {\r\n");
             
-            #line 44 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 59 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
  foreach (var propertyInfo in Properties)
 { 
 
@@ -216,19 +238,41 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             #line hidden
             this.Write("        ");
             
-            #line 47 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 62 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyInfo.ToString()));
             
             #line default
             #line hidden
             this.Write(" { get; set; }\r\n");
             
-            #line 48 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            #line 63 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("    }\r\n}");
+            this.Write("    }\r\n\r\n    /// <summary>The table-service-context used to access the backing en" +
+                    "tity for the \'");
+            
+            #line 66 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ModelType.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\' model.</summary>\r\n    public partial class ");
+            
+            #line 67 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ContextName));
+            
+            #line default
+            #line hidden
+            this.Write(" : TableServiceContextBase<");
+            
+            #line 67 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ClassName));
+            
+            #line default
+            #line hidden
+            this.Write(">\r\n    {\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

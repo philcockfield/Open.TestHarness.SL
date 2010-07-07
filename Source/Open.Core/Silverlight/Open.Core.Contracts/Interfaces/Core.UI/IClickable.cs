@@ -9,7 +9,8 @@ namespace Open.Core.UI
         event EventHandler Click;
 
         /// <summary>Programaticaly invokes a click.</summary>
+        /// <param name="force">Flag indicating if the click action should be forced (even if the button is disabled).</param>
         /// <remarks>Typically used for programmatic testing.</remarks>
-        void InvokeClick();
+        void InvokeClick(bool force = false);
     }
 }

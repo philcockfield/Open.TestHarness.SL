@@ -75,6 +75,9 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
 
         /// <summary>Gets the collection of properties that require persisting.</summary>
         public IEnumerable<PropertyInfo> Properties { get { return properties ?? (properties = GetProperties()); } }
+
+        /// <summary>Gets the name of the entity's TableServiceContext.</summary>
+        public string ContextName { get { return GetContextName(ModelType); } }
         #endregion
 
         #region Methods
@@ -98,6 +101,13 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         {
             return modelType == null ? null : "I" + GetClassName(modelType);
         }
+
+        /// <summary>Retrieves the context name for the generated entity.</summary>
+        /// <param name="modelType">The type of the model.</param>
+        public static string GetContextName(Type modelType)
+        {
+            return modelType == null ? null : string.Format("{0}Context", modelType.Name);
+        }
         #endregion
 
         #region Internal
@@ -105,8 +115,8 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         {
             if (ModelType == null) return new List<PropertyInfo>();
             return modelType
-                        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Where(m => m.HasAttribute<PersistPropertyAttribute>());
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(m => m.HasAttribute<PersistPropertyAttribute>());
         }
         #endregion
     }

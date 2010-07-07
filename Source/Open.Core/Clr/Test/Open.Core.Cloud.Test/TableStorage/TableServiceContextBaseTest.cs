@@ -3,9 +3,10 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.StorageClient;
 using Open.Core.Cloud.TableStorage;
+using Open.Core.Cloud.Test;
 using Open.Core.Common.Testing;
 
-namespace Open.Core.Cloud.Test.Base_Classes
+namespace Open.Core.Cloud.Test.TableStorage
 {
     [TestClass]
     public class TableServiceContextBaseTest : CloudTestBase
@@ -17,7 +18,7 @@ namespace Open.Core.Cloud.Test.Base_Classes
         [TestInitialize]
         public void TestSetup()
         {
-            tableName = MockContext.GetTableName<TestEntity>();
+            tableName = TestEntityContext.GetTableName<TestEntity>();
             client = CloudSettings.CreateTableClient();
         }
 
@@ -37,9 +38,9 @@ namespace Open.Core.Cloud.Test.Base_Classes
         [TestMethod]
         public void ShouldHaveTableName()
         {
-            var context = new MockContext();
+            var context = new TestEntityContext();
             context.TableName.ShouldBe("TestEntity");
-            MockContext.GetTableName<TestEntity>().ShouldBe(context.TableName);
+            TestEntityContext.GetTableName<TestEntity>().ShouldBe(context.TableName);
         }
 
         [TestMethod]
@@ -47,7 +48,7 @@ namespace Open.Core.Cloud.Test.Base_Classes
         {
             DeleteTable();
 
-            new MockContext();
+            new TestEntityContext();
             var tables = client.ListTables().ToList();
             tables.ShouldContain(tableName);
         }
@@ -57,7 +58,7 @@ namespace Open.Core.Cloud.Test.Base_Classes
         {
             DeleteTable();
 
-            var context = new MockContext();
+            var context = new TestEntityContext();
             var entity = new TestEntity { Text = "Foo.ShouldAdd" };
             context.AddObject(entity);
             context.SaveChanges();
@@ -66,12 +67,8 @@ namespace Open.Core.Cloud.Test.Base_Classes
         }
         #endregion
 
-        #region Stubs
-        private class MockContext : TableServiceContextBase<TestEntity>
-        {
-        }
-
-
+        #region Mocks
+        private class TestEntityContext : TableServiceContextBase<TestEntity> { }
         private class TestEntity : TableServiceEntity
         {
             public TestEntity() : base(Guid.NewGuid().ToString(), String.Empty) { }

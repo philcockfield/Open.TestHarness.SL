@@ -122,24 +122,24 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
             model.EnumConversion.ShouldBe(MyEnum.Two);
         }
 
-//        [TestMethod]
-//        public void ShouldSaveChangesToTable()
-//        {
-//            // Setup initial conditions.
-//            var tableName = MyTableEntityContext.GetTableName<MyTableEntity>();
-//            var client = CloudSettings.CreateTableClient();
+        //[TestMethod]
+        //public void ShouldSaveChangesToTable()
+        //{
+        //    // Setup initial conditions.
+        //    var tableName = MyTableEntityContext.GetTableName<MyTableEntity>();
+        //    var client = CloudSettings.CreateTableClient();
 
-//            model.Text = "FooBar";
-//            model.EnumValue = MyEnum.Two;
-//            model.Number = 42;
+        //    model.Text = "FooBar";
+        //    model.EnumValue = MyEnum.Two;
+        //    model.Number = 42;
 
-//            var context = new MyTableEntityContext();
-//            context.AddObject(backingEntity);
-//            context.SaveChanges();
+        //    var context = new MyTableEntityContext();
+        //    context.AddObject(backingEntity);
+        //    context.SaveChanges();
 
-//            // Finish up.
-////            client.DeleteTableIfExist(tableName);
-//        }
+        //    // Finish up.
+        //    //            client.DeleteTableIfExist(tableName);
+        //}
         #endregion
     }
 }

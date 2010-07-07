@@ -69,6 +69,12 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         }
 
         [TestMethod]
+        public void ShouldHaveContextName()
+        {
+            TableEntityTemplate.GetContextName(typeof(MockEntityA)).ShouldBe("MockEntityAContext");
+        }
+
+        [TestMethod]
         public void ShouldEmitConstructors()
         {
             generator.ModelType = typeof(MockEntityA);
