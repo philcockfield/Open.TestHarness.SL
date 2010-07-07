@@ -158,6 +158,16 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         }
 
         [TestMethod]
+        public void ShouldNotFireEventOnClickWhenDisabledButForced()
+        {
+            var fireCount = 0;
+            tool.Click += delegate { fireCount++; };
+            tool.IsEnabled = false;
+            tool.InvokeClick(force:true);
+            fireCount.ShouldBe(1);
+        }
+
+        [TestMethod]
         public void ShouldUpdateIsPressedWhenNotToggleButton()
         {
             tool.IsToggleButton = false;

@@ -162,9 +162,10 @@ namespace Open.Core.UI.Controls
 
         #region Methods
         /// <summary>Simulates a click of the button (used internally and for testing).</summary>
-        public void InvokeClick()
+        /// <param name="force">Flag indicating if the click action should be forced (even if the button is disabled).</param>
+        public void InvokeClick(bool force = false)
         {
-            if (!IsEnabled) return;
+            if (!IsEnabled && !force) return;
             ShowDialog();
             if (Click != null) Click(this, new EventArgs());
             PublishToolEvent();

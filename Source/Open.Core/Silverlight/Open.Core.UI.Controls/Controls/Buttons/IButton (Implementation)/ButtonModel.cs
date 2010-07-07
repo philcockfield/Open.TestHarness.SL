@@ -91,9 +91,9 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Methods
-        public void InvokeClick()
+        public void InvokeClick(bool force = false)
         {
-            if (Command.CanExecute(null)) Command.Execute(null);
+            if (Command.CanExecute(null) || force) Command.Execute(null);
         }
 
         public FrameworkElement CreateView()

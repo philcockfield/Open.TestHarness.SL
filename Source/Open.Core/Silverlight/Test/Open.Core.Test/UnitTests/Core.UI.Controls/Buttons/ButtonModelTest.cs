@@ -96,6 +96,29 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.Buttons
         }
 
         [TestMethod]
+        public void ShouldNotFireClickEventViaInvokeMethodWhenDisabled()
+        {
+            var count = 0;
+            button.Click += delegate { count++; };
+
+            button.IsEnabled = false;
+            button.InvokeClick(force:false);
+            count.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldFireClickEventViaInvokeMethodWhenDisabledButForced()
+        {
+            var count = 0;
+            button.Click += delegate { count++; };
+
+            button.IsEnabled = false;
+            button.InvokeClick(force: true);
+            count.ShouldBe(1);
+        }
+
+
+        [TestMethod]
         public void ShouldNotFireClickEvent()
         {
             var count = 0;
