@@ -30,7 +30,7 @@ namespace Open.Core.Cloud.Test.TableStorage
         [TestCleanup]
         public void TestCleanup()
         {
-            DeleteTable();
+//            DeleteTable();
         }
 
         private void DeleteTable()
@@ -52,11 +52,14 @@ namespace Open.Core.Cloud.Test.TableStorage
                                  PartitionKey = "Partition1",
                                  RowKey = "1",
                                  Text = "Zazen", 
-                                 Number = 42
+                                 Number = 42,
+                                 StringArray = new[] { "One", "Two" },
                              };
 
             context.AddObject(entity);
             context.SaveChanges();
+
+//            DeleteTable();
         }
         #endregion
 
@@ -72,6 +75,7 @@ namespace Open.Core.Cloud.Test.TableStorage
 
             public string Text { get; set; }
             public int Number { get; set; }
+            public string[] StringArray { get; set; }
         }
         #endregion
     }
