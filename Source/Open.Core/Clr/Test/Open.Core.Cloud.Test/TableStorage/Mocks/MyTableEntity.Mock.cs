@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Services.Common;
+using Microsoft.WindowsAzure.StorageClient;
 using Open.Core.Cloud.TableStorage;
 
 namespace Open.Core.Cloud.Test.TableStorage.Mocks

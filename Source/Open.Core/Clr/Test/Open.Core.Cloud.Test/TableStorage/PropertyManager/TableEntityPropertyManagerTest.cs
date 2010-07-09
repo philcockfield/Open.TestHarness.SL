@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.Test.TableStorage.CodeGeneration;
+using Open.Core.Cloud.Test.TableStorage.CodeGeneration.Generated;
 using Open.Core.Cloud.Test.TableStorage.Mocks;
 using Open.Core.Common.Testing;
 
@@ -122,24 +124,31 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
             model.EnumConversion.ShouldBe(MyEnum.Two);
         }
 
-        //[TestMethod]
-        //public void ShouldSaveChangesToTable()
-        //{
-        //    // Setup initial conditions.
-        //    var tableName = MyTableEntityContext.GetTableName<MyTableEntity>();
-        //    var client = CloudSettings.CreateTableClient();
+        [TestMethod]
+        public void ShouldSaveChangesToTable()
+        {
+            var client = CloudSettings.CreateTableClient();
+            var context = new MockEntityAContext();
+            client.DeleteTableIfExist(context.TableName);
 
-        //    model.Text = "FooBar";
-        //    model.EnumValue = MyEnum.Two;
-        //    model.Number = 42;
+            // ---
 
-        //    var context = new MyTableEntityContext();
-        //    context.AddObject(backingEntity);
-        //    context.SaveChanges();
+            var entity = new MockEntityATableEntity("P1", "R1");
+            var mock = new MockEntityA(entity) {Text = "FooBar", Number = 42};
+            mock.Property.Save(context);
 
-        //    // Finish up.
-        //    //            client.DeleteTableIfExist(tableName);
-        //}
+            // ---
+
+            var query = context.CreateQuery().Where(m => m.PartitionKey == "P1" && m.RowKey == "R1");
+            query.ToList().Count.ShouldBe(1);
+
+            query = context.CreateQuery().Where(m => m.PartitionKey == "P1" && m.RowKey == "R2");
+            query.ToList().Count.ShouldBe(0);
+
+            // ---
+
+            client.DeleteTableIfExist(context.TableName);
+        }
         #endregion
     }
 }

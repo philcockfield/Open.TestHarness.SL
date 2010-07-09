@@ -256,6 +256,7 @@
     <Compile Include="Composition %28MEF%29\DirectoryCompositionInitializer.cs" />
     <Compile Include="Extensions\LinqExtensions.CLR.cs" />
     <Compile Include="Extensions\ReflectionExtensions.CLR.cs" />
+    <Compile Include="Extensions\StringExtensions.CLR.cs" />
     <Compile Include="Helper Classes\PropertyObserver.clr.cs" />
     <Compile Include="Testing\AsyncTest.cs" />
   </ItemGroup>

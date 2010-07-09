@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Microsoft.WindowsAzure.StorageClient;
 using Open.Core.Common;
 
 [assembly: InternalsVisibleTo("Open.Core.Cloud.Test.Clr")]
-
 
 namespace Open.Core.Cloud.TableStorage
 {
@@ -16,6 +16,7 @@ namespace Open.Core.Cloud.TableStorage
     public class TableEntityPropertyManager<TModel, TBackingEntity> : AutoPropertyManager<TModel> where TBackingEntity : ITableServiceEntity
     {
         #region Head
+        private static CloudTableClient cloudTableClient;
         private readonly Type modelType;
         private readonly PersistClassAttribute classAttribute;
         private PropertyMapCache<TBackingEntity> propertyCache;
@@ -51,6 +52,19 @@ namespace Open.Core.Cloud.TableStorage
         #endregion
 
         #region Methods
+        /// <summary>Saves the backing entity to the table store.</summary>
+        public void Save(TableServiceContextBase<TBackingEntity> context)
+        {
+            GetTableClient().CreateTableIfNotExist(context.TableName);
+
+            context.AddObject(BackingEntity);
+            context.SaveChanges();
+            // TODO
+        }
+
+        #endregion
+
+        #region Methods : Override
         protected override bool OnReadValue<T>(PropertyInfo modelProperty, out T value)
         {
             // Setup initial conditions.
@@ -93,6 +107,11 @@ namespace Open.Core.Cloud.TableStorage
 
             // Finish up.
             return cache;
+        }
+
+        private static CloudTableClient GetTableClient() 
+        {
+            return cloudTableClient ?? (cloudTableClient = CloudSettings.Current.CreateTableClient()); 
         }
         #endregion
     }

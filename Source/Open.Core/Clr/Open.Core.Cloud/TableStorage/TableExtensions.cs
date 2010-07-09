@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using Open.Core.Cloud.TableStorage.CodeGeneration;
 using Open.Core.Common;
 
 namespace Open.Core.Cloud.TableStorage
@@ -47,6 +48,18 @@ namespace Open.Core.Cloud.TableStorage
         public static PersistPropertyAttribute GetPersistAttribute(this PropertyInfo property)
         {
             return property.GetCustomAttributes(typeof(PersistPropertyAttribute), true).FirstOrDefault() as PersistPropertyAttribute;
+        }
+
+        /// <summary>Generates all Table Entity code for models defined with [PersistClass] in the given assembly.</summary>
+        /// <param name="assembly">The assembly containing the models.</param>
+        /// <param name="outputFolder">The folder to write to.</param>
+        /// <param name="fileName">The name of the output file.</param>
+        public static void GenerateCode(this Assembly assembly, string outputFolder, string fileName = "TableEntities.g.cs")
+        {
+            var generator = new TableEntitiesTemplate();
+            generator.ModelTypes.Add(assembly);
+            var code = generator.TransformText();
+            code.WriteToProjectFile(outputFolder, fileName);
         }
     }
 }

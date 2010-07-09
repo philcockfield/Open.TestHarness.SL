@@ -50,6 +50,13 @@ namespace Open.Core.Cloud.TableStorage
         {
             return typeof (TEntity).Name;
         }
+
+
+        /// <summary>Creates a data service query for the table-service type.</summary>
+        public DataServiceQuery<T> CreateQuery()
+        {
+            return CreateQuery<T>(TableName);
+        }
         #endregion
     }
 }

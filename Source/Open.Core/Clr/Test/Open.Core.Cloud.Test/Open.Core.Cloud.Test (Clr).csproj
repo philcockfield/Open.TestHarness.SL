@@ -61,7 +61,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableStorage\CodeGeneration\Output\g\TableEntities.g.cs" />
-    <Compile Include="TableStorage\EntitySaveTest.cs" />
+    <Compile Include="TableStorage\SimpleEntityTests.cs" />
     <Compile Include="TableStorage\TableServiceContextBaseTest.cs" />
     <Compile Include="CloudSettingsTest.cs" />
     <Compile Include="TableStorage\Mocks\Mocks.cs" />
