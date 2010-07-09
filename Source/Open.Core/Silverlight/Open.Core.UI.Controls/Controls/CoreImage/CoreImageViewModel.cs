@@ -37,7 +37,7 @@ namespace Open.Core.UI.Controls
         private IDropShadowEffect shadow;
         #endregion
 
-        #region Properties
+        #region Properties - IImage
         public ImageSource Source
         {
             get { return GetPropertyValue<T, ImageSource>(m => m.Source); }
@@ -67,6 +67,14 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<T, bool>(m => m.IsVisible, value, true, m => m.Visibility); }
         }
 
+        public string Tooltip
+        {
+            get { return Property.GetValue<T, string>(m => m.Tooltip); }
+            set { Property.SetValue<T, string>(m => m.Tooltip, value); }
+        }
+        #endregion
+
+        #region Properties - ViewModel
         public Visibility Visibility { get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; } }
         #endregion
 

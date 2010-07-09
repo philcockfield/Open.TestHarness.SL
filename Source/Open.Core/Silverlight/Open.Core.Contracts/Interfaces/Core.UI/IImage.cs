@@ -44,5 +44,8 @@ namespace Open.Core.UI
 
         /// <summary>Gets or sets the margin offset to apply to the image.</summary>
         Thickness Margin { get; set; }
+
+        /// <summary>Gets or sets the tooltip to apply to the image.</summary>
+        string Tooltip { get; set; }
     }
 }

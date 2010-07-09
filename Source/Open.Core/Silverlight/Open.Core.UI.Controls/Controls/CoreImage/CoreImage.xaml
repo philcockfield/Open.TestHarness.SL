@@ -8,6 +8,7 @@
             x:Name="image" x:FieldModifier="private" 
             Source="{Binding Source}"
             Stretch="{Binding Stretch}"
-            Visibility="{Binding Visibility}" />
+            Visibility="{Binding Visibility}" 
+            ToolTipService.ToolTip="{Binding Tooltip}" />
     
 </UserControl>
