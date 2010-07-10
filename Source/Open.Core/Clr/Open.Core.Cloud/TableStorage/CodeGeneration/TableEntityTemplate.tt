@@ -66,5 +66,13 @@ namespace <#= this.Namespace #>
     /// <summary>The table-service-context used to access the backing entity for the '<#= ModelType.Name #>' model.</summary>
     public partial class <#= ContextName #> : TableServiceContextBase<<#= ClassName #>>
     {
+<# if( this.HasCustomTableName)  
+{ 
+#>
+        protected override string GetCustomTableName()
+        {
+            return "<#= this.CustomTableName #>";
+        }
+<# } #>
     }
 }

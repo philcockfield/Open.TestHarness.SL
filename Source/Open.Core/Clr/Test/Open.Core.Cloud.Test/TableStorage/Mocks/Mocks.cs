@@ -4,7 +4,7 @@ using Open.Core.Cloud.Test.TableStorage.CodeGeneration.Generated;
 
 namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 {
-    [PersistClass]
+    [PersistClass(TableName = "MyCustomTableName")]
     public class MockModelA
     {
         #region Head

@@ -272,7 +272,31 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             
             #line default
             #line hidden
-            this.Write(">\r\n    {\r\n    }\r\n}");
+            this.Write(">\r\n    {\r\n");
+            
+            #line 69 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+ if( this.HasCustomTableName)  
+{ 
+
+            
+            #line default
+            #line hidden
+            this.Write("        protected override string GetCustomTableName()\r\n        {\r\n            re" +
+                    "turn \"");
+            
+            #line 74 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.CustomTableName));
+            
+            #line default
+            #line hidden
+            this.Write("\";\r\n        }\r\n");
+            
+            #line 76 "C:\Data\My Dropbox\Code\Open\Source\Open.Core\Clr\Open.Core.Cloud\TableStorage\CodeGeneration\TableEntityTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

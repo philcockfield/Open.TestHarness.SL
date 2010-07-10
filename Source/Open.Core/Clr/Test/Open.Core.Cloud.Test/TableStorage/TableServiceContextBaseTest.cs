@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.StorageClient;
 using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.Test;
+using Open.Core.Cloud.Test.TableStorage.CodeGeneration.Generated;
 using Open.Core.Common.Testing;
 
 namespace Open.Core.Cloud.Test.TableStorage
@@ -18,7 +19,7 @@ namespace Open.Core.Cloud.Test.TableStorage
         [TestInitialize]
         public void TestSetup()
         {
-            tableName = TestEntityContext.GetTableName<TestEntity>();
+            tableName = TestEntityContext.GetDefaultTableName<TestEntity>();
             client = CloudSettings.CreateTableClient();
         }
 
@@ -36,11 +37,18 @@ namespace Open.Core.Cloud.Test.TableStorage
 
         #region Tests
         [TestMethod]
-        public void ShouldHaveTableName()
+        public void ShouldHaveDefaultTableName()
         {
             var context = new TestEntityContext();
             context.TableName.ShouldBe("TestEntity");
-            TestEntityContext.GetTableName<TestEntity>().ShouldBe(context.TableName);
+            TestEntityContext.GetDefaultTableName<TestEntity>().ShouldBe(context.TableName);
+        }
+
+        [TestMethod]
+        public void ShouldHaveCustomTableName()
+        {
+            var context = new MockModelAContext();
+            context.TableName.ShouldBe("MyCustomTableName");
         }
 
         [TestMethod]

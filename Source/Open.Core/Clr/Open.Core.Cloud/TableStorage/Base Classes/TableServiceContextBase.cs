@@ -1,6 +1,7 @@
 ﻿using System.Data.Services.Client;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using Open.Core.Common;
 
 namespace Open.Core.Cloud.TableStorage
 {
@@ -9,11 +10,10 @@ namespace Open.Core.Cloud.TableStorage
         #region Head
         private static CloudStorageAccount storageAccount;
         private readonly CloudTableClient client;
+        private string tableName;
 
         /// <summary>Constructor.</summary>
-        protected TableServiceContextBase() : this(StorageAccount.TableEndpoint.ToString())
-        {
-        }
+        protected TableServiceContextBase() : this(StorageAccount.TableEndpoint.ToString()) { }
 
         /// <summary>Constructor.</summary>
         protected TableServiceContextBase(string baseAddress) : base(baseAddress, StorageAccount.Credentials)
@@ -25,7 +25,7 @@ namespace Open.Core.Cloud.TableStorage
 
         #region Properties
         /// <summary>Gets the name of the storage table.</summary>
-        public string TableName { get { return typeof(T).Name; } }
+        public string TableName { get { return tableName ?? (tableName = GetTableName()); } }
 
         /// <summary>Gets a typed service query provider for the table.</summary>
         public DataServiceQuery<T> Query { get { return CreateQuery<T>(TableName); } }
@@ -46,16 +46,20 @@ namespace Open.Core.Cloud.TableStorage
 
         /// <summary>Gets the name for the storage table.</summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        public static string GetTableName<TEntity>()
-        {
-            return typeof (TEntity).Name;
-        }
-
+        public static string GetDefaultTableName<TEntity>() { return typeof(TEntity).Name; }
 
         /// <summary>Creates a data service query for the table-service type.</summary>
-        public DataServiceQuery<T> CreateQuery()
+        public DataServiceQuery<T> CreateQuery() { return CreateQuery<T>(TableName); }
+
+        /// <summary>Retrieves the custom table name (if there is one).</summary>
+        protected virtual string GetCustomTableName() { return null; }
+        #endregion
+
+        #region Internal
+        private string GetTableName()
         {
-            return CreateQuery<T>(TableName);
+            var customName = GetCustomTableName();
+            return customName.IsNullOrEmpty(true) ? GetDefaultTableName<T>() : customName;
         }
         #endregion
     }

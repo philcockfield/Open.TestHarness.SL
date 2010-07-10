@@ -28,5 +28,7 @@ namespace Open.Core.Cloud.TableStorage
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class PersistClassAttribute : Attribute
     {
+        /// <summary>Gets or sets the custom table name to use (Optional.  Leave blank to use the default table name).</summary>
+        public string TableName { get; set; }
     }
 }

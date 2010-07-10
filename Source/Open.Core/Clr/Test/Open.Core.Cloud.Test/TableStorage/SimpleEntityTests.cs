@@ -32,8 +32,8 @@ namespace Open.Core.Cloud.Test.TableStorage
 
         private void DeleteTables()
         {
-            client.DeleteTableIfExist(TestEntityContext.GetTableName<TestEntity>());
-            client.DeleteTableIfExist(TestEntityContext.GetTableName<SuperClass>());
+            client.DeleteTableIfExist(TestEntityContext.GetDefaultTableName<TestEntity>());
+            client.DeleteTableIfExist(TestEntityContext.GetDefaultTableName<SuperClass>());
         }
         #endregion
         
@@ -77,7 +77,7 @@ namespace Open.Core.Cloud.Test.TableStorage
 
             var context = new TestEntityContext();
             var query = context
-                        .CreateQuery<TestEntity>(TestEntityContext.GetTableName<TestEntity>())
+                        .CreateQuery<TestEntity>(TestEntityContext.GetDefaultTableName<TestEntity>())
                         .Where(m => m.PartitionKey.CompareTo("Partition1") == 0);
 
             var items = query.ToList();
@@ -97,7 +97,7 @@ namespace Open.Core.Cloud.Test.TableStorage
 
             var context = new TestEntityContext();
             var query = context
-                    .CreateQuery<TestEntity>(TestEntityContext.GetTableName<TestEntity>())
+                    .CreateQuery<TestEntity>(TestEntityContext.GetDefaultTableName<TestEntity>())
                     .Where(m => 
                             m.RowKey.CompareTo("METABOLIS") >= 0 &&
                             m.RowKey.CompareTo("METABOLIT") < 0);
@@ -117,7 +117,7 @@ namespace Open.Core.Cloud.Test.TableStorage
 
             var context = new TestEntityContext();
             var query = context
-                    .CreateQuery<TestEntity>(TestEntityContext.GetTableName<TestEntity>())
+                    .CreateQuery<TestEntity>(TestEntityContext.GetDefaultTableName<TestEntity>())
                     .Where(m =>
                             m.Text.CompareTo("METABOLIS") >= 0 &&
                             m.Text.CompareTo("METABOLIT") < 0);

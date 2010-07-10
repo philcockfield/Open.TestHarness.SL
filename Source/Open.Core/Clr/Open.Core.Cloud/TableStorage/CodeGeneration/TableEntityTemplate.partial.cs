@@ -61,6 +61,15 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
             }
         }
 
+        /// <summary>Gets the persist attribute.</summary>
+        public PersistClassAttribute PersistAttribute { get { return ModelType == null ? null : ModelType.GetPersistAttribute(); } }
+
+        /// <summary>Gets or sets whether there is a custom table name.</summary>
+        public bool HasCustomTableName { get { return CustomTableName != null; } }
+
+        /// <summary>Gets the custom table name.</summary>
+        public string CustomTableName { get { return ModelType == null ? null : PersistAttribute.TableName.AsNullWhenEmpty(); } }
+
         /// <summary>Gets or sets whether the header (using and comments) are generated.</summary>
         public bool IncludeHeaderDirectives { get; set; }
 
@@ -115,8 +124,8 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         {
             if (ModelType == null) return new List<PropertyInfo>();
             return ModelType
-                        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Where(EmitProperty);
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(EmitProperty);
         }
 
         private static bool EmitProperty(PropertyInfo property)

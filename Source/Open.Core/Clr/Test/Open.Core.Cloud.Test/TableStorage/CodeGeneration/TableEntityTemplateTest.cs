@@ -45,6 +45,21 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         }
 
         [TestMethod]
+        public void ShouldNotHavePersistAttribute()
+        {
+            generator.ModelType = null;
+            generator.PersistAttribute.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldHavePersistAttribute()
+        {
+            generator.ModelType = typeof(MockModelA);
+            generator.PersistAttribute.ShouldBeInstanceOfType<PersistClassAttribute>();
+        }
+
+
+        [TestMethod]
         public void ShouldEmitEntityWithinNamespace()
         {
             generator.ModelType = typeof (MockModelA);
