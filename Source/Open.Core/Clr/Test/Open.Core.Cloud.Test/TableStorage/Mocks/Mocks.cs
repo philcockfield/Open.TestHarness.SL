@@ -5,26 +5,32 @@ using Open.Core.Cloud.Test.TableStorage.CodeGeneration.Generated;
 namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
 {
     [PersistClass]
-    public class MockEntityA
+    public class MockModelA
     {
         #region Head
-        public MockEntityA() { }
-        public MockEntityA(MockEntityATableEntity backingEntity)
+        public MockModelA() { }
+        public MockModelA(MockModelATableEntity backingEntity)
         {
-            Property = new TableEntityPropertyManager<MockEntityA, MockEntityATableEntity>(backingEntity);
+            Property = new TablePropertyManager<MockModelA, MockModelATableEntity>(backingEntity);
         }
         #endregion
 
         #region Properties
-        public TableEntityPropertyManager<MockEntityA, MockEntityATableEntity> Property { get; private set; }
+        public TablePropertyManager<MockModelA, MockModelATableEntity> Property { get; private set; }
 
-        // TODO - Don't generate backing field for this.  Rather generate field for "map to" value.
-        //[PersistProperty(IsRowKey = true, MapTo = "RowKey")]
-        //public string Id
-        //{
-        //    get { return Property.GetValue<string>(m => m.Id); }
-        //    set { Property.SetValue(m => m.Id, value); }
-        //}
+        [PersistProperty(IsRowKey = true)]
+        public string Id
+        {
+            get { return Property.GetValue<string>(m => m.Id); }
+            set { Property.SetValue(m => m.Id, value); }
+        }
+
+        [PersistProperty(IsPartitonKey = true)]
+        public string Partition
+        {
+            get { return Property.GetValue<string>(m => m.Partition); }
+            set { Property.SetValue(m => m.Partition, value); }
+        }
 
         [PersistProperty]
         public string Text
@@ -45,10 +51,20 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
     }
 
     [PersistClass]
-    public class MockEntityB
+    public class MockModelB
     {
         [PersistProperty]
         public DateTime Date { get; set; }
+    }
+
+    [PersistClass]
+    public class MockModelC
+    {
+        [PersistProperty]
+        public string PartitionKey { get; set; }
+
+        [PersistProperty]
+        public string RowKey { get; set; }
     }
 
     [PersistClass]

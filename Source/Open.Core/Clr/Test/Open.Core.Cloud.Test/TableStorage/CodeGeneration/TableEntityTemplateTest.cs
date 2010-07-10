@@ -24,8 +24,8 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         [TestMethod]
         public void WriteToFile()
         {
-            generator.ModelType = typeof(MockEntityA);
-            OutputFileWriter.Write("MockEntityA.g.cs", generator.TransformText());
+            generator.ModelType = typeof(MockModelA);
+            OutputFileWriter.Write("MockModelATableEntity.g.cs", generator.TransformText());
         }
 
         [TestMethod]
@@ -40,15 +40,39 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.Namespace.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntityA);
+            generator.ModelType = typeof(MockModelA);
             generator.Namespace.ShouldBe(GetType().Namespace + ".Generated");
         }
 
         [TestMethod]
         public void ShouldEmitEntityWithinNamespace()
         {
-            generator.ModelType = typeof (MockEntityA);
+            generator.ModelType = typeof (MockModelA);
             generator.TransformText().Contains("namespace " + generator.Namespace).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldNotEmitPropertyMarkedAsRowKeyInAttribute()
+        {
+            // ...because it maps to the default 'RowKey' property.
+            generator.ModelType = typeof(MockModelA);
+            generator.TransformText().Contains("public System.String Id { get; set; }").ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldNotEmitPropertyNamedRowKey()
+        {
+            // ...because it maps to the default 'RowKey' property.
+            generator.ModelType = typeof(MockModelC);
+            generator.TransformText().Contains("public System.String RowKey { get; set; }").ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldNotEmitPropertyNamedPartitionKey()
+        {
+            // ...because it maps to the default 'PartitionKey' property.
+            generator.ModelType = typeof(MockModelC);
+            generator.TransformText().Contains("public System.String PartitionKey { get; set; }").ShouldBe(false);
         }
 
         [TestMethod]
@@ -57,36 +81,36 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.ClassName.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntityA);
-            generator.ClassName.ShouldBe("MockEntityATableEntity");
+            generator.ModelType = typeof(MockModelA);
+            generator.ClassName.ShouldBe("MockModelATableEntity");
         }
 
         [TestMethod]
         public void ShouldEmitEntityWithCorrectClassName()
         {
-            generator.ModelType = typeof(MockEntityA);
+            generator.ModelType = typeof(MockModelA);
             generator.TransformText().Contains("public partial class " + generator.ClassName).ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldHaveContextName()
         {
-            TableEntityTemplate.GetContextName(typeof(MockEntityA)).ShouldBe("MockEntityAContext");
+            TableEntityTemplate.GetContextName(typeof(MockModelA)).ShouldBe("MockModelAContext");
         }
 
         [TestMethod]
         public void ShouldEmitConstructors()
         {
-            generator.ModelType = typeof(MockEntityA);
+            generator.ModelType = typeof(MockModelA);
             var code = generator.TransformText();
-            code.Contains("public MockEntityATableEntity()").ShouldBe(true);
-            code.Contains("public MockEntityATableEntity(string partitionKey, string rowKey)").ShouldBe(true);
+            code.Contains("public MockModelATableEntity()").ShouldBe(true);
+            code.Contains("public MockModelATableEntity(string partitionKey, string rowKey)").ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldFindPropertiesDecoratedWithPersistAttribute()
         {
-            var type = typeof (MockEntityA);
+            var type = typeof (MockModelA);
             generator.ModelType = type;
 
             var propText = type.GetProperty("Text");
@@ -109,8 +133,8 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
             generator.ModelType = null;
             generator.InterfaceName.ShouldBe(null);
 
-            generator.ModelType = typeof(MockEntityA);
-            generator.InterfaceName.ShouldBe("IMockEntityATableEntity");
+            generator.ModelType = typeof(MockModelA);
+            generator.InterfaceName.ShouldBe("IMockModelATableEntity");
         }
 
         [TestMethod]
@@ -122,7 +146,7 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         [TestMethod]
         public void ShouldEmitHeaderDirectives()
         {
-            generator.ModelType = typeof (MockEntityA);
+            generator.ModelType = typeof (MockModelA);
             generator.IncludeHeaderDirectives = true;
             var code = generator.TransformText();
 
@@ -133,7 +157,7 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         [TestMethod]
         public void ShouldNotEmitHeaderDirectives()
         {
-            generator.ModelType = typeof(MockEntityA);
+            generator.ModelType = typeof(MockModelA);
             generator.IncludeHeaderDirectives = false;
             var code = generator.TransformText();
 

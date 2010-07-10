@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Open.Core.Cloud.TableStorage;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Cloud.TableStorage.CodeGeneration;
 using Open.Core.Common.Testing;
 
@@ -32,8 +27,8 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         [TestMethod]
         public void WriteToFile()
         {
-            generator.ModelTypes.Add<MockEntityA>();
-            generator.ModelTypes.Add<MockEntityB>();
+            generator.ModelTypes.Add<MockModelA>();
+            generator.ModelTypes.Add<MockModelB>();
             OutputFileWriter.Write("TableEntities.g.cs", generator.TransformText());
         }
         #endregion

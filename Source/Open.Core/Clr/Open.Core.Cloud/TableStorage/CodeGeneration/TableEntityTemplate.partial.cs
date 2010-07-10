@@ -114,9 +114,26 @@ namespace Open.Core.Cloud.TableStorage.CodeGeneration
         private IEnumerable<PropertyInfo> GetProperties()
         {
             if (ModelType == null) return new List<PropertyInfo>();
-            return modelType
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(m => m.HasAttribute<PersistPropertyAttribute>());
+            return ModelType
+                        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(EmitProperty);
+        }
+
+        private static bool EmitProperty(PropertyInfo property)
+        {
+            // Setup initial conditions.
+            var attribute = property.GetPersistAttribute();
+            if (attribute == null) return false;
+
+            // Don't emit if this is marked as mapping to the RowKey [property already available].
+            if (attribute.IsRowKey) return false;
+
+            // Don't emit if this is named 'RowKey' or 'PartitionKey' [properties already available].
+            if (property.Name == LinqExtensions.GetPropertyName<ITableServiceEntity>(m => m.RowKey)) return false;
+            if (property.Name == LinqExtensions.GetPropertyName<ITableServiceEntity>(m => m.PartitionKey)) return false;
+
+            // Finish up.
+            return true;
         }
         #endregion
     }

@@ -67,7 +67,7 @@
     </Compile>
     <Compile Include="TableStorage\PropertyManager\PropertyMapCache.cs" />
     <Compile Include="TableStorage\PropertyManager\PropertyMetadata.cs" />
-    <Compile Include="TableStorage\PropertyManager\TableEntityPropertyManager.cs" />
+    <Compile Include="TableStorage\PropertyManager\TablePropertyManager.cs" />
     <Compile Include="TableStorage\TableExtensions.cs" />
     <Compile Include="TableStorage\TableStorageConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -57,8 +57,8 @@ namespace Open.Core.Cloud.Test.TableStorage
         public void ShouldGetTableModelsFromAssembly()
         {
             var types = GetType().Assembly.GetTableModelTypes();
-            types.ShouldContain(typeof(MockEntityA));
-            types.ShouldContain(typeof(MockEntityB));
+            types.ShouldContain(typeof(MockModelA));
+            types.ShouldContain(typeof(MockModelB));
             types.ShouldContain(typeof(NoPersistableValues));
             types.ShouldNotContain(typeof(NonPersistableClass));
         }
@@ -66,7 +66,7 @@ namespace Open.Core.Cloud.Test.TableStorage
         [TestMethod]
         public void ShouldGetPersistClassAttribute()
         {
-            typeof(MockEntityA).GetPersistAttribute().ShouldBeInstanceOfType<PersistClassAttribute>();
+            typeof(MockModelA).GetPersistAttribute().ShouldBeInstanceOfType<PersistClassAttribute>();
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace Open.Core.Cloud.Test.TableStorage
         [TestMethod]
         public void ShouldGetPersistPropertyAttribute()
         {
-            var property = typeof (MockEntityA).GetProperty("Text");
+            var property = typeof (MockModelA).GetProperty("Text");
             property.ShouldNotBe(null);
             property.GetPersistAttribute().ShouldBeInstanceOfType<PersistPropertyAttribute>();
         }
@@ -86,7 +86,7 @@ namespace Open.Core.Cloud.Test.TableStorage
         [TestMethod]
         public void ShouldNotGetPersistPropertyAttribute()
         {
-            var property = typeof(MockEntityA).GetProperty("NotPersisted");
+            var property = typeof(MockModelA).GetProperty("NotPersisted");
             property.ShouldNotBe(null);
             property.GetPersistAttribute().ShouldBe(null);
         }

@@ -13,10 +13,10 @@ namespace Open.Core.Cloud.TableStorage
     /// <summary>Translates storage of properties in a model to it's backing TableEntity.</summary>
     /// <typeparam name="TModel">The type of the model that is reading/writing properties to this store.</typeparam>
     /// <typeparam name="TBackingEntity">The type of the table entity that acts as the backing store for property values.</typeparam>
-    public class TableEntityPropertyManager<TModel, TBackingEntity> : AutoPropertyManager<TModel> where TBackingEntity : ITableServiceEntity
+    public class TablePropertyManager<TModel, TBackingEntity> : AutoPropertyManager<TModel> where TBackingEntity : ITableServiceEntity
     {
         #region Head
-        private static CloudTableClient cloudTableClient;
+        private static CloudTableClient CloudTableClient;
         private readonly Type modelType;
         private readonly PersistClassAttribute classAttribute;
         private PropertyMapCache<TBackingEntity> propertyCache;
@@ -24,7 +24,7 @@ namespace Open.Core.Cloud.TableStorage
 
         /// <summary>Constructor.</summary>
         /// <param name="backingEntity">The backing entity to use.</param>
-        public TableEntityPropertyManager(TBackingEntity backingEntity)
+        public TablePropertyManager(TBackingEntity backingEntity)
         {
             // Setup initial conditions.
             if (Equals(backingEntity, default(TBackingEntity))) throw new ArgumentNullException("backingEntity");
@@ -56,12 +56,9 @@ namespace Open.Core.Cloud.TableStorage
         public void Save(TableServiceContextBase<TBackingEntity> context)
         {
             GetTableClient().CreateTableIfNotExist(context.TableName);
-
             context.AddObject(BackingEntity);
             context.SaveChanges();
-            // TODO
         }
-
         #endregion
 
         #region Methods : Override
@@ -111,7 +108,7 @@ namespace Open.Core.Cloud.TableStorage
 
         private static CloudTableClient GetTableClient() 
         {
-            return cloudTableClient ?? (cloudTableClient = CloudSettings.Current.CreateTableClient()); 
+            return CloudTableClient ?? (CloudTableClient = CloudSettings.Current.CreateTableClient()); 
         }
         #endregion
     }

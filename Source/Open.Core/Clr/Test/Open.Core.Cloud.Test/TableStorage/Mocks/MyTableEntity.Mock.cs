@@ -72,18 +72,25 @@ namespace Open.Core.Cloud.Test.TableStorage.Mocks
         #region Head
         public MyModel(IMyTableEntity backingEntity)
         {
-            Property = new TableEntityPropertyManager<MyModel, IMyTableEntity>(backingEntity);
+            Property = new TablePropertyManager<MyModel, IMyTableEntity>(backingEntity);
         }
         #endregion
 
         #region Properties
-        public TableEntityPropertyManager<MyModel, IMyTableEntity> Property { get; private set; }
+        public TablePropertyManager<MyModel, IMyTableEntity> Property { get; private set; }
 
         [PersistProperty(IsRowKey = true)]
         public string Id
         {
             get { return Property.GetValue<string>(m => m.Id); }
             set { Property.SetValue(m => m.Id, value); }
+        }
+
+        [PersistProperty(IsPartitonKey = true)]
+        public string Partition
+        {
+            get { return Property.GetValue<string>(m => m.Partition); }
+            set { Property.SetValue(m => m.Partition, value); }
         }
 
         [PersistProperty]

@@ -76,9 +76,27 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
         }
 
         [TestMethod]
+        public void ShouldMapToPartitionKey()
+        {
+            var modelProp = typeof(TMyModel).GetProperty("Partition");
+            var partitionKeyProp = typeof(TBackingEntity).GetProperty("PartitionKey");
+            modelProp.ShouldNotBe(null);
+            partitionKeyProp.ShouldNotBe(null);
+            cache.GetPropertyMetadata(modelProp).BackingProperty.ShouldBe(partitionKeyProp);
+        }
+
+        [TestMethod]
         public void ShouldThrowIfMoreThanOneRowKeyIsDeclared()
         {
             var propId1 = typeof(MultipleRowKeys).GetProperty("Id1");
+            propId1.ShouldNotBe(null);
+            Should.Throw<ArgumentOutOfRangeException>(() => cache.GetPropertyMetadata(propId1));
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfMoreThanOnePartitionKeyIsDeclared()
+        {
+            var propId1 = typeof(MultiplePartitionKeys).GetProperty("Partition1");
             propId1.ShouldNotBe(null);
             Should.Throw<ArgumentOutOfRangeException>(() => cache.GetPropertyMetadata(propId1));
         }
@@ -162,5 +180,15 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
             [PersistProperty(IsRowKey = true)]
             public string Id2 { get; set; }
         }
+
+        public class MultiplePartitionKeys : AnotherTableEntity
+        {
+            [PersistProperty(IsPartitonKey = true)]
+            public string Partition1 { get; set; }
+
+            [PersistProperty(IsPartitonKey = true)]
+            public string Partition2 { get; set; }
+        }
+
     }
 }

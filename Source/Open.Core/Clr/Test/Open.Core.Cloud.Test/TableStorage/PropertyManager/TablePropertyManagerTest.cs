@@ -10,20 +10,28 @@ using Open.Core.Common.Testing;
 namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
 {
     [TestClass]
-    public class TableEntityPropertyManagerTest : CloudTestBase
+    public class TablePropertyManagerTest : CloudTestBase
     {
         #region Head
-        private MyTableEntity backingEntity;
-        private MyModel model;
+        private MockModelATableEntity backingEntity;
+        private MockModelA model;
 
-        private TableEntityPropertyManager<MyModel, IMyTableEntity> propertyManager;
+        private MyModel myModel;
+        private MyTableEntity myBackingEntity;
+
+        private TablePropertyManager<MockModelA, MockModelATableEntity> propertyManager;
 
         [TestInitialize]
         public void TestSetup()
         {
-            backingEntity = new MyTableEntity();
-            model = new MyModel(backingEntity);
+            backingEntity = new MockModelATableEntity();
+            model = new MockModelA(backingEntity);
             propertyManager = model.Property;
+
+            // --
+
+            myBackingEntity = new MyTableEntity();
+            myModel = new MyModel(myBackingEntity);
         }
 
         [TestCleanup]
@@ -39,7 +47,7 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
         {
             Should.Throw<ArgumentOutOfRangeException>(() =>
                                     {
-                                        new TableEntityPropertyManager<NonPersistableClass, IMyTableEntity>(backingEntity);
+                                        new TablePropertyManager<NonPersistableClass, IMockModelATableEntity>(backingEntity);
                                     });
         }
 
@@ -52,7 +60,7 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
         [TestMethod]
         public void ShouldThrowIfBackingEntityNotSupplied()
         {
-            Should.Throw<ArgumentNullException>(() => new TableEntityPropertyManager<NonPersistableClass, IMyTableEntity>(null));
+            Should.Throw<ArgumentNullException>(() => new TablePropertyManager<NonPersistableClass, IMockModelATableEntity>(null));
         }
 
         [TestMethod]
@@ -72,43 +80,43 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
         [TestMethod]
         public void ShouldReadFromInjectedBackingStore()
         {
-            backingEntity = new MyTableEntity { Text = "Hello" };
-            model = new MyModel(backingEntity);
+            backingEntity = new MockModelATableEntity { Text = "Hello" };
+            model = new MockModelA(backingEntity);
             model.Text.ShouldBe("Hello");
         }
 
         [TestMethod]
         public void ShouldTranslateIntToEnumWhenReading()
         {
-            model.EnumValue.ShouldBe(MyEnum.Zero);
-            backingEntity.EnumValue = 2;
-            model.EnumValue.ShouldBe(MyEnum.Two);
+            myModel.EnumValue.ShouldBe(MyEnum.Zero);
+            myBackingEntity.EnumValue = 2;
+            myModel.EnumValue.ShouldBe(MyEnum.Two);
         }
 
         [TestMethod]
         public void ShouldTranslateEnumToIntWhenWriting()
         {
-            model.EnumValue.ShouldBe(MyEnum.Zero);
-            model.EnumValue = MyEnum.Three;
-            backingEntity.EnumValue.ShouldBe(3);
+            myModel.EnumValue.ShouldBe(MyEnum.Zero);
+            myModel.EnumValue = MyEnum.Three;
+            myBackingEntity.EnumValue.ShouldBe(3);
         }
 
         [TestMethod]
         public void ShouldMapToDifferentBackingEntityName()
         {
-            model.Number.ShouldBe(0);
-            model.Number = 42;
-            backingEntity.MyNumber.ShouldBe(42);
+            myModel.Number.ShouldBe(0);
+            myModel.Number = 42;
+            myBackingEntity.MyNumber.ShouldBe(42);
 
-            backingEntity.MyNumber = 1024;
-            model.Number.ShouldBe(1024);
+            myBackingEntity.MyNumber = 1024;
+            myModel.Number.ShouldBe(1024);
         }
 
         [TestMethod]
         public void ShouldHaveSingletonInstanceOfPropertyCache()
         {
-            var model1 = new MyModel(new MyTableEntity());
-            var model2 = new MyModel(new MyTableEntity());
+            var model1 = new MockModelA(new MockModelATableEntity());
+            var model2 = new MockModelA(new MockModelATableEntity());
 
             model1.Property.PropertyCache.ShouldNotBe(null);
             model1.Property.PropertyCache.ShouldBe(model2.Property.PropertyCache);
@@ -117,24 +125,44 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
         [TestMethod]
         public void ShouldConvertEnumToStringOverridingDefaultConverter()
         {
-            model.EnumConversion = MyEnum.Three;
-            backingEntity.EnumAsString.ShouldBe("Three");
+            myModel.EnumConversion = MyEnum.Three;
+            myBackingEntity.EnumAsString.ShouldBe("Three");
 
-            backingEntity.EnumAsString = "Two";
-            model.EnumConversion.ShouldBe(MyEnum.Two);
+            myBackingEntity.EnumAsString = "Two";
+            myModel.EnumConversion.ShouldBe(MyEnum.Two);
+        }
+
+        [TestMethod]
+        public void ShouldMapIdPropertyToRowKey()
+        {
+            model.Id = "MyId";
+            backingEntity.RowKey.ShouldBe("MyId");
+
+            backingEntity.RowKey = "Foo";
+            model.Id.ShouldBe("Foo");
+        }
+
+        [TestMethod]
+        public void ShouldMapPartitionPropertyToPartitionKey()
+        {
+            model.Partition = "P1";
+            backingEntity.PartitionKey.ShouldBe("P1");
+
+            backingEntity.PartitionKey = "Foo";
+            model.Partition.ShouldBe("Foo");
         }
 
         [TestMethod]
         public void ShouldSaveChangesToTable()
         {
             var client = CloudSettings.CreateTableClient();
-            var context = new MockEntityAContext();
+            var context = new MockModelAContext();
             client.DeleteTableIfExist(context.TableName);
 
             // ---
 
-            var entity = new MockEntityATableEntity("P1", "R1");
-            var mock = new MockEntityA(entity) {Text = "FooBar", Number = 42};
+            var entity = new MockModelATableEntity("P1", "R1");
+            var mock = new MockModelA(entity) {Text = "FooBar", Number = 42};
             mock.Property.Save(context);
 
             // ---

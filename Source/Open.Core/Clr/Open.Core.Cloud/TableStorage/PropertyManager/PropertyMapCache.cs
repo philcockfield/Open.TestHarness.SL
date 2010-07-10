@@ -35,9 +35,11 @@ namespace Open.Core.Cloud.TableStorage
     internal class PropertyMapCache<TBackingEntity> where TBackingEntity : ITableServiceEntity
     {
         #region Head
-        private readonly List<PropertyMetadata> propertySets = new List<PropertyMetadata>();
         private static readonly string PropRowKey = LinqExtensions.GetPropertyName<ITableServiceEntity>(m => m.RowKey);
-        private const BindingFlags PropertyPublicInstance = BindingFlags.Public | BindingFlags.Instance;
+        private static readonly string PropPartitionKey = LinqExtensions.GetPropertyName<ITableServiceEntity>(m => m.PartitionKey);
+        private const BindingFlags PropertyPublicInstance = BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
+
+        private readonly List<PropertyMetadata> propertySets = new List<PropertyMetadata>();
 
         /// <summary>Constructor.</summary>
         public PropertyMapCache()
@@ -114,26 +116,34 @@ namespace Open.Core.Cloud.TableStorage
 
         private static string GetBackingPropertyName(PropertyInfo modelProperty, PersistPropertyAttribute attribute)
         {
-            if (IsRowKey(modelProperty, attribute)) return PropRowKey;
+            if (IsKeyProperty(modelProperty, attribute, attr => attr.IsPartitonKey, "PartitonKey")) return PropPartitionKey;
+            if (IsKeyProperty(modelProperty, attribute, attr => attr.IsRowKey, "RowKey")) return PropRowKey;
             if (!attribute.MapTo.IsNullOrEmpty(true)) return attribute.MapTo;
             return modelProperty.Name;
         }
 
-        private static bool IsRowKey(PropertyInfo modelProperty, PersistPropertyAttribute attribute)
+        private static bool IsKeyProperty(
+                        PropertyInfo modelProperty, 
+                        PersistPropertyAttribute attribute, 
+                        Func<PersistPropertyAttribute, bool> isKey, 
+                        string keyName)
         {
             // Setup initial conditions.
-            if (!attribute.IsRowKey) return false;
+            if (!isKey(attribute)) return false;
 
-            // Ensure the row-key is set only once on the class.
+            // Ensure the key is set only once.
             var modelType = modelProperty.DeclaringType;
             var keyPropertyTotal = modelType.GetProperties(PropertyPublicInstance)
                 .Where(m => m.GetCustomAttributes(typeof(PersistPropertyAttribute), true)
-                                .Where(attr => ((PersistPropertyAttribute)attr).IsRowKey).Count() > 0).Count();
+                                .Where(attr => isKey((PersistPropertyAttribute)attr)).Count() > 0).Count();
+            
             if (keyPropertyTotal > 1) throw new ArgumentOutOfRangeException(
-                string.Format("There are {0} {1} mapped to the RowKey via the [{2}] attribute. There can be only one.", 
+                string.Format("There are {0} {1} mapped to the {2} via the [{3}] attribute. There can be only one.",
                               keyPropertyTotal,
-                              "property".ToPlural(keyPropertyTotal, "properties"), 
+                              "property".ToPlural(keyPropertyTotal, "properties"),
+                              keyName,
                               typeof(PersistPropertyAttribute).Name));
+
             // Finish up.
             return true;
         }

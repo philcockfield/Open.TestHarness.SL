@@ -74,7 +74,7 @@
     </Compile>
     <Compile Include="TableStorage\Mocks\MyTableEntity.Mock.cs" />
     <Compile Include="TableStorage\PropertyManager\PropertyMapCacheTest.cs" />
-    <Compile Include="TableStorage\PropertyManager\TableEntityPropertyManagerTest.cs" />
+    <Compile Include="TableStorage\PropertyManager\TablePropertyManagerTest.cs" />
     <Compile Include="TableStorage\TableExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

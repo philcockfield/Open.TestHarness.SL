@@ -25,38 +25,38 @@ namespace Open.Core.Cloud.Test.TableStorage.CodeGeneration
         public void ShouldAddModelType()
         {
             modelTypes.Types.Count().ShouldBe(0);
-            modelTypes.Add<MockEntityA>();
+            modelTypes.Add<MockModelA>();
             modelTypes.Types.Count().ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldNotInsertSameModelTypeTwice()
         {
-            modelTypes.Add<MockEntityA>();
-            modelTypes.Add<MockEntityA>();
-            modelTypes.Add<MockEntityA>();
+            modelTypes.Add<MockModelA>();
+            modelTypes.Add<MockModelA>();
+            modelTypes.Add<MockModelA>();
             modelTypes.Types.Count().ShouldBe(1);
         }
 
         [TestMethod]
         public void ShouldAllowDifferentModelTypesToBeAdded()
         {
-            modelTypes.Add<MockEntityA>();
-            modelTypes.Add<MockEntityB>();
+            modelTypes.Add<MockModelA>();
+            modelTypes.Add<MockModelB>();
             modelTypes.Types.Count().ShouldBe(2);
         }
 
         [TestMethod]
         public void ShouldRemoveModelType()
         {
-            modelTypes.Add<MockEntityA>();
+            modelTypes.Add<MockModelA>();
             modelTypes.Types.Count().ShouldBe(1);
 
-            modelTypes.Remove<MockEntityA>();
+            modelTypes.Remove<MockModelA>();
             modelTypes.Types.Count().ShouldBe(0);
 
-            modelTypes.Remove<MockEntityA>();
-            modelTypes.Remove<MockEntityA>();
+            modelTypes.Remove<MockModelA>();
+            modelTypes.Remove<MockModelA>();
         }
 
         [TestMethod]

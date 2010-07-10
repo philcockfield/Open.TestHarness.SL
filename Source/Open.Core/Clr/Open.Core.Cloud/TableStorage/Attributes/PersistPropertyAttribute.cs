@@ -31,6 +31,9 @@ namespace Open.Core.Cloud.TableStorage
         /// <summary>Gets or sets whether the property maps to the RowKey.</summary>
         public bool IsRowKey { get; set; }
 
+        /// <summary>Gets or sets whether the property maps to the PartitionKey.</summary>
+        public bool IsPartitonKey { get; set; }
+
         /// <summary>Gets or sets the name of the property on the backing entity to map to.</summary>
         public string MapTo { get; set; }
 
