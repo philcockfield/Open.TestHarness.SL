@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Services.Client;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
@@ -61,5 +62,31 @@ namespace Open.Core.Cloud.TableStorage
             var code = generator.TransformText();
             code.WriteToProjectFile(outputFolder, fileName);
         }
+
+
+        /// <summary>Adds a Where clause to the query matching the given partition/row keys.</summary>
+        /// <typeparam name="T">The type of entity being queryied</typeparam>
+        /// <param name="query">The starting query.</param>
+        /// <param name="keyQueryType">Flag indicating how to perform the matching.</param>
+        /// <param name="partitionKey">The partition key to look for.</param>
+        /// <param name="rowKey">The row key to look for.</param>
+        public static IQueryable<T> WhereKeysMatch<T>(
+                                                    this DataServiceQuery<T> query, 
+                                                    KeyQueryType keyQueryType, 
+                                                    string partitionKey,
+                                                    string rowKey) where T : ITableServiceEntity
+        {
+            switch (keyQueryType)
+            {
+                case KeyQueryType.Literal: return query.Where(m => m.PartitionKey == partitionKey && m.RowKey == rowKey);
+                case KeyQueryType.StartsWith: 
+                    return query.Where(m => 
+                        m.PartitionKey.CompareTo(partitionKey) >= 0 &&
+                        m.RowKey.CompareTo(rowKey) >= 0);
+
+                default: throw new NotSupportedException(keyQueryType.ToString());
+            }
+        }
+
     }
 }

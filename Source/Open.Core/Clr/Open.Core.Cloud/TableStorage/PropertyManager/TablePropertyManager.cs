@@ -92,15 +92,18 @@ namespace Open.Core.Cloud.TableStorage
         #endregion
 
         #region Methods : Static
+
         /// <summary>Creates a new property-manager by looking up the backing entity that matches the given keys.</summary>
         /// <param name="context">The table-service context to use.</param>
         /// <param name="partitionKey">The partition key of the backing entity.</param>
         /// <param name="rowKey">The row key of the backing entity.</param>
+        /// <param name="keyQueryType">Flag indicating how to structure the partition/row key query.</param>
         /// <returns>The property-manager, or Null if no corresponding entity could be found.</returns>
         public static TablePropertyManager<TModel, TBackingEntity> Lookup(
                                 TableServiceContextBase<TBackingEntity> context, 
                                 string partitionKey, 
-                                string rowKey) 
+                                string rowKey,
+                                KeyQueryType keyQueryType = KeyQueryType.Literal) 
         {
             // Setup initial conditions.
             if (context == null) throw new ArgumentNullException("context");
@@ -108,7 +111,7 @@ namespace Open.Core.Cloud.TableStorage
             rowKey = rowKey.IsNullOrEmpty(true) ? String.Empty : rowKey;
 
             // Construct the query.
-            var query = context.Query.Where(m => m.PartitionKey == partitionKey && m.RowKey == rowKey);
+            var query = context.Query.WhereKeysMatch(keyQueryType, partitionKey, rowKey);
 
             // Attempt to retrieve from table-storage.
             var entity = query.FirstOrDefault();

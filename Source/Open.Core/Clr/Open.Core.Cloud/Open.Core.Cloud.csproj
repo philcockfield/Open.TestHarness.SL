@@ -66,6 +66,7 @@
     <Compile Include="TableStorage\Converters\EnumToIntConverter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TableStorage\Enumerations.cs" />
     <Compile Include="TableStorage\PropertyManager\PropertyMapCache.cs" />
     <Compile Include="TableStorage\PropertyManager\PropertyMetadata.cs" />
     <Compile Include="TableStorage\PropertyManager\TablePropertyManager.cs" />

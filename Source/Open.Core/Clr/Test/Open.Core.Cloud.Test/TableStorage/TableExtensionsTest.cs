@@ -5,6 +5,7 @@ using Moq;
 using Open.Core.Cloud.TableStorage;
 using Open.Core.Cloud.Test;
 using Open.Core.Cloud.Test.TableStorage.CodeGeneration;
+using Open.Core.Cloud.Test.TableStorage.CodeGeneration.Generated;
 using Open.Core.Common.Testing;
 
 namespace Open.Core.Cloud.Test.TableStorage
@@ -89,6 +90,18 @@ namespace Open.Core.Cloud.Test.TableStorage
             var property = typeof(MockModelA).GetProperty("NotPersisted");
             property.ShouldNotBe(null);
             property.GetPersistAttribute().ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldHaveQueryForEachKeyComparisonType()
+        {
+            var context = new MockModelAContext();
+            var query = context.Query;
+
+            foreach (KeyQueryType keyQueryType in typeof(KeyQueryType).GetEnumValues())
+            {
+                query.WhereKeysMatch(keyQueryType, "P1", "R1").ShouldNotBe(null);
+            }
         }
         #endregion
     }

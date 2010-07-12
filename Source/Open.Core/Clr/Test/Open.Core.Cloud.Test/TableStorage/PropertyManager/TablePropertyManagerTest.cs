@@ -197,10 +197,10 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
 
             // ---
             // LookupOrCreate
-            var propManager2 = TablePropertyManager<MockModelA, MockModelATableEntity>.LookupOrCreate(context, "P1", "R1");
-            propManager2.GetValue<string>(m => m.Text).ShouldBe("FooBar");
-            propManager2.GetValue<string>(m => m.Partition).ShouldBe("P1");
-            propManager2.GetValue<string>(m => m.Id).ShouldBe("R1");
+            var propManager3 = TablePropertyManager<MockModelA, MockModelATableEntity>.LookupOrCreate(context, "P1", "R1");
+            propManager3.GetValue<string>(m => m.Text).ShouldBe("FooBar");
+            propManager3.GetValue<string>(m => m.Partition).ShouldBe("P1");
+            propManager3.GetValue<string>(m => m.Id).ShouldBe("R1");
         }
 
         [TestMethod]
@@ -217,6 +217,35 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
             context = new MockModelAContext();
             var propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P1", "R-2-NEW-ID");
             propManager.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldLookupWithPartialKeys()
+        {
+            var context = new MockModelAContext();
+            context.DeleteTable();
+            var entity = new MockModelATableEntity("P1", "R1");
+            var mock = new MockModelA(entity) { Text = "FooBar", Number = 42 };
+            mock.Property.Save(context);
+
+            // ---
+
+            context = new MockModelAContext();
+
+            var propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "Z", "X", KeyQueryType.StartsWith);
+            propManager.ShouldBe(null);
+
+            propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P", "R", KeyQueryType.StartsWith);
+            propManager.GetValue<string>(m => m.Text).ShouldBe("FooBar");
+
+            propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P1", "R", KeyQueryType.StartsWith);
+            propManager.GetValue<string>(m => m.Text).ShouldBe("FooBar");
+
+            propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P", "R1", KeyQueryType.StartsWith);
+            propManager.GetValue<string>(m => m.Text).ShouldBe("FooBar");
+
+            propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P1", "R1", KeyQueryType.StartsWith);
+            propManager.GetValue<string>(m => m.Text).ShouldBe("FooBar");
         }
 
         [TestMethod]
