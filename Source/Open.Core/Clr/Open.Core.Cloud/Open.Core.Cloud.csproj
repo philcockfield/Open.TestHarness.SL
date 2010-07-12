@@ -48,6 +48,7 @@
     <Compile Include="CloudSettings.cs" />
     <Compile Include="TableStorage\Attributes\PersistClassAttribute.cs" />
     <Compile Include="TableStorage\Attributes\PersistPropertyAttribute.cs" />
+    <Compile Include="TableStorage\Base Classes\TableModelBase.cs" />
     <Compile Include="TableStorage\Base Classes\TableServiceContextBase.cs" />
     <Compile Include="TableStorage\CodeGeneration\TableEntitiesTemplate.cs">
       <AutoGen>True</AutoGen>

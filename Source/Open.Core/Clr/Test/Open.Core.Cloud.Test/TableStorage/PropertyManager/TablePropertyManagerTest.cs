@@ -177,6 +177,60 @@ namespace Open.Core.Cloud.Test.TableStorage.PropertyManager
 
             client.DeleteTableIfExist(context.TableName);
         }
+
+        [TestMethod]
+        public void ShouldCreateFromLookup()
+        {
+            var context = new MockModelAContext();
+            context.DeleteTable();
+            var entity = new MockModelATableEntity("P1", "R1");
+            var mock = new MockModelA(entity) { Text = "FooBar", Number = 42 };
+            mock.Property.Save(context);
+
+            // ---
+            // Lookup
+            context = new MockModelAContext();
+            var propManager1 = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P1", "R1");
+            propManager1.GetValue<string>(m => m.Text).ShouldBe("FooBar");
+            propManager1.GetValue<string>(m => m.Partition).ShouldBe("P1");
+            propManager1.GetValue<string>(m => m.Id).ShouldBe("R1");
+
+            // ---
+            // LookupOrCreate
+            var propManager2 = TablePropertyManager<MockModelA, MockModelATableEntity>.LookupOrCreate(context, "P1", "R1");
+            propManager2.GetValue<string>(m => m.Text).ShouldBe("FooBar");
+            propManager2.GetValue<string>(m => m.Partition).ShouldBe("P1");
+            propManager2.GetValue<string>(m => m.Id).ShouldBe("R1");
+        }
+
+        [TestMethod]
+        public void ShouldReturnNullFromLookup()
+        {
+            var context = new MockModelAContext();
+            context.DeleteTable();
+            var entity = new MockModelATableEntity("P1", "R1");
+            var mock = new MockModelA(entity) { Text = "FooBar", Number = 42 };
+            mock.Property.Save(context);
+
+            // ---
+
+            context = new MockModelAContext();
+            var propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.Lookup(context, "P1", "R-2-NEW-ID");
+            propManager.ShouldBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldCreateNewInstanceWhenLookupNotFound()
+        {
+            var context = new MockModelAContext();
+            context.DeleteTable();
+            context.CreateTable();
+
+            var propManager = TablePropertyManager<MockModelA, MockModelATableEntity>.LookupOrCreate(context, "P1", "R1");
+            propManager.GetValue<string>(m => m.Text).ShouldBe(null);
+            propManager.GetValue<string>(m => m.Partition).ShouldBe("P1");
+            propManager.GetValue<string>(m => m.Id).ShouldBe("R1");
+        }
         #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace Open.Core.Cloud.TableStorage
     public class TablePropertyManager<TModel, TBackingEntity> : AutoPropertyManager<TModel> where TBackingEntity : ITableServiceEntity
     {
         #region Head
-        private static CloudTableClient CloudTableClient;
+        private static CloudTableClient cloudTableClient;
         private readonly Type modelType;
         private readonly PersistClassAttribute classAttribute;
         private PropertyMapCache<TBackingEntity> propertyCache;
@@ -55,6 +55,7 @@ namespace Open.Core.Cloud.TableStorage
         /// <summary>Saves the backing entity to the table store.</summary>
         public void Save(TableServiceContextBase<TBackingEntity> context)
         {
+            if (context == null) throw new ArgumentNullException("context");
             GetTableClient().CreateTableIfNotExist(context.TableName);
             context.AddObject(BackingEntity);
             context.SaveChanges();
@@ -90,6 +91,66 @@ namespace Open.Core.Cloud.TableStorage
         }
         #endregion
 
+        #region Methods : Static
+        /// <summary>Creates a new property-manager by looking up the backing entity that matches the given keys.</summary>
+        /// <param name="context">The table-service context to use.</param>
+        /// <param name="partitionKey">The partition key of the backing entity.</param>
+        /// <param name="rowKey">The row key of the backing entity.</param>
+        /// <returns>The property-manager, or Null if no corresponding entity could be found.</returns>
+        public static TablePropertyManager<TModel, TBackingEntity> Lookup(
+                                TableServiceContextBase<TBackingEntity> context, 
+                                string partitionKey, 
+                                string rowKey) 
+        {
+            // Setup initial conditions.
+            if (context == null) throw new ArgumentNullException("context");
+            partitionKey = partitionKey.IsNullOrEmpty(true) ? String.Empty : partitionKey;
+            rowKey = rowKey.IsNullOrEmpty(true) ? String.Empty : rowKey;
+
+            // Construct the query.
+            var query = context.Query.Where(m => m.PartitionKey == partitionKey && m.RowKey == rowKey);
+
+            // Attempt to retrieve from table-storage.
+            var entity = query.FirstOrDefault();
+
+            // Construct the new property-manager.
+            return Equals(entity, default(TBackingEntity)) 
+                            ? null 
+                            : new TablePropertyManager<TModel, TBackingEntity>(entity);
+        }
+
+        /// <summary>
+        ///     Creates a new property-manager by looking up the backing entity that matches the given keys,
+        ///     and if the backing entity is not found initializes a new property-manager with a virgin entity.
+        /// </summary>
+        /// <param name="context">The table-service context to use.</param>
+        /// <param name="partitionKey">The partition key of the backing entity.</param>
+        /// <param name="rowKey">The row key of the backing entity.</param>
+        public static TablePropertyManager<TModel, TBackingEntity> LookupOrCreate(
+                                TableServiceContextBase<TBackingEntity> context,
+                                string partitionKey,
+                                string rowKey)
+        {
+            var propManager = Lookup(context, partitionKey, rowKey);
+            return propManager ?? Create(partitionKey, rowKey);
+        }
+
+        /// <summary>Creates a new instance of the property manager with the given keys.</summary>
+        /// <param name="partitionKey">The partition key of the backing entity.</param>
+        /// <param name="rowKey">The row key of the backing entity.</param>
+        /// <returns></returns>
+        public static TablePropertyManager<TModel, TBackingEntity> Create(string partitionKey = null, string rowKey = null)
+        {
+            // Create the entity.
+            var entity = (TBackingEntity)Activator.CreateInstance(typeof(TBackingEntity));
+            entity.PartitionKey = partitionKey.IsNullOrEmpty(true) ? String.Empty : partitionKey;
+            entity.RowKey = rowKey.IsNullOrEmpty(true) ? String.Empty : rowKey;
+
+            // Construct the new property-manager.
+            return new TablePropertyManager<TModel, TBackingEntity>(entity);
+        }
+        #endregion
+
         #region Internal
         private static PropertyMapCache<TBackingEntity> GetOrCreatePropertyCache()
         {
@@ -108,7 +169,7 @@ namespace Open.Core.Cloud.TableStorage
 
         private static CloudTableClient GetTableClient() 
         {
-            return CloudTableClient ?? (CloudTableClient = CloudSettings.Current.CreateTableClient()); 
+            return cloudTableClient ?? (cloudTableClient = CloudSettings.Current.CreateTableClient()); 
         }
         #endregion
     }

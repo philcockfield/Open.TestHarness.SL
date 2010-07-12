@@ -57,12 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base Classes\CloudTestBase.cs" />
+    <Compile Include="TableStorage\Base Classes\TableModelBaseTest.cs" />
     <Compile Include="TableStorage\CodeGeneration\Output\GeneratedMockEntityATest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableStorage\CodeGeneration\Output\g\TableEntities.g.cs" />
     <Compile Include="TableStorage\SimpleEntityTests.cs" />
-    <Compile Include="TableStorage\TableServiceContextBaseTest.cs" />
+    <Compile Include="TableStorage\Base Classes\TableServiceContextBaseTest.cs" />
     <Compile Include="CloudSettingsTest.cs" />
     <Compile Include="TableStorage\Mocks\Mocks.cs" />
     <Compile Include="TableStorage\CodeGeneration\ModelTypesTest.cs" />

@@ -49,7 +49,9 @@ namespace Open.Core.Cloud.Test.TableStorage
         {
             var context = new MockModelAContext();
             context.TableName.ShouldBe("MyCustomTableName");
+            context.DeleteTable();
         }
+
 
         [TestMethod]
         public void ShouldCreateTableOnConstruction()
@@ -59,6 +61,39 @@ namespace Open.Core.Cloud.Test.TableStorage
             new TestEntityContext();
             var tables = client.ListTables().ToList();
             tables.ShouldContain(tableName);
+        }
+
+        [TestMethod]
+        public void ShouldDeleteTable()
+        {
+            var context = new TestEntityContext();
+            client.ListTables().ShouldContain(context.TableName);
+
+            context.DeleteTable();
+            client.ListTables().ShouldNotContain(context.TableName);
+        }
+
+        [TestMethod]
+        public void ShouldDeleteCustomeNamedTable()
+        {
+            var context = new TestEntityCustomNameContext();
+            client.ListTables().ShouldContain(context.TableName);
+
+            context.DeleteTable();
+            client.ListTables().ShouldNotContain(context.TableName);
+        }
+
+        [TestMethod]
+        public void ShouldCreateTable()
+        {
+            var context = new TestEntityContext();
+            context.DeleteTable();
+            client.ListTables().ShouldNotContain(context.TableName);
+
+            context.CreateTable();
+            context.CreateTable();
+            context.CreateTable();
+            client.ListTables().ShouldContain(context.TableName);
         }
 
         [TestMethod]
@@ -73,6 +108,33 @@ namespace Open.Core.Cloud.Test.TableStorage
 
             context.Query.Where(m => m.Text == entity.Text).ToList().Count().ShouldBe(1);
         }
+
+        [TestMethod]
+        public void ShouldSaveAndRetrieveEntityFromCustomNamedTable()
+        {
+            var context = new TestEntityCustomNameContext();
+            var entity = new TestEntity
+                             {
+                                 Text = "Foo.ShouldAddToCustomTable", 
+                                 PartitionKey = "P1", 
+                                 RowKey = "R1"
+                             };
+            context.AddObject(entity);
+            context.SaveChanges();
+
+            // ---
+
+            var query1 = context.Query.Where(m => m.PartitionKey == "P1" && m.RowKey == "R1");
+            query1.ToList().Count.ShouldBe(1);
+
+            var query2 = context.Query.Where(m => m.Text == "Hello");
+            query2.ToList().Count.ShouldBe(0);
+
+            // ---
+
+            context.DeleteTable();
+        }
+
         #endregion
 
         #region Mocks
@@ -82,6 +144,15 @@ namespace Open.Core.Cloud.Test.TableStorage
             public TestEntity() : base(Guid.NewGuid().ToString(), String.Empty) { }
             public string Text { get; set; }
         }
+
+        private class TestEntityCustomNameContext : TableServiceContextBase<TestEntity>
+        {
+            protected override string GetCustomTableName()
+            {
+                return "MyTestEntityCustomTableName";
+            }
+        }
+
         #endregion
     }
 }
