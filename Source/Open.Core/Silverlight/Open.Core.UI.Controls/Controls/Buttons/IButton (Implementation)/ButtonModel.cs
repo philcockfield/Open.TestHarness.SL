@@ -74,6 +74,18 @@ namespace Open.Core.UI.Controls
             }
         }
 
+        public bool IsVisible
+        {
+            get { return Property.GetValue<T, bool>(m => m.IsVisible, true); }
+            set { Property.SetValue<T, bool>(m => m.IsVisible, value, true); }
+        }
+
+        public Thickness Margin
+        {
+            get { return Property.GetValue<T, Thickness>(m => m.Margin); }
+            set { Property.SetValue<T, Thickness>(m => m.Margin, value); }
+        }
+
         public string Label
         {
             get { return GetPropertyValue<T, string>(m => m.Label, defaultButtonText); }
@@ -104,7 +116,8 @@ namespace Open.Core.UI.Controls
                                   ContentTemplate = Template,
                                   HorizontalContentAlignment = HorizontalAlignment.Stretch,
                                   VerticalContentAlignment = VerticalAlignment.Stretch,
-                                  Content = new ContentPresenter()
+                                  Content = new ContentPresenter(),
+                                  IsTabStop = false,
                               };
         }
         #endregion

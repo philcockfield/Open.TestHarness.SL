@@ -85,6 +85,20 @@ namespace Open.Core
         Bottom
     }
 
+    /// <summary>Edges on the horizontal plane.</summary>
+    public enum HorizontalEdge
+    {
+        Left,
+        Right,
+    }
+
+    /// <summary>Edges on the vertical plane.</summary>
+    public enum VerticalEdge
+    {
+        Top,
+        Bottom,
+    }
+
     /// <summary>Flags representing the edges of a rectangle.</summary>
     [Flags]
     public enum RectEdgeFlag
@@ -105,7 +119,7 @@ namespace Open.Core
         Right
     }
 
-    /// <summary>Possible responses to a prompt (eg. within a dialog box.</summary>
+    /// <summary>Possible responses to a prompt (eg. within a dialog box).</summary>
     public enum PromptResult
     {
         /// <summary>The user accepts the prompt or new state configuration(OK, Yes).</summary>
@@ -114,7 +128,25 @@ namespace Open.Core
         /// <summary>The user rejects the prompt or current state (No).</summary>
         Decline,
 
-        /// <summary>The user cancels the operation leaving the current state unchanged (Cancel, Ignore).</summary>
-        Cancel
+        /// <summary>The user cancels the operation leaving the current state unchanged (Cancel, Ignore, Done).</summary>
+        Cancel,
+
+        /// <summary>The user selects to move next in a wizard sequence.</summary>
+        Next,
+
+        /// <summary>The user selects to move back in a wizard sequence.</summary>
+        Back
+    }
+
+    /// <summary>Various configurations of prompt buttons.</summary>
+    public enum PromptButtonConfiguration
+    {
+        YesNo,
+        YesNoCancel,
+        Ok,
+        OkCancel,
+        Done,
+        BackNext,
+        BackNextCancel,
     }
 }

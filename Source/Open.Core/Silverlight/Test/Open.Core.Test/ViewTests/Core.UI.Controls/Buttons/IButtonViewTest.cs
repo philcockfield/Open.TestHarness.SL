@@ -1,14 +1,5 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Net;
+﻿using System.ComponentModel.Composition;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
 using Open.Core.UI;
@@ -21,31 +12,46 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Buttons
     {
         #region Head
         [Import]
-        public IButton button;
+        public IButton Button { get; set; }
 
         [ViewTest(Default = true, IsVisible = false)]
-        public void Initialize(ViewFactoryContent control)
+        public void Initialize(IButtonTestControl control)
         {
+            // Setup initial conditions.
             CompositionInitializer.SatisfyImports(this);
-            control.ViewFactory = button;
+            control.content.ViewFactory = Button;
 
-            button.Click += delegate { Output.Write("Click"); };
+            // Wire up events.
+            Button.Click += delegate { Output.Write("!! Click"); };
 
+            // Finish up.
+            Change__Label(control);
         }
         #endregion
 
         #region Tests
-
         [ViewTest]
-        public void Toggle__IsEnabled(ViewFactoryContent control)
+        public void Toggle__IsEnabled(IButtonTestControl control)
         {
-            button.IsEnabled = !button.IsEnabled;
+            Button.IsEnabled = !Button.IsEnabled;
         }
 
         [ViewTest]
-        public void Change__Label(ViewFactoryContent control)
+        public void Toggle__IsVisible(IButtonTestControl control)
         {
-            button.Label = RandomData.LoremIpsum(1, 2);
+            Button.IsVisible = !Button.IsVisible;
+        }
+
+        [ViewTest]
+        public void Change__Label(IButtonTestControl control)
+        {
+            Button.Label = RandomData.LoremIpsum(1, 2);
+        }
+
+        [ViewTest]
+        public void Set__Margin(IButtonTestControl control)
+        {
+            Button.Margin = new Thickness(50);
         }
         #endregion
     }

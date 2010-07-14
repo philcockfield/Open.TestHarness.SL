@@ -7,9 +7,8 @@ using Open.Core.Common;
 namespace Open.Core.UI
 {
     /// <summary>Abstractly defines a simple button.</summary>
-    public interface IButton : IViewFactory, INotifyPropertyChanged, IClickable
+    public interface IButton : IViewFactory, INotifyPropertyChanged, IClickable, IVisiblity
     {
-
         /// <summary>Gets the command the button is bound to.</summary>
         ICommand Command { get; }
 
@@ -18,6 +17,9 @@ namespace Open.Core.UI
 
         /// <summary>Gets or sets the text label of the button.</summary>
         string Label { get; set; }
+
+        /// <summary>Gets or sets the margin to put around the button.</summary>
+        Thickness Margin { get; set; }
 
         /// <summary>Gets or sets the XAML template used to render the button.</summary>
         DataTemplate Template { get; set; }

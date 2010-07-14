@@ -2,8 +2,8 @@
     x:Class="Open.Core.UI.Controls.ViewFactoryContent"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:c="clr-namespace:Open.Core.UI.Controls">
+    xmlns:c="clr-namespace:Open.Core.UI.Controls" IsTabStop="False">
 
-    <c:ContentContainer x:Name="container" x:FieldModifier="private" />
+    <c:ContentContainer x:Name="container" x:FieldModifier="private" IsTabStop="False" />
 
 </UserControl>

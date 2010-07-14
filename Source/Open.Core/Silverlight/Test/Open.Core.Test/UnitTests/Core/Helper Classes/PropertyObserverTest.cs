@@ -1,25 +1,4 @@
-//------------------------------------------------------
-//    Copyright (c) 2010 TestHarness.org
-//
-//    Permission is hereby granted, free of charge, to any person obtaining a copy
-//    of this software and associated documentation files (the 'Software'), to deal
-//    in the Software without restriction, including without limitation the rights
-//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//    copies of the Software, and to permit persons to whom the Software is
-//    furnished to do so, subject to the following conditions:
-//
-//    The above copyright notice and this permission notice shall be included in
-//    all copies or substantial portions of the Software.
-//
-//    THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//    THE SOFTWARE.
-//------------------------------------------------------
-
+using System;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
@@ -31,6 +10,8 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Helper_Classes
     ///    This class only tests the SL specific portions of the partial class.
     ///    The full set of tests for the 'PropertyObserver' are in the Core.Common.Test CLR project.
     /// </remarks>
+
+    [Tag("p")]
     [TestClass]
     public class PropertyObserverTest : SilverlightUnitTest
     {
@@ -58,7 +39,25 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Helper_Classes
 
             stub.Text = "Hello";
             fireCount.ShouldBe(0);
-        }        
+        }
+
+        [TestMethod]
+        public void ShouldFireOnce()
+        {
+            var stub = new Stub();
+
+            var fireCount = 0;
+            Action handler = () => { fireCount++; };
+
+            var observer = new PropertyObserver<Stub>(stub)
+                .RegisterHandler(s => s.Text, handler)
+                .RegisterHandler(s => s.Number, s => { });
+
+            stub.Text = "Hello";
+            stub.Number = 50;
+
+            fireCount.ShouldBe(1);
+        }
         #endregion
 
         #region Stubs

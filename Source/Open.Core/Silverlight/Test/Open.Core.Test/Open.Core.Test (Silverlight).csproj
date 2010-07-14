@@ -145,6 +145,10 @@
     <Compile Include="UnitTests\Core.UI.Controls\PropertyGrid\PropertyModelTest.cs" />
     <Compile Include="UnitTests\Core\Base Classes\NotifyPropertyChangedBaseSilverlightTest.cs" />
     <Compile Include="ViewTests\Code.ViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Buttons\IButton.TestControl.xaml.cs">
+      <DependentUpon>IButton.TestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewTests\Core.UI.Controls\Dialogs\DropdownDialogViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Primitives\BackgroundViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Primitives\BorderViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Buttons\IButtonViewTest.cs" />
@@ -154,6 +158,10 @@
     <Compile Include="ViewTests\Core.UI.Controls\Lists\NamedControlListViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Lists\SelectionList.ViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\PostItViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Prompts\PromptButtonBarViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Prompts\PromptButtons.TestControl.xaml.cs">
+      <DependentUpon>PromptButtons.TestControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewTests\Core.UI.Controls\Prompts\PromptButtonsViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ButtonToolViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\ToolBar\ToolBarViewTest.cs" />
@@ -307,6 +315,14 @@
     <Compile Include="UnitTests\Core\Network\Sample\SampleWebClient.cs" />
     <Compile Include="UnitTests\Core\Threading\DelayedActionTest.cs" />
     <Page Include="UnitTests\Core.UI.Controls\ToolBar\ToolBarViewOverride.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewTests\Core.UI.Controls\Buttons\IButton.TestControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewTests\Core.UI.Controls\Prompts\PromptButtons.TestControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

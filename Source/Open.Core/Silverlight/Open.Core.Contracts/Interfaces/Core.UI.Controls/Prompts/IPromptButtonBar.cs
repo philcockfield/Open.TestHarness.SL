@@ -20,23 +20,26 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.Windows.Controls;
+using System;
+using System.ComponentModel;
+using System.Windows;
+using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
 {
-    public partial class PromptButtons : UserControl
+    /// <summary>A bar that contains prompt buttons.</summary>
+    public interface IPromptButtonBar : IViewFactory, IDisposable, IVisiblity, INotifyPropertyChanged
     {
-        /// <summary>Constructor.</summary>
-        public PromptButtons()
-        {
-            InitializeComponent();
-        }
+        /// <summary>Gets the background.</summary>
+        IBackground Background { get; }
 
-        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
-        public PromptButtonsViewModel ViewModel
-        {
-            get { return DataContext as PromptButtonsViewModel; }
-            set { DataContext = value; }
-        }
+        /// <summary>Gets the prompt buttons.</summary>
+        IPromptButtons Buttons { get;  }
+
+        /// <summary>Gets or sets where which edge the buttons are aligned to.</summary>
+        HorizontalEdge Alignment { get; set; }
+
+        /// <summary>Gets or sets the padding within the bar.</summary>
+        Thickness Padding { get; set; }
     }
 }

@@ -126,6 +126,27 @@
   <data name="OutputLog_ShowTimeStamp" xml:space="preserve">
     <value>Time Stamp</value>
   </data>
+  <data name="Prompt_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Prompt_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Prompt_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="Prompt_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Prompt_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Prompt_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Prompt_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="PropertyExplorer_Tooltip_IncludeHierarchy" xml:space="preserve">
     <value>Include inheritance hierarchy.</value>
   </data>

@@ -1,0 +1,56 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.DropdownDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI" 
+    xmlns:c="clr-namespace:Open.Core.UI.Controls">
+    
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="18,4,18,4" />
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <i:Interaction.Behaviors>
+            <ab:Clipping />
+        </i:Interaction.Behaviors>
+
+        <!--Mask-->
+        <c:ViewFactoryContent x:Name="mask" ViewFactory="{Binding Mask}" Opacity="0" IsTabStop="False" x:FieldModifier="private" />
+        
+        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid x:Name="contentContainer" x:FieldModifier="private">
+
+                <!--Background-->
+                <Border>
+                    <c:ViewFactoryContent ViewFactory="{Binding Background}" IsTabStop="False" />
+                    <Border.Effect>
+                        <DropShadowEffect x:Name="dropShadow" BlurRadius="15" Opacity="0" ShadowDepth="10" />
+                    </Border.Effect>
+                </Border>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--Content-->
+                    <c:ViewFactoryContent 
+                        x:Name="content" 
+                        Grid.Row="0" 
+                        ViewFactory="{Binding Content}" 
+                        Margin="{Binding Padding}" 
+                        IsTabStop="False"
+                        x:FieldModifier="private" />
+
+                    <!--Prompt Button Bar-->
+                    <c:ViewFactoryContent Grid.Row="1" ViewFactory="{Binding ButtonBar}" IsTabStop="False" />
+                </Grid>
+            </Grid >
+        </Canvas>
+        
+    </Grid>
+</UserControl>

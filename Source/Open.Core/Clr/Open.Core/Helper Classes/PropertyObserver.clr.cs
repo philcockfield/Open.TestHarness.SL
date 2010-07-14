@@ -22,7 +22,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 
 namespace Open.Core.Common

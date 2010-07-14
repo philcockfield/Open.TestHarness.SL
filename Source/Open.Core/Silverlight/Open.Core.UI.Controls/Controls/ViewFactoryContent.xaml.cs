@@ -52,7 +52,8 @@ namespace Open.Core.UI.Controls
 
             // Update visual state.
             viewFactoryValue = ViewFactory;
-            viewModel.Content = ViewFactory == null ? null : viewFactoryValue.CreateView();
+            var view = ViewFactory == null ? null : viewFactoryValue.CreateView();
+            viewModel.Content = view;
         }
         #endregion
 

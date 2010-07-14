@@ -95,7 +95,7 @@ namespace Open.Core.UI.Controls
         #region Methods
         public FrameworkElement CreateView()
         {
-            return new ContentContainer { ViewModel = this };
+            return new ContentContainer { ViewModel = this, IsTabStop = false };
         }
         #endregion
     }

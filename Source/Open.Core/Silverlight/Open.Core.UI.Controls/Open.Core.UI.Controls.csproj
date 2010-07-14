@@ -116,6 +116,10 @@
     <Compile Include="Controls\Dialogs\Interfaces\IQuestionDialog.cs" />
     <Compile Include="Controls\Dialogs\NotificationType.cs" />
     <Compile Include="Controls\Dialogs\QuestionDialog\QuestionDialog.cs" />
+    <Compile Include="Controls\DropdownDialog\DropdownDialog.xaml.cs">
+      <DependentUpon>DropdownDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DropdownDialog\DropdownDialogViewModel.cs" />
     <Compile Include="Controls\DropShadow\DropShadow.ViewModel.cs" />
     <Compile Include="Controls\DropShadow\DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
@@ -221,10 +225,14 @@
     <Compile Include="Controls\Primitives\Background\BackgroundModel.cs" />
     <Compile Include="Controls\Primitives\BorderModel.cs" />
     <Compile Include="Controls\ProgressBar\ProgressBarFlat.cs" />
-    <Compile Include="Controls\Prompts\PromptButtons.xaml.cs">
+    <Compile Include="Controls\Prompts\PromptButtonBar\PromptButtonBar.xaml.cs">
+      <DependentUpon>PromptButtonBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Prompts\PromptButtonBar\PromptButtonBarViewModel.cs" />
+    <Compile Include="Controls\Prompts\PromptButtons\PromptButtons.xaml.cs">
       <DependentUpon>PromptButtons.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Prompts\PromptButtonsViewModel.cs" />
+    <Compile Include="Controls\Prompts\PromptButtons\PromptButtonsViewModel.cs" />
     <Compile Include="Controls\Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
@@ -251,6 +259,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DropdownDialog\DropdownDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ImageIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -267,7 +279,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Prompts\PromptButtons.xaml">
+    <Page Include="Controls\Prompts\PromptButtonBar\PromptButtonBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Prompts\PromptButtons\PromptButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

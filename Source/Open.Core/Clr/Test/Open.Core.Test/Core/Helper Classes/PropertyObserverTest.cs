@@ -116,6 +116,25 @@ namespace Open.Core.Common.Test.Core.Common.Helper_Classes
         }
 
         [TestMethod]
+        public void ShouldFireOnce()
+        {
+            var stub = new Stub();
+
+            var fireCount = 0;
+            Action handler = () => { fireCount++; };
+
+            var observer = new PropertyObserver<Stub>(stub)
+                .RegisterHandler(s => s.Text, handler)
+                .RegisterHandler(s => s.Number, s => {  });
+
+            stub.Text = "Hello";
+            stub.Number = 50;
+
+            fireCount.ShouldBe(1);
+        }
+
+
+        [TestMethod]
         public void ShouldHaveFluentApiForUnregisteringHandlers()
         {
             var stub = new Stub();

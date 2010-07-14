@@ -1,0 +1,16 @@
+﻿<UserControl 
+    x:Class="Open.Core.UI.Controls.PromptButtons"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls">
+
+    <StackPanel x:Name="root" Orientation="Horizontal" x:FieldModifier="private" Visibility="Collapsed">
+        <Controls:ViewFactoryContent ViewFactory="{Binding BackButton}" />
+        <Controls:ViewFactoryContent ViewFactory="{Binding NextButton}" />
+
+        <Controls:ViewFactoryContent ViewFactory="{Binding AcceptButton}" />
+        <Controls:ViewFactoryContent ViewFactory="{Binding DeclineButton}" />
+        <Controls:ViewFactoryContent ViewFactory="{Binding CancelButton}" />
+    </StackPanel>
+
+</UserControl>

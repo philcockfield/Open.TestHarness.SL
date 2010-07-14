@@ -27,21 +27,24 @@ namespace Open.Core.Common
     public partial class PropertyObserver<TPropertySource> 
     {
         #region Event Handlers
-        private void Handle_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             ProcessEvent((TPropertySource)sender, e.PropertyName);
         }
         #endregion
 
         #region Internal (calls made from master class)
+        private bool isSourceRegistered;
         private void RegisterHandler(TPropertySource propertySource, string propertyName)
         {
-            propertySource.PropertyChanged += Handle_PropertyChanged;
+            if (isSourceRegistered) return;
+            propertySource.PropertyChanged += OnPropertyChanged;
+            isSourceRegistered = true;
         }
 
         private void UnregisterHandler(TPropertySource propertySource, string propertyName)
         {
-            propertySource.PropertyChanged -= Handle_PropertyChanged;
+            propertySource.PropertyChanged -= OnPropertyChanged;
         }
         #endregion
     }

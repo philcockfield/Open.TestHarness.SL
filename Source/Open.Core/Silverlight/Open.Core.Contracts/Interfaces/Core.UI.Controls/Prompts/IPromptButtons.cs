@@ -29,6 +29,9 @@ namespace Open.Core.UI.Controls
     /// <summary>A set of buttons that prompt the user (typically within a dialog box).</summary>
     public interface IPromptButtons : IViewFactory, INotifyPropertyChanged, IDisposable
     {
+        /// <summary>Gets or sets the configuration of the buttons.</summary>
+        PromptButtonConfiguration Configuration { get; set; }
+
         /// <summary>Gets the button used to accept the prompt (OK, Yes).</summary>
         IButton AcceptButton { get; }
 
@@ -37,6 +40,18 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets the button used to cancel the operation leaving all state intact (Cancel, Ignore).</summary>
         IButton CancelButton { get; }
+
+        /// <summary>Gets the button used to move next in a wizard sequence.</summary>
+        IButton NextButton { get; }
+
+        /// <summary>Gets the button used to move back in a wizard sequence.</summary>
+        IButton BackButton { get; }
+
+        /// <summary>Gets or sets un-associated buttons (eg. Yes/No and Cancel).</summary>
+        double LargeSpacing { get; set; }
+
+        /// <summary>Gets or sets the spacing between associated buttons (eg. Yes and No).</summary>
+        double SmallSpacing { get; set; }
 
         /// <summary>Retrieves the button corresponding to the given type.</summary>
         /// <param name="buttonType">The type of prompt button to retrieve.</param>

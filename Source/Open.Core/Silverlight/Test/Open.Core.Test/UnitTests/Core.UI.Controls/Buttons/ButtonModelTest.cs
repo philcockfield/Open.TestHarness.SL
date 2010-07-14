@@ -8,7 +8,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.Buttons
 {
-    [Tag("button")]
+    [Tag("foo")]
     [TestClass]
     public class ButtonModelTest : SilverlightUnitTest
     {
@@ -46,6 +46,12 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.Buttons
         public void ShouldBeEnabledByDefault()
         {
             button.IsEnabled.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldBeVisibleByDefault()
+        {
+            button.IsVisible.ShouldBe(true);
         }
 
         [TestMethod]
