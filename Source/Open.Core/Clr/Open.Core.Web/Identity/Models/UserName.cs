@@ -22,18 +22,11 @@
 
 namespace Open.Core.Identity
 {
-    /// <summary>The basic profile information returned from an OpenId provider.</summary>
-    public class OpenIdProfile
+    /// <summary>The name of a user (returned from an identity provider).</summary>
+    public class UserName
     {
-        public string Identifier { get; set; }
-        public string DisplayName { get; set; }
-        public string Email { get; set; }
-        public string VerifiedEmail { get; set; }
-        public string PreferredUserName { get; set; }
-        public string ProviderName { get; set; }
-
-        public string GivenName { get; set; }
-        public string FamilyName { get; set; }
-        public string FormattedName { get; set; }
+        public string Given { get; set; }
+        public string Family { get; set; }
+        public string Formatted { get; set; }
     }
 }

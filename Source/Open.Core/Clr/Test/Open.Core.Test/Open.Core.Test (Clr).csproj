@@ -53,6 +53,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\..\..\..\..\Lib\Moq.CLR\Moq.dll</HintPath>
@@ -92,6 +93,7 @@
     <Compile Include="Core.Testing\Extensions\MockTestingExtensionsTest.cs" />
     <Compile Include="Core.UI\IconNameProcessor.cs" />
     <Compile Include="Core.UI\IconTest.cs" />
+    <Compile Include="Core.Web\Identity\OpenIdAuthenticationTest.cs" />
     <Compile Include="Core\Attributes\ViewTestAttributeTest.cs" />
     <Compile Include="Core\Attributes\ViewTestClassAttributeTest.cs" />
     <Compile Include="Core\Base Classes\AutoPropertyManagerTest.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Core\Extensions\UriExtensionsTest.cs" />
     <Compile Include="Core\Extensions\VisualTreeExtensionsTest.cs" />
     <Compile Include="Core\Extensions\XExtensions.Test.cs" />
+    <Compile Include="Core\Helper Classes\DynamicXmlTest.cs" />
     <Compile Include="Core\Helper Classes\PropertyObserverTest.cs" />
     <Compile Include="Core\Helper Classes\SelectionManagerTest.cs" />
     <Compile Include="Core\Helper Classes\SyncValueToHandlerTest.cs" />
@@ -150,6 +153,10 @@
     <ProjectReference Include="..\..\Open.Core.UI\Open.Core.UI.csproj">
       <Project>{FF0BAE2A-4D48-42AE-95C8-FDEB9ACC3011}</Project>
       <Name>Open.Core.UI %28Open.Core\Clr\Open.Core.UI%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core.Web\Open.Core.Web.csproj">
+      <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
+      <Name>Open.Core.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\Open.Core.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>

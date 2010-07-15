@@ -212,6 +212,9 @@
     <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\DelayedAction.cs">
       <Link>Helper Classes\DelayedAction.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\DynamicXml.cs">
+      <Link>Helper Classes\DynamicXml.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Open.Core\Helper Classes\PropertyObserver.cs">
       <Link>Helper Classes\PropertyObserver.cs</Link>
     </Compile>

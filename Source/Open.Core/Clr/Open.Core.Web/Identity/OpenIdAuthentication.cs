@@ -41,7 +41,7 @@ namespace Open.Core.Identity
         /// <remarks>
         ///     See: https://rpxnow.com/relying_parties/listbox-me/setup_tokenurl#steps
         /// </remarks>
-        public static OpenIdProfile GetProfileFromJanRain(string apiKey, string token)
+        public static string GetAuthInfo(string apiKey, string token)
         {
             // Fetch authentication info from JanRain.
             var url = new Uri(@"https://rpxnow.com/api/v2/auth_info");
@@ -64,41 +64,52 @@ namespace Open.Core.Identity
             responseReader.Close();
 
             // Finish up.
-            return ToProfile(responseXml);
+            return responseXml;
         }
 
-        private static OpenIdProfile ToProfile(string responseXml)
+        /// <summary>Calls the 'auth_info' method on the JanRain server and parses the response.</summary>
+        /// <param name="apiKey">The API key of the JanRain account.  This can be retrieved from the account page.  See link below.</param>
+        /// <param name="token">
+        ///     The token returned by the initial redirect to the JanRain server in the POST data of the return call.<br/>
+        ///     To retrieve this use: Request["token"]
+        /// </param>
+        /// <remarks>
+        ///     See: https://rpxnow.com/relying_parties/listbox-me/setup_tokenurl#steps
+        /// </remarks>
+        public static AuthenticationProfile GetAuthenticationProfile(string apiKey, string token)
+        {
+            return ToProfile(GetAuthInfo(apiKey, token));
+        }
+
+        /// <summary>Parses the given 'auth_info' XML into an 'AuthenticationProfile' object.</summary>
+        /// <param name="profileXml">The raw XML string.</param>
+        public static AuthenticationProfile ToProfile(string profileXml)
         {
             // Setup initial conditions.
-            if (responseXml.IsNullOrEmpty(true)) throw new ArgumentNullException("responseXml");
+            if (profileXml.IsNullOrEmpty(true)) throw new ArgumentNullException("profileXml");
 
-            // Parse XML.
-            //var xmlRoot = XDocument.Parse(responseXml).Root;
-            //if (xmlRoot == null) throw new ArgumentException("The given XML did not contains any data.");
-
-            //var xmlProfile = xmlRoot.FirstNode as XElement;
-            //if (xmlProfile == null) throw new ArgumentException("The given XML does not contain a <profile> element.");
-
-            //var xmlName = xmlProfile.Element("name");
-            //if (xmlName == null) throw new ArgumentException("The given XML does not contain a <name> element.");
-
-            var xmlProfile = XDocument.Parse(responseXml).Root.FirstNode as XElement;
-            var xmlName = xmlProfile.Element("name");
-
+            // Create the dynamic XML wrapper.
+            dynamic root = new DynamicXml(profileXml);
+            var profile = root.profile;
 
             // Construct the profile object.
-            return new OpenIdProfile
-                       {
-                           Identifier = xmlProfile.GetChildValue("identifier"),
-                           DisplayName = xmlProfile.GetChildValue("displayName"),
-                           Email = xmlProfile.GetChildValue("email"),
-                           VerifiedEmail = xmlProfile.GetChildValue("verifiedEmail"),
-                           PreferredUserName = xmlProfile.GetChildValue("preferredUsername"),
-                           ProviderName = xmlProfile.GetChildValue("providerName"),
-                           GivenName = xmlName.GetChildValue("givenName"),
-                           FamilyName = xmlName.GetChildValue("familyName"),
-                           FormattedName = xmlName.GetChildValue("formatted"),
-                       };
+            var userProfile = new AuthenticationProfile
+                                  {
+                                      Identifier = profile.identifier.Value,
+                                      DisplayName = profile.displayName.Value,
+                                      Email = profile.email.Value,
+                                      VerifiedEmail = profile.verifiedEmail.Value,
+                                      PreferredUserName = profile.preferredUsername.Value,
+                                      AuthenticationProvider = profile.providerName.Value,
+                                  };
+
+            var name = profile.name;
+            userProfile.Name.Given = name.givenName.Value;
+            userProfile.Name.Family = name.familyName.Value;
+            userProfile.Name.Formatted = name.formatted.Value;
+
+            // Finish up.
+            return userProfile;
         }
     }
 }

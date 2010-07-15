@@ -107,8 +107,46 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
-    <Compile Include="Helper Classes\AutoPropertyManager.cs" />
-    <Compile Include="Helper Classes\WeakDelegateReference.cs" />
+    <Compile Include="Helper Classes\AutoPropertyManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\DataContextObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\DataContextPropertyObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\DelayedAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\DoubleClickMonitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\DynamicXml.cs" />
+    <Compile Include="Helper Classes\HtmlWindowCloseMonitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\PropertyObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\PropertyObserver.silverlight.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\SelectionManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\StackArranger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\SyncValueToHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\UrlHash.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper Classes\WeakDelegateReference.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\Base Classes\ModelBase.INotifyDataErrorInfo.partial.cs" />
     <Compile Include="Base Classes\NotifyPropertyChangedBase.partial.silverlight.cs" />
     <Compile Include="Model\ErrorInfo.cs" />
@@ -119,7 +157,6 @@
     <Compile Include="Extensions\ReflectionExtensions.silverlight.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helper Classes\HtmlWindowCloseMonitor.cs" />
     <Compile Include="Logging\Output\OutputLine.cs" />
     <Compile Include="Logging\Output\OutputWriter.cs" />
     <Compile Include="Logging\Output\Output.cs">
@@ -156,12 +193,6 @@
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Collection\ProcessQueue.cs" />
-    <Compile Include="Helper Classes\DataContextObserver.cs" />
-    <Compile Include="Helper Classes\DataContextPropertyObserver.cs" />
-    <Compile Include="Helper Classes\PropertyObserver.silverlight.cs" />
-    <Compile Include="Helper Classes\PropertyObserver.cs" />
-    <Compile Include="Helper Classes\SelectionManager.cs" />
-    <Compile Include="Helper Classes\SyncValueToHandler.cs" />
     <Compile Include="Network\Callback.cs" />
     <Compile Include="Testing\RandomData.cs" />
     <Compile Include="Testing\Should.cs" />
@@ -180,14 +211,10 @@
     <Compile Include="Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs" />
     <Compile Include="Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs" />
     <Compile Include="Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs" />
-    <Compile Include="Helper Classes\DoubleClickMonitor.cs" />
-    <Compile Include="Helper Classes\StackArranger.cs" />
-    <Compile Include="Helper Classes\UrlHash.cs" />
     <Compile Include="Network\AssemblyLoader.cs" />
     <Compile Include="Network\LoaderBase.cs" />
     <Compile Include="Network\TestableOpenReadCompletedEventArgs.cs" />
     <Compile Include="Network\TestableWebClient.cs" />
-    <Compile Include="Helper Classes\DelayedAction.cs" />
     <Compile Include="Util\ReflectionUtil.cs" />
     <Compile Include="Util\ServiceUtil.cs" />
   </ItemGroup>
