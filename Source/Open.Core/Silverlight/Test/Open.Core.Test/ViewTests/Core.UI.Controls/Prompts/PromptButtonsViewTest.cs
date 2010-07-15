@@ -9,13 +9,15 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Prompts
     {
         #region Head
         [Import]
-        public IPromptButtons ButtonBar { get; set; }
+        public IPromptButtons Buttons { get; set; }
 
         [ViewTest(Default = true, IsVisible = false)]
         public void Initialize(PromptButtonsTestControl control)
         {
             CompositionInitializer.SatisfyImports(this);
-            control.content.ViewFactory = ButtonBar;
+            control.content.ViewFactory = Buttons;
+
+            Buttons.Click += (s, e) => Output.Write("!! Click: " + e.ButtonType);
         }
         #endregion
 
@@ -23,7 +25,7 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Prompts
         [ViewTest]
         public void Change_Configuration(PromptButtonsTestControl control, PromptButtonConfiguration configuration = PromptButtonConfiguration.YesNoCancel)
         {
-            ButtonBar.Configuration = configuration;
+            Buttons.Configuration = configuration;
         }
         #endregion
     }

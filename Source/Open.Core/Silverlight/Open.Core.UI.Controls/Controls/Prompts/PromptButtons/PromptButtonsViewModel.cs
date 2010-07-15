@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows;
@@ -33,11 +34,23 @@ namespace Open.Core.UI.Controls
     [Export(typeof(IPromptButtons))]
     public class PromptButtonsViewModel : ViewModelBase, IPromptButtons
     {
+        #region Events
+        /// <summary>Fires when one of the prompt buttons in the set is clicked.</summary>
+        public event EventHandler<PromptButtonClickEventArgs> Click;
+        private void FireClick(PromptResult button) { if (Click != null) Click(this, new PromptButtonClickEventArgs(button)); }
+        #endregion
+
         #region Head
         private static ButtonImporter importer;
         private const PromptButtonConfiguration DefaultConfiguration = PromptButtonConfiguration.OkCancel;
         private const double DefaultLargeSpacing = 8;
         private const double DefaultSmallSpacing = 2;
+        private readonly List<ButtonItem> buttons = new List<ButtonItem>();
+        private class ButtonItem
+        {
+            public IButton Button { get; set; }
+            public PromptResult Type { get; set; }
+        }
 
         /// <summary>Constructor.</summary>
         public PromptButtonsViewModel()
@@ -46,12 +59,11 @@ namespace Open.Core.UI.Controls
             if (importer == null) importer = new ButtonImporter();
 
             // Create buttons.
-            AcceptButton = CreateButton();
-            DeclineButton = CreateButton();
-            CancelButton = CreateButton();
-            NextButton = CreateButton();
-            BackButton = CreateButton();
-            Buttons = new[] { AcceptButton, DeclineButton, CancelButton, NextButton, BackButton };
+            AcceptButton = CreateButton(PromptResult.Accept);
+            DeclineButton = CreateButton(PromptResult.Decline);
+            CancelButton = CreateButton(PromptResult.Cancel);
+            NextButton = CreateButton(PromptResult.Next);
+            BackButton = CreateButton(PromptResult.Back);
 
             // Finish up.
             UpdateConfiguration(Configuration);
@@ -91,7 +103,7 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Properties : ViewModel
-        public IEnumerable<IButton> Buttons { get; private set; }
+        public IEnumerable<IButton> Buttons { get { return buttons.Select(m => m.Button); } }
         #endregion
 
         #region Methods
@@ -116,10 +128,16 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Internal
-        private static IButton CreateButton()
+        private IButton CreateButton(PromptResult type)
         {
-            var button = importer.ButtonFactory.CreateExport().Value;
-            return button;
+            var item = new ButtonItem
+                           {
+                               Button = importer.ButtonFactory.CreateExport().Value,
+                               Type = type,
+                           };
+            item.Button.Click += delegate { FireClick(item.Type); };
+            buttons.Add(item);
+            return item.Button;
         }
 
         private void UpdateConfiguration(PromptButtonConfiguration configuration)
@@ -131,6 +149,9 @@ namespace Open.Core.UI.Controls
             // Set the specified configuration.
             switch (configuration)
             {
+                case PromptButtonConfiguration.None:
+                    break;
+
                 case PromptButtonConfiguration.YesNo:
                     AcceptButton.IsVisible = true;
                     DeclineButton.IsVisible = true;

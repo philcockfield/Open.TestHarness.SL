@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using Open.Core.Common;
+using Open.Core.Common.Testing;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
@@ -22,9 +23,7 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
             CompositionInitializer.SatisfyImports(this);
             control.ViewFactory = Dialog;
 
-            Set__Content(control);
-            DelayedAction.Invoke(0.3, action: () => Dialog.IsShowing = true);
-//            Dialog.IsShowing = true;
+            DelayedAction.Invoke(0.6, action: () => Show(control));
 
             Dialog.Showing += delegate { Output.Write(Colors.Green, "!! Showing"); };
             Dialog.Shown += delegate { Output.Write(Colors.Red, "!! Shown"); Output.Break(); };
@@ -35,10 +34,62 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
 
         #region Tests
         [ViewTest]
+        public void Show(ViewFactoryContent control)
+        {
+            Dialog.Show(
+                    myContent,
+                    result => Output.Write("Callback - OnComplete: " + result));
+        }
+
+        [ViewTest]
+        public void Show(
+                            ViewFactoryContent control,
+                            PromptButtonConfiguration buttonConfiguration = PromptButtonConfiguration.YesNoCancel,
+                            DialogSize sizeMode = DialogSize.Fill)
+        {
+            Dialog.Show(
+                            myContent,
+                            result => Output.Write("Callback - OnComplete: " + result),
+                            sizeMode: sizeMode,
+                            buttonConfiguration: buttonConfiguration);
+        }
+
+        [ViewTest]
         public void Toggle__IsShowing(ViewFactoryContent control)
         {
+            Set__Content(control);
             Dialog.IsShowing = !Dialog.IsShowing;
             Output.Write("IsShowing: " + Dialog.IsShowing);
+        }
+
+        [ViewTest]
+        public void Disable_Buttons(ViewFactoryContent control)
+        {
+            foreach (PromptResult buttonType in typeof(PromptResult).GetEnumValues())
+            {
+                Dialog.ButtonBar.Buttons.GetButton(buttonType).IsEnabled = false;
+            }
+        }
+
+        [ViewTest]
+        public void Enable_Buttons(ViewFactoryContent control)
+        {
+            foreach (PromptResult buttonType in typeof(PromptResult).GetEnumValues())
+            {
+                Dialog.ButtonBar.Buttons.GetButton(buttonType).IsEnabled = true;
+            }
+        }
+
+        [ViewTest]
+        public void Load_ModelessMessageContent(ViewFactoryContent control)
+        {
+            var message = new ModelessMessageDialogContentViewModel
+                              {
+                                  Title = "My Title",
+                                  Message = RandomData.LoremIpsum(50)
+                              };
+            message.Initialize(Dialog);
+            Dialog.Show(message, result => Output.Write("Callback - OnComplete: " + result));
         }
 
         [ViewTest]
@@ -96,6 +147,7 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
         }
         #endregion
 
+        #region Mocks
         public class MyContent : ViewModelBase, IViewFactory
         {
             public double Width
@@ -112,17 +164,12 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
 
             public FrameworkElement CreateView()
             {
-                var view = new Placeholder
-                           {
-                               DataContext = this,
-                               Text = "Content",
-                           };
-
+                var view = new SampleDialogContent { DataContext = this };
                 view.SetBinding(FrameworkElement.WidthProperty, new Binding("Width"));
                 view.SetBinding(FrameworkElement.HeightProperty, new Binding("Height"));
-
                 return view;
             }
         }
+        #endregion
     }
 }

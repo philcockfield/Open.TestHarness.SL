@@ -149,6 +149,9 @@
       <DependentUpon>IButton.TestControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewTests\Core.UI.Controls\Dialogs\DropdownDialogViewTest.cs" />
+    <Compile Include="ViewTests\Core.UI.Controls\Dialogs\SampleDialogContent.xaml.cs">
+      <DependentUpon>SampleDialogContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewTests\Core.UI.Controls\Primitives\BackgroundViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Primitives\BorderViewTest.cs" />
     <Compile Include="ViewTests\Core.UI.Controls\Buttons\IButtonViewTest.cs" />
@@ -319,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewTests\Core.UI.Controls\Buttons\IButton.TestControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewTests\Core.UI.Controls\Dialogs\SampleDialogContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

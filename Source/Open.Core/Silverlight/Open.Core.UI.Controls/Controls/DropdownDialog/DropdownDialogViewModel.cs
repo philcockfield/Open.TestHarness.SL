@@ -33,7 +33,7 @@ namespace Open.Core.UI.Controls
     [Export(typeof(IDropdownDialog))]
     public class DropdownDialogViewModel : ViewModelBase, IDropdownDialog
     {
-        #region Event Handlers
+        #region Events
         public event EventHandler Showing;
         private void FireShowing(){if (Showing != null) Showing(this, new EventArgs());}
 
@@ -44,7 +44,7 @@ namespace Open.Core.UI.Controls
         private void FireHiding(){if (Hiding != null) Hiding(this, new EventArgs());}
 
         public event EventHandler Hidden;
-        internal void FireHidden(){if (Hidden != null) Hidden(this, new EventArgs());}
+        private void FireHidden(){if (Hidden != null) Hidden(this, new EventArgs());}
         #endregion
 
         #region Head
@@ -54,12 +54,18 @@ namespace Open.Core.UI.Controls
         private const DialogSize DefaultSizeMode = DialogSize.Fixed;
         private static readonly Thickness DefaultPadding = new Thickness(8);
         private static readonly Thickness DefaultMargin = new Thickness(20);
+        private const bool DefaultMonitorKeys = true;
+
+        private Action<PromptResult> onShowComplete;
+        private PromptResult? lastClickType;
 
         /// <summary>Constructor.</summary>
         public DropdownDialogViewModel()
         {
-            // Set default values.
+            // Setup initial conditions.
             var black = Colors.Black.ToBrush();
+
+            // Set default values.
             Mask = new BackgroundModel { Color = black, Opacity = 0.2 };
             Background = new BackgroundModel
                              {
@@ -82,6 +88,55 @@ namespace Open.Core.UI.Controls
                                                 Border = { Color = black, Thickness = new Thickness(0, 1, 0, 0), Opacity = 0.1 }
                                             }
                             };
+
+            // Wire up events.
+            Buttons.Click += (s, e) => OnPromptButtonClick(e.ButtonType);
+
+            // Finish up.
+            OnPropertyChanged<T>(m => m.ButtonBar, m => m.Buttons, m => m.Mask, m => m.Background);
+        }
+        #endregion
+
+        #region Event Handlers
+        private void OnPromptButtonClick(PromptResult buttonType)
+        {
+            lastClickType = buttonType;
+            switch (buttonType)
+            {
+                case PromptResult.Accept:
+                case PromptResult.Decline:
+                case PromptResult.Cancel:
+                    IsShowing = false;
+                    break;
+
+                case PromptResult.Next:
+                case PromptResult.Back:
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(buttonType.ToString());
+            }
+        }
+
+        internal void OnHidden()
+        {
+            // Complete a 'Show' interaction sequence if one is in process.
+            var buttonType = lastClickType == null ? PromptResult.Cancel : lastClickType.Value;
+            if (onShowComplete != null) onShowComplete(buttonType);
+
+            // Finish up.
+            lastClickType = null;
+            onShowComplete = null;
+            FireHidden();
+        }
+
+        internal void OnEnterKeyPress()
+        {
+            if (IsShowing && MonitorEnterKey) Buttons.AcceptButton.InvokeClick();
+        }
+
+        internal void OnEscapeKeyPress()
+        {
+            if (IsShowing && MonitorEscapeKey) Buttons.CancelButton.InvokeClick(); ;
         }
         #endregion
 
@@ -97,7 +152,7 @@ namespace Open.Core.UI.Controls
                 }
             }
         }
-
+        
         public DialogSize SizeMode
         {
             get { return Property.GetValue<T, DialogSize>(m => m.SizeMode, DefaultSizeMode); }
@@ -140,15 +195,51 @@ namespace Open.Core.UI.Controls
             set { Property.SetValue<T, IViewFactory>(m => m.Content, value); }
         }
 
+        public bool MonitorEnterKey
+        {
+            get { return Property.GetValue<T, bool>(m => m.MonitorEnterKey, DefaultMonitorKeys); }
+            set { Property.SetValue<T, bool>(m => m.MonitorEnterKey, value, DefaultMonitorKeys); }
+        }
+
+        public bool MonitorEscapeKey
+        {
+            get { return Property.GetValue<T, bool>(m => m.MonitorEscapeKey, DefaultMonitorKeys); }
+            set { Property.SetValue<T, bool>(m => m.MonitorEscapeKey, value, DefaultMonitorKeys); }
+        }
+
         public IBackground Mask { get; private set; }
         public IBackground Background { get; private set; }
         public IPromptButtonBar ButtonBar { get; private set; }
+        public IPromptButtons Buttons { get { return ButtonBar == null ? null : ButtonBar.Buttons; } }
         #endregion
 
         #region Methods
         public FrameworkElement CreateView()
         {
-            return new DropdownDialog {ViewModel = this};
+            return new DropdownDialog { ViewModel = this };
+        }
+
+        public bool Show(
+                        IViewFactory content, 
+                        Action<PromptResult> onComplete, 
+                        DialogSize? sizeMode, 
+                        PromptButtonConfiguration? buttonConfiguration)
+        {
+            // Setup initial conditions.
+            if (IsShowing) return false;
+            if (content == null) throw new ArgumentNullException("content");
+
+            // Update state.
+            if (sizeMode != null) SizeMode = sizeMode.Value;
+            if (buttonConfiguration != null) Buttons.Configuration = buttonConfiguration.Value;
+            Content = content;
+            onShowComplete = onComplete;
+
+            // Reveal the dialog.
+            IsShowing = true;
+
+            // Finish up.
+            return true;
         }
         #endregion
     }

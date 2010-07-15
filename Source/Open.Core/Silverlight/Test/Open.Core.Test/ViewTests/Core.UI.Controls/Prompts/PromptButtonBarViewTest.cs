@@ -21,6 +21,8 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Prompts
 
             ButtonBar.Background.Color = Colors.Black.ToBrush();
             ButtonBar.Background.Opacity = 0.1;
+
+            ButtonBar.Buttons.Click += (s, e) => Output.Write("!! Click: " + e.ButtonType);
         }
         #endregion
 

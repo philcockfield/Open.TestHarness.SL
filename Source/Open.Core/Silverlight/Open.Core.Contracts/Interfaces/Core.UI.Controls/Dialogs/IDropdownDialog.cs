@@ -83,6 +83,9 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets the prompt buttons.</summary>
         IPromptButtonBar ButtonBar { get; }
 
+        /// <summary>Gets the prompt buttons within the button bar (exposed here for convenience, reads from ButtonBar).</summary>
+        IPromptButtons Buttons { get; }
+
         /// <summary>Gets or sets the padding within the dialog (around the Content).</summary>
         Thickness Padding { get; set; }
 
@@ -91,5 +94,19 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets the content of the dialog.</summary>
         IViewFactory Content { get; set; }
+
+        /// <summary>Gets or sets whether the Enter causes the 'Accept' key to be invoked.</summary>
+        bool MonitorEnterKey { get; set; }
+
+        /// <summary>Gets or sets whether the Escape key causes the 'Decline' action to be invoked.</summary>
+        bool MonitorEscapeKey { get; set; }
+
+        /// <summary>Shows the dialog box with 'on complete' callback support.</summary>
+        /// <param name="content">The content to show in the dialog box.</param>
+        /// <param name="onComplete">Function to callback with when complete (passes the result).</param>
+        /// <param name="sizeMode">Optional. The size mode to use (Null: no change to current).</param>
+        /// <param name="buttonConfiguration">Optional. The prompt button configuration to use (Null: no change to current).</param>
+        /// <returns>True if the dialog was shown, or False if the dialog was already being shown to the user.</returns>
+        bool Show(IViewFactory content, Action<PromptResult> onComplete, DialogSize? sizeMode = null, PromptButtonConfiguration? buttonConfiguration = null);
     }
 }

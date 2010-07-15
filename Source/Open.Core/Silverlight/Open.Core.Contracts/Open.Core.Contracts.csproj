@@ -81,12 +81,14 @@
     </Compile>
     <Compile Include="Attributes\Core.UI.Controls\ExportToolBarViewAttribute.cs" />
     <Compile Include="Event Helpers\ToolState.cs" />
+    <Compile Include="EventArgs\PromptButtonClickEventArgs.cs" />
     <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IContentContainer.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IDialogPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Dialogs\IDropdownDialog.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\Dialogs\IModelessMessageDialogContent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\INamedControlList.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />

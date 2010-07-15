@@ -5,7 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <!--General-->
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/ProgressBar/ProgressBarFlat.xaml" />
-        
+
         <!--Containers-->
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/AcceptCancelPresenter/AcceptCancelPresenter.xaml" />
         <ResourceDictionary Source="/Open.Core.UI.Controls;component/Controls/Containers/CollapsingContent/CollapsingContent.xaml" />

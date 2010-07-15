@@ -1,0 +1,11 @@
+﻿<UserControl 
+    x:Class="Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs.SampleDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Open.Core.UI.Controls;assembly=Open.Core.UI.Controls" 
+    xmlns:Common="clr-namespace:Open.Core.Common;assembly=Open.Core">
+    <Grid>
+        <Controls:Placeholder />
+        <TextBox FontSize="30" VerticalAlignment="Top" Margin="20" Text="Text" Common:Focus.IsDefault="True" />
+    </Grid>
+</UserControl>

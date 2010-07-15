@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Open.Core.Common;
 using Open.Core.UI.Common;
 
@@ -43,8 +44,15 @@ namespace Open.Core.UI.Controls
 
             // Wire up events.
             dataContextObserver = new DataContextObserver(this, OnDataContextChanged);
-            content.SizeChanged += delegate { UpdateDialogPositionAndSize(); };
             SizeChanged += delegate { UpdateDialogPositionAndSize(); };
+            KeyDown += OnKeyDown;
+            Loaded += delegate
+                          {
+                              content.SizeChanged += delegate { UpdateDialogPositionAndSize(); };
+                          };
+
+            // Finish up.
+            SetTop(-50000);
         }
         #endregion
 
@@ -64,11 +72,19 @@ namespace Open.Core.UI.Controls
 
             // Finish up.
             UpdateDialogPositionAndSize();
+            UpdateElementVisibility();
         }
 
         private void OnIsShowingChanged()
         {
             AnimateDialog();
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (ViewModel == null) return;
+            if (e.Key == Key.Escape) ViewModel.OnEscapeKeyPress();
+            if (e.Key == Key.Enter) ViewModel.OnEnterKeyPress();
         }
         #endregion
 
@@ -89,7 +105,13 @@ namespace Open.Core.UI.Controls
         #region Internal
         private void AnimateDialog()
         {
-            if (ViewModel != null) AnimateDialog(ViewModel.SlideDuration);
+            if (ViewModel == null) return;
+            if (content.ViewFactory != null && !content.IsViewLoaded)
+            {
+                new AnimateWhenLoaded(this, content);
+                return;
+            }
+            AnimateDialog(ViewModel.SlideDuration);
         }
 
         private void AnimateDialog(double duration)
@@ -97,7 +119,7 @@ namespace Open.Core.UI.Controls
             // Setup initial conditions.
             if (ViewModel == null) return;
             animationCount++;
-            UpdateDialogSize();
+            UpdateDialogPositionAndSize();
 
             // Start the mask-fade in animation.
             mask.Visibility = Visibility.Visible;
@@ -118,7 +140,7 @@ namespace Open.Core.UI.Controls
                                                                 if (IsShowing) FocusContent();
                                                                 if (ViewModel != null)
                                                                 {
-                                                                    if (IsShowing) ViewModel.FireShown(); else ViewModel.FireHidden();
+                                                                    if (IsShowing) ViewModel.FireShown(); else ViewModel.OnHidden();
                                                                 }
                                                             });
         }
@@ -137,6 +159,7 @@ namespace Open.Core.UI.Controls
         {
             mask.Visibility = IsShowing ? Visibility.Visible : Visibility.Collapsed;
             dropShadow.Opacity = IsShowing && !IsAnimating ? ViewModel.DropShadowOpacity : 0;
+            IsHitTestVisible = IsShowing;
         }
 
         private double GetDialogLeft()
@@ -165,20 +188,24 @@ namespace Open.Core.UI.Controls
             UpdateDialogSize();
         }
 
-        private void UpdateDialogPosition()
+        private void UpdateDialogPosition(bool updateX = true, bool updateY = true)
         {
             // Setup initial conditions.
             if (!IsInitalized) return;
 
             // Center the dialog (X).
-            Canvas.SetLeft(contentContainer, GetDialogLeft());
+            if (updateX) Canvas.SetLeft(contentContainer, GetDialogLeft());
 
             // Set top value (Y).
-            if (!IsAnimating)
+            if (updateY && !IsAnimating)
             {
-                var y = IsShowing ? 0 : -500000;
-                Canvas.SetTop(contentContainer, y);
+                SetTop(IsShowing ? 0 : -500000);
             }
+        }
+
+        private void SetTop(double y)
+        {
+            Canvas.SetTop(contentContainer, y);
         }
 
         private void UpdateDialogSize()
@@ -220,5 +247,37 @@ namespace Open.Core.UI.Controls
             contentContainer.Height = (ActualHeight - DialogMargin.Bottom).WithinBounds(0, double.MaxValue);
         }
         #endregion
+
+        /// <summary>Provides single callback for an animate pause waiting for content to be loaded.</summary>
+        private class AnimateWhenLoaded
+        {
+            private DropdownDialog parent;
+            private ViewFactoryContent content;
+
+            public AnimateWhenLoaded(DropdownDialog parent, ViewFactoryContent content)
+            {
+                this.parent = parent;
+                this.content = content;
+                parent.SetTop(-50000);
+                content.IsViewLoadedChanged += OnIsLoaded;
+            }
+            private void OnIsLoaded(object sender, EventArgs e)
+            {
+                // Unwire from the loaded event.
+                content.IsViewLoadedChanged -= OnIsLoaded;
+
+                // Make sure the dialog is correctly sized and positioned.
+                parent.UpdateLayout();
+                parent.UpdateDialogSize();
+                parent.UpdateDialogPosition(updateY: false);
+
+                // Restart the animation.
+                parent.AnimateDialog();
+
+                // Finish up.
+                parent = null;
+                content = null;
+            }
+        }
     }
 }

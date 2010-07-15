@@ -29,6 +29,9 @@ namespace Open.Core.UI.Controls
     /// <summary>A set of buttons that prompt the user (typically within a dialog box).</summary>
     public interface IPromptButtons : IViewFactory, INotifyPropertyChanged, IDisposable
     {
+        /// <summary>Fires when one of the prompt buttons in the set is clicked.</summary>
+        event EventHandler<PromptButtonClickEventArgs> Click;
+
         /// <summary>Gets or sets the configuration of the buttons.</summary>
         PromptButtonConfiguration Configuration { get; set; }
 

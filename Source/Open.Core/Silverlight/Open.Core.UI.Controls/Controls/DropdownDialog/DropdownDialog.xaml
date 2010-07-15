@@ -39,17 +39,18 @@
 
                     <!--Content-->
                     <c:ViewFactoryContent 
-                        x:Name="content" 
-                        Grid.Row="0" 
-                        ViewFactory="{Binding Content}" 
-                        Margin="{Binding Padding}" 
-                        IsTabStop="False"
-                        x:FieldModifier="private" />
+                            x:Name="content" 
+                            Grid.Row="0" 
+                            ViewFactory="{Binding Content}" 
+                            Margin="{Binding Padding}" 
+                            IsTabStop="False"
+                            x:FieldModifier="private" />
 
                     <!--Prompt Button Bar-->
-                    <c:ViewFactoryContent Grid.Row="1" ViewFactory="{Binding ButtonBar}" IsTabStop="False" />
+                    <c:PromptButtonBar Grid.Row="1" DataContext="{Binding ButtonBar}" IsTabStop="False" />
                 </Grid>
-            </Grid >
+                
+            </Grid>
         </Canvas>
         
     </Grid>

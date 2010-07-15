@@ -120,6 +120,10 @@
       <DependentUpon>DropdownDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DropdownDialog\DropdownDialogViewModel.cs" />
+    <Compile Include="Controls\DropdownDialog\ModelessMessageDialogContent.xaml.cs">
+      <DependentUpon>ModelessMessageDialogContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DropdownDialog\ModelessMessageDialogContentViewModel.cs" />
     <Compile Include="Controls\DropShadow\DropShadow.ViewModel.cs" />
     <Compile Include="Controls\DropShadow\DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
@@ -260,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DropdownDialog\DropdownDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DropdownDialog\ModelessMessageDialogContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,6 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
@@ -32,8 +33,13 @@ namespace Open.Core.UI.Controls
     public partial class ViewFactoryContent : UserControl
     {
         #region Head
+        /// <summary>Fires when the 'IsViewLoaded' property changes.</summary>
+        public event EventHandler IsViewLoadedChanged;
+        private void FireIsViewLoadedChanged(){if (IsViewLoadedChanged != null) IsViewLoadedChanged(this, new EventArgs());}
+
         private readonly ContentContainerViewModel viewModel;
         private IViewFactory viewFactoryValue;
+        private bool isViewLoaded;
 
         /// <summary>Constructor.</summary>
         public ViewFactoryContent()
@@ -49,11 +55,38 @@ namespace Open.Core.UI.Controls
         {
             // Determine if the value has actually changed.
             if (ViewFactory == viewFactoryValue) return;
+            IsViewLoaded = false;
 
             // Update visual state.
             viewFactoryValue = ViewFactory;
             var view = ViewFactory == null ? null : viewFactoryValue.CreateView();
+
+            // Wire up events.
+            if (view != null) view.Loaded += OnViewLoaded;
+
+            // Insert into visual tree.
             viewModel.Content = view;
+        }
+
+        private void OnViewLoaded(object sender, RoutedEventArgs e)
+        {
+            var view = sender as FrameworkElement;
+            if (view != null) view.Loaded -= OnViewLoaded;
+            IsViewLoaded = true;
+        }
+        #endregion
+
+        #region Properties
+        /// <summary>Gets or sets whether the view has loaded.</summary>
+        public bool IsViewLoaded
+        {
+            get { return isViewLoaded; }
+            private set
+            {
+                if (value == IsViewLoaded) return;
+                isViewLoaded = value;
+                FireIsViewLoadedChanged();
+            }
         }
         #endregion
 

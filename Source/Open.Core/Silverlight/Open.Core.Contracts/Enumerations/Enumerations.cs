@@ -141,6 +141,7 @@ namespace Open.Core
     /// <summary>Various configurations of prompt buttons.</summary>
     public enum PromptButtonConfiguration
     {
+        None,
         YesNo,
         YesNoCancel,
         Ok,
