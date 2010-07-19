@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System.ComponentModel;
+using System.Windows.Controls;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
@@ -34,11 +35,14 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets the dialog this message is being hosted within (set via the 'Initialize' method).</summary>
         IDropdownDialog Dialog { get; }
 
-        /// <summary>Gets or sets the title of the content.</summary>
-        string Title { get; set; }
+        /// <summary>Gets the background for the message.</summary>
+        IBackground Background { get; }
 
-        /// <summary>Gets or sets the message.</summary>
-        string Message { get; set; }
+        /// <summary>Gets or sets the text of the message.</summary>
+        string Text { get; set; }
+
+        /// <summary>Gets or sets the icon (null if not required).</summary>
+        IImage Icon { get; }
 
         /// <summary>Initializes the message to work within the given dialog.</summary>
         /// <param name="dialog">The parent dialog box.</param>

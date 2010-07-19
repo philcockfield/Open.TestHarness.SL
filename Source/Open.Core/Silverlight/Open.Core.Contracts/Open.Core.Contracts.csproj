@@ -90,6 +90,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Dialogs\IDropdownDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Dialogs\IModelessMessageDialogContent.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\IDropShadow.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\IPager.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\INamedControlList.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Lists\ISelectionList.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Prompts\IPromptButtonBar.cs" />

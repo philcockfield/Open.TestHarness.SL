@@ -272,7 +272,7 @@ namespace Open.Core.UI.Controls
                 parent.UpdateDialogPosition(updateY: false);
 
                 // Restart the animation.
-                parent.AnimateDialog();
+                DelayedAction.Invoke(0.05, () => parent.AnimateDialog());
 
                 // Finish up.
                 parent = null;

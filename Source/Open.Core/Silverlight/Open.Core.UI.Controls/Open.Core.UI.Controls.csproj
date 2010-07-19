@@ -120,10 +120,10 @@
       <DependentUpon>DropdownDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DropdownDialog\DropdownDialogViewModel.cs" />
-    <Compile Include="Controls\DropdownDialog\ModelessMessageDialogContent.xaml.cs">
+    <Compile Include="Controls\DropdownDialog\ModelessMessage\ModelessMessageDialogContent.xaml.cs">
       <DependentUpon>ModelessMessageDialogContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DropdownDialog\ModelessMessageDialogContentViewModel.cs" />
+    <Compile Include="Controls\DropdownDialog\ModelessMessage\ModelessMessageDialogContentViewModel.cs" />
     <Compile Include="Controls\DropShadow\DropShadow.ViewModel.cs" />
     <Compile Include="Controls\DropShadow\DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
@@ -214,6 +214,10 @@
     <Compile Include="Controls\OutputLog\OutputLog.xaml.cs">
       <DependentUpon>OutputLog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Pager\Pager.xaml.cs">
+      <DependentUpon>Pager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Pager\PagerViewModel.cs" />
     <Compile Include="Controls\Placeholder.xaml.cs">
       <DependentUpon>Placeholder.xaml</DependentUpon>
     </Compile>
@@ -267,7 +271,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DropdownDialog\ModelessMessageDialogContent.xaml">
+    <Page Include="Controls\DropdownDialog\ModelessMessage\ModelessMessageDialogContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -278,6 +282,10 @@
     <Page Include="Controls\Lists\NamedControlList\NamedControlList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Pager\Pager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\PostIt.xaml">
       <SubType>Designer</SubType>

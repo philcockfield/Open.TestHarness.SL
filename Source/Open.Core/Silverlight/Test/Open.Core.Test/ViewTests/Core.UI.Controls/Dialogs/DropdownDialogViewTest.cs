@@ -24,6 +24,7 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
             control.ViewFactory = Dialog;
 
             DelayedAction.Invoke(0.6, action: () => Show(control));
+//            DelayedAction.Invoke(0.6, action: () => Load_ModelessMessageContent(control));
 
             Dialog.Showing += delegate { Output.Write(Colors.Green, "!! Showing"); };
             Dialog.Shown += delegate { Output.Write(Colors.Red, "!! Shown"); Output.Break(); };
@@ -80,16 +81,15 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
             }
         }
 
+        private ModelessMessageDialogContentViewModel modelessMessage;
         [ViewTest]
         public void Load_ModelessMessageContent(ViewFactoryContent control)
         {
-            var message = new ModelessMessageDialogContentViewModel
-                              {
-                                  Title = "My Title",
-                                  Message = RandomData.LoremIpsum(50)
-                              };
-            message.Initialize(Dialog);
-            Dialog.Show(message, result => Output.Write("Callback - OnComplete: " + result));
+            if (modelessMessage == null) modelessMessage = new ModelessMessageDialogContentViewModel();
+            modelessMessage.Text = RandomData.LoremIpsum(5, 50);
+            modelessMessage.Icon.Source = IconImage.SilkError.ToImageSource();
+            modelessMessage.Initialize(Dialog);
+            Dialog.Show(modelessMessage, result => Output.Write("Callback - OnComplete: " + result));
         }
 
         [ViewTest]
