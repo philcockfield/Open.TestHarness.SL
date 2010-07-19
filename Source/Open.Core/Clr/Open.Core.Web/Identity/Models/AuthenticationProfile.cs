@@ -25,8 +25,11 @@ namespace Open.Core.Identity
     /// <summary>The basic profile information returned from an OpenId provider.</summary>
     public class AuthenticationProfile
     {
-        private readonly UserName name = new UserName();
+        public AuthenticationException Error { get; set; }
+        public bool HasError { get { return Error != null; } }
+        public bool IsAuthenticated { get { return !HasError; } }
 
+        private readonly UserName name = new UserName();
         public string Identifier { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }

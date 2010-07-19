@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common.Testing;
 using Open.Core.Identity;
@@ -37,6 +33,7 @@ namespace Open.Core.Common.Test.Core.Web.Identity
         public void ShouldParseXml()
         {
             var profile = OpenIdAuthentication.ToProfile(SampleXml);
+            profile.IsAuthenticated.ShouldBe(true);
             profile.DisplayName.ShouldBe("philfoo");
             profile.Email.ShouldBe("philfoo@gmail.com");
             profile.Identifier.ShouldBe("https://www.google.com/accounts/o8/id?id=AItObyKkx1KGsBvEoaOaWBGEXeawmb57SDOIKPw");
@@ -46,6 +43,55 @@ namespace Open.Core.Common.Test.Core.Web.Identity
             profile.PreferredUserName.ShouldBe("philfoo");
             profile.AuthenticationProvider.ShouldBe("Google");
             profile.VerifiedEmail.ShouldBe("philfoo@gmail.com");
+
+            profile.Error.ShouldBe(null);
+            profile.HasError.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldNotBeAuthenticated()
+        {
+            var profile = OpenIdAuthentication.ToProfile(SampleFailXml);
+            profile.IsAuthenticated.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldHaveException()
+        {
+            var profile = OpenIdAuthentication.ToProfile(SampleFailXml);
+            profile.Error.ShouldBeInstanceOfType<AuthenticationException>();
+            profile.HasError.ShouldBe(true);
+
+            profile.Error.ErrorCode.ShouldBe(AuthenticationErrorCode.DataNotFound);
+            profile.Error.Message.ShouldBe("Data not found");
+            profile.Error.IsUnknownError.ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldHaveExceptionWithUnknownCode()
+        {
+            var profile = OpenIdAuthentication.ToProfile(SampleFailXmlUnknownCode);
+            profile.Error.ErrorCode.ShouldBe((AuthenticationErrorCode)500);
+            profile.Error.Message.ShouldBe("Foo Bar");
+            profile.Error.IsUnknownError.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldHaveExceptionWithUnknownCodeAndGeneratedError()
+        {
+            var profile = OpenIdAuthentication.ToProfile(SampleFailXmlNoCode);
+            profile.Error.ErrorCode.ShouldBe(AuthenticationErrorCode.UnknownError);
+            profile.Error.Message.ShouldBe("Unknown error occured.");
+            profile.Error.IsUnknownError.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldHaveExceptionWithUnknownCodeAndGeneratedErrorWhenNoErrorChildPresent()
+        {
+            var profile = OpenIdAuthentication.ToProfile(SampleFailXmlNoErrorNode);
+            profile.Error.ErrorCode.ShouldBe(AuthenticationErrorCode.UnknownError);
+            profile.Error.Message.ShouldBe("Unknown error occured.");
+            profile.Error.IsUnknownError.ShouldBe(true);
         }
         #endregion
 
@@ -68,6 +114,14 @@ namespace Open.Core.Common.Test.Core.Web.Identity
                         <googleUserId>535024701020725674864</googleUserId>
                       </profile>
                     </rsp>";
+
+        private const string SampleFailXml = @"<?xml version='1.0' encoding='UTF-8'?><rsp stat='fail'><err msg='Data not found' code='2'/></rsp>";
+        private const string SampleFailXmlUnknownCode = @"<?xml version='1.0' encoding='UTF-8'?><rsp stat='fail'><err msg='Foo Bar' code='500'/></rsp>";
+        private const string SampleFailXmlNoCode = @"<?xml version='1.0' encoding='UTF-8'?><rsp stat='fail'><err code=''/></rsp>";
+        private const string SampleFailXmlNoErrorNode= @"<?xml version='1.0' encoding='UTF-8'?><rsp stat='fail' />";
+
+        // https://rpxnow.com/docs#api_error_responses
+
         #endregion
     }
 }

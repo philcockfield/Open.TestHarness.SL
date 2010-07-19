@@ -24,7 +24,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Xml.Linq;
 using Open.Core.Common;
 
 namespace Open.Core.Identity
@@ -90,26 +89,56 @@ namespace Open.Core.Identity
 
             // Create the dynamic XML wrapper.
             dynamic root = new DynamicXml(profileXml);
-            var profile = root.profile;
 
-            // Construct the profile object.
-            var userProfile = new AuthenticationProfile
-                                  {
-                                      Identifier = profile.identifier.Value,
-                                      DisplayName = profile.displayName.Value,
-                                      Email = profile.email.Value,
-                                      VerifiedEmail = profile.verifiedEmail.Value,
-                                      PreferredUserName = profile.preferredUsername.Value,
-                                      AuthenticationProvider = profile.providerName.Value,
-                                  };
+            // Construct the profile object and determine if the request was successful.
+            var userProfile = new AuthenticationProfile { Error = GetError(root) };
+            if (!userProfile.HasError)
+            {
+                var profile = root.profile;
+                userProfile.Identifier = profile.identifier.Value;
+                userProfile.DisplayName = profile.displayName.Value;
+                userProfile.Email = profile.email.Value;
+                userProfile.VerifiedEmail = profile.verifiedEmail.Value;
+                userProfile.PreferredUserName = profile.preferredUsername.Value;
+                userProfile.AuthenticationProvider = profile.providerName.Value;
 
-            var name = profile.name;
-            userProfile.Name.Given = name.givenName.Value;
-            userProfile.Name.Family = name.familyName.Value;
-            userProfile.Name.Formatted = name.formatted.Value;
+                var name = profile.name;
+                userProfile.Name.Given = name.givenName.Value;
+                userProfile.Name.Family = name.familyName.Value;
+                userProfile.Name.Formatted = name.formatted.Value;
+            }
 
             // Finish up.
             return userProfile;
+        }
+
+        private static AuthenticationException GetError(dynamic root)
+        {
+            // Setup initial conditions.
+            string state = root.stat.Value;
+            if (state.ToLower() == "ok") return null;
+            
+            // Retrieve the error details.
+            var error = root.err;
+            var msgText = error.msg.Value as string;
+            var codeText = error.code.Value as string;
+
+            // Parse the code into an enum.
+            AuthenticationErrorCode code;
+            try
+            {
+                code = (AuthenticationErrorCode)Convert.ToInt32(codeText);
+            }
+            catch (Exception)
+            {
+                code = AuthenticationErrorCode.UnknownError;
+            }
+
+            // Format the error.
+            if (msgText.IsNullOrEmpty(true)) msgText = "Unknown error occured.";
+
+            // Create the exception.)
+            return new AuthenticationException(code, msgText);
         }
     }
 }

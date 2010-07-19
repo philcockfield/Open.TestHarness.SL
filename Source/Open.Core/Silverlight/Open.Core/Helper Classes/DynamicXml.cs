@@ -44,8 +44,7 @@ namespace Open.Core
         #endregion
 
         #region Methods : Override
-        public override bool TryGetMember(
-            GetMemberBinder binder, out object result)
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             // Setup initial conditions.
             result = null;

@@ -43,6 +43,7 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Identity\Models\AuthenticationException.cs" />
     <Compile Include="Identity\Models\UserName.cs" />
     <Compile Include="Identity\Models\AuthenticationProfile.cs" />
     <Compile Include="Identity\OpenIdAuthentication.cs" />
