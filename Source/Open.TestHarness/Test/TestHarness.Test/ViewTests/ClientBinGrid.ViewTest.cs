@@ -43,7 +43,7 @@ namespace Open.TestHarness.Test.ViewTests
             control.Width = 500;
             control.Height = 250;
 
-            viewModel = new ClientBinGridViewModel();
+            viewModel = new ClientBinGridViewModel(new DropdownDialogViewModel());
             control.DataContext = viewModel;
             viewModel.LoadAsync(false);
 

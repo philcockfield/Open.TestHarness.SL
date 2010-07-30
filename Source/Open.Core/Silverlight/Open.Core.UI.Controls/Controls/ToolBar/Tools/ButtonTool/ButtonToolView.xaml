@@ -9,13 +9,14 @@
     </UserControl.Resources>
     
     <ContentControl 
-            x:Name="root" 
-            x:FieldModifier="private"
-            Visibility="{Binding Model.IsVisible, Converter={StaticResource visibilityConverter}}"
-            ContentTemplate="{Binding ButtonStructureTemplate}" 
-            HorizontalContentAlignment="Stretch" 
-            VerticalContentAlignment="Stretch"
-            ToolTipService.ToolTip="{Binding Model.ToolTip}">
+                x:Name="root" 
+                x:FieldModifier="private"
+                Visibility="{Binding Model.IsVisible, Converter={StaticResource visibilityConverter}}"
+                ContentTemplate="{Binding ButtonStructureTemplate}" 
+                HorizontalContentAlignment="Stretch" 
+                VerticalContentAlignment="Stretch"
+                Margin="{Binding Model.Margin}"
+                ToolTipService.ToolTip="{Binding Model.ToolTip}">
         <ContentPresenter />
     </ContentControl>
 

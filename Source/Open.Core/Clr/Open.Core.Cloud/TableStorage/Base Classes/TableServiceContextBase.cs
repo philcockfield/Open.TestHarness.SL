@@ -57,8 +57,8 @@ namespace Open.Core.Cloud.TableStorage
 
         #region Methods : Static
         /// <summary>Gets the name for the storage table.</summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        public static string GetDefaultTableName<TEntity>() { return typeof(TEntity).Name; }
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        public static string GetDefaultTableName<T>() { return typeof(T).Name; }
         #endregion
 
         #region Methods : Virtual

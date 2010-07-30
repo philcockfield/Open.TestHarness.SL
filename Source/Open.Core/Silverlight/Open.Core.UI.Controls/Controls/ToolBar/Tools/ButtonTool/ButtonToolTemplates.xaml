@@ -110,6 +110,7 @@
             <!--Icon-->
             <Image 
                 Grid.Column="0"
+                Visibility="{Binding IsIconVisible, Converter={StaticResource visibilityConverter}}"
                 Source="{Binding Model.Icon.Source}"
                 Margin="{Binding Model.Icon.Margin}"
                 Height="16"
@@ -121,9 +122,10 @@
             <TextBlock 
                 Grid.Column="1" 
                 Text="{Binding Model.Text}" 
+                Foreground="{Binding TextColorBrush}"
                 Visibility="{Binding IsTextVisible, Converter={StaticResource visibilityConverter}}"
-                Margin="4,0,0,0" 
-                Opacity="0.8" 
+                Margin="{Binding TextMargin}" 
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
 
             <!--Drop Down Pointer-->
@@ -164,12 +166,12 @@
             <TextBlock 
                 Grid.Row="1" 
                 Text="{Binding Model.Text}" 
+                Foreground="{Binding TextColorBrush}"
                 TextAlignment="Center"
                 LineHeight="13"
                 LineStackingStrategy="BlockLineHeight"
                 Visibility="{Binding IsTextVisible, Converter={StaticResource visibilityConverter}}"
                 Margin="0,1,0,0" 
-                Opacity="0.8" 
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Center" />
         </Grid>

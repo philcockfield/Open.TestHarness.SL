@@ -26,6 +26,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media;
+using Open.Core;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
 using Open.TestHarness.Model;
@@ -33,21 +35,20 @@ using Open.TestHarness.Model;
 namespace Open.TestHarness.View.AssemblyChooser
 {
     /// <summary>The logical representation of the ClientBinGrid.</summary>
-    public class ClientBinGridViewModel : AcceptCancelPresenterViewModel
+    public class ClientBinGridViewModel : AcceptCancelPresenterViewModel, IViewFactory
     {
         #region Head
-        public const string PropIsShowing = "IsShowing";
         public const string PropSelectedFile = "SelectedFile";
         public const string PropAssemblyNameLabel = "AssemblyNameLabel";
 
         private readonly ObservableCollection<XapFile> files = new ObservableCollection<XapFile>();
+        private readonly IDropdownDialog modalDialog;
         private XapFile selectedFile;
-        private bool isShowing;
 
-
-        public ClientBinGridViewModel()
+        public ClientBinGridViewModel(IDropdownDialog modalDialog)
         {
             // Setup initial conditions.
+            this.modalDialog = modalDialog;
             ContentMargin = new Thickness(15);
 
             // Show the 'Add Modules' dialog if nothing is loaded.
@@ -57,10 +58,24 @@ namespace Open.TestHarness.View.AssemblyChooser
                 CompositionInitializer.SatisfyImports(this);
                 if (QueryString.XapFiles.IsEmpty())
                 {
-                    IsShowing = true;
+                    ShowInDialog();
                     LoadAsync();
                 }
             }
+        }
+        #endregion
+
+        #region Event Handlers
+        internal void OnDoubleClick()
+        {
+            modalDialog.IsShowing = false;
+            OnDialogAccept();
+        }
+
+        private void OnDialogAccept()
+        {
+            // Add the assembly to the list.
+            if (SelectedFile != null) TestHarnessModel.Instance.AddModule(SelectedFile.Name);
         }
         #endregion
 
@@ -80,18 +95,6 @@ namespace Open.TestHarness.View.AssemblyChooser
             }
         }
 
-        /// <summary>Gets or sets whether the grid is currently showing within a dialog-presenter.</summary>
-        public bool IsShowing
-        {
-            get { return isShowing; }
-            set
-            {
-                if (value == IsShowing) return;
-                isShowing = value; 
-                OnPropertyChanged(PropIsShowing);
-            }
-        }
-
         /// <summary>Gets whether the data is currently being loaded.</summary>
         public bool IsLoading { get; private set; }
 
@@ -108,21 +111,32 @@ namespace Open.TestHarness.View.AssemblyChooser
             if (force || Files.Count == 0) LoadAsyncDelayed();
         }
 
-        protected override void OnCancelClick()
+        /// <summary>Reveals the grid in the modal dialog.</summary>
+        public void ShowInDialog()
         {
-            base.OnCancelClick();
-            IsShowing = false;
+            modalDialog.Padding = new Thickness(30, 20, 30, 20);
+            modalDialog.Mask.Opacity = 0.7;
+            modalDialog.Mask.Color = Colors.White.ToBrush();
+            modalDialog.Background.Opacity = 0.7;
+            modalDialog.Show(this, result =>
+                                            {
+                                                if (result == PromptResult.Accept)
+                                                {
+                                                    OnDialogAccept();
+                                                }
+                                            }, 
+                                            DialogSize.Fixed, 
+                                            PromptButtonConfiguration.OkCancel);
         }
 
-        protected override void OnAcceptClick()
+        public FrameworkElement CreateView()
         {
-            // Setup initial conditions.
-            base.OnAcceptClick();
-            IsShowing = false;
-            if (SelectedFile == null) return;
-
-            // Add the assembly to the list.
-            TestHarnessModel.Instance.AddModule(SelectedFile.Name);
+            return new ClientBinGrid
+                       {
+                           DataContext = this,
+                           Width = 500,
+                           Height = 200,
+                       };
         }
         #endregion
 
@@ -157,9 +171,7 @@ namespace Open.TestHarness.View.AssemblyChooser
             // Invoke web-service call.
             Network.GetClientBin(onSuccess, onError);
         }
-        #endregion
 
-        #region Internal
         private static List<XapFile> RemoveAlreadyLoadedFiles(List<XapFile> files)
         {
             var modules = TestHarnessModel.Instance.Modules;

@@ -227,6 +227,104 @@ namespace Open.Core.Test.Extensions
         }
         #endregion
 
+        #region Tests - SyncWithCollection
+        [TestMethod]
+        public void ShouldSyncWithCollection()
+        {
+            var collection1 = Stub.CreateCollection("one", "two", "three");
+            var collection2 = Stub.CreateCollection("one", "three", "four", "five");
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.ElementAt(0).Text.ShouldBe("one");
+            collection1.ElementAt(1).Text.ShouldBe("three");
+            collection1.ElementAt(2).Text.ShouldBe("four");
+            collection1.ElementAt(3).Text.ShouldBe("five");
+        }
+
+        [TestMethod]
+        public void ShouldNotChangeCollectionAfterSyncing()
+        {
+            var collection1 = Stub.CreateCollection("one", "two", "three");
+            var collection2 = Stub.CreateCollection("one", "two", "three");
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.ElementAt(0).Text.ShouldBe("one");
+            collection1.ElementAt(1).Text.ShouldBe("two");
+            collection1.ElementAt(2).Text.ShouldBe("three");
+        }
+
+        [TestMethod]
+        public void ShouldEmptyCollectionAfterSyncingWithEmptyCollection()
+        {
+            var collection1 = Stub.CreateCollection("one", "two", "three");
+            var collection2 = new List<Stub>();
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.Count.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void ShouldReplaceEntireCollection()
+        {
+            var collection1 = Stub.CreateCollection("one", "two", "three");
+            var collection2 = Stub.CreateCollection("four", "five", "six");
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.Count.ShouldBe(3);
+            collection1.ElementAt(0).Text.ShouldBe("four");
+            collection1.ElementAt(1).Text.ShouldBe("five");
+            collection1.ElementAt(2).Text.ShouldBe("six");
+        }
+
+        [TestMethod]
+        public void ShouldPopulateEntireCollectionFromEmpty()
+        {
+            var collection1 = new List<Stub>();
+            var collection2 = Stub.CreateCollection("one", "two", "three");
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.ElementAt(0).Text.ShouldBe("one");
+            collection1.ElementAt(1).Text.ShouldBe("two");
+            collection1.ElementAt(2).Text.ShouldBe("three");
+        }
+
+        [TestMethod]
+        public void ShouldRemoveFirstItem()
+        {
+            var collection1 = Stub.CreateCollection("one", "two", "three");
+            var collection2 = Stub.CreateCollection("two", "three");
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.Count.ShouldBe(2);
+            collection1.ElementAt(0).Text.ShouldBe("two");
+            collection1.ElementAt(1).Text.ShouldBe("three");
+        }
+
+        [TestMethod]
+        public void ShouldRemoveLastItem()
+        {
+            var collection1 = Stub.CreateCollection("one", "two", "three");
+            var collection2 = Stub.CreateCollection("one", "two");
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.Count.ShouldBe(2);
+            collection1.ElementAt(0).Text.ShouldBe("one");
+            collection1.ElementAt(1).Text.ShouldBe("two");
+        }
+
+        [TestMethod]
+        public void ShouldSyncObservableCollection()
+        {
+            var collection1 = new ObservableCollection<Stub> { Stub.Create("one"), Stub.Create("two") };
+            var collection2 = new ObservableCollection<Stub> { Stub.Create("two"), Stub.Create("three") };
+
+            collection1.SyncWith(collection2, (stub1, stub2) => stub1.Text == stub2.Text);
+            collection1.Count.ShouldBe(2);
+            collection1.ElementAt(0).Text.ShouldBe("two");
+            collection1.ElementAt(1).Text.ShouldBe("three");
+        }
+        #endregion
+
         #region Stubs
         private class DisposableStub : ModelBase
         {
@@ -235,6 +333,11 @@ namespace Open.Core.Test.Extensions
         private class Stub : ModelBase
         {
             public string Text { get; set; }
+            public static Stub Create(string text) { return new Stub { Text = text }; }
+            public static ICollection<Stub> CreateCollection(params string[] text)
+            {
+                return text.Select(Create).ToList();
+            }
         }
         #endregion
     }

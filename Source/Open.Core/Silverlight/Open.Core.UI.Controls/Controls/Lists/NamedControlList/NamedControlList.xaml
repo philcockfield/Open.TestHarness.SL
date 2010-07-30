@@ -2,16 +2,23 @@
     x:Class="Open.Core.UI.Controls.NamedControlList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:c="clr-namespace:Open.Core.UI.Controls">
+    xmlns:c="clr-namespace:Open.Core.UI.Controls"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:ab="clr-namespace:Open.Core.Common.AttachedBehavior;assembly=Open.Core.UI">
 
     <ScrollViewer 
+        x:Name="root" x:FieldModifier="private"
         Background="Transparent"
         BorderBrush="Transparent" 
         HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility}"
         VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}">
 
         <Border Background="Transparent">
-            <ItemsControl ItemsSource="{Binding Items}">
+            <i:Interaction.Behaviors>
+                <ab:SyncWithScrollViewerWidth />
+            </i:Interaction.Behaviors>
+
+                <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
 

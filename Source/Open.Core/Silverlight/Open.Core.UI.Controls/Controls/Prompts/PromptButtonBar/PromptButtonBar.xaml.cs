@@ -16,5 +16,11 @@ namespace Open.Core.UI.Controls
             get { return DataContext as PromptButtonBarViewModel; }
             set { DataContext = value; }
         }
+
+        /// <summary>Forces an update of the visual state.</summary>
+        public void UpdateVisualState()
+        {
+            promptButtons.UpdateVisualState();
+        }
     }
 }

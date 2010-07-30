@@ -15,7 +15,7 @@
                 Margin="{Binding Padding}"
                 HorizontalAlignment="{Binding HorizontalAlignment}"
                 VerticalAlignment="Center">
-            <c:PromptButtons DataContext="{Binding Buttons}" IsTabStop="False" />
+            <c:PromptButtons x:Name="promptButtons" DataContext="{Binding Buttons}" IsTabStop="False" x:FieldModifier="private" />
         </Border>
     </Grid>
 </UserControl>

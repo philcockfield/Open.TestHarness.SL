@@ -25,9 +25,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using Microsoft.Silverlight.Testing;
 using Open.Core.Common;
 using Open.Core.Common.Collection;
 

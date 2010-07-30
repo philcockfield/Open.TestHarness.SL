@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
 {

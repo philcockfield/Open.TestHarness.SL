@@ -16,7 +16,6 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls
         {
             CompositionInitializer.SatisfyImports(this);
             control.ViewFactory = Pager;
-
             Pager.CurrentIndexChanged += delegate { Output.Write("!! CurrentIndexChanged: " + Pager.CurrentPage); };
         }
         #endregion
@@ -45,6 +44,18 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls
 
         [ViewTest]
         public void CurrentPage__Decrease(ViewFactoryContent control) { Pager.CurrentPage--; }
+
+        [ViewTest]
+        public void TotalPages__Reduce(ViewFactoryContent control) { Pager.TotalPages--; }
+
+        [ViewTest]
+        public void TotalPages__Increase(ViewFactoryContent control) { Pager.TotalPages++; }
+
+        [ViewTest]
+        public void Toggle__IsEnabled(ViewFactoryContent control) { Pager.IsEnabled = !Pager.IsEnabled; }
+
+        [ViewTest]
+        public void Toggle__IsLoading(ViewFactoryContent control) { Pager.IsLoading = !Pager.IsLoading; }
 
         [ViewTest]
         public void Write_Properties(ViewFactoryContent control)

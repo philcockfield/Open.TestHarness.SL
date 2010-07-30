@@ -21,15 +21,36 @@
 //------------------------------------------------------
 
 using System.Windows.Controls;
+using Open.Core.Common;
 
 namespace Open.TestHarness.View.AssemblyChooser
 {
     /// <summary>A grid populated with the XAP files contained within the 'ClientBin' on the server.</summary>
     public partial class ClientBinGrid : UserControl
     {
+        #region Head
+        private readonly DoubleClickMonitor doubleClickMonitor;
+
         public ClientBinGrid()
         {
+            // Setup initial conditions.
             InitializeComponent();
+
+            // Wire up events.
+            doubleClickMonitor = new DoubleClickMonitor(dataGrid, () =>
+                                                    {
+                                                        if (ViewModel != null) ViewModel.OnDoubleClick();
+                                                    });
         }
+        #endregion
+
+        #region Properties
+        /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
+        public ClientBinGridViewModel ViewModel
+        {
+            get { return DataContext as ClientBinGridViewModel; }
+            set { DataContext = value; }
+        }
+        #endregion
     }
 }

@@ -25,11 +25,12 @@
 
     <DataTemplate x:Key="ButtonModel.Default">
         <Button 
-            Content="{Binding Label}" 
+            Content="{Binding Text}" 
             IsEnabled="{Binding IsEnabled}"
             Visibility="{Binding IsVisible, Converter={StaticResource visibilityConverter}}"
             Margin="{Binding Margin}"
-            Command="{Binding Command}" />
+            Command="{Binding Command}" 
+            ToolTipService.ToolTip="{Binding ToolTip}" />
     </DataTemplate>
 
 </ResourceDictionary>

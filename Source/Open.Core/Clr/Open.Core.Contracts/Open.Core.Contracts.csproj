@@ -44,41 +44,22 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Enumerations\Enumerations.cs">
-      <Link>Enumerations\Enumerations.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core.Composite\IEventBus.cs">
-      <Link>Interfaces\Core.Composite\IEventBus.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core.UI\IOpacity.cs">
-      <Link>Interfaces\Core.UI\IOpacity.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\Filter\IPageFilter.cs">
-      <Link>Interfaces\Core\Filter\IPageFilter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ICallback.cs">
-      <Link>Interfaces\Core\ICallback.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IConverter.cs">
-      <Link>Interfaces\Core\IConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IDomainCredential.cs">
-      <Link>Interfaces\Core\IDomainCredential.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IError.cs">
-      <Link>Interfaces\Core\IError.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IIdentifiable.cs">
-      <Link>Interfaces\Core\IIdentifiable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\INotifyDisposed.cs">
-      <Link>Interfaces\Core\INotifyDisposed.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\ISelectable.cs">
-      <Link>Interfaces\Core\ISelectable.cs</Link>
-    </Compile>
+    <Compile Include="Enumerations\Enumerations.cs" />
+    <Compile Include="Enumerations\IconImage.cs" />
     <Compile Include="Interfaces\Core.Cloud\ICloudSettings.cs" />
     <Compile Include="Interfaces\Core.Cloud\ITableServiceEntity.cs" />
+    <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
+    <Compile Include="Interfaces\Core.UI\IEnableable.cs" />
+    <Compile Include="Interfaces\Core.UI\IOpacity.cs" />
+    <Compile Include="Interfaces\Core.UI\IVisibility.cs" />
+    <Compile Include="Interfaces\Core\ICallback.cs" />
+    <Compile Include="Interfaces\Core\IConverter.cs" />
+    <Compile Include="Interfaces\Core\IDomainCredential.cs" />
+    <Compile Include="Interfaces\Core\IError.cs" />
+    <Compile Include="Interfaces\Core\IIdentifiable.cs" />
+    <Compile Include="Interfaces\Core\INotifyDisposed.cs" />
+    <Compile Include="Interfaces\Core\IPage.cs" />
+    <Compile Include="Interfaces\Core\ISelectable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

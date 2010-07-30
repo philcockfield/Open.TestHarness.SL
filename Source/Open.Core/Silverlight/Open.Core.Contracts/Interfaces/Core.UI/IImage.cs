@@ -28,7 +28,7 @@ using Open.Core.Common;
 namespace Open.Core.UI
 {
     /// <summary>An image.</summary>
-    public interface IImage : IViewFactory, IVisiblity, INotifyPropertyChanged
+    public interface IImage : IViewFactory, IVisibility, INotifyPropertyChanged
     {
         /// <summary>Gets or sets the source for the image.</summary>
         ImageSource Source { get; set; }

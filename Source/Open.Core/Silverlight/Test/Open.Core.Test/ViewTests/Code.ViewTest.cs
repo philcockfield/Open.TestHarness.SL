@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Open.Core.Common;
 using System.Diagnostics;
 using Open.Core.Common.Converter;
@@ -24,7 +25,31 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests
         }
         #endregion
 
+
+        public class MyViewModel : ViewModelBase
+        {
+            private void OnClick()
+            {
+                // Handle the click event here
+            }
+
+            public ICommand MyCommand { get { return base.GetCommand<MyViewModel>(m => m.MyCommand, OnClick); } }
+        }
+
         #region Tests
+
+        [ViewTest]
+        public void Dialog()
+        {
+                //            ExceptionDialog dialog = new ExceptionDialog();
+                //dialog.Error = new Exception(“Oh dear!”);
+                //dialog.Show();
+
+            
+
+        }
+
+
 
         [ViewTest]
         public void TestControl(TestControl control)

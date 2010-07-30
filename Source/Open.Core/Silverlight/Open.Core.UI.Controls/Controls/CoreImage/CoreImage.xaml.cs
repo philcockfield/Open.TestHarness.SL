@@ -29,11 +29,11 @@ namespace Open.Core.UI.Controls
             if (ViewModel != null)
             {
                 dropShadowObserver = new PropertyObserver<IDropShadowEffect>(ViewModel.DropShadow)
-                    .RegisterHandler(m => m.Opacity, UpdateShadow)
-                    .RegisterHandler(m => m.Color, UpdateShadow)
-                    .RegisterHandler(m => m.Direction, UpdateShadow)
-                    .RegisterHandler(m => m.BlurRadius, UpdateShadow)
-                    .RegisterHandler(m => m.ShadowDepth, UpdateShadow);
+                                .RegisterHandler(m => m.Opacity, UpdateShadow)
+                                .RegisterHandler(m => m.Color, UpdateShadow)
+                                .RegisterHandler(m => m.Direction, UpdateShadow)
+                                .RegisterHandler(m => m.BlurRadius, UpdateShadow)
+                                .RegisterHandler(m => m.ShadowDepth, UpdateShadow);
             }
             UpdateShadow();
         }
@@ -41,9 +41,9 @@ namespace Open.Core.UI.Controls
 
         #region Properties
         /// <summary>Gets or sets the logical model for the control (passed to 'DataContext').</summary>
-        public IImage ViewModel
+        public CoreImageViewModel ViewModel
         {
-            get { return DataContext as IImage; }
+            get { return DataContext as CoreImageViewModel; }
             set { DataContext = value; }
         }
 

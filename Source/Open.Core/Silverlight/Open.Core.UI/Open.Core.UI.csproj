@@ -120,13 +120,37 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Base Classes\ResourcesBase.cs">
+      <Link>Base Classes\ResourcesBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Converter\CommaConverter.cs">
+      <Link>Converter\CommaConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Converter\InvertedVisibilityConverter.cs">
+      <Link>Converter\InvertedVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Converter\VisibilityConverter.cs">
+      <Link>Converter\VisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Extensions\FrameworkElementExtensions.cs">
+      <Link>Extensions\FrameworkElementExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Extensions\IconExtensions.cs">
+      <Link>Extensions\IconExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Extensions\ReflectionExtensions.cs">
+      <Link>Extensions\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Extensions\VisualTreeExtensions.cs">
+      <Link>Extensions\VisualTreeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Util\AnimationUtil.cs">
+      <Link>Util\AnimationUtil.cs</Link>
+    </Compile>
     <Compile Include="Composite\Command\ButtonBaseClickCommandBehavior.cs" />
     <Compile Include="Composite\Command\Click.cs" />
     <Compile Include="Composite\Command\CommandBehaviorBase.cs" />
     <Compile Include="Composite\Command\DelegateCommand.cs" />
-    <Compile Include="Converter\CommaConverter.cs" />
-    <Compile Include="Converter\InvertedVisibilityConverter.cs" />
-    <Compile Include="Converter\VisibilityConverter.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\BindingExtensions.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
@@ -165,22 +189,16 @@
     <Compile Include="Interactivity\Behaviors\Text\UpdateCharacterFieldOnKeyPressBase.cs" />
     <Compile Include="Interactivity\Behaviors\Text\UpdateTextBoxOnKeyPress.cs" />
     <Compile Include="Interactivity\Behaviors.cs" />
-    <Compile Include="Base Classes\ResourcesBase.cs" />
-    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.silverlight.cs" />
-    <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.silverlight.cs" />
-    <Compile Include="Extensions\ReflectionExtensions.cs" />
-    <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Helper Classes\ScrollViewerMonitor.cs" />
     <Compile Include="Interactivity\Behaviors\ViewModelSetter.cs" />
     <Compile Include="Model\DropShadowEffect.cs" />
     <Compile Include="Model\FontSettings.cs" />
-    <Compile Include="Model\ViewModelBase.cs" />
+    <Compile Include="Base Classes\ViewModelBase.cs" />
     <Compile Include="Styles\Shapes.cs" />
     <Compile Include="Styles\StyleResources.cs" />
     <Compile Include="Interactivity\TriggerActions\ExecuteMethod.cs" />
-    <Compile Include="Util\AnimationUtil.cs" />
     <Compile Include="Util\AnimationUtil.silverlight.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -49,6 +49,7 @@ namespace Open.Core.UI.Controls
             Loaded += delegate
                           {
                               content.SizeChanged += delegate { UpdateDialogPositionAndSize(); };
+                              UpdateDialogPositionAndSize();
                           };
 
             // Finish up.
@@ -65,10 +66,10 @@ namespace Open.Core.UI.Controls
 
             // Wire up events.
             viewModelObserver = new PropertyObserver<DropdownDialogViewModel>(ViewModel)
-                .RegisterHandler(m => m.IsShowing, OnIsShowingChanged)
-                .RegisterHandler(m => m.SizeMode, UpdateDialogPositionAndSize)
-                .RegisterHandler(m => m.DropShadowOpacity, UpdateElementVisibility)
-                .RegisterHandler(m => m.Margin, UpdateDialogPositionAndSize);
+                        .RegisterHandler(m => m.IsShowing, OnIsShowingChanged)
+                        .RegisterHandler(m => m.SizeMode, UpdateDialogPositionAndSize)
+                        .RegisterHandler(m => m.DropShadowOpacity, UpdateElementVisibility)
+                        .RegisterHandler(m => m.Margin, UpdateDialogPositionAndSize);
 
             // Finish up.
             UpdateDialogPositionAndSize();
@@ -106,11 +107,6 @@ namespace Open.Core.UI.Controls
         private void AnimateDialog()
         {
             if (ViewModel == null) return;
-            if (content.ViewFactory != null && !content.IsViewLoaded)
-            {
-                new AnimateWhenLoaded(this, content);
-                return;
-            }
             AnimateDialog(ViewModel.SlideDuration);
         }
 
@@ -132,6 +128,7 @@ namespace Open.Core.UI.Controls
             Point endPosition;
             GetSlidePositions(out startPosition, out endPosition);
             dropShadow.Opacity = 0;
+
             AnimationUtil.Move(contentContainer, startPosition, endPosition, duration, ViewModel.Easing, () =>
                                                             {
                                                                 animationCount--;
@@ -147,6 +144,9 @@ namespace Open.Core.UI.Controls
 
         private void GetSlidePositions(out Point start, out Point end)
         {
+            InvalidateMeasure();
+            UpdateLayout();
+
             var x = GetDialogLeft();
             var offStage = new Point(x, 0 - contentContainer.DesiredSize.Height);
             var onStage = new Point(x, 0);
@@ -155,16 +155,16 @@ namespace Open.Core.UI.Controls
             end = IsShowing ? onStage : offStage;
         }
 
+        private double GetDialogLeft()
+        {
+            return Math.Round((ActualWidth * 0.5) - (contentContainer.DesiredSize.Width * 0.5));
+        }
+
         private void UpdateElementVisibility()
         {
             mask.Visibility = IsShowing ? Visibility.Visible : Visibility.Collapsed;
             dropShadow.Opacity = IsShowing && !IsAnimating ? ViewModel.DropShadowOpacity : 0;
             IsHitTestVisible = IsShowing;
-        }
-
-        private double GetDialogLeft()
-        {
-            return Math.Round((ActualWidth * 0.5) - (contentContainer.DesiredSize.Width * 0.5));
         }
 
         private void FocusContent()
@@ -184,8 +184,9 @@ namespace Open.Core.UI.Controls
         #region Internal : Position and Size
         private void UpdateDialogPositionAndSize()
         {
-            UpdateDialogPosition();
+            promptButtons.UpdateVisualState();
             UpdateDialogSize();
+            UpdateDialogPosition();
         }
 
         private void UpdateDialogPosition(bool updateX = true, bool updateY = true)
@@ -235,49 +236,19 @@ namespace Open.Core.UI.Controls
 
                 default: throw new ArgumentOutOfRangeException(ViewModel.SizeMode.ToString());
             }
+            SetMaxSizes();
         }
 
-        private void StretchHorizontal()
+        private void SetMaxSizes()
         {
-            contentContainer.Width = (ActualWidth - (DialogMargin.Left + DialogMargin.Right)).WithinBounds(0,double.MaxValue);
+            contentContainer.MaxWidth = MaxDialogWidth;
+            contentContainer.MaxHeight = MaxDialogHeight;
         }
 
-        private void StretchVertical()
-        {
-            contentContainer.Height = (ActualHeight - DialogMargin.Bottom).WithinBounds(0, double.MaxValue);
-        }
+        private double MaxDialogWidth { get { return (ActualWidth - (DialogMargin.Left + DialogMargin.Right)).WithinBounds(0, double.MaxValue); } }
+        private double MaxDialogHeight { get { return (ActualHeight - DialogMargin.Bottom).WithinBounds(0, double.MaxValue); } }
+        private void StretchHorizontal() { contentContainer.Width = MaxDialogWidth; }
+        private void StretchVertical() { contentContainer.Height = MaxDialogHeight; }
         #endregion
-
-        /// <summary>Provides single callback for an animate pause waiting for content to be loaded.</summary>
-        private class AnimateWhenLoaded
-        {
-            private DropdownDialog parent;
-            private ViewFactoryContent content;
-
-            public AnimateWhenLoaded(DropdownDialog parent, ViewFactoryContent content)
-            {
-                this.parent = parent;
-                this.content = content;
-                parent.SetTop(-50000);
-                content.IsViewLoadedChanged += OnIsLoaded;
-            }
-            private void OnIsLoaded(object sender, EventArgs e)
-            {
-                // Unwire from the loaded event.
-                content.IsViewLoadedChanged -= OnIsLoaded;
-
-                // Make sure the dialog is correctly sized and positioned.
-                parent.UpdateLayout();
-                parent.UpdateDialogSize();
-                parent.UpdateDialogPosition(updateY: false);
-
-                // Restart the animation.
-                DelayedAction.Invoke(0.05, () => parent.AnimateDialog());
-
-                // Finish up.
-                parent = null;
-                content = null;
-            }
-        }
     }
 }

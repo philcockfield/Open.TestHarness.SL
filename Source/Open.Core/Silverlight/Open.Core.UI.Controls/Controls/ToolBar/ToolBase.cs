@@ -20,10 +20,8 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System.ComponentModel.Composition;
 using System.Windows;
 using Open.Core.Common;
-using Open.Core.Composite;
 using T = Open.Core.UI.Controls.ToolBase;
 
 namespace Open.Core.UI.Controls
@@ -32,21 +30,12 @@ namespace Open.Core.UI.Controls
     public abstract class ToolBase : ModelBase, ITool
     {
         #region Head
-        private static IEventBus eventBus;
         private EventHandlers eventHandlers;
 
         /// <summary>Constructor.</summary>
         protected ToolBase()
         {
             eventHandlers = new EventHandlers(this);
-        }
-        #endregion
-
-        #region Properties
-        /// <summary>Gets the static reference to the global EventBux.</summary>
-        protected IEventBus EventBus
-        {
-            get { return eventBus ?? (eventBus = new Importer().EventBus); }
         }
         #endregion
 
@@ -168,12 +157,6 @@ namespace Open.Core.UI.Controls
                 if (e.IsEnabled != null) parent.IsEnabled = e.IsEnabled.Value;
             }
             #endregion
-        }
-
-        public class Importer : ImporterBase
-        {
-            [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
-            public IEventBus EventBus { get; set; }
         }
     }
 }

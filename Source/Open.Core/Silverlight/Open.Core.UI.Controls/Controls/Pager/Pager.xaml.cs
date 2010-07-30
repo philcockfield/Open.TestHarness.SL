@@ -24,7 +24,6 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
@@ -36,10 +35,6 @@ namespace Open.Core.UI.Controls
     public partial class Pager : UserControl
     {
         #region Head
-        private const string Previous = "Previous";
-        private const string Next = "Next";
-        private const string Elipses = "...";
-
         private DataContextObserver dataContextObserver;
         private PropertyObserver<PagerViewModel> viewModelObserver;
 
@@ -51,7 +46,7 @@ namespace Open.Core.UI.Controls
 
             // Wire up events.
             dataContextObserver = new DataContextObserver(this, OnDataContextChanged);
-            Loaded += delegate { BuildPager(); };
+            Loaded += delegate { InsertPages(); };
         }
         #endregion
 
@@ -61,36 +56,23 @@ namespace Open.Core.UI.Controls
             if (viewModelObserver != null) viewModelObserver.Dispose();
             if (ViewModel == null) return;
             viewModelObserver = new PropertyObserver<PagerViewModel>(ViewModel)
-                .RegisterHandler(m => m.TotalPageButtons, BuildPager)
-                .RegisterHandler(m => m.TotalPages, BuildPager)
-                .RegisterHandler(m => m.CurrentPage, BuildPager);
+                            .RegisterHandler(m => m.TotalPageButtons, InsertPages)
+                            .RegisterHandler(m => m.TotalPages, InsertPages)
+                            .RegisterHandler(m => m.CurrentPage, InsertPages);
         }
 
-        private void OnButtonClick(object sender, RoutedEventArgs e)
+        private void OnPageClick(object sender, EventArgs e)
         {
             // Setup initial conditions.
             if (ViewModel == null) return;
-            var button = (Button)e.OriginalSource;
+            var button = (IButton)sender;
 
-            // Determine the type of button that was clicked.
-            var clickedIndex = -1;
-            PageButtonType buttonType;
-            if (button.Tag.ToString() == Previous)
-            {
-                buttonType = PageButtonType.Previous;
-            }
-            else if (button.Tag.ToString() == Next)
-            {
-                buttonType = PageButtonType.Next;
-            }
-            else
-            {
-                buttonType = PageButtonType.Page;
-                int.TryParse(button.Tag.ToString(), out clickedIndex);
-            }
+            // Determine which page button was clicked.
+            var pageNumber = -1;
+            int.TryParse(button.Tag.ToString(), out pageNumber);
 
             // Finish up.
-            ViewModel.OnButtonClicked(buttonType, clickedIndex < 0 ? (int?)null : clickedIndex);
+            ViewModel.OnPageClicked(pageNumber);
         }
         #endregion
 
@@ -108,76 +90,48 @@ namespace Open.Core.UI.Controls
         #endregion
 
         #region Internal
-        /// <summary>Renders a Button control for the Pager.</summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="isInner">Flag to denote if this refers to the inner buttons or the Previous/Next buttons</param>
-        /// <param name="isEnabled">Flag to denote if this button is enabled</param>
-        private Button BuildButton(string text, bool isInner, bool isEnabled)
-        {
-            var button = new Button
-                             {
-                                 Content = text,
-                                 Tag = text,
-                                 Style = isInner ? Resources["PagerButtonInnerStyle"] as Style : Resources["PagerButtonOuterStyle"] as Style,
-                                 Width = 45
-                             };
-            if (isInner == false) button.Width = 75;
-            button.IsEnabled = isEnabled;
-            button.Click += OnButtonClick;
-            return button;
-        }
-
-        /// <summary>Renders a selected Button or the ellipsis (...) TextBlock</summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="hasBorder">Flag to denote if this button is to have a border</param>
-        /// <returns>UIElement (either a TextBlock or a Border with a TextBlock within)</returns>
-        private static UIElement BuildSpan(string text, bool hasBorder)
-        {
-            if (hasBorder)
-            {
-                var textBlock = new TextBlock
-                                    {
-                                        Text = text,
-                                        TextAlignment = TextAlignment.Center,
-                                        VerticalAlignment = VerticalAlignment.Center,
-                                        Width = 30
-                                    };
-                var border = new Border
-                                 {
-                                     Margin = new Thickness(3, 3, 3, 3),
-                                     BorderThickness = new Thickness(0.5, 0.5, 0.5, 0.5),
-                                     BorderBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255)),
-                                     Width = 30,
-                                     Height = 22,
-                                     HorizontalAlignment = HorizontalAlignment.Center,
-                                     VerticalAlignment = VerticalAlignment.Center,
-                                     Child = textBlock
-                                 };
-                return border;
-            }
-            else
-            {
-                return new TextBlock
-                           {
-                               Text = text,
-                               Width = 30,
-                               Height = 22,
-                               TextAlignment = TextAlignment.Center,
-                               VerticalAlignment = VerticalAlignment.Bottom
-                           };
-            }
-        }
-
-        /// <summary>Build the Pager Control.</summary>
-        private void BuildPager()
+        private void InsertPages()
         {
             // Setup initial conditions.
             pagerStackPanel.Children.Clear();
             if (TotalPages <= 1) return;
 
             // Determine min/max.
-            var min = CurrentPage - TotalPageButtons;
-            var max = CurrentPage + TotalPageButtons;
+            int min;
+            int max;
+            CalculateMinMax(out min, out max);
+
+            // Insert buttons.
+            var showEllipsis = false;
+            for (var i = 1; i <= TotalPages; i++)
+            {
+                if (i <= 2 || i > TotalPages - 2 || (min <= i && i <= max))
+                {
+                    var text = i.ToString(NumberFormatInfo.InvariantInfo);
+                    var isCurrent = i == CurrentPage;
+                    if (isCurrent)
+                    {
+                        InsertControl("currentPageTemplate", new PageViewModel(i, ViewModel));
+                    }
+                    else
+                    {
+                        InsertPageButton(text);
+                    }
+
+                    showEllipsis = true;
+                }
+                else if (showEllipsis)
+                {
+                    InsertControl("ellipsisTemplate", null);
+                    showEllipsis = false;
+                }
+            }
+        }
+
+        private void CalculateMinMax(out int min, out int max)
+        {
+            min = CurrentPage - TotalPageButtons;
+            max = CurrentPage + TotalPageButtons;
             if (max > TotalPages)
             {
                 min -= max - TotalPages;
@@ -186,33 +140,53 @@ namespace Open.Core.UI.Controls
             {
                 max += 1 - min;
             }
+        }
 
-            // Previous Button
-            pagerStackPanel.Children.Add(BuildButton(Previous, isInner: false, isEnabled: (CurrentPage > 1)));
+        private void InsertControl(string templateName, object viewModel)
+        {
+            var control = new ContentControl
+                              {
+                                  ContentTemplate = Resources[templateName] as DataTemplate,
+                                  DataContext = viewModel,
+                                  VerticalContentAlignment = VerticalAlignment.Stretch,
+                                  HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                                  Content = new ContentPresenter(),
+                              };
+            pagerStackPanel.Children.Add(control);
+        }
 
-            // Middle Buttons
-            var showDivider = false;
-            for (var i = 1; i <= TotalPages; i++)
-            {
-                if (i <= 2 || i > TotalPages - 2 || (min <= i && i <= max))
-                {
-                    var text = i.ToString(NumberFormatInfo.InvariantInfo);
-                    pagerStackPanel.Children.Add(i == CurrentPage
-                                                     ? BuildSpan(text, hasBorder:false)
-                                                     : BuildButton(text, isInner:true, isEnabled:true));
-                    showDivider = true;
-                }
-                else if (showDivider)
-                {
-                    // This will add the ellipsis (...) TextBlock
-                    pagerStackPanel.Children.Add(BuildSpan(Elipses, false));
-                    showDivider = false;
-                }
-            }
+        private void InsertPageButton(string text)
+        {
+            // Create the model.
+            var model = new ButtonTool
+                                    {
+                                        Text = text,
+                                        Icon = null,
+                                        IsDefaultBackgroundVisible = true,
+                                        CanToggle = false,
+                                        Tag = text,
+                                        Margin = new Thickness(1, 0, 1, 0),
+                                    };
+            model.Click += OnPageClick;
 
-            // Next Button
-            pagerStackPanel.Children.Add(BuildButton(Next, isInner: false, isEnabled: (CurrentPage < TotalPages)));
+            // Create the view.
+            var view = model.CreateView();
+            view.Width = 45;
+
+            // Insert into visual tree.
+            pagerStackPanel.Children.Add(view);
         }
         #endregion
+
+        public class PageViewModel 
+        {
+            public PageViewModel(int pageNumber, PagerViewModel pager)
+            {
+                PageNumber = pageNumber;
+                Pager = pager;
+            }
+            public int PageNumber { get; private set; }
+            public PagerViewModel Pager { get; private set; }
+        }
     }
 }

@@ -22,12 +22,16 @@
 
 using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Open.Core.UI.Controls
 {
     /// <summary>A ToolBar tool which behaves like a button.</summary>
-    public interface IButtonTool : ITool, IClickable
+    public interface IButtonTool : ITool, IToggleButton
     {
+        /// <summary>Fires when the IsPressed state changes.</summary>
+        event EventHandler IsPressedChanged;
+
         /// <summary>Gets or sets the orientation of the label relative to the icon.</summary>
         Orientation Orientation { get; set; }
 
@@ -40,23 +44,20 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the icon image.</summary>
         Image Icon { get; set; }
 
-        /// <summary>Gets or sets the text label of the button.</summary>
-        string Text { get; set; }
-
-        /// <summary>Gets or sets the tooltip of the button.</summary>
-        string ToolTip { get; set; }
-
         /// <summary>Gets or sets the mouse related state of the button.</summary>
         ButtonMouseState MouseState { get; set; }
+
+        /// <summary>Gets or sets the color of the text when the button is not pressed.</summary>
+        Brush TextColor { get; set; }
+
+        /// <summary>Gets or sets the color of the text when the button is pressed.</summary>
+        Brush TextColorPressed { get; set; }
 
         /// <summary>
         ///     Gets or sets whether the button is currently pressed 
         ///     (see also IsMouseDown.  Relevant when IsToggleButton is True).
         /// </summary>
         bool IsPressed { get; set; }
-
-        /// <summary>Gets or sets whether the button retains it's state on each click.</summary>
-        bool IsToggleButton { get; set; }
 
         /// <summary>Gets whether the mouse is currently over the button.</summary>
         bool IsMouseOver { get; }

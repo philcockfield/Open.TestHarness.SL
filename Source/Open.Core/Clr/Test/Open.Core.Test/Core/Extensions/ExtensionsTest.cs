@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Open.Core.Common;
 using Open.Core.Common.Testing;
 
 namespace Open.Core.Common.Test.Core.Extensions

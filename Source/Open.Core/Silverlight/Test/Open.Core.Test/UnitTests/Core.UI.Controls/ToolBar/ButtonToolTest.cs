@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel.Composition;
 using Microsoft.Silverlight.Testing;
@@ -48,7 +46,8 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
             tool.IsEnabled.ShouldBe(true);
             tool.MouseState.ShouldBe(ButtonMouseState.Default);
             tool.IsPressed.ShouldBe(false);
-            tool.IsToggleButton.ShouldBe(false);
+            tool.CanToggle.ShouldBe(false);
+            tool.Margin.ShouldBe(default(Thickness));
         }
 
         [TestMethod]
@@ -170,7 +169,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestMethod]
         public void ShouldUpdateIsPressedWhenNotToggleButton()
         {
-            tool.IsToggleButton = false;
+            tool.CanToggle = false;
             tool.IsPressed.ShouldBe(false);
             viewModel.OnMouseEnter();
 
@@ -184,7 +183,7 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.ToolBar
         [TestMethod]
         public void ShouldUpdateIsPressedWhenToggleButton()
         {
-            tool.IsToggleButton = true;
+            tool.CanToggle = true;
             tool.IsPressed.ShouldBe(false);
             viewModel.OnMouseEnter();
 

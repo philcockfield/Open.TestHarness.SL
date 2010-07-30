@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Open.Core.Common;
@@ -49,12 +50,12 @@ namespace Open.Core.UI.Controls
 
         #region Head
         private const double DefaultSlideDuration = 0.3;
+        private const bool DefaultMonitorKeys = true;
         private static readonly IEasingFunction DefaultEasing = new QuadraticEase();
         private const double DefaultDropShadowOpacity = 0.2;
         private const DialogSize DefaultSizeMode = DialogSize.Fixed;
         private static readonly Thickness DefaultPadding = new Thickness(8);
         private static readonly Thickness DefaultMargin = new Thickness(20);
-        private const bool DefaultMonitorKeys = true;
 
         private Action<PromptResult> onShowComplete;
         private PromptResult? lastClickType;
@@ -74,8 +75,8 @@ namespace Open.Core.UI.Controls
                                  Border =
                                              {
                                                  Color = black, 
-                                                 Opacity = 0.4, 
-                                                 Thickness = new Thickness(1,0,1,1)
+                                                 Opacity = 0.4,
+                                                 Thickness = new Thickness(1, 0, 1, 1)
                                              },
                              };
             ButtonBar = new PromptButtonBarViewModel
@@ -140,7 +141,7 @@ namespace Open.Core.UI.Controls
         }
         #endregion
 
-        #region Properties
+        #region Properties : IDropdownDialog
         public bool IsShowing
         {
             get { return Property.GetValue<T, bool>(m => m.IsShowing, false); }
@@ -232,11 +233,11 @@ namespace Open.Core.UI.Controls
             // Update state.
             if (sizeMode != null) SizeMode = sizeMode.Value;
             if (buttonConfiguration != null) Buttons.Configuration = buttonConfiguration.Value;
-            Content = content;
             onShowComplete = onComplete;
 
-            // Reveal the dialog.
-            IsShowing = true;
+            // Insert content.
+            if (Content != content) Content = content;
+            IsShowing = true; // Reveal the dialog.
 
             // Finish up.
             return true;

@@ -45,13 +45,19 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Buttons
         [ViewTest]
         public void Change__Label(IButtonTestControl control)
         {
-            Button.Label = RandomData.LoremIpsum(1, 2);
+            Button.Text = RandomData.LoremIpsum(1, 2);
         }
 
         [ViewTest]
         public void Set__Margin(IButtonTestControl control)
         {
             Button.Margin = new Thickness(50);
+        }
+
+        [ViewTest]
+        public void Set__ToolTip(IButtonTestControl control)
+        {
+            Button.ToolTip = RandomData.LoremIpsum(5, 20);
         }
         #endregion
     }

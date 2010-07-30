@@ -79,10 +79,57 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Enumerations\Enumerations.cs">
+      <Link>Enumerations\Enumerations.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Enumerations\IconImage.cs">
+      <Link>Enumerations\IconImage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core.Composite\IEventBus.cs">
+      <Link>Interfaces\Core.Composite\IEventBus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core.UI\IEnableable.cs">
+      <Link>Interfaces\Core.UI\IEnableable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core.UI\IOpacity.cs">
+      <Link>Interfaces\Core.UI\IOpacity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core.UI\IVisibility.cs">
+      <Link>Interfaces\Core.UI\IVisibility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\ICallback.cs">
+      <Link>Interfaces\Core\ICallback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\IConverter.cs">
+      <Link>Interfaces\Core\IConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\IDomainCredential.cs">
+      <Link>Interfaces\Core\IDomainCredential.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\IError.cs">
+      <Link>Interfaces\Core\IError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\IIdentifiable.cs">
+      <Link>Interfaces\Core\IIdentifiable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\INotifyDisposed.cs">
+      <Link>Interfaces\Core\INotifyDisposed.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\IPage.cs">
+      <Link>Interfaces\Core\IPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Contracts\Interfaces\Core\ISelectable.cs">
+      <Link>Interfaces\Core\ISelectable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Interfaces\IOutput.cs">
+      <Link>Interfaces\Core\IOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Interfaces\IViewTemplate.cs">
+      <Link>Interfaces\Core\IViewTemplate.cs</Link>
+    </Compile>
     <Compile Include="Attributes\Core.UI.Controls\ExportToolBarViewAttribute.cs" />
     <Compile Include="Event Helpers\ToolState.cs" />
     <Compile Include="EventArgs\PromptButtonClickEventArgs.cs" />
-    <Compile Include="Interfaces\Core.Composite\IEventBus.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelDialog.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IAcceptCancelPresenter.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Containers\IContentContainer.cs" />
@@ -119,24 +166,12 @@
     <Compile Include="Interfaces\Core.UI\IGridCellWidth.cs" />
     <Compile Include="Interfaces\Core.UI\IImage.cs" />
     <Compile Include="Interfaces\Core.UI\IDropShadowEffect.cs" />
-    <Compile Include="Interfaces\Core.UI\IVisiblity.cs" />
-    <Compile Include="Interfaces\Core\IConverter.cs" />
-    <Compile Include="Interfaces\Core\IError.cs" />
-    <Compile Include="Interfaces\Core\ICallback.cs" />
+    <Compile Include="Interfaces\Core.UI\IToggleButton.cs" />
     <Compile Include="Interfaces\Core\IErrorInfo.cs" />
-    <Compile Include="Interfaces\Core\IIdentifiable.cs" />
-    <Compile Include="Interfaces\Core\INotifyDisposed.cs" />
-    <Compile Include="Interfaces\Core.UI\IOpacity.cs" />
-    <Compile Include="Interfaces\Core\IOutput.cs" />
     <Compile Include="Interfaces\Core\IPackageDownloadService.cs" />
-    <Compile Include="Interfaces\Core\ISelectable.cs" />
     <Compile Include="Interfaces\Core\IViewFactory.cs" />
-    <Compile Include="Interfaces\Core\IViewTemplate.cs" />
     <Compile Include="Interfaces\Core.Composite\IDelegateCommand.cs" />
     <Compile Include="Interfaces\Core.Composite\IActiveAware.cs" />
-    <Compile Include="Interfaces\Core\IDomainCredential.cs" />
-    <Compile Include="Enumerations\Enumerations.cs" />
-    <Compile Include="Interfaces\Core\Filter\IPageFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

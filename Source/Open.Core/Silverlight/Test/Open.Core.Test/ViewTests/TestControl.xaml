@@ -15,5 +15,8 @@
         <Controls:Placeholder Text="One" Margin="3" Grid.Row="0" Grid.RowSpan="1" />
         <Controls:Placeholder Text="Two" Margin="3" Grid.Row="1" Grid.RowSpan="2" />
 
+        
+        <Button Command="{Binding MyCommand}" Content="Click Me" />
+        
     </Grid>
 </UserControl>

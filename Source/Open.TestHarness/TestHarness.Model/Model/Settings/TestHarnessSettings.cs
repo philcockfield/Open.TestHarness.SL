@@ -20,10 +20,8 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
 using Open.Core.Common;
 using T = Open.TestHarness.Model.TestHarnessSettings;
 
@@ -32,12 +30,6 @@ namespace Open.TestHarness.Model
     /// <summary>Provides client-side persistence functionality for storing settings.</summary>
     public class TestHarnessSettings : IsolatedStorageModelBase
     {
-        #region Events
-        /// <summary>Fires when the TestHarness settings are cleared.</summary>
-        public event EventHandler Cleared;
-        protected void OnCleared() { if (Cleared != null) Cleared(this, new EventArgs()); }
-        #endregion
-
         #region Head
         private const int recentSelectionMax = 8;
         private readonly TestHarnessModel testHarness;
@@ -73,13 +65,6 @@ namespace Open.TestHarness.Model
         #endregion
 
         #region Methods
-        /// <summary>Clears the settings from isloated storage.</summary>
-        public override void Clear()
-        {
-            base.Clear();
-            OnCleared();
-        }
-
         /// <summary>Persists the current settings.</summary>
         public override bool Save()
         {

@@ -55,7 +55,7 @@ namespace Open.Core.Common.Collection
         {
             // Setup initial conditions.
             if (source == null) throw new ArgumentNullException("source");
-            if (createWrapper == null) throw new ArgumentNullException("source");
+            if (createWrapper == null) throw new ArgumentNullException("createWrapper");
 
             // Store values.
             Source = source;

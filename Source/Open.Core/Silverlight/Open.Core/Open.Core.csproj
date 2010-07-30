@@ -85,6 +85,183 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Logging\Output\Output.cs">
+      <Link>Logging\Output\Output.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Logging\Output\OutputLine.cs">
+      <Link>Logging\Output\OutputLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Logging\Output\OutputWriter.cs">
+      <Link>Logging\Output\OutputWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.UI\Model\ViewTemplate.cs">
+      <Link>Model\ViewTemplate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Attributes\SyncValueToAttribute.cs">
+      <Link>Attributes\SyncValueToAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Base Classes\ControllerBase.cs">
+      <Link>Base Classes\ControllerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Base Classes\DisposableBase.cs">
+      <Link>Base Classes\DisposableBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Base Classes\NotifyPropertyChangedBase.AutoProperty.partial.cs">
+      <Link>Base Classes\NotifyPropertyChangedBase.AutoProperty.partial.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Base Classes\NotifyPropertyChangedBase.cs">
+      <Link>Base Classes\NotifyPropertyChangedBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Base Classes\NotifyPropertyChangedInvoker.cs">
+      <Link>Base Classes\NotifyPropertyChangedInvoker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Base Classes\ParserBase.cs">
+      <Link>Base Classes\ParserBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ChildPropertyChangedEventArgs.cs">
+      <Link>Collection\ChildPropertyChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs">
+      <Link>Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs">
+      <Link>Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs">
+      <Link>Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\NotifyPropertyChangedCollectionMonitor.cs">
+      <Link>Collection\NotifyPropertyChangedCollectionMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ObservableCollectionMonitor.cs">
+      <Link>Collection\ObservableCollectionMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ObservableCollectionWrapper.cs">
+      <Link>Collection\ObservableCollectionWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ObservableCollectionWrapperEventArgs.cs">
+      <Link>Collection\ObservableCollectionWrapperEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ProcessQueue.cs">
+      <Link>Collection\ProcessQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ProcessQueueEventArgs.cs">
+      <Link>Collection\ProcessQueueEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Collection\ProcessQueueHandle.cs">
+      <Link>Collection\ProcessQueueHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Composite\EventBus.cs">
+      <Link>Composite\EventBus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\AssertionException.cs">
+      <Link>Exceptions\AssertionException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\CodeGenerationException.cs">
+      <Link>Exceptions\CodeGenerationException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\ExistsException.cs">
+      <Link>Exceptions\ExistsException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\InitializationException.cs">
+      <Link>Exceptions\InitializationException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\NotFoundException.cs">
+      <Link>Exceptions\NotFoundException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\NotInitializedException.cs">
+      <Link>Exceptions\NotInitializedException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\TemplateNotSetException.cs">
+      <Link>Exceptions\TemplateNotSetException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Exceptions\ValidationException.cs">
+      <Link>Exceptions\ValidationException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\CollectionExtensions.cs">
+      <Link>Extensions\CollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\EnumExtensions.cs">
+      <Link>Extensions\EnumExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\EventExtensions.cs">
+      <Link>Extensions\EventExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\Extensions.cs">
+      <Link>Extensions\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\KeyExtensions.cs">
+      <Link>Extensions\KeyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\LinqExtensions.cs">
+      <Link>Extensions\LinqExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\LocalizationExtensions.cs">
+      <Link>Extensions\LocalizationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\NumberExtensions.cs">
+      <Link>Extensions\NumberExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\ReflectionExtensions.cs">
+      <Link>Extensions\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\SerializationExtensions.cs">
+      <Link>Extensions\SerializationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\UriExtensions.cs">
+      <Link>Extensions\UriExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Extensions\XExtensions.cs">
+      <Link>Extensions\XExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\AutoPropertyManager.cs">
+      <Link>Helper Classes\AutoPropertyManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\DelayedAction.cs">
+      <Link>Helper Classes\DelayedAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\DynamicXml.cs">
+      <Link>Helper Classes\DynamicXml.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\PropertyObserver.cs">
+      <Link>Helper Classes\PropertyObserver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\SelectionManager.cs">
+      <Link>Helper Classes\SelectionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\SyncValueToHandler.cs">
+      <Link>Helper Classes\SyncValueToHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Helper Classes\WeakDelegateReference.cs">
+      <Link>Helper Classes\WeakDelegateReference.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Model\Base Classes\ModelBase.BeginInvoke.partial.cs">
+      <Link>Model\Base Classes\ModelBase.BeginInvoke.partial.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Model\Base Classes\ModelBase.cs">
+      <Link>Model\Base Classes\ModelBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Model\DomainCredential.cs">
+      <Link>Model\DomainCredential.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Network\Callback.cs">
+      <Link>Network\Callback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Testing\RandomData.cs">
+      <Link>Testing\RandomData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Testing\Should.cs">
+      <Link>Testing\Should.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Testing\TestingExtensions.cs">
+      <Link>Testing\TestingExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core\Util\ReflectionUtil.cs">
+      <Link>Util\ReflectionUtil.cs</Link>
+    </Compile>
     <Compile Include="Assets\StringLibrary.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,130 +269,49 @@
     </Compile>
     <Compile Include="AttachedProperties\Focus.cs" />
     <Compile Include="Attributes\PropertyGridAttribute.cs" />
-    <Compile Include="Attributes\SyncValueToAttribute.cs" />
-    <Compile Include="Base Classes\ControllerBase.cs" />
-    <Compile Include="Base Classes\DisposableBase.cs" />
-    <Compile Include="Base Classes\ParserBase.cs" />
-    <Compile Include="Composite\EventBus.cs" />
     <Compile Include="Composite\EventBus.silverlight.cs" />
     <Compile Include="Base Classes\ImporterBase.cs" />
-    <Compile Include="Enumerations\Icons %28Enum%29.cs" />
-    <Compile Include="Exceptions\CodeGenerationException.cs" />
-    <Compile Include="Exceptions\NotInitializedException.cs" />
     <Compile Include="Extensions\SerializationExtensions.silverlight.cs" />
-    <Compile Include="Extensions\EventExtensions.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\MouseExtensions.cs" />
-    <Compile Include="Extensions\UriExtensions.cs" />
-    <Compile Include="Helper Classes\AutoPropertyManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Helper Classes\DataContextObserver.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper Classes\DataContextPropertyObserver.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helper Classes\DelayedAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Helper Classes\DoubleClickMonitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helper Classes\DynamicXml.cs" />
     <Compile Include="Helper Classes\HtmlWindowCloseMonitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Helper Classes\PropertyObserver.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper Classes\PropertyObserver.silverlight.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helper Classes\SelectionManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Helper Classes\StackArranger.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Helper Classes\SyncValueToHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper Classes\UrlHash.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helper Classes\WeakDelegateReference.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Model\Base Classes\ModelBase.INotifyDataErrorInfo.partial.cs" />
     <Compile Include="Base Classes\NotifyPropertyChangedBase.partial.silverlight.cs" />
     <Compile Include="Model\ErrorInfo.cs" />
-    <Compile Include="Model\Filter\PageFilter.cs" />
     <Compile Include="Network\PackageDownloadService.cs" />
-    <Compile Include="Exceptions\ValidationException.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.silverlight.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Logging\Output\OutputLine.cs" />
-    <Compile Include="Logging\Output\OutputWriter.cs" />
-    <Compile Include="Logging\Output\Output.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\Base Classes\ModelBase.BeginInvoke.partial.cs" />
     <Compile Include="Base Classes\EmbeddedParentT.cs" />
-    <Compile Include="Model\Base Classes\ModelBase.cs" />
-    <Compile Include="Base Classes\NotifyPropertyChangedBase.AutoProperty.partial.cs" />
-    <Compile Include="Model\DomainCredential.cs" />
-    <Compile Include="Model\ViewTemplate.cs" />
-    <Compile Include="Base Classes\NotifyPropertyChangedBase.cs" />
-    <Compile Include="Base Classes\NotifyPropertyChangedInvoker.cs" />
     <Compile Include="Model\Base Classes\IsolatedStorageModelBase.cs" />
-    <Compile Include="Collection\ChildPropertyChangedEventArgs.cs" />
-    <Compile Include="Collection\ObservableCollectionWrapperEventArgs.cs" />
-    <Compile Include="Collection\NotifyPropertyChangedCollectionMonitor.cs" />
-    <Compile Include="Collection\ObservableCollectionMonitor.cs" />
-    <Compile Include="Collection\ObservableCollectionWrapper.cs" />
-    <Compile Include="Collection\ProcessQueueEventArgs.cs" />
-    <Compile Include="Collection\ProcessQueueHandle.cs" />
-    <Compile Include="Exceptions\AssertionException.cs" />
-    <Compile Include="Exceptions\InitializationException.cs" />
-    <Compile Include="Exceptions\ExistsException.cs" />
-    <Compile Include="Exceptions\NotFoundException.cs" />
-    <Compile Include="Exceptions\TemplateNotSetException.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\HtmlBridgeExtensions.cs" />
-    <Compile Include="Extensions\KeyExtensions.cs" />
-    <Compile Include="Extensions\LinqExtensions.cs" />
-    <Compile Include="Extensions\NumberExtensions.cs" />
-    <Compile Include="Collection\ProcessQueue.cs" />
-    <Compile Include="Network\Callback.cs" />
-    <Compile Include="Testing\RandomData.cs" />
-    <Compile Include="Testing\Should.cs" />
     <Compile Include="Extensions\XExtensions.silverlight.cs" />
-    <Compile Include="Extensions\LocalizationExtensions.cs" />
-    <Compile Include="Extensions\ReflectionExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\SerializationExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Extensions\StringExtensions.silverlight.cs" />
-    <Compile Include="Testing\TestingExtensions.cs" />
-    <Compile Include="Extensions\XExtensions.cs" />
-    <Compile Include="Collection\CollectionChangedEventBatch\CollectionChangedEventBatch.cs" />
-    <Compile Include="Collection\CollectionChangedEventBatch\CollectionChangedEventBatchArgs.cs" />
-    <Compile Include="Collection\CollectionChangedEventBatch\SwappedCollectionItem.cs" />
     <Compile Include="Network\AssemblyLoader.cs" />
     <Compile Include="Network\LoaderBase.cs" />
     <Compile Include="Network\TestableOpenReadCompletedEventArgs.cs" />
     <Compile Include="Network\TestableWebClient.cs" />
-    <Compile Include="Util\ReflectionUtil.cs" />
     <Compile Include="Util\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>

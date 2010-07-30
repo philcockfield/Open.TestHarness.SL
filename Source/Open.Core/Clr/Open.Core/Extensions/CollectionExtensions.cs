@@ -48,6 +48,46 @@ namespace Open.Core.Common
                 if (disposable != null) disposable.Dispose();
             }
         }
+
+        /// <summary>
+        ///     Syncs two collection, ensuring no items exist in the base-collection that aren't in the given-collection
+        ///     and that all items in the given-collection are in the base-collection.
+        /// </summary>
+        /// <typeparam name="T">The type of items within the collection.</typeparam>
+        /// <param name="self">The base collection to update.</param>
+        /// <param name="collection">The collection to merge in.</param>
+        /// <param name="compare">Predicate used to make comparisons.</param>
+        /// <remarks>
+        ///     This is useful for syncing an Observable collection that is data-bound with results from a server-call, 
+        ///     avoiding clearing and resetting the entire collection, just syncing the specific elements that have changed.
+        /// </remarks>
+        public static void SyncWith<T>(this ICollection<T> self, IEnumerable<T> collection, Func<T, T, bool> compare)
+        {
+            // Setup initial conditions.
+            if (self == null) throw new ArgumentNullException("self");
+            if (collection == null) throw new ArgumentNullException("collection");
+            if (compare == null) throw new ArgumentNullException("compare");
+
+            lock(self)
+            {
+                // Remove items from the base-collection that aren't in the specified collection.
+                var removedItems = self.Where(existingItem => !collection.Any(newItem => compare(newItem, existingItem)));
+                if (removedItems.Count() > 0)
+                {
+                    foreach (var item in removedItems.ToArray())
+                    {
+                        self.Remove(item);
+                    }
+                }
+
+                // Add items to the base-collection that aren't already there.
+                var addedItems = collection.Where(newItem => !self.Any(existingItem => compare(existingItem, newItem)));
+                foreach (var item in addedItems)
+                {
+                    self.Add(item);
+                }
+            }
+        }
         #endregion
 
         #region IEnumerable

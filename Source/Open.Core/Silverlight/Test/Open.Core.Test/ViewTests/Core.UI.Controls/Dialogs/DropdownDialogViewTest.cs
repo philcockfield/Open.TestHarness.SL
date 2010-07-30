@@ -15,7 +15,7 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
         #region Head
         [Import]
         public IDropdownDialog Dialog { get; set; }
-        private MyContent myContent = new MyContent();
+        private readonly MyContent myContent = new MyContent();
 
         [ViewTest(Default = true, IsVisible = false)]
         public void Initialize(ViewFactoryContent control)
@@ -23,7 +23,7 @@ namespace Open.Core.Test.ViewTests.Core.UI.Controls.Dialogs
             CompositionInitializer.SatisfyImports(this);
             control.ViewFactory = Dialog;
 
-            DelayedAction.Invoke(0.6, action: () => Show(control));
+//            DelayedAction.Invoke(0.6, action: () => Show(control));
 //            DelayedAction.Invoke(0.6, action: () => Load_ModelessMessageContent(control));
 
             Dialog.Showing += delegate { Output.Write(Colors.Green, "!! Showing"); };

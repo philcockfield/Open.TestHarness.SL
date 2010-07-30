@@ -8,7 +8,7 @@ using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.UnitTests.Core.UI.Controls.Buttons
 {
-    [Tag("foo")]
+    [Tag("button")]
     [TestClass]
     public class ButtonModelTest : SilverlightUnitTest
     {
@@ -37,9 +37,6 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.Buttons
             var view = button.CreateView();
             view.ShouldBeInstanceOfType<ContentControl>();
             view.DataContext.ShouldBe(button);
-
-            var control = view as ContentControl;
-            control.ContentTemplate.ShouldBe(button.Template);
         }
 
         [TestMethod]
@@ -57,37 +54,36 @@ namespace Open.Core.Test.UnitTests.Core.UI.Controls.Buttons
         [TestMethod]
         public void ShouldUpdateCommandEnabledState()
         {
-            button.IsEnabled.ShouldBe(true);
-            button.Command.CanExecute(null).ShouldBe(true);
+            var model = (ButtonModel)button;
 
-            button.IsEnabled = false;
-            button.Command.CanExecute(null).ShouldBe(false);
+            model.IsEnabled.ShouldBe(true);
+            model.Command.CanExecute(null).ShouldBe(true);
+
+            model.IsEnabled = false;
+            model.Command.CanExecute(null).ShouldBe(false);
         }
 
         [TestMethod]
         public void ShouldFireCommandExecuteChanged()
         {
+            var model = (ButtonModel)button;
+
             var count = 0;
-            button.Command.CanExecuteChanged += delegate { count++; };
+            model.Command.CanExecuteChanged += delegate { count++; };
 
             button.IsEnabled = false;
             count.ShouldBe(1);
         }
 
         [TestMethod]
-        public void ShouldHaveDefaultTemplateWhenNull()
-        {
-            button.Template = null;
-            button.Template.ShouldBe(ButtonTemplates.ButtonModelDefault);
-        }
-
-        [TestMethod]
         public void ShouldFireClickEventViaCommand()
         {
+            var model = (ButtonModel)button;
+
             var count = 0;
             button.Click += delegate { count++; };
-            
-            button.Command.Execute(null);
+
+            model.Command.Execute(null);
             count.ShouldBe(1);
         }
 

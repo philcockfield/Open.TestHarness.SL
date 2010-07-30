@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using Open.Core.Common;
+using Open.Core.UI.Controls;
 using Open.TestHarness.Model;
 using Open.TestHarness.View.AssemblyChooser;
 using Open.TestHarness.View.ControlHost;
@@ -42,6 +43,7 @@ namespace Open.TestHarness.View
         private readonly TestHarnessModel model;
         private SelectorPanelViewModel selectorPanel;
         private ClientBinGridViewModel clientBinGrid;
+        private IDropdownDialog modalDialog;
         private PropertyExplorerPanelViewModel propertyExplorer;
         private GridLength navigationPaneWidth = new GridLength(300);
         private DisplayContainerViewModel currentClass;
@@ -94,10 +96,16 @@ namespace Open.TestHarness.View
             get { return selectorPanel ?? (selectorPanel = new SelectorPanelViewModel(this)); }
         }
 
+        /// <summary>Gets the modal dialog box.</summary>
+        public IDropdownDialog ModalDialog
+        {
+            get { return modalDialog ?? (modalDialog = new DropdownDialogViewModel()); }
+        }
+
         /// <summary>Gets the view-model for the assembly chooser.</summary>
         public ClientBinGridViewModel ClientBinGrid
         {
-            get { return clientBinGrid ?? (clientBinGrid = new ClientBinGridViewModel()); }
+            get { return clientBinGrid ?? (clientBinGrid = new ClientBinGridViewModel(ModalDialog)); }
         }
 
         /// <summary>Gets the view-model for the property explorer.</summary>

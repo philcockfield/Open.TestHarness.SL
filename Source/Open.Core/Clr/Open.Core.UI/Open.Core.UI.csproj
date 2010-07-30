@@ -45,55 +45,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IOutput.cs">
-      <Link>Interfaces\IOutput.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.Contracts\Interfaces\Core\IViewTemplate.cs">
-      <Link>Interfaces\IViewTemplate.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Base Classes\ResourcesBase.cs">
-      <Link>Base Classes\ResourcesBase.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Converter\CommaConverter.cs">
-      <Link>Converter\CommaConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Converter\InvertedVisibilityConverter.cs">
-      <Link>Converter\InvertedVisibilityConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Converter\VisibilityConverter.cs">
-      <Link>Converter\VisibilityConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Extensions\FrameworkElementExtensions.cs">
-      <Link>Extensions\FrameworkElementExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Extensions\IconExtensions.cs">
-      <Link>Extensions\IconExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Extensions\ReflectionExtensions.cs">
-      <Link>Extensions\ReflectionExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Extensions\VisualTreeExtensions.cs">
-      <Link>Extensions\VisualTreeExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core.UI\Util\AnimationUtil.cs">
-      <Link>Util\AnimationUtil.cs</Link>
-    </Compile>
-    <Compile Include="..\..\silverlight\open.core\logging\output\Output.cs">
-      <Link>Logging\Output\Output.cs</Link>
-    </Compile>
-    <Compile Include="..\..\silverlight\open.core\logging\output\OutputLine.cs">
-      <Link>Logging\Output\OutputLine.cs</Link>
-    </Compile>
-    <Compile Include="..\..\silverlight\open.core\logging\output\OutputWriter.cs">
-      <Link>Logging\Output\OutputWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Silverlight\Open.Core\Model\ViewTemplate.cs">
-      <Link>Model\ViewTemplate.cs</Link>
-    </Compile>
+    <Compile Include="Base Classes\ResourcesBase.cs" />
+    <Compile Include="Converter\CommaConverter.cs" />
+    <Compile Include="Converter\InvertedVisibilityConverter.cs" />
+    <Compile Include="Converter\VisibilityConverter.cs" />
     <Compile Include="Converter\VisibilityHiddenConverter.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.Clr.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Extensions\IconExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\VisualTreeExtensions.Clr.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
+    <Compile Include="Interfaces\IOutput.cs" />
+    <Compile Include="Interfaces\IViewTemplate.cs" />
+    <Compile Include="Logging\Output\Output.cs" />
+    <Compile Include="Logging\Output\OutputLine.cs" />
+    <Compile Include="Logging\Output\OutputWriter.cs" />
+    <Compile Include="Model\ViewTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\AnimationUtil.cs" />
     <Compile Include="Util\AnimationUtil.wpf.cs" />
   </ItemGroup>
   <ItemGroup>

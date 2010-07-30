@@ -156,8 +156,8 @@ namespace Open.Core.UI.Controls
                     AcceptButton.IsVisible = true;
                     DeclineButton.IsVisible = true;
 
-                    AcceptButton.Label = StringLibrary.Prompt_Yes;
-                    DeclineButton.Label = StringLibrary.Prompt_No;
+                    AcceptButton.Text = StringLibrary.Prompt_Yes;
+                    DeclineButton.Text = StringLibrary.Prompt_No;
 
                     SetSmallSpacing(DeclineButton);
                     break;
@@ -167,9 +167,9 @@ namespace Open.Core.UI.Controls
                     DeclineButton.IsVisible = true;
                     CancelButton.IsVisible = true;
 
-                    AcceptButton.Label = StringLibrary.Prompt_Yes;
-                    DeclineButton.Label = StringLibrary.Prompt_No;
-                    CancelButton.Label = StringLibrary.Prompt_Cancel;
+                    AcceptButton.Text = StringLibrary.Prompt_Yes;
+                    DeclineButton.Text = StringLibrary.Prompt_No;
+                    CancelButton.Text = StringLibrary.Prompt_Cancel;
 
                     SetSmallSpacing(DeclineButton);
                     SetLargeSpacing(CancelButton);
@@ -177,30 +177,30 @@ namespace Open.Core.UI.Controls
 
                 case PromptButtonConfiguration.Ok:
                     AcceptButton.IsVisible = true;
-                    AcceptButton.Label = StringLibrary.Prompt_OK;
+                    AcceptButton.Text = StringLibrary.Prompt_OK;
                     break;
 
                 case PromptButtonConfiguration.OkCancel:
                     AcceptButton.IsVisible = true;
                     CancelButton.IsVisible = true;
 
-                    AcceptButton.Label = StringLibrary.Prompt_OK;
-                    CancelButton.Label = StringLibrary.Prompt_Cancel;
+                    AcceptButton.Text = StringLibrary.Prompt_OK;
+                    CancelButton.Text = StringLibrary.Prompt_Cancel;
 
                     SetSmallSpacing(CancelButton);
                     break;
 
                 case PromptButtonConfiguration.Done:
                     CancelButton.IsVisible = true;
-                    CancelButton.Label = StringLibrary.Prompt_Done;
+                    CancelButton.Text = StringLibrary.Prompt_Done;
                     break;
 
                 case PromptButtonConfiguration.BackNext:
                     BackButton.IsVisible = true;
                     NextButton.IsVisible = true;
 
-                    BackButton.Label = StringLibrary.Prompt_Back;
-                    NextButton.Label = StringLibrary.Prompt_Next;
+                    BackButton.Text = StringLibrary.Prompt_Back;
+                    NextButton.Text = StringLibrary.Prompt_Next;
 
                     SetSmallSpacing(NextButton);
                     break;
@@ -210,9 +210,9 @@ namespace Open.Core.UI.Controls
                     NextButton.IsVisible = true;
                     CancelButton.IsVisible = true;
 
-                    BackButton.Label = StringLibrary.Prompt_Back;
-                    NextButton.Label = StringLibrary.Prompt_Next;
-                    CancelButton.Label = StringLibrary.Prompt_Cancel;
+                    BackButton.Text = StringLibrary.Prompt_Back;
+                    NextButton.Text = StringLibrary.Prompt_Next;
+                    CancelButton.Text = StringLibrary.Prompt_Cancel;
 
                     SetSmallSpacing(NextButton);
                     SetLargeSpacing(CancelButton);

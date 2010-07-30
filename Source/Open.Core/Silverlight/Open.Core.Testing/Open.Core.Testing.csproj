@@ -86,9 +86,15 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Attributes\ViewTestAttribute.cs" />
-    <Compile Include="Attributes\ViewTestClassAttribute.cs" />
-    <Compile Include="Extensions\ReflectionTestingExtensions.cs" />
+    <Compile Include="..\..\Clr\Open.Core.Testing\Attributes\ViewTestAttribute.cs">
+      <Link>Attributes\ViewTestAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Testing\Attributes\ViewTestClassAttribute.cs">
+      <Link>Attributes\ViewTestClassAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Clr\Open.Core.Testing\Extensions\ReflectionTestingExtensions.cs">
+      <Link>Extensions\ReflectionTestingExtensions.cs</Link>
+    </Compile>
     <Compile Include="Initialization.cs" />
     <Compile Include="SilverlightUnitTest.cs" />
   </ItemGroup>

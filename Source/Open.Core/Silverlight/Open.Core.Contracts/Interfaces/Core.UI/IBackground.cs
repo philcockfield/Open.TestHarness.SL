@@ -28,7 +28,7 @@ using Open.Core.Common;
 namespace Open.Core.UI
 {
     /// <summary>Defines a background.</summary>
-    public interface IBackground : IOpacity, IVisiblity, IViewFactory, INotifyPropertyChanged
+    public interface IBackground : IOpacity, IVisibility, IViewFactory, INotifyPropertyChanged
     {
         /// <summary>Gets or sets the color of the border.</summary>
         Brush Color { get; set; }

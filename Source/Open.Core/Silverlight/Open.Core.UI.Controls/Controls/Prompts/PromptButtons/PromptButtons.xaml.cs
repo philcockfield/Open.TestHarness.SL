@@ -45,9 +45,7 @@ namespace Open.Core.UI.Controls
             dataContextObserver = new DataContextObserver(this, OnDataContextChanged);
             Loaded += delegate
                           {
-                              buttonElements = this.FindChildrenOfType<Button>();
-                              UpdateWidth();
-                              UpdateRootVisibility();
+                              UpdateVisualState();
                           };
         }
         #endregion
@@ -57,7 +55,7 @@ namespace Open.Core.UI.Controls
         {
             DestroyButtonObservers();
             WireUpButtonObservers();
-            UpdateWidth();
+            UpdateButtonWidths();
             UpdateRootVisibility();
         }
         #endregion
@@ -68,6 +66,25 @@ namespace Open.Core.UI.Controls
         {
             get { return DataContext as PromptButtonsViewModel; }
             set { DataContext = value; }
+        }
+
+        private IEnumerable<Button> ButtonElements
+        {
+            get
+            {
+                if (buttonElements != null && !buttonElements.IsEmpty()) return buttonElements;
+                buttonElements = this.FindChildrenOfType<Button>();
+                return buttonElements;
+            }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>Forces an update of the visual state.</summary>
+        public void UpdateVisualState()
+        {
+            UpdateButtonWidths();
+            UpdateRootVisibility();
         }
         #endregion
 
@@ -87,24 +104,24 @@ namespace Open.Core.UI.Controls
             buttonObservers.Clear();
         }
 
-        private void WireUpButtonObservers( )
+        private void WireUpButtonObservers()
         {
             if (ViewModel == null) return;
             buttonObservers = new List<PropertyObserver<IButton>>();
             foreach (var button in ViewModel.Buttons)
             {
-                var observer = new PropertyObserver<IButton>(button).RegisterHandler(m => m.Label, () => UpdateWidth());
+                var observer = new PropertyObserver<IButton>(button).RegisterHandler(m => m.Text, () => UpdateButtonWidths());
                 buttonObservers.Add(observer);
             }
         }
 
-        private void UpdateWidth()
+        private void UpdateButtonWidths()
         {
             // Setup initial conditions.
-            if (ViewModel == null || buttonElements == null) return;
+            if (ViewModel == null || ButtonElements == null || ButtonElements.IsEmpty()) return;
 
             // Clear all explicit widths.
-            foreach (var button in buttonElements)
+            foreach (var button in ButtonElements)
             {
                 button.Width = double.NaN;
             }
@@ -112,7 +129,7 @@ namespace Open.Core.UI.Controls
 
             // Update the width of all buttons to match the widest button.
             var width = GetWidestWidth();
-            foreach (var button in buttonElements)
+            foreach (var button in ButtonElements)
             {
                 button.Width = width;
             }
@@ -121,7 +138,7 @@ namespace Open.Core.UI.Controls
         private double GetWidestWidth()
         {
             var widestButton = GetWidestButton();
-            var match = buttonElements.FirstOrDefault(m => m.DataContext == widestButton);
+            var match = ButtonElements.FirstOrDefault(m => m.DataContext == widestButton);
             return match == null ? 50 : match.ActualWidth;
         }
 
@@ -132,9 +149,9 @@ namespace Open.Core.UI.Controls
             foreach (var item in ViewModel.Buttons)
             {
                 if (!item.IsVisible) continue;
-                if (item.Label.Length > maxLength)
+                if (item.Text.Length > maxLength)
                 {
-                    maxLength = item.Label.Length;
+                    maxLength = item.Text.Length;
                     button = item;
                 }
             }

@@ -45,7 +45,7 @@ namespace Open.Core.UI
             var type = typeof (TModel);
 
             if (type == typeof(IOpacity)) element.SetOpacityBindings();
-            if (type == typeof(IVisiblity)) element.SetVisibilityBindings();
+            if (type == typeof(IVisibility)) element.SetVisibilityBindings();
             if (type == typeof(IBorder)) element.SetBorderBindings();
 
             return element;

@@ -144,6 +144,9 @@
   <data name="Prompt_OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Prompt_Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
   <data name="Prompt_Yes" xml:space="preserve">
     <value>Yes</value>
   </data>

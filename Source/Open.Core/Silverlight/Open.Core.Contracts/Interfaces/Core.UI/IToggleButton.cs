@@ -20,15 +20,12 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-namespace Open.Core.Common
+namespace Open.Core.UI
 {
-    /// <summary>Defines the size and position of a page of data to return from a query.</summary>
-    public interface IPageFilter
+    /// <summary>Abstractly defines a simple button that can optionally assume a togglable mode.</summary>
+    public interface IToggleButton : IButton
     {
-        /// <summary>Gets or sets the number of items to skip before taking the page (this behavior matches the Skip method in LINQ).</summary>
-        int SkipCount { get; set; }
-
-        /// <summary>Gets or sets the number of items to include in the page (this behavior matches the Take method in LINQ).</summary>
-        int TakeCount { get; set; }
+        /// <summary>Gets or sets whether the button retains it's state on each click.</summary>
+        bool CanToggle { get; set; }
     }
 }

@@ -27,19 +27,13 @@ using Open.Core.Common;
 namespace Open.Core.UI.Controls
 {
     /// <summary>A single tool in a toolbar.</summary>
-    public interface ITool : IViewFactory, INotifyPropertyChanged
+    public interface ITool : IViewFactory, IEnableable, IVisibility, INotifyPropertyChanged
     {
         /// <summary>Gets or sets the unique identifier of the tool.</summary>
         object Id { get; set; }
 
         /// <summary>Gets the toolbar that this tool resides within (null if not added to a toolbar, or is a root element).</summary>
         IToolBar Parent { get; set; }
-
-        /// <summary>Gets or sets whether the tool is enabled.</summary>
-        bool IsEnabled { get; set; }
-
-        /// <summary>Gets or sets whether the tool is visible.</summary>
-        bool IsVisible { get; set; }
 
         /// <summary>Gets or sets the minimum width the tool can be.</summary>
         double MinWidth { get; set; }

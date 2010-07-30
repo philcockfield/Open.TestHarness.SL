@@ -28,7 +28,7 @@ using Open.Core.Common;
 namespace Open.Core.UI.Controls
 {
     /// <summary>A bar that contains prompt buttons.</summary>
-    public interface IPromptButtonBar : IViewFactory, IDisposable, IVisiblity, INotifyPropertyChanged
+    public interface IPromptButtonBar : IViewFactory, IDisposable, IVisibility, INotifyPropertyChanged
     {
         /// <summary>Gets the background.</summary>
         IBackground Background { get; }

@@ -86,19 +86,33 @@ namespace Open.Core.UI.Controls
             set { Property.SetValue<T, Thickness>(m => m.Margin, value); }
         }
 
-        public string Label
+        public string Text
         {
-            get { return GetPropertyValue<T, string>(m => m.Label, defaultButtonText); }
-            set { SetPropertyValue<T, string>(m => m.Label, value, defaultButtonText); }
+            get { return GetPropertyValue<T, string>(m => m.Text, defaultButtonText); }
+            set { SetPropertyValue<T, string>(m => m.Text, value, defaultButtonText); }
+        }
+
+        public string ToolTip
+        {
+            get { return Property.GetValue<T, string>(m => m.ToolTip); }
+            set { Property.SetValue<T, string>(m => m.ToolTip, value); }
         }
 
         public DataTemplate Template
         {
             get
             {
-                return GetPropertyValue<T, DataTemplate>(m => m.Template) ?? ButtonTemplates.ButtonModelDefault;
+                return 
+                        GetPropertyValue<T, DataTemplate>(m => m.Template) 
+                        ?? ButtonTemplates.ButtonModelDefault;
             }
             set { SetPropertyValue<T, DataTemplate>(m => m.Template, value); }
+        }
+
+        public object Tag
+        {
+            get { return Property.GetValue<T, object>(m => m.Tag); }
+            set { Property.SetValue<T, object>(m => m.Tag, value); }
         }
         #endregion
 

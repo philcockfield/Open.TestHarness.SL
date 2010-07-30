@@ -20,18 +20,13 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
-using System.Diagnostics;
 using Open.Core.Common.AttachedBehavior;
-using Open.Core.Common;
-using Open.Core.Common.Collection;
 
 namespace Open.Core.UI.Controls
 {

@@ -24,10 +24,10 @@ using System.ComponentModel;
 
 namespace Open.Core.UI
 {
-    /// <summary>Exposes a simple visibility switch.</summary>
-    public interface IVisiblity : INotifyPropertyChanged
+    /// <summary>Exposes a simple IsEnabled switch.</summary>
+    public interface IEnableable : INotifyPropertyChanged
     {
-        /// <summary>Gets or sets the visibility of the element.</summary>
-        bool IsVisible { get; set; }
+        /// <summary>Gets or sets the enabled state of the control.</summary>
+        bool IsEnabled { get; set; }
     }
 }

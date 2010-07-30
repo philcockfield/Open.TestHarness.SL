@@ -72,7 +72,9 @@
         </Grid>
 
         <!--Assembly Chooser Dialog-->
-        <Controls:DialogPresenter IsShowing="{Binding ClientBinGrid.IsShowing}">
+        <Controls:DropdownDialog DataContext="{Binding ModalDialog}" />
+        
+        <!--<Controls:DialogPresenter IsShowing="{Binding ClientBinGrid.IsShowing}">
             <Controls:AcceptCancelPresenter
                                 DataContext="{Binding ClientBinGrid}" 
                                 Width="550" 
@@ -81,7 +83,7 @@
                                 TopShadowOpacity="0.2">
                 <AssemblyChooser:ClientBinGrid />
             </Controls:AcceptCancelPresenter>
-        </Controls:DialogPresenter>
+        </Controls:DialogPresenter>-->
 
     </Grid>
 </UserControl>

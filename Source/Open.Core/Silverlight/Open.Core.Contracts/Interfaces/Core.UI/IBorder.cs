@@ -28,7 +28,7 @@ using Open.Core.Common;
 namespace Open.Core.UI
 {
     /// <summary>Defines an abstract border.</summary>
-    public interface IBorder : IOpacity, IVisiblity, IViewFactory, INotifyPropertyChanged
+    public interface IBorder : IOpacity, IVisibility, IViewFactory, INotifyPropertyChanged
     {
         /// <summary>Gets or sets the color of the border.</summary>
         Brush Color { get; set; }

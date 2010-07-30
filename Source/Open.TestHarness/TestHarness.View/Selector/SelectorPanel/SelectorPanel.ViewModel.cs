@@ -69,7 +69,7 @@ namespace Open.TestHarness.View.Selector
         #region Event Handlers
         private void OnAddAssemblyClick()
         {
-            parent.ClientBinGrid.IsShowing = true;
+            parent.ClientBinGrid.ShowInDialog();
             parent.ClientBinGrid.LoadAsync(true);
         }
 

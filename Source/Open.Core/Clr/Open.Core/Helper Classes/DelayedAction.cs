@@ -172,8 +172,8 @@ namespace Open.Core.Common
 
         private void InvokeAction()
         {
-            if (Action == null) return;
-            Action.Invoke();
+            if (this.Action == null) return;
+            this.Action.Invoke();
             OnActionInvoked();
         }
         #endregion

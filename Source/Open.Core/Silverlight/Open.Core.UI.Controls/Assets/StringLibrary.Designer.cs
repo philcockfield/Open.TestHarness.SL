@@ -142,6 +142,15 @@ namespace Open.Core.UI.Controls.Assets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Prompt_Previous {
+            get {
+                return ResourceManager.GetString("Prompt_Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         public static string Prompt_Yes {

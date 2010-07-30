@@ -22,9 +22,9 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.UI.Controls.Models;
 using OpenFileDialog = System.Windows.Controls.OpenFileDialog;
@@ -40,9 +40,14 @@ namespace Open.Core.UI.Controls
         #region Events
         /// <summary>Fires when the button is clicked.</summary>
         public event EventHandler Click;
+
+        /// <summary>Fires when the IsPressed state changes.</summary>
+        public event EventHandler IsPressedChanged;
+        private void FireIsPressedChanged() { if (IsPressedChanged != null) IsPressedChanged(this, new EventArgs()); }
         #endregion
 
         #region Head
+        private static readonly Brush DefaultTextColor = new SolidColorBrush(Colors.Black) { Opacity = 0.8 };
         private readonly ButtonToolViewModel viewModel;
         private DialogInvoker<ISaveFileDialog> saveFileDialog;
         private DialogInvoker<IOpenFileDialog> openFileDialog;
@@ -95,6 +100,20 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<ButtonTool, ButtonToolType>(m => m.ButtonType, value); }
         }
 
+        /// <summary>Gets or sets the color of the text.</summary>
+        public Brush TextColor
+        {
+            get { return Property.GetValue<T, Brush>(m => m.TextColor, DefaultTextColor); }
+            set { Property.SetValue<T, Brush>(m => m.TextColor, value, DefaultTextColor); }
+        }
+
+        /// <summary>Gets or sets the color of the text when the button is pressed.</summary>
+        public Brush TextColorPressed
+        {
+            get { return Property.GetValue<T, Brush>(m => m.TextColorPressed, DefaultTextColor); }
+            set { Property.SetValue<T, Brush>(m => m.TextColorPressed, value, DefaultTextColor); }
+        }
+
         /// <summary>Gets or sets the icon image.</summary>
         public Image Icon
         {
@@ -116,6 +135,13 @@ namespace Open.Core.UI.Controls
             set { SetPropertyValue<ButtonTool, string>(m => m.ToolTip, value); }
         }
 
+        /// <summary>Gets or sets the margin to put around the button.</summary>
+        public Thickness Margin
+        {
+            get { return Property.GetValue<T, Thickness>(m => m.Margin); }
+            set { Property.SetValue<T, Thickness>(m => m.Margin, value); }
+        }
+
         /// <summary>Gets or sets the mouse related state of the button.</summary>
         public ButtonMouseState MouseState
         {
@@ -130,14 +156,20 @@ namespace Open.Core.UI.Controls
         public bool IsPressed
         {
             get { return GetPropertyValue<T, bool>(m => m.IsPressed, false); }
-            set { SetPropertyValue<T, bool>(m => m.IsPressed, value, false); }
+            set
+            {
+                if (SetPropertyValue<T, bool>(m => m.IsPressed, value, false))
+                {
+                    FireIsPressedChanged();
+                }
+            }
         }
 
         /// <summary>Gets or sets whether the button retains it's state on each click.</summary>
-        public bool IsToggleButton
+        public bool CanToggle
         {
-            get { return GetPropertyValue<T, bool>(m => m.IsToggleButton, false); }
-            set { SetPropertyValue<T, bool>(m => m.IsToggleButton, value, false); }
+            get { return GetPropertyValue<T, bool>(m => m.CanToggle, false); }
+            set { SetPropertyValue<T, bool>(m => m.CanToggle, value, false); }
         }
 
         /// <summary>Gets whether the mouse is currently over the button.</summary>
@@ -157,6 +189,13 @@ namespace Open.Core.UI.Controls
         {
             get { return GetPropertyValue<ButtonTool, bool>(m => m.IsDefaultBackgroundVisible); }
             set { SetPropertyValue<ButtonTool, bool>(m => m.IsDefaultBackgroundVisible, value); }
+        }
+
+        /// <summary>Gets or sets an arbitrary state object associated with the button.</summary>
+        public object Tag
+        {
+            get { return Property.GetValue<T, object>(m => m.Tag); }
+            set { Property.SetValue<T, object>(m => m.Tag, value); }
         }
         #endregion
 

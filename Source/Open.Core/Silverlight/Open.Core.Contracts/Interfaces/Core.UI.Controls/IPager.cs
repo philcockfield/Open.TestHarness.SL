@@ -27,7 +27,7 @@ using Open.Core.Common;
 namespace Open.Core.UI.Controls
 {
     /// <summary>A data-pager for navigating a large collection of items.</summary>
-    public interface IPager : IViewFactory, INotifyPropertyChanged
+    public interface IPager : IViewFactory, IEnableable, INotifyPropertyChanged
     {
         /// <summary>Fires when the 'CurrentIndex' property changes.</summary>
         event EventHandler CurrentIndexChanged;
@@ -38,7 +38,7 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets of sets the index of the current page (0-based).</summary>
         int CurrentPageIndex { get; set; }
 
-        /// <summary>Gets the total number of pages.</summary>
+        /// <summary>Gets the total number of pages (1-based).</summary>
         int TotalPages { get; set; }
 
         /// <summary>Gets or sets the number of buttons to render before/after current selection.</summary>
@@ -54,5 +54,8 @@ namespace Open.Core.UI.Controls
         ///          Previous 1 2 ... 94 95 (96) 97 98 99 100 Next
         /// </remarks>
         int TotalPageButtons { get; set; }
+
+        /// <summary>Gets or sets whether the current page is loading.</summary>
+        bool IsLoading { get; set; }
     }
 }

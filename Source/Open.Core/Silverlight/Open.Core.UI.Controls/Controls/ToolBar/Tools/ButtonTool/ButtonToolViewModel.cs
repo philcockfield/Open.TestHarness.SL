@@ -22,6 +22,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Media;
 using Open.Core.Common;
 
 using T = Open.Core.UI.Controls.ButtonToolViewModel;
@@ -47,7 +48,8 @@ namespace Open.Core.UI.Controls
             model.PropertyChanged += delegate { FireChanged(); };
             modelObserver = new PropertyObserver<ButtonTool>(model)
                 .RegisterHandler(m => m.IsEnabled, FireIsEnabledChanged)
-                .RegisterHandler(m => m.IsPressed, () => OnPropertyChanged<T>(o => o.BackgroundTemplate));
+                .RegisterHandler(m => m.IsPressed, () => OnPropertyChanged<T>(m => m.BackgroundTemplate))
+                .RegisterHandler(m => m.TextColor, () => OnPropertyChanged<T>(m => m.TextColorBrush));
         }
 
         protected override void OnDisposed()
@@ -83,7 +85,7 @@ namespace Open.Core.UI.Controls
             UpdateMouseState();
             if (IsEnabled && isMouseOver && wasMouseDown)
             {
-                if (Model.IsToggleButton) Model.IsPressed = !Model.IsPressed;
+                if (Model.CanToggle) Model.IsPressed = !Model.IsPressed;
                 Model.InvokeClick();
             }
         }
@@ -105,6 +107,16 @@ namespace Open.Core.UI.Controls
         }
         public bool IsIconVisible { get { return Model.Icon != null; } }
         public bool IsTextVisible { get { return Model.Text.AsNullWhenEmpty() != null; } }
+        public Thickness TextMargin { get { return IsIconVisible ? new Thickness(4, 0, 4, 0) : new Thickness(0); } }
+        public Brush TextColorBrush
+        {
+            get
+            {
+                return Model.MouseState == ButtonMouseState.Default && !Model.IsPressed
+                    ? Model.TextColor 
+                    : Model.TextColorPressed;
+            }
+        }
         #endregion
 
         #region Properties - Templates
@@ -124,7 +136,7 @@ namespace Open.Core.UI.Controls
             get
             {
                 if (Model.IsMouseDown) return Model.Styles.BackgroundDown;
-                if (Model.IsToggleButton)
+                if (Model.CanToggle)
                 {
                     if (Model.IsPressed) return Model.Styles.BackgroundTogglePressed;
                     if (Model.IsMouseOver) return Model.Styles.BackgroundOver;
@@ -147,7 +159,9 @@ namespace Open.Core.UI.Controls
                             m => m.BackgroundTemplate,
                             m => m.IsIconVisible,
                             m => m.IsTextVisible,
-                            m => m.IsDropDownPointerVisible
+                            m => m.IsDropDownPointerVisible,
+                            m => m.TextMargin,
+                            m => m.TextColorBrush
                             );
         }
 
@@ -179,6 +193,7 @@ namespace Open.Core.UI.Controls
             {
                 Model.MouseState = ButtonMouseState.Default;
             }
+            OnPropertyChanged<T>(m => m.TextColorBrush);
         }
         #endregion
     }

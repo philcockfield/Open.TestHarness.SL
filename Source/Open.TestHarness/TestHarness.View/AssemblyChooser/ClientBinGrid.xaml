@@ -17,11 +17,10 @@
     
     <Border BorderBrush="{StaticResource Brush.Black.020}" BorderThickness="1" CornerRadius="2">
         <dg:DataGrid 
-                x:Name="binGrid_DataGrid" 
+                x:Name="dataGrid" x:FieldModifier="private"
                 ItemsSource="{Binding Path=Files}" 
                 SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}"
-                Style="{StaticResource SimpleGrid}"
-                x:FieldModifier="private">
+                Style="{StaticResource SimpleGrid}">
             <i:Interaction.Behaviors>
                 <ab:DataGridFillerColumn ColumnIndex="0" />
             </i:Interaction.Behaviors>

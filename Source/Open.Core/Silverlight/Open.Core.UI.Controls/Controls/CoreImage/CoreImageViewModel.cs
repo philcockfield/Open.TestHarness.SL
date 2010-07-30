@@ -58,7 +58,7 @@ namespace Open.Core.UI.Controls
         public Thickness Margin
         {
             get { return GetPropertyValue<T, Thickness>(m => m.Margin, new Thickness(0)); }
-            set { SetPropertyValue<T, Thickness>(m => m.Margin, value, new Thickness(0), m => m.BindingMargin); }
+            set { SetPropertyValue<T, Thickness>(m => m.Margin, value, new Thickness(0)); }
         }
 
         public bool IsVisible
@@ -76,7 +76,6 @@ namespace Open.Core.UI.Controls
 
         #region Properties - ViewModel
         public Visibility Visibility { get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; } }
-        public Thickness BindingMargin { get { return IsVisible ? Margin : default(Thickness); } }
         #endregion
 
         #region Methods

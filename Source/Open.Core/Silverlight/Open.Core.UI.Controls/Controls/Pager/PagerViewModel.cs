@@ -23,63 +23,83 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Input;
 using Open.Core.Common;
+using Open.Core.UI.Controls.Assets;
 using T = Open.Core.UI.Controls.PagerViewModel;
 
 namespace Open.Core.UI.Controls
 {
-    internal enum PageButtonType
-    {
-        Previous,
-        Next,
-        Page
-    }
-
     [Export(typeof(IPager))]
     public class PagerViewModel : ViewModelBase, IPager
     {
-        #region Head
+        #region Events
         public event EventHandler CurrentIndexChanged;
-        private void FireCurrentIndexChanged(){if (CurrentIndexChanged != null) CurrentIndexChanged(this, new EventArgs());}
+        private void FireCurrentIndexChanged() { if (CurrentIndexChanged != null) CurrentIndexChanged(this, new EventArgs()); }
+        #endregion
 
+        #region Head
         private const int DefaultPageCount = 15;
         private const int DefaultButtonCount = 2;
         private const int DefaultCurrentPage = 1;
-        #endregion
 
-        #region Event Handlers
-        internal void OnButtonClicked(PageButtonType buttonType, int? clickedIndex)
+        /// <summary>Constructor.</summary>
+        public PagerViewModel()
         {
-            switch (buttonType)
-            {
-                case PageButtonType.Previous:
-                    CurrentPage--;
-                    break;
-
-                case PageButtonType.Next:
-                    CurrentPage++;
-                    break;
-
-                case PageButtonType.Page:
-                    CurrentPage = clickedIndex.HasValue ? clickedIndex.Value : 0;
-                    break;
-
-                default: throw new NotSupportedException(buttonType.ToString());
-            }
+            UpdateVisualState();
         }
         #endregion
 
-        #region Properties
+        #region Event Handlers
+        internal void OnPageClicked(int pageNumber)
+        {
+            CurrentPage = pageNumber;
+            UpdateVisualState();
+        }
+
+        private void OnPreviousClicked()
+        {
+            CurrentPage--;
+            UpdateVisualState();
+        }
+
+        private void OnNextClicked()
+        {
+            CurrentPage++;
+            UpdateVisualState();
+        }
+        #endregion
+
+        #region Properties : IPager
+        public bool IsEnabled
+        {
+            get { return Property.GetValue<T, bool>(m => m.IsEnabled, true); }
+            set { Property.SetValue<T, bool>(m => m.IsEnabled, value, true); }
+        }
+
         public int TotalPages
         {
             get { return Property.GetValue<T, int>(m => m.TotalPages, DefaultPageCount); }
-            set { Property.SetValue<T, int>(m => m.TotalPages, value, DefaultPageCount); }
+            set
+            {
+                if (Property.SetValue<T, int>(m => m.TotalPages, value.WithinBounds(0, int.MaxValue), DefaultPageCount))
+                {
+                    // Ensure the CurrentPage is not greater than the total pages.
+                    if (CurrentPage > TotalPages) CurrentPage = TotalPages;
+                    if (TotalPages > 0 && CurrentPage == 0) CurrentPage = 1;
+                    UpdateVisualState();
+                }
+            }
         }
 
         public int TotalPageButtons
         {
             get { return Property.GetValue<T, int>(m => m.TotalPageButtons, DefaultButtonCount); }
-            set { Property.SetValue<T, int>(m => m.TotalPageButtons, value, DefaultButtonCount); }
+            set
+            {
+                Property.SetValue<T, int>(m => m.TotalPageButtons, value.WithinBounds(0, int.MaxValue), DefaultButtonCount);
+                UpdateVisualState();
+            }
         }
 
         public int CurrentPage
@@ -93,6 +113,7 @@ namespace Open.Core.UI.Controls
                                                 DefaultCurrentPage))
                 {
                     FireCurrentIndexChanged();
+                    UpdateVisualState();
                 }
             }
         }
@@ -102,12 +123,46 @@ namespace Open.Core.UI.Controls
             get { return CurrentPage - 1; }
             set { CurrentPage = value.WithinBounds(0, int.MaxValue) + 1; }
         }
+
+        public bool IsLoading
+        {
+            get { return Property.GetValue<T, bool>(m => m.IsLoading); }
+            set { Property.SetValue<T, bool>(m => m.IsLoading, value); }
+        }
+        #endregion
+
+        #region Properties : ViewModel
+        public bool IsNextEnabled
+        {
+            get { return Property.GetValue<T, bool>(m => m.IsNextEnabled); }
+            private set { Property.SetValue<T, bool>(m => m.IsNextEnabled, value); }
+        }
+
+        public bool IsPreviousEnabled
+        {
+            get { return Property.GetValue<T, bool>(m => m.IsPreviousEnabled); }
+            set { Property.SetValue<T, bool>(m => m.IsPreviousEnabled, value); }
+        }
+
+        public ICommand NextCommand { get { return GetCommand<T>(m => m.NextCommand, m => m.IsNextEnabled, OnNextClicked); } }
+        public ICommand PreviousCommand { get { return GetCommand<T>(m => m.PreviousCommand, m => m.IsPreviousEnabled, OnPreviousClicked); } }
+
+        public string LabelPrevious { get { return StringLibrary.Prompt_Previous; } }
+        public string LabelNext { get { return StringLibrary.Prompt_Next; } }
         #endregion
 
         #region Methods
         public FrameworkElement CreateView()
         {
             return new Pager { ViewModel = this };
+        }
+        #endregion
+
+        #region Internal
+        private void UpdateVisualState()
+        {
+            IsPreviousEnabled = CurrentPage > 1;
+            IsNextEnabled = CurrentPage < TotalPages;
         }
         #endregion
     }

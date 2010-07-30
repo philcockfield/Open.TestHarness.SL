@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
@@ -118,6 +119,13 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
+        public void Change__TextColor(ContentControl control)
+        {
+            tool.TextColor = new SolidColorBrush(Colors.Red);
+            tool.TextColorPressed = new SolidColorBrush(Colors.Green);
+        }
+
+        [ViewTest]
         public void Toggle__IsDefaultBackgroundVisible(ContentControl control)
         {
             tool.IsDefaultBackgroundVisible = !tool.IsDefaultBackgroundVisible;
@@ -148,8 +156,8 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         [ViewTest]
         public void Toggle__IsToggleButton(ContentControl control)
         {
-            tool.IsToggleButton = !tool.IsToggleButton;
-            Output.Write("IsToggleButton: " + tool.IsToggleButton);
+            tool.CanToggle = !tool.CanToggle;
+            Output.Write("IsToggleButton: " + tool.CanToggle);
         }
 
         [ViewTest]
@@ -157,6 +165,13 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         {
             tool.IsPressed = !tool.IsPressed;
             Output.Write("IsPressed: " + tool.IsPressed);
+        }
+
+        [ViewTest]
+        public void Toggle__Margin(ContentControl control)
+        {
+            tool.Margin = tool.Margin.Left == 0 ? new Thickness(5) : new Thickness(0);
+            Output.Write("Margin: " + tool.Margin);
         }
 
         [ViewTest]

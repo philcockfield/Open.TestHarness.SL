@@ -20,7 +20,7 @@
         <!--Mask-->
         <c:ViewFactoryContent x:Name="mask" ViewFactory="{Binding Mask}" Opacity="0" IsTabStop="False" x:FieldModifier="private" />
         
-        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Canvas x:Name="canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid x:Name="contentContainer" x:FieldModifier="private">
 
                 <!--Background-->
@@ -47,7 +47,12 @@
                             x:FieldModifier="private" />
 
                     <!--Prompt Button Bar-->
-                    <c:PromptButtonBar Grid.Row="1" DataContext="{Binding ButtonBar}" IsTabStop="False" />
+                    <c:PromptButtonBar 
+                            x:Name="promptButtons" 
+                            Grid.Row="1" 
+                            DataContext="{Binding ButtonBar}" 
+                            IsTabStop="False" 
+                            x:FieldModifier="private" />
                 </Grid>
                 
             </Grid>

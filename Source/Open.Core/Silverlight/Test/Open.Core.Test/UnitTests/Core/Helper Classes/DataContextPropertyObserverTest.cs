@@ -20,16 +20,7 @@
 //    THE SOFTWARE.
 //------------------------------------------------------
 
-using System;
-using System.Net;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Open.Core.Common;
@@ -110,6 +101,7 @@ namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Helper_Classes
             eventCount.ShouldBe(0);
         }
 
+        [Tag("foo")]
         [TestMethod]
         public void ShouldRegisterNewHandler()
         {

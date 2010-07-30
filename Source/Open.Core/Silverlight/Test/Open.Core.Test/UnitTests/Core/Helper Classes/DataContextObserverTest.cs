@@ -29,6 +29,7 @@ using Open.Core.Common.Testing;
 
 namespace Open.Core.UI.Silverlight.Test.Unit_Tests.Common.Helper_Classes
 {
+    [Tag("foo")]
     [TestClass]
     public class DataContextObserverTest : SilverlightUnitTest
     {
