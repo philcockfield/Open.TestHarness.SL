@@ -23,9 +23,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Globalization;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.Common.Collection;

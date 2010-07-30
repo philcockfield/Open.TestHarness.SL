@@ -85,7 +85,6 @@ namespace Open.Core.UI.Controls
             UpdateMouseState();
             if (IsEnabled && isMouseOver && wasMouseDown)
             {
-                if (Model.CanToggle) Model.IsPressed = !Model.IsPressed;
                 Model.InvokeClick();
             }
         }

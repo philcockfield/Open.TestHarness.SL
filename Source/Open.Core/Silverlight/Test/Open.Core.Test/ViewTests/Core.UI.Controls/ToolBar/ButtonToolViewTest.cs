@@ -175,6 +175,14 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
+        public void InvokeClick(ContentControl control, bool canToggle = true)
+        {
+            tool.CanToggle = canToggle;
+            tool.InvokeClick();
+            Output.Write("IsPressed: " + tool.IsPressed);
+        }
+
+        [ViewTest]
         public void Write_Properties(ContentControl control)
         {
             Output.WriteProperties(tool, true);

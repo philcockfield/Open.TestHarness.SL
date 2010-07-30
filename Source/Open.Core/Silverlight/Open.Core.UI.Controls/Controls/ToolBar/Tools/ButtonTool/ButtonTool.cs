@@ -206,6 +206,7 @@ namespace Open.Core.UI.Controls
         {
             if (!IsEnabled && !force) return;
             ShowDialog();
+            if (CanToggle) IsPressed = !IsPressed;
             if (Click != null) Click(this, new EventArgs());
             PublishToolEvent();
         }
