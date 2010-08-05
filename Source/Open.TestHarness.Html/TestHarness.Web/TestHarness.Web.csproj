@@ -52,7 +52,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -81,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Common.css" />
-    <Content Include="Content\TestHarness.css" />
+    <Content Include="Content\TestHarness.Structure.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Validation.css" />
     <Content Include="Views\Home\Index.aspx" />

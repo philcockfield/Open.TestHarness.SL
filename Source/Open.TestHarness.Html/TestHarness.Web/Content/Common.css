@@ -1,4 +1,5 @@
-﻿html { overflow:hidden; }
+﻿/* Global */
+html { overflow:hidden; }
 body * 
 { 
     margin: 0; 
@@ -15,4 +16,17 @@ div
 {
     -moz-user-select: none;
 }
+
+
+/* Borders */
+.panelBorder
+{
+    border-style: solid;
+    border-color: #717376;
+    border-width: 0px;
+}
+.panelBorderRight { border-right-width: 1px; }
+.panelBorderTop { border-top-width: 1px; }
+.panelBorderBottom { border-bottom-width: 1px; }
+
 

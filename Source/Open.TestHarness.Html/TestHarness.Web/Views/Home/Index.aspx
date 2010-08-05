@@ -8,7 +8,7 @@
 
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <link rel="Stylesheet" href="~/Content/Common.css" type="text/css" />
-    <link rel="Stylesheet" href="~/Content/TestHarness.css" type="text/css" />
+    <link rel="Stylesheet" href="~/Content/TestHarness.Structure.css" type="text/css" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
@@ -27,12 +27,12 @@
 <body>
 
     <div id="root">
-        <div id="sidebar" class="panelBorder panelBorderRight">Sidebar</div>
+        <div id="sidebar" class="panelBorder panelBorderRight">
+            <div id="sidebarToolbar" class="panelBorder panelBorderBottom toolbar">Sidebar Toolbar</div>
+        </div>
         <div id="main">
-        
-            Main
+            <div id="mainToolbar" class="panelBorder panelBorderBottom toolbar">Main Toolbar</div>
             <div id="outputLog" class="panelBorder panelBorderTop">Output</div>
-
         </div>
     </div>
 

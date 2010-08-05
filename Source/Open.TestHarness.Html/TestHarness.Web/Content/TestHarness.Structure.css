@@ -2,10 +2,13 @@
 #root
 {
     position:absolute;
-    left:30px;
-    right:30px;
-    top:30px;
-    bottom:30px;
+    left:0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    
+    /* TEMP */
+    color:#bababa;
 }
 
 #sidebar
@@ -20,7 +23,6 @@
 
 #main
 {
-    background:#f2f2f2;
     position:absolute;
     left:251px;
     top:0px;
@@ -38,19 +40,30 @@
     height:100px;
 }
 
-
-/* Borders */
-.panelBorder
+/* Toolbars */
+.toolbar
 {
-    border-style: solid;
-    border-color: #86898d;
-    border-width: 0px;
+    background:#e1e1e1;
+    position:absolute;
+    left:0px;
+    top:0px;
+    right:0px;
+    height:25px;   
+    border-color:#989898; 
 }
-.panelBorderRight { border-right-width: 1px; }
-.panelBorderTop { border-top-width: 1px; }
+
+#mainToolbar
+{
+    background:#f2f2f2;
+    border-color:#d9d9d9;
+}
 
 
+/*
+        opacity:0.2;
+    filter:alpha(opacity=20);
 
+*/
 
 
 

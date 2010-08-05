@@ -192,6 +192,7 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId) 
     $(window).bind(Open.Core.Events.resize, ss.Delegate.create(this, function(e) {
         this.onWindowSizeChanged();
     }));
+    var script = alert('blab');;
 }
 Open.Core.UI.PanelResizerBase.prototype = {
     
