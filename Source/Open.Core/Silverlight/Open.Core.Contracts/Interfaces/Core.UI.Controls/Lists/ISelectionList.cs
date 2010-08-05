@@ -55,5 +55,11 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets the padding to apply to the item.</summary>
         Thickness ItemPadding { get; set; }
+
+        /// <summary>Selects the first item.</summary>
+        void SelectFirst();
+
+        /// <summary>Selects the last item.</summary>
+        void SelectLast();
     }
 }

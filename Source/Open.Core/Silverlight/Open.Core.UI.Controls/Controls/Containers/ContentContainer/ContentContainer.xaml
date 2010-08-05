@@ -1,9 +1,10 @@
 ﻿<UserControl 
     x:Class="Open.Core.UI.Controls.ContentContainer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" IsTabStop="False">
-    
-    <Grid x:Name="root" x:FieldModifier="private">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    IsTabStop="False">
+
+    <Grid x:Name="root" x:FieldModifier="private" Background="{Binding Background}">
 
         <ContentControl 
             DataContext="{Binding BindingModel}"

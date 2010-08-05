@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 using Open.Core.Common;
 
 namespace Open.Core.UI.Controls
@@ -25,5 +26,7 @@ namespace Open.Core.UI.Controls
 
         /// <summary>Gets or sets a specific UI element to render (overrides 'ContentTemplate').</summary>
         object Content { get; set; }
+
+        Brush Background { get; set; }
     }
 }

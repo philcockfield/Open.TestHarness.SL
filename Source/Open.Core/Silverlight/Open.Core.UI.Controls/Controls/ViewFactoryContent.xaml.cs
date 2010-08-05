@@ -21,6 +21,7 @@
 //------------------------------------------------------
 
 using System;
+using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
 using Open.Core.Common;
@@ -30,7 +31,8 @@ using T = Open.Core.UI.Controls.ViewFactoryContent;
 namespace Open.Core.UI.Controls
 {
     /// <summary>Provides binding support for a view-model that implements IViewFactory.</summary>
-    public partial class ViewFactoryContent : UserControl
+    [Export(typeof(IViewFactoryContent))]
+    public partial class ViewFactoryContent : UserControl, IViewFactoryContent
     {
         #region Head
         /// <summary>Fires when the 'IsViewLoaded' property changes.</summary>

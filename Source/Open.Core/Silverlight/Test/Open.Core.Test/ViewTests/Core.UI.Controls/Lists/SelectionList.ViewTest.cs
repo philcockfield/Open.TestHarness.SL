@@ -23,7 +23,6 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.Common.Testing;

@@ -25,7 +25,7 @@ using Open.Core.Composite;
 
 namespace Open.Core.UI.Controls
 {
-    /// <summary>Helper class that provides a convenient way to fire tool-state change events (vis the event-bus).</summary>
+    /// <summary>Helper class that provides a convenient way to fire tool-state change events (via the event-bus).</summary>
     public static class ToolState
     {
         #region Head

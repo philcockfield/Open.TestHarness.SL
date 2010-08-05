@@ -250,6 +250,7 @@
     <Compile Include="Controls\Text\CoreTextBox.cs" />
     <Compile Include="Controls\ToolBar\Controllers\ToolLayoutController.cs" />
     <Compile Include="Controls\ToolBar\Events\ToolStateEvent.cs" />
+    <Compile Include="Controls\ToolBar\Events\UpdateToolbarLayoutEvent.cs" />
     <Compile Include="Controls\ToolBar\Title\ToolBarTitle.xaml.cs">
       <DependentUpon>ToolBarTitle.xaml</DependentUpon>
     </Compile>

@@ -23,6 +23,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Open.Core.Common;
@@ -81,7 +82,7 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the currently selected item.</summary>
         public object SelectedItem
         {
-            get { return SelectedItemWrapper == null ? null : SelectedItemWrapper.Value; }
+            get { return SelectedItemWrapper == null ? null : SelectedItemWrapper.Model; }
             set
             {
                 // Setup initial conditions.
@@ -163,32 +164,43 @@ namespace Open.Core.UI.Controls
         {
             return new SelectionList { DataContext = this };
         }
+
+        public void SelectFirst()
+        {
+            if (Items.IsEmpty()) return;
+            SelectedItem = Items.FirstOrDefault();
+        }
+
+        public void SelectLast()
+        {
+            if (Items.IsEmpty()) return;
+            SelectedItem = Items.LastOrDefault();
+        }
         #endregion
 
         public class ItemViewModel : ViewModelBase
         {
             #region Head
+            private readonly DataTemplate defaultTemplate;
 
-            private DataTemplate defaultTemplate;
-
-            public ItemViewModel(SelectionListViewModel parent, object value)
+            public ItemViewModel(SelectionListViewModel parent, object model)
             {
                 Parent = parent;
-                Value = value;
+                Model = model;
                 defaultTemplate = Parent.templates["SelectionList.DefaultItemTemplate"] as DataTemplate;
             }
             #endregion
 
             #region Properties
             public SelectionListViewModel Parent { get; private set; }
-            public object Value { get; private set; }
+            public object Model { get; private set; }
             public DataTemplate Template
             {
                 get
                 {
                     var template = Parent.ItemTemplateSelector == null
                                ? defaultTemplate
-                               : Parent.ItemTemplateSelector(Value);
+                               : Parent.ItemTemplateSelector(Model);
                     return template ?? defaultTemplate;
                 }
             }

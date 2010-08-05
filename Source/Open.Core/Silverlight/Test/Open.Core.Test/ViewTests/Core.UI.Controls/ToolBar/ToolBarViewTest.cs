@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using Open.Core.Common;
 using Open.Core.Common.Testing;
+using Open.Core.Composite;
 using Open.Core.UI.Controls;
 
 namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
@@ -22,6 +23,9 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
         [Import(RequiredCreationPolicy = CreationPolicy.NonShared)]
         public IToolBar ToolBar { get; set; }
+
+        [Import]
+        public IEventBus EventBus { get; set; }
 
 
         [ViewTest(Default = true, IsVisible = false)]
@@ -41,6 +45,14 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         #endregion
 
         #region Tests 
+
+        [ViewTest]
+        public void Clear(Border control)
+        {
+            ToolBar.Clear();
+            ToolBar.UpdateLayout();
+        }
+
         [ViewTest]
         public void Add_Empty_ToolGroup(Border control)
         {
@@ -52,7 +64,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         }
 
         [ViewTest]
-        public void Add_ToolGroups(Border control)
+        public void Add_ToolGroups(Border control, bool updateLayout = true)
         {
             // Setup initial conditions.
             ToolBar.Clear();
@@ -72,7 +84,7 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
 
             // ---
 
-            ToolBar.UpdateLayout();
+            if (updateLayout) ToolBar.UpdateLayout();
         }
 
         [ViewTest]
@@ -142,6 +154,12 @@ namespace Open.Core.Test.ViewTests.Core.Controls.ToolBar
         public void UpdateLayout(Border control)
         {
             ToolBar.UpdateLayout();
+        }
+
+        [ViewTest]
+        public void Fire_UpdateToolbarLayoutEvent(Border control)
+        {
+            EventBus.Publish(new UpdateToolbarLayoutEvent());
         }
 
         [ViewTest]

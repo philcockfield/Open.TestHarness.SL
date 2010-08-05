@@ -158,6 +158,7 @@
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ICustomTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\ISpacerTool.cs" />
     <Compile Include="Interfaces\Core.UI.Controls\Toolbar\Tools\IToolDivider.cs" />
+    <Compile Include="Interfaces\Core.UI.Controls\IViewFactoryContent.cs" />
     <Compile Include="Interfaces\Core.UI\IBackground.cs" />
     <Compile Include="Interfaces\Core.UI\IBorder.cs" />
     <Compile Include="Interfaces\Core.UI\IButton.cs" />

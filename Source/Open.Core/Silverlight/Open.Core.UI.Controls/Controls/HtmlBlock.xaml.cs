@@ -134,7 +134,16 @@ namespace Open.Core.UI.Controls
 
         #region Properties
         /// <summary>Gets the absolute position of the control relative to the visual root (or null if it's not within the tree).</summary>
-        public Point? AbsolutePosition { get { return this.GetAbsolutePosition(); } }
+        public Point? AbsolutePosition
+        {
+            get
+            {
+                var position = this.GetAbsolutePosition();
+                return position == null 
+                                ? (Point?)null 
+                                : new Point(position.Value.X + Offset.X, position.Value.Y + Offset.Y);
+            }
+        }
 
         /// <summary>Gets the unique identifier of the embedded HTML element.</summary>
         public string HtmlElementId { get; private set; }
@@ -215,6 +224,27 @@ namespace Open.Core.UI.Controls
                 typeof (Uri),
                 typeof (T),
                 new PropertyMetadata(null, (s, e) => ((T) s).OnSourceUriChanged()));
+
+
+        /// <summary>
+        ///     Gets or sets the pixel offset to apply when calculating the position of the 
+        ///     HTML (used when the SL app is not filling the entire window).
+        /// </summary>
+        public Point Offset
+        {
+            get { return (Point) (GetValue(OffsetProperty)); }
+            set { SetValue(OffsetProperty, value); }
+        }
+        /// <summary>
+        ///     Gets or sets the pixel offset to apply when calculating the position of the 
+        ///     HTML (used when the SL app is not filling the entire window).
+        /// </summary>
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register(
+                LinqExtensions.GetPropertyName<T>(m => m.Offset),
+                typeof (Point),
+                typeof (T),
+                new PropertyMetadata(default(Point), (s, e) => ((T) s).UpdateDimensions()));
         #endregion
 
         #region Methods

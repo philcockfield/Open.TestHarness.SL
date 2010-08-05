@@ -25,6 +25,7 @@ using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
 using Open.Core.Common;
+using T = Open.Core.UI.Controls.HtmlDocument;
 
 namespace Open.Core.UI.Controls
 {
@@ -32,7 +33,7 @@ namespace Open.Core.UI.Controls
     public partial class HtmlDocument : UserControl, INotifyDisposed
     {
         #region Head
-        private const string htmlIframe = @"<iframe src='{0}' width='100%' height='100%' scrolling='auto' frameborder='0' />";
+        private const string HtmlIframe = @"<iframe src='{0}' width='100%' height='100%' scrolling='auto' frameborder='0' />";
 
         public HtmlDocument()
         {
@@ -96,17 +97,42 @@ namespace Open.Core.UI.Controls
         /// <summary>Gets or sets the URL of the page.</summary>
         public static readonly DependencyProperty SourceUriProperty =
             DependencyProperty.Register(
-                LinqExtensions.GetPropertyName<HtmlDocument>(m => m.SourceUri),
+                LinqExtensions.GetPropertyName<T>(m => m.SourceUri),
                 typeof(Uri),
-                typeof(HtmlDocument),
-                new PropertyMetadata(null, (s, e) => ((HtmlDocument)s).SetSource()));
+                typeof(T),
+                new PropertyMetadata(null, (s, e) => ((T)s).SetSource()));
+
+        /// <summary>
+        ///     Gets or sets the pixel offset to apply when calculating the position of the 
+        ///     HTML (used when the SL app is not filling the entire window).
+        /// </summary>
+        public Point Offset
+        {
+            get { return (Point)(GetValue(OffsetProperty)); }
+            set { SetValue(OffsetProperty, value); }
+        }
+        /// <summary>
+        ///     Gets or sets the pixel offset to apply when calculating the position of the 
+        ///     HTML (used when the SL app is not filling the entire window).
+        /// </summary>
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register(
+                LinqExtensions.GetPropertyName<T>(m => m.Offset),
+                typeof(Point),
+                typeof(T),
+                new PropertyMetadata(default(Point), (s, e) => ((T)s).SetOffset()));
         #endregion
 
         #region Internal
         private void SetSource()
         {
-            var html = SourceUri == null ? null : string.Format(htmlIframe, SourceUri);
+            var html = SourceUri == null ? null : string.Format(HtmlIframe, SourceUri);
             htmlBlock.InnerHtml = html;
+        }
+
+        private void SetOffset()
+        {
+            htmlBlock.Offset = Offset;
         }
         #endregion
     }

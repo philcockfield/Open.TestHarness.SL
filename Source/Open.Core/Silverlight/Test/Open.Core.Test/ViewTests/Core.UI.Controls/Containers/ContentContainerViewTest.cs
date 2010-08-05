@@ -105,6 +105,14 @@ namespace Open.Core.Test.ViewTests.Core.Controls.Containers
         }
 
         [ViewTest]
+        public void Set_Background(ContentControl control)
+        {
+            ViewModel.Background = new SolidColorBrush(Colors.Orange);
+        }
+
+
+
+        [ViewTest]
         public void Write(ContentControl control)
         {
             Write();

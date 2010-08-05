@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Media;
 using Open.Core.Common;
 
 using T = Open.Core.UI.Controls.ContentContainerViewModel;
@@ -70,6 +71,13 @@ namespace Open.Core.UI.Controls
                 SetPropertyValue<T, object>(m => m.Model, value, m => m.BindingModel);
                 FireModelChanged();
             }
+        }
+
+        /// <summary>Gets or sets the background.</summary>
+        public Brush Background
+        {
+            get { return Property.GetValue<T, Brush>(m => m.Background); }
+            set { Property.SetValue<T, Brush>(m => m.Background, value); }
         }
         #endregion
 

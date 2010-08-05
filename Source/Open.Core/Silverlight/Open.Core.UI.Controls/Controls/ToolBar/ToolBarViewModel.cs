@@ -49,12 +49,23 @@ namespace Open.Core.UI.Controls
         private readonly List<ToolItem> toolItems = new List<ToolItem>();
         private ToolBarImporter importer;
         private IToolBarTitle defaultTitle;
+
+        public ToolBarViewModel()
+        {
+            EventBus.Subscribe<UpdateToolbarLayoutEvent>(OnUpdateToolbarLayoutEvent);
+        }
         #endregion
 
         #region Event Handlers
         private void OnTitleIsVisibleChanged(object sender, EventArgs e)
         {
             OnPropertyChanged<T>(m => m.ToolContainerMargin);
+        }
+
+        public void OnUpdateToolbarLayoutEvent(UpdateToolbarLayoutEvent e)
+        {
+            // Update the layout (only if this is the root toolbar).
+            if (Parent == null) UpdateLayout();
         }
         #endregion
 

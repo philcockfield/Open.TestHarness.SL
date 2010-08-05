@@ -1,0 +1,18 @@
+﻿html { overflow:hidden; }
+body * 
+{ 
+    margin: 0; 
+    padding: 0;  
+}
+
+body
+{
+    font-family:Tahoma, Helvetica, Verdana;
+    font-size:10pt;
+}
+
+div
+{
+    -moz-user-select: none;
+}
+

@@ -22,6 +22,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Data;
 using Open.Core.Common;
 using Open.Core.UI.Controls;
 
@@ -31,6 +32,8 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
     public class HtmlDocumentViewTest
     {
         #region Head
+        private MyModel model;
+
         [ViewTest(Default = true, IsVisible = false)]
         public void Initialize(HtmlDocument control)
         {
@@ -66,6 +69,20 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
         public void Visibility__Visible(HtmlDocument control) { control.Visibility = Visibility.Visible; }
 
         [ViewTest]
+        public void Setup_Databinding(HtmlDocument control)
+        {
+            model = new MyModel { PageUri = new Uri("http://google.com") };
+            control.DataContext = model;
+            control.SetBinding(HtmlDocument.SourceUriProperty, new Binding("PageUri"));
+        }
+
+        [ViewTest]
+        public void Change__Offset(HtmlDocument control)
+        {
+            control.Offset = control.Offset.X == 0 ? new Point(50, 100) : default(Point);
+        }
+
+        [ViewTest]
         public void Dispose(HtmlDocument control)
         {
             control.Dispose();
@@ -73,11 +90,29 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
         #endregion
 
         #region Internal
-        private static void SetSource(HtmlDocument control, string url)
+        private void SetSource(HtmlDocument control, string url)
         {
-            control.SourceUri = new Uri(url);
-            Output.Write("SourceUri: " + url);
+            var uri = new Uri(url);
+            if (model != null)
+            {
+                model.PageUri = uri;
+                Output.Write("SourceUri (via Databound Model): " + url);
+            }
+            else
+            {
+                control.SourceUri = uri;
+                Output.Write("SourceUri: " + url);
+            }
         }
         #endregion
+
+        public class MyModel : ModelBase
+        {
+            public Uri PageUri
+            {
+                get { return Property.GetValue<MyModel, Uri>(m => m.PageUri); }
+                set { Property.SetValue<MyModel, Uri>(m => m.PageUri, value); }
+            }
+        }
     }
 }

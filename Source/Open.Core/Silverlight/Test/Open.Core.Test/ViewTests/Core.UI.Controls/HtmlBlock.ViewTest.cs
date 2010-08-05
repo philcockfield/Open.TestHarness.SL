@@ -89,23 +89,12 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
         [ViewTest]
         public void Visibility__Visible(HtmlBlock control) { control.Visibility = Visibility.Visible; }
 
+
         [ViewTest]
-        public void TEMP(HtmlBlock control)
+        public void Change__Offset(HtmlBlock control)
         {
-            var child = new Border();
-            var parent = new Border {Child = child};
-
-            Output.Write("parent: " + parent.Visibility);
-            Output.Write("child: " + child.Visibility);
-           Output.Break();
-
-            parent.Visibility = Visibility.Collapsed;
-
-           Output.Write("parent: " + parent.Visibility);
-           Output.Write("child: " + child.Visibility);
-
+            control.Offset = control.Offset.X == 0 ? new Point(50, 100) : default(Point);
         }
-
 
         [ViewTest]
         public void Dispose(HtmlBlock control)
@@ -124,6 +113,5 @@ namespace Open.Core.UI.Silverlight.Test.View_Tests.Controls
             return html;
         }
         #endregion
-
     }
 }

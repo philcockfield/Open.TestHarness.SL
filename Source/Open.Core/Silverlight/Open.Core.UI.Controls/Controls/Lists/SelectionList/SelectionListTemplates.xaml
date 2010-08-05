@@ -23,7 +23,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="SelectionList.DefaultItemTemplate">
-        <TextBlock Text="{Binding Value}" />
+        <TextBlock Text="{Binding Model}" />
     </DataTemplate>
 
 </ResourceDictionary>
