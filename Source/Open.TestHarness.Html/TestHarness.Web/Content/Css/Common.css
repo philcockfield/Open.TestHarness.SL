@@ -30,3 +30,10 @@ div
 .panelBorderBottom { border-bottom-width: 1px; }
 
 
+/* DropShadow */
+.dropShadow
+{
+    background-image:url(/Content/Images/Shadow/Drop.12.030.png);
+    background-repeat:repeat-x;
+    height:12px;
+}

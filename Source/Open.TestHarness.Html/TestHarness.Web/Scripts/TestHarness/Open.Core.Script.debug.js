@@ -13,6 +13,10 @@ Open.Core.Css = function Open_Core_Css() {
     /// <summary>
     /// CSS constants.
     /// </summary>
+    /// <field name="left" type="String" static="true">
+    /// </field>
+    /// <field name="right" type="String" static="true">
+    /// </field>
     /// <field name="top" type="String" static="true">
     /// </field>
     /// <field name="bottom" type="String" static="true">
@@ -20,6 +24,8 @@ Open.Core.Css = function Open_Core_Css() {
     /// <field name="width" type="String" static="true">
     /// </field>
     /// <field name="height" type="String" static="true">
+    /// </field>
+    /// <field name="px" type="String" static="true">
     /// </field>
 }
 
@@ -30,6 +36,212 @@ Open.Core.Css = function Open_Core_Css() {
 Open.Core.Events = function Open_Core_Events() {
     /// <field name="resize" type="String" static="true">
     /// </field>
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Cookie
+
+Open.Core.Cookie = function Open_Core_Cookie(cookieId) {
+    /// <summary>
+    /// Stores a set of properties within a cookie.
+    /// </summary>
+    /// <param name="cookieId" type="String">
+    /// The unique identifier of the cookie.
+    /// </param>
+    /// <field name="_id" type="String">
+    /// </field>
+    /// <field name="_expires" type="Number" integer="true">
+    /// </field>
+    /// <field name="_propertyBag" type="Open.Core.PropertyBag">
+    /// </field>
+    this._id = cookieId;
+    this._createPropertyBag();
+}
+Open.Core.Cookie.prototype = {
+    _id: null,
+    _expires: 0,
+    _propertyBag: null,
+    
+    get_id: function Open_Core_Cookie$get_id() {
+        /// <summary>
+        /// Gets the unique identifier of the cookie.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._id;
+    },
+    set_id: function Open_Core_Cookie$set_id(value) {
+        /// <summary>
+        /// Gets the unique identifier of the cookie.
+        /// </summary>
+        /// <value type="String"></value>
+        this._id = value;
+        return value;
+    },
+    
+    get_expires: function Open_Core_Cookie$get_expires() {
+        /// <summary>
+        /// Gets or sets the lifespan of the cookie (days).
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this._expires;
+    },
+    set_expires: function Open_Core_Cookie$set_expires(value) {
+        /// <summary>
+        /// Gets or sets the lifespan of the cookie (days).
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        if (value < 0) {
+            value = 0;
+        }
+        this._expires = value;
+        return value;
+    },
+    
+    save: function Open_Core_Cookie$save() {
+        /// <summary>
+        /// Saves the properties to the cookie.
+        /// </summary>
+        $.cookie(this.get_id(), this._propertyBag.toJson(), { expires: this.get_expires() });
+    },
+    
+    clear: function Open_Core_Cookie$clear() {
+        /// <summary>
+        /// Deletes the cookie (and all associated property values).
+        /// </summary>
+        $.cookie(this.get_id(), null);
+        this._createPropertyBag();
+    },
+    
+    set: function Open_Core_Cookie$set(key, value) {
+        /// <summary>
+        /// Stores the given value.
+        /// </summary>
+        /// <param name="key" type="String">
+        /// The unique identifier of the property.
+        /// </param>
+        /// <param name="value" type="Object">
+        /// The value to store.
+        /// </param>
+        this._propertyBag.set(key, value);
+    },
+    
+    get: function Open_Core_Cookie$get(key) {
+        /// <summary>
+        /// Retrieve the specified value.
+        /// </summary>
+        /// <param name="key" type="String">
+        /// The unique identifier of the property.
+        /// </param>
+        /// <returns type="Object"></returns>
+        return this._propertyBag.get(key);
+    },
+    
+    hasValue: function Open_Core_Cookie$hasValue(key) {
+        /// <summary>
+        /// Determines whether there is a value for the given key.
+        /// </summary>
+        /// <param name="key" type="String">
+        /// The unique identifier of the property.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return this._propertyBag.hasValue(key);
+    },
+    
+    _createPropertyBag: function Open_Core_Cookie$_createPropertyBag() {
+        var json = this._readCookie();
+        this._propertyBag = (String.isNullOrEmpty(json)) ? Open.Core.PropertyBag.create() : Open.Core.PropertyBag.fromJson(json);
+    },
+    
+    _readCookie: function Open_Core_Cookie$_readCookie() {
+        /// <returns type="String"></returns>
+        return Type.safeCast($.cookie(this.get_id()), String);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.PropertyBag
+
+Open.Core.PropertyBag = function Open_Core_PropertyBag(json) {
+    /// <summary>
+    /// Stores properties in a backing JavaScript object.
+    /// </summary>
+    /// <param name="json" type="String">
+    /// </param>
+    /// <field name="_backingObject" type="Object">
+    /// </field>
+    if (ss.isNullOrUndefined(json)) {
+        this._backingObject =  {};
+    }
+    else {
+        this._backingObject = JSON.parse( json );
+    }
+}
+Open.Core.PropertyBag.create = function Open_Core_PropertyBag$create() {
+    /// <summary>
+    /// Factory method.  Create an empty property bag.
+    /// </summary>
+    /// <returns type="Open.Core.PropertyBag"></returns>
+    return new Open.Core.PropertyBag(null);
+}
+Open.Core.PropertyBag.fromJson = function Open_Core_PropertyBag$fromJson(json) {
+    /// <summary>
+    /// Reconstructs a property-bag from the given JSON string.
+    /// </summary>
+    /// <param name="json" type="String">
+    /// The JSON string to parse.
+    /// </param>
+    /// <returns type="Open.Core.PropertyBag"></returns>
+    return new Open.Core.PropertyBag(json);
+}
+Open.Core.PropertyBag.prototype = {
+    _backingObject: null,
+    
+    get: function Open_Core_PropertyBag$get(key) {
+        /// <summary>
+        /// Retrieve the specified value.
+        /// </summary>
+        /// <param name="key" type="String">
+        /// The unique identifier of the property.
+        /// </param>
+        /// <returns type="Object"></returns>
+        var script = String.format('this._backingObject.{0}', key);
+        return eval(script);
+    },
+    
+    set: function Open_Core_PropertyBag$set(key, value) {
+        /// <summary>
+        /// Stores the given value.
+        /// </summary>
+        /// <param name="key" type="String">
+        /// The unique identifier of the property.
+        /// </param>
+        /// <param name="value" type="Object">
+        /// The value to store.
+        /// </param>
+        var script = String.format('this._backingObject.{0} = {1}', key, value);
+        eval(script);
+    },
+    
+    hasValue: function Open_Core_PropertyBag$hasValue(key) {
+        /// <summary>
+        /// Determines whether there is a value for the given key.
+        /// </summary>
+        /// <param name="key" type="String">
+        /// The unique identifier of the property.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return !ss.isNullOrUndefined(this.get(key));
+    },
+    
+    toJson: function Open_Core_PropertyBag$toJson() {
+        /// <summary>
+        /// Converts the property-bag to a JSON string.
+        /// </summary>
+        /// <returns type="String"></returns>
+        return Type.safeCast(JSON.stringify( this._backingObject ), String);
+    }
 }
 
 
@@ -69,18 +281,21 @@ Type.registerNamespace('Open.Core.UI');
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.UI.HorizontalPanelResizer
 
-Open.Core.UI.HorizontalPanelResizer = function Open_Core_UI_HorizontalPanelResizer(panelId) {
+Open.Core.UI.HorizontalPanelResizer = function Open_Core_UI_HorizontalPanelResizer(panelId, cookieKey) {
     /// <summary>
     /// Controls the resizing of a panel on the X plane.
     /// </summary>
     /// <param name="panelId" type="String">
     /// The unique identifier of the panel being resized.
     /// </param>
+    /// <param name="cookieKey" type="String">
+    /// The unique key to store the panel size within (null if saving not required).
+    /// </param>
     /// <field name="_minWidth$1" type="Number">
     /// </field>
     /// <field name="_maxWidthMargin$1" type="Number">
     /// </field>
-    Open.Core.UI.HorizontalPanelResizer.initializeBase(this, [ panelId ]);
+    Open.Core.UI.HorizontalPanelResizer.initializeBase(this, [ panelId, cookieKey ]);
 }
 Open.Core.UI.HorizontalPanelResizer.prototype = {
     _minWidth$1: 0,
@@ -122,6 +337,16 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         return value;
     },
     
+    get__rootContainerWidth$1: function Open_Core_UI_HorizontalPanelResizer$get__rootContainerWidth$1() {
+        /// <value type="Number"></value>
+        return (this.get_hasRootContainer()) ? this.getRootContainer().width() : -1;
+    },
+    
+    get__maxWidth$1: function Open_Core_UI_HorizontalPanelResizer$get__maxWidth$1() {
+        /// <value type="Number"></value>
+        return (this.get_hasRootContainer()) ? this.get__rootContainerWidth$1() - this.get_maxWidthMargin() : -1;
+    },
+    
     getHandles: function Open_Core_UI_HorizontalPanelResizer$getHandles() {
         /// <returns type="String"></returns>
         return 'e';
@@ -137,9 +362,24 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
     },
     
     onWindowSizeChanged: function Open_Core_UI_HorizontalPanelResizer$onWindowSizeChanged() {
-        if (this.isInitialized) {
-            this._setMinMaxWidth$1();
+        if (!this.isInitialized) {
+            return;
         }
+        this._setMinMaxWidth$1();
+        if (this.get_hasRootContainer()) {
+            this.shrinkIfOverflowing(this.getPanel(), this.getCurrentSize(), this.get_minWidth(), this.get__maxWidth$1(), Open.Core.Css.width);
+        }
+    },
+    
+    getCurrentSize: function Open_Core_UI_HorizontalPanelResizer$getCurrentSize() {
+        /// <returns type="Number"></returns>
+        return this.getPanel().width();
+    },
+    
+    setCurrentSize: function Open_Core_UI_HorizontalPanelResizer$setCurrentSize(size) {
+        /// <param name="size" type="Number">
+        /// </param>
+        this.getPanel().css(Open.Core.Css.width, size + Open.Core.Css.px);
     },
     
     _setMinMaxWidth$1: function Open_Core_UI_HorizontalPanelResizer$_setMinMaxWidth$1() {
@@ -152,7 +392,7 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
     },
     
     _setMaxWidth$1: function Open_Core_UI_HorizontalPanelResizer$_setMaxWidth$1() {
-        var width = (this.get_hasRootContainer()) ? (this.getRootContainer().width() - this.get_maxWidthMargin()).toString() : String.Empty;
+        var width = (this.get_hasRootContainer()) ? this.get__maxWidth$1().toString() : String.Empty;
         this.setResizeOption('maxWidth', width);
     }
 }
@@ -161,12 +401,15 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.UI.PanelResizerBase
 
-Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId) {
+Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, cookieKey) {
     /// <summary>
     /// Base class for resizing panels.
     /// </summary>
     /// <param name="panelId" type="String">
     /// The unique identifier of the panel being resized.
+    /// </param>
+    /// <param name="cookieKey" type="String">
+    /// The unique key to store the panel size within (null if saving not required).
     /// </param>
     /// <field name="__resized" type="EventHandler">
     /// </field>
@@ -184,15 +427,24 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId) 
     /// </field>
     /// <field name="panelId" type="String">
     /// </field>
+    /// <field name="_cookieKey" type="String">
+    /// </field>
     /// <field name="isInitialized" type="Boolean">
+    /// </field>
+    /// <field name="_cookie" type="Open.Core.Cookie" static="true">
     /// </field>
     /// <field name="_resizeScript" type="String" static="true">
     /// </field>
     this.panelId = panelId;
+    this._cookieKey = cookieKey;
+    if (Open.Core.UI.PanelResizerBase._cookie == null) {
+        Open.Core.UI.PanelResizerBase._cookie = new Open.Core.Cookie('PanelResizeStore');
+        Open.Core.UI.PanelResizerBase._cookie.set_expires(5000);
+    }
     $(window).bind(Open.Core.Events.resize, ss.Delegate.create(this, function(e) {
         this.onWindowSizeChanged();
     }));
-    var script = alert('blab');;
+    this._loadSize();
 }
 Open.Core.UI.PanelResizerBase.prototype = {
     
@@ -213,7 +465,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
     
     __resized: null,
     
-    _fireResized: function Open_Core_UI_PanelResizerBase$_fireResized() {
+    fireResized: function Open_Core_UI_PanelResizerBase$fireResized() {
         if (this.__resized != null) {
             this.__resized.invoke(this, new ss.EventArgs());
         }
@@ -267,6 +519,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
     
     _rootContainerId: null,
     panelId: null,
+    _cookieKey: null,
     isInitialized: false,
     
     get_rootContainerId: function Open_Core_UI_PanelResizerBase$get_rootContainerId() {
@@ -288,6 +541,11 @@ Open.Core.UI.PanelResizerBase.prototype = {
     get_hasRootContainer: function Open_Core_UI_PanelResizerBase$get_hasRootContainer() {
         /// <value type="Boolean"></value>
         return !String.isNullOrEmpty(this.get_rootContainerId());
+    },
+    
+    get_isSaving: function Open_Core_UI_PanelResizerBase$get_isSaving() {
+        /// <value type="Boolean"></value>
+        return !String.isNullOrEmpty(this._cookieKey);
     },
     
     initialize: function Open_Core_UI_PanelResizerBase$initialize() {
@@ -337,6 +595,27 @@ Open.Core.UI.PanelResizerBase.prototype = {
         eval(script);
     },
     
+    shrinkIfOverflowing: function Open_Core_UI_PanelResizerBase$shrinkIfOverflowing(panel, currentValue, minValue, maxValue, cssAttribute) {
+        /// <param name="panel" type="jQueryObject">
+        /// </param>
+        /// <param name="currentValue" type="Number">
+        /// </param>
+        /// <param name="minValue" type="Number">
+        /// </param>
+        /// <param name="maxValue" type="Number">
+        /// </param>
+        /// <param name="cssAttribute" type="String">
+        /// </param>
+        if (currentValue <= maxValue) {
+            return;
+        }
+        if (maxValue < minValue) {
+            return;
+        }
+        panel.css(cssAttribute, maxValue + Open.Core.Css.px);
+        this.fireResized();
+    },
+    
     _handleEvent: function Open_Core_UI_PanelResizerBase$_handleEvent(eventName) {
         /// <param name="eventName" type="String">
         /// </param>
@@ -346,12 +625,33 @@ Open.Core.UI.PanelResizerBase.prototype = {
         }
         else if (eventName === Open.Core.UI.PanelResizerBase._eventResize) {
             this.onResize();
-            this._fireResized();
+            this.fireResized();
         }
         else if (eventName === Open.Core.UI.PanelResizerBase._eventStop) {
             this.onStopped();
+            this._saveSize();
             this._fireResizeStopped();
         }
+    },
+    
+    _saveSize: function Open_Core_UI_PanelResizerBase$_saveSize() {
+        if (!this.get_isSaving()) {
+            return;
+        }
+        Open.Core.UI.PanelResizerBase._cookie.set(this._cookieKey, this.getCurrentSize());
+        Open.Core.UI.PanelResizerBase._cookie.save();
+    },
+    
+    _loadSize: function Open_Core_UI_PanelResizerBase$_loadSize() {
+        if (!this.get_isSaving()) {
+            return;
+        }
+        var size = Open.Core.UI.PanelResizerBase._cookie.get(this._cookieKey);
+        if (ss.isNullOrUndefined(size)) {
+            return;
+        }
+        this.setCurrentSize(size);
+        this.fireResized();
     }
 }
 
@@ -359,18 +659,21 @@ Open.Core.UI.PanelResizerBase.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.UI.VerticalPanelResizer
 
-Open.Core.UI.VerticalPanelResizer = function Open_Core_UI_VerticalPanelResizer(panelId) {
+Open.Core.UI.VerticalPanelResizer = function Open_Core_UI_VerticalPanelResizer(panelId, cookieKey) {
     /// <summary>
     /// Controls the resizing of a panel on the Y plane.
     /// </summary>
     /// <param name="panelId" type="String">
     /// The unique identifier of the panel being resized.
     /// </param>
+    /// <param name="cookieKey" type="String">
+    /// The unique key to store the panel size within (null if saving not required).
+    /// </param>
     /// <field name="_minHeight$1" type="Number">
     /// </field>
     /// <field name="_maxHeightMargin$1" type="Number">
     /// </field>
-    Open.Core.UI.VerticalPanelResizer.initializeBase(this, [ panelId ]);
+    Open.Core.UI.VerticalPanelResizer.initializeBase(this, [ panelId, cookieKey ]);
 }
 Open.Core.UI.VerticalPanelResizer.prototype = {
     _minHeight$1: 0,
@@ -412,6 +715,16 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         return value;
     },
     
+    get__rootContainerHeight$1: function Open_Core_UI_VerticalPanelResizer$get__rootContainerHeight$1() {
+        /// <value type="Number"></value>
+        return (this.get_hasRootContainer()) ? this.getRootContainer().height() : -1;
+    },
+    
+    get__maxHeight$1: function Open_Core_UI_VerticalPanelResizer$get__maxHeight$1() {
+        /// <value type="Number"></value>
+        return (this.get_hasRootContainer()) ? this.get__rootContainerHeight$1() - this.get_maxHeightMargin() : -1;
+    },
+    
     getHandles: function Open_Core_UI_VerticalPanelResizer$getHandles() {
         /// <returns type="String"></returns>
         return 'n';
@@ -428,9 +741,24 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
     },
     
     onWindowSizeChanged: function Open_Core_UI_VerticalPanelResizer$onWindowSizeChanged() {
-        if (this.isInitialized) {
-            this._setMinMaxHeight$1();
+        if (!this.isInitialized) {
+            return;
         }
+        this._setMinMaxHeight$1();
+        if (this.get_hasRootContainer()) {
+            this.shrinkIfOverflowing(this.getPanel(), this.getCurrentSize(), this.get_minHeight(), this.get__maxHeight$1(), Open.Core.Css.height);
+        }
+    },
+    
+    getCurrentSize: function Open_Core_UI_VerticalPanelResizer$getCurrentSize() {
+        /// <returns type="Number"></returns>
+        return this.getPanel().height();
+    },
+    
+    setCurrentSize: function Open_Core_UI_VerticalPanelResizer$setCurrentSize(size) {
+        /// <param name="size" type="Number">
+        /// </param>
+        this.getPanel().css(Open.Core.Css.height, size + Open.Core.Css.px);
     },
     
     _setMinMaxHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMinMaxHeight$1() {
@@ -443,26 +771,32 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
     },
     
     _setMaxHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMaxHeight$1() {
-        var width = (this.get_hasRootContainer()) ? (this.getRootContainer().height() - this.get_maxHeightMargin()).toString() : String.Empty;
-        this.setResizeOption('maxHeight', width);
+        var height = (this.get_hasRootContainer()) ? this.get__maxHeight$1().toString() : String.Empty;
+        this.setResizeOption('maxHeight', height);
     }
 }
 
 
 Open.Core.Css.registerClass('Open.Core.Css');
 Open.Core.Events.registerClass('Open.Core.Events');
+Open.Core.Cookie.registerClass('Open.Core.Cookie');
+Open.Core.PropertyBag.registerClass('Open.Core.PropertyBag');
 Open.Core.DelegateUtil.registerClass('Open.Core.DelegateUtil');
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Core.Css.left = 'left';
+Open.Core.Css.right = 'right';
 Open.Core.Css.top = 'top';
 Open.Core.Css.bottom = 'bottom';
 Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
+Open.Core.Css.px = 'px';
 Open.Core.Events.resize = 'resize';
 Open.Core.UI.PanelResizerBase._eventStart = 'start';
 Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';
+Open.Core.UI.PanelResizerBase._cookie = null;
 Open.Core.UI.PanelResizerBase._resizeScript = '\r\n$(\'{0}\').resizable({\r\n    handles: \'{1}\',\r\n    start: {2},\r\n    stop: {3},\r\n    resize: {4}\r\n    });\r\n';
 
 // ---- Do not remove this footer ----

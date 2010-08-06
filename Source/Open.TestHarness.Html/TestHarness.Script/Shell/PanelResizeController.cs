@@ -1,4 +1,6 @@
+using System;
 using jQueryApi;
+using Open.Core;
 using Open.Core.UI;
 
 namespace Open.TestHarness.Shell
@@ -9,7 +11,6 @@ namespace Open.TestHarness.Shell
         #region Head
         private const int SidebarMinWidth = 200;
         private const int SidebarMaxWidthMargin = 80;
-        private const int OutputLogMinHeight = 30;
         private const int OutputLogMaxWidthMargin = 80;
 
         private readonly HorizontalPanelResizer sideBarResizer;
@@ -18,7 +19,7 @@ namespace Open.TestHarness.Shell
         public PanelResizeController()
         {
             // Setup the 'SidePanel' resizer.
-            sideBarResizer = new HorizontalPanelResizer(Elements.SideBar);
+            sideBarResizer = new HorizontalPanelResizer(Elements.SideBar, "Panel_Sidebar");
             sideBarResizer.Resized += delegate
                                           {
                                               SyncMainPanelWidth();
@@ -26,14 +27,15 @@ namespace Open.TestHarness.Shell
             sideBarResizer.MinWidth = SidebarMinWidth;
             sideBarResizer.MaxWidthMargin = SidebarMaxWidthMargin;
             InitializeResizer(sideBarResizer);
+            SyncMainPanelWidth();
 
             // Setup the 'Output Log' resizer.
-            outputResizer = new VerticalPanelResizer(Elements.OutputLog);
+            outputResizer = new VerticalPanelResizer(Elements.OutputLog, "Panel_Output");
             outputResizer.Resized += delegate
                                          {
                                              
                                          };
-            outputResizer.MinHeight = OutputLogMinHeight;
+            outputResizer.MinHeight = jQuery.Select(Elements.OutputLogToolbar).GetHeight();
             outputResizer.MaxHeightMargin = OutputLogMaxWidthMargin;
             InitializeResizer(outputResizer);
         }
@@ -48,22 +50,11 @@ namespace Open.TestHarness.Shell
 
         private static void SyncMainPanelWidth()
         {
-            jQuery.Select(Elements.Main).CSS("left", jQuery.Select(Elements.SideBar).GetWidth() + 1 + "px");
+            jQuery.Select(Elements.Main)
+                .CSS(
+                    Css.Left, 
+                    jQuery.Select(Elements.SideBar).GetWidth() + 1 + Css.Px);
         }
         #endregion
-
-        //TEMP 
-        private const string SidebarResizeScript1111 =
-@"
-$('{0}').resizable({
-    handles: 'e',
-    minWidth: {1},
-    maxWidth: $('{2}').width() - {3},
-    resize: function (event, ui) {
-        $('{4}').css('left', $('{0}').width() + 1);
-    }
-});
-";
-
     }
 }

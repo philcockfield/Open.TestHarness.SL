@@ -9,7 +9,7 @@ namespace Open.Core.UI
         #region Events
         /// <summary>Fires during the resize operation.</summary>
         public event EventHandler Resized;
-        private void FireResized(){if (Resized != null) Resized(this, new EventArgs());}
+        protected void FireResized(){if (Resized != null) Resized(this, new EventArgs());}
 
         /// <summary>Fires when the resize operation starts.</summary>
         public event EventHandler ResizeStarted;
@@ -26,14 +26,29 @@ namespace Open.Core.UI
         private const string EventResize = "eventResize";
         private string rootContainerId;
         protected readonly string PanelId;
+        private readonly string cookieKey;
         protected bool IsInitialized;
+        private static Cookie cookie;
 
         /// <summary>Constructor.</summary>
         /// <param name="panelId">The unique identifier of the panel being resized.</param>
-        protected PanelResizerBase(string panelId)
+        /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
+        protected PanelResizerBase(string panelId, string cookieKey)
         {
+            // Setup initial conditions.
             PanelId = panelId;
+            this.cookieKey = cookieKey;
+            if (cookie == null)
+            {
+                cookie = new Cookie("PanelResizeStore");
+                cookie.Expires = 5000;
+            }
+
+            // Wire up events.
             jQuery.Window.Bind(Events.Resize, delegate(jQueryEvent e) { OnWindowSizeChanged(); });
+
+            // Finish up.
+            LoadSize();
         }
         #endregion
 
@@ -47,6 +62,7 @@ namespace Open.Core.UI
         }
 
         protected bool HasRootContainer { get { return !string.IsNullOrEmpty(RootContainerId); } }
+        protected bool IsSaving { get { return !String.IsNullOrEmpty(cookieKey); } }
         #endregion
 
         #region Methods
@@ -80,7 +96,6 @@ namespace Open.Core.UI
         protected virtual void OnStopped() { }
         protected virtual void OnWindowSizeChanged() { } 
 
-
         protected jQueryObject GetPanel() { return jQuery.Select(PanelId); }
         protected jQueryObject GetRootContainer() { return HasRootContainer ? jQuery.Select(RootContainerId) : null; }
 
@@ -89,6 +104,24 @@ namespace Open.Core.UI
             string script = string.Format("$('{0}').resizable('option', '{1}', {2});", PanelId, option, value);
             Script.Eval(script);
         }
+
+        protected void ShrinkIfOverflowing(jQueryObject panel, double currentValue, double minValue, double maxValue, string cssAttribute)
+        {
+            // Determine if the panel is overflowing it's available space.
+            if (currentValue <= maxValue) return;
+            if (maxValue < minValue) return; // Don't shrink smaller than the min.
+
+            // Shrink the panel.
+            panel.CSS(cssAttribute, maxValue + Css.Px);
+            FireResized();
+        }
+
+        /// <summary>Gets the current size (on the appropriate X:Y plane given the deriving class).</summary>
+        protected abstract double GetCurrentSize();
+
+        /// <summary>Sets the current size (on the appropriate X:Y plane given the deriving class).</summary>
+        /// <param name="size">The size value to set.</param>
+        protected abstract void SetCurrentSize(double size);
         #endregion
 
         #region Internal
@@ -107,8 +140,25 @@ namespace Open.Core.UI
             else if (eventName == EventStop)
             {
                 OnStopped();
+                SaveSize();
                 FireResizeStopped();
             }
+        }
+
+        private void SaveSize()
+        {
+            if (!IsSaving) return;
+            cookie.Set(cookieKey, GetCurrentSize());
+            cookie.Save();
+        }
+
+        private void LoadSize()
+        {
+            if (!IsSaving) return;
+            object size = cookie.Get(cookieKey);
+            if (Script.IsNullOrUndefined(size)) return;
+            SetCurrentSize((double)size);
+            FireResized();
         }
         #endregion
 

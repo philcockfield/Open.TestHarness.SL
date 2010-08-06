@@ -12,7 +12,8 @@ namespace Open.Core.UI
 
         /// <summary>Constructor.</summary>
         /// <param name="panelId">The unique identifier of the panel being resized.</param>
-        public HorizontalPanelResizer(string panelId) : base(panelId)
+        /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
+        public HorizontalPanelResizer(string panelId, string cookieKey) : base(panelId, cookieKey)
         {
         }
         #endregion
@@ -36,6 +37,16 @@ namespace Open.Core.UI
             get { return maxWidthMargin; }
             set { maxWidthMargin = value; }
         }
+
+        private double RootContainerWidth
+        {
+            get { return HasRootContainer ? GetRootContainer().GetWidth() : -1; }
+        }
+
+        private double MaxWidth
+        {
+            get { return HasRootContainer ? RootContainerWidth - MaxWidthMargin : -1; }
+        }
         #endregion
 
         #region Methods
@@ -51,7 +62,23 @@ namespace Open.Core.UI
             jQueryObject panel = GetPanel();
             panel.CSS(Css.Height, String.Empty);
         }
-        protected override void OnWindowSizeChanged() { if (IsInitialized) SetMinMaxWidth(); }
+        protected override void OnWindowSizeChanged()
+        {
+            if (!IsInitialized) return;
+            SetMinMaxWidth();
+
+            // Shrink the panel if the window is too small.
+            if (HasRootContainer)
+            {
+                ShrinkIfOverflowing(GetPanel(), GetCurrentSize(), MinWidth, MaxWidth, Css.Width);
+            }
+        }
+
+        protected override double GetCurrentSize() { return GetPanel().GetWidth(); }
+        protected override void SetCurrentSize(double size)
+        {
+            GetPanel().CSS(Css.Width, size + Css.Px);
+        }
         #endregion
 
         #region Internal
@@ -69,7 +96,7 @@ namespace Open.Core.UI
         private void SetMaxWidth()
         {
             string width = HasRootContainer
-                                    ? (GetRootContainer().GetWidth() - MaxWidthMargin).ToString()
+                                    ? MaxWidth.ToString()
                                     : String.Empty;
             SetResizeOption("maxWidth", width);
         }

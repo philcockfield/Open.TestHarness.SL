@@ -6,9 +6,6 @@
     right:0px;
     top:0px;
     bottom:0px;
-    
-    /* TEMP */
-    color:#bababa;
 }
 
 #sidebar
@@ -30,20 +27,40 @@
     bottom:0px;
 }
 
+/* Output Log */
 #outputLog
 {
-    background:#e5e5e5;
+    background:#f9fafb;
     position:absolute;
     left:0px;
     right:0px;
     bottom:0px;
-    height:100px;
+    height:180px;
 }
+
+#outputLogTitle
+{
+    position:relative;
+    font-family: Tahoma, Helvetica, Arial, Verdana;
+    font-size:14pt;
+    color:#a0a0a0;
+    margin-left:8px;
+    margin-top:3px;
+}
+
+#outputLog p.dropShadow
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:33px;
+}
+
 
 /* Toolbars */
 .toolbar
 {
-    background:#e1e1e1;
+    background:#e4e4e4;
     position:absolute;
     left:0px;
     top:0px;
@@ -58,12 +75,18 @@
     border-color:#d9d9d9;
 }
 
+#outputLogToolbar{ height:32px; }
 
-/*
-        opacity:0.2;
-    filter:alpha(opacity=20);
-
-*/
+.toolbarReflection
+{
+    position:absolute;
+    background:white;
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:50%;
+    opacity:0.5; filter:alpha(opacity=50);
+}
 
 
 

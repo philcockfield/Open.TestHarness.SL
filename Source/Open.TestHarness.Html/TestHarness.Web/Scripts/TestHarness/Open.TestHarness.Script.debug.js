@@ -17,9 +17,15 @@ Open.TestHarness.Elements = function Open_TestHarness_Elements() {
     /// </field>
     /// <field name="sideBar" type="String" static="true">
     /// </field>
+    /// <field name="sideBarToolbar" type="String" static="true">
+    /// </field>
     /// <field name="main" type="String" static="true">
     /// </field>
+    /// <field name="mainToolbar" type="String" static="true">
+    /// </field>
     /// <field name="outputLog" type="String" static="true">
+    /// </field>
+    /// <field name="outputLogToolbar" type="String" static="true">
     /// </field>
 }
 
@@ -51,27 +57,24 @@ Open.TestHarness.Shell.PanelResizeController = function Open_TestHarness_Shell_P
     /// </field>
     /// <field name="_sidebarMaxWidthMargin" type="Number" integer="true" static="true">
     /// </field>
-    /// <field name="_outputLogMinHeight" type="Number" integer="true" static="true">
-    /// </field>
     /// <field name="_outputLogMaxWidthMargin" type="Number" integer="true" static="true">
     /// </field>
     /// <field name="_sideBarResizer" type="Open.Core.UI.HorizontalPanelResizer">
     /// </field>
     /// <field name="_outputResizer" type="Open.Core.UI.VerticalPanelResizer">
     /// </field>
-    /// <field name="_sidebarResizeScript1111" type="String" static="true">
-    /// </field>
-    this._sideBarResizer = new Open.Core.UI.HorizontalPanelResizer(Open.TestHarness.Elements.sideBar);
+    this._sideBarResizer = new Open.Core.UI.HorizontalPanelResizer(Open.TestHarness.Elements.sideBar, 'Panel_Sidebar');
     this._sideBarResizer.add_resized(ss.Delegate.create(this, function() {
         Open.TestHarness.Shell.PanelResizeController._syncMainPanelWidth();
     }));
     this._sideBarResizer.set_minWidth(Open.TestHarness.Shell.PanelResizeController._sidebarMinWidth);
     this._sideBarResizer.set_maxWidthMargin(Open.TestHarness.Shell.PanelResizeController._sidebarMaxWidthMargin);
     Open.TestHarness.Shell.PanelResizeController._initializeResizer(this._sideBarResizer);
-    this._outputResizer = new Open.Core.UI.VerticalPanelResizer(Open.TestHarness.Elements.outputLog);
+    Open.TestHarness.Shell.PanelResizeController._syncMainPanelWidth();
+    this._outputResizer = new Open.Core.UI.VerticalPanelResizer(Open.TestHarness.Elements.outputLog, 'Panel_Output');
     this._outputResizer.add_resized(ss.Delegate.create(this, function() {
     }));
-    this._outputResizer.set_minHeight(Open.TestHarness.Shell.PanelResizeController._outputLogMinHeight);
+    this._outputResizer.set_minHeight($(Open.TestHarness.Elements.outputLogToolbar).height());
     this._outputResizer.set_maxHeightMargin(Open.TestHarness.Shell.PanelResizeController._outputLogMaxWidthMargin);
     Open.TestHarness.Shell.PanelResizeController._initializeResizer(this._outputResizer);
 }
@@ -82,7 +85,7 @@ Open.TestHarness.Shell.PanelResizeController._initializeResizer = function Open_
     resizer.initialize();
 }
 Open.TestHarness.Shell.PanelResizeController._syncMainPanelWidth = function Open_TestHarness_Shell_PanelResizeController$_syncMainPanelWidth() {
-    $(Open.TestHarness.Elements.main).css('left', $(Open.TestHarness.Elements.sideBar).width() + 1 + 'px');
+    $(Open.TestHarness.Elements.main).css(Open.Core.Css.left, $(Open.TestHarness.Elements.sideBar).width() + 1 + Open.Core.Css.px);
 }
 Open.TestHarness.Shell.PanelResizeController.prototype = {
     _sideBarResizer: null,
@@ -95,14 +98,15 @@ Open.TestHarness.Application.registerClass('Open.TestHarness.Application');
 Open.TestHarness.Shell.PanelResizeController.registerClass('Open.TestHarness.Shell.PanelResizeController');
 Open.TestHarness.Elements.root = '#root';
 Open.TestHarness.Elements.sideBar = '#sidebar';
+Open.TestHarness.Elements.sideBarToolbar = '#sidebarToolbar';
 Open.TestHarness.Elements.main = '#main';
+Open.TestHarness.Elements.mainToolbar = '#mainToolbar';
 Open.TestHarness.Elements.outputLog = '#outputLog';
+Open.TestHarness.Elements.outputLogToolbar = '#outputLogToolbar';
 Open.TestHarness.Application._resizeController = null;
 Open.TestHarness.Shell.PanelResizeController._sidebarMinWidth = 200;
 Open.TestHarness.Shell.PanelResizeController._sidebarMaxWidthMargin = 80;
-Open.TestHarness.Shell.PanelResizeController._outputLogMinHeight = 30;
 Open.TestHarness.Shell.PanelResizeController._outputLogMaxWidthMargin = 80;
-Open.TestHarness.Shell.PanelResizeController._sidebarResizeScript1111 = '\r\n$(\'{0}\').resizable({\r\n    handles: \'e\',\r\n    minWidth: {1},\r\n    maxWidth: $(\'{2}\').width() - {3},\r\n    resize: function (event, ui) {\r\n        $(\'{4}\').css(\'left\', $(\'{0}\').width() + 1);\r\n    }\r\n});\r\n';
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)

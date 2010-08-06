@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Open.TestHarness.Web.Controllers
 {
-    public class HomeController : Controller
+    /// <summary>Default controller.</summary>
+    public class HomeController : ControllerBase
     {
-        //
-        // GET: /Index/
+        #region Head
+        private const string KeyOutputTitle = "Output_Title";
+        #endregion
 
+        #region Methods
+        // GET: /Index/
         public ActionResult Index()
         {
-            return View();
+            ViewModel.OutputTitle = GetResource(KeyOutputTitle);
+            return View(ViewModel);
         }
-
-        public ActionResult Sample()
-        {
-            return View();
-        }
-
+        #endregion
     }
 }

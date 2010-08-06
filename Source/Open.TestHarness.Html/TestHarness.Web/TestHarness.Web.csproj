@@ -66,11 +66,20 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\TestHarnessStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestHarnessStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Content\Images\Shadow\Drop.12.030.png" />
+    <Content Include="Favicon.ico" />
     <Content Include="Scripts\jquery-1.4.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.2.custom.min.js" />
     <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
@@ -79,13 +88,12 @@
     <Content Include="Scripts\TestHarness\Open.Core.Script.js" />
     <Content Include="Scripts\TestHarness\Open.TestHarness.Script.debug.js" />
     <Content Include="Scripts\TestHarness\Open.TestHarness.Script.js" />
-    <Content Include="Views\Home\Sample.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Common.css" />
-    <Content Include="Content\TestHarness.Structure.css" />
+    <Content Include="Content\Css\Common.css" />
+    <Content Include="Content\Css\TestHarness.Structure.css" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Validation.css" />
+    <Content Include="Content\Css\Validation.css" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -111,6 +119,12 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Views\Shared\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\TestHarnessStrings.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TestHarnessStrings.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

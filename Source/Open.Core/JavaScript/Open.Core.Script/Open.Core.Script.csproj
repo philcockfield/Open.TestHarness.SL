@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Declarations\Css.cs" />
     <Compile Include="Declarations\Events.cs" />
+    <Compile Include="Model\Cookie.cs" />
+    <Compile Include="Model\PropertyBag.cs" />
     <Compile Include="UI\Resize\HorizontalPanelResizer.cs" />
     <Compile Include="UI\Resize\PanelResizerBase.cs" />
     <Compile Include="UI\Resize\VerticalPanelResizer.cs" />
