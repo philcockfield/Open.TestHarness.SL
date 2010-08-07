@@ -1,8 +1,11 @@
+using jQueryApi;
+
 namespace Open.Core
 {
     /// <summary>CSS constants.</summary>
-    public class Css
+    public static class Css
     {
+        #region Constants
         public const string Left = "left";
         public const string Right = "right";
         public const string Top = "top";
@@ -11,5 +14,28 @@ namespace Open.Core
         public const string Height = "height";
 
         public const string Px = "px";
+        #endregion
+
+        #region Methods
+        /// <summary>Prepends the # to a CSS identifier (eg: id='one' would be '#one').</summary>
+        /// <param name="identifier">The ID value.</param>
+        public static string ToId(string identifier)
+        {
+            if (string.IsNullOrEmpty(identifier)) return identifier;
+            return identifier.Substr(0, 1) == "#" 
+                            ? identifier 
+                            : "#" + identifier;
+        }
+
+        /// <summary>
+        ///     Performs a jQuery CSS selection with the given ID 
+        ///     (pre-processing the ID format using the ToId() method).
+        /// </summary>
+        /// <param name="identifier">The ID of the element.</param>
+        public static jQueryObject SelectFromId(string identifier)
+        {
+            return jQuery.Select(ToId(identifier));
+        }
+        #endregion
     }
 }

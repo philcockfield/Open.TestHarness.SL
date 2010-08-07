@@ -13,7 +13,7 @@
     <LangVersion>ISO-2</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Open.TestHarness</RootNamespace>
-    <AssemblyName>Open.TestHarness.Script</AssemblyName>
+    <AssemblyName>Open.TestHarness</AssemblyName>
     <TemplateFile>Properties\TestHarness.Script3.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\TestHarness.Script3.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Debug\Open.TestHarness.Script.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Open.TestHarness.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Release\Open.TestHarness.Script.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Open.TestHarness.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=0.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
@@ -57,6 +57,9 @@
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>
       <Name>Open.Core.Script</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base Classes\" />
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
   <PropertyGroup>

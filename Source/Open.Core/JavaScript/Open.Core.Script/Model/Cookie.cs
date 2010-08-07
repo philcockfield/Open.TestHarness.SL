@@ -1,4 +1,5 @@
 ﻿using System;
+using jQueryApi;
 
 namespace Open.Core
 {

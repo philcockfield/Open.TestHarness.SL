@@ -11,7 +11,7 @@ namespace Open.TestHarness.Shell
         #region Head
         private const int SidebarMinWidth = 200;
         private const int SidebarMaxWidthMargin = 80;
-        private const int OutputLogMaxWidthMargin = 80;
+        private const int OutputLogMaxHeightMargin = 80;
 
         private readonly HorizontalPanelResizer sideBarResizer;
         private readonly VerticalPanelResizer outputResizer;
@@ -19,7 +19,7 @@ namespace Open.TestHarness.Shell
         public PanelResizeController()
         {
             // Setup the 'SidePanel' resizer.
-            sideBarResizer = new HorizontalPanelResizer(Elements.SideBar, "Panel_Sidebar");
+            sideBarResizer = new HorizontalPanelResizer(Elements.SideBar, "TH_SB");
             sideBarResizer.Resized += delegate
                                           {
                                               SyncMainPanelWidth();
@@ -30,13 +30,13 @@ namespace Open.TestHarness.Shell
             SyncMainPanelWidth();
 
             // Setup the 'Output Log' resizer.
-            outputResizer = new VerticalPanelResizer(Elements.OutputLog, "Panel_Output");
+            outputResizer = new VerticalPanelResizer(Elements.OutputLog, "TH_OL");
             outputResizer.Resized += delegate
                                          {
                                              
                                          };
-            outputResizer.MinHeight = jQuery.Select(Elements.OutputLogToolbar).GetHeight();
-            outputResizer.MaxHeightMargin = OutputLogMaxWidthMargin;
+            outputResizer.MinHeight = Css.SelectFromId(Elements.OutputLogTitlebar).GetHeight();
+            outputResizer.MaxHeightMargin = OutputLogMaxHeightMargin;
             InitializeResizer(outputResizer);
         }
         #endregion
@@ -50,10 +50,10 @@ namespace Open.TestHarness.Shell
 
         private static void SyncMainPanelWidth()
         {
-            jQuery.Select(Elements.Main)
+            Css.SelectFromId(Elements.Main)
                 .CSS(
-                    Css.Left, 
-                    jQuery.Select(Elements.SideBar).GetWidth() + 1 + Css.Px);
+                    Css.Left,
+                    Css.SelectFromId(Elements.SideBar).GetWidth() + 1 + Css.Px);
         }
         #endregion
     }

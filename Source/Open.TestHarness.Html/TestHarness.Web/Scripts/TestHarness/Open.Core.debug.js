@@ -1,4 +1,4 @@
-//! Open.Core.Script.debug.js
+//! Open.Core.debug.js
 //
 
 (function() {
@@ -27,6 +27,30 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="px" type="String" static="true">
     /// </field>
+}
+Open.Core.Css.toId = function Open_Core_Css$toId(identifier) {
+    /// <summary>
+    /// Prepends the # to a CSS identifier (eg: id='one' would be '#one').
+    /// </summary>
+    /// <param name="identifier" type="String">
+    /// The ID value.
+    /// </param>
+    /// <returns type="String"></returns>
+    if (String.isNullOrEmpty(identifier)) {
+        return identifier;
+    }
+    return (identifier.substr(0, 1) === '#') ? identifier : '#' + identifier;
+}
+Open.Core.Css.selectFromId = function Open_Core_Css$selectFromId(identifier) {
+    /// <summary>
+    /// Performs a jQuery CSS selection with the given ID
+    /// (pre-processing the ID format using the ToId() method).
+    /// </summary>
+    /// <param name="identifier" type="String">
+    /// The ID of the element.
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    return $(Open.Core.Css.toId(identifier));
 }
 
 
@@ -435,7 +459,7 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, 
     /// </field>
     /// <field name="_resizeScript" type="String" static="true">
     /// </field>
-    this.panelId = panelId;
+    this.panelId = Open.Core.Css.toId(panelId);
     this._cookieKey = cookieKey;
     if (Open.Core.UI.PanelResizerBase._cookie == null) {
         Open.Core.UI.PanelResizerBase._cookie = new Open.Core.Cookie('PanelResizeStore');
@@ -444,7 +468,6 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, 
     $(window).bind(Open.Core.Events.resize, ss.Delegate.create(this, function(e) {
         this.onWindowSizeChanged();
     }));
-    this._loadSize();
 }
 Open.Core.UI.PanelResizerBase.prototype = {
     
@@ -534,7 +557,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
         /// Gets or sets the unique identifier of the root container of the panel(s).
         /// </summary>
         /// <value type="String"></value>
-        this._rootContainerId = value;
+        this._rootContainerId = Open.Core.Css.toId(value);
         return value;
     },
     
@@ -559,6 +582,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
         eval(script);
         this.onInitialize();
         this.isInitialized = true;
+        this._loadSize();
     },
     
     onInitialize: function Open_Core_UI_PanelResizerBase$onInitialize() {

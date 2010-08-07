@@ -36,7 +36,7 @@ namespace Open.Core.UI
         protected PanelResizerBase(string panelId, string cookieKey)
         {
             // Setup initial conditions.
-            PanelId = panelId;
+            PanelId = Css.ToId(panelId);
             this.cookieKey = cookieKey;
             if (cookie == null)
             {
@@ -46,9 +46,6 @@ namespace Open.Core.UI
 
             // Wire up events.
             jQuery.Window.Bind(Events.Resize, delegate(jQueryEvent e) { OnWindowSizeChanged(); });
-
-            // Finish up.
-            LoadSize();
         }
         #endregion
 
@@ -58,7 +55,7 @@ namespace Open.Core.UI
         public string RootContainerId
         {
             get { return rootContainerId; }
-            set { rootContainerId = value; }
+            set { rootContainerId = Css.ToId(value); }
         }
 
         protected bool HasRootContainer { get { return !string.IsNullOrEmpty(RootContainerId); } }
@@ -85,6 +82,7 @@ namespace Open.Core.UI
             // Finish up.
             OnInitialize();
             IsInitialized = true;
+            LoadSize();
         }
         #endregion
 

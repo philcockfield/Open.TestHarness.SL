@@ -1,4 +1,4 @@
-﻿/* Panels */
+﻿/*====== Panels ======*/
 #root
 {
     position:absolute;
@@ -7,7 +7,6 @@
     top:0px;
     bottom:0px;
 }
-
 #sidebar
 {
     background:#e0e5eb;
@@ -17,7 +16,6 @@
     bottom:0px;
     width:250px;
 }
-
 #main
 {
     position:absolute;
@@ -27,37 +25,8 @@
     bottom:0px;
 }
 
-/* Output Log */
-#outputLog
-{
-    background:#f9fafb;
-    position:absolute;
-    left:0px;
-    right:0px;
-    bottom:0px;
-    height:180px;
-}
 
-#outputLogTitle
-{
-    position:relative;
-    font-family: Tahoma, Helvetica, Arial, Verdana;
-    font-size:14pt;
-    color:#a0a0a0;
-    margin-left:8px;
-    margin-top:3px;
-}
-
-#outputLog p.dropShadow
-{
-    position:absolute;
-    left:0px;
-    right:0px;
-    top:33px;
-}
-
-
-/* Toolbars */
+/*====== Toolbars ======*/
 .toolbar
 {
     background:#e4e4e4;
@@ -68,15 +37,6 @@
     height:25px;   
     border-color:#989898; 
 }
-
-#mainToolbar
-{
-    background:#f2f2f2;
-    border-color:#d9d9d9;
-}
-
-#outputLogToolbar{ height:32px; }
-
 .toolbarReflection
 {
     position:absolute;
@@ -88,5 +48,63 @@
     opacity:0.5; filter:alpha(opacity=50);
 }
 
+
+/*====== Main ======*/
+#mainToolbar
+{
+    background:#f2f2f2;
+    border-color:#d9d9d9;
+}
+
+
+/*====== Output Log ======*/
+#outputLog
+{
+    background:#f9fafb;
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    height:180px;
+}
+#outputLogTitle
+{
+    position:relative;
+    font-family: Tahoma, Helvetica, Arial, Verdana;
+    font-size:14pt;
+    color:#a0a0a0;
+    margin-left:8px;
+    margin-top:3px;
+}
+#outputLog p.dropShadow
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:33px;
+}
+#outputLogTitlebar { height:32px; }
+
+#outputLog table
+{
+    position:absolute;
+    left:0px;
+    top:33px;
+    right:0px;
+    bottom:0px;
+    background:red;
+    border:1px;
+}
+
+#outputLog .foo
+{
+    position:absolute;
+    left:0px;
+    top:33px;
+    right:0px;
+    bottom:0px;
+    background:orange;
+    
+}
 
 

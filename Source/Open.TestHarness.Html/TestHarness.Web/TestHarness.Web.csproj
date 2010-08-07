@@ -71,30 +71,46 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestHarnessStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Code\Base Classes\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TestHarnessController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HomeController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Scripts\jquery.cookie.js" />
+    <Compile Include="SharedController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T4MVC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestHarnessController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Content Include="Scripts\JQuery\jquery.cookie.js" />
     <Content Include="Content\Images\Shadow\Drop.12.030.png" />
     <Content Include="Favicon.ico" />
-    <Content Include="Scripts\jquery-1.4.2.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.2.custom.min.js" />
-    <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
-    <Content Include="Scripts\TestHarness\mscorlib.js" />
-    <Content Include="Scripts\TestHarness\Open.Core.Script.debug.js" />
-    <Content Include="Scripts\TestHarness\Open.Core.Script.js" />
-    <Content Include="Scripts\TestHarness\Open.TestHarness.Script.debug.js" />
-    <Content Include="Scripts\TestHarness\Open.TestHarness.Script.js" />
+    <Content Include="Scripts\JQuery\jquery-1.4.2.min.js" />
+    <Content Include="Scripts\JQuery\jquery-ui-1.8.2.custom.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Css\Common.css" />
-    <Content Include="Content\Css\TestHarness.Structure.css" />
+    <Content Include="Content\Css\Core.css" />
+    <Content Include="Content\Css\TestHarness.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Css\Validation.css" />
-    <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
+    <Content Include="Scripts\TestHarness\mscorlib.js" />
+    <Content Include="Scripts\TestHarness\Open.Core.debug.js" />
+    <Content Include="Scripts\TestHarness\Open.Core.js" />
+    <Content Include="Scripts\TestHarness\Open.TestHarness.debug.js" />
+    <Content Include="Scripts\TestHarness\Open.TestHarness.js" />
+    <Content Include="Views\TestHarness\Log.ascx" />
+    <Content Include="Views\TestHarness\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -102,22 +118,23 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\jquery-1.4.1.js" />
-    <Content Include="Scripts\jquery-1.4.1.min.js" />
-    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\MicrosoftAjax.js" />
-    <Content Include="Scripts\MicrosoftAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\JQuery\jquery-1.4.1.js" />
+    <Content Include="Scripts\JQuery\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\JQuery\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\JQuery\jquery.validate.js" />
+    <Content Include="Scripts\JQuery\jquery.validate.min.js" />
+    <Content Include="Scripts\JQuery\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\MicrosoftAjax\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftAjax\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Views\Home\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +142,16 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>TestHarnessStrings.Designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="T4MVC.settings.t4" />
+    <None Include="T4MVC.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T4MVC.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
