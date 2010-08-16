@@ -1,14 +1,12 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
 
-<div id="outputLog" class="panelBorder panelBorderTop">
-    <div id="outputLogTitlebar" class="panelBorder panelBorderBottom toolbar">
+<div id="testHarnessLog" class="panelBorder panelBorderTop">
+    <div class="titlebar panelBorder panelBorderBottom toolbar">
         <p class="toolbarReflection"></p>
-        <p id="outputLogTitle"><%= Model.OutputTitle %></p>
+        <div class="table">
+           <p class="title titleFont"><%= Model.OutputTitle %></p>
+        </div>
     </div>
-
-    <div class="outputLogContent">
-    </div>
-
-
+    <div class="outputLogContent"></div>
     <p class="dropShadow"></p>
 </div>

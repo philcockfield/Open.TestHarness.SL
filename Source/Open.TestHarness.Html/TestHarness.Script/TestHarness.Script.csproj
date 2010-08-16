@@ -45,6 +45,7 @@
     <Reference Include="Script.jQuery" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
     <Compile Include="Shell\PanelResizeController.cs" />
     <Content Include="Properties\TestHarness.Script3.ruleset" />

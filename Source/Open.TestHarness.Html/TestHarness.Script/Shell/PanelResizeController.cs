@@ -30,12 +30,11 @@ namespace Open.TestHarness.Shell
             SyncMainPanelWidth();
 
             // Setup the 'Output Log' resizer.
-            outputResizer = new VerticalPanelResizer(Elements.OutputLog, "TH_OL");
+            outputResizer = new VerticalPanelResizer(Elements.Log, "TH_OL");
             outputResizer.Resized += delegate
                                          {
-                                             
                                          };
-            outputResizer.MinHeight = Css.SelectFromId(Elements.OutputLogTitlebar).GetHeight();
+            outputResizer.MinHeight = jQuery.Select(CssSelectors.LogTitlebar).GetHeight();
             outputResizer.MaxHeightMargin = OutputLogMaxHeightMargin;
             InitializeResizer(outputResizer);
         }

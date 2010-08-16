@@ -412,7 +412,7 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
     },
     
     _setMinWidth$1: function Open_Core_UI_HorizontalPanelResizer$_setMinWidth$1() {
-        this.setResizeOption('minWidth', this.get_minWidth());
+        this.setResizeOption('minWidth', this.get_minWidth().toString());
     },
     
     _setMaxWidth$1: function Open_Core_UI_HorizontalPanelResizer$_setMaxWidth$1() {
@@ -468,6 +468,7 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, 
     $(window).bind(Open.Core.Events.resize, ss.Delegate.create(this, function(e) {
         this.onWindowSizeChanged();
     }));
+    this._loadSize();
 }
 Open.Core.UI.PanelResizerBase.prototype = {
     
@@ -582,7 +583,6 @@ Open.Core.UI.PanelResizerBase.prototype = {
         eval(script);
         this.onInitialize();
         this.isInitialized = true;
-        this._loadSize();
     },
     
     onInitialize: function Open_Core_UI_PanelResizerBase$onInitialize() {
@@ -613,8 +613,11 @@ Open.Core.UI.PanelResizerBase.prototype = {
     setResizeOption: function Open_Core_UI_PanelResizerBase$setResizeOption(option, value) {
         /// <param name="option" type="String">
         /// </param>
-        /// <param name="value" type="Object">
+        /// <param name="value" type="String">
         /// </param>
+        if (String.isNullOrEmpty(value)) {
+            return;
+        }
         var script = String.format('$(\'{0}\').resizable(\'option\', \'{1}\', {2});', this.panelId, option, value);
         eval(script);
     },
@@ -791,7 +794,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
     },
     
     _setMinHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMinHeight$1() {
-        this.setResizeOption('minHeight', this.get_minHeight());
+        this.setResizeOption('minHeight', this.get_minHeight().toString());
     },
     
     _setMaxHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMaxHeight$1() {

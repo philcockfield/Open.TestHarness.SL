@@ -11,8 +11,7 @@ namespace Open.TestHarness
         public const string Main = "main";
         public const string MainToolbar = "mainToolbar";
 
-        public const string OutputLog = "outputLog";
-        public const string OutputLogTitlebar = "outputLogTitlebar";
+        public const string Log = "testHarnessLog";
         public const string OutputLogTitle = "outputLogTitle";
     }
 }

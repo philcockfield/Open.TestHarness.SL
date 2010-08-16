@@ -90,7 +90,7 @@ namespace Open.Core.UI
 
         private void SetMinWidth()
         {
-            SetResizeOption("minWidth", MinWidth); 
+            SetResizeOption("minWidth", MinWidth.ToString()); 
         }
 
         private void SetMaxWidth()

@@ -8,13 +8,17 @@ body *
 
 body
 {
-    font-family:Tahoma, Helvetica, Verdana;
+    font-family: Tahoma, Helvetica, Verdana;
     font-size:10pt;
 }
 
-div
+div { -moz-user-select: none; }
+
+
+/* Typography */
+.titleFont
 {
-    -moz-user-select: none;
+    font-family: 'Lucida Grande', Tahoma, Helvetica, Arial, Verdana;
 }
 
 
@@ -30,10 +34,23 @@ div
 .panelBorderBottom { border-bottom-width: 1px; }
 
 
-/* DropShadow */
+/* Drop Shadows */
 .dropShadow
 {
     background-image:url(/Content/Images/Shadow/Drop.12.030.png);
     background-repeat:repeat-x;
     height:12px;
 }
+
+/* Reflections */
+.toolbarReflection
+{
+    position:absolute;
+    background:white;
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:50%;
+    opacity:0.5; filter:alpha(opacity=50);
+}
+

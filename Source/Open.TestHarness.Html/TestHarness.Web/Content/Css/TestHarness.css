@@ -37,16 +37,6 @@
     height:25px;   
     border-color:#989898; 
 }
-.toolbarReflection
-{
-    position:absolute;
-    background:white;
-    left:0px;
-    top:0px;
-    right:0px;
-    bottom:50%;
-    opacity:0.5; filter:alpha(opacity=50);
-}
 
 
 /*====== Main ======*/
@@ -58,7 +48,7 @@
 
 
 /*====== Output Log ======*/
-#outputLog
+#testHarnessLog
 {
     background:#f9fafb;
     position:absolute;
@@ -67,44 +57,21 @@
     bottom:0px;
     height:180px;
 }
-#outputLogTitle
+
+#testHarnessLog .titlebar { height:32px; }
+#testHarnessLog .titlebar div.table { position:absolute; display:table; left:8px; height:32px; }
+#testHarnessLog .titlebar p.title
 {
     position:relative;
-    font-family: Tahoma, Helvetica, Arial, Verdana;
+    display:table-cell;
+    vertical-align:middle;
     font-size:14pt;
     color:#a0a0a0;
-    margin-left:8px;
-    margin-top:3px;
 }
-#outputLog p.dropShadow
+#testHarnessLog p.dropShadow
 {
     position:absolute;
     left:0px;
     right:0px;
     top:33px;
 }
-#outputLogTitlebar { height:32px; }
-
-#outputLog table
-{
-    position:absolute;
-    left:0px;
-    top:33px;
-    right:0px;
-    bottom:0px;
-    background:red;
-    border:1px;
-}
-
-#outputLog .foo
-{
-    position:absolute;
-    left:0px;
-    top:33px;
-    right:0px;
-    bottom:0px;
-    background:orange;
-    
-}
-
-

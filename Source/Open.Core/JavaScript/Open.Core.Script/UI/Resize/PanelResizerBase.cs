@@ -46,6 +46,9 @@ namespace Open.Core.UI
 
             // Wire up events.
             jQuery.Window.Bind(Events.Resize, delegate(jQueryEvent e) { OnWindowSizeChanged(); });
+
+            // Finish up.
+            LoadSize();
         }
         #endregion
 
@@ -82,7 +85,6 @@ namespace Open.Core.UI
             // Finish up.
             OnInitialize();
             IsInitialized = true;
-            LoadSize();
         }
         #endregion
 
@@ -97,8 +99,9 @@ namespace Open.Core.UI
         protected jQueryObject GetPanel() { return jQuery.Select(PanelId); }
         protected jQueryObject GetRootContainer() { return HasRootContainer ? jQuery.Select(RootContainerId) : null; }
 
-        protected void SetResizeOption(string option, object value)
+        protected void SetResizeOption(string option, string value)
         {
+            if (string.IsNullOrEmpty(value)) return;
             string script = string.Format("$('{0}').resizable('option', '{1}', {2});", PanelId, option, value);
             Script.Eval(script);
         }

@@ -5,7 +5,7 @@
     <file relUrl="Content/Images/Shadow/Drop.12.030.png" publishTime="08/05/2010 10:35:34" />
     <file relUrl="Scripts/JQuery/jquery-1.4.1-vsdoc.js" publishTime="08/04/2010 14:34:30" />
     <file relUrl="bin/Open.Core.Web.Clr.dll" publishTime="07/29/2010 17:58:56" />
-    <file relUrl="Content/Css/TestHarness.css" publishTime="08/06/2010 16:40:39" />
+    <file relUrl="Content/Css/TestHarness.css" publishTime="08/06/2010 22:16:31" />
     <file relUrl="Global.asax" publishTime="08/04/2010 14:34:30" />
     <file relUrl="Content/Css/Validation.css" publishTime="08/04/2010 14:34:30" />
     <file relUrl="Content/Css/Core.css" publishTime="08/05/2010 10:39:58" />
@@ -25,7 +25,7 @@
     <file relUrl="Scripts/TestHarness/mscorlib.js" publishTime="06/17/2010 02:08:44" />
     <file relUrl="Scripts/JQuery/jquery.validate.js" publishTime="08/04/2010 14:34:30" />
     <file relUrl="Scripts/MicrosoftAjax/MicrosoftMvcAjax.js" publishTime="08/04/2010 14:34:30" />
-    <file relUrl="Views/TestHarness/Log.ascx" publishTime="08/06/2010 16:43:36" />
+    <file relUrl="Views/TestHarness/Log.ascx" publishTime="08/06/2010 22:10:24" />
     <file relUrl="Scripts/MicrosoftAjax/MicrosoftMvcValidation.debug.js" publishTime="08/04/2010 14:34:30" />
     <file relUrl="bin/System.Web.Mvc.dll" publishTime="07/19/2010 11:38:36" />
     <file relUrl="bin/Open.Core.Contracts.Clr.pdb" publishTime="07/29/2010 17:49:41" />

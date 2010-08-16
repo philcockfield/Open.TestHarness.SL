@@ -91,7 +91,7 @@ namespace Open.Core.UI
 
         private void SetMinHeight()
         {
-            SetResizeOption("minHeight", MinHeight);
+            SetResizeOption("minHeight", MinHeight.ToString());
         }
 
         private void SetMaxHeight()
