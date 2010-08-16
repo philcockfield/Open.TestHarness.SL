@@ -19,7 +19,7 @@ namespace Open.TestHarness.Shell
         public PanelResizeController()
         {
             // Setup the 'SidePanel' resizer.
-            sideBarResizer = new HorizontalPanelResizer(Css.SelectFromId(Elements.SideBar), "TH_SB");
+            sideBarResizer = new HorizontalPanelResizer(CssSelectors.Sidebar, "TH_SB");
             sideBarResizer.Resized += delegate
                                           {
                                               SyncMainPanelWidth();
@@ -30,7 +30,7 @@ namespace Open.TestHarness.Shell
             SyncMainPanelWidth();
 
             // Setup the 'Output Log' resizer.
-            outputResizer = new VerticalPanelResizer(Css.SelectFromId(Elements.Log), "TH_OL");
+            outputResizer = new VerticalPanelResizer(Css.ToId(Elements.OutputLog), "TH_OL");
             outputResizer.Resized += delegate
                                          {
                                          };
@@ -49,10 +49,15 @@ namespace Open.TestHarness.Shell
 
         private static void SyncMainPanelWidth()
         {
-            Css.SelectFromId(Elements.Main)
+            jQuery.Select(CssSelectors.Main)
                 .CSS(
                     Css.Left,
-                    Css.SelectFromId(Elements.SideBar).GetWidth() + 1 + Css.Px);
+                    jQuery.Select(CssSelectors.Sidebar).GetWidth() + 1 + Css.Px);
+
+            //Css.SelectFromId(Elements.Main)
+            //    .CSS(
+            //        Css.Left,
+            //        Css.SelectFromId(Elements.SideBar).GetWidth() + 1 + Css.Px);
         }
         #endregion
     }

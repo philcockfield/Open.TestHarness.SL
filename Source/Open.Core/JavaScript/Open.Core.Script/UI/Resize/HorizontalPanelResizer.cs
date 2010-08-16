@@ -11,9 +11,9 @@ namespace Open.Core.UI
         private double maxWidthMargin;
 
         /// <summary>Constructor.</summary>
-        /// <param name="panel">The panel being resized.</param>
+        /// <param name="cssSelector">The CSS selector used to retrieve the panel being resized.</param>
         /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
-        public HorizontalPanelResizer(jQueryObject panel, string cookieKey) : base(panel, cookieKey)
+        public HorizontalPanelResizer(string cssSelector, string cookieKey) : base(cssSelector, cookieKey)
         {
         }
         #endregion
@@ -59,8 +59,7 @@ namespace Open.Core.UI
         protected override void OnStopped()
         {
             // Clear the height value (which assigned during the resize).
-            jQueryObject panel = GetPanel();
-            panel.CSS(Css.Height, String.Empty);
+            Panel.CSS(Css.Height, String.Empty);
         }
         protected override void OnWindowSizeChanged()
         {
@@ -74,10 +73,10 @@ namespace Open.Core.UI
             }
         }
 
-        protected override double GetCurrentSize() { return GetPanel().GetWidth(); }
+        protected override double GetCurrentSize() { return Panel.GetWidth(); }
         protected override void SetCurrentSize(double size)
         {
-            GetPanel().CSS(Css.Width, size + Css.Px);
+            Panel.CSS(Css.Width, size + Css.Px);
         }
         #endregion
 

@@ -11,9 +11,9 @@ namespace Open.Core.UI
         private double maxHeightMargin;
 
         /// <summary>Constructor.</summary>
-        /// <param name="panel">The panel being resized.</param>
+        /// <param name="cssSelector">The CSS selector used to retrieve the panel being resized.</param>
         /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
-        public VerticalPanelResizer(jQueryObject panel, string cookieKey) : base(panel, cookieKey)
+        public VerticalPanelResizer(string cssSelector, string cookieKey) : base(cssSelector, cookieKey)
         {
         }
         #endregion
@@ -59,9 +59,8 @@ namespace Open.Core.UI
         protected override void OnStopped()
         {
             // Clear the width and top values (which assigned during the resize).
-            jQueryObject panel = Panel;
-            panel.CSS(Css.Width, String.Empty);
-            panel.CSS(Css.Top, String.Empty);
+            Panel.CSS(Css.Width, String.Empty);
+            Panel.CSS(Css.Top, String.Empty);
         }
         protected override void OnWindowSizeChanged()
         {

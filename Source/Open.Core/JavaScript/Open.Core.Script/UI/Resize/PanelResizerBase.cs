@@ -29,14 +29,16 @@ namespace Open.Core.UI
         private readonly string cookieKey;
         protected bool IsInitialized;
         private static Cookie cookie;
+        private string cssSelector;
 
         /// <summary>Constructor.</summary>
-        /// <param name="panel">The panel being resized.</param>
+        /// <param name="cssSelector">The CSS selector used to retrieve the panel being resized.</param>
         /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
-        protected PanelResizerBase(jQueryObject panel, string cookieKey)
+        protected PanelResizerBase(string cssSelector, string cookieKey)
         {
             // Setup initial conditions.
-            this.panel = panel;
+            this.cssSelector = cssSelector;
+            panel = jQuery.Select(cssSelector);
             this.cookieKey = cookieKey;
             if (cookie == null)
             {
@@ -65,7 +67,6 @@ namespace Open.Core.UI
         protected bool IsSaving { get { return !String.IsNullOrEmpty(cookieKey); } }
 
         protected jQueryObject Panel{get{return panel;}}
-        protected string PanelId { get { return Css.ToId(Panel.GetAttribute("id")); } }
         #endregion
 
         #region Methods
@@ -78,7 +79,7 @@ namespace Open.Core.UI
             // Prepare the script.
             string script = string.Format(
                 ResizeScript,
-                            PanelId,
+                            cssSelector,
                             GetHandles(),
                             DelegateUtil.ToEventCallbackString(eventCallback, EventStart),
                             DelegateUtil.ToEventCallbackString(eventCallback, EventStop),
@@ -99,13 +100,12 @@ namespace Open.Core.UI
         protected virtual void OnStopped() { }
         protected virtual void OnWindowSizeChanged() { } 
 
-        protected jQueryObject GetPanel() { return jQuery.Select(PanelId); }
         protected jQueryObject GetRootContainer() { return HasRootContainer ? jQuery.Select(RootContainerId) : null; }
 
         protected void SetResizeOption(string option, string value)
         {
             if (string.IsNullOrEmpty(value)) return;
-            string script = string.Format("$('{0}').resizable('option', '{1}', {2});", PanelId, option, value);
+            string script = string.Format("$('{0}').resizable('option', '{1}', {2});", cssSelector, option, value);
             Script.Eval(script);
         }
 

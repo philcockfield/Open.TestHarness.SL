@@ -7,7 +7,7 @@
     top:0px;
     bottom:0px;
 }
-#sidebar
+#testHarness .sidebar
 {
     background:#e0e5eb;
     position:absolute;
@@ -16,7 +16,7 @@
     bottom:0px;
     width:250px;
 }
-#main
+#testHarness .main
 {
     position:absolute;
     left:251px;

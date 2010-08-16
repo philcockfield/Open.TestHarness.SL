@@ -29,13 +29,13 @@
 <body>
 
     <div id="testHarness">
-        <div id="sidebar" class="panelBorder panelBorderRight">
-            <div id="sidebarToolbar" class="panelBorder panelBorderBottom toolbar">
+        <div class="sidebar panelBorder panelBorderRight">
+            <div class="toolbar panelBorder panelBorderBottom">
                 <p class="toolbarReflection"></p>
             </div>
         </div>
-        <div id="main">
-            <div id="mainToolbar" class="panelBorder panelBorderBottom toolbar"></div>
+        <div class="main">
+            <div class="toolbar panelBorder panelBorderBottom"></div>
             <%= Html.Action(MVC.TestHarness.Log()) %>
         </div>
     </div>

@@ -15,6 +15,10 @@ Open.TestHarness.CssSelectors = function Open_TestHarness_CssSelectors() {
     /// </summary>
     /// <field name="logTitlebar" type="String" static="true">
     /// </field>
+    /// <field name="main" type="String" static="true">
+    /// </field>
+    /// <field name="sidebar" type="String" static="true">
+    /// </field>
 }
 
 
@@ -27,17 +31,7 @@ Open.TestHarness.Elements = function Open_TestHarness_Elements() {
     /// </summary>
     /// <field name="root" type="String" static="true">
     /// </field>
-    /// <field name="sideBar" type="String" static="true">
-    /// </field>
-    /// <field name="sideBarToolbar" type="String" static="true">
-    /// </field>
-    /// <field name="main" type="String" static="true">
-    /// </field>
-    /// <field name="mainToolbar" type="String" static="true">
-    /// </field>
-    /// <field name="log" type="String" static="true">
-    /// </field>
-    /// <field name="outputLogTitle" type="String" static="true">
+    /// <field name="outputLog" type="String" static="true">
     /// </field>
 }
 
@@ -75,7 +69,7 @@ Open.TestHarness.Shell.PanelResizeController = function Open_TestHarness_Shell_P
     /// </field>
     /// <field name="_outputResizer" type="Open.Core.UI.VerticalPanelResizer">
     /// </field>
-    this._sideBarResizer = new Open.Core.UI.HorizontalPanelResizer(Open.Core.Css.selectFromId(Open.TestHarness.Elements.sideBar), 'TH_SB');
+    this._sideBarResizer = new Open.Core.UI.HorizontalPanelResizer(Open.TestHarness.CssSelectors.sidebar, 'TH_SB');
     this._sideBarResizer.add_resized(ss.Delegate.create(this, function() {
         Open.TestHarness.Shell.PanelResizeController._syncMainPanelWidth();
     }));
@@ -83,7 +77,7 @@ Open.TestHarness.Shell.PanelResizeController = function Open_TestHarness_Shell_P
     this._sideBarResizer.set_maxWidthMargin(Open.TestHarness.Shell.PanelResizeController._sidebarMaxWidthMargin);
     Open.TestHarness.Shell.PanelResizeController._initializeResizer(this._sideBarResizer);
     Open.TestHarness.Shell.PanelResizeController._syncMainPanelWidth();
-    this._outputResizer = new Open.Core.UI.VerticalPanelResizer(Open.Core.Css.selectFromId(Open.TestHarness.Elements.log), 'TH_OL');
+    this._outputResizer = new Open.Core.UI.VerticalPanelResizer(Open.Core.Css.toId(Open.TestHarness.Elements.outputLog), 'TH_OL');
     this._outputResizer.add_resized(ss.Delegate.create(this, function() {
     }));
     this._outputResizer.set_minHeight($(Open.TestHarness.CssSelectors.logTitlebar).height());
@@ -97,7 +91,7 @@ Open.TestHarness.Shell.PanelResizeController._initializeResizer = function Open_
     resizer.initialize();
 }
 Open.TestHarness.Shell.PanelResizeController._syncMainPanelWidth = function Open_TestHarness_Shell_PanelResizeController$_syncMainPanelWidth() {
-    Open.Core.Css.selectFromId(Open.TestHarness.Elements.main).css(Open.Core.Css.left, Open.Core.Css.selectFromId(Open.TestHarness.Elements.sideBar).width() + 1 + Open.Core.Css.px);
+    $(Open.TestHarness.CssSelectors.main).css(Open.Core.Css.left, $(Open.TestHarness.CssSelectors.sidebar).width() + 1 + Open.Core.Css.px);
 }
 Open.TestHarness.Shell.PanelResizeController.prototype = {
     _sideBarResizer: null,
@@ -110,13 +104,10 @@ Open.TestHarness.Elements.registerClass('Open.TestHarness.Elements');
 Open.TestHarness.Application.registerClass('Open.TestHarness.Application');
 Open.TestHarness.Shell.PanelResizeController.registerClass('Open.TestHarness.Shell.PanelResizeController');
 Open.TestHarness.CssSelectors.logTitlebar = '#testHarnessLog .titlebar';
+Open.TestHarness.CssSelectors.main = '#testHarness .main';
+Open.TestHarness.CssSelectors.sidebar = '#testHarness .sidebar';
 Open.TestHarness.Elements.root = 'testHarness';
-Open.TestHarness.Elements.sideBar = 'sidebar';
-Open.TestHarness.Elements.sideBarToolbar = 'sidebarToolbar';
-Open.TestHarness.Elements.main = 'main';
-Open.TestHarness.Elements.mainToolbar = 'mainToolbar';
-Open.TestHarness.Elements.log = 'testHarnessLog';
-Open.TestHarness.Elements.outputLogTitle = 'outputLogTitle';
+Open.TestHarness.Elements.outputLog = 'testHarnessLog';
 Open.TestHarness.Application._resizeController = null;
 Open.TestHarness.Shell.PanelResizeController._sidebarMinWidth = 200;
 Open.TestHarness.Shell.PanelResizeController._sidebarMaxWidthMargin = 80;
