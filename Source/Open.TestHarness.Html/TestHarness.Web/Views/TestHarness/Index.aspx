@@ -28,7 +28,7 @@
 </head>
 <body>
 
-    <div id="root">
+    <div id="testHarness">
         <div id="sidebar" class="panelBorder panelBorderRight">
             <div id="sidebarToolbar" class="panelBorder panelBorderBottom toolbar">
                 <p class="toolbarReflection"></p>

@@ -11,9 +11,9 @@ namespace Open.Core.UI
         private double maxHeightMargin;
 
         /// <summary>Constructor.</summary>
-        /// <param name="panelId">The unique identifier of the panel being resized.</param>
+        /// <param name="panel">The panel being resized.</param>
         /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
-        public VerticalPanelResizer(string panelId, string cookieKey) : base(panelId, cookieKey)
+        public VerticalPanelResizer(jQueryObject panel, string cookieKey) : base(panel, cookieKey)
         {
         }
         #endregion
@@ -59,7 +59,7 @@ namespace Open.Core.UI
         protected override void OnStopped()
         {
             // Clear the width and top values (which assigned during the resize).
-            jQueryObject panel = GetPanel();
+            jQueryObject panel = Panel;
             panel.CSS(Css.Width, String.Empty);
             panel.CSS(Css.Top, String.Empty);
         }
@@ -71,14 +71,14 @@ namespace Open.Core.UI
             // Shrink the panel if the window is too small.
             if (HasRootContainer)
             {
-                ShrinkIfOverflowing(GetPanel(), GetCurrentSize(), MinHeight, MaxHeight, Css.Height);
+                ShrinkIfOverflowing(GetCurrentSize(), MinHeight, MaxHeight, Css.Height);
             }
         }
 
-        protected override double GetCurrentSize() { return GetPanel().GetHeight(); }
+        protected override double GetCurrentSize() { return Panel.GetHeight(); }
         protected override void SetCurrentSize(double size)
         {
-            GetPanel().CSS(Css.Height, size + Css.Px);
+            Panel.CSS(Css.Height, size + Css.Px);
         }
         #endregion
 

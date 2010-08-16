@@ -25,18 +25,18 @@ namespace Open.Core.UI
         private const string EventStop = "eventStop";
         private const string EventResize = "eventResize";
         private string rootContainerId;
-        protected readonly string PanelId;
+        private readonly jQueryObject panel;
         private readonly string cookieKey;
         protected bool IsInitialized;
         private static Cookie cookie;
 
         /// <summary>Constructor.</summary>
-        /// <param name="panelId">The unique identifier of the panel being resized.</param>
+        /// <param name="panel">The panel being resized.</param>
         /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
-        protected PanelResizerBase(string panelId, string cookieKey)
+        protected PanelResizerBase(jQueryObject panel, string cookieKey)
         {
             // Setup initial conditions.
-            PanelId = Css.ToId(panelId);
+            this.panel = panel;
             this.cookieKey = cookieKey;
             if (cookie == null)
             {
@@ -63,6 +63,9 @@ namespace Open.Core.UI
 
         protected bool HasRootContainer { get { return !string.IsNullOrEmpty(RootContainerId); } }
         protected bool IsSaving { get { return !String.IsNullOrEmpty(cookieKey); } }
+
+        protected jQueryObject Panel{get{return panel;}}
+        protected string PanelId { get { return Css.ToId(Panel.GetAttribute("id")); } }
         #endregion
 
         #region Methods
@@ -106,14 +109,14 @@ namespace Open.Core.UI
             Script.Eval(script);
         }
 
-        protected void ShrinkIfOverflowing(jQueryObject panel, double currentValue, double minValue, double maxValue, string cssAttribute)
+        protected void ShrinkIfOverflowing(double currentValue, double minValue, double maxValue, string cssAttribute)
         {
             // Determine if the panel is overflowing it's available space.
             if (currentValue <= maxValue) return;
             if (maxValue < minValue) return; // Don't shrink smaller than the min.
 
             // Shrink the panel.
-            panel.CSS(cssAttribute, maxValue + Css.Px);
+            Panel.CSS(cssAttribute, maxValue + Css.Px);
             FireResized();
         }
 

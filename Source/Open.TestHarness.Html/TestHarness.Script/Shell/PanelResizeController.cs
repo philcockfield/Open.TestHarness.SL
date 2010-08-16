@@ -19,7 +19,7 @@ namespace Open.TestHarness.Shell
         public PanelResizeController()
         {
             // Setup the 'SidePanel' resizer.
-            sideBarResizer = new HorizontalPanelResizer(Elements.SideBar, "TH_SB");
+            sideBarResizer = new HorizontalPanelResizer(Css.SelectFromId(Elements.SideBar), "TH_SB");
             sideBarResizer.Resized += delegate
                                           {
                                               SyncMainPanelWidth();
@@ -30,7 +30,7 @@ namespace Open.TestHarness.Shell
             SyncMainPanelWidth();
 
             // Setup the 'Output Log' resizer.
-            outputResizer = new VerticalPanelResizer(Elements.Log, "TH_OL");
+            outputResizer = new VerticalPanelResizer(Css.SelectFromId(Elements.Log), "TH_OL");
             outputResizer.Resized += delegate
                                          {
                                          };

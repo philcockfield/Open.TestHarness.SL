@@ -305,12 +305,12 @@ Type.registerNamespace('Open.Core.UI');
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.UI.HorizontalPanelResizer
 
-Open.Core.UI.HorizontalPanelResizer = function Open_Core_UI_HorizontalPanelResizer(panelId, cookieKey) {
+Open.Core.UI.HorizontalPanelResizer = function Open_Core_UI_HorizontalPanelResizer(panel, cookieKey) {
     /// <summary>
     /// Controls the resizing of a panel on the X plane.
     /// </summary>
-    /// <param name="panelId" type="String">
-    /// The unique identifier of the panel being resized.
+    /// <param name="panel" type="jQueryObject">
+    /// The panel being resized.
     /// </param>
     /// <param name="cookieKey" type="String">
     /// The unique key to store the panel size within (null if saving not required).
@@ -319,7 +319,7 @@ Open.Core.UI.HorizontalPanelResizer = function Open_Core_UI_HorizontalPanelResiz
     /// </field>
     /// <field name="_maxWidthMargin$1" type="Number">
     /// </field>
-    Open.Core.UI.HorizontalPanelResizer.initializeBase(this, [ panelId, cookieKey ]);
+    Open.Core.UI.HorizontalPanelResizer.initializeBase(this, [ panel, cookieKey ]);
 }
 Open.Core.UI.HorizontalPanelResizer.prototype = {
     _minWidth$1: 0,
@@ -391,7 +391,7 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         }
         this._setMinMaxWidth$1();
         if (this.get_hasRootContainer()) {
-            this.shrinkIfOverflowing(this.getPanel(), this.getCurrentSize(), this.get_minWidth(), this.get__maxWidth$1(), Open.Core.Css.width);
+            this.shrinkIfOverflowing(this.getCurrentSize(), this.get_minWidth(), this.get__maxWidth$1(), Open.Core.Css.width);
         }
     },
     
@@ -425,12 +425,12 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.UI.PanelResizerBase
 
-Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, cookieKey) {
+Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panel, cookieKey) {
     /// <summary>
     /// Base class for resizing panels.
     /// </summary>
-    /// <param name="panelId" type="String">
-    /// The unique identifier of the panel being resized.
+    /// <param name="panel" type="jQueryObject">
+    /// The panel being resized.
     /// </param>
     /// <param name="cookieKey" type="String">
     /// The unique key to store the panel size within (null if saving not required).
@@ -449,7 +449,7 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, 
     /// </field>
     /// <field name="_rootContainerId" type="String">
     /// </field>
-    /// <field name="panelId" type="String">
+    /// <field name="_panel" type="jQueryObject">
     /// </field>
     /// <field name="_cookieKey" type="String">
     /// </field>
@@ -459,7 +459,7 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(panelId, 
     /// </field>
     /// <field name="_resizeScript" type="String" static="true">
     /// </field>
-    this.panelId = Open.Core.Css.toId(panelId);
+    this._panel = panel;
     this._cookieKey = cookieKey;
     if (Open.Core.UI.PanelResizerBase._cookie == null) {
         Open.Core.UI.PanelResizerBase._cookie = new Open.Core.Cookie('PanelResizeStore');
@@ -542,7 +542,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
     },
     
     _rootContainerId: null,
-    panelId: null,
+    _panel: null,
     _cookieKey: null,
     isInitialized: false,
     
@@ -572,6 +572,16 @@ Open.Core.UI.PanelResizerBase.prototype = {
         return !String.isNullOrEmpty(this._cookieKey);
     },
     
+    get_panel: function Open_Core_UI_PanelResizerBase$get_panel() {
+        /// <value type="jQueryObject"></value>
+        return this._panel;
+    },
+    
+    get_panelId: function Open_Core_UI_PanelResizerBase$get_panelId() {
+        /// <value type="String"></value>
+        return Open.Core.Css.toId(this.get_panel().attr('id'));
+    },
+    
     initialize: function Open_Core_UI_PanelResizerBase$initialize() {
         /// <summary>
         /// Sets the panel up to be resizable.
@@ -579,7 +589,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
         var eventCallback = ss.Delegate.create(this, function(eventName) {
             this._handleEvent(eventName);
         });
-        var script = String.format(Open.Core.UI.PanelResizerBase._resizeScript, this.panelId, this.getHandles(), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStart), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStop), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventResize));
+        var script = String.format(Open.Core.UI.PanelResizerBase._resizeScript, this.get_panelId(), this.getHandles(), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStart), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStop), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventResize));
         eval(script);
         this.onInitialize();
         this.isInitialized = true;
@@ -602,7 +612,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
     
     getPanel: function Open_Core_UI_PanelResizerBase$getPanel() {
         /// <returns type="jQueryObject"></returns>
-        return $(this.panelId);
+        return $(this.get_panelId());
     },
     
     getRootContainer: function Open_Core_UI_PanelResizerBase$getRootContainer() {
@@ -618,13 +628,11 @@ Open.Core.UI.PanelResizerBase.prototype = {
         if (String.isNullOrEmpty(value)) {
             return;
         }
-        var script = String.format('$(\'{0}\').resizable(\'option\', \'{1}\', {2});', this.panelId, option, value);
+        var script = String.format('$(\'{0}\').resizable(\'option\', \'{1}\', {2});', this.get_panelId(), option, value);
         eval(script);
     },
     
-    shrinkIfOverflowing: function Open_Core_UI_PanelResizerBase$shrinkIfOverflowing(panel, currentValue, minValue, maxValue, cssAttribute) {
-        /// <param name="panel" type="jQueryObject">
-        /// </param>
+    shrinkIfOverflowing: function Open_Core_UI_PanelResizerBase$shrinkIfOverflowing(currentValue, minValue, maxValue, cssAttribute) {
         /// <param name="currentValue" type="Number">
         /// </param>
         /// <param name="minValue" type="Number">
@@ -639,7 +647,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
         if (maxValue < minValue) {
             return;
         }
-        panel.css(cssAttribute, maxValue + Open.Core.Css.px);
+        this.get_panel().css(cssAttribute, maxValue + Open.Core.Css.px);
         this.fireResized();
     },
     
@@ -686,12 +694,12 @@ Open.Core.UI.PanelResizerBase.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.UI.VerticalPanelResizer
 
-Open.Core.UI.VerticalPanelResizer = function Open_Core_UI_VerticalPanelResizer(panelId, cookieKey) {
+Open.Core.UI.VerticalPanelResizer = function Open_Core_UI_VerticalPanelResizer(panel, cookieKey) {
     /// <summary>
     /// Controls the resizing of a panel on the Y plane.
     /// </summary>
-    /// <param name="panelId" type="String">
-    /// The unique identifier of the panel being resized.
+    /// <param name="panel" type="jQueryObject">
+    /// The panel being resized.
     /// </param>
     /// <param name="cookieKey" type="String">
     /// The unique key to store the panel size within (null if saving not required).
@@ -700,7 +708,7 @@ Open.Core.UI.VerticalPanelResizer = function Open_Core_UI_VerticalPanelResizer(p
     /// </field>
     /// <field name="_maxHeightMargin$1" type="Number">
     /// </field>
-    Open.Core.UI.VerticalPanelResizer.initializeBase(this, [ panelId, cookieKey ]);
+    Open.Core.UI.VerticalPanelResizer.initializeBase(this, [ panel, cookieKey ]);
 }
 Open.Core.UI.VerticalPanelResizer.prototype = {
     _minHeight$1: 0,
@@ -762,7 +770,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
     },
     
     onStopped: function Open_Core_UI_VerticalPanelResizer$onStopped() {
-        var panel = this.getPanel();
+        var panel = this.get_panel();
         panel.css(Open.Core.Css.width, String.Empty);
         panel.css(Open.Core.Css.top, String.Empty);
     },
@@ -773,19 +781,19 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         }
         this._setMinMaxHeight$1();
         if (this.get_hasRootContainer()) {
-            this.shrinkIfOverflowing(this.getPanel(), this.getCurrentSize(), this.get_minHeight(), this.get__maxHeight$1(), Open.Core.Css.height);
+            this.shrinkIfOverflowing(this.getCurrentSize(), this.get_minHeight(), this.get__maxHeight$1(), Open.Core.Css.height);
         }
     },
     
     getCurrentSize: function Open_Core_UI_VerticalPanelResizer$getCurrentSize() {
         /// <returns type="Number"></returns>
-        return this.getPanel().height();
+        return this.get_panel().height();
     },
     
     setCurrentSize: function Open_Core_UI_VerticalPanelResizer$setCurrentSize(size) {
         /// <param name="size" type="Number">
         /// </param>
-        this.getPanel().css(Open.Core.Css.height, size + Open.Core.Css.px);
+        this.get_panel().css(Open.Core.Css.height, size + Open.Core.Css.px);
     },
     
     _setMinMaxHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMinMaxHeight$1() {

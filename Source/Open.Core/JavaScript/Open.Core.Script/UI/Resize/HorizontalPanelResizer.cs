@@ -11,9 +11,9 @@ namespace Open.Core.UI
         private double maxWidthMargin;
 
         /// <summary>Constructor.</summary>
-        /// <param name="panelId">The unique identifier of the panel being resized.</param>
+        /// <param name="panel">The panel being resized.</param>
         /// <param name="cookieKey">The unique key to store the panel size within (null if saving not required).</param>
-        public HorizontalPanelResizer(string panelId, string cookieKey) : base(panelId, cookieKey)
+        public HorizontalPanelResizer(jQueryObject panel, string cookieKey) : base(panel, cookieKey)
         {
         }
         #endregion
@@ -70,7 +70,7 @@ namespace Open.Core.UI
             // Shrink the panel if the window is too small.
             if (HasRootContainer)
             {
-                ShrinkIfOverflowing(GetPanel(), GetCurrentSize(), MinWidth, MaxWidth, Css.Width);
+                ShrinkIfOverflowing(GetCurrentSize(), MinWidth, MaxWidth, Css.Width);
             }
         }
 
