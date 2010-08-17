@@ -16,8 +16,8 @@
     <script src="/Scripts/JQuery/jquery.cookie.js" type="text/javascript"></script>
 
     <script src="/Scripts/TestHarness/mscorlib.js" type="text/javascript"></script>
-    <script src="/Scripts/TestHarness/Open.TestHarness.debug.js" type="text/javascript"></script>
     <script src="/Scripts/TestHarness/Open.Core.debug.js" type="text/javascript"></script>
+    <script src="/Scripts/TestHarness/Open.TestHarness.debug.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {

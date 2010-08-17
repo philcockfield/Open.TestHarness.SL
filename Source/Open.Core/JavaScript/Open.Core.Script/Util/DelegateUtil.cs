@@ -22,6 +22,5 @@ namespace Open.Core
                                         eventIdentifier);
             return "function(e,ui){ " + func + " }";
         }
-
     }
 }

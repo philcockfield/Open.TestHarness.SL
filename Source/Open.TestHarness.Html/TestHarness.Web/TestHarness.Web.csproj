@@ -102,7 +102,6 @@
     <Content Include="Content\Css\Core.css" />
     <Content Include="Content\Css\TestHarness.css" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Css\Validation.css" />
     <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
     <Content Include="Scripts\TestHarness\mscorlib.js" />
     <Content Include="Scripts\TestHarness\Open.Core.debug.js" />

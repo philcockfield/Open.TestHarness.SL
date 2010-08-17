@@ -123,6 +123,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\EventExtensions.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Extensions\IoExtensions.cs" />
     <Compile Include="Extensions\KeyExtensions.cs" />
     <Compile Include="Extensions\LinqExtensions.CLR.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
