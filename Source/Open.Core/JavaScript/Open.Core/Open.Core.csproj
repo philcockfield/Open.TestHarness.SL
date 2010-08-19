@@ -50,12 +50,16 @@
   <ItemGroup>
     <Compile Include="Declarations\Css.cs" />
     <Compile Include="Declarations\Events.cs" />
+    <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Model\Cookie.cs" />
     <Compile Include="Model\PropertyBag.cs" />
+    <Compile Include="Model\Size.cs" />
     <Compile Include="UI\Resize\HorizontalPanelResizer.cs" />
     <Compile Include="UI\Resize\PanelResizerBase.cs" />
     <Compile Include="UI\Resize\VerticalPanelResizer.cs" />
-    <Compile Include="Util\DelegateUtil.cs" />
+    <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Helpers\DelegateHelper.cs" />
     <Content Include="Properties\Open.Core.Script.ruleset" />
     <Content Include="Properties\Open.Core.Script.script" />
     <Compile Include="Declarations\Delegates.cs" />

@@ -64,6 +64,63 @@ Open.Core.Events = function Open_Core_Events() {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.JsonHelper
+
+Open.Core.JsonHelper = function Open_Core_JsonHelper() {
+    /// <summary>
+    /// Utility methods for working with JSON.
+    /// </summary>
+}
+Open.Core.JsonHelper.prototype = {
+    
+    serialize: function Open_Core_JsonHelper$serialize(value) {
+        /// <summary>
+        /// Serialized the given object to a JSON string.
+        /// </summary>
+        /// <param name="value" type="Object">
+        /// The object to serialize.
+        /// </param>
+        /// <returns type="String"></returns>
+        return Type.safeCast(JSON.stringify( value ), String);
+    },
+    
+    parse: function Open_Core_JsonHelper$parse(json) {
+        /// <summary>
+        /// Parses the given JSON into an object.
+        /// </summary>
+        /// <param name="json" type="String">
+        /// The JSON to parse.
+        /// </param>
+        /// <returns type="Object"></returns>
+        return JSON.parse( json );
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.ReflectionHelper
+
+Open.Core.ReflectionHelper = function Open_Core_ReflectionHelper() {
+    /// <summary>
+    /// Utility methods for working with reflection.
+    /// </summary>
+}
+Open.Core.ReflectionHelper.prototype = {
+    
+    isString: function Open_Core_ReflectionHelper$isString(value) {
+        /// <summary>
+        /// Determines whether the given object is a string.
+        /// </summary>
+        /// <param name="value" type="Object">
+        /// The object to examine.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return Type.getInstanceType(value).get_name() === 'String';
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Cookie
 
 Open.Core.Cookie = function Open_Core_Cookie(cookieId) {
@@ -199,7 +256,7 @@ Open.Core.PropertyBag = function Open_Core_PropertyBag(json) {
         this._backingObject =  {};
     }
     else {
-        this._backingObject = JSON.parse( json );
+        this._backingObject = Open.Core.Helper.get_json().parse(json);
     }
 }
 Open.Core.PropertyBag.create = function Open_Core_PropertyBag$create() {
@@ -221,6 +278,14 @@ Open.Core.PropertyBag.fromJson = function Open_Core_PropertyBag$fromJson(json) {
 }
 Open.Core.PropertyBag.prototype = {
     _backingObject: null,
+    
+    get_data: function Open_Core_PropertyBag$get_data() {
+        /// <summary>
+        /// Gets the backing JavaScript JSON object.
+        /// </summary>
+        /// <value type="Object"></value>
+        return this._backingObject;
+    },
     
     get: function Open_Core_PropertyBag$get(key) {
         /// <summary>
@@ -244,6 +309,9 @@ Open.Core.PropertyBag.prototype = {
         /// <param name="value" type="Object">
         /// The value to store.
         /// </param>
+        if (Open.Core.Helper.get_reflection().isString(value)) {
+            value = String.format('\'{0}\'', value);
+        }
         var script = String.format('this._backingObject.{0} = {1}', key, value);
         eval(script);
     },
@@ -264,39 +332,122 @@ Open.Core.PropertyBag.prototype = {
         /// Converts the property-bag to a JSON string.
         /// </summary>
         /// <returns type="String"></returns>
-        return Type.safeCast(JSON.stringify( this._backingObject ), String);
+        return Open.Core.Helper.get_json().serialize(this._backingObject);
     }
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.DelegateUtil
+// Open.Core.Size
 
-Open.Core.DelegateUtil = function Open_Core_DelegateUtil() {
-}
-Open.Core.DelegateUtil.toCallbackString = function Open_Core_DelegateUtil$toCallbackString(callback) {
+Open.Core.Size = function Open_Core_Size(width, height) {
     /// <summary>
-    /// Formats a callback function to a JavaScript function name.
+    /// Represents a width and a height.
     /// </summary>
-    /// <param name="callback" type="ss.Delegate">
-    /// The callback delegate.
+    /// <param name="width" type="Number">
+    /// The pixel width of the element.
     /// </param>
-    /// <returns type="String"></returns>
-    return 'ss.Delegate.' + ss.Delegate.createExport(callback, true);
+    /// <param name="height" type="Number">
+    /// The pixel height of the element.
+    /// </param>
+    /// <field name="_width" type="Number">
+    /// </field>
+    /// <field name="_height" type="Number">
+    /// </field>
+    this._width = width;
+    this._height = height;
 }
-Open.Core.DelegateUtil.toEventCallbackString = function Open_Core_DelegateUtil$toEventCallbackString(callback, eventIdentifier) {
+Open.Core.Size.prototype = {
+    _width: 0,
+    _height: 0,
+    
+    get_width: function Open_Core_Size$get_width() {
+        /// <summary>
+        /// Gets or sets the pixel width of the element.
+        /// </summary>
+        /// <value type="Number"></value>
+        return this._width;
+    },
+    
+    get_height: function Open_Core_Size$get_height() {
+        /// <summary>
+        /// Gets or sets the pixel height of the element.
+        /// </summary>
+        /// <value type="Number"></value>
+        return this._height;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helper
+
+Open.Core.Helper = function Open_Core_Helper() {
     /// <summary>
-    /// Formats a callback function with the specified event identifier.
+    /// Static index of helpers.
     /// </summary>
-    /// <param name="callback" type="Open.Core.EventCallback">
-    /// The callback delegate.
-    /// </param>
-    /// <param name="eventIdentifier" type="String">
-    /// The event identifier.
-    /// </param>
-    /// <returns type="String"></returns>
-    var func = String.format('{0}(\'{1}\');', Open.Core.DelegateUtil.toCallbackString(callback), eventIdentifier);
-    return 'function(e,ui){ ' + func + ' }';
+    /// <field name="_delegateHelper" type="Open.Core.DelegateHelper" static="true">
+    /// </field>
+    /// <field name="_jsonHelper" type="Open.Core.JsonHelper" static="true">
+    /// </field>
+    /// <field name="_reflectionHelper" type="Open.Core.ReflectionHelper" static="true">
+    /// </field>
+}
+Open.Core.Helper.get_delegate = function Open_Core_Helper$get_delegate() {
+    /// <summary>
+    /// Gets the helper for working with Delegates.
+    /// </summary>
+    /// <value type="Open.Core.DelegateHelper"></value>
+    return Open.Core.Helper._delegateHelper;
+}
+Open.Core.Helper.get_json = function Open_Core_Helper$get_json() {
+    /// <summary>
+    /// Gets the helper for working with Delegates.
+    /// </summary>
+    /// <value type="Open.Core.JsonHelper"></value>
+    return Open.Core.Helper._jsonHelper;
+}
+Open.Core.Helper.get_reflection = function Open_Core_Helper$get_reflection() {
+    /// <summary>
+    /// Gets the helper for working with reflection.
+    /// </summary>
+    /// <value type="Open.Core.ReflectionHelper"></value>
+    return Open.Core.Helper._reflectionHelper;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.DelegateHelper
+
+Open.Core.DelegateHelper = function Open_Core_DelegateHelper() {
+}
+Open.Core.DelegateHelper.prototype = {
+    
+    toCallbackString: function Open_Core_DelegateHelper$toCallbackString(callback) {
+        /// <summary>
+        /// Formats a callback function to a JavaScript function name.
+        /// </summary>
+        /// <param name="callback" type="ss.Delegate">
+        /// The callback delegate.
+        /// </param>
+        /// <returns type="String"></returns>
+        return 'ss.Delegate.' + ss.Delegate.createExport(callback, true);
+    },
+    
+    toEventCallbackString: function Open_Core_DelegateHelper$toEventCallbackString(callback, eventIdentifier) {
+        /// <summary>
+        /// Formats a callback function with the specified event identifier.
+        /// </summary>
+        /// <param name="callback" type="Open.Core.EventCallback">
+        /// The callback delegate.
+        /// </param>
+        /// <param name="eventIdentifier" type="String">
+        /// The event identifier.
+        /// </param>
+        /// <returns type="String"></returns>
+        var func = String.format('{0}(\'{1}\');', this.toCallbackString(callback), eventIdentifier);
+        return 'function(e,ui){ ' + func + ' }';
+    }
 }
 
 
@@ -587,7 +738,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
         var eventCallback = ss.Delegate.create(this, function(eventName) {
             this._handleEvent(eventName);
         });
-        var script = String.format(Open.Core.UI.PanelResizerBase._resizeScript, this._cssSelector, this.getHandles(), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStart), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStop), Open.Core.DelegateUtil.toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventResize));
+        var script = String.format(Open.Core.UI.PanelResizerBase._resizeScript, this._cssSelector, this.getHandles(), Open.Core.Helper.get_delegate().toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStart), Open.Core.Helper.get_delegate().toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventStop), Open.Core.Helper.get_delegate().toEventCallbackString(eventCallback, Open.Core.UI.PanelResizerBase._eventResize));
         eval(script);
         this.onInitialize();
         this.isInitialized = true;
@@ -806,9 +957,13 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 
 Open.Core.Css.registerClass('Open.Core.Css');
 Open.Core.Events.registerClass('Open.Core.Events');
+Open.Core.JsonHelper.registerClass('Open.Core.JsonHelper');
+Open.Core.ReflectionHelper.registerClass('Open.Core.ReflectionHelper');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.PropertyBag.registerClass('Open.Core.PropertyBag');
-Open.Core.DelegateUtil.registerClass('Open.Core.DelegateUtil');
+Open.Core.Size.registerClass('Open.Core.Size');
+Open.Core.Helper.registerClass('Open.Core.Helper');
+Open.Core.DelegateHelper.registerClass('Open.Core.DelegateHelper');
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
@@ -820,6 +975,9 @@ Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
 Open.Core.Css.px = 'px';
 Open.Core.Events.resize = 'resize';
+Open.Core.Helper._delegateHelper = new Open.Core.DelegateHelper();
+Open.Core.Helper._jsonHelper = new Open.Core.JsonHelper();
+Open.Core.Helper._reflectionHelper = new Open.Core.ReflectionHelper();
 Open.Core.UI.PanelResizerBase._eventStart = 'start';
 Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';

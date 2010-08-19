@@ -29,7 +29,7 @@ namespace Open.Core.UI
         private readonly string cookieKey;
         protected bool IsInitialized;
         private static Cookie cookie;
-        private string cssSelector;
+        private readonly string cssSelector;
 
         /// <summary>Constructor.</summary>
         /// <param name="cssSelector">The CSS selector used to retrieve the panel being resized.</param>
@@ -81,9 +81,9 @@ namespace Open.Core.UI
                 ResizeScript,
                             cssSelector,
                             GetHandles(),
-                            DelegateUtil.ToEventCallbackString(eventCallback, EventStart),
-                            DelegateUtil.ToEventCallbackString(eventCallback, EventStop),
-                            DelegateUtil.ToEventCallbackString(eventCallback, EventResize));
+                            Helper.Delegate.ToEventCallbackString(eventCallback, EventStart),
+                            Helper.Delegate.ToEventCallbackString(eventCallback, EventStop),
+                            Helper.Delegate.ToEventCallbackString(eventCallback, EventResize));
             Script.Eval(script);
 
             // Finish up.

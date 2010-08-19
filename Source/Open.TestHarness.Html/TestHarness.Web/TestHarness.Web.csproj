@@ -99,8 +99,8 @@
     <Content Include="Scripts\JQuery\jquery-ui-1.8.2.custom.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Css\Core.css" />
-    <Content Include="Content\Css\TestHarness.css" />
+    <Content Include="Content\Css\Open.Core.css" />
+    <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
     <Content Include="Scripts\TestHarness\mscorlib.js" />
@@ -108,8 +108,8 @@
     <Content Include="Scripts\TestHarness\Open.Core.js" />
     <Content Include="Scripts\TestHarness\Open.TestHarness.debug.js" />
     <Content Include="Scripts\TestHarness\Open.TestHarness.js" />
-    <Content Include="Views\TestHarness\Log.ascx" />
     <Content Include="Views\TestHarness\Index.aspx" />
+    <Content Include="Views\TestHarness\Log.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -123,17 +123,11 @@
     <Content Include="Scripts\JQuery\jquery.validate.js" />
     <Content Include="Scripts\JQuery\jquery.validate.min.js" />
     <Content Include="Scripts\JQuery\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\MicrosoftAjax\MicrosoftAjax.js" />
-    <Content Include="Scripts\MicrosoftAjax\MicrosoftAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcAjax.js" />
-    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcValidation.js" />
-    <Content Include="Scripts\MicrosoftAjax\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Home\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +163,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>8020</DevelopmentServerPort>
+          <DevelopmentServerPort>8022</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
@@ -182,4 +176,8 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

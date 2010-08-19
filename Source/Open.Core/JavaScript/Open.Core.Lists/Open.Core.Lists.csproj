@@ -5,19 +5,19 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E1C9C7B6-0D3B-4F29-A90B-33D0049D6205}</ProjectGuid>
+    <ProjectGuid>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStdLib>True</NoStdLib>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <LangVersion>ISO-2</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Open.TestHarness</RootNamespace>
-    <AssemblyName>Open.TestHarness</AssemblyName>
-    <TemplateFile>Properties\TestHarness.Script3.script</TemplateFile>
-    <CodeAnalysisRuleSet>Properties\TestHarness.Script3.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>Open.Core.Lists</RootNamespace>
+    <AssemblyName>Open.Core.Lists</AssemblyName>
+    <TemplateFile>Properties\Open.Core.Lists.script</TemplateFile>
+    <CodeAnalysisRuleSet>Properties\Open.Core.Lists.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\TestHarness.Web\Scripts\TestHarness</DeploymentPath>
+    <DeploymentPath>..\..\Bin\Bin.JavaScript</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Debug\Open.TestHarness.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Open.Core.Lists.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,34 +37,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Release\Open.TestHarness.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Open.Core.Lists.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=0.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="Script.jQuery, Version=0.6.0.0, Culture=neutral, PublicKeyToken=1c210798c746a285, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\ScriptSharp\v1.0\Framework\Script.jQuery.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web" />
-    <Reference Include="Script.jQuery" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\CssSelectors.cs" />
-    <Compile Include="Constants\Elements.cs" />
-    <Compile Include="Shell\PanelResizeController.cs" />
-    <Content Include="Properties\TestHarness.Script3.ruleset" />
-    <Content Include="Properties\TestHarness.Script3.script" />
-    <Compile Include="Application.cs" />
+    <Content Include="Properties\Open.Core.Lists.ruleset" />
+    <Content Include="Properties\Open.Core.Lists.script" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Base Classes\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core\Open.Core.csproj">
+    <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>
       <Name>Open.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

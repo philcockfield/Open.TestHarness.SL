@@ -23,6 +23,7 @@ namespace Open.Core.Common.Test.Core.Helper_Classes
             wrapper = new DynamicXml(SampleXml);
         }
 
+
         [TestCleanup]
         public void TestCleanup()
         {
@@ -69,6 +70,7 @@ namespace Open.Core.Common.Test.Core.Helper_Classes
             string title = book.title.Value;
             title.ShouldBe("Skydiving on a Budget");
         }
+
 
         [TestMethod]
         public void ShouldTraverseHierarchy()

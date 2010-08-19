@@ -7,8 +7,8 @@
 <head id="Head1" runat="server">
     <title>TestHarness</title>
 
-    <link rel="Stylesheet" href="~/Content/Css/Core.css" type="text/css" />
-    <link rel="Stylesheet" href="~/Content/Css/TestHarness.css" type="text/css" />
+    <link rel="Stylesheet" href="~/Content/Css/Open.Core.css" type="text/css" />
+    <link rel="Stylesheet" href="~/Content/Css/Open.TestHarness.css" type="text/css" />
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
@@ -16,8 +16,8 @@
     <script src="/Scripts/JQuery/jquery.cookie.js" type="text/javascript"></script>
 
     <script src="/Scripts/TestHarness/mscorlib.js" type="text/javascript"></script>
-    <script src="/Scripts/TestHarness/Open.Core.debug.js" type="text/javascript"></script>
     <script src="/Scripts/TestHarness/Open.TestHarness.debug.js" type="text/javascript"></script>
+    <script src="/Scripts/TestHarness/Open.Core.debug.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {

@@ -17,9 +17,14 @@ namespace Open.Core
             }
             else
             {
-                backingObject = Script.Literal("JSON.parse( json )");
+                backingObject = Helper.Json.Parse(json);
             }
         }
+        #endregion
+
+        #region Properties
+        /// <summary>Gets the backing JavaScript JSON object.</summary>
+        public object Data { get { return backingObject; } }
         #endregion
 
         #region Methods
@@ -37,6 +42,10 @@ namespace Open.Core
         /// <param name="value">The value to store.</param>
         public void Set(string key, object value)
         {
+            if (Helper.Reflection.IsString(value))
+            {
+                value = string.Format("'{0}'", value); // Wrap string in quotes.
+            }
             string script = string.Format("this._backingObject.{0} = {1}", key, value);
             Script.Eval(script);
         }
@@ -51,7 +60,7 @@ namespace Open.Core
         /// <summary>Converts the property-bag to a JSON string.</summary>
         public string ToJson()
         {
-            return Script.Literal("JSON.stringify( this._backingObject )") as string;
+            return Helper.Json.Serialize(backingObject);
         }
         #endregion
 
