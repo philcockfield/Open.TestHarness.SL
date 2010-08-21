@@ -17,7 +17,7 @@
     <TemplateFile>Properties\Open.Core.Script.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\Open.Core.Script.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\..\Bin\Bin.JavaScript</DeploymentPath>
+    <DeploymentPath>..\..\Clr\Open.Core.Web\Content\Scripts\</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,18 +48,25 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Declarations\Css.cs" />
+    <Compile Include="Base Classes\ViewBase.cs" />
+    <Compile Include="Declarations\Interfaces\IViewFactory.cs" />
+    <Compile Include="Declarations\Interfaces\IView.cs" />
+    <Compile Include="Util\Css.cs" />
     <Compile Include="Declarations\Events.cs" />
-    <Compile Include="Helpers\JsonHelper.cs" />
-    <Compile Include="Helpers\ReflectionHelper.cs" />
+    <Compile Include="Util\Helpers\JsonHelper.cs" />
+    <Compile Include="Util\Helpers\ReflectionHelper.cs" />
+    <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
+    <Compile Include="Util\Loaders\ResourceLoader.cs" />
+    <Compile Include="Util\Loaders\ScriptLoader.cs" />
+    <Compile Include="Util\Helpers\Scripts\ScriptLoadHelper.cs" />
     <Compile Include="Model\Cookie.cs" />
     <Compile Include="Model\PropertyBag.cs" />
     <Compile Include="Model\Size.cs" />
     <Compile Include="UI\Resize\HorizontalPanelResizer.cs" />
     <Compile Include="UI\Resize\PanelResizerBase.cs" />
     <Compile Include="UI\Resize\VerticalPanelResizer.cs" />
-    <Compile Include="Helpers\Helper.cs" />
-    <Compile Include="Helpers\DelegateHelper.cs" />
+    <Compile Include="Util\Helpers\Helper.cs" />
+    <Compile Include="Util\Helpers\DelegateHelper.cs" />
     <Content Include="Properties\Open.Core.Script.ruleset" />
     <Content Include="Properties\Open.Core.Script.script" />
     <Compile Include="Declarations\Delegates.cs" />

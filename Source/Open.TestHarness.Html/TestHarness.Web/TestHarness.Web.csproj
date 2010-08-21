@@ -34,14 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Open.Core.Clr">
-      <HintPath>..\..\Open.Core\Bin\Bin.Clr\Open.Core.Clr.dll</HintPath>
-    </Reference>
-    <Reference Include="Open.Core.Contracts.Clr">
-      <HintPath>..\..\Open.Core\Bin\Bin.Clr\Open.Core.Contracts.Clr.dll</HintPath>
-    </Reference>
-    <Reference Include="Open.Core.Web.Clr">
-      <HintPath>..\..\Open.Core\Bin\Bin.Clr\Open.Core.Web.Clr.dll</HintPath>
+    <Reference Include="MvcContrib, Version=2.0.36.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\MVCContrib\MvcContrib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -59,7 +54,6 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -99,7 +93,6 @@
     <Content Include="Scripts\JQuery\jquery-ui-1.8.2.custom.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Css\Open.Core.css" />
     <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
@@ -145,6 +138,20 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.csproj">
+      <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
+      <Name>Open.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Web\Open.Core.Web.csproj">
+      <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
+      <Name>Open.Core.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core\Open.Core.csproj">
+      <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
+      <Name>Open.Core %28Clr\Open.Core%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

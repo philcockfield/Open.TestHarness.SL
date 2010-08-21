@@ -16,14 +16,6 @@
     bottom:0px;
     width:250px;
 }
-#testHarness .main
-{
-    position:absolute;
-    left:251px;
-    top:0px;
-    right:0px;
-    bottom:0px;
-}
 
 
 /*====== Toolbars ======*/
@@ -40,10 +32,29 @@
 
 
 /*====== Main ======*/
-#mainToolbar
+#testHarness .main
+{
+    position:absolute;
+    left:251px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+}
+
+#testHarness .main .mainToolbar
 {
     background:#f2f2f2;
     border-color:#d9d9d9;
+}
+
+#testHarness .main .content
+{
+    background:orange;
+    position:absolute;
+    left:0px;
+    top:25px;
+    right:0px;
+    bottom:0px;
 }
 
 

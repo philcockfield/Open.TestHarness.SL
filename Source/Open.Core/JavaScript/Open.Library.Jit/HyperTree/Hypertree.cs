@@ -11,7 +11,6 @@ namespace Open.Library.Jit
     public class Hypertree
     {
         #region Head
-        private const string ScriptUrl = "/Scripts/Jit/HyperTreeInitialize.js";
         private object hyperTree;
         private readonly jQueryObject containerElement;
         private bool isInitialized;
@@ -30,32 +29,32 @@ namespace Open.Library.Jit
         #endregion
 
         #region Methods
-        /// <summary>Inserts the hyper-tree into the DOM and initializes it.</summary>
+        /// <summary>Inserts the hyper-tree into the DOM, initializes it and then loads the given node.</summary>
         /// <param name="callback">Action to invoke upon completion.</param>
         public void Initialize(Action callback)
         {
             // Ensure the controller script is loaded.
-            jQuery.GetScript(ScriptUrl, delegate(object data)
-                                            {
-                                                // Setup initial conditions.
-                                                Size size = GetSize();
-                                                string containerId = containerElement.GetAttribute("id");
+            // NB: Does not repeat download if scripts already loaded.
+            Helper.ScriptLoader.Jit.LoadHypertree(delegate
+                            {
+                                // Setup initial conditions.
+                                string containerId = containerElement.GetAttribute("id");
 
-                                                // Insert the tree.
-                                                hyperTree = Script.Literal("insertTree({0})", containerId);
-                                                UpdateSize();
+                                // Insert the tree.
+                                hyperTree = Script.Literal("insertTree({0})", containerId);
+                                UpdateSize();
 
-                                                // Finish up.
-                                                isInitialized = true;
-                                                if (!Script.IsNullOrUndefined(callback)) callback();
-                                            });
+                                // Finish up.
+                                isInitialized = true;
+                                Helper.InvokeOrDefault(callback);
+                            });
         }
 
         /// <summary>Loads the specified root node into the tree.</summary>
         /// <param name="rootNode">The root node to load.</param>
         public void Load(HypertreeNode rootNode)
         {
-            if (!isInitialized) throw new Exception("Not initialized");
+            if (!isInitialized) throw new Exception("HyperTree not initialized");
             Script.Literal("this._hyperTree.loadJSON(rootNode)");
             Refresh();
         }

@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>ViewDataContainerExtensions - MVCContrib Documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <link type="text/css" rel="stylesheet" href="../main.css"/>
+    <script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.scrollTo-min.js"></script>
+    <script type="text/javascript" src="../js/navigation.js"></script>
+  </head>
+  <body><div id="namespaces">
+	<h2 class="fixed">Namespaces</h2>
+	<div class="scroll">
+		<ul><li>
+          <a href="../MvcContrib.FluentHtml/index.htm" class="current">MvcContrib.FluentHtml</a>
+      </li><li>
+          <a href="../MvcContrib.FluentHtml.Behaviors/index.htm">MvcContrib.FluentHtml.Behaviors</a>
+      </li><li>
+          <a href="../MvcContrib.FluentHtml.Elements/index.htm">MvcContrib.FluentHtml.Elements</a>
+      </li><li>
+          <a href="../MvcContrib.FluentHtml.Expressions/index.htm">MvcContrib.FluentHtml.Expressions</a>
+      </li><li>
+          <a href="../MvcContrib.FluentHtml.Html/index.htm">MvcContrib.FluentHtml.Html</a>
+      </li>
+		</ul>
+	</div>
+</div><div id="types">
+  <h2 class="fixed">Types in MvcContrib.FluentHtml</h2>
+	<div class="scroll">
+		<ul><li>
+            <a href="../MvcContrib.FluentHtml/IViewModelContainer`1.htm">IViewModelContainer&lt;T&gt;</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/ModelStateDictionaryExtensions.htm">ModelStateDictionaryExtensions</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/ModelViewMasterPage`1.htm">ModelViewMasterPage&lt;T&gt;</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/ModelViewPage`1.htm">ModelViewPage&lt;T&gt;</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/ModelViewUserControl`1.htm">ModelViewUserControl&lt;T&gt;</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/PartialNameConventionService.htm">PartialNameConventionService</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/PartialRenderer`2.htm">PartialRenderer&lt;T, TPartialViewModel&gt;</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/StringExtensions.htm">StringExtensions</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm" class="current">ViewDataContainerExtensions</a>
+        </li><li>
+            <a href="../MvcContrib.FluentHtml/ViewModelContainerExtensions.htm">ViewModelContainerExtensions</a>
+        </li>
+		</ul>
+	</div>
+</div>
+    <div class="header">
+		<p class="class"><strong>Type</strong> ViewDataContainerExtensions</p>
+		<p><strong>Namespace</strong> MvcContrib.FluentHtml</p>
+	</div>
+    <div class="sub-header">
+			<div id="summary">Extensions to IViewDataContainer
+			</div>
+
+
+			<h3 class="section">Methods</h3>
+			<ul><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Button">Button</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#CheckBox">CheckBox</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#CheckBoxList">CheckBoxList</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#FileUpload">FileUpload</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#FormLiteral">FormLiteral</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Hidden">Hidden</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Label">Label</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Literal">Literal</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Literal">Literal</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#MultiSelect">MultiSelect</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Password">Password</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#RadioButton">RadioButton</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#RadioSet">RadioSet</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#ResetButton">ResetButton</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#Select">Select</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#SubmitButton">SubmitButton</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#TextArea">TextArea</a></li><li><a href="../MvcContrib.FluentHtml/ViewDataContainerExtensions.htm#TextBox">TextBox</a></li>
+			</ul>
+
+
+	</div>
+
+
+
+	<h3 class="section">Public static methods</h3>
+<div id="Button" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Button.htm">Button</a> <strong>Button</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> text)</h4>
+		<div class="content">Generate an HTML input element of type 'button.'
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> text</h6><p class="comments">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="CheckBox" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/CheckBox.htm">CheckBox</a> <strong>CheckBox</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML input element of type 'checkbox' and set checked from ViewData based on the name provided.
+The checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="CheckBoxList" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/CheckBoxList.htm">CheckBoxList</a> <strong>CheckBoxList</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate a list of HTML input elements of type 'checkbox' and set its value from the ViewModel based on the expression provided.
+Each checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="FileUpload" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/FileUpload.htm">FileUpload</a> <strong>FileUpload</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML input element of type 'file' and set its value from ViewData based on the name provided.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="FormLiteral" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/FormLiteral.htm">FormLiteral</a> <strong>FormLiteral</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML span element and an HTML input element of type 'hidden' and set the inner text
+of the span and the value of the hidden input element from ViewData based on the specified name.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="Hidden" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Hidden.htm">Hidden</a> <strong>Hidden</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML input element of type 'hidden' and set its value from ViewData based on the name provided.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="Label" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Label.htm">Label</a> <strong>Label</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> forName)</h4>
+		<div class="content">Generate an HTML label element;
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> forName</h6><p class="comments">The id of the target element to point to in the 'for' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="Literal" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Literal.htm">Literal</a> <strong>Literal</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name, <span title="System.object">object</span> value)</h4>
+		<div class="content">Generate an HTML span element.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">The name of the element.</p>
+          <h6><code><span title="System.object">object</span></code> value</h6><p class="comments">The inner text.</p>
+      </div>
+
+
+		</div>
+	</div><div id="Literal" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Literal.htm">Literal</a> <strong>Literal</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.object">object</span> value)</h4>
+		<div class="content">Generate an HTML span element.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.object">object</span></code> value</h6><p class="comments">The inner text.</p>
+      </div>
+
+
+		</div>
+	</div><div id="MultiSelect" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/MultiSelect.htm">MultiSelect</a> <strong>MultiSelect</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML select element with a multiselect attribute = 'true' and set its selected
+values from ViewData based on the name provided.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="Password" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Password.htm">Password</a> <strong>Password</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML input element of type 'password' and set its value from ViewData based on the name provided.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="RadioButton" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/RadioButton.htm">RadioButton</a> <strong>RadioButton</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML input element of type 'radio.'
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the of the input elements.  Also used to derive the 'id' attributes.</p>
+      </div>
+
+
+		</div>
+	</div><div id="RadioSet" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/RadioSet.htm">RadioSet</a> <strong>RadioSet</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate a set of HTML input elements of type 'radio' -- each wrapped inside a label.  The whole thing is wrapped in an HTML
+div element.  The values of the input elements and he label text are taken from the options specified.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the of the input elements.  Also used to derive the 'id' attributes.</p>
+      </div>
+
+
+		</div>
+	</div><div id="ResetButton" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/ResetButton.htm">ResetButton</a> <strong>ResetButton</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> text)</h4>
+		<div class="content">Generate an HTML input element of type 'reset.'
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> text</h6><p class="comments">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="Select" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/Select.htm">Select</a> <strong>Select</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML select element and set its selected value from ViewData based on the name provided.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="SubmitButton" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/SubmitButton.htm">SubmitButton</a> <strong>SubmitButton</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> text)</h4>
+		<div class="content">Generate an HTML input element of type 'submit.'
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> text</h6><p class="comments">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="TextArea" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/TextArea.htm">TextArea</a> <strong>TextArea</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML textarea element and set the value from ViewData.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div><div id="TextBox" class="method">
+		<h4><a href="../MvcContrib.FluentHtml.Elements/TextBox.htm">TextBox</a> <strong>TextBox</strong>(this <span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span> view, <span title="System.string">string</span> name)</h4>
+		<div class="content">Generate an HTML input element of type 'text' and set its value from ViewData based on the name provided.
+
+<div class="parameters">
+        <h5>Parameters</h5>
+
+          <h6><code><span title="System.Web.Mvc.IViewDataContainer">IViewDataContainer</span></code> view</h6><p class="comments">The view.</p>
+          <h6><code><span title="System.string">string</span></code> name</h6><p class="comments">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</p>
+      </div>
+
+
+		</div>
+	</div>
+
+<div id="footer">
+  <p>Based on v2.0.36.0 of MvcContrib.FluentHtml (MVCContrib)</p>
+  <p>Generated by <a href="http://docu.jagregory.com">docu</a></p>
+</div>
+  </body>
+</html>

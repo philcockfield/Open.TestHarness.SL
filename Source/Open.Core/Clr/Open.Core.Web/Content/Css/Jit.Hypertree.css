@@ -1,0 +1,41 @@
+#infovis-canvaswidget 
+{
+  margin:25px 0 0 25px;
+}
+
+#hyperTreeContainer 
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+}
+
+
+#hyperTree {
+    margin:auto;
+    overflow:hidden;
+    position:absolute;
+    left:20px;
+    top:20px;
+    right:20px;
+    bottom:20px;
+}
+
+/*TOOLTIPS*/
+.tip {
+    color: #111;
+    width: 139px;
+    background-color: white;
+    border:1px solid #ccc;
+    -moz-box-shadow:#555 2px 2px 8px;
+    -webkit-box-shadow:#555 2px 2px 8px;
+    -o-box-shadow:#555 2px 2px 8px;
+    box-shadow:#555 2px 2px 8px;
+    opacity:0.9;
+    filter:alpha(opacity=90);
+    font-size:10px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    padding:7px;
+}

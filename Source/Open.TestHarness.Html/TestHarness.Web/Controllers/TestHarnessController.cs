@@ -12,7 +12,9 @@ namespace Open.TestHarness.Web.Controllers
         /// <summary>The root of the TestHarness.</summary>
         public virtual ActionResult Index()
         {
-            return View();
+            ViewModel.MyValue = "Yo! My Value"; //TEMP 
+
+            return View(ViewModel);
         }
 
         /// <summary>The Output Log.</summary>

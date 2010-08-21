@@ -8,7 +8,7 @@
     <ProjectGuid>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Open.Core</RootNamespace>
+    <RootNamespace>Open.Core.Web</RootNamespace>
     <AssemblyName>Open.Core.Web.Clr</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -31,8 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MvcContrib">
+      <HintPath>..\..\..\..\Lib\MVCContrib\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,20 +48,68 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Identity\Models\AuthenticationException.cs" />
-    <Compile Include="Identity\Models\UserName.cs" />
-    <Compile Include="Identity\Models\AuthenticationProfile.cs" />
-    <Compile Include="Identity\OpenIdAuthentication.cs" />
+    <Compile Include="Code\Base Classes\ControllerBase.cs" />
+    <Compile Include="Code\Extensions\AreaExtensions.cs" />
+    <Compile Include="AreaRegistration.cs" />
+    <Compile Include="Code\Identity\Models\AuthenticationException.cs" />
+    <Compile Include="Code\Identity\Models\UserName.cs" />
+    <Compile Include="Code\Identity\Models\AuthenticationProfile.cs" />
+    <Compile Include="Code\Identity\OpenIdAuthentication.cs" />
+    <Compile Include="Code\WebConstants.cs" />
+    <Compile Include="Controllers\FooController.cs" />
+    <Compile Include="Controllers\JitController.cs" />
+    <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts %28Open.Core\Clr\Open.Core.Contracts%29</Name>
+      <Name>Open.Core.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
+      <Name>Open.Core %28Clr\Open.Core%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Foo\Index.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\KenWilber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Css\Core.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Jit\HyperTree.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Scripts\CoreScripts.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Scripts\mscorlib.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\mscorlib.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Core.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Core.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.js" />
+    <EmbeddedResource Include="Content\Scripts\Jit\excanvas.js" />
+    <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.Initialize.js" />
+    <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.js" />
+    <EmbeddedResource Include="Content\Scripts\Jit\Jit.Initialize.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.cookie.js" />
+    <EmbeddedResource Include="Content\Css\Jit.Hypertree.css" />
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

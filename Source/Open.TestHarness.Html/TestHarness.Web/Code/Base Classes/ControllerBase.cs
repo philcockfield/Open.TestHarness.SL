@@ -4,7 +4,7 @@ using System.Web.Mvc;
 namespace Open.TestHarness.Web.Controllers
 {
     /// <summary>Base class for controllers.</summary>
-    public abstract class ControllerBase : Controller
+    public abstract class ControllerBase : Core.Web.ControllerBase
     {
         #region Head
         private const string StringResx = "TestHarnessStrings";
@@ -15,9 +15,7 @@ namespace Open.TestHarness.Web.Controllers
         /// <param name="key">The key of the string to retrieve.</param>
         protected string GetResource(string key)
         {
-            var httpContext = ControllerContext.HttpContext;
-            var culture = Thread.CurrentThread.CurrentUICulture;
-            return httpContext.GetGlobalResourceObject(StringResx, key, culture) as string;
+            return base.GetResource(StringResx, key);
         }
         #endregion
     }
