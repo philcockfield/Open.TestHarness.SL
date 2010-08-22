@@ -4,20 +4,16 @@ using jQueryApi;
 namespace Open.Core.Lists
 {
     /// <summary>Represents a single item within a list.</summary>
-    public class ListItem : ViewBase, IListItem
+    public class ListItemView : ViewBase, IListItemView
     {
         #region Head
-        /// <summary>Fires when the item is selected of deselected.</summary>
-        public event EventHandler SelectionChanged;
-        private void FireSelectionChanged(){if (SelectionChanged != null) SelectionChanged(this, new EventArgs());}
-
         private readonly object model;
         private bool isSelected;
 
         /// <summary>Constructor.</summary>
         /// <param name="liElement">The containing <li></li> element.</param>
         /// <param name="model">The data model for the list item.</param>
-        public ListItem(jQueryObject liElement, object model)
+        public ListItemView(jQueryObject liElement, object model)
         {
             this.model = model;
             Initialize(liElement);
@@ -34,7 +30,6 @@ namespace Open.Core.Lists
                 if (value == isSelected) return;
                 isSelected = value;
                 UpdateVisualState();
-                FireSelectionChanged();
             }
         }
 

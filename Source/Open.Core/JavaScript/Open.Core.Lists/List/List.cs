@@ -42,7 +42,7 @@ namespace Open.Core.Lists
         private void OnItemClick(jQueryEvent e, IView view)
         {
             if (SelectionMode == ListSelectionMode.None) return;
-            SelectItem(view as IListItem);
+            SelectItem(view as IListItemView);
         }
         #endregion
 
@@ -96,7 +96,6 @@ namespace Open.Core.Lists
 
                                         // Construct the view.
                                         IView view = factory.CreateView(div, model);
-                                        IListItem listItem = view as IListItem;
 
                                         // Store values.
                                         this.views.Add(view);
@@ -132,16 +131,10 @@ namespace Open.Core.Lists
         }
 
         /// <summary>Selects the first item in the list.</summary>
-        public void SelectFirst()
-        {
-            SelectIndex(0);
-        }
+        public void SelectFirst() { SelectIndex(0); }
 
         /// <summary>Selects the first item in the list.</summary>
-        public void SelectLast()
-        {
-            if (views.Count > 0) SelectIndex(views.Count - 1);
-        }
+        public void SelectLast() { if (views.Count > 0) SelectIndex(views.Count - 1); }
 
         /// <summary>Selects the list item at the specified index.</summary>
         /// <param name="index">The index of the item to select (0-based).</param>
@@ -149,12 +142,12 @@ namespace Open.Core.Lists
         public void SelectIndex(int index)
         {
             if (views.Count == 0 || index > views.Count - 1 || index < 0) return;
-            SelectItem(views[index] as IListItem);
+            SelectItem(views[index] as IListItemView);
         }
         #endregion
 
         #region Internal
-        private void SelectItem(IListItem item)
+        private void SelectItem(IListItemView item)
         {
             // Setup initial conditions.
             if (Script.IsNullOrUndefined(item)) return;
@@ -166,20 +159,28 @@ namespace Open.Core.Lists
 
         private void ClearSelection()
         {
-            foreach (IView view in views)
+            foreach (IListItemView item in GetItems())
             {
-                IListItem item = view as IListItem;
-                if (Script.IsNullOrUndefined(item)) continue;
                 item.IsSelected = false;
             }
         }
 
-        private IListItem GetListItem(object model)
+        private IEnumerable GetItems()
         {
+            ArrayList list = new ArrayList(views.Count);
             foreach (IView view in views)
             {
-                IListItem item = view as IListItem;
-                if (!Script.IsNullOrUndefined(item) && item.Model == model) return item;
+                IListItemView item = view as IListItemView;
+                if (!Script.IsNullOrUndefined(item)) list.Add(item);
+            }
+            return list;
+        }
+
+        private IListItemView GetListItem(object model)
+        {
+            foreach (IListItemView item in GetItems())
+            {
+                if (item.Model == model) return item;
             }
             return null;
         }

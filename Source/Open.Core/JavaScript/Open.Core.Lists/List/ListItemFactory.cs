@@ -7,7 +7,7 @@ namespace Open.Core.Lists
     {
         public IView CreateView(jQueryObject liElement, object model)
         {
-            return new ListItem(liElement, model);
+            return new ListItemView(liElement, model);
         }
     }
 }

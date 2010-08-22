@@ -7,21 +7,19 @@ function executeScript() {
 Type.registerNamespace('Open.Core.Lists');
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.Lists.IListItem
+// Open.Core.Lists.IListItemView
 
-Open.Core.Lists.IListItem = function() { 
+Open.Core.Lists.IListItemView = function() { 
     /// <summary>
     /// Represents a single item within a list.
     /// </summary>
 };
-Open.Core.Lists.IListItem.prototype = {
-    add_selectionChanged : null,
-    remove_selectionChanged : null,
+Open.Core.Lists.IListItemView.prototype = {
     get_isSelected : null,
     set_isSelected : null,
     get_model : null
 }
-Open.Core.Lists.IListItem.registerInterface('Open.Core.Lists.IListItem');
+Open.Core.Lists.IListItemView.registerInterface('Open.Core.Lists.IListItemView');
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +151,7 @@ Open.Core.Lists.List.prototype = {
         if (this.get_selectionMode() === Open.Core.Lists.ListSelectionMode.none) {
             return;
         }
-        this._selectItem$1(Type.safeCast(view, Open.Core.Lists.IListItem));
+        this._selectItem$1(Type.safeCast(view, Open.Core.Lists.IListItemView));
     },
     
     get_itemFactory: function Open_Core_Lists_List$get_itemFactory() {
@@ -222,7 +220,6 @@ Open.Core.Lists.List.prototype = {
             var div = $(element);
             var model = models[index];
             var view = factory.createView(div, model);
-            var listItem = Type.safeCast(view, Open.Core.Lists.IListItem);
             this._views$1.add(view);
             div.click(ss.Delegate.create(this, function(e) {
                 this._onItemClick$1(e, view);
@@ -283,11 +280,11 @@ Open.Core.Lists.List.prototype = {
         if (this._views$1.length === 0 || index > this._views$1.length - 1 || index < 0) {
             return;
         }
-        this._selectItem$1(Type.safeCast(this._views$1[index], Open.Core.Lists.IListItem));
+        this._selectItem$1(Type.safeCast(this._views$1[index], Open.Core.Lists.IListItemView));
     },
     
     _selectItem$1: function Open_Core_Lists_List$_selectItem$1(item) {
-        /// <param name="item" type="Open.Core.Lists.IListItem">
+        /// <param name="item" type="Open.Core.Lists.IListItemView">
         /// </param>
         if (ss.isNullOrUndefined(item)) {
             return;
@@ -297,26 +294,35 @@ Open.Core.Lists.List.prototype = {
     },
     
     _clearSelection$1: function Open_Core_Lists_List$_clearSelection$1() {
+        var $enum1 = ss.IEnumerator.getEnumerator(this._getItems$1());
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            item.set_isSelected(false);
+        }
+    },
+    
+    _getItems$1: function Open_Core_Lists_List$_getItems$1() {
+        /// <returns type="ss.IEnumerable"></returns>
+        var list = new Array(this._views$1.length);
         var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
         while ($enum1.moveNext()) {
             var view = $enum1.get_current();
-            var item = Type.safeCast(view, Open.Core.Lists.IListItem);
-            if (ss.isNullOrUndefined(item)) {
-                continue;
+            var item = Type.safeCast(view, Open.Core.Lists.IListItemView);
+            if (!ss.isNullOrUndefined(item)) {
+                list.add(item);
             }
-            item.set_isSelected(false);
         }
+        return list;
     },
     
     _getListItem$1: function Open_Core_Lists_List$_getListItem$1(model) {
         /// <param name="model" type="Object">
         /// </param>
-        /// <returns type="Open.Core.Lists.IListItem"></returns>
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
+        /// <returns type="Open.Core.Lists.IListItemView"></returns>
+        var $enum1 = ss.IEnumerator.getEnumerator(this._getItems$1());
         while ($enum1.moveNext()) {
-            var view = $enum1.get_current();
-            var item = Type.safeCast(view, Open.Core.Lists.IListItem);
-            if (!ss.isNullOrUndefined(item) && item.get_model() === model) {
+            var item = $enum1.get_current();
+            if (item.get_model() === model) {
                 return item;
             }
         }
@@ -326,9 +332,9 @@ Open.Core.Lists.List.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.Lists.ListItem
+// Open.Core.Lists.ListItemView
 
-Open.Core.Lists.ListItem = function Open_Core_Lists_ListItem(liElement, model) {
+Open.Core.Lists.ListItemView = function Open_Core_Lists_ListItemView(liElement, model) {
     /// <summary>
     /// Represents a single item within a list.
     /// </summary>
@@ -338,52 +344,26 @@ Open.Core.Lists.ListItem = function Open_Core_Lists_ListItem(liElement, model) {
     /// <param name="model" type="Object">
     /// The data model for the list item.
     /// </param>
-    /// <field name="__selectionChanged$1" type="EventHandler">
-    /// </field>
     /// <field name="_model$1" type="Object">
     /// </field>
     /// <field name="_isSelected$1" type="Boolean">
     /// </field>
-    Open.Core.Lists.ListItem.initializeBase(this);
+    Open.Core.Lists.ListItemView.initializeBase(this);
     this._model$1 = model;
     this.initialize(liElement);
 }
-Open.Core.Lists.ListItem.prototype = {
-    
-    add_selectionChanged: function Open_Core_Lists_ListItem$add_selectionChanged(value) {
-        /// <summary>
-        /// Fires when the item is selected of deselected.
-        /// </summary>
-        /// <param name="value" type="Function" />
-        this.__selectionChanged$1 = ss.Delegate.combine(this.__selectionChanged$1, value);
-    },
-    remove_selectionChanged: function Open_Core_Lists_ListItem$remove_selectionChanged(value) {
-        /// <summary>
-        /// Fires when the item is selected of deselected.
-        /// </summary>
-        /// <param name="value" type="Function" />
-        this.__selectionChanged$1 = ss.Delegate.remove(this.__selectionChanged$1, value);
-    },
-    
-    __selectionChanged$1: null,
-    
-    _fireSelectionChanged$1: function Open_Core_Lists_ListItem$_fireSelectionChanged$1() {
-        if (this.__selectionChanged$1 != null) {
-            this.__selectionChanged$1.invoke(this, new ss.EventArgs());
-        }
-    },
-    
+Open.Core.Lists.ListItemView.prototype = {
     _model$1: null,
     _isSelected$1: false,
     
-    get_isSelected: function Open_Core_Lists_ListItem$get_isSelected() {
+    get_isSelected: function Open_Core_Lists_ListItemView$get_isSelected() {
         /// <summary>
         /// Gets or sets whether the item is currently selected.
         /// </summary>
         /// <value type="Boolean"></value>
         return this._isSelected$1;
     },
-    set_isSelected: function Open_Core_Lists_ListItem$set_isSelected(value) {
+    set_isSelected: function Open_Core_Lists_ListItemView$set_isSelected(value) {
         /// <summary>
         /// Gets or sets whether the item is currently selected.
         /// </summary>
@@ -393,11 +373,10 @@ Open.Core.Lists.ListItem.prototype = {
         }
         this._isSelected$1 = value;
         this._updateVisualState$1();
-        this._fireSelectionChanged$1();
         return value;
     },
     
-    get_model: function Open_Core_Lists_ListItem$get_model() {
+    get_model: function Open_Core_Lists_ListItemView$get_model() {
         /// <summary>
         /// Gets or sets the data model.
         /// </summary>
@@ -405,7 +384,7 @@ Open.Core.Lists.ListItem.prototype = {
         return this._model$1;
     },
     
-    onInitialize: function Open_Core_Lists_ListItem$onInitialize(container) {
+    onInitialize: function Open_Core_Lists_ListItemView$onInitialize(container) {
         /// <summary>
         /// Initializes the list-item.
         /// </summary>
@@ -420,7 +399,7 @@ Open.Core.Lists.ListItem.prototype = {
         html.addClass(Open.Core.Css.classes.titleFont);
     },
     
-    _updateVisualState$1: function Open_Core_Lists_ListItem$_updateVisualState$1() {
+    _updateVisualState$1: function Open_Core_Lists_ListItemView$_updateVisualState$1() {
         if (this.get_isSelected()) {
             this.get_container().addClass(Open.Core.Lists.ListCss.classes.selectedListItem);
         }
@@ -447,7 +426,7 @@ Open.Core.Lists._listItemFactory.prototype = {
         /// <param name="model" type="Object">
         /// </param>
         /// <returns type="Open.Core.IView"></returns>
-        return new Open.Core.Lists.ListItem(liElement, model);
+        return new Open.Core.Lists.ListItemView(liElement, model);
     }
 }
 
@@ -455,7 +434,7 @@ Open.Core.Lists._listItemFactory.prototype = {
 Open.Core.Lists.ListCss.registerClass('Open.Core.Lists.ListCss');
 Open.Core.Lists.ListCssClasses.registerClass('Open.Core.Lists.ListCssClasses');
 Open.Core.Lists.List.registerClass('Open.Core.Lists.List', Open.Core.ViewBase);
-Open.Core.Lists.ListItem.registerClass('Open.Core.Lists.ListItem', Open.Core.ViewBase, Open.Core.Lists.IListItem);
+Open.Core.Lists.ListItemView.registerClass('Open.Core.Lists.ListItemView', Open.Core.ViewBase, Open.Core.Lists.IListItemView);
 Open.Core.Lists._listItemFactory.registerClass('Open.Core.Lists._listItemFactory', null, Open.Core.IViewFactory);
 Open.Core.Lists.ListCss.url = '/Open.Core/Css/Core.Lists.css';
 Open.Core.Lists.ListCss._isCssInserted = false;
