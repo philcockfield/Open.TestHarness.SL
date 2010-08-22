@@ -50,6 +50,8 @@
   <ItemGroup>
     <Content Include="Properties\Open.Core.Lists.ruleset" />
     <Content Include="Properties\Open.Core.Lists.script" />
+    <Compile Include="Declarations\Interfaces\IListItem.cs" />
+    <Compile Include="Declarations\ListCss.cs" />
     <Compile Include="List\List.cs" />
     <Compile Include="List\ListItem.cs" />
     <Compile Include="List\ListItemFactory.cs" />

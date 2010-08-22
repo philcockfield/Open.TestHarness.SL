@@ -49,10 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base Classes\ViewBase.cs" />
+    <Compile Include="Util\Dom\Html.cs" />
     <Compile Include="Declarations\Interfaces\IViewFactory.cs" />
     <Compile Include="Declarations\Interfaces\IView.cs" />
-    <Compile Include="Util\Css.cs" />
+    <Compile Include="Util\Dom\Css.cs" />
     <Compile Include="Declarations\Events.cs" />
+    <Compile Include="Util\Helpers\CollectionHelper.cs" />
     <Compile Include="Util\Helpers\JsonHelper.cs" />
     <Compile Include="Util\Helpers\ReflectionHelper.cs" />
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />

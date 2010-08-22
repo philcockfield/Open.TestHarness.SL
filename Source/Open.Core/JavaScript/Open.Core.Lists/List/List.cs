@@ -1,20 +1,48 @@
 using System;
 using System.Collections;
+using System.Html;
 using jQueryApi;
 
 namespace Open.Core.Lists
 {
+    /// <summary>Flags indicating how items within a list are selected.</summary>
+    public enum ListSelectionMode
+    {
+        /// <summary>Items are not selectable.</summary>
+        None = 0,
+
+        /// <summary>Only one item at a time can be selected.</summary>
+        Single = 1,
+    }
+
+
     /// <summary>Renders a simple list.</summary>
     public class List : ViewBase
     {
-        #region Methods
+        #region Head
+        /// <summary>Fires when the item selection changes.</summary>
+        public event EventHandler SelectionChanged;
+        private void FireSelectionChanged() { if (SelectionChanged != null) SelectionChanged(this, new EventArgs()); }
+
         private IViewFactory itemFactory;
         private IViewFactory defaultItemFactory;
-        private jQueryObject listElement;
+        private ListSelectionMode selectionMode = ListSelectionMode.Single;
+        private readonly ArrayList views = new ArrayList();
 
-        public List(jQueryObject element)
+        /// <summary>Constructor.</summary>
+        /// <param name="container">The containing element.</param>
+        public List(jQueryObject container)
         {
-            Initialize(element);
+            Initialize(container);
+            ListCss.InsertCss();
+        }
+        #endregion
+
+        #region Event Handlers
+        private void OnItemClick(jQueryEvent e, IView view)
+        {
+            if (SelectionMode == ListSelectionMode.None) return;
+            SelectItem(view as IListItem);
         }
         #endregion
 
@@ -25,33 +53,135 @@ namespace Open.Core.Lists
             get { return itemFactory ?? (defaultItemFactory ?? (defaultItemFactory = new ListItemFactory())); }
             set { itemFactory = value; }
         }
+
+        /// <summary>Gets or sets whether items within the list are selecable.</summary>
+        public ListSelectionMode SelectionMode
+        {
+            get { return selectionMode; }
+            set { selectionMode = value; }
+        }
+
+        /// <summary>Gets the number of items currently in the list.</summary>
+        public int Count { get { return views.Count; } }
         #endregion
 
         #region Methods
-        protected override void OnInitialize(jQueryObject element)
+        protected override void OnInitialize(jQueryObject container)
         {
-            // Insert the <UL> list.
-            listElement = element.Append("<ul></ul>");
         }
 
         /// <summary>Loads the collection of models into the list.</summary>
-        /// <param name="models">A collection models.</param>
-        public void Load(IEnumerable models)
+        /// <param name="items">A collection models.</param>
+        public void Load(IEnumerable items)
         {
             // Setup initial conditions.
-            listElement.Empty();
-            if (models == null) return;
+            Clear();
+            if (Script.IsNullOrUndefined(items)) return;
+            ArrayList models = Helper.Collection.ToArrayList(items);
 
-            // TODO - Call Dispose on existing list-items before clearing.
-
-            // Add the models as list-items.
-            IViewFactory factory = ItemFactory;
-            foreach (object model in models)
+            // Insert a DIV for each model.
+            for (int i = 0; i < models.Count; i++)
             {
-                jQueryObject li = jQuery.FromHtml(string.Format("<li></li>"));
-                listElement.Append(li);
-                IView view = factory.CreateView(li, model);
+                jQueryObject div = Html.AppendDiv(Container);
+                div.AppendTo(Container);
             }
+
+            // Create the views for each model.
+            IViewFactory factory = ItemFactory;
+            Container.Children(Html.Div).Each(delegate(int index, Element element)
+                                    {
+                                        // Prepare data.
+                                        jQueryObject div = jQuery.FromElement(element);
+                                        object model = models[index];
+
+                                        // Construct the view.
+                                        IView view = factory.CreateView(div, model);
+                                        IListItem listItem = view as IListItem;
+
+                                        // Store values.
+                                        this.views.Add(view);
+
+                                        // Wire up events.
+                                        div.Click(delegate(jQueryEvent e) { OnItemClick(e, view); });
+                                    });
+        }
+
+        /// <summary>Clears the list (disposing of all children).</summary>
+        public void Clear()
+        {
+            // Dispose of all views.
+            foreach (IView view in views)
+            {
+                view.Dispose();
+            }
+
+            // Clear DOM elements.
+            Container.Empty();
+            views.Clear();
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>Selects the item corresponding to the given model.</summary>
+        /// <param name="model">The item's model.</param>
+        public void Select(object model)
+        {
+            if (Script.IsNullOrUndefined(model)) return;
+            SelectItem(GetListItem(model));
+            FireSelectionChanged();
+        }
+
+        /// <summary>Selects the first item in the list.</summary>
+        public void SelectFirst()
+        {
+            SelectIndex(0);
+        }
+
+        /// <summary>Selects the first item in the list.</summary>
+        public void SelectLast()
+        {
+            if (views.Count > 0) SelectIndex(views.Count - 1);
+        }
+
+        /// <summary>Selects the list item at the specified index.</summary>
+        /// <param name="index">The index of the item to select (0-based).</param>
+        /// <remarks>If the given index is out of range no action is taken (and no error is thrown).</remarks>
+        public void SelectIndex(int index)
+        {
+            if (views.Count == 0 || index > views.Count - 1 || index < 0) return;
+            SelectItem(views[index] as IListItem);
+        }
+        #endregion
+
+        #region Internal
+        private void SelectItem(IListItem item)
+        {
+            // Setup initial conditions.
+            if (Script.IsNullOrUndefined(item)) return;
+
+            // Update the selection.
+            ClearSelection();
+            item.IsSelected = true;
+        }
+
+        private void ClearSelection()
+        {
+            foreach (IView view in views)
+            {
+                IListItem item = view as IListItem;
+                if (Script.IsNullOrUndefined(item)) continue;
+                item.IsSelected = false;
+            }
+        }
+
+        private IListItem GetListItem(object model)
+        {
+            foreach (IView view in views)
+            {
+                IListItem item = view as IListItem;
+                if (!Script.IsNullOrUndefined(item) && item.Model == model) return item;
+            }
+            return null;
         }
         #endregion
     }

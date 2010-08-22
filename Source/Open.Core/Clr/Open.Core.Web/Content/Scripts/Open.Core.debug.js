@@ -47,14 +47,14 @@ Open.Core.ViewBase = function Open_Core_ViewBase() {
     /// </field>
     /// <field name="_model" type="Object">
     /// </field>
-    /// <field name="_element" type="jQueryObject">
+    /// <field name="_container" type="jQueryObject">
     /// </field>
 }
 Open.Core.ViewBase.prototype = {
     _isDisposed: false,
     _isInitialized: false,
     _model: null,
-    _element: null,
+    _container: null,
     
     dispose: function Open_Core_ViewBase$dispose() {
         /// <summary>
@@ -83,24 +83,67 @@ Open.Core.ViewBase.prototype = {
         return this._isInitialized;
     },
     
-    get_element: function Open_Core_ViewBase$get_element() {
+    get_container: function Open_Core_ViewBase$get_container() {
         /// <summary>
         /// Gets the element that the view is contained within.
         /// </summary>
         /// <value type="jQueryObject"></value>
-        return this._element;
+        return this._container;
     },
     
-    initialize: function Open_Core_ViewBase$initialize(element) {
-        /// <param name="element" type="jQueryObject">
+    initialize: function Open_Core_ViewBase$initialize(container) {
+        /// <param name="container" type="jQueryObject">
         /// </param>
         if (this.get_isInitialized()) {
             throw new Error('View is already initialized.');
         }
-        this._element = element;
-        this.onInitialize(element);
+        this._container = container;
+        this.onInitialize(container);
         this._isInitialized = true;
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Html
+
+Open.Core.Html = function Open_Core_Html() {
+    /// <summary>
+    /// HTML utility.
+    /// </summary>
+    /// <field name="head" type="String" static="true">
+    /// </field>
+    /// <field name="div" type="String" static="true">
+    /// </field>
+    /// <field name="span" type="String" static="true">
+    /// </field>
+    /// <field name="href" type="String" static="true">
+    /// </field>
+}
+Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
+    /// <summary>
+    /// Creates and appends a DIV elemnet within the given parent.
+    /// </summary>
+    /// <param name="parent" type="jQueryObject">
+    /// The parent element to insert into
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    return Open.Core.Html.append(parent, Open.Core.Html.div);
+}
+Open.Core.Html.append = function Open_Core_Html$append(parent, tag) {
+    /// <summary>
+    /// Creates and appends a DIV elemnet within the given parent.
+    /// </summary>
+    /// <param name="parent" type="jQueryObject">
+    /// The parent element to insert into
+    /// </param>
+    /// <param name="tag" type="String">
+    /// The tag name (NOT including angle brackets).
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    var html = $(String.format('<{0}></{0}>', tag));
+    html.appendTo(parent);
+    return parent.last().contents();
 }
 
 
@@ -109,7 +152,7 @@ Open.Core.ViewBase.prototype = {
 
 Open.Core.Css = function Open_Core_Css() {
     /// <summary>
-    /// CSS constants.
+    /// CSS utility.
     /// </summary>
     /// <field name="left" type="String" static="true">
     /// </field>
@@ -125,19 +168,8 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="px" type="String" static="true">
     /// </field>
-}
-Open.Core.Css.toId = function Open_Core_Css$toId(identifier) {
-    /// <summary>
-    /// Prepends the # to a CSS identifier (eg: id='one' would be '#one').
-    /// </summary>
-    /// <param name="identifier" type="String">
-    /// The ID value.
-    /// </param>
-    /// <returns type="String"></returns>
-    if (String.isNullOrEmpty(identifier)) {
-        return identifier;
-    }
-    return (identifier.substr(0, 1) === '#') ? identifier : '#' + identifier;
+    /// <field name="classes" type="Open.Core.CoreCssClasses" static="true">
+    /// </field>
 }
 Open.Core.Css.selectFromId = function Open_Core_Css$selectFromId(identifier) {
     /// <summary>
@@ -150,15 +182,88 @@ Open.Core.Css.selectFromId = function Open_Core_Css$selectFromId(identifier) {
     /// <returns type="jQueryObject"></returns>
     return $(Open.Core.Css.toId(identifier));
 }
-Open.Core.Css.insert = function Open_Core_Css$insert(url) {
+Open.Core.Css.toId = function Open_Core_Css$toId(identifier) {
+    /// <summary>
+    /// Prepends the # to a CSS identifier if it's not present (eg: id='one' would be '#one').
+    /// </summary>
+    /// <param name="identifier" type="String">
+    /// The ID value.
+    /// </param>
+    /// <returns type="String"></returns>
+    return Open.Core.Css._prependSelectorPrefix(identifier, '#');
+}
+Open.Core.Css.toClass = function Open_Core_Css$toClass(cclass) {
+    /// <summary>
+    /// Prepends the period (.) to a CSS class name if it's not present (eg: id='one' would be '.one').
+    /// </summary>
+    /// <param name="cclass" type="String">
+    /// </param>
+    /// <returns type="String"></returns>
+    return Open.Core.Css._prependSelectorPrefix(cclass, '.');
+}
+Open.Core.Css._prependSelectorPrefix = function Open_Core_Css$_prependSelectorPrefix(value, prefix) {
+    /// <param name="value" type="String">
+    /// </param>
+    /// <param name="prefix" type="String">
+    /// </param>
+    /// <returns type="String"></returns>
+    if (String.isNullOrEmpty(value)) {
+        return value;
+    }
+    return (value.substr(0, 1) === prefix) ? value : prefix + value;
+}
+Open.Core.Css.insertLink = function Open_Core_Css$insertLink(url) {
     /// <summary>
     /// Inserts a CSS link witin the document head.
     /// </summary>
     /// <param name="url" type="String">
     /// The URL of the CSS to load.
     /// </param>
-    var link = String.format('<link rel=\'Stylesheet\' href=\'{0}\' type=\'text/css\' />', url);
-    $('head').append(link);
+    $(Open.Core.Html.head).append(String.format('<link rel=\'Stylesheet\' href=\'{0}\' type=\'text/css\' />', url));
+}
+Open.Core.Css.isLinked = function Open_Core_Css$isLinked(url) {
+    /// <summary>
+    /// Determines whether the specified URL has a link within the page.
+    /// </summary>
+    /// <param name="url" type="String">
+    /// The path to the CSS document to match (not case-sensitive).
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return Open.Core.Css.getLink(url) != null;
+}
+Open.Core.Css.getLink = function Open_Core_Css$getLink(url) {
+    /// <summary>
+    /// Retrieves the CSS <link type="text/css" /> with the given source (src) URL.
+    /// </summary>
+    /// <param name="url" type="String">
+    /// The path to the CSS document to match (not case-sensitive).
+    /// </param>
+    /// <returns type="Object" domElement="true"></returns>
+    url = url.toLowerCase();
+    var $enum1 = ss.IEnumerator.getEnumerator($('link[type=\'text/css\']').get());
+    while ($enum1.moveNext()) {
+        var link = $enum1.get_current();
+        var href = link.getAttributeNode(Open.Core.Html.href);
+        if (ss.isNullOrUndefined(href)) {
+            continue;
+        }
+        if (url === href.value.toLowerCase()) {
+            return link;
+        }
+    }
+    return null;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.CoreCssClasses
+
+Open.Core.CoreCssClasses = function Open_Core_CoreCssClasses() {
+    /// <field name="titleFont" type="String">
+    /// </field>
+}
+Open.Core.CoreCssClasses.prototype = {
+    titleFont: 'titleFont'
 }
 
 
@@ -445,6 +550,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_scriptLoadHelper" type="Open.Core.Helpers.ScriptLoadHelper" static="true">
     /// </field>
+    /// <field name="_collectionHelper" type="Open.Core.Helpers.CollectionHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -476,6 +583,13 @@ Open.Core.Helper.get_scriptLoader = function Open_Core_Helper$get_scriptLoader()
     /// <value type="Open.Core.Helpers.ScriptLoadHelper"></value>
     return Open.Core.Helper._scriptLoadHelper;
 }
+Open.Core.Helper.get_collection = function Open_Core_Helper$get_collection() {
+    /// <summary>
+    /// Gets the helper for working with collections.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.CollectionHelper"></value>
+    return Open.Core.Helper._collectionHelper;
+}
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
     /// Invokes the given action if it's not Null/Undefined.
@@ -498,6 +612,38 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
 
 
 Type.registerNamespace('Open.Core.Helpers');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.CollectionHelper
+
+Open.Core.Helpers.CollectionHelper = function Open_Core_Helpers_CollectionHelper() {
+    /// <summary>
+    /// Utility methods for working with collections.
+    /// </summary>
+}
+Open.Core.Helpers.CollectionHelper.prototype = {
+    
+    toArrayList: function Open_Core_Helpers_CollectionHelper$toArrayList(collection) {
+        /// <summary>
+        /// Converts an enumerable to an ArrayList.
+        /// </summary>
+        /// <param name="collection" type="ss.IEnumerable">
+        /// The collection to convert.
+        /// </param>
+        /// <returns type="Array"></returns>
+        var list = [];
+        if (ss.isNullOrUndefined(collection)) {
+            return list;
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(collection);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            list.add(item);
+        }
+        return list;
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Helpers.JsonHelper
@@ -1419,12 +1565,15 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 
 
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', null, Open.Core.IView);
+Open.Core.Html.registerClass('Open.Core.Html');
 Open.Core.Css.registerClass('Open.Core.Css');
+Open.Core.CoreCssClasses.registerClass('Open.Core.CoreCssClasses');
 Open.Core.Events.registerClass('Open.Core.Events');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.PropertyBag.registerClass('Open.Core.PropertyBag');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
+Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
 Open.Core.Helpers.ReflectionHelper.registerClass('Open.Core.Helpers.ReflectionHelper');
 Open.Core.Helpers.JitScriptLoader.registerClass('Open.Core.Helpers.JitScriptLoader');
@@ -1435,6 +1584,10 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Core.Html.head = 'head';
+Open.Core.Html.div = 'div';
+Open.Core.Html.span = 'span';
+Open.Core.Html.href = 'href';
 Open.Core.Css.left = 'left';
 Open.Core.Css.right = 'right';
 Open.Core.Css.top = 'top';
@@ -1442,11 +1595,13 @@ Open.Core.Css.bottom = 'bottom';
 Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
 Open.Core.Css.px = 'px';
+Open.Core.Css.classes = new Open.Core.CoreCssClasses();
 Open.Core.Events.resize = 'resize';
 Open.Core.Helper._delegateHelper = new Open.Core.Helpers.DelegateHelper();
 Open.Core.Helper._jsonHelper = new Open.Core.Helpers.JsonHelper();
 Open.Core.Helper._reflectionHelper = new Open.Core.Helpers.ReflectionHelper();
 Open.Core.Helper._scriptLoadHelper = new Open.Core.Helpers.ScriptLoadHelper();
+Open.Core.Helper._collectionHelper = new Open.Core.Helpers.CollectionHelper();
 Open.Core.Helper._idCounter = 0;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.UI.PanelResizerBase._eventStart = 'start';

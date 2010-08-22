@@ -106,6 +106,7 @@
     <EmbeddedResource Include="Content\Scripts\Jit\Jit.Initialize.js" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.cookie.js" />
     <EmbeddedResource Include="Content\Css\Jit.Hypertree.css" />
+    <EmbeddedResource Include="Content\Css\Core.Lists.css" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,8 @@ namespace Open.Core
         private static readonly JsonHelper JsonHelper = new JsonHelper();
         private static readonly ReflectionHelper ReflectionHelper = new ReflectionHelper();
         private static readonly ScriptLoadHelper ScriptLoadHelper = new ScriptLoadHelper();
+        private static readonly CollectionHelper CollectionHelper = new CollectionHelper();
+
         private static int idCounter;
         #endregion
 
@@ -26,6 +28,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for downloading scripts.</summary>
         public static ScriptLoadHelper ScriptLoader { get { return ScriptLoadHelper; } }
+
+        /// <summary>Gets the helper for working with collections.</summary>
+        public static CollectionHelper Collection { get { return CollectionHelper; } }
         #endregion
 
         #region Methods

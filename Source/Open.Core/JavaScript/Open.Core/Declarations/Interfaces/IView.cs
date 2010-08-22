@@ -12,8 +12,8 @@ namespace Open.Core
         bool IsInitialized { get; }
 
         /// <summary>Initializes the view.</summary>
-        /// <param name="rootElement">The containing element of the view.</param>
-        void Initialize(jQueryObject rootElement);
+        /// <param name="container">The containing element of the view.</param>
+        void Initialize(jQueryObject container);
 
         /// <summary>Destroys the view and clears resources.</summary>
         void Dispose();

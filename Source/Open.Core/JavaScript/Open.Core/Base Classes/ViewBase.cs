@@ -9,7 +9,7 @@ namespace Open.Core
         private bool isDisposed;
         private bool isInitialized;
         private object model;
-        private jQueryObject element;
+        private jQueryObject container;
 
         /// <summary>Destroys the view and cleans up resources.</summary>
         public void Dispose()
@@ -30,20 +30,20 @@ namespace Open.Core
 
         #region Properties
         /// <summary>Gets the element that the view is contained within.</summary>
-        protected jQueryObject Element { get { return element; } }
+        protected jQueryObject Container { get { return container; } }
         #endregion
 
         #region Methods
-        public void Initialize(jQueryObject element)
+        public void Initialize(jQueryObject container)
         {
             if (IsInitialized) throw new Exception("View is already initialized.");
-            this.element = element;
-            OnInitialize(element);
+            this.container = container;
+            OnInitialize(container);
             isInitialized = true;
         }
 
         /// <summary>Deriving implementation of Initialize.</summary>
-        protected abstract void OnInitialize(jQueryObject element);
+        protected abstract void OnInitialize(jQueryObject container);
         #endregion
     }
 }
