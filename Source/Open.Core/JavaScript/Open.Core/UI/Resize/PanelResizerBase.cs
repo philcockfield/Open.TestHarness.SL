@@ -47,7 +47,7 @@ namespace Open.Core.UI
             }
 
             // Wire up events.
-            jQuery.Window.Bind(Events.Resize, delegate(jQueryEvent e) { OnWindowSizeChanged(); });
+            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { OnWindowSizeChanged(); });
 
             // Finish up.
             LoadSize();

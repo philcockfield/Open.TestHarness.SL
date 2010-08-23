@@ -24,7 +24,7 @@ namespace Open.Library.Jit
             this.containerElement = containerElement;
 
             // Wire up events.
-            jQuery.Window.Bind(Events.Resize, delegate(jQueryEvent e) { UpdateSize(); });
+            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { UpdateSize(); });
         }
         #endregion
 

@@ -48,22 +48,25 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />
+    <Compile Include="Declarations\Interfaces\INotifyPropertyChanged.cs" />
     <Compile Include="Declarations\Interfaces\IViewFactory.cs" />
+    <Compile Include="Declarations\Events\PropertyChangedEventArgs.cs" />
     <Compile Include="Util\Dom\Html.cs" />
     <Compile Include="Declarations\Interfaces\IView.cs" />
     <Compile Include="Util\Dom\Css.cs" />
-    <Compile Include="Declarations\Events.cs" />
+    <Compile Include="Declarations\Events\DomEvents.cs" />
     <Compile Include="Util\Helpers\CollectionHelper.cs" />
     <Compile Include="Util\Helpers\JsonHelper.cs" />
     <Compile Include="Util\Helpers\ReflectionHelper.cs" />
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
+    <Compile Include="Util\Helpers\StringHelper.cs" />
     <Compile Include="Util\Loaders\ResourceLoader.cs" />
     <Compile Include="Util\Loaders\ScriptLoader.cs" />
     <Compile Include="Util\Helpers\Scripts\ScriptLoadHelper.cs" />
-    <Compile Include="Model\Cookie.cs" />
-    <Compile Include="Model\PropertyBag.cs" />
-    <Compile Include="Model\Size.cs" />
+    <Compile Include="Util\Persistence\Cookie.cs" />
+    <Compile Include="Models\Size.cs" />
     <Compile Include="UI\Resize\HorizontalPanelResizer.cs" />
     <Compile Include="UI\Resize\PanelResizerBase.cs" />
     <Compile Include="UI\Resize\VerticalPanelResizer.cs" />
@@ -74,5 +77,6 @@
     <Compile Include="Declarations\Delegates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>

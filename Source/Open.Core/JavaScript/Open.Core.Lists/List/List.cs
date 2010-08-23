@@ -120,7 +120,7 @@ namespace Open.Core.Lists
         }
         #endregion
 
-        #region Methods
+        #region Methods : Select
         /// <summary>Selects the item corresponding to the given model.</summary>
         /// <param name="model">The item's model.</param>
         public void Select(object model)
@@ -161,7 +161,7 @@ namespace Open.Core.Lists
         {
             foreach (IListItemView item in GetItems())
             {
-                item.IsSelected = false;
+                if (!Script.IsNullOrUndefined(item)) item.IsSelected = false;
             }
         }
 

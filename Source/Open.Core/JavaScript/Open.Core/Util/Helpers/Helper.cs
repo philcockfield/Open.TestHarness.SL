@@ -7,30 +7,34 @@ namespace Open.Core
     public static class Helper
     {
         #region Head
-        private static readonly DelegateHelper DelegateHelper = new DelegateHelper();
-        private static readonly JsonHelper JsonHelper = new JsonHelper();
-        private static readonly ReflectionHelper ReflectionHelper = new ReflectionHelper();
-        private static readonly ScriptLoadHelper ScriptLoadHelper = new ScriptLoadHelper();
-        private static readonly CollectionHelper CollectionHelper = new CollectionHelper();
+        private static DelegateHelper DelegateHelper;
+        private static JsonHelper JsonHelper;
+        private static ReflectionHelper ReflectionHelper;
+        private static ScriptLoadHelper ScriptLoadHelper;
+        private static CollectionHelper CollectionHelper;
+        private static StringHelper StringHelper;
 
         private static int idCounter;
         #endregion
 
         #region Properties
         /// <summary>Gets the helper for working with Delegates.</summary>
-        public static DelegateHelper Delegate{get { return DelegateHelper; }}
+        public static DelegateHelper Delegate { get { return DelegateHelper ?? (DelegateHelper = new DelegateHelper()); } }
 
         /// <summary>Gets the helper for working with Delegates.</summary>
-        public static JsonHelper Json { get { return JsonHelper; } }
+        public static JsonHelper Json { get { return JsonHelper ?? (JsonHelper = new JsonHelper()); } }
 
         /// <summary>Gets the helper for working with reflection.</summary>
-        public static ReflectionHelper Reflection { get { return ReflectionHelper; } }
+        public static ReflectionHelper Reflection { get { return ReflectionHelper ?? (ReflectionHelper = new ReflectionHelper()); } }
 
         /// <summary>Gets the helper for downloading scripts.</summary>
-        public static ScriptLoadHelper ScriptLoader { get { return ScriptLoadHelper; } }
+        public static ScriptLoadHelper ScriptLoader { get { return ScriptLoadHelper ?? (ScriptLoadHelper = new ScriptLoadHelper()); } }
 
         /// <summary>Gets the helper for working with collections.</summary>
-        public static CollectionHelper Collection { get { return CollectionHelper; } }
+        public static CollectionHelper Collection { get { return CollectionHelper ?? (CollectionHelper = new CollectionHelper()); } }
+
+        /// <summary>Gets the helper for working with strings.</summary>
+        public static StringHelper String { get { return StringHelper ?? (StringHelper = new StringHelper()); } }
         #endregion
 
         #region Methods

@@ -3,7 +3,8 @@ using jQueryApi;
 
 namespace Open.Core
 {
-    public abstract class ViewBase : IView
+    /// <summary>Base for classes that represent, manage and construct views ("UI").</summary>
+    public abstract class ViewBase : ModelBase, IView
     {
         #region Head
         private bool isDisposed;

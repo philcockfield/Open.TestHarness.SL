@@ -16,7 +16,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
     <script src="/Scripts/JQuery/jquery.cookie.js" type="text/javascript"></script>
 
-    <% Html.CoreScripts(); %>
+    <% Html.InsertCoreScripts();%>
     <script src="/Scripts/TestHarness/Open.TestHarness.debug.js" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -38,17 +38,7 @@
             <div class="mainToolbar toolbar panelBorder panelBorderBottom"></div>
 
             <div class="content">
-
-
-                <% Html.Foo(); %>
-                <p> 
-                    <img src="/Open.Core/images/KenWilber.png" alt="Ken Wilber" />
-                </p>
-                                <p><%= Model.MyValue %></p>
-
-            </div>
-
-            <%= Html.Action(MVC.TestHarness.Log()) %>
+                <%= Html.Action(MVC.TestHarness.Log()) %>
         </div>
     </div>
 

@@ -7,6 +7,21 @@ function executeScript() {
 Type.registerNamespace('Open.Core');
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.INotifyPropertyChanged
+
+Open.Core.INotifyPropertyChanged = function() { 
+    /// <summary>
+    /// Notifies clients that a property value has changed.
+    /// </summary>
+};
+Open.Core.INotifyPropertyChanged.prototype = {
+    add_propertyChanged : null,
+    remove_propertyChanged : null
+}
+Open.Core.INotifyPropertyChanged.registerInterface('Open.Core.INotifyPropertyChanged');
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.IViewFactory
 
 Open.Core.IViewFactory = function() { 
@@ -38,33 +53,120 @@ Open.Core.IView.registerInterface('Open.Core.IView');
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.ModelBase
+
+Open.Core.ModelBase = function Open_Core_ModelBase() {
+    /// <summary>
+    /// Base class for data models.
+    /// </summary>
+    /// <field name="__propertyChanged" type="Open.Core.PropertyChangedHandler">
+    /// </field>
+    /// <field name="_propertyBag" type="Object">
+    /// </field>
+}
+Open.Core.ModelBase.prototype = {
+    
+    add_propertyChanged: function Open_Core_ModelBase$add_propertyChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__propertyChanged = ss.Delegate.combine(this.__propertyChanged, value);
+    },
+    remove_propertyChanged: function Open_Core_ModelBase$remove_propertyChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__propertyChanged = ss.Delegate.remove(this.__propertyChanged, value);
+    },
+    
+    __propertyChanged: null,
+    _propertyBag: null,
+    
+    get__propertyBag: function Open_Core_ModelBase$get__propertyBag() {
+        /// <value type="Object"></value>
+        return this._propertyBag || (this._propertyBag = {});
+    },
+    
+    firePropertyChanged: function Open_Core_ModelBase$firePropertyChanged(propertyName) {
+        /// <summary>
+        /// Fires the 'PropertyChanged' event.
+        /// </summary>
+        /// <param name="propertyName" type="String">
+        /// The name of the property that has changed.
+        /// </param>
+        if (this.__propertyChanged != null) {
+            this.__propertyChanged.invoke(this, new Open.Core.PropertyChangedEventArgs(this, propertyName));
+        }
+    },
+    
+    get: function Open_Core_ModelBase$get(propertyName, defaultValue) {
+        /// <summary>
+        /// Retrieves a property value from the backing store.
+        /// </summary>
+        /// <param name="propertyName" type="String">
+        /// The name of the property.
+        /// </param>
+        /// <param name="defaultValue" type="Object">
+        /// The default value to provide (if the value does not exist).
+        /// </param>
+        /// <returns type="Object"></returns>
+        return (Object.keyExists(this.get__propertyBag(), propertyName)) ? this.get__propertyBag()[propertyName] : defaultValue;
+    },
+    
+    set: function Open_Core_ModelBase$set(propertyName, value, defaultValue) {
+        /// <summary>
+        /// Stores the given value for the named property
+        /// (firing the 'PropertyChanged' event if the value differs from the current value).
+        /// </summary>
+        /// <param name="propertyName" type="String">
+        /// The name of the property.
+        /// </param>
+        /// <param name="value" type="Object">
+        /// The value to set.
+        /// </param>
+        /// <param name="defaultValue" type="Object">
+        /// The default value of the property.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        var currentValue = this.get(propertyName, defaultValue);
+        if (value === currentValue) {
+            return false;
+        }
+        this.get__propertyBag()[propertyName] = value;
+        this.firePropertyChanged(propertyName);
+        return true;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.ViewBase
 
 Open.Core.ViewBase = function Open_Core_ViewBase() {
-    /// <field name="_isDisposed" type="Boolean">
+    /// <summary>
+    /// Base for classes that represent, manage and construct views ("UI").
+    /// </summary>
+    /// <field name="_isDisposed$1" type="Boolean">
     /// </field>
-    /// <field name="_isInitialized" type="Boolean">
+    /// <field name="_isInitialized$1" type="Boolean">
     /// </field>
-    /// <field name="_model" type="Object">
+    /// <field name="_model$1" type="Object">
     /// </field>
-    /// <field name="_container" type="jQueryObject">
+    /// <field name="_container$1" type="jQueryObject">
     /// </field>
+    Open.Core.ViewBase.initializeBase(this);
 }
 Open.Core.ViewBase.prototype = {
-    _isDisposed: false,
-    _isInitialized: false,
-    _model: null,
-    _container: null,
+    _isDisposed$1: false,
+    _isInitialized$1: false,
+    _model$1: null,
+    _container$1: null,
     
     dispose: function Open_Core_ViewBase$dispose() {
         /// <summary>
         /// Destroys the view and cleans up resources.
         /// </summary>
-        if (this._isDisposed) {
+        if (this._isDisposed$1) {
             return;
         }
         this.onDispose();
-        this._isDisposed = true;
+        this._isDisposed$1 = true;
     },
     
     onDispose: function Open_Core_ViewBase$onDispose() {
@@ -75,12 +177,12 @@ Open.Core.ViewBase.prototype = {
     
     get_isDisposed: function Open_Core_ViewBase$get_isDisposed() {
         /// <value type="Boolean"></value>
-        return this._isDisposed;
+        return this._isDisposed$1;
     },
     
     get_isInitialized: function Open_Core_ViewBase$get_isInitialized() {
         /// <value type="Boolean"></value>
-        return this._isInitialized;
+        return this._isInitialized$1;
     },
     
     get_container: function Open_Core_ViewBase$get_container() {
@@ -88,7 +190,7 @@ Open.Core.ViewBase.prototype = {
         /// Gets the element that the view is contained within.
         /// </summary>
         /// <value type="jQueryObject"></value>
-        return this._container;
+        return this._container$1;
     },
     
     initialize: function Open_Core_ViewBase$initialize(container) {
@@ -97,9 +199,68 @@ Open.Core.ViewBase.prototype = {
         if (this.get_isInitialized()) {
             throw new Error('View is already initialized.');
         }
-        this._container = container;
+        this._container$1 = container;
         this.onInitialize(container);
-        this._isInitialized = true;
+        this._isInitialized$1 = true;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.PropertyChangedEventArgs
+
+Open.Core.PropertyChangedEventArgs = function Open_Core_PropertyChangedEventArgs(instance, propertyName) {
+    /// <summary>
+    /// Event arguments accompanying the 'PropertyChanged' event.
+    /// </summary>
+    /// <param name="instance" type="Object">
+    /// The instance of the object that exposes the property.
+    /// </param>
+    /// <param name="propertyName" type="String">
+    /// The name of the property.
+    /// </param>
+    /// <field name="_instance$1" type="Object">
+    /// </field>
+    /// <field name="_propertyName$1" type="String">
+    /// </field>
+    /// <field name="_formattedName$1" type="String">
+    /// </field>
+    Open.Core.PropertyChangedEventArgs.initializeBase(this);
+    this._instance$1 = instance;
+    this._propertyName$1 = propertyName;
+}
+Open.Core.PropertyChangedEventArgs.prototype = {
+    _instance$1: null,
+    _propertyName$1: null,
+    _formattedName$1: null,
+    
+    get_instance: function Open_Core_PropertyChangedEventArgs$get_instance() {
+        /// <summary>
+        /// Gets the instance of the object that exposes the property.
+        /// </summary>
+        /// <value type="Object"></value>
+        return this._instance$1;
+    },
+    
+    get_propertyName: function Open_Core_PropertyChangedEventArgs$get_propertyName() {
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._propertyName$1;
+    },
+    
+    get__formattedName$1: function Open_Core_PropertyChangedEventArgs$get__formattedName$1() {
+        /// <value type="String"></value>
+        return this._formattedName$1 || (this._formattedName$1 = Open.Core.Helper.get_string().toCamelCase(this.get_propertyName()));
+    },
+    
+    get_propertyValue: function Open_Core_PropertyChangedEventArgs$get_propertyValue() {
+        /// <summary>
+        /// Gets or sets the value of the property.
+        /// </summary>
+        /// <value type="Object"></value>
+        return this.get_instance()['get_' + this.get__formattedName$1()]();
     }
 }
 
@@ -268,9 +429,9 @@ Open.Core.CoreCssClasses.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.Events
+// Open.Core.DomEvents
 
-Open.Core.Events = function Open_Core_Events() {
+Open.Core.DomEvents = function Open_Core_DomEvents() {
     /// <field name="resize" type="String" static="true">
     /// </field>
 }
@@ -290,7 +451,7 @@ Open.Core.Cookie = function Open_Core_Cookie(cookieId) {
     /// </field>
     /// <field name="_expires" type="Number" integer="true">
     /// </field>
-    /// <field name="_propertyBag" type="Open.Core.PropertyBag">
+    /// <field name="_propertyBag" type="Object">
     /// </field>
     this._id = cookieId;
     this._createPropertyBag();
@@ -339,7 +500,7 @@ Open.Core.Cookie.prototype = {
         /// <summary>
         /// Saves the properties to the cookie.
         /// </summary>
-        $.cookie(this.get_id(), this._propertyBag.toJson(), { expires: this.get_expires() });
+        $.cookie(this.get_id(), Open.Core.Helper.get_json().serialize(this._propertyBag), { expires: this.get_expires() });
     },
     
     clear: function Open_Core_Cookie$clear() {
@@ -360,7 +521,7 @@ Open.Core.Cookie.prototype = {
         /// <param name="value" type="Object">
         /// The value to store.
         /// </param>
-        this._propertyBag.set(key, value);
+        this._propertyBag[key] = value;
     },
     
     get: function Open_Core_Cookie$get(key) {
@@ -371,7 +532,7 @@ Open.Core.Cookie.prototype = {
         /// The unique identifier of the property.
         /// </param>
         /// <returns type="Object"></returns>
-        return this._propertyBag.get(key);
+        return (this.hasValue(key)) ? this._propertyBag[key] : null;
     },
     
     hasValue: function Open_Core_Cookie$hasValue(key) {
@@ -382,113 +543,17 @@ Open.Core.Cookie.prototype = {
         /// The unique identifier of the property.
         /// </param>
         /// <returns type="Boolean"></returns>
-        return this._propertyBag.hasValue(key);
+        return Object.keyExists(this._propertyBag, key);
     },
     
     _createPropertyBag: function Open_Core_Cookie$_createPropertyBag() {
         var json = this._readCookie();
-        this._propertyBag = (String.isNullOrEmpty(json)) ? Open.Core.PropertyBag.create() : Open.Core.PropertyBag.fromJson(json);
+        this._propertyBag = (String.isNullOrEmpty(json)) ? {} : Open.Core.Helper.get_json().parse(json);
     },
     
     _readCookie: function Open_Core_Cookie$_readCookie() {
         /// <returns type="String"></returns>
         return Type.safeCast($.cookie(this.get_id()), String);
-    }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Core.PropertyBag
-
-Open.Core.PropertyBag = function Open_Core_PropertyBag(json) {
-    /// <summary>
-    /// Stores properties in a backing JavaScript object.
-    /// </summary>
-    /// <param name="json" type="String">
-    /// </param>
-    /// <field name="_backingObject" type="Object">
-    /// </field>
-    if (ss.isNullOrUndefined(json)) {
-        this._backingObject =  {};
-    }
-    else {
-        this._backingObject = Open.Core.Helper.get_json().parse(json);
-    }
-}
-Open.Core.PropertyBag.create = function Open_Core_PropertyBag$create() {
-    /// <summary>
-    /// Factory method.  Create an empty property bag.
-    /// </summary>
-    /// <returns type="Open.Core.PropertyBag"></returns>
-    return new Open.Core.PropertyBag(null);
-}
-Open.Core.PropertyBag.fromJson = function Open_Core_PropertyBag$fromJson(json) {
-    /// <summary>
-    /// Reconstructs a property-bag from the given JSON string.
-    /// </summary>
-    /// <param name="json" type="String">
-    /// The JSON string to parse.
-    /// </param>
-    /// <returns type="Open.Core.PropertyBag"></returns>
-    return new Open.Core.PropertyBag(json);
-}
-Open.Core.PropertyBag.prototype = {
-    _backingObject: null,
-    
-    get_data: function Open_Core_PropertyBag$get_data() {
-        /// <summary>
-        /// Gets the backing JavaScript JSON object.
-        /// </summary>
-        /// <value type="Object"></value>
-        return this._backingObject;
-    },
-    
-    get: function Open_Core_PropertyBag$get(key) {
-        /// <summary>
-        /// Retrieve the specified value.
-        /// </summary>
-        /// <param name="key" type="String">
-        /// The unique identifier of the property.
-        /// </param>
-        /// <returns type="Object"></returns>
-        var script = String.format('this._backingObject.{0}', key);
-        return eval(script);
-    },
-    
-    set: function Open_Core_PropertyBag$set(key, value) {
-        /// <summary>
-        /// Stores the given value.
-        /// </summary>
-        /// <param name="key" type="String">
-        /// The unique identifier of the property.
-        /// </param>
-        /// <param name="value" type="Object">
-        /// The value to store.
-        /// </param>
-        if (Open.Core.Helper.get_reflection().isString(value)) {
-            value = String.format('\'{0}\'', value);
-        }
-        var script = String.format('this._backingObject.{0} = {1}', key, value);
-        eval(script);
-    },
-    
-    hasValue: function Open_Core_PropertyBag$hasValue(key) {
-        /// <summary>
-        /// Determines whether there is a value for the given key.
-        /// </summary>
-        /// <param name="key" type="String">
-        /// The unique identifier of the property.
-        /// </param>
-        /// <returns type="Boolean"></returns>
-        return !ss.isNullOrUndefined(this.get(key));
-    },
-    
-    toJson: function Open_Core_PropertyBag$toJson() {
-        /// <summary>
-        /// Converts the property-bag to a JSON string.
-        /// </summary>
-        /// <returns type="String"></returns>
-        return Open.Core.Helper.get_json().serialize(this._backingObject);
     }
 }
 
@@ -552,6 +617,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_collectionHelper" type="Open.Core.Helpers.CollectionHelper" static="true">
     /// </field>
+    /// <field name="_stringHelper" type="Open.Core.Helpers.StringHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -560,35 +627,42 @@ Open.Core.Helper.get_delegate = function Open_Core_Helper$get_delegate() {
     /// Gets the helper for working with Delegates.
     /// </summary>
     /// <value type="Open.Core.Helpers.DelegateHelper"></value>
-    return Open.Core.Helper._delegateHelper;
+    return Open.Core.Helper._delegateHelper || (Open.Core.Helper._delegateHelper = new Open.Core.Helpers.DelegateHelper());
 }
 Open.Core.Helper.get_json = function Open_Core_Helper$get_json() {
     /// <summary>
     /// Gets the helper for working with Delegates.
     /// </summary>
     /// <value type="Open.Core.Helpers.JsonHelper"></value>
-    return Open.Core.Helper._jsonHelper;
+    return Open.Core.Helper._jsonHelper || (Open.Core.Helper._jsonHelper = new Open.Core.Helpers.JsonHelper());
 }
 Open.Core.Helper.get_reflection = function Open_Core_Helper$get_reflection() {
     /// <summary>
     /// Gets the helper for working with reflection.
     /// </summary>
     /// <value type="Open.Core.Helpers.ReflectionHelper"></value>
-    return Open.Core.Helper._reflectionHelper;
+    return Open.Core.Helper._reflectionHelper || (Open.Core.Helper._reflectionHelper = new Open.Core.Helpers.ReflectionHelper());
 }
 Open.Core.Helper.get_scriptLoader = function Open_Core_Helper$get_scriptLoader() {
     /// <summary>
     /// Gets the helper for downloading scripts.
     /// </summary>
     /// <value type="Open.Core.Helpers.ScriptLoadHelper"></value>
-    return Open.Core.Helper._scriptLoadHelper;
+    return Open.Core.Helper._scriptLoadHelper || (Open.Core.Helper._scriptLoadHelper = new Open.Core.Helpers.ScriptLoadHelper());
 }
 Open.Core.Helper.get_collection = function Open_Core_Helper$get_collection() {
     /// <summary>
     /// Gets the helper for working with collections.
     /// </summary>
     /// <value type="Open.Core.Helpers.CollectionHelper"></value>
-    return Open.Core.Helper._collectionHelper;
+    return Open.Core.Helper._collectionHelper || (Open.Core.Helper._collectionHelper = new Open.Core.Helpers.CollectionHelper());
+}
+Open.Core.Helper.get_string = function Open_Core_Helper$get_string() {
+    /// <summary>
+    /// Gets the helper for working with strings.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.StringHelper"></value>
+    return Open.Core.Helper._stringHelper || (Open.Core.Helper._stringHelper = new Open.Core.Helpers.StringHelper());
 }
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
@@ -786,6 +860,35 @@ Open.Core.Helpers.JitScriptLoader.prototype = {
         loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(Open.Core.Helpers.JitScriptLoader._jitFolder, 'HyperTree', true));
         loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(Open.Core.Helpers.JitScriptLoader._jitFolder, 'HyperTree.Initialize', false));
         loader.start();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.StringHelper
+
+Open.Core.Helpers.StringHelper = function Open_Core_Helpers_StringHelper() {
+    /// <summary>
+    /// Utility methods for working with strings.
+    /// </summary>
+}
+Open.Core.Helpers.StringHelper.prototype = {
+    
+    toCamelCase: function Open_Core_Helpers_StringHelper$toCamelCase(value) {
+        /// <summary>
+        /// Converts the given string to camelCase.
+        /// </summary>
+        /// <param name="value" type="String">
+        /// The value to convert.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (ss.isUndefined(value)) {
+            return value;
+        }
+        if (String.isNullOrEmpty(value)) {
+            return value;
+        }
+        return value.substr(0, 1).toLowerCase() + value.substring(1, value.length);
     }
 }
 
@@ -1227,7 +1330,7 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(cssSelect
         Open.Core.UI.PanelResizerBase._cookie = new Open.Core.Cookie('PanelResizeStore');
         Open.Core.UI.PanelResizerBase._cookie.set_expires(5000);
     }
-    $(window).bind(Open.Core.Events.resize, ss.Delegate.create(this, function(e) {
+    $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
         this.onWindowSizeChanged();
     }));
     this._loadSize();
@@ -1564,19 +1667,21 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 }
 
 
-Open.Core.ViewBase.registerClass('Open.Core.ViewBase', null, Open.Core.IView);
+Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.INotifyPropertyChanged);
+Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
+Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
 Open.Core.Html.registerClass('Open.Core.Html');
 Open.Core.Css.registerClass('Open.Core.Css');
 Open.Core.CoreCssClasses.registerClass('Open.Core.CoreCssClasses');
-Open.Core.Events.registerClass('Open.Core.Events');
+Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
-Open.Core.PropertyBag.registerClass('Open.Core.PropertyBag');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
 Open.Core.Helpers.ReflectionHelper.registerClass('Open.Core.Helpers.ReflectionHelper');
 Open.Core.Helpers.JitScriptLoader.registerClass('Open.Core.Helpers.JitScriptLoader');
+Open.Core.Helpers.StringHelper.registerClass('Open.Core.Helpers.StringHelper');
 Open.Core.Helpers.ResourceLoader.registerClass('Open.Core.Helpers.ResourceLoader');
 Open.Core.Helpers.ScriptLoader.registerClass('Open.Core.Helpers.ScriptLoader', Open.Core.Helpers.ResourceLoader);
 Open.Core.Helpers.ScriptLoadHelper.registerClass('Open.Core.Helpers.ScriptLoadHelper');
@@ -1596,12 +1701,13 @@ Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
 Open.Core.Css.px = 'px';
 Open.Core.Css.classes = new Open.Core.CoreCssClasses();
-Open.Core.Events.resize = 'resize';
-Open.Core.Helper._delegateHelper = new Open.Core.Helpers.DelegateHelper();
-Open.Core.Helper._jsonHelper = new Open.Core.Helpers.JsonHelper();
-Open.Core.Helper._reflectionHelper = new Open.Core.Helpers.ReflectionHelper();
-Open.Core.Helper._scriptLoadHelper = new Open.Core.Helpers.ScriptLoadHelper();
-Open.Core.Helper._collectionHelper = new Open.Core.Helpers.CollectionHelper();
+Open.Core.DomEvents.resize = 'resize';
+Open.Core.Helper._delegateHelper = null;
+Open.Core.Helper._jsonHelper = null;
+Open.Core.Helper._reflectionHelper = null;
+Open.Core.Helper._scriptLoadHelper = null;
+Open.Core.Helper._collectionHelper = null;
+Open.Core.Helper._stringHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.UI.PanelResizerBase._eventStart = 'start';

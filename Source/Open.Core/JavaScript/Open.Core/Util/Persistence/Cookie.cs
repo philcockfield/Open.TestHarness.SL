@@ -1,5 +1,5 @@
 ﻿using System;
-using jQueryApi;
+using System.Collections;
 
 namespace Open.Core
 {
@@ -13,7 +13,7 @@ namespace Open.Core
         #region Head
         private string id;
         private int expires;
-        private PropertyBag propertyBag;
+        private Dictionary propertyBag;
 
         /// <summary>Constructor.</summary>
         /// <param name="cookieId">The unique identifier of the cookie.</param>
@@ -49,7 +49,7 @@ namespace Open.Core
         /// <summary>Saves the properties to the cookie.</summary>
         public void Save()
         {
-            Script.Literal("$.cookie({0}, {1}, {{ expires: {2} }})", Id, propertyBag.ToJson(), Expires);
+            Script.Literal("$.cookie({0}, {1}, {{ expires: {2} }})", Id, Helper.Json.Serialize(propertyBag), Expires);
         }
 
         /// <summary>Deletes the cookie (and all associated property values).</summary>
@@ -64,16 +64,16 @@ namespace Open.Core
         /// <summary>Stores the given value.</summary>
         /// <param name="key">The unique identifier of the property.</param>
         /// <param name="value">The value to store.</param>
-        public void Set(string key, object value) { propertyBag.Set(key, value); }
+        public void Set(string key, object value) { propertyBag[key] = value; }
 
         /// <summary>Retrieve the specified value.</summary>
         /// <param name="key">The unique identifier of the property.</param>
         /// <returns>The property value, or null if there is no corresponding value.</returns>
-        public object Get(string key) { return propertyBag.Get(key); }
+        public object Get(string key) { return HasValue(key) ? propertyBag[key] : null; }
 
         /// <summary>Determines whether there is a value for the given key.</summary>
         /// <param name="key">The unique identifier of the property.</param>
-        public bool HasValue(string key) { return propertyBag.HasValue(key); }
+        public bool HasValue(string key) { return propertyBag.ContainsKey(key); }
         #endregion
 
         #region Internal
@@ -81,8 +81,8 @@ namespace Open.Core
         {
             string json = ReadCookie();
             propertyBag =  String.IsNullOrEmpty(json) 
-                                    ? PropertyBag.Create() 
-                                    : PropertyBag.FromJson(json);
+                                    ? new Dictionary()
+                                    : (Dictionary)Helper.Json.Parse(json);
         }
 
         private string ReadCookie()
