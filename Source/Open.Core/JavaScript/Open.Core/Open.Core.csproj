@@ -49,16 +49,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base Classes\ModelBase.cs" />
+    <Compile Include="Base Classes\TreeNode.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />
+    <Compile Include="Declarations\Enumerations.cs" />
+    <Compile Include="Declarations\Interfaces\IModel.cs" />
+    <Compile Include="Declarations\Interfaces\ITreeNode.cs" />
     <Compile Include="Declarations\Interfaces\INotifyPropertyChanged.cs" />
     <Compile Include="Declarations\Interfaces\IViewFactory.cs" />
     <Compile Include="Declarations\Events\PropertyChangedEventArgs.cs" />
+    <Compile Include="Util\ComponentModel\PropertyBinding.cs" />
+    <Compile Include="Util\ComponentModel\PropertyRef.cs" />
     <Compile Include="Util\Dom\Html.cs" />
     <Compile Include="Declarations\Interfaces\IView.cs" />
     <Compile Include="Util\Dom\Css.cs" />
     <Compile Include="Declarations\Events\DomEvents.cs" />
     <Compile Include="Util\Helpers\CollectionHelper.cs" />
     <Compile Include="Util\Helpers\JsonHelper.cs" />
+    <Compile Include="Util\Helpers\NumberHelper.cs" />
     <Compile Include="Util\Helpers\ReflectionHelper.cs" />
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
     <Compile Include="Util\Helpers\StringHelper.cs" />

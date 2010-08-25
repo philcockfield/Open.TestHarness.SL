@@ -17,7 +17,7 @@ namespace Open.Core.Lists
 
 
     /// <summary>Renders a simple list.</summary>
-    public class List : ViewBase
+    public class ListView : ViewBase
     {
         #region Head
         /// <summary>Fires when the item selection changes.</summary>
@@ -31,7 +31,7 @@ namespace Open.Core.Lists
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
-        public List(jQueryObject container)
+        public ListView(jQueryObject container)
         {
             Initialize(container);
             ListCss.InsertCss();
@@ -39,10 +39,19 @@ namespace Open.Core.Lists
         #endregion
 
         #region Event Handlers
-        private void OnItemClick(jQueryEvent e, IView view)
+        private void OnItemClick(jQueryEvent e, IListItemView view)
         {
             if (SelectionMode == ListSelectionMode.None) return;
-            SelectItem(view as IListItemView);
+            view.IsSelected = true;
+        }
+
+        private void OnViewPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.Property.Name == ListItemView.PropIsSelected)
+            {
+                IListItemView view = sender as IListItemView;
+                if (view != null && view.IsSelected) SelectItem(view);
+            }
         }
         #endregion
 
@@ -96,12 +105,16 @@ namespace Open.Core.Lists
 
                                         // Construct the view.
                                         IView view = factory.CreateView(div, model);
+                                        IListItemView listItemView = view as IListItemView;
 
                                         // Store values.
-                                        this.views.Add(view);
+                                        views.Add(view);
 
                                         // Wire up events.
-                                        div.Click(delegate(jQueryEvent e) { OnItemClick(e, view); });
+                                        if (listItemView != null) div.Click(delegate(jQueryEvent e) { OnItemClick(e, listItemView); });
+
+                                        INotifyPropertyChanged observableView = view as INotifyPropertyChanged;
+                                        if (observableView != null) observableView.PropertyChanged += OnViewPropertyChanged;
                                     });
         }
 
@@ -111,6 +124,11 @@ namespace Open.Core.Lists
             // Dispose of all views.
             foreach (IView view in views)
             {
+                // Unwire events.
+                INotifyPropertyChanged observableView = view as INotifyPropertyChanged;
+                if (observableView != null) observableView.PropertyChanged -= OnViewPropertyChanged;
+
+                // Destroy.
                 view.Dispose();
             }
 
@@ -120,48 +138,22 @@ namespace Open.Core.Lists
         }
         #endregion
 
-        #region Methods : Select
-        /// <summary>Selects the item corresponding to the given model.</summary>
-        /// <param name="model">The item's model.</param>
-        public void Select(object model)
-        {
-            if (Script.IsNullOrUndefined(model)) return;
-            SelectItem(GetListItem(model));
-            FireSelectionChanged();
-        }
-
-        /// <summary>Selects the first item in the list.</summary>
-        public void SelectFirst() { SelectIndex(0); }
-
-        /// <summary>Selects the first item in the list.</summary>
-        public void SelectLast() { if (views.Count > 0) SelectIndex(views.Count - 1); }
-
-        /// <summary>Selects the list item at the specified index.</summary>
-        /// <param name="index">The index of the item to select (0-based).</param>
-        /// <remarks>If the given index is out of range no action is taken (and no error is thrown).</remarks>
-        public void SelectIndex(int index)
-        {
-            if (views.Count == 0 || index > views.Count - 1 || index < 0) return;
-            SelectItem(views[index] as IListItemView);
-        }
-        #endregion
-
         #region Internal
         private void SelectItem(IListItemView item)
         {
-            // Setup initial conditions.
+            // Setup initial conditions.);
             if (Script.IsNullOrUndefined(item)) return;
 
             // Update the selection.
-            ClearSelection();
+            ClearSelection(item);
             item.IsSelected = true;
         }
 
-        private void ClearSelection()
+        private void ClearSelection(IListItemView exclude)
         {
             foreach (IListItemView item in GetItems())
             {
-                if (!Script.IsNullOrUndefined(item)) item.IsSelected = false;
+                if (!Script.IsNullOrUndefined(item) && item != exclude) item.IsSelected = false;
             }
         }
 
@@ -174,15 +166,6 @@ namespace Open.Core.Lists
                 if (!Script.IsNullOrUndefined(item)) list.Add(item);
             }
             return list;
-        }
-
-        private IListItemView GetListItem(object model)
-        {
-            foreach (IListItemView item in GetItems())
-            {
-                if (item.Model == model) return item;
-            }
-            return null;
         }
         #endregion
     }

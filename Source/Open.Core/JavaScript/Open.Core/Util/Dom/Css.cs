@@ -4,6 +4,17 @@ using jQueryApi;
 
 namespace Open.Core
 {
+    #region Enumerations
+    public enum CssOverflow
+    {
+        Visible = 0,
+        Hidden = 1,
+        Scroll = 2,
+        Auto = 3,
+        Inherit = 4
+    }
+    #endregion
+
     /// <summary>CSS utility.</summary>
     public static class Css
     {
@@ -15,12 +26,27 @@ namespace Open.Core
         public const string Bottom = "bottom";
         public const string Width = "width";
         public const string Height = "height";
+        public const string Background = "background";
+        public const string Display = "display";
+
+        // Values.
+        public const string Block = "block";
+        public const string None = "none";
 
         // Units.
         public const string Px = "px";
 
         // Classes.
         public static readonly CoreCssClasses Classes = new CoreCssClasses();
+        #endregion
+
+        #region Methods
+        /// <summary>Determines whether the element is visible (has any display value other than 'None').</summary>
+        /// <param name="element">The element to display.</param>
+        public static bool IsVisible(jQueryObject element)
+        {
+            return Script.IsNullOrUndefined(element) ? false : element.GetCSS(Display).ToLowerCase() != None;
+        }
         #endregion
 
         #region Methods : Id | Class
@@ -46,8 +72,8 @@ namespace Open.Core
         {
             if (string.IsNullOrEmpty(value)) return value;
             return value.Substr(0, 1) == prefix
-                            ? value
-                            : prefix + value;
+                       ? value
+                       : prefix + value;
         }
         #endregion
 
@@ -78,6 +104,37 @@ namespace Open.Core
                 if (url == href.Value.ToLowerCase()) return link;
             }
             return null;
+        }
+        #endregion
+
+        #region Methods : Assign Styles
+        /// <summary>Sets the given element to absolute positioning and sets all edges to 0px.</summary>
+        /// <param name="element">The element to update.</param>
+        public static void AbsoluteFill(jQueryObject element)
+        {
+            element.CSS("position", "absolute");
+            element.CSS(Left, "0px");
+            element.CSS(Top, "0px");
+            element.CSS(Right, "0px");
+            element.CSS(Bottom, "0px");
+        }
+
+        /// <summary>Sets the overflow style on the given element.</summary>
+        /// <param name="element">The element to update.</param>
+        /// <param name="value">The overflow value.</param>
+        public static void SetOverflow(jQueryObject element, CssOverflow value)
+        {
+            element.CSS("overflow", value.ToString());
+        }
+
+        /// <summary>Applies a drop shadow.</summary>
+        /// <param name="element">The element to update.</param>
+        /// <param name="opacity">Opacity of the drop-shadow (005, 010, 020, 030, 040, 050, 060).</param>
+        public static void ApplyDropshadow(jQueryObject element, string opacity)
+        {
+            element.CSS("background-image", string.Format("url(/Open.Core/Images/DropShadow.12.{0}.png)", opacity));
+            element.CSS("background-repeat", "repeat-x");
+            element.CSS("height", "12px");
         }
         #endregion
     }

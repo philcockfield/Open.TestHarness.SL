@@ -6,33 +6,19 @@ namespace Open.Core
     public class PropertyChangedEventArgs : EventArgs
     {
         #region Head
-        private readonly object instance;
-        private readonly string propertyName;
-        private string formattedName;
+        private readonly PropertyRef property;
 
         /// <summary>Constructor.</summary>
-        /// <param name="instance">The instance of the object that exposes the property.</param>
-        /// <param name="propertyName">The name of the property.</param>
-        public PropertyChangedEventArgs(object instance, string propertyName)
+        /// <param name="property">The property that has changed.</param>
+        public PropertyChangedEventArgs(PropertyRef property)
         {
-            this.instance = instance;
-            this.propertyName = propertyName;
+            this.property = property;
         }
         #endregion
 
         #region Properties
-        /// <summary>Gets the instance of the object that exposes the property.</summary>
-        public object Instance { get { return instance; } }
-
-        /// <summary>Gets the name of the property.</summary>
-        public string PropertyName { get { return propertyName; } }
-        private string FormattedName { get { return formattedName ?? (formattedName = Helper.String.ToCamelCase(PropertyName)); } }
-
-        /// <summary>Gets or sets the value of the property.</summary>
-        public object PropertyValue
-        {
-            get { return Type.GetProperty(Instance, FormattedName); }
-        }
+        /// <summary>Gets the reference to the property that has changed.</summary>
+        public PropertyRef Property{get { return property; }}
         #endregion
     }
 

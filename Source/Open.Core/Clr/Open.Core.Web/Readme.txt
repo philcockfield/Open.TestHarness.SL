@@ -17,7 +17,7 @@
             <% Html.Foo(); %>
 
 4. To reference images:
-            <img src="/Open.Core/images/KenWilber.png" alt="Ken Wilber" />
+            <img src="/Open.Core/images/MyPicture.png" alt="My Description" />
 
 5. To reference CSS:
 		    <link rel="Stylesheet" href="/Open.Core/Css/Core.css" type="text/css" />

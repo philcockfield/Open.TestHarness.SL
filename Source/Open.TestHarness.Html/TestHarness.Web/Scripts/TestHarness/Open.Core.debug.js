@@ -7,6 +7,88 @@ function executeScript() {
 Type.registerNamespace('Open.Core');
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.HorizontalDirection
+
+Open.Core.HorizontalDirection = function() { 
+    /// <summary>
+    /// A direction on the X plane.
+    /// </summary>
+    /// <field name="left" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="right" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.HorizontalDirection.prototype = {
+    left: 0, 
+    right: 1
+}
+Open.Core.HorizontalDirection.registerEnum('Open.Core.HorizontalDirection', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.VerticalDirection
+
+Open.Core.VerticalDirection = function() { 
+    /// <summary>
+    /// A direction on the Y plane.
+    /// </summary>
+    /// <field name="up" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="down" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.VerticalDirection.prototype = {
+    up: 0, 
+    down: 1
+}
+Open.Core.VerticalDirection.registerEnum('Open.Core.VerticalDirection', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.IModel
+
+Open.Core.IModel = function() { 
+    /// <summary>
+    /// A logical model.
+    /// </summary>
+};
+Open.Core.IModel.prototype = {
+    get_isDisposed : null,
+    getPropertyRef : null,
+    toJson : null
+}
+Open.Core.IModel.registerInterface('Open.Core.IModel');
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.ITreeNode
+
+Open.Core.ITreeNode = function() { 
+    /// <summary>
+    /// Represents a node within a tree structure.
+    /// </summary>
+};
+Open.Core.ITreeNode.prototype = {
+    add_selectionChanged : null,
+    remove_selectionChanged : null,
+    add_childSelectionChanged : null,
+    remove_childSelectionChanged : null,
+    get_parent : null,
+    get_isRoot : null,
+    get_isSelected : null,
+    set_isSelected : null,
+    get_children : null,
+    get_totalChildren : null,
+    add : null,
+    remove : null,
+    contains : null,
+    containsDescendent : null,
+    childAt : null
+}
+Open.Core.ITreeNode.registerInterface('Open.Core.ITreeNode');
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.INotifyPropertyChanged
 
 Open.Core.INotifyPropertyChanged = function() { 
@@ -53,16 +135,48 @@ Open.Core.IView.registerInterface('Open.Core.IView');
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.CssOverflow
+
+Open.Core.CssOverflow = function() { 
+    /// <field name="visible" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="hidden" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="scroll" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="auto" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="inherit" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.CssOverflow.prototype = {
+    visible: 0, 
+    hidden: 1, 
+    scroll: 2, 
+    auto: 3, 
+    inherit: 4
+}
+Open.Core.CssOverflow.registerEnum('Open.Core.CssOverflow', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.ModelBase
 
 Open.Core.ModelBase = function Open_Core_ModelBase() {
     /// <summary>
     /// Base class for data models.
     /// </summary>
+    /// <field name="_isDisposed" type="Boolean">
+    /// </field>
     /// <field name="__propertyChanged" type="Open.Core.PropertyChangedHandler">
+    /// </field>
+    /// <field name="_propertyBag" type="Object">
+    /// </field>
+    /// <field name="_propertRefs" type="Array">
     /// </field>
 }
 Open.Core.ModelBase.prototype = {
+    _isDisposed: false,
     
     add_propertyChanged: function Open_Core_ModelBase$add_propertyChanged(value) {
         /// <param name="value" type="Function" />
@@ -74,6 +188,55 @@ Open.Core.ModelBase.prototype = {
     },
     
     __propertyChanged: null,
+    _propertyBag: null,
+    _propertRefs: null,
+    
+    get_isDisposed: function Open_Core_ModelBase$get_isDisposed() {
+        /// <value type="Boolean"></value>
+        return this._isDisposed;
+    },
+    
+    get__propertyBag: function Open_Core_ModelBase$get__propertyBag() {
+        /// <value type="Object"></value>
+        return this._propertyBag || (this._propertyBag = {});
+    },
+    
+    get__propertyRefs: function Open_Core_ModelBase$get__propertyRefs() {
+        /// <value type="Array"></value>
+        return this._propertRefs || (this._propertRefs = []);
+    },
+    
+    dispose: function Open_Core_ModelBase$dispose() {
+        /// <summary>
+        /// Disposes of the object.
+        /// </summary>
+        if (this._isDisposed) {
+            return;
+        }
+        if (this._propertRefs != null) {
+            var $enum1 = ss.IEnumerator.getEnumerator(this.get__propertyRefs());
+            while ($enum1.moveNext()) {
+                var propertyRef = $enum1.get_current();
+                propertyRef.dispose();
+            }
+        }
+        this.onDisposed();
+        this._isDisposed = true;
+    },
+    
+    toJson: function Open_Core_ModelBase$toJson() {
+        /// <summary>
+        /// Serializes the model to JSON.
+        /// </summary>
+        /// <returns type="String"></returns>
+        return Open.Core.Helper.get_json().serialize(this);
+    },
+    
+    onDisposed: function Open_Core_ModelBase$onDisposed() {
+        /// <summary>
+        /// Invoked when the model is disposed.
+        /// </summary>
+    },
     
     firePropertyChanged: function Open_Core_ModelBase$firePropertyChanged(propertyName) {
         /// <summary>
@@ -83,8 +246,336 @@ Open.Core.ModelBase.prototype = {
         /// The name of the property that has changed.
         /// </param>
         if (this.__propertyChanged != null) {
-            this.__propertyChanged.invoke(this, new Open.Core.PropertyChangedEventArgs(this, propertyName));
+            this.__propertyChanged.invoke(this, new Open.Core.PropertyChangedEventArgs(this.getPropertyRef(propertyName)));
         }
+    },
+    
+    get: function Open_Core_ModelBase$get(propertyName, defaultValue) {
+        /// <summary>
+        /// Retrieves a property value from the backing store.
+        /// </summary>
+        /// <param name="propertyName" type="String">
+        /// The name of the property.
+        /// </param>
+        /// <param name="defaultValue" type="Object">
+        /// The default value to provide (if the value does not exist).
+        /// </param>
+        /// <returns type="Object"></returns>
+        return (Object.keyExists(this.get__propertyBag(), propertyName)) ? this.get__propertyBag()[propertyName] : defaultValue;
+    },
+    
+    set: function Open_Core_ModelBase$set(propertyName, value, defaultValue) {
+        /// <summary>
+        /// Stores the given value for the named property
+        /// (firing the 'PropertyChanged' event if the value differs from the current value).
+        /// </summary>
+        /// <param name="propertyName" type="String">
+        /// The name of the property.
+        /// </param>
+        /// <param name="value" type="Object">
+        /// The value to set.
+        /// </param>
+        /// <param name="defaultValue" type="Object">
+        /// The default value of the property.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        var currentValue = this.get(propertyName, defaultValue);
+        if (value === currentValue) {
+            return false;
+        }
+        this.get__propertyBag()[propertyName] = value;
+        this.firePropertyChanged(propertyName);
+        return true;
+    },
+    
+    getPropertyRef: function Open_Core_ModelBase$getPropertyRef(propertyName) {
+        /// <summary>
+        /// Retrieves a singleton instance to the handle to the named property.
+        /// </summary>
+        /// <param name="propertyName" type="String">
+        /// The name of the property to retrieve.
+        /// </param>
+        /// <returns type="Open.Core.PropertyRef"></returns>
+        var propertyRef = this._getPropertyRefFromList(propertyName);
+        if (propertyRef != null) {
+            return propertyRef;
+        }
+        if (!Open.Core.Helper.get_reflection().hasProperty(this, propertyName)) {
+            return null;
+        }
+        propertyRef = new Open.Core.PropertyRef(this, propertyName);
+        this.get__propertyRefs().add(propertyRef);
+        return propertyRef;
+    },
+    
+    _getPropertyRefFromList: function Open_Core_ModelBase$_getPropertyRefFromList(propertyName) {
+        /// <param name="propertyName" type="String">
+        /// </param>
+        /// <returns type="Open.Core.PropertyRef"></returns>
+        if (this._propertRefs == null) {
+            return null;
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(this.get__propertyRefs());
+        while ($enum1.moveNext()) {
+            var property = $enum1.get_current();
+            if (property.get_name() === propertyName) {
+                return property;
+            }
+        }
+        return null;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.TreeNode
+
+Open.Core.TreeNode = function Open_Core_TreeNode() {
+    /// <field name="__selectionChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="__childSelectionChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="propIsSelected" type="String" static="true">
+    /// </field>
+    /// <field name="propChildren" type="String" static="true">
+    /// </field>
+    /// <field name="_parent$1" type="Open.Core.ITreeNode">
+    /// </field>
+    /// <field name="_childList$1" type="Array">
+    /// </field>
+    Open.Core.TreeNode.initializeBase(this);
+}
+Open.Core.TreeNode.fromJson = function Open_Core_TreeNode$fromJson(json, factory) {
+    /// <summary>
+    /// Creates a new instance of the node from JSON.
+    /// </summary>
+    /// <param name="json" type="String">
+    /// The JSON string to parse.
+    /// </param>
+    /// <param name="factory" type="Open.Core.TreeNodeFactory">
+    /// The factory method for creating new nodes.
+    /// </param>
+    /// <returns type="Open.Core.TreeNode"></returns>
+    return Open.Core.TreeNode._fromDictionary$1(Open.Core.Helper.get_json().parse(json), factory);
+}
+Open.Core.TreeNode._fromDictionary$1 = function Open_Core_TreeNode$_fromDictionary$1(dic, factory) {
+    /// <param name="dic" type="Object">
+    /// </param>
+    /// <param name="factory" type="Open.Core.TreeNodeFactory">
+    /// </param>
+    /// <returns type="Open.Core.TreeNode"></returns>
+    var node = factory.invoke(dic);
+    var children = Type.safeCast(dic[Open.Core.TreeNode.propChildren], Array);
+    if (children != null) {
+        var $enum1 = ss.IEnumerator.getEnumerator(children);
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            var childNode = Open.Core.TreeNode._fromDictionary$1(child, factory);
+            node.add(childNode);
+        }
+    }
+    return node;
+}
+Open.Core.TreeNode._setParent$1 = function Open_Core_TreeNode$_setParent$1(node, value) {
+    /// <param name="node" type="Open.Core.ITreeNode">
+    /// </param>
+    /// <param name="value" type="Open.Core.ITreeNode">
+    /// </param>
+    var concrete = Type.safeCast(node, Open.Core.TreeNode);
+    if (concrete == null) {
+        return;
+    }
+    concrete._parent$1 = value;
+}
+Open.Core.TreeNode._isDescendent$1 = function Open_Core_TreeNode$_isDescendent$1(parent, node) {
+    /// <param name="parent" type="Open.Core.ITreeNode">
+    /// </param>
+    /// <param name="node" type="Open.Core.ITreeNode">
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    if (ss.isNullOrUndefined(node)) {
+        return false;
+    }
+    if (parent.contains(node)) {
+        return true;
+    }
+    var $enum1 = ss.IEnumerator.getEnumerator(parent.get_children());
+    while ($enum1.moveNext()) {
+        var child = $enum1.get_current();
+        if (Open.Core.TreeNode._isDescendent$1(child, node)) {
+            return true;
+        }
+    }
+    return false;
+}
+Open.Core.TreeNode.prototype = {
+    
+    add_selectionChanged: function Open_Core_TreeNode$add_selectionChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__selectionChanged$1 = ss.Delegate.combine(this.__selectionChanged$1, value);
+    },
+    remove_selectionChanged: function Open_Core_TreeNode$remove_selectionChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__selectionChanged$1 = ss.Delegate.remove(this.__selectionChanged$1, value);
+    },
+    
+    __selectionChanged$1: null,
+    
+    _fireSelectionChanged$1: function Open_Core_TreeNode$_fireSelectionChanged$1() {
+        if (this.__selectionChanged$1 != null) {
+            this.__selectionChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    add_childSelectionChanged: function Open_Core_TreeNode$add_childSelectionChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__childSelectionChanged$1 = ss.Delegate.combine(this.__childSelectionChanged$1, value);
+    },
+    remove_childSelectionChanged: function Open_Core_TreeNode$remove_childSelectionChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__childSelectionChanged$1 = ss.Delegate.remove(this.__childSelectionChanged$1, value);
+    },
+    
+    __childSelectionChanged$1: null,
+    
+    _fireChildSelectionChanged$1: function Open_Core_TreeNode$_fireChildSelectionChanged$1() {
+        if (this.__childSelectionChanged$1 != null) {
+            this.__childSelectionChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    _parent$1: null,
+    _childList$1: null,
+    
+    onDisposed: function Open_Core_TreeNode$onDisposed() {
+        if (this._childList$1 != null) {
+            var $enum1 = ss.IEnumerator.getEnumerator(this.get_children());
+            while ($enum1.moveNext()) {
+                var child = $enum1.get_current();
+                child.dispose();
+            }
+        }
+        Open.Core.TreeNode.callBaseMethod(this, 'onDisposed');
+    },
+    
+    _onChildSelectionChanged$1: function Open_Core_TreeNode$_onChildSelectionChanged$1(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this._fireChildSelectionChanged$1();
+    },
+    
+    get_parent: function Open_Core_TreeNode$get_parent() {
+        /// <value type="Open.Core.ITreeNode"></value>
+        return this._parent$1;
+    },
+    
+    get_isRoot: function Open_Core_TreeNode$get_isRoot() {
+        /// <value type="Boolean"></value>
+        return this.get_parent() == null;
+    },
+    
+    get_children: function Open_Core_TreeNode$get_children() {
+        /// <value type="ss.IEnumerable"></value>
+        return this.get__childList$1();
+    },
+    
+    get_totalChildren: function Open_Core_TreeNode$get_totalChildren() {
+        /// <value type="Number" integer="true"></value>
+        return (this._childList$1 == null) ? 0 : this._childList$1.length;
+    },
+    
+    get_isSelected: function Open_Core_TreeNode$get_isSelected() {
+        /// <value type="Boolean"></value>
+        return this.get(Open.Core.TreeNode.propIsSelected, false);
+    },
+    set_isSelected: function Open_Core_TreeNode$set_isSelected(value) {
+        /// <value type="Boolean"></value>
+        if (this.set(Open.Core.TreeNode.propIsSelected, value, false)) {
+            this._fireSelectionChanged$1();
+        }
+        return value;
+    },
+    
+    get__childList$1: function Open_Core_TreeNode$get__childList$1() {
+        /// <value type="Array"></value>
+        return this._childList$1 || (this._childList$1 = []);
+    },
+    
+    toJson: function Open_Core_TreeNode$toJson() {
+        /// <returns type="String"></returns>
+        return Open.Core.Helper.get_json().serialize(this._toDictionary$1());
+    },
+    
+    serializingJson: function Open_Core_TreeNode$serializingJson(node) {
+        /// <summary>
+        /// Allows deriving classes to suppliment the dictionary used for JSON serialization.
+        /// </summary>
+        /// <param name="node" type="Object">
+        /// The dictionary representing the node to process.
+        /// </param>
+    },
+    
+    add: function Open_Core_TreeNode$add(node) {
+        /// <param name="node" type="Open.Core.ITreeNode">
+        /// </param>
+        if (this.contains(node)) {
+            return;
+        }
+        this.get__childList$1().add(node);
+        node.add_selectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$1));
+        if (node.get_parent() !== this) {
+            Open.Core.TreeNode._setParent$1(node, this);
+        }
+    },
+    
+    remove: function Open_Core_TreeNode$remove(node) {
+        /// <param name="node" type="Open.Core.ITreeNode">
+        /// </param>
+        if (!this.contains(node)) {
+            return;
+        }
+        this.get__childList$1().remove(node);
+        node.remove_selectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$1));
+        if (node.get_parent() === this) {
+            Open.Core.TreeNode._setParent$1(node, null);
+        }
+    },
+    
+    childAt: function Open_Core_TreeNode$childAt(index) {
+        /// <param name="index" type="Number" integer="true">
+        /// </param>
+        /// <returns type="Open.Core.ITreeNode"></returns>
+        return (this._childList$1 == null) ? null : Type.safeCast(this.get__childList$1()[index], Open.Core.ITreeNode);
+    },
+    
+    contains: function Open_Core_TreeNode$contains(node) {
+        /// <param name="node" type="Open.Core.ITreeNode">
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return this.get__childList$1().contains(node);
+    },
+    
+    containsDescendent: function Open_Core_TreeNode$containsDescendent(node) {
+        /// <param name="node" type="Open.Core.ITreeNode">
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return Open.Core.TreeNode._isDescendent$1(this, node);
+    },
+    
+    _toDictionary$1: function Open_Core_TreeNode$_toDictionary$1() {
+        /// <returns type="Object"></returns>
+        var json = {};
+        this.serializingJson(json);
+        var children = [];
+        var $enum1 = ss.IEnumerator.getEnumerator(this.get_children());
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            children.add(child._toDictionary$1());
+        }
+        json[Open.Core.TreeNode.propChildren] = children;
+        return json;
     }
 }
 
@@ -96,8 +587,6 @@ Open.Core.ViewBase = function Open_Core_ViewBase() {
     /// <summary>
     /// Base for classes that represent, manage and construct views ("UI").
     /// </summary>
-    /// <field name="_isDisposed$1" type="Boolean">
-    /// </field>
     /// <field name="_isInitialized$1" type="Boolean">
     /// </field>
     /// <field name="_model$1" type="Object">
@@ -107,32 +596,9 @@ Open.Core.ViewBase = function Open_Core_ViewBase() {
     Open.Core.ViewBase.initializeBase(this);
 }
 Open.Core.ViewBase.prototype = {
-    _isDisposed$1: false,
     _isInitialized$1: false,
     _model$1: null,
     _container$1: null,
-    
-    dispose: function Open_Core_ViewBase$dispose() {
-        /// <summary>
-        /// Destroys the view and cleans up resources.
-        /// </summary>
-        if (this._isDisposed$1) {
-            return;
-        }
-        this.onDispose();
-        this._isDisposed$1 = true;
-    },
-    
-    onDispose: function Open_Core_ViewBase$onDispose() {
-        /// <summary>
-        /// Deriving implementation of Dispose.
-        /// </summary>
-    },
-    
-    get_isDisposed: function Open_Core_ViewBase$get_isDisposed() {
-        /// <value type="Boolean"></value>
-        return this._isDisposed$1;
-    },
     
     get_isInitialized: function Open_Core_ViewBase$get_isInitialized() {
         /// <value type="Boolean"></value>
@@ -163,58 +629,242 @@ Open.Core.ViewBase.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.PropertyChangedEventArgs
 
-Open.Core.PropertyChangedEventArgs = function Open_Core_PropertyChangedEventArgs(instance, propertyName) {
+Open.Core.PropertyChangedEventArgs = function Open_Core_PropertyChangedEventArgs(property) {
     /// <summary>
     /// Event arguments accompanying the 'PropertyChanged' event.
+    /// </summary>
+    /// <param name="property" type="Open.Core.PropertyRef">
+    /// The property that has changed.
+    /// </param>
+    /// <field name="_property$1" type="Open.Core.PropertyRef">
+    /// </field>
+    Open.Core.PropertyChangedEventArgs.initializeBase(this);
+    this._property$1 = property;
+}
+Open.Core.PropertyChangedEventArgs.prototype = {
+    _property$1: null,
+    
+    get_property: function Open_Core_PropertyChangedEventArgs$get_property() {
+        /// <summary>
+        /// Gets the reference to the property that has changed.
+        /// </summary>
+        /// <value type="Open.Core.PropertyRef"></value>
+        return this._property$1;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.PropertyBinding
+
+Open.Core.PropertyBinding = function Open_Core_PropertyBinding(source, target) {
+    /// <summary>
+    /// Manages synchronization between a source property to a target property.
+    /// </summary>
+    /// <param name="source" type="Open.Core.PropertyRef">
+    /// </param>
+    /// <param name="target" type="Open.Core.PropertyRef">
+    /// </param>
+    /// <field name="_source" type="Open.Core.PropertyRef">
+    /// </field>
+    /// <field name="_target" type="Open.Core.PropertyRef">
+    /// </field>
+    this._source = source;
+    this._target = target;
+    source.add_changed(ss.Delegate.create(this, this._onSourceChanged));
+    this._sync();
+}
+Open.Core.PropertyBinding.prototype = {
+    _source: null,
+    _target: null,
+    
+    _onSourceChanged: function Open_Core_PropertyBinding$_onSourceChanged(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this._sync();
+    },
+    
+    dispose: function Open_Core_PropertyBinding$dispose() {
+        /// <summary>
+        /// Disposes of the object.
+        /// </summary>
+        this._source.remove_changed(ss.Delegate.create(this, this._onSourceChanged));
+    },
+    
+    _sync: function Open_Core_PropertyBinding$_sync() {
+        this._target.set_value(this._source.get_value());
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.PropertyRef
+
+Open.Core.PropertyRef = function Open_Core_PropertyRef(instance, name) {
+    /// <summary>
+    /// A reference to a property on an object.
     /// </summary>
     /// <param name="instance" type="Object">
     /// The instance of the object that exposes the property.
     /// </param>
+    /// <param name="name" type="String">
+    /// The name of the property.
+    /// </param>
+    /// <field name="__changed" type="EventHandler">
+    /// </field>
+    /// <field name="_instance" type="Object">
+    /// </field>
+    /// <field name="_observable" type="Open.Core.INotifyPropertyChanged">
+    /// </field>
+    /// <field name="_name" type="String">
+    /// </field>
+    /// <field name="_formattedName" type="String">
+    /// </field>
+    /// <field name="_bindTo" type="Open.Core.PropertyRef">
+    /// </field>
+    /// <field name="_propertyBinding" type="Open.Core.PropertyBinding">
+    /// </field>
+    this._instance = instance;
+    this._name = name;
+    this._observable = Type.safeCast(instance, Open.Core.INotifyPropertyChanged);
+    if (this._observable != null) {
+        this._observable.add_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged));
+    }
+}
+Open.Core.PropertyRef.getFromModel = function Open_Core_PropertyRef$getFromModel(obj, propertyName) {
+    /// <summary>
+    /// Retrieves the PropertyRef from an IModel.
+    /// </summary>
+    /// <param name="obj" type="Object">
+    /// The model object.
+    /// </param>
     /// <param name="propertyName" type="String">
     /// The name of the property.
     /// </param>
-    /// <field name="_instance$1" type="Object">
-    /// </field>
-    /// <field name="_propertyName$1" type="String">
-    /// </field>
-    /// <field name="_formattedName$1" type="String">
-    /// </field>
-    Open.Core.PropertyChangedEventArgs.initializeBase(this);
-    this._instance$1 = instance;
-    this._propertyName$1 = propertyName;
+    /// <returns type="Open.Core.PropertyRef"></returns>
+    var model = Type.safeCast(obj, Open.Core.IModel);
+    return (model == null) ? null : model.getPropertyRef(propertyName);
 }
-Open.Core.PropertyChangedEventArgs.prototype = {
-    _instance$1: null,
-    _propertyName$1: null,
-    _formattedName$1: null,
+Open.Core.PropertyRef.prototype = {
     
-    get_instance: function Open_Core_PropertyChangedEventArgs$get_instance() {
+    add_changed: function Open_Core_PropertyRef$add_changed(value) {
+        /// <summary>
+        /// Fires when the property value changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__changed = ss.Delegate.combine(this.__changed, value);
+    },
+    remove_changed: function Open_Core_PropertyRef$remove_changed(value) {
+        /// <summary>
+        /// Fires when the property value changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__changed = ss.Delegate.remove(this.__changed, value);
+    },
+    
+    __changed: null,
+    
+    _fireChanged: function Open_Core_PropertyRef$_fireChanged() {
+        if (this.__changed != null) {
+            this.__changed.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    _instance: null,
+    _observable: null,
+    _name: null,
+    _formattedName: null,
+    _bindTo: null,
+    _propertyBinding: null,
+    
+    dispose: function Open_Core_PropertyRef$dispose() {
+        /// <summary>
+        /// Disposes of the object.
+        /// </summary>
+        if (this._observable != null) {
+            this._observable.remove_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged));
+        }
+        if (this._propertyBinding != null) {
+            this._propertyBinding.dispose();
+        }
+    },
+    
+    _onPropertyChanged: function Open_Core_PropertyRef$_onPropertyChanged(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Core.PropertyChangedEventArgs">
+        /// </param>
+        if (e.get_property().get_name() !== this.get_name()) {
+            return;
+        }
+        this._fireChanged();
+    },
+    
+    get_instance: function Open_Core_PropertyRef$get_instance() {
         /// <summary>
         /// Gets the instance of the object that exposes the property.
         /// </summary>
         /// <value type="Object"></value>
-        return this._instance$1;
+        return this._instance;
     },
     
-    get_propertyName: function Open_Core_PropertyChangedEventArgs$get_propertyName() {
+    get_name: function Open_Core_PropertyRef$get_name() {
         /// <summary>
         /// Gets the name of the property.
         /// </summary>
         /// <value type="String"></value>
-        return this._propertyName$1;
+        return this._name;
     },
     
-    get__formattedName$1: function Open_Core_PropertyChangedEventArgs$get__formattedName$1() {
+    get__formattedName: function Open_Core_PropertyRef$get__formattedName() {
         /// <value type="String"></value>
-        return this._formattedName$1 || (this._formattedName$1 = Open.Core.Helper.get_string().toCamelCase(this.get_propertyName()));
+        return this._formattedName || (this._formattedName = Open.Core.Helper.get_string().toCamelCase(this.get_name()));
     },
     
-    get_propertyValue: function Open_Core_PropertyChangedEventArgs$get_propertyValue() {
+    get_fullName: function Open_Core_PropertyRef$get_fullName() {
+        /// <summary>
+        /// Gets the fully qualified name of the property..
+        /// </summary>
+        /// <value type="String"></value>
+        return Type.getInstanceType(this.get_instance()).get_fullName() + ':' + this.get_name();
+    },
+    
+    get_value: function Open_Core_PropertyRef$get_value() {
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
         /// <value type="Object"></value>
-        return this.get_instance()['get_' + this.get__formattedName$1()]();
+        return this.get_instance()['get_' + this.get__formattedName()]();
+    },
+    set_value: function Open_Core_PropertyRef$set_value(value) {
+        /// <summary>
+        /// Gets or sets the value of the property.
+        /// </summary>
+        /// <value type="Object"></value>
+        this.get_instance()['set_' + this.get__formattedName()](value);
+        return value;
+    },
+    
+    get_bindTo: function Open_Core_PropertyRef$get_bindTo() {
+        /// <summary>
+        /// Gets or sets the source property to bind this property to.
+        /// </summary>
+        /// <value type="Open.Core.PropertyRef"></value>
+        return this._bindTo;
+    },
+    set_bindTo: function Open_Core_PropertyRef$set_bindTo(value) {
+        /// <summary>
+        /// Gets or sets the source property to bind this property to.
+        /// </summary>
+        /// <value type="Open.Core.PropertyRef"></value>
+        if (value === this.get_bindTo()) {
+            return;
+        }
+        this._bindTo = value;
+        this._propertyBinding = new Open.Core.PropertyBinding(value, this);
+        return value;
     }
 }
 
@@ -237,7 +887,7 @@ Open.Core.Html = function Open_Core_Html() {
 }
 Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
     /// <summary>
-    /// Creates and appends a DIV elemnet within the given parent.
+    /// Creates and appends a DIV element within the given parent.
     /// </summary>
     /// <param name="parent" type="jQueryObject">
     /// The parent element to insert into
@@ -247,7 +897,7 @@ Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
 }
 Open.Core.Html.append = function Open_Core_Html$append(parent, tag) {
     /// <summary>
-    /// Creates and appends a DIV elemnet within the given parent.
+    /// Creates and appends a DIV element within the given parent.
     /// </summary>
     /// <param name="parent" type="jQueryObject">
     /// The parent element to insert into
@@ -256,9 +906,18 @@ Open.Core.Html.append = function Open_Core_Html$append(parent, tag) {
     /// The tag name (NOT including angle brackets).
     /// </param>
     /// <returns type="jQueryObject"></returns>
-    var html = $(String.format('<{0}></{0}>', tag));
-    html.appendTo(parent);
+    Open.Core.Html.createElement(tag).appendTo(parent);
     return parent.last().contents();
+}
+Open.Core.Html.createElement = function Open_Core_Html$createElement(tag) {
+    /// <summary>
+    /// Creates a new element with the given tag.
+    /// </summary>
+    /// <param name="tag" type="String">
+    /// The HTML tag.
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    return $(String.format('<{0}></{0}>', tag));
 }
 
 
@@ -281,10 +940,28 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="height" type="String" static="true">
     /// </field>
+    /// <field name="background" type="String" static="true">
+    /// </field>
+    /// <field name="display" type="String" static="true">
+    /// </field>
+    /// <field name="block" type="String" static="true">
+    /// </field>
+    /// <field name="none" type="String" static="true">
+    /// </field>
     /// <field name="px" type="String" static="true">
     /// </field>
     /// <field name="classes" type="Open.Core.CoreCssClasses" static="true">
     /// </field>
+}
+Open.Core.Css.isVisible = function Open_Core_Css$isVisible(element) {
+    /// <summary>
+    /// Determines whether the element is visible (has any display value other than 'None').
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to display.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return (ss.isNullOrUndefined(element)) ? false : element.css(Open.Core.Css.display).toLowerCase() !== Open.Core.Css.none;
 }
 Open.Core.Css.selectFromId = function Open_Core_Css$selectFromId(identifier) {
     /// <summary>
@@ -367,6 +1044,31 @@ Open.Core.Css.getLink = function Open_Core_Css$getLink(url) {
         }
     }
     return null;
+}
+Open.Core.Css.absoluteFill = function Open_Core_Css$absoluteFill(element) {
+    /// <summary>
+    /// Sets the given element to absolute positioning and sets all edges to 0px.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to update.
+    /// </param>
+    element.css('position', 'absolute');
+    element.css(Open.Core.Css.left, '0px');
+    element.css(Open.Core.Css.top, '0px');
+    element.css(Open.Core.Css.right, '0px');
+    element.css(Open.Core.Css.bottom, '0px');
+}
+Open.Core.Css.setOverflow = function Open_Core_Css$setOverflow(element, value) {
+    /// <summary>
+    /// Sets the overflow style on the given element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to update.
+    /// </param>
+    /// <param name="value" type="Open.Core.CssOverflow">
+    /// The overflow value.
+    /// </param>
+    element.css('overflow', Open.Core.CssOverflow.toString(value));
 }
 
 
@@ -573,6 +1275,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_stringHelper" type="Open.Core.Helpers.StringHelper" static="true">
     /// </field>
+    /// <field name="_numberHelper" type="Open.Core.Helpers.NumberHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -617,6 +1321,13 @@ Open.Core.Helper.get_string = function Open_Core_Helper$get_string() {
     /// </summary>
     /// <value type="Open.Core.Helpers.StringHelper"></value>
     return Open.Core.Helper._stringHelper || (Open.Core.Helper._stringHelper = new Open.Core.Helpers.StringHelper());
+}
+Open.Core.Helper.get_number = function Open_Core_Helper$get_number() {
+    /// <summary>
+    /// Gets the helper for working with numbers.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.NumberHelper"></value>
+    return Open.Core.Helper._numberHelper || (Open.Core.Helper._numberHelper = new Open.Core.Helpers.NumberHelper());
 }
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
@@ -702,7 +1413,30 @@ Open.Core.Helpers.JsonHelper.prototype = {
         /// The JSON to parse.
         /// </param>
         /// <returns type="Object"></returns>
-        return JSON.parse( json );
+        return Type.safeCast(JSON.parse( json ), Object);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.NumberHelper
+
+Open.Core.Helpers.NumberHelper = function Open_Core_Helpers_NumberHelper() {
+    /// <summary>
+    /// Utility methods for working with numbers.
+    /// </summary>
+}
+Open.Core.Helpers.NumberHelper.prototype = {
+    
+    toMsecs: function Open_Core_Helpers_NumberHelper$toMsecs(secs) {
+        /// <summary>
+        /// Converts seconds to milliseconds.
+        /// </summary>
+        /// <param name="secs" type="Number">
+        /// The value to convert.
+        /// </param>
+        /// <returns type="Number" integer="true"></returns>
+        return Math.truncate((secs * 1000));
     }
 }
 
@@ -726,6 +1460,31 @@ Open.Core.Helpers.ReflectionHelper.prototype = {
         /// </param>
         /// <returns type="Boolean"></returns>
         return Type.getInstanceType(value).get_name() === 'String';
+    },
+    
+    hasProperty: function Open_Core_Helpers_ReflectionHelper$hasProperty(instance, propertyName) {
+        /// <summary>
+        /// Determines whether the specified property exists on the object.
+        /// </summary>
+        /// <param name="instance" type="Object">
+        /// The object to examine.
+        /// </param>
+        /// <param name="propertyName" type="String">
+        /// The name of the property.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        if (ss.isNullOrUndefined(instance)) {
+            return false;
+        }
+        propertyName = 'get_' + Open.Core.Helper.get_string().toCamelCase(propertyName);
+        var $dict1 = instance;
+        for (var $key2 in $dict1) {
+            var item = { key: $key2, value: $dict1[$key2] };
+            if (item.key === propertyName) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
@@ -1621,9 +2380,12 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 }
 
 
-Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.INotifyPropertyChanged);
+Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
+Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
 Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
+Open.Core.PropertyBinding.registerClass('Open.Core.PropertyBinding', null, ss.IDisposable);
+Open.Core.PropertyRef.registerClass('Open.Core.PropertyRef');
 Open.Core.Html.registerClass('Open.Core.Html');
 Open.Core.Css.registerClass('Open.Core.Css');
 Open.Core.CoreCssClasses.registerClass('Open.Core.CoreCssClasses');
@@ -1633,6 +2395,7 @@ Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
+Open.Core.Helpers.NumberHelper.registerClass('Open.Core.Helpers.NumberHelper');
 Open.Core.Helpers.ReflectionHelper.registerClass('Open.Core.Helpers.ReflectionHelper');
 Open.Core.Helpers.JitScriptLoader.registerClass('Open.Core.Helpers.JitScriptLoader');
 Open.Core.Helpers.StringHelper.registerClass('Open.Core.Helpers.StringHelper');
@@ -1643,6 +2406,8 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Core.TreeNode.propIsSelected = 'IsSelected';
+Open.Core.TreeNode.propChildren = 'Children';
 Open.Core.Html.head = 'head';
 Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
@@ -1653,6 +2418,10 @@ Open.Core.Css.top = 'top';
 Open.Core.Css.bottom = 'bottom';
 Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
+Open.Core.Css.background = 'background';
+Open.Core.Css.display = 'display';
+Open.Core.Css.block = 'block';
+Open.Core.Css.none = 'none';
 Open.Core.Css.px = 'px';
 Open.Core.Css.classes = new Open.Core.CoreCssClasses();
 Open.Core.DomEvents.resize = 'resize';
@@ -1662,6 +2431,7 @@ Open.Core.Helper._reflectionHelper = null;
 Open.Core.Helper._scriptLoadHelper = null;
 Open.Core.Helper._collectionHelper = null;
 Open.Core.Helper._stringHelper = null;
+Open.Core.Helper._numberHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.UI.PanelResizerBase._eventStart = 'start';

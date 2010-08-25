@@ -10,14 +10,13 @@
 {
     cursor:default;
     position:relative;
-    font-size:16pt;
+    font-size:14pt;
 }
 
-div .selectedListItem
+.selectedListItem
 {
     color:white;
     background:#1773c1;
     background: -webkit-gradient(linear, left top, left bottom, from(#1c86e1), to(#1360a0));
     background: -moz-linear-gradient(top, #1c86e1, #1360a0);
-        
 }

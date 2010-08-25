@@ -56,7 +56,6 @@
     <Compile Include="Code\Identity\Models\AuthenticationProfile.cs" />
     <Compile Include="Code\Identity\OpenIdAuthentication.cs" />
     <Compile Include="Code\WebConstants.cs" />
-    <Compile Include="Controllers\FooController.cs" />
     <Compile Include="Controllers\JitController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>
@@ -72,14 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Foo\Index.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\KenWilber.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\Css\Core.css" />
@@ -107,6 +98,13 @@
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.cookie.js" />
     <EmbeddedResource Include="Content\Css\Jit.Hypertree.css" />
     <EmbeddedResource Include="Content\Css\Core.Lists.css" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.030.png" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.020.png" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.040.png" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.050.png" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.060.png" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.005.png" />
+    <EmbeddedResource Include="Content\Images\DropShadow.12.010.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

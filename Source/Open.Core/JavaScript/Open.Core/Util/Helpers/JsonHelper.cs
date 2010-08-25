@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace Open.Core.Helpers
 {
@@ -14,9 +15,9 @@ namespace Open.Core.Helpers
 
         /// <summary>Parses the given JSON into an object.</summary>
         /// <param name="json">The JSON to parse.</param>
-        public object Parse(string json)
+        public Dictionary Parse(string json)
         {
-            return Script.Literal("JSON.parse( json )");
+            return Script.Literal("JSON.parse( json )") as Dictionary;
         }
     }
 }

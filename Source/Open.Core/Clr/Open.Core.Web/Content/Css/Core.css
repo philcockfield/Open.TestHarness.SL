@@ -15,10 +15,20 @@ body
 div { -moz-user-select: none; }
 
 
+/* Common */
+.absoluteFill
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+}
+
 /* Typography */
 .titleFont
 {
-    font-family: 'Lucida Grande', Tahoma, Helvetica, Arial, Verdana;
+    font-family: 'Lucida Grande', 'Segoe UI', Tahoma, Helvetica, Arial, Verdana;
 }
 
 
@@ -33,15 +43,6 @@ div { -moz-user-select: none; }
 .panelBorderTop { border-top-width: 1px; }
 .panelBorderBottom { border-bottom-width: 1px; }
 
-
-/* Drop Shadows */
-.dropShadow
-{
-    background-image:url(/Content/Images/Shadow/Drop.12.030.png);
-    background-repeat:repeat-x;
-    height:12px;
-}
-
 /* Reflections */
 .toolbarReflection
 {
@@ -54,3 +55,20 @@ div { -moz-user-select: none; }
     opacity:0.5; filter:alpha(opacity=50);
 }
 
+/* Drop Shadows */
+.dropShadow
+{
+    background-image:url(/Open.Core/Images/DropShadow.12.030.png);
+    background-repeat:repeat-x;
+    height:12px;
+}
+
+
+/* Vertical Alignment */
+.verticalAlignContainer { display:table; width:100%; height:100%; }
+.verticalAlign
+{
+    position:relative;
+    display:table-cell;
+    vertical-align:middle;
+}

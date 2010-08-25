@@ -10,10 +10,17 @@ namespace Open.Library.Jit
     /// </remarks>
     public class Hypertree
     {
+        #region Events
+        /// <summary>Fires when the currently selected node changes.</summary>
+        public event EventHandler SelectedNodeChanged;
+        private void FireSelectedNodeChanged(){if (SelectedNodeChanged != null) SelectedNodeChanged(this, new EventArgs());}
+        #endregion
+
         #region Head
         private object hyperTree;
         private readonly jQueryObject containerElement;
         private bool isInitialized;
+        private HypertreeNode selectedNode;
 
         /// <summary>Constructor.</summary>
         /// <param name="containerElement">The the element to inject the tree into.</param>
@@ -23,8 +30,32 @@ namespace Open.Library.Jit
             if (containerElement == null) throw new Exception("Container element not specified");
             this.containerElement = containerElement;
 
+            // Insert CSS.);
+            if (!Css.IsLinked(JitCss.HypertreeUrl)) Css.InsertLink(JitCss.HypertreeUrl);
+
             // Wire up events.
             jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { UpdateSize(); });
+        }
+        #endregion
+
+        #region Event Handlers
+        public void OnNodeClick(HypertreeNode node)
+        {
+            SelectedNode = node;
+        }
+        #endregion
+
+        #region Properties
+        /// <summary>Gets the currently selected node.</summary>
+        public HypertreeNode SelectedNode
+        {
+            get { return selectedNode; }
+            private set
+            {
+                if (value == SelectedNode) return;
+                selectedNode = value;
+                FireSelectedNodeChanged();
+            }
         }
         #endregion
 
@@ -41,7 +72,7 @@ namespace Open.Library.Jit
                                 string containerId = containerElement.GetAttribute("id");
 
                                 // Insert the tree.
-                                hyperTree = Script.Literal("insertTree({0})", containerId);
+                                hyperTree = Script.Literal("insertTree({0}, {1})", this, containerId);
                                 UpdateSize();
 
                                 // Finish up.
@@ -56,6 +87,7 @@ namespace Open.Library.Jit
         {
             if (!isInitialized) throw new Exception("HyperTree not initialized");
             Script.Literal("this._hyperTree.loadJSON(rootNode)");
+            SelectedNode = rootNode;
             Refresh();
         }
 
@@ -75,6 +107,7 @@ namespace Open.Library.Jit
             Size size = GetSize();
             Script.Literal("this._hyperTree.canvas.resize({0}, {1})", size.Width, size.Height);
             Refresh();
+            if (SelectedNode != null) Script.Literal("this._hyperTree.onClick({0})", SelectedNode.Id);
         }
 
         private Size GetSize()

@@ -1,4 +1,4 @@
-function insertTree(control, injectInto) {
+function insertTree(injectInto){
     var hyperTree = new $jit.Hypertree({
 
         //id of the visualization container
@@ -26,7 +26,6 @@ function insertTree(control, injectInto) {
             domElement.innerHTML = node.name;
             $jit.util.addEvent(domElement, 'click', function () {
                 hyperTree.onClick(node.id);
-                control.onNodeClick(node);
             });
         },
         //Change node styles when labels are placed

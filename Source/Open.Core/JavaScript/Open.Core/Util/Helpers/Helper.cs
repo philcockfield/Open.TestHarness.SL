@@ -13,6 +13,7 @@ namespace Open.Core
         private static ScriptLoadHelper ScriptLoadHelper;
         private static CollectionHelper CollectionHelper;
         private static StringHelper StringHelper;
+        private static NumberHelper NumberHelper;
 
         private static int idCounter;
         #endregion
@@ -35,6 +36,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with strings.</summary>
         public static StringHelper String { get { return StringHelper ?? (StringHelper = new StringHelper()); } }
+
+        /// <summary>Gets the helper for working with numbers.</summary>
+        public static NumberHelper Number { get { return NumberHelper ?? (NumberHelper = new NumberHelper()); } }
         #endregion
 
         #region Methods

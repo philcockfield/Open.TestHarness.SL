@@ -33,4 +33,39 @@ namespace Open.Library.Jit
         public object Data;
         #endregion
     }
+
+    public static class HypertreeNodeFactory
+    {
+        #region Head
+        public const string PropId = "Id";
+        public const string PropName = "Name";
+        public const string PropChildren = "Children";
+        public const string PropData = "Data";
+        #endregion
+
+        #region Methods
+        /// <summary>Constructs the node from a JSON object.</summary>
+        /// <param name="json">The JSON to construct from.</param>
+        public static HypertreeNode Create(Dictionary json)
+        {
+            // Create the node.
+            HypertreeNode node = new HypertreeNode(json[PropId], json[PropName] as string);
+            node.Data = json[PropData];
+
+            // Insert children.
+            Array children = json[PropChildren] as Array;
+            if (!Script.IsNullOrUndefined(children))
+            {
+                foreach (Dictionary child in children)
+                {
+                    node.Children.Add(Create(child));
+                }
+            }
+
+            // Finish up.
+            return node;
+        }
+        #endregion
+    }
+
 }

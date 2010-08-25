@@ -61,10 +61,10 @@ namespace Open.Core.Helpers
             // Download scripts.
             ScriptLoader loader = new ScriptLoader();
             loader.LoadComplete += delegate
-            {
-                isHypertreeLoaded = true;
-                Helper.InvokeOrDefault(callback);
-            };
+                                                    {
+                                                        isHypertreeLoaded = true;
+                                                        Helper.InvokeOrDefault(callback);
+                                                    };
             loader.AddLoader(GetBaseLoader());
             loader.AddUrl(Helper.ScriptLoader.Url(JitFolder, "HyperTree", true));
             loader.AddUrl(Helper.ScriptLoader.Url(JitFolder, "HyperTree.Initialize", false));
