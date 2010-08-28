@@ -36,7 +36,7 @@ namespace Open.Core.Common
         }
 
         /// <summary>
-        ///    Retrieves the value of the value of the given attribute, or a default value if the 
+        ///    Retrieves the value of the value of the given attribute, or null if the 
         ///    attribute either does not exist or contained no value (empty string).
         /// </summary>
         /// <param name="self">The element decorated with the attribute.</param>

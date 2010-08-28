@@ -58,7 +58,10 @@
     <Compile Include="Declarations\Interfaces\IViewFactory.cs" />
     <Compile Include="Declarations\Events\PropertyChangedEventArgs.cs" />
     <Compile Include="Util\ComponentModel\PropertyBinding.cs" />
+    <Compile Include="Util\ComponentModel\PropertyDef.cs" />
     <Compile Include="Util\ComponentModel\PropertyRef.cs" />
+    <Compile Include="Util\DelayedAction.cs" />
+    <Compile Include="Util\Dom\Url.cs" />
     <Compile Include="Util\Dom\Html.cs" />
     <Compile Include="Declarations\Interfaces\IView.cs" />
     <Compile Include="Util\Dom\Css.cs" />

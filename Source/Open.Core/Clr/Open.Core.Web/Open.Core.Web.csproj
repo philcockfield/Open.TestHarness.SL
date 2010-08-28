@@ -31,10 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Http">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft WCF REST\WCF REST Starter Kit Preview 2\Assemblies\Microsoft.Http.dll</HintPath>
+    </Reference>
     <Reference Include="MvcContrib">
       <HintPath>..\..\..\..\Lib\MVCContrib\MvcContrib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -49,13 +53,18 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Code\Base Classes\ControllerBase.cs" />
+    <Compile Include="Code\Config\ServerProxyConfig.cs" />
+    <Compile Include="Code\Config\WebConfig.cs" />
+    <Compile Include="Code\Declarations\ContentTypes.cs" />
     <Compile Include="Code\Extensions\AreaExtensions.cs" />
     <Compile Include="AreaRegistration.cs" />
+    <Compile Include="Code\Extensions\ServerExtensions.cs" />
     <Compile Include="Code\Identity\Models\AuthenticationException.cs" />
     <Compile Include="Code\Identity\Models\UserName.cs" />
     <Compile Include="Code\Identity\Models\AuthenticationProfile.cs" />
     <Compile Include="Code\Identity\OpenIdAuthentication.cs" />
-    <Compile Include="Code\WebConstants.cs" />
+    <Compile Include="Code\Server\ServerProxy.cs" />
+    <Compile Include="Code\Declarations\WebConstants.cs" />
     <Compile Include="Controllers\JitController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>

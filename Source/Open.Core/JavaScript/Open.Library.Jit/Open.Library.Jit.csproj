@@ -51,6 +51,8 @@
     <Compile Include="Constants\JitCss.cs" />
     <Compile Include="Constants\Elements.cs" />
     <Compile Include="HyperTree\Hypertree.cs" />
+    <Compile Include="HyperTree\HypertreeChildInserter.cs" />
+    <Compile Include="HyperTree\HypertreeInserter.cs" />
     <Compile Include="HyperTree\HyperTreeNode.cs" />
     <Content Include="Properties\Open.Library.Jit.ruleset" />
     <Content Include="Properties\Open.Library.Jit.script" />

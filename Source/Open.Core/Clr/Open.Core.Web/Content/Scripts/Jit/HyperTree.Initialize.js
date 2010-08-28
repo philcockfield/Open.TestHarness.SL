@@ -1,4 +1,4 @@
-function insertTree(control, injectInto) {
+function insertHyperTree(control, injectInto) {
     var hyperTree = new $jit.Hypertree({
 
         //id of the visualization container
@@ -17,6 +17,7 @@ function insertTree(control, injectInto) {
         },
 
         onBeforeCompute: function (node) {
+            control.onBeforeCompute(node);
         },
 
         //Attach event handlers and add text to the
@@ -53,8 +54,18 @@ function insertTree(control, injectInto) {
         },
 
         onAfterCompute: function () {
+            control.onAfterCompute();
         }
     });
 
     return hyperTree;
+}
+
+
+function addHyperTreeNodes(control, hyperTree, parameters) {
+    hyperTree.op.sum(parameters.data, {
+                type: parameters.type,
+                duration: parameters.duration,
+                onComplete: function () { control.onAddComplete(); }
+            });
 }

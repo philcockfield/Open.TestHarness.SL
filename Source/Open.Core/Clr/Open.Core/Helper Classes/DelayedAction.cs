@@ -74,7 +74,7 @@ namespace Open.Core.Common
         #endregion
 
         #region Properties
-        /// <summary>Gets or sets the time delay in delay (in seconds).</summary>
+        /// <summary>Gets or sets the time delay (in seconds).</summary>
         public double Delay
         {
             get { return delay; }

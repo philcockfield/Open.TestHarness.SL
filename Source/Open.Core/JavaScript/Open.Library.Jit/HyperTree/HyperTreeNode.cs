@@ -15,7 +15,7 @@ namespace Open.Library.Jit
         {
             Id = id;
             Name = name;
-            Children =new ArrayList();
+            Children = new ArrayList();
         }
         #endregion
 
@@ -48,6 +48,9 @@ namespace Open.Library.Jit
         /// <param name="json">The JSON to construct from.</param>
         public static HypertreeNode Create(Dictionary json)
         {
+            // Setup initial conditions.
+            if (Script.IsNullOrUndefined(json)) throw new Exception("[Null] Cannot create from factory. JSON object not provided.");
+
             // Create the node.
             HypertreeNode node = new HypertreeNode(json[PropId], json[PropName] as string);
             node.Data = json[PropData];

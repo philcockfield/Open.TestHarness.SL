@@ -3,7 +3,7 @@ using System;
 namespace Open.Core
 {
     /// <summary>A reference to a property on an object.</summary>
-    public class PropertyRef
+    public class PropertyRef : PropertyDef
     {
         #region Head
         /// <summary>Fires when the property value changes.</summary>
@@ -12,19 +12,16 @@ namespace Open.Core
 
         private readonly object instance;
         private readonly INotifyPropertyChanged observable;
-        private readonly string name;
-        private string formattedName;
         private PropertyRef bindTo;
         private PropertyBinding propertyBinding;
 
         /// <summary>Constructor.</summary>
         /// <param name="instance">The instance of the object that exposes the property.</param>
         /// <param name="name">The name of the property.</param>
-        public PropertyRef(object instance, string name)
+        public PropertyRef(object instance, string name) : base(instance.GetType(), name)
         {
             // Setup initial conditions.
             this.instance = instance;
-            this.name = name;
 
             // Wire up events.
             observable = instance as INotifyPropertyChanged;
@@ -51,18 +48,11 @@ namespace Open.Core
         /// <summary>Gets the instance of the object that exposes the property.</summary>
         public object Instance { get { return instance; } }
 
-        /// <summary>Gets the name of the property.</summary>
-        public string Name { get { return name; } }
-        private string FormattedName { get { return formattedName ?? (formattedName = Helper.String.ToCamelCase(Name)); } }
-
-        /// <summary>Gets the fully qualified name of the property..</summary>
-        public string FullName { get { return Instance.GetType().FullName + ":" + Name; } }
-
         /// <summary>Gets or sets the value of the property.</summary>
         public object Value
         {
-            get { return Type.GetProperty(Instance, FormattedName); }
-            set{ Type.SetProperty(Instance, FormattedName, value); }
+            get { return Type.GetProperty(Instance, JavaScriptName); }
+            set{ Type.SetProperty(Instance, JavaScriptName, value); }
         }
 
         /// <summary>Gets or sets the source property to bind this property to.</summary>
