@@ -589,15 +589,12 @@ Open.Core.ViewBase = function Open_Core_ViewBase() {
     /// </summary>
     /// <field name="_isInitialized$1" type="Boolean">
     /// </field>
-    /// <field name="_model$1" type="Object">
-    /// </field>
     /// <field name="_container$1" type="jQueryObject">
     /// </field>
     Open.Core.ViewBase.initializeBase(this);
 }
 Open.Core.ViewBase.prototype = {
     _isInitialized$1: false,
-    _model$1: null,
     _container$1: null,
     
     get_isInitialized: function Open_Core_ViewBase$get_isInitialized() {
@@ -620,8 +617,16 @@ Open.Core.ViewBase.prototype = {
             throw new Error('View is already initialized.');
         }
         this._container$1 = container;
-        this.onInitialize(container);
+        this.onInitialize(this._container$1);
         this._isInitialized$1 = true;
+    },
+    
+    onInitialize: function Open_Core_ViewBase$onInitialize(container) {
+        /// <summary>
+        /// Deriving implementation of Initialize.
+        /// </summary>
+        /// <param name="container" type="jQueryObject">
+        /// </param>
     }
 }
 
@@ -700,6 +705,92 @@ Open.Core.PropertyBinding.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.PropertyDef
+
+Open.Core.PropertyDef = function Open_Core_PropertyDef(declaringType, name) {
+    /// <summary>
+    /// Represents a definition of a property.
+    /// </summary>
+    /// <param name="declaringType" type="Type">
+    /// The type of the object that exposes the property.
+    /// </param>
+    /// <param name="name" type="String">
+    /// the name of the property.
+    /// </param>
+    /// <field name="_declaringType" type="Type">
+    /// </field>
+    /// <field name="_name" type="String">
+    /// </field>
+    /// <field name="_formattedName" type="String">
+    /// </field>
+    /// <field name="_singletons" type="Object" static="true">
+    /// </field>
+    this._declaringType = declaringType;
+    this._name = name;
+}
+Open.Core.PropertyDef.get__singletons = function Open_Core_PropertyDef$get__singletons() {
+    /// <value type="Object"></value>
+    return Open.Core.PropertyDef._singletons || (Open.Core.PropertyDef._singletons = {});
+}
+Open.Core.PropertyDef.getSingletonDef = function Open_Core_PropertyDef$getSingletonDef(declaringType, name) {
+    /// <summary>
+    /// Gets a singleton version of the property definition.
+    /// </summary>
+    /// <param name="declaringType" type="Type">
+    /// The type of the object that exposes the property.
+    /// </param>
+    /// <param name="name" type="String">
+    /// the name of the property.
+    /// </param>
+    /// <returns type="Open.Core.PropertyDef"></returns>
+    var key = String.format('{0}:{1}', declaringType.get_fullName(), name);
+    if (Object.keyExists(Open.Core.PropertyDef.get__singletons(), key)) {
+        return Type.safeCast(Open.Core.PropertyDef.get__singletons()[key], Open.Core.PropertyDef);
+    }
+    var def = new Open.Core.PropertyDef(declaringType, name);
+    Open.Core.PropertyDef.get__singletons()[key] = def;
+    return def;
+}
+Open.Core.PropertyDef.prototype = {
+    _declaringType: null,
+    _name: null,
+    _formattedName: null,
+    
+    get_declaringType: function Open_Core_PropertyDef$get_declaringType() {
+        /// <summary>
+        /// Gets the type of the object that exposes the property.
+        /// </summary>
+        /// <value type="Type"></value>
+        return this._declaringType;
+    },
+    
+    get_name: function Open_Core_PropertyDef$get_name() {
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._name;
+    },
+    
+    get_javaScriptName: function Open_Core_PropertyDef$get_javaScriptName() {
+        /// <summary>
+        /// Gets the property name with the same casing that is using in the emitted JavaScript.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._formattedName || (this._formattedName = Open.Core.Helper.get_string().toCamelCase(this.get_name()));
+    },
+    
+    get_fullName: function Open_Core_PropertyDef$get_fullName() {
+        /// <summary>
+        /// Gets the fully qualified name of the property..
+        /// </summary>
+        /// <value type="String"></value>
+        return this.get_declaringType().get_fullName() + ':' + this.get_name();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.PropertyRef
 
 Open.Core.PropertyRef = function Open_Core_PropertyRef(instance, name) {
@@ -712,25 +803,21 @@ Open.Core.PropertyRef = function Open_Core_PropertyRef(instance, name) {
     /// <param name="name" type="String">
     /// The name of the property.
     /// </param>
-    /// <field name="__changed" type="EventHandler">
+    /// <field name="__changed$1" type="EventHandler">
     /// </field>
-    /// <field name="_instance" type="Object">
+    /// <field name="_instance$1" type="Object">
     /// </field>
-    /// <field name="_observable" type="Open.Core.INotifyPropertyChanged">
+    /// <field name="_observable$1" type="Open.Core.INotifyPropertyChanged">
     /// </field>
-    /// <field name="_name" type="String">
+    /// <field name="_bindTo$1" type="Open.Core.PropertyRef">
     /// </field>
-    /// <field name="_formattedName" type="String">
+    /// <field name="_propertyBinding$1" type="Open.Core.PropertyBinding">
     /// </field>
-    /// <field name="_bindTo" type="Open.Core.PropertyRef">
-    /// </field>
-    /// <field name="_propertyBinding" type="Open.Core.PropertyBinding">
-    /// </field>
-    this._instance = instance;
-    this._name = name;
-    this._observable = Type.safeCast(instance, Open.Core.INotifyPropertyChanged);
-    if (this._observable != null) {
-        this._observable.add_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged));
+    Open.Core.PropertyRef.initializeBase(this, [ Type.getInstanceType(instance), name ]);
+    this._instance$1 = instance;
+    this._observable$1 = Type.safeCast(instance, Open.Core.INotifyPropertyChanged);
+    if (this._observable$1 != null) {
+        this._observable$1.add_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged$1));
     }
 }
 Open.Core.PropertyRef.getFromModel = function Open_Core_PropertyRef$getFromModel(obj, propertyName) {
@@ -754,44 +841,42 @@ Open.Core.PropertyRef.prototype = {
         /// Fires when the property value changes.
         /// </summary>
         /// <param name="value" type="Function" />
-        this.__changed = ss.Delegate.combine(this.__changed, value);
+        this.__changed$1 = ss.Delegate.combine(this.__changed$1, value);
     },
     remove_changed: function Open_Core_PropertyRef$remove_changed(value) {
         /// <summary>
         /// Fires when the property value changes.
         /// </summary>
         /// <param name="value" type="Function" />
-        this.__changed = ss.Delegate.remove(this.__changed, value);
+        this.__changed$1 = ss.Delegate.remove(this.__changed$1, value);
     },
     
-    __changed: null,
+    __changed$1: null,
     
-    _fireChanged: function Open_Core_PropertyRef$_fireChanged() {
-        if (this.__changed != null) {
-            this.__changed.invoke(this, new ss.EventArgs());
+    _fireChanged$1: function Open_Core_PropertyRef$_fireChanged$1() {
+        if (this.__changed$1 != null) {
+            this.__changed$1.invoke(this, new ss.EventArgs());
         }
     },
     
-    _instance: null,
-    _observable: null,
-    _name: null,
-    _formattedName: null,
-    _bindTo: null,
-    _propertyBinding: null,
+    _instance$1: null,
+    _observable$1: null,
+    _bindTo$1: null,
+    _propertyBinding$1: null,
     
     dispose: function Open_Core_PropertyRef$dispose() {
         /// <summary>
         /// Disposes of the object.
         /// </summary>
-        if (this._observable != null) {
-            this._observable.remove_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged));
+        if (this._observable$1 != null) {
+            this._observable$1.remove_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged$1));
         }
-        if (this._propertyBinding != null) {
-            this._propertyBinding.dispose();
+        if (this._propertyBinding$1 != null) {
+            this._propertyBinding$1.dispose();
         }
     },
     
-    _onPropertyChanged: function Open_Core_PropertyRef$_onPropertyChanged(sender, e) {
+    _onPropertyChanged$1: function Open_Core_PropertyRef$_onPropertyChanged$1(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="Open.Core.PropertyChangedEventArgs">
@@ -799,7 +884,7 @@ Open.Core.PropertyRef.prototype = {
         if (e.get_property().get_name() !== this.get_name()) {
             return;
         }
-        this._fireChanged();
+        this._fireChanged$1();
     },
     
     get_instance: function Open_Core_PropertyRef$get_instance() {
@@ -807,28 +892,7 @@ Open.Core.PropertyRef.prototype = {
         /// Gets the instance of the object that exposes the property.
         /// </summary>
         /// <value type="Object"></value>
-        return this._instance;
-    },
-    
-    get_name: function Open_Core_PropertyRef$get_name() {
-        /// <summary>
-        /// Gets the name of the property.
-        /// </summary>
-        /// <value type="String"></value>
-        return this._name;
-    },
-    
-    get__formattedName: function Open_Core_PropertyRef$get__formattedName() {
-        /// <value type="String"></value>
-        return this._formattedName || (this._formattedName = Open.Core.Helper.get_string().toCamelCase(this.get_name()));
-    },
-    
-    get_fullName: function Open_Core_PropertyRef$get_fullName() {
-        /// <summary>
-        /// Gets the fully qualified name of the property..
-        /// </summary>
-        /// <value type="String"></value>
-        return Type.getInstanceType(this.get_instance()).get_fullName() + ':' + this.get_name();
+        return this._instance$1;
     },
     
     get_value: function Open_Core_PropertyRef$get_value() {
@@ -836,14 +900,14 @@ Open.Core.PropertyRef.prototype = {
         /// Gets or sets the value of the property.
         /// </summary>
         /// <value type="Object"></value>
-        return this.get_instance()['get_' + this.get__formattedName()]();
+        return this.get_instance()['get_' + this.get_javaScriptName()]();
     },
     set_value: function Open_Core_PropertyRef$set_value(value) {
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
         /// <value type="Object"></value>
-        this.get_instance()['set_' + this.get__formattedName()](value);
+        this.get_instance()['set_' + this.get_javaScriptName()](value);
         return value;
     },
     
@@ -852,7 +916,7 @@ Open.Core.PropertyRef.prototype = {
         /// Gets or sets the source property to bind this property to.
         /// </summary>
         /// <value type="Open.Core.PropertyRef"></value>
-        return this._bindTo;
+        return this._bindTo$1;
     },
     set_bindTo: function Open_Core_PropertyRef$set_bindTo(value) {
         /// <summary>
@@ -862,10 +926,191 @@ Open.Core.PropertyRef.prototype = {
         if (value === this.get_bindTo()) {
             return;
         }
-        this._bindTo = value;
-        this._propertyBinding = new Open.Core.PropertyBinding(value, this);
+        this._bindTo$1 = value;
+        this._propertyBinding$1 = new Open.Core.PropertyBinding(value, this);
         return value;
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.DelayedAction
+
+Open.Core.DelayedAction = function Open_Core_DelayedAction(delaySeconds, action) {
+    /// <summary>
+    /// Invokes an action after a delay times out (cancelling any previous actions that may be pending).
+    /// </summary>
+    /// <param name="delaySeconds" type="Number">
+    /// The time delay in delay (in seconds).
+    /// </param>
+    /// <param name="action" type="Action">
+    /// The action that is invoked after the delay.
+    /// </param>
+    /// <field name="__invoked" type="EventHandler">
+    /// </field>
+    /// <field name="_nullTimerId" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_delay" type="Number">
+    /// </field>
+    /// <field name="_action" type="Action">
+    /// </field>
+    /// <field name="_isAsyncronous" type="Boolean" static="true">
+    /// </field>
+    /// <field name="_timerId" type="Number" integer="true">
+    /// </field>
+    this._timerId = Open.Core.DelayedAction._nullTimerId;
+    this.set_delay(delaySeconds);
+    this.set_action(action);
+}
+Open.Core.DelayedAction.get_isAsyncronous = function Open_Core_DelayedAction$get_isAsyncronous() {
+    /// <summary>
+    /// Gets or sets whether the delayed action runs asynchronously (true) or synchronously (false) for testing purposes.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.DelayedAction._isAsyncronous;
+}
+Open.Core.DelayedAction.set_isAsyncronous = function Open_Core_DelayedAction$set_isAsyncronous(value) {
+    /// <summary>
+    /// Gets or sets whether the delayed action runs asynchronously (true) or synchronously (false) for testing purposes.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    Open.Core.DelayedAction._isAsyncronous = value;
+    return value;
+}
+Open.Core.DelayedAction.invoke = function Open_Core_DelayedAction$invoke(delay, action) {
+    /// <summary>
+    /// Invokes the given action after the specified delay.
+    /// </summary>
+    /// <param name="delay" type="Number">
+    /// The delay (in seconds) before invoking the action.
+    /// </param>
+    /// <param name="action" type="Action">
+    /// The action to invoke.
+    /// </param>
+    /// <returns type="Open.Core.DelayedAction"></returns>
+    var delayedAction = new Open.Core.DelayedAction(delay, action);
+    delayedAction.start();
+    return delayedAction;
+}
+Open.Core.DelayedAction.prototype = {
+    
+    add_invoked: function Open_Core_DelayedAction$add_invoked(value) {
+        /// <summary>
+        /// Fires immediately after the action is invoked when the delay time elapses.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__invoked = ss.Delegate.combine(this.__invoked, value);
+    },
+    remove_invoked: function Open_Core_DelayedAction$remove_invoked(value) {
+        /// <summary>
+        /// Fires immediately after the action is invoked when the delay time elapses.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__invoked = ss.Delegate.remove(this.__invoked, value);
+    },
+    
+    __invoked: null,
+    
+    _fireInvoked: function Open_Core_DelayedAction$_fireInvoked() {
+        if (this.__invoked != null) {
+            this.__invoked.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    _delay: 0,
+    _action: null,
+    
+    dispose: function Open_Core_DelayedAction$dispose() {
+        this.stop();
+    },
+    
+    get_delay: function Open_Core_DelayedAction$get_delay() {
+        /// <summary>
+        /// Gets or sets the time delay in delay (in seconds).
+        /// </summary>
+        /// <value type="Number"></value>
+        return this._delay;
+    },
+    set_delay: function Open_Core_DelayedAction$set_delay(value) {
+        /// <summary>
+        /// Gets or sets the time delay in delay (in seconds).
+        /// </summary>
+        /// <value type="Number"></value>
+        if (value < 0) {
+            value = 0;
+        }
+        this._delay = value;
+        return value;
+    },
+    
+    get_action: function Open_Core_DelayedAction$get_action() {
+        /// <summary>
+        /// Gets or sets the action that is invoked after the delay.
+        /// </summary>
+        /// <value type="Action"></value>
+        return this._action;
+    },
+    set_action: function Open_Core_DelayedAction$set_action(value) {
+        /// <summary>
+        /// Gets or sets the action that is invoked after the delay.
+        /// </summary>
+        /// <value type="Action"></value>
+        this._action = value;
+        return value;
+    },
+    
+    get_isRunning: function Open_Core_DelayedAction$get_isRunning() {
+        /// <summary>
+        /// Gets whether the timer is currently in progress.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        return this._timerId !== -1;
+    },
+    
+    start: function Open_Core_DelayedAction$start() {
+        /// <summary>
+        /// Starts the delay timer.  Subsequent calls to this method restart the timer.
+        /// </summary>
+        this.stop();
+        if (Open.Core.DelayedAction.get_isAsyncronous()) {
+            this._timerId = window.setTimeout(ss.Delegate.create(this, function() {
+                this._invokeAction();
+            }), Open.Core.Helper.get_number().toMsecs(this.get_delay()));
+        }
+        else {
+            this._invokeAction();
+        }
+    },
+    
+    stop: function Open_Core_DelayedAction$stop() {
+        /// <summary>
+        /// Stops the timer.
+        /// </summary>
+        if (this.get_isRunning()) {
+            window.clearTimeout(this._timerId);
+        }
+        this._timerId = Open.Core.DelayedAction._nullTimerId;
+    },
+    
+    _invokeAction: function Open_Core_DelayedAction$_invokeAction() {
+        if (ss.isNullOrUndefined(this.get_action())) {
+            return;
+        }
+        this.get_action().invoke();
+        this._fireInvoked();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Url
+
+Open.Core.Url = function Open_Core_Url() {
+    /// <summary>
+    /// Url utility.
+    /// </summary>
+    /// <field name="escAnd" type="String" static="true">
+    /// </field>
 }
 
 
@@ -881,6 +1126,8 @@ Open.Core.Html = function Open_Core_Html() {
     /// <field name="div" type="String" static="true">
     /// </field>
     /// <field name="span" type="String" static="true">
+    /// </field>
+    /// <field name="id" type="String" static="true">
     /// </field>
     /// <field name="href" type="String" static="true">
     /// </field>
@@ -1069,6 +1316,20 @@ Open.Core.Css.setOverflow = function Open_Core_Css$setOverflow(element, value) {
     /// The overflow value.
     /// </param>
     element.css('overflow', Open.Core.CssOverflow.toString(value));
+}
+Open.Core.Css.applyDropshadow = function Open_Core_Css$applyDropshadow(element, opacity) {
+    /// <summary>
+    /// Applies a drop shadow.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to update.
+    /// </param>
+    /// <param name="opacity" type="String">
+    /// Opacity of the drop-shadow (005, 010, 020, 030, 040, 050, 060).
+    /// </param>
+    element.css('background-image', String.format('url(/Open.Core/Images/DropShadow.12.{0}.png)', opacity));
+    element.css('background-repeat', 'repeat-x');
+    element.css('height', '12px');
 }
 
 
@@ -2385,7 +2646,10 @@ Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
 Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
 Open.Core.PropertyBinding.registerClass('Open.Core.PropertyBinding', null, ss.IDisposable);
-Open.Core.PropertyRef.registerClass('Open.Core.PropertyRef');
+Open.Core.PropertyDef.registerClass('Open.Core.PropertyDef');
+Open.Core.PropertyRef.registerClass('Open.Core.PropertyRef', Open.Core.PropertyDef);
+Open.Core.DelayedAction.registerClass('Open.Core.DelayedAction', null, ss.IDisposable);
+Open.Core.Url.registerClass('Open.Core.Url');
 Open.Core.Html.registerClass('Open.Core.Html');
 Open.Core.Css.registerClass('Open.Core.Css');
 Open.Core.CoreCssClasses.registerClass('Open.Core.CoreCssClasses');
@@ -2408,9 +2672,14 @@ Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelR
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
+Open.Core.PropertyDef._singletons = null;
+Open.Core.DelayedAction._nullTimerId = -1;
+Open.Core.DelayedAction._isAsyncronous = true;
+Open.Core.Url.escAnd = '%26';
 Open.Core.Html.head = 'head';
 Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
+Open.Core.Html.id = 'id';
 Open.Core.Html.href = 'href';
 Open.Core.Css.left = 'left';
 Open.Core.Css.right = 'right';

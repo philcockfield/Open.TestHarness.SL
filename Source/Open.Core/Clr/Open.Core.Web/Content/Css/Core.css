@@ -25,6 +25,9 @@ div { -moz-user-select: none; }
     bottom:0px;
 }
 
+div.table { position:absolute; display:table; }
+
+
 /* Typography */
 .titleFont
 {

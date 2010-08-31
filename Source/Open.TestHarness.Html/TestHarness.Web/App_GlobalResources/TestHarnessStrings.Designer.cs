@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TestHarness.
+        /// </summary>
+        internal static string App_Title {
+            get {
+                return ResourceManager.GetString("App_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output.
         /// </summary>
         internal static string Output_Title {

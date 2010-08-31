@@ -6,14 +6,14 @@ namespace Open.TestHarness.Web.Controllers
     {
         #region Head
         private const string KeyOutputTitle = "Output_Title";
+        private const string KeyAppTitle = "App_Title";
         #endregion
 
         #region Methods : Actions
         /// <summary>The root of the TestHarness.</summary>
         public virtual ActionResult Index()
         {
-            ViewModel.MyValue = "Yo! My Value"; //TEMP 
-
+            ViewModel.AppTitle = GetResource(KeyAppTitle);
             return View(ViewModel);
         }
 

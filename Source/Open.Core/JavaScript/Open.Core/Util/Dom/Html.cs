@@ -12,6 +12,7 @@ namespace Open.Core
         public const string Span = "span";
 
         // Attributes.
+        public const string Id = "id";
         public const string Href = "href";
         #endregion
 

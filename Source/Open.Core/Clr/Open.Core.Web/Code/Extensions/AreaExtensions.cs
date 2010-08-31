@@ -8,14 +8,14 @@ namespace Open.Core.Web
     public static class AreaExtensions
     {
         #region Methods : HtmlHelper
-        public static void Foo(this HtmlHelper helper)
-        {
-            RenderAction(helper, "Foo", WebConstants.Index); //TEMP 
-        }
-
         public static void InsertCoreScripts(this HtmlHelper helper)
         {
             RenderAction(helper, ScriptsController.Name, ScriptsController.ActionCoreScripts);
+        }
+
+        public static void InsertCoreJQuery(this HtmlHelper helper)
+        {
+            RenderAction(helper, ScriptsController.Name, ScriptsController.ActionCoreJQuery);
         }
 
         public static void InsertHyperTree(this HtmlHelper helper)

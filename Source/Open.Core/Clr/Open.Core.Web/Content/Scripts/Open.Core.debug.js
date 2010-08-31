@@ -617,8 +617,16 @@ Open.Core.ViewBase.prototype = {
             throw new Error('View is already initialized.');
         }
         this._container$1 = container;
-        this.onInitialize(container);
+        this.onInitialize(this._container$1);
         this._isInitialized$1 = true;
+    },
+    
+    onInitialize: function Open_Core_ViewBase$onInitialize(container) {
+        /// <summary>
+        /// Deriving implementation of Initialize.
+        /// </summary>
+        /// <param name="container" type="jQueryObject">
+        /// </param>
     }
 }
 
@@ -1118,6 +1126,8 @@ Open.Core.Html = function Open_Core_Html() {
     /// <field name="div" type="String" static="true">
     /// </field>
     /// <field name="span" type="String" static="true">
+    /// </field>
+    /// <field name="id" type="String" static="true">
     /// </field>
     /// <field name="href" type="String" static="true">
     /// </field>
@@ -2669,6 +2679,7 @@ Open.Core.Url.escAnd = '%26';
 Open.Core.Html.head = 'head';
 Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
+Open.Core.Html.id = 'id';
 Open.Core.Html.href = 'href';
 Open.Core.Css.left = 'left';
 Open.Core.Css.right = 'right';

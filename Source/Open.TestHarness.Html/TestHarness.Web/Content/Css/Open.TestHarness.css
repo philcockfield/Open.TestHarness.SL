@@ -7,7 +7,7 @@
     top:0px;
     bottom:0px;
 }
-#testHarness .sidebar
+#testHarness .th-sidebar
 {
     background:#e0e5eb;
     position:absolute;
@@ -18,8 +18,12 @@
 }
 
 
+/*====== Fonts ======*/
+#testHarness .titleFont { font-family: "sovba-1", "sovba-2"; }
+
+
 /*====== Toolbars ======*/
-.toolbar
+.th-toolbar
 {
     background:#e4e4e4;
     position:absolute;
@@ -32,7 +36,7 @@
 
 
 /*====== Main ======*/
-#testHarness .main
+#testHarness .th-main
 {
     position:absolute;
     left:251px;
@@ -41,15 +45,14 @@
     bottom:0px;
 }
 
-#testHarness .main .mainToolbar
+#testHarness .th-mainToolbar
 {
     background:#f2f2f2;
     border-color:#d9d9d9;
 }
 
-#testHarness .main .content
+#testHarness .th-mainContent
 {
-    background:orange;
     position:absolute;
     left:0px;
     top:25px;
@@ -69,15 +72,15 @@
     height:180px;
 }
 
-#testHarnessLog .titlebar { height:32px; }
-#testHarnessLog .titlebar div.table { position:absolute; display:table; left:8px; height:32px; }
-#testHarnessLog .titlebar p.title
+#testHarnessLog .th-log-titlebar { height:32px; }
+#testHarnessLog .th-log-titlebar div.table { left:8px; height:32px; }
+#testHarnessLog .th-log-titlebar p.title
 {
     position:relative;
     display:table-cell;
     vertical-align:middle;
     font-size:14pt;
-    color:#a0a0a0;
+    color:#828282;
 }
 #testHarnessLog p.dropShadow
 {
@@ -85,4 +88,31 @@
     left:0px;
     right:0px;
     top:33px;
+}
+#testHarnessLog div.th-log-content
+{
+    background:#f9fafb;
+    top:33px;
+}
+
+#testHarnessLog div.th-log-list
+{
+    overflow:auto;
+}
+
+#testHarnessLog div.th-log-listItem
+{
+    border-bottom-color:#e0e1e2;
+    border-bottom-width:1px;
+    border-bottom-style:solid;
+    padding:5px;
+}
+
+#testHarnessLog div.th-log-margin
+{
+    left:120px;
+    border-left-color:#91faff;
+    border-left-width:1px;
+    border-left-style:solid;
+    width:1px;
 }

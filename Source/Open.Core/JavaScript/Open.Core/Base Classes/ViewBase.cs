@@ -23,14 +23,21 @@ namespace Open.Core
         #region Methods
         public void Initialize(jQueryObject container)
         {
+            // Setup initial conditions.)
             if (IsInitialized) throw new Exception("View is already initialized.");
+
+            // Store reference to the container.
             this.container = container;
-            OnInitialize(container);
+
+            // Finish up.
+            OnInitialize(this.container);
             isInitialized = true;
         }
 
         /// <summary>Deriving implementation of Initialize.</summary>
-        protected abstract void OnInitialize(jQueryObject container);
+        protected virtual void OnInitialize(jQueryObject container)
+        {
+        }
         #endregion
     }
 }

@@ -75,7 +75,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core %28Clr\Open.Core%29</Name>
+      <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +85,9 @@
     <EmbeddedResource Include="Content\Css\Core.css" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Views\Scripts\CoreJQuery.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Jit\HyperTree.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </EmbeddedResource>

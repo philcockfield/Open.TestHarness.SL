@@ -8,13 +8,12 @@ namespace Open.Core.Web.Controllers
         #region Head
         public const string Name = "Scripts";
         public const string ActionCoreScripts = "CoreScripts";
+        public const string ActionCoreJQuery = "CoreJQuery";
         #endregion
 
         #region Methods
-        public virtual ActionResult CoreScripts()
-        {
-            return View();
-        }
+        public virtual ActionResult CoreScripts() { return View(); }
+        public virtual ActionResult CoreJQuery() { return View(); }
         #endregion
     }
 }
