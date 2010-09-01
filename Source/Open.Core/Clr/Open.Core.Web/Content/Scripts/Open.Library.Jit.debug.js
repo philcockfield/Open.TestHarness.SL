@@ -72,9 +72,7 @@ Open.Library.Jit.Hypertree = function Open_Library_Jit_Hypertree(containerElemen
         throw new Error('Container element not specified');
     }
     this._containerElement = containerElement;
-    if (!Open.Core.Css.isLinked(Open.Library.Jit.JitCss.hypertreeUrl)) {
-        Open.Core.Css.insertLink(Open.Library.Jit.JitCss.hypertreeUrl);
-    }
+    Open.Core.Css.insertLink(Open.Library.Jit.JitCss.hypertreeUrl);
     $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
         this._onWindowResized();
     }));

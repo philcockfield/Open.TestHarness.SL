@@ -20,7 +20,7 @@ namespace Open.Core.Lists
         public static void InsertCss()
         {
             if (isCssInserted) return;
-            if (!Css.IsLinked(Url)) Css.InsertLink(Url);
+            Css.InsertLink(Url);
             isCssInserted = true;
         }
         #endregion

@@ -20,12 +20,7 @@ namespace Open.Core.Lists
     public class ListView : ViewBase
     {
         #region Head
-        /// <summary>Fires when the item selection changes.</summary>
-        public event EventHandler SelectionChanged;
-        private void FireSelectionChanged() { if (SelectionChanged != null) SelectionChanged(this, new EventArgs()); }
-
-        private IViewFactory itemFactory;
-        private IViewFactory defaultItemFactory;
+        private ListItemFactory itemFactory;
         private ListSelectionMode selectionMode = ListSelectionMode.Single;
         private readonly ArrayList views = new ArrayList();
 
@@ -57,10 +52,9 @@ namespace Open.Core.Lists
 
         #region Properties
         /// <summary>Gets or sets the factory that creates each item in the list.</summary>
-        public IViewFactory ItemFactory
+        private ListItemFactory ItemFactory
         {
-            get { return itemFactory ?? (defaultItemFactory ?? (defaultItemFactory = new ListItemFactory())); }
-            set { itemFactory = value; }
+            get { return itemFactory ?? (itemFactory = new ListItemFactory()); }
         }
 
         /// <summary>Gets or sets whether items within the list are selecable.</summary>
@@ -96,7 +90,6 @@ namespace Open.Core.Lists
             }
 
             // Create the views for each model.
-            IViewFactory factory = ItemFactory;
             Container.Children(Html.Div).Each(delegate(int index, Element element)
                                     {
                                         // Prepare data.
@@ -104,7 +97,7 @@ namespace Open.Core.Lists
                                         object model = models[index];
 
                                         // Construct the view.
-                                        IView view = factory.CreateView(div, model);
+                                        IView view = ItemFactory.CreateView(div, model);
                                         IListItemView listItemView = view as IListItemView;
 
                                         // Store values.

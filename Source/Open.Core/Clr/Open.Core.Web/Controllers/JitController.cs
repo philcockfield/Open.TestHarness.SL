@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Open.Core.Web.Controllers
 {
@@ -12,14 +8,10 @@ namespace Open.Core.Web.Controllers
         #region Head
         public const string Name = "Jit";
         public const string ActionHyperTree = "HyperTree";
-        
         #endregion
 
         #region Methods
-        public virtual ActionResult HyperTree()
-        {
-            return View();
-        }
+        public virtual ActionResult HyperTree() { return View(); }
         #endregion
     }
 }

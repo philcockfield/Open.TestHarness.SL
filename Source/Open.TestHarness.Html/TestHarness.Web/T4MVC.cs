@@ -22,7 +22,6 @@ using T4MVC;
 
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static class MVC {
-    public static Open.TestHarness.Web.Controllers.HomeController Home = new Open.TestHarness.Web.Controllers.T4MVC_HomeController();
     public static Open.TestHarness.Web.Controllers.TestHarnessController TestHarness = new Open.TestHarness.Web.Controllers.T4MVC_TestHarnessController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
@@ -228,25 +227,6 @@ namespace Links {
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static class MicrosoftAjax {
-            private const string URLPATH = "~/Scripts/MicrosoftAjax";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string MicrosoftAjax_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/MicrosoftAjax.debug.min.js") ? Url("MicrosoftAjax.debug.min.js") : Url("MicrosoftAjax.debug.js");
-                          
-            public static readonly string MicrosoftAjax_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/MicrosoftAjax.min.js") ? Url("MicrosoftAjax.min.js") : Url("MicrosoftAjax.js");
-                          
-            public static readonly string MicrosoftMvcAjax_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/MicrosoftMvcAjax.debug.min.js") ? Url("MicrosoftMvcAjax.debug.min.js") : Url("MicrosoftMvcAjax.debug.js");
-                          
-            public static readonly string MicrosoftMvcAjax_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/MicrosoftMvcAjax.min.js") ? Url("MicrosoftMvcAjax.min.js") : Url("MicrosoftMvcAjax.js");
-                          
-            public static readonly string MicrosoftMvcValidation_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/MicrosoftMvcValidation.debug.min.js") ? Url("MicrosoftMvcValidation.debug.min.js") : Url("MicrosoftMvcValidation.debug.js");
-                          
-            public static readonly string MicrosoftMvcValidation_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/MicrosoftMvcValidation.min.js") ? Url("MicrosoftMvcValidation.min.js") : Url("MicrosoftMvcValidation.js");
-                          
-        }
-    
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class TestHarness {
             private const string URLPATH = "~/Scripts/TestHarness";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -277,9 +257,7 @@ namespace Links {
             private const string URLPATH = "~/Content/Css";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string Core_css = Url("Core.css");
-            public static readonly string TestHarness_css = Url("TestHarness.css");
-            public static readonly string Validation_css = Url("Validation.css");
+            public static readonly string Open_TestHarness_css = Url("Open.TestHarness.css");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

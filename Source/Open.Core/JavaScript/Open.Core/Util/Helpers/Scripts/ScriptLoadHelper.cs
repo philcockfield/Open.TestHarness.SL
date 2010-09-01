@@ -3,13 +3,17 @@
 namespace Open.Core.Helpers
 {
     /// <summary>Utility methods for loading scripts.</summary>
-    public class ScriptLoadHelper
+    public class ScriptLoadHelper : ModelBase
     {
         #region Head
+        public const string PropIsListsLoaded = "IsListsLoaded";
+        public const string PropIsViewsLoaded = "IsViewsLoaded";
+
         private string rootScriptFolder = "/Open.Core/Scripts/";
         private bool useDebug;
         private JitScriptLoader jit;
         private bool isListsLoaded;
+        private bool isViewsLoaded;
         #endregion
 
         #region Properties
@@ -31,30 +35,33 @@ namespace Open.Core.Helpers
         public JitScriptLoader Jit { get { return jit ?? (jit = new JitScriptLoader()); } }
 
         /// <summary>Gets whether the Lists library has been loaded.</summary>
-        public bool IsListsLoaded { get { return isListsLoaded; } }
+        public bool IsListsLoaded
+        {
+            get { return isListsLoaded; }
+            private set { isListsLoaded = value; }
+        }
+
+        /// <summary>Gets whether the Views library has been loaded.</summary>
+        public bool IsViewsLoaded
+        {
+            get { return isViewsLoaded; }
+            private set { isViewsLoaded = value; }
+        }
         #endregion
 
         #region Methods
+        /// <summary>Loads the Views library.</summary>
+        /// <param name="callback">Callback to invoke upon completion.</param>
+        public void LoadViews(Action callback)
+        {
+            Load("Open.Core.Views", GetPropertyRef(PropIsViewsLoaded), callback);
+        }
+
         /// <summary>Loads the Lists library.</summary>
         /// <param name="callback">Callback to invoke upon completion.</param>
         public void LoadLists(Action callback)
         {
-            // Setup initial conditions.
-            if (IsListsLoaded)
-            {
-                Helper.InvokeOrDefault(callback);
-                return;
-            }
-
-            // Download scripts.
-            ScriptLoader loader = new ScriptLoader();
-            loader.LoadComplete += delegate
-                                       {
-                                           isListsLoaded = true;
-                                           Helper.InvokeOrDefault(callback);
-                                       };
-            loader.AddUrl(Helper.ScriptLoader.Url(string.Empty, "Open.Core.Lists", true));
-            loader.Start();
+            Load("Open.Core.Lists", GetPropertyRef(PropIsListsLoaded), callback);
         }
         #endregion
 
@@ -68,6 +75,26 @@ namespace Open.Core.Helpers
         {
             string debug = hasDebug && UseDebug ? ".debug" : null;
             return string.Format("{0}{1}.js", name, debug);
+        }
+
+        private void Load(string scriptName, PropertyRef isLoadedProperty, Action callback)
+        {
+            // Setup initial conditions.)
+            if ((bool)isLoadedProperty.Value)
+            {
+                Helper.InvokeOrDefault(callback);
+                return;
+            }
+
+            // Download script.
+            ScriptLoader loader = new ScriptLoader();
+            loader.LoadComplete += delegate
+                                {
+                                    isLoadedProperty.Value = true;
+                                    Helper.InvokeOrDefault(callback);
+                                };
+            loader.AddUrl(Helper.ScriptLoader.Url(string.Empty, scriptName, true));
+            loader.Start();
         }
         #endregion
     }

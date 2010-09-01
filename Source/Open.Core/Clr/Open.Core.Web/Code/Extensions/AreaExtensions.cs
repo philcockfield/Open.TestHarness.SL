@@ -22,6 +22,11 @@ namespace Open.Core.Web
         {
             RenderAction(helper, JitController.Name, JitController.ActionHyperTree);
         }
+
+        public static void InsertLog(this HtmlHelper helper)
+        {
+            RenderAction(helper, ControlsController.Name, ControlsController.ActionLog);
+        }
         #endregion
 
         #region Methods : AreaRegistrationContext

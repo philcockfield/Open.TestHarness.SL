@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using jQueryApi;
-using Open.TestHarness.Log;
+using Open.Core;
+using Open.Core.Controls;
 using Open.TestHarness.Shell;
 
 namespace Open.TestHarness
@@ -8,7 +10,6 @@ namespace Open.TestHarness
     public class Application
     {
         #region Head
-        private static LogView log;
         private static PanelResizeController resizeController;
         #endregion
 
@@ -18,15 +19,49 @@ namespace Open.TestHarness
             // Create controllers.
             resizeController = new PanelResizeController();
 
-            // Create views.
-            log = new LogView(jQuery.Select(CssSelectors.LogList).First());
+            // Setup the output log.
+            LogView logView = new LogView(jQuery.Select(CssSelectors.Log).First());
+            Log.RegisterView(logView);
 
-            // TEMP
 
-            for (int i = 0; i < 3; i++)
+//            Log.Write("Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello ", LogSeverity.Info);
+
+            //TEMP );
+            for (int i = 0; i < 50; i++)
             {
-                log.Write("Hello " + i);
+                Log.Write("Hello " + i, LogSeverity.Debug);
             }
+
+            Log.LineBreak();
+            Log.Info("9999");
+
+
+            //log.Write("Fail", LogSeverity.Error);
+            //log.Write("Warn", LogSeverity.Warning);
+
+            //                            Log.Clear();
+
+            //log.Write("New 1", LogSeverity.Debug);
+            //log.Write("New 2", LogSeverity.Debug);
+
+            DelayedAction.Invoke(2, delegate
+                                        {
+                                            Log.Error("Error");
+                                            Log.Debug("Foo");
+                                            Log.LineBreak();
+                                            Log.Info("Yo");
+                                        });
+
+            //                        });
+
+
+            //// TEMP
+
+
+
+
+            // TEST THIS
+            // log.Dispose();
 
         }
         #endregion

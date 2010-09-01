@@ -72,6 +72,12 @@
     height:180px;
 }
 
+#testHarnessLog .coreLog
+{
+    background:#f9fafb;
+    top:33px;
+}
+
 #testHarnessLog .th-log-titlebar { height:32px; }
 #testHarnessLog .th-log-titlebar div.table { left:8px; height:32px; }
 #testHarnessLog .th-log-titlebar p.title
@@ -88,31 +94,4 @@
     left:0px;
     right:0px;
     top:33px;
-}
-#testHarnessLog div.th-log-content
-{
-    background:#f9fafb;
-    top:33px;
-}
-
-#testHarnessLog div.th-log-list
-{
-    overflow:auto;
-}
-
-#testHarnessLog div.th-log-listItem
-{
-    border-bottom-color:#e0e1e2;
-    border-bottom-width:1px;
-    border-bottom-style:solid;
-    padding:5px;
-}
-
-#testHarnessLog div.th-log-margin
-{
-    left:120px;
-    border-left-color:#91faff;
-    border-left-width:1px;
-    border-left-style:solid;
-    width:1px;
 }

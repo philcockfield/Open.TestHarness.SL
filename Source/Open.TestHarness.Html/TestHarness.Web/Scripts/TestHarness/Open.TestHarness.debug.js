@@ -13,17 +13,13 @@ Open.TestHarness.CssSelectors = function Open_TestHarness_CssSelectors() {
     /// <summary>
     /// Constants for common CSS selectors.
     /// </summary>
-    /// <field name="classLogListItem" type="String" static="true">
-    /// </field>
     /// <field name="main" type="String" static="true">
     /// </field>
     /// <field name="sidebar" type="String" static="true">
     /// </field>
     /// <field name="logTitlebar" type="String" static="true">
     /// </field>
-    /// <field name="logList" type="String" static="true">
-    /// </field>
-    /// <field name="logListItem" type="String" static="true">
+    /// <field name="log" type="String" static="true">
     /// </field>
 }
 
@@ -46,8 +42,6 @@ Open.TestHarness.Elements = function Open_TestHarness_Elements() {
 // Open.TestHarness.Application
 
 Open.TestHarness.Application = function Open_TestHarness_Application() {
-    /// <field name="_log" type="Open.TestHarness.Log.LogView" static="true">
-    /// </field>
     /// <field name="_resizeController" type="Open.TestHarness.Shell.PanelResizeController" static="true">
     /// </field>
 }
@@ -55,39 +49,19 @@ Open.TestHarness.Application.main = function Open_TestHarness_Application$main(a
     /// <param name="args" type="Object">
     /// </param>
     Open.TestHarness.Application._resizeController = new Open.TestHarness.Shell.PanelResizeController();
-    Open.TestHarness.Application._log = new Open.TestHarness.Log.LogView($(Open.TestHarness.CssSelectors.logList).first());
-    for (var i = 0; i < 3; i++) {
-        Open.TestHarness.Application._log.write('Hello ' + i);
+    var logView = new Open.Core.Controls.LogView($(Open.TestHarness.CssSelectors.log).first());
+    Open.Core.Log.registerView(logView);
+    for (var i = 0; i < 50; i++) {
+        Open.Core.Log.write('Hello ' + i, Open.Core.LogSeverity.debug);
     }
-}
-
-
-Type.registerNamespace('Open.TestHarness.Log');
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.TestHarness.Log.LogView
-
-Open.TestHarness.Log.LogView = function Open_TestHarness_Log_LogView(divLogList) {
-    /// <param name="divLogList" type="jQueryObject">
-    /// The container of the log
-    /// </param>
-    Open.TestHarness.Log.LogView.initializeBase(this);
-    this.initialize(divLogList);
-}
-Open.TestHarness.Log.LogView.prototype = {
-    
-    write: function Open_TestHarness_Log_LogView$write(message) {
-        /// <summary>
-        /// Appends the given message to the log.
-        /// </summary>
-        /// <param name="message" type="String">
-        /// The message to write (HTML).
-        /// </param>
-        var div = Open.Core.Html.createElement(Open.Core.Html.div);
-        div.addClass(Open.TestHarness.CssSelectors.classLogListItem);
-        div.append(message);
-        div.appendTo(this.get_container());
-    }
+    Open.Core.Log.lineBreak();
+    Open.Core.Log.info('9999');
+    Open.Core.DelayedAction.invoke(2, function() {
+        Open.Core.Log.error('Error');
+        Open.Core.Log.debug('Foo');
+        Open.Core.Log.lineBreak();
+        Open.Core.Log.info('Yo');
+    });
 }
 
 
@@ -143,17 +117,13 @@ Open.TestHarness.Shell.PanelResizeController.prototype = {
 Open.TestHarness.CssSelectors.registerClass('Open.TestHarness.CssSelectors');
 Open.TestHarness.Elements.registerClass('Open.TestHarness.Elements');
 Open.TestHarness.Application.registerClass('Open.TestHarness.Application');
-Open.TestHarness.Log.LogView.registerClass('Open.TestHarness.Log.LogView', Open.Core.ViewBase);
 Open.TestHarness.Shell.PanelResizeController.registerClass('Open.TestHarness.Shell.PanelResizeController');
-Open.TestHarness.CssSelectors.classLogListItem = 'th-log-listItem';
 Open.TestHarness.CssSelectors.main = '#testHarness .th-main';
 Open.TestHarness.CssSelectors.sidebar = '#testHarness .th-sidebar';
 Open.TestHarness.CssSelectors.logTitlebar = '#testHarnessLog .th-log-titlebar';
-Open.TestHarness.CssSelectors.logList = '#testHarnessLog div.th-log-list';
-Open.TestHarness.CssSelectors.logListItem = '#testHarnessLog div.' + Open.TestHarness.CssSelectors.classLogListItem;
+Open.TestHarness.CssSelectors.log = '#testHarnessLog .coreLog';
 Open.TestHarness.Elements.root = 'testHarness';
 Open.TestHarness.Elements.outputLog = 'testHarnessLog';
-Open.TestHarness.Application._log = null;
 Open.TestHarness.Application._resizeController = null;
 Open.TestHarness.Shell.PanelResizeController._sidebarMinWidth = 200;
 Open.TestHarness.Shell.PanelResizeController._sidebarMaxWidthMargin = 80;
@@ -164,5 +134,5 @@ Open.TestHarness.Shell.PanelResizeController._outputLogMaxHeightMargin = 80;
 // -----------------------------------
 
 }
-ss.loader.registerScript('TestHarness.Script3', ['Open.Core.Script'], executeScript);
+ss.loader.registerScript('TestHarness.Script3', ['Open.Core.Views','Open.Core.Script'], executeScript);
 })();

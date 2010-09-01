@@ -2,12 +2,11 @@ using jQueryApi;
 
 namespace Open.Core
 {
-    /// <summary>Factory for constructing views.</summary>
+    /// <summary>Defined a model that is capable of creating the view for itself.</summary>
     public interface IViewFactory
     {
-        /// <summary>Creates a view with the given element.</summary>
-        /// <param name="element">The element to construct the view within.</param>
-        /// <param name="model">The logical model for the list-item.</param>
-        IView CreateView(jQueryObject element, object model);
+        /// <summary>Creates a view within the given element.</summary>
+        /// <param name="container">The element to construct the view within.</param>
+        IView CreateView(jQueryObject container);
     }
 }

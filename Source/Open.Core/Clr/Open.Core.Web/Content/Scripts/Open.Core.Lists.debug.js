@@ -64,9 +64,7 @@ Open.Core.Lists.ListCss.insertCss = function Open_Core_Lists_ListCss$insertCss()
     if (Open.Core.Lists.ListCss._isCssInserted) {
         return;
     }
-    if (!Open.Core.Css.isLinked(Open.Core.Lists.ListCss.url)) {
-        Open.Core.Css.insertLink(Open.Core.Lists.ListCss.url);
-    }
+    Open.Core.Css.insertLink(Open.Core.Lists.ListCss.url);
     Open.Core.Lists.ListCss._isCssInserted = true;
 }
 
@@ -514,11 +512,7 @@ Open.Core.Lists.ListView = function Open_Core_Lists_ListView(container) {
     /// <param name="container" type="jQueryObject">
     /// The containing element.
     /// </param>
-    /// <field name="__selectionChanged$2" type="EventHandler">
-    /// </field>
-    /// <field name="_itemFactory$2" type="Open.Core.IViewFactory">
-    /// </field>
-    /// <field name="_defaultItemFactory$2" type="Open.Core.IViewFactory">
+    /// <field name="_itemFactory$2" type="Open.Core.Lists._listItemFactory">
     /// </field>
     /// <field name="_selectionMode$2" type="Open.Core.Lists.ListSelectionMode">
     /// </field>
@@ -531,32 +525,7 @@ Open.Core.Lists.ListView = function Open_Core_Lists_ListView(container) {
     Open.Core.Lists.ListCss.insertCss();
 }
 Open.Core.Lists.ListView.prototype = {
-    
-    add_selectionChanged: function Open_Core_Lists_ListView$add_selectionChanged(value) {
-        /// <summary>
-        /// Fires when the item selection changes.
-        /// </summary>
-        /// <param name="value" type="Function" />
-        this.__selectionChanged$2 = ss.Delegate.combine(this.__selectionChanged$2, value);
-    },
-    remove_selectionChanged: function Open_Core_Lists_ListView$remove_selectionChanged(value) {
-        /// <summary>
-        /// Fires when the item selection changes.
-        /// </summary>
-        /// <param name="value" type="Function" />
-        this.__selectionChanged$2 = ss.Delegate.remove(this.__selectionChanged$2, value);
-    },
-    
-    __selectionChanged$2: null,
-    
-    _fireSelectionChanged$2: function Open_Core_Lists_ListView$_fireSelectionChanged$2() {
-        if (this.__selectionChanged$2 != null) {
-            this.__selectionChanged$2.invoke(this, new ss.EventArgs());
-        }
-    },
-    
     _itemFactory$2: null,
-    _defaultItemFactory$2: null,
     
     _onItemClick$2: function Open_Core_Lists_ListView$_onItemClick$2(e, view) {
         /// <param name="e" type="jQueryEvent">
@@ -582,20 +551,12 @@ Open.Core.Lists.ListView.prototype = {
         }
     },
     
-    get_itemFactory: function Open_Core_Lists_ListView$get_itemFactory() {
+    get__itemFactory$2: function Open_Core_Lists_ListView$get__itemFactory$2() {
         /// <summary>
         /// Gets or sets the factory that creates each item in the list.
         /// </summary>
-        /// <value type="Open.Core.IViewFactory"></value>
-        return this._itemFactory$2 || (this._defaultItemFactory$2 || (this._defaultItemFactory$2 = new Open.Core.Lists._listItemFactory()));
-    },
-    set_itemFactory: function Open_Core_Lists_ListView$set_itemFactory(value) {
-        /// <summary>
-        /// Gets or sets the factory that creates each item in the list.
-        /// </summary>
-        /// <value type="Open.Core.IViewFactory"></value>
-        this._itemFactory$2 = value;
-        return value;
+        /// <value type="Open.Core.Lists._listItemFactory"></value>
+        return this._itemFactory$2 || (this._itemFactory$2 = new Open.Core.Lists._listItemFactory());
     },
     
     get_selectionMode: function Open_Core_Lists_ListView$get_selectionMode() {
@@ -643,11 +604,10 @@ Open.Core.Lists.ListView.prototype = {
             var div = Open.Core.Html.appendDiv(this.get_container());
             div.appendTo(this.get_container());
         }
-        var factory = this.get_itemFactory();
         this.get_container().children(Open.Core.Html.div).each(ss.Delegate.create(this, function(index, element) {
             var div = $(element);
             var model = models[index];
-            var view = factory.createView(div, model);
+            var view = this.get__itemFactory$2().createView(div, model);
             var listItemView = Type.safeCast(view, Open.Core.Lists.IListItemView);
             this._views$2.add(view);
             if (listItemView != null) {
@@ -888,7 +848,7 @@ Open.Core.Lists._listTreePanel.registerClass('Open.Core.Lists._listTreePanel', O
 Open.Core.Lists.ListTreeView.registerClass('Open.Core.Lists.ListTreeView', Open.Core.ViewBase);
 Open.Core.Lists.ListView.registerClass('Open.Core.Lists.ListView', Open.Core.ViewBase);
 Open.Core.Lists.ListItemView.registerClass('Open.Core.Lists.ListItemView', Open.Core.ViewBase, Open.Core.Lists.IListItemView);
-Open.Core.Lists._listItemFactory.registerClass('Open.Core.Lists._listItemFactory', null, Open.Core.IViewFactory);
+Open.Core.Lists._listItemFactory.registerClass('Open.Core.Lists._listItemFactory');
 Open.Core.Lists.ListCss.url = '/Open.Core/Css/Core.Lists.css';
 Open.Core.Lists.ListCss._isCssInserted = false;
 Open.Core.Lists.ListCss.classes = new Open.Core.Lists.ListCssClasses();

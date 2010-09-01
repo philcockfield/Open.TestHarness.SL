@@ -65,6 +65,7 @@
     <Compile Include="Code\Identity\OpenIdAuthentication.cs" />
     <Compile Include="Code\Server\ServerProxy.cs" />
     <Compile Include="Code\Declarations\WebConstants.cs" />
+    <Compile Include="Controllers\ControlsController.cs" />
     <Compile Include="Controllers\JitController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>
@@ -75,7 +76,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core %28Open.Core\Clr\Open.Core%29</Name>
+      <Name>Open.Core %28Clr\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +86,9 @@
     <EmbeddedResource Include="Content\Css\Core.css" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Views\Controls\Log.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Scripts\CoreJQuery.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </EmbeddedResource>
@@ -117,6 +121,9 @@
     <EmbeddedResource Include="Content\Images\DropShadow.12.060.png" />
     <EmbeddedResource Include="Content\Images\DropShadow.12.005.png" />
     <EmbeddedResource Include="Content\Images\DropShadow.12.010.png" />
+    <EmbeddedResource Include="Content\Css\Core.Controls.css" />
+    <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.js" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

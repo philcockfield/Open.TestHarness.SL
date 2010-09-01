@@ -35,8 +35,8 @@ namespace Open.Library.Jit
             if (containerElement == null) throw new Exception("Container element not specified");
             this.containerElement = containerElement;
 
-            // Insert CSS.);
-            if (!Css.IsLinked(JitCss.HypertreeUrl)) Css.InsertLink(JitCss.HypertreeUrl);
+            // Insert CSS.
+            Css.InsertLink(JitCss.HypertreeUrl);
 
             // Wire up events.
             jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { OnWindowResized(); });

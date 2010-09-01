@@ -1,0 +1,11 @@
+// Open.Core.Views.js
+(function(){function executeScript(){
+Type.registerNamespace('Open.Core.Views');Open.Core.Views.LogView=function(divRoot){Open.Core.Views.LogView.initializeBase(this);this.initialize(divRoot);this.$2_4=new Open.Core.DelayedAction(0.05,ss.Delegate.create(this,this.$2_5));$(window).bind(Open.Core.DomEvents.resize,ss.Delegate.create(this,function($p1_0){
+this.$2_6();}));this.$2_6();}
+Open.Core.Views.LogView.prototype={$2_0:null,$2_1:null,$2_2:0,$2_3:0,$2_4:null,onDisposed:function(){this.clear();this.$2_4.dispose();Open.Core.Views.LogView.callBaseMethod(this, 'onDisposed');},$2_5:function(){if(this.$2_1==null){return;}Open.Core.Helper.get_scroll().toBottom(this.$2_0,this.get_scrollDuration(),'swing',null);},get_scrollDuration:function(){return this.$2_3;},set_scrollDuration:function(value){this.$2_3=value;return value;},onInitialize:function(divRoot){this.$2_0=divRoot.children(Open.Core.LogCss.list).first();Open.Core.Views.LogView.callBaseMethod(this, 'onInitialize',[divRoot]);},insert:function(message,cssClass){this.$2_2++;this.$2_1=Open.Core.Html.createDiv();this.$2_1.addClass(cssClass);this.$2_1.addClass(Open.Core.LogCss.listItemClass);this.$2_1.attr(Open.Core.Html.id,Open.Core.Helper.createId());var $0=Open.Core.Html.createSpan();$0.addClass(Open.Core.LogCss.counterClass);$0.append(this.$2_2.toString());var $1=Open.Core.Html.createDiv();$1.addClass(Open.Core.LogCss.messageClass);$1.append(message);$0.appendTo(this.$2_1);$1.appendTo(this.$2_1);this.$2_1.appendTo(this.$2_0);this.$2_4.start();},lineBreak:function(){if(this.$2_1==null){return;}this.$2_1.addClass(Open.Core.LogCss.lineBreakClass);},clear:function(){this.$2_4.stop();this.$2_2=0;this.$2_1=null;this.$2_0.html(String.Empty);},$2_6:function(){if(!this.get_isInitialized()){return;}this.$2_0.width(this.get_container().width());}}
+Open.Core.Views.LogView.registerClass('Open.Core.Views.LogView',Open.Core.ViewBase,Open.Core.ILogView);
+// ---- Do not remove this footer ----
+// This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)
+// -----------------------------------
+}
+ss.loader.registerScript('Open.Core.Views',['Open.Core.Script'],executeScript);})();

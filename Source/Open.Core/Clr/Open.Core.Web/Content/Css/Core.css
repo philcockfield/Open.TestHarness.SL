@@ -1,4 +1,4 @@
-﻿/* Global */
+﻿/* ----------- Global ----------- */
 html { overflow:hidden; }
 body * 
 { 
@@ -15,7 +15,7 @@ body
 div { -moz-user-select: none; }
 
 
-/* Common */
+/* ----------- Common ----------- */
 .absoluteFill
 {
     position:absolute;
@@ -28,14 +28,14 @@ div { -moz-user-select: none; }
 div.table { position:absolute; display:table; }
 
 
-/* Typography */
+/* ----------- Typography ----------- */
 .titleFont
 {
     font-family: 'Lucida Grande', 'Segoe UI', Tahoma, Helvetica, Arial, Verdana;
 }
 
 
-/* Borders */
+/* ----------- Borders ----------- */
 .panelBorder
 {
     border-style: solid;
@@ -46,7 +46,7 @@ div.table { position:absolute; display:table; }
 .panelBorderTop { border-top-width: 1px; }
 .panelBorderBottom { border-bottom-width: 1px; }
 
-/* Reflections */
+/* ----------- Reflections ----------- */
 .toolbarReflection
 {
     position:absolute;
@@ -58,7 +58,7 @@ div.table { position:absolute; display:table; }
     opacity:0.5; filter:alpha(opacity=50);
 }
 
-/* Drop Shadows */
+/* ----------- Drop Shadows ----------- */
 .dropShadow
 {
     background-image:url(/Open.Core/Images/DropShadow.12.030.png);
@@ -67,7 +67,7 @@ div.table { position:absolute; display:table; }
 }
 
 
-/* Vertical Alignment */
+/* ----------- Vertical Alignment ----------- */
 .verticalAlignContainer { display:table; width:100%; height:100%; }
 .verticalAlign
 {

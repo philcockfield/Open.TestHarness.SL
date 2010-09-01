@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
-    <Compile Include="Log\LogView.cs" />
     <Compile Include="Shell\PanelResizeController.cs" />
     <Content Include="Properties\TestHarness.Script3.ruleset" />
     <Content Include="Properties\TestHarness.Script3.script" />
@@ -58,6 +57,10 @@
     <Folder Include="Base Classes\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Views\Open.Core.Controls.csproj">
+      <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
+      <Name>Open.Core.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core\Open.Core.csproj">
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>
       <Name>Open.Core %28Script\Open.Core%29</Name>

@@ -23,6 +23,10 @@ namespace Open.TestHarness.Web.Controllers
             ViewModel.OutputTitle = GetResource(KeyOutputTitle);
             return View(ViewModel);
         }
+
+        public virtual ActionResult TEMP() { return View(); }
+        public virtual ActionResult TEMP2() { return View(); }
+
         #endregion
     }
 }

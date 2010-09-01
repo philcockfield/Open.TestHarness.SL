@@ -14,6 +14,10 @@ namespace Open.Core
         // Attributes.
         public const string Id = "id";
         public const string Href = "href";
+
+        // Properties.
+        public const string ScrollTop = "scrollTop";
+        public const string ScrollHeight = "scrollHeight";
         #endregion
 
         #region Methods
@@ -31,6 +35,12 @@ namespace Open.Core
             CreateElement(tag).AppendTo(parent);
             return parent.Last().Contents();
         }
+
+        /// <summary>Creates a DIV element.</summary>
+        public static jQueryObject CreateDiv() { return CreateElement(Div); }
+
+        /// <summary>Creates a SPAN element.</summary>
+        public static jQueryObject CreateSpan() { return CreateElement(Span); }
 
         /// <summary>Creates a new element with the given tag.</summary>
         /// <param name="tag">The HTML tag.</param>

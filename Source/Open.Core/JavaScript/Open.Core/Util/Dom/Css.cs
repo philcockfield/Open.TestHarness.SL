@@ -78,13 +78,16 @@ namespace Open.Core
         #endregion
 
         #region Methods : <link type='text/css' />
-        /// <summary>Inserts a CSS link witin the document head.</summary>
+        /// <summary>Inserts a CSS link within the document head (only if the CSS is not already present).</summary>
         /// <param name="url">The URL of the CSS to load.</param>
-        public static void InsertLink(string url)
+        /// <returns>True if the link was inserted, of False if the link was already present.</returns>
+        public static bool InsertLink(string url)
         {
+            if (IsLinked(url)) return false;
             jQuery
                 .Select(Html.Head)
                 .Append(string.Format("<link rel='Stylesheet' href='{0}' type='text/css' />", url));
+            return true;
         }
 
         /// <summary>Determines whether the specified URL has a link within the page.</summary>
@@ -142,5 +145,6 @@ namespace Open.Core
     public class CoreCssClasses
     {
         public readonly string TitleFont = "titleFont";
+        public readonly string AbsoluteFill = "absoluteFill";
     }
 }

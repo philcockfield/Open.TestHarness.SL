@@ -66,13 +66,9 @@
       <DependentUpon>TestHarnessStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Code\Base Classes\ControllerBase.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestHarnessController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="HomeController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedController.generated.cs">

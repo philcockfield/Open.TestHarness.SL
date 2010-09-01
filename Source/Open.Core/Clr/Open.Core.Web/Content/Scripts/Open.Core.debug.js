@@ -45,6 +45,64 @@ Open.Core.VerticalDirection.registerEnum('Open.Core.VerticalDirection', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.LogSeverity
+
+Open.Core.LogSeverity = function() { 
+    /// <summary>
+    /// Flags indicating the level of severity of a message being written to the log.
+    /// </summary>
+    /// <field name="info" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="debug" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="warning" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="error" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.LogSeverity.prototype = {
+    info: 0, 
+    debug: 1, 
+    warning: 2, 
+    error: 3
+}
+Open.Core.LogSeverity.registerEnum('Open.Core.LogSeverity', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.ILog
+
+Open.Core.ILog = function() { 
+    /// <summary>
+    /// An output log.
+    /// </summary>
+};
+Open.Core.ILog.prototype = {
+    write : null,
+    lineBreak : null,
+    clear : null,
+    registerView : null
+}
+Open.Core.ILog.registerInterface('Open.Core.ILog');
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.ILogView
+
+Open.Core.ILogView = function() { 
+    /// <summary>
+    /// A visual representation of a log.
+    /// </summary>
+};
+Open.Core.ILogView.prototype = {
+    insert : null,
+    lineBreak : null,
+    clear : null
+}
+Open.Core.ILogView.registerInterface('Open.Core.ILogView');
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.IModel
 
 Open.Core.IModel = function() { 
@@ -108,7 +166,7 @@ Open.Core.INotifyPropertyChanged.registerInterface('Open.Core.INotifyPropertyCha
 
 Open.Core.IViewFactory = function() { 
     /// <summary>
-    /// Factory for constructing views.
+    /// Defined a model that is capable of creating the view for itself.
     /// </summary>
 };
 Open.Core.IViewFactory.prototype = {
@@ -660,6 +718,199 @@ Open.Core.PropertyChangedEventArgs.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Log
+
+Open.Core.Log = function Open_Core_Log() {
+    /// <summary>
+    /// Static log writer.
+    /// </summary>
+    /// <field name="_writer" type="Open.Core.LogWriter" static="true">
+    /// </field>
+}
+Open.Core.Log.get__writer = function Open_Core_Log$get__writer() {
+    /// <summary>
+    /// Gets the specific log-writer instance that the static methods write to.
+    /// </summary>
+    /// <value type="Open.Core.LogWriter"></value>
+    return Open.Core.Log._writer || (Open.Core.Log._writer = new Open.Core.LogWriter());
+}
+Open.Core.Log.info = function Open_Core_Log$info(message) {
+    /// <summary>
+    /// Writes a informational message to the log.
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The messge to write (HTML).
+    /// </param>
+    Open.Core.Log.write(message, Open.Core.LogSeverity.info);
+}
+Open.Core.Log.debug = function Open_Core_Log$debug(message) {
+    /// <summary>
+    /// Writes a debug message to the log.
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The messge to write (HTML).
+    /// </param>
+    Open.Core.Log.write(message, Open.Core.LogSeverity.debug);
+}
+Open.Core.Log.warning = function Open_Core_Log$warning(message) {
+    /// <summary>
+    /// Writes a warning to the log.
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The messge to write (HTML).
+    /// </param>
+    Open.Core.Log.write(message, Open.Core.LogSeverity.warning);
+}
+Open.Core.Log.error = function Open_Core_Log$error(message) {
+    /// <summary>
+    /// Writes a error message message to the log.
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The messge to write (HTML).
+    /// </param>
+    Open.Core.Log.write(message, Open.Core.LogSeverity.error);
+}
+Open.Core.Log.write = function Open_Core_Log$write(message, severity) {
+    /// <summary>
+    /// Writes a message to the log.
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The message to write (HTML).
+    /// </param>
+    /// <param name="severity" type="Open.Core.LogSeverity">
+    /// The severity of the message.
+    /// </param>
+    Open.Core.Log.get__writer().write(message, severity);
+}
+Open.Core.Log.clear = function Open_Core_Log$clear() {
+    /// <summary>
+    /// Clears the log.
+    /// </summary>
+    Open.Core.Log.get__writer().clear();
+}
+Open.Core.Log.lineBreak = function Open_Core_Log$lineBreak() {
+    /// <summary>
+    /// Inserts a line break to the log.
+    /// </summary>
+    Open.Core.Log.get__writer().lineBreak();
+}
+Open.Core.Log.registerView = function Open_Core_Log$registerView(view) {
+    /// <summary>
+    /// Registers a log viewer to emit output to (multiple views can be associated with the log).
+    /// </summary>
+    /// <param name="view" type="Open.Core.ILogView">
+    /// The log view to emit to.
+    /// </param>
+    Open.Core.Log.get__writer().registerView(view);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.LogWriter
+
+Open.Core.LogWriter = function Open_Core_LogWriter() {
+    /// <summary>
+    /// An output log.
+    /// </summary>
+    /// <field name="_views$1" type="Array">
+    /// </field>
+    this._views$1 = [];
+    Open.Core.LogWriter.initializeBase(this);
+    Open.Core.Css.insertLink(Open.Core.LogCss.url);
+}
+Open.Core.LogWriter.prototype = {
+    
+    onDisposed: function Open_Core_LogWriter$onDisposed() {
+        /// <summary>
+        /// Destructor.
+        /// </summary>
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
+        while ($enum1.moveNext()) {
+            var view = $enum1.get_current();
+            var disposable = Type.safeCast(view, ss.IDisposable);
+            if (disposable != null) {
+                disposable.dispose();
+            }
+        }
+        Open.Core.LogWriter.callBaseMethod(this, 'onDisposed');
+    },
+    
+    write: function Open_Core_LogWriter$write(message, severity) {
+        /// <param name="message" type="String">
+        /// </param>
+        /// <param name="severity" type="Open.Core.LogSeverity">
+        /// </param>
+        var css = Open.Core.LogCss.severityClass(severity);
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
+        while ($enum1.moveNext()) {
+            var view = $enum1.get_current();
+            view.insert(message, css);
+        }
+    },
+    
+    lineBreak: function Open_Core_LogWriter$lineBreak() {
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
+        while ($enum1.moveNext()) {
+            var view = $enum1.get_current();
+            view.lineBreak();
+        }
+    },
+    
+    clear: function Open_Core_LogWriter$clear() {
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
+        while ($enum1.moveNext()) {
+            var view = $enum1.get_current();
+            view.clear();
+        }
+    },
+    
+    registerView: function Open_Core_LogWriter$registerView(view) {
+        /// <param name="view" type="Open.Core.ILogView">
+        /// </param>
+        if (view != null) {
+            this._views$1.add(view);
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.LogCss
+
+Open.Core.LogCss = function Open_Core_LogCss() {
+    /// <summary>
+    /// CSS constants for the log.
+    /// </summary>
+    /// <field name="url" type="String" static="true">
+    /// </field>
+    /// <field name="_rootClass" type="String" static="true">
+    /// </field>
+    /// <field name="listItemClass" type="String" static="true">
+    /// </field>
+    /// <field name="lineBreakClass" type="String" static="true">
+    /// </field>
+    /// <field name="counterClass" type="String" static="true">
+    /// </field>
+    /// <field name="messageClass" type="String" static="true">
+    /// </field>
+    /// <field name="list" type="String" static="true">
+    /// </field>
+    /// <field name="listItem" type="String" static="true">
+    /// </field>
+}
+Open.Core.LogCss.severityClass = function Open_Core_LogCss$severityClass(severity) {
+    /// <summary>
+    /// Retrieves a CSS class for the given severity level.
+    /// </summary>
+    /// <param name="severity" type="Open.Core.LogSeverity">
+    /// The severity of the log message.
+    /// </param>
+    /// <returns type="String"></returns>
+    return String.format('{0}-{1}', Open.Core.LogCss._rootClass, Open.Core.LogSeverity.toString(severity));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.PropertyBinding
 
 Open.Core.PropertyBinding = function Open_Core_PropertyBinding(source, target) {
@@ -1131,6 +1382,10 @@ Open.Core.Html = function Open_Core_Html() {
     /// </field>
     /// <field name="href" type="String" static="true">
     /// </field>
+    /// <field name="scrollTop" type="String" static="true">
+    /// </field>
+    /// <field name="scrollHeight" type="String" static="true">
+    /// </field>
 }
 Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
     /// <summary>
@@ -1155,6 +1410,20 @@ Open.Core.Html.append = function Open_Core_Html$append(parent, tag) {
     /// <returns type="jQueryObject"></returns>
     Open.Core.Html.createElement(tag).appendTo(parent);
     return parent.last().contents();
+}
+Open.Core.Html.createDiv = function Open_Core_Html$createDiv() {
+    /// <summary>
+    /// Creates a DIV element.
+    /// </summary>
+    /// <returns type="jQueryObject"></returns>
+    return Open.Core.Html.createElement(Open.Core.Html.div);
+}
+Open.Core.Html.createSpan = function Open_Core_Html$createSpan() {
+    /// <summary>
+    /// Creates a SPAN element.
+    /// </summary>
+    /// <returns type="jQueryObject"></returns>
+    return Open.Core.Html.createElement(Open.Core.Html.span);
 }
 Open.Core.Html.createElement = function Open_Core_Html$createElement(tag) {
     /// <summary>
@@ -1253,12 +1522,17 @@ Open.Core.Css._prependSelectorPrefix = function Open_Core_Css$_prependSelectorPr
 }
 Open.Core.Css.insertLink = function Open_Core_Css$insertLink(url) {
     /// <summary>
-    /// Inserts a CSS link witin the document head.
+    /// Inserts a CSS link within the document head (only if the CSS is not already present).
     /// </summary>
     /// <param name="url" type="String">
     /// The URL of the CSS to load.
     /// </param>
+    /// <returns type="Boolean"></returns>
+    if (Open.Core.Css.isLinked(url)) {
+        return false;
+    }
     $(Open.Core.Html.head).append(String.format('<link rel=\'Stylesheet\' href=\'{0}\' type=\'text/css\' />', url));
+    return true;
 }
 Open.Core.Css.isLinked = function Open_Core_Css$isLinked(url) {
     /// <summary>
@@ -1339,9 +1613,12 @@ Open.Core.Css.applyDropshadow = function Open_Core_Css$applyDropshadow(element, 
 Open.Core.CoreCssClasses = function Open_Core_CoreCssClasses() {
     /// <field name="titleFont" type="String">
     /// </field>
+    /// <field name="absoluteFill" type="String">
+    /// </field>
 }
 Open.Core.CoreCssClasses.prototype = {
-    titleFont: 'titleFont'
+    titleFont: 'titleFont',
+    absoluteFill: 'absoluteFill'
 }
 
 
@@ -1538,6 +1815,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_numberHelper" type="Open.Core.Helpers.NumberHelper" static="true">
     /// </field>
+    /// <field name="_scrollHelper" type="Open.Core.Helpers.ScrollHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -1590,6 +1869,13 @@ Open.Core.Helper.get_number = function Open_Core_Helper$get_number() {
     /// <value type="Open.Core.Helpers.NumberHelper"></value>
     return Open.Core.Helper._numberHelper || (Open.Core.Helper._numberHelper = new Open.Core.Helpers.NumberHelper());
 }
+Open.Core.Helper.get_scroll = function Open_Core_Helper$get_scroll() {
+    /// <summary>
+    /// Gets the helper for working with scrolling.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.ScrollHelper"></value>
+    return Open.Core.Helper._scrollHelper || (Open.Core.Helper._scrollHelper = new Open.Core.Helpers.ScrollHelper());
+}
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
     /// Invokes the given action if it's not Null/Undefined.
@@ -1641,6 +1927,41 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             list.add(item);
         }
         return list;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.ScrollHelper
+
+Open.Core.Helpers.ScrollHelper = function Open_Core_Helpers_ScrollHelper() {
+    /// <summary>
+    /// Utility methods for scrolling.
+    /// </summary>
+}
+Open.Core.Helpers.ScrollHelper.prototype = {
+    
+    toBottom: function Open_Core_Helpers_ScrollHelper$toBottom(container, duration, easing, onComplete) {
+        /// <summary>
+        /// Scrolls to the specified element.
+        /// </summary>
+        /// <param name="container" type="jQueryObject">
+        /// The element to scroll to.
+        /// </param>
+        /// <param name="duration" type="Number">
+        /// The duration of the scroll animation (in seconds).
+        /// </param>
+        /// <param name="easing" type="EffectEasing">
+        /// The easing effect to apply.
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// Action to invoke on complete.
+        /// </param>
+        var props = {};
+        props[Open.Core.Html.scrollTop] = container.attr(Open.Core.Html.scrollHeight);
+        container.animate(props, Open.Core.Helper.get_number().toMsecs(duration), easing, ss.Delegate.create(this, function() {
+            Open.Core.Helper.invokeOrDefault(onComplete);
+        }));
     }
 }
 
@@ -1993,34 +2314,42 @@ Open.Core.Helpers.ScriptLoadHelper = function Open_Core_Helpers_ScriptLoadHelper
     /// <summary>
     /// Utility methods for loading scripts.
     /// </summary>
-    /// <field name="_rootScriptFolder" type="String">
+    /// <field name="propIsListsLoaded" type="String" static="true">
     /// </field>
-    /// <field name="_useDebug" type="Boolean">
+    /// <field name="propIsViewsLoaded" type="String" static="true">
     /// </field>
-    /// <field name="_jit" type="Open.Core.Helpers.JitScriptLoader">
+    /// <field name="_rootScriptFolder$1" type="String">
     /// </field>
-    /// <field name="_isListsLoaded" type="Boolean">
+    /// <field name="_useDebug$1" type="Boolean">
     /// </field>
+    /// <field name="_jit$1" type="Open.Core.Helpers.JitScriptLoader">
+    /// </field>
+    /// <field name="_isListsLoaded$1" type="Boolean">
+    /// </field>
+    /// <field name="_isViewsLoaded$1" type="Boolean">
+    /// </field>
+    Open.Core.Helpers.ScriptLoadHelper.initializeBase(this);
 }
 Open.Core.Helpers.ScriptLoadHelper.prototype = {
-    _rootScriptFolder: '/Open.Core/Scripts/',
-    _useDebug: false,
-    _jit: null,
-    _isListsLoaded: false,
+    _rootScriptFolder$1: '/Open.Core/Scripts/',
+    _useDebug$1: false,
+    _jit$1: null,
+    _isListsLoaded$1: false,
+    _isViewsLoaded$1: false,
     
     get_useDebug: function Open_Core_Helpers_ScriptLoadHelper$get_useDebug() {
         /// <summary>
         /// Gets or sets whether the debug version of scripts should be used.
         /// </summary>
         /// <value type="Boolean"></value>
-        return this._useDebug;
+        return this._useDebug$1;
     },
     set_useDebug: function Open_Core_Helpers_ScriptLoadHelper$set_useDebug(value) {
         /// <summary>
         /// Gets or sets whether the debug version of scripts should be used.
         /// </summary>
         /// <value type="Boolean"></value>
-        this._useDebug = value;
+        this._useDebug$1 = value;
         return value;
     },
     
@@ -2029,14 +2358,14 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// Gets or sets the root folder where the script libraries are housed.
         /// </summary>
         /// <value type="String"></value>
-        return this._rootScriptFolder;
+        return this._rootScriptFolder$1;
     },
     set_rootScriptFolder: function Open_Core_Helpers_ScriptLoadHelper$set_rootScriptFolder(value) {
         /// <summary>
         /// Gets or sets the root folder where the script libraries are housed.
         /// </summary>
         /// <value type="String"></value>
-        this._rootScriptFolder = value;
+        this._rootScriptFolder$1 = value;
         return value;
     },
     
@@ -2045,7 +2374,7 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// Gets the JIT (visualization library) loader.
         /// </summary>
         /// <value type="Open.Core.Helpers.JitScriptLoader"></value>
-        return this._jit || (this._jit = new Open.Core.Helpers.JitScriptLoader());
+        return this._jit$1 || (this._jit$1 = new Open.Core.Helpers.JitScriptLoader());
     },
     
     get_isListsLoaded: function Open_Core_Helpers_ScriptLoadHelper$get_isListsLoaded() {
@@ -2053,7 +2382,41 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// Gets whether the Lists library has been loaded.
         /// </summary>
         /// <value type="Boolean"></value>
-        return this._isListsLoaded;
+        return this._isListsLoaded$1;
+    },
+    set_isListsLoaded: function Open_Core_Helpers_ScriptLoadHelper$set_isListsLoaded(value) {
+        /// <summary>
+        /// Gets whether the Lists library has been loaded.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        this._isListsLoaded$1 = value;
+        return value;
+    },
+    
+    get_isViewsLoaded: function Open_Core_Helpers_ScriptLoadHelper$get_isViewsLoaded() {
+        /// <summary>
+        /// Gets whether the Views library has been loaded.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        return this._isViewsLoaded$1;
+    },
+    set_isViewsLoaded: function Open_Core_Helpers_ScriptLoadHelper$set_isViewsLoaded(value) {
+        /// <summary>
+        /// Gets whether the Views library has been loaded.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        this._isViewsLoaded$1 = value;
+        return value;
+    },
+    
+    loadViews: function Open_Core_Helpers_ScriptLoadHelper$loadViews(callback) {
+        /// <summary>
+        /// Loads the Views library.
+        /// </summary>
+        /// <param name="callback" type="Action">
+        /// Callback to invoke upon completion.
+        /// </param>
+        this._load$1('Open.Core.Views', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded), callback);
     },
     
     loadLists: function Open_Core_Helpers_ScriptLoadHelper$loadLists(callback) {
@@ -2063,17 +2426,7 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// <param name="callback" type="Action">
         /// Callback to invoke upon completion.
         /// </param>
-        if (this.get_isListsLoaded()) {
-            Open.Core.Helper.invokeOrDefault(callback);
-            return;
-        }
-        var loader = new Open.Core.Helpers.ScriptLoader();
-        loader.add_loadComplete(ss.Delegate.create(this, function() {
-            this._isListsLoaded = true;
-            Open.Core.Helper.invokeOrDefault(callback);
-        }));
-        loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, 'Open.Core.Lists', true));
-        loader.start();
+        this._load$1('Open.Core.Lists', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded), callback);
     },
     
     _url: function Open_Core_Helpers_ScriptLoadHelper$_url(path, fileName, hasDebug) {
@@ -2095,6 +2448,26 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// <returns type="String"></returns>
         var debug = (hasDebug && this.get_useDebug()) ? '.debug' : null;
         return String.format('{0}{1}.js', name, debug);
+    },
+    
+    _load$1: function Open_Core_Helpers_ScriptLoadHelper$_load$1(scriptName, isLoadedProperty, callback) {
+        /// <param name="scriptName" type="String">
+        /// </param>
+        /// <param name="isLoadedProperty" type="Open.Core.PropertyRef">
+        /// </param>
+        /// <param name="callback" type="Action">
+        /// </param>
+        if (isLoadedProperty.get_value()) {
+            Open.Core.Helper.invokeOrDefault(callback);
+            return;
+        }
+        var loader = new Open.Core.Helpers.ScriptLoader();
+        loader.add_loadComplete(ss.Delegate.create(this, function() {
+            isLoadedProperty.set_value(true);
+            Open.Core.Helper.invokeOrDefault(callback);
+        }));
+        loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, scriptName, true));
+        loader.start();
     }
 }
 
@@ -2645,6 +3018,9 @@ Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel,
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
 Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
+Open.Core.Log.registerClass('Open.Core.Log');
+Open.Core.LogWriter.registerClass('Open.Core.LogWriter', Open.Core.ModelBase, Open.Core.ILog);
+Open.Core.LogCss.registerClass('Open.Core.LogCss');
 Open.Core.PropertyBinding.registerClass('Open.Core.PropertyBinding', null, ss.IDisposable);
 Open.Core.PropertyDef.registerClass('Open.Core.PropertyDef');
 Open.Core.PropertyRef.registerClass('Open.Core.PropertyRef', Open.Core.PropertyDef);
@@ -2658,6 +3034,7 @@ Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
+Open.Core.Helpers.ScrollHelper.registerClass('Open.Core.Helpers.ScrollHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
 Open.Core.Helpers.NumberHelper.registerClass('Open.Core.Helpers.NumberHelper');
 Open.Core.Helpers.ReflectionHelper.registerClass('Open.Core.Helpers.ReflectionHelper');
@@ -2665,13 +3042,22 @@ Open.Core.Helpers.JitScriptLoader.registerClass('Open.Core.Helpers.JitScriptLoad
 Open.Core.Helpers.StringHelper.registerClass('Open.Core.Helpers.StringHelper');
 Open.Core.Helpers.ResourceLoader.registerClass('Open.Core.Helpers.ResourceLoader');
 Open.Core.Helpers.ScriptLoader.registerClass('Open.Core.Helpers.ScriptLoader', Open.Core.Helpers.ResourceLoader);
-Open.Core.Helpers.ScriptLoadHelper.registerClass('Open.Core.Helpers.ScriptLoadHelper');
+Open.Core.Helpers.ScriptLoadHelper.registerClass('Open.Core.Helpers.ScriptLoadHelper', Open.Core.ModelBase);
 Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper');
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
+Open.Core.Log._writer = null;
+Open.Core.LogCss.url = '/Open.Core/Css/Core.Controls.css';
+Open.Core.LogCss._rootClass = 'coreLog';
+Open.Core.LogCss.listItemClass = 'coreLog-listItem';
+Open.Core.LogCss.lineBreakClass = 'coreLog-lineBreak';
+Open.Core.LogCss.counterClass = 'coreLog-counter';
+Open.Core.LogCss.messageClass = 'coreLog-message';
+Open.Core.LogCss.list = 'div.' + Open.Core.LogCss._rootClass + '-list';
+Open.Core.LogCss.listItem = '.' + Open.Core.LogCss.listItemClass;
 Open.Core.PropertyDef._singletons = null;
 Open.Core.DelayedAction._nullTimerId = -1;
 Open.Core.DelayedAction._isAsyncronous = true;
@@ -2681,6 +3067,8 @@ Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
 Open.Core.Html.id = 'id';
 Open.Core.Html.href = 'href';
+Open.Core.Html.scrollTop = 'scrollTop';
+Open.Core.Html.scrollHeight = 'scrollHeight';
 Open.Core.Css.left = 'left';
 Open.Core.Css.right = 'right';
 Open.Core.Css.top = 'top';
@@ -2701,8 +3089,11 @@ Open.Core.Helper._scriptLoadHelper = null;
 Open.Core.Helper._collectionHelper = null;
 Open.Core.Helper._stringHelper = null;
 Open.Core.Helper._numberHelper = null;
+Open.Core.Helper._scrollHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
+Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
+Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';
 Open.Core.UI.PanelResizerBase._eventStart = 'start';
 Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';

@@ -10,16 +10,18 @@
 
     <!-- CSS -->
     <link rel="Stylesheet" href="/Open.Core/Css/Core.css" type="text/css" />
+    <link rel="Stylesheet" href="/Open.Core/Css/Core.Controls.css" type="text/css" />
     <link rel="Stylesheet" href="/Content/Css/Open.TestHarness.css" type="text/css" />
-
-    <% Html.InsertCoreJQuery();%>
 
     <!-- TypeKit -->
     <script type="text/javascript" src="http://use.typekit.com/pdx3yro.js"></script>
     <script type="text/javascript">try { Typekit.load(); } catch (e) { }</script>   
-
-    <!-- Core & TestHarness -->
+    
+    <% Html.InsertCoreJQuery();%>
     <% Html.InsertCoreScripts();%>
+    <script src="/Open.Core/Scripts/Open.Core.Controls.js" type="text/javascript"></script>
+
+    <!-- TestHarness -->
     <script src="/Scripts/TestHarness/Open.TestHarness.debug.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {

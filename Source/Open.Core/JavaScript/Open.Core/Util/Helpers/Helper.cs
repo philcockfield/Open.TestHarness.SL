@@ -14,6 +14,7 @@ namespace Open.Core
         private static CollectionHelper CollectionHelper;
         private static StringHelper StringHelper;
         private static NumberHelper NumberHelper;
+        private static ScrollHelper ScrollHelper;
 
         private static int idCounter;
         #endregion
@@ -39,6 +40,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with numbers.</summary>
         public static NumberHelper Number { get { return NumberHelper ?? (NumberHelper = new NumberHelper()); } }
+
+        /// <summary>Gets the helper for working with scrolling.</summary>
+        public static ScrollHelper Scroll { get { return ScrollHelper ?? (ScrollHelper = new ScrollHelper()); } }
         #endregion
 
         #region Methods
