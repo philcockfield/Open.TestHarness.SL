@@ -1,3 +1,4 @@
+using System;
 using jQueryApi;
 
 namespace Open.Core.Controls
@@ -12,15 +13,17 @@ namespace Open.Core.Controls
         private readonly DelayedAction scrollDelay;
 
         /// <summary>Constructor.</summary>
-        /// <param name="divRoot">The container of the log</param>
-        public LogView(jQueryObject divRoot)
+        /// <param name="container">The container of the log</param>
+        public LogView(jQueryObject container)
         {
             // Setup initial conditions.
-            Initialize(divRoot);
+            Initialize(container);
             scrollDelay = new DelayedAction(0.05, OnScrollDelayElapsed);
 
             // Wire up events.
             jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { UpdateVisualState(); });
+            GlobalEvents.HorizontalPanelResized += delegate { UpdateVisualState(); };
+            GlobalEvents.VerticalPanelResized += delegate { scrollDelay.Start(); };
 
             // Finish up.
             UpdateVisualState();
@@ -52,10 +55,10 @@ namespace Open.Core.Controls
         #endregion
 
         #region Methods : ILogView
-        protected override void OnInitialize(jQueryObject divRoot)
+        protected override void OnInitialize(jQueryObject container)
         {
-            divList = divRoot.Children(LogCss.List).First();
-            base.OnInitialize(divRoot);
+            divList = container.Children(LogCss.List).First();
+            base.OnInitialize(container);
         }
 
         public void Insert(string message, string cssClass)

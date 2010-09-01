@@ -718,6 +718,82 @@ Open.Core.PropertyChangedEventArgs.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.GlobalEvents
+
+Open.Core.GlobalEvents = function Open_Core_GlobalEvents() {
+    /// <field name="__panelResized" type="EventHandler" static="true">
+    /// </field>
+    /// <field name="__horizontalPanelResized" type="EventHandler" static="true">
+    /// </field>
+    /// <field name="__verticalPanelResized" type="EventHandler" static="true">
+    /// </field>
+}
+Open.Core.GlobalEvents.add_panelResized = function Open_Core_GlobalEvents$add_panelResized(value) {
+    /// <summary>
+    /// Fires when any PanelResizer is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__panelResized = ss.Delegate.combine(Open.Core.GlobalEvents.__panelResized, value);
+}
+Open.Core.GlobalEvents.remove_panelResized = function Open_Core_GlobalEvents$remove_panelResized(value) {
+    /// <summary>
+    /// Fires when any PanelResizer is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__panelResized = ss.Delegate.remove(Open.Core.GlobalEvents.__panelResized, value);
+}
+Open.Core.GlobalEvents._firePanelResized = function Open_Core_GlobalEvents$_firePanelResized(sender) {
+    /// <param name="sender" type="Object">
+    /// </param>
+    if (Open.Core.GlobalEvents.__panelResized != null) {
+        Open.Core.GlobalEvents.__panelResized.invoke(sender, new ss.EventArgs());
+    }
+}
+Open.Core.GlobalEvents.add_horizontalPanelResized = function Open_Core_GlobalEvents$add_horizontalPanelResized(value) {
+    /// <summary>
+    /// Fires when any HorizontalPanelResizer is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__horizontalPanelResized = ss.Delegate.combine(Open.Core.GlobalEvents.__horizontalPanelResized, value);
+}
+Open.Core.GlobalEvents.remove_horizontalPanelResized = function Open_Core_GlobalEvents$remove_horizontalPanelResized(value) {
+    /// <summary>
+    /// Fires when any HorizontalPanelResizer is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__horizontalPanelResized = ss.Delegate.remove(Open.Core.GlobalEvents.__horizontalPanelResized, value);
+}
+Open.Core.GlobalEvents._fireHorizontalPanelResized = function Open_Core_GlobalEvents$_fireHorizontalPanelResized(sender) {
+    /// <param name="sender" type="Object">
+    /// </param>
+    if (Open.Core.GlobalEvents.__horizontalPanelResized != null) {
+        Open.Core.GlobalEvents.__horizontalPanelResized.invoke(sender, new ss.EventArgs());
+    }
+}
+Open.Core.GlobalEvents.add_verticalPanelResized = function Open_Core_GlobalEvents$add_verticalPanelResized(value) {
+    /// <summary>
+    /// Fires when any VerticalPanelResizer is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__verticalPanelResized = ss.Delegate.combine(Open.Core.GlobalEvents.__verticalPanelResized, value);
+}
+Open.Core.GlobalEvents.remove_verticalPanelResized = function Open_Core_GlobalEvents$remove_verticalPanelResized(value) {
+    /// <summary>
+    /// Fires when any VerticalPanelResizer is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__verticalPanelResized = ss.Delegate.remove(Open.Core.GlobalEvents.__verticalPanelResized, value);
+}
+Open.Core.GlobalEvents._fireVerticalPanelResized = function Open_Core_GlobalEvents$_fireVerticalPanelResized(sender) {
+    /// <param name="sender" type="Object">
+    /// </param>
+    if (Open.Core.GlobalEvents.__verticalPanelResized != null) {
+        Open.Core.GlobalEvents.__verticalPanelResized.invoke(sender, new ss.EventArgs());
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Log
 
 Open.Core.Log = function Open_Core_Log() {
@@ -2615,6 +2691,11 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         this.get_panel().css(Open.Core.Css.width, size + Open.Core.Css.px);
     },
     
+    fireResized: function Open_Core_UI_HorizontalPanelResizer$fireResized() {
+        Open.Core.UI.HorizontalPanelResizer.callBaseMethod(this, 'fireResized');
+        Open.Core.GlobalEvents._fireHorizontalPanelResized(this);
+    },
+    
     _setMinMaxWidth$1: function Open_Core_UI_HorizontalPanelResizer$_setMinMaxWidth$1() {
         this._setMinWidth$1();
         this._setMaxWidth$1();
@@ -2705,6 +2786,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
         if (this.__resized != null) {
             this.__resized.invoke(this, new ss.EventArgs());
         }
+        Open.Core.GlobalEvents._firePanelResized(this);
     },
     
     add_resizeStarted: function Open_Core_UI_PanelResizerBase$add_resizeStarted(value) {
@@ -2998,6 +3080,11 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         this.get_panel().css(Open.Core.Css.height, size + Open.Core.Css.px);
     },
     
+    fireResized: function Open_Core_UI_VerticalPanelResizer$fireResized() {
+        Open.Core.UI.VerticalPanelResizer.callBaseMethod(this, 'fireResized');
+        Open.Core.GlobalEvents._fireVerticalPanelResized(this);
+    },
+    
     _setMinMaxHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMinMaxHeight$1() {
         this._setMinHeight$1();
         this._setMaxHeight$1();
@@ -3018,6 +3105,7 @@ Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel,
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
 Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
+Open.Core.GlobalEvents.registerClass('Open.Core.GlobalEvents');
 Open.Core.Log.registerClass('Open.Core.Log');
 Open.Core.LogWriter.registerClass('Open.Core.LogWriter', Open.Core.ModelBase, Open.Core.ILog);
 Open.Core.LogCss.registerClass('Open.Core.LogCss');
@@ -3049,6 +3137,9 @@ Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelR
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
+Open.Core.GlobalEvents.__panelResized = null;
+Open.Core.GlobalEvents.__horizontalPanelResized = null;
+Open.Core.GlobalEvents.__verticalPanelResized = null;
 Open.Core.Log._writer = null;
 Open.Core.LogCss.url = '/Open.Core/Css/Core.Controls.css';
 Open.Core.LogCss._rootClass = 'coreLog';

@@ -78,6 +78,12 @@ namespace Open.Core.UI
         {
             Panel.CSS(Css.Width, size + Css.Px);
         }
+
+        protected override void FireResized()
+        {
+            base.FireResized();
+            GlobalEvents.FireHorizontalPanelResized(this);
+        }
         #endregion
 
         #region Internal

@@ -9,8 +9,8 @@ Type.registerNamespace('Open.Core.Controls');
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Controls.LogView
 
-Open.Core.Controls.LogView = function Open_Core_Controls_LogView(divRoot) {
-    /// <param name="divRoot" type="jQueryObject">
+Open.Core.Controls.LogView = function Open_Core_Controls_LogView(container) {
+    /// <param name="container" type="jQueryObject">
     /// The container of the log
     /// </param>
     /// <field name="_divList$2" type="jQueryObject">
@@ -24,10 +24,16 @@ Open.Core.Controls.LogView = function Open_Core_Controls_LogView(divRoot) {
     /// <field name="_scrollDelay$2" type="Open.Core.DelayedAction">
     /// </field>
     Open.Core.Controls.LogView.initializeBase(this);
-    this.initialize(divRoot);
+    this.initialize(container);
     this._scrollDelay$2 = new Open.Core.DelayedAction(0.05, ss.Delegate.create(this, this._onScrollDelayElapsed$2));
     $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
         this._updateVisualState$2();
+    }));
+    Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this, function() {
+        this._updateVisualState$2();
+    }));
+    Open.Core.GlobalEvents.add_verticalPanelResized(ss.Delegate.create(this, function() {
+        this._scrollDelay$2.start();
     }));
     this._updateVisualState$2();
 }
@@ -67,11 +73,11 @@ Open.Core.Controls.LogView.prototype = {
         return value;
     },
     
-    onInitialize: function Open_Core_Controls_LogView$onInitialize(divRoot) {
-        /// <param name="divRoot" type="jQueryObject">
+    onInitialize: function Open_Core_Controls_LogView$onInitialize(container) {
+        /// <param name="container" type="jQueryObject">
         /// </param>
-        this._divList$2 = divRoot.children(Open.Core.LogCss.list).first();
-        Open.Core.Controls.LogView.callBaseMethod(this, 'onInitialize', [ divRoot ]);
+        this._divList$2 = container.children(Open.Core.LogCss.list).first();
+        Open.Core.Controls.LogView.callBaseMethod(this, 'onInitialize', [ container ]);
     },
     
     insert: function Open_Core_Controls_LogView$insert(message, cssClass) {

@@ -9,7 +9,11 @@ namespace Open.Core.UI
         #region Events
         /// <summary>Fires during the resize operation.</summary>
         public event EventHandler Resized;
-        protected void FireResized(){if (Resized != null) Resized(this, new EventArgs());}
+        protected virtual void FireResized()
+        {
+            if (Resized != null) Resized(this, new EventArgs());
+            GlobalEvents.FirePanelResized(this);
+        }
 
         /// <summary>Fires when the resize operation starts.</summary>
         public event EventHandler ResizeStarted;
