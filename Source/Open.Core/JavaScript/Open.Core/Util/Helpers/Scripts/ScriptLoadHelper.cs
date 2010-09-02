@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Html;
 
 namespace Open.Core.Helpers
 {
@@ -49,7 +50,7 @@ namespace Open.Core.Helpers
         }
         #endregion
 
-        #region Methods
+        #region Methods : Load
         /// <summary>Loads the Views library.</summary>
         /// <param name="callback">Callback to invoke upon completion.</param>
         public void LoadViews(Action callback)
@@ -77,7 +78,7 @@ namespace Open.Core.Helpers
             return string.Format("{0}{1}.js", name, debug);
         }
 
-        private void Load(string scriptName, PropertyRef isLoadedProperty, Action callback)
+        private static void Load(string scriptName, PropertyRef isLoadedProperty, Action callback)
         {
             // Setup initial conditions.)
             if ((bool)isLoadedProperty.Value)

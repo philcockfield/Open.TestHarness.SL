@@ -957,8 +957,6 @@ Open.Core.Lists.ListItemView = function Open_Core_Lists_ListItemView(container, 
     /// </field>
     /// <field name="_text$2" type="String">
     /// </field>
-    /// <field name="_rightIconSrc$2" type="String">
-    /// </field>
     /// <field name="_isSelectedRef$2" type="Open.Core.PropertyRef">
     /// </field>
     Open.Core.Lists.ListItemView.initializeBase(this);
@@ -983,7 +981,6 @@ Open.Core.Lists.ListItemView.prototype = {
     _htmLabel$2: null,
     _imgRightIcon$2: null,
     _text$2: null,
-    _rightIconSrc$2: null,
     _isSelectedRef$2: null,
     
     onDisposed: function Open_Core_Lists_ListItemView$onDisposed() {
@@ -1054,7 +1051,7 @@ Open.Core.Lists.ListItemView.prototype = {
         if (this._imgRightIcon$2 != null) {
             this._imgRightIcon$2.attr(Open.Core.Html.src, value);
         }
-        this._updateChildPointer$2();
+        this._updateRightIcon$2();
         return value;
     },
     
@@ -1093,7 +1090,7 @@ Open.Core.Lists.ListItemView.prototype = {
         this._htmLabel$2 = Open.Core.Lists.ListItemView._getChild$2(content, Open.Core.Lists.ListCss.itemClasses.label);
         this._imgRightIcon$2 = Open.Core.Lists.ListItemView._getChild$2(content, Open.Core.Lists.ListCss.itemClasses.iconRight);
         this._imgRightIcon$2.load(ss.Delegate.create(this, function(eevent) {
-            this._updateChildPointer$2();
+            this._updateRightIcon$2();
         }));
         this._setupBindings$2();
         this.updateVisualState();
@@ -1103,20 +1100,11 @@ Open.Core.Lists.ListItemView.prototype = {
         /// <summary>
         /// Refrehses the visual state of the item.
         /// </summary>
-        this._updateCssSelection$2();
-        this._updateChildPointer$2();
+        Open.Core.Css.addOrRemoveClass(this.get_container(), Open.Core.Lists.ListCss.itemClasses.selected, this.get_isSelected());
+        this._updateRightIcon$2();
     },
     
-    _updateCssSelection$2: function Open_Core_Lists_ListItemView$_updateCssSelection$2() {
-        if (this.get_isSelected()) {
-            this.get_container().addClass(Open.Core.Lists.ListCss.itemClasses.selected);
-        }
-        else {
-            this.get_container().removeClass(Open.Core.Lists.ListCss.itemClasses.selected);
-        }
-    },
-    
-    _updateChildPointer$2: function Open_Core_Lists_ListItemView$_updateChildPointer$2() {
+    _updateRightIcon$2: function Open_Core_Lists_ListItemView$_updateRightIcon$2() {
         if (ss.isNullOrUndefined(this._imgRightIcon$2)) {
             return;
         }

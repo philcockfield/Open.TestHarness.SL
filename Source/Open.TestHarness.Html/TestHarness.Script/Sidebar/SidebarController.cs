@@ -68,9 +68,6 @@ namespace Open.TestHarness.Sidebar
 
             child2.CanSelect = false;
             child2.IsSelected = true;
-            child3.RightIconSrc = "http://www.feedicons.com/images/standard-icons.gif";
-
-
         }
         #endregion
     }

@@ -86,6 +86,22 @@ namespace Open.Core
                        ? value
                        : prefix + value;
         }
+
+        /// <summary>Adds or removes a class from the given element.</summary>
+        /// <param name="element">The element to add or remove from.</param>
+        /// <param name="cssClass">The CSS class name.</param>
+        /// <param name="add">Flag indicating whether the class should be added (true) or removed (false).</param>
+        public static void AddOrRemoveClass(jQueryObject element, string cssClass, bool add)
+        {
+            if (add)
+            {
+                element.AddClass(cssClass);
+            }
+            else
+            {
+                element.RemoveClass(cssClass);
+            }
+        }
         #endregion
 
         #region Methods : <link type='text/css' />

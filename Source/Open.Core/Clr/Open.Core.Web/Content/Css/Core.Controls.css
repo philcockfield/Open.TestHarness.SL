@@ -37,3 +37,4 @@ div.coreLog-margin
 .coreLog-debug { }
 .coreLog-warning { background-color:#faecc9; }
 .coreLog-error { background-color:#fadadb; }
+.coreLog-success { background-color:#d4fbbc; }

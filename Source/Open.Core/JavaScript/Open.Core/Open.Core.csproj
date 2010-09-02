@@ -91,6 +91,7 @@
     <Compile Include="UI\Resize\VerticalPanelResizer.cs" />
     <Compile Include="Util\Helpers\Helper.cs" />
     <Compile Include="Util\Helpers\DelegateHelper.cs" />
+    <Compile Include="Util\TestHarness.cs" />
     <Content Include="Properties\Open.Core.Script.ruleset" />
     <Content Include="Properties\Open.Core.Script.script" />
     <Compile Include="Declarations\Delegates.cs" />

@@ -73,12 +73,15 @@ Open.Core.LogSeverity = function() {
     /// </field>
     /// <field name="error" type="Number" integer="true" static="true">
     /// </field>
+    /// <field name="success" type="Number" integer="true" static="true">
+    /// </field>
 };
 Open.Core.LogSeverity.prototype = {
     info: 0, 
     debug: 1, 
     warning: 2, 
-    error: 3
+    error: 3, 
+    success: 4
 }
 Open.Core.LogSeverity.registerEnum('Open.Core.LogSeverity', false);
 
@@ -864,12 +867,21 @@ Open.Core.Log.warning = function Open_Core_Log$warning(message) {
 }
 Open.Core.Log.error = function Open_Core_Log$error(message) {
     /// <summary>
-    /// Writes a error message message to the log.
+    /// Writes an error message to the log.
     /// </summary>
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
     Open.Core.Log.write(message, Open.Core.LogSeverity.error);
+}
+Open.Core.Log.success = function Open_Core_Log$success(message) {
+    /// <summary>
+    /// Writes a success message to the log.
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The messge to write (HTML).
+    /// </param>
+    Open.Core.Log.write(message, Open.Core.LogSeverity.success);
 }
 Open.Core.Log.write = function Open_Core_Log$write(message, severity) {
     /// <summary>
@@ -1671,6 +1683,26 @@ Open.Core.Css._prependSelectorPrefix = function Open_Core_Css$_prependSelectorPr
     }
     return (value.substr(0, 1) === prefix) ? value : prefix + value;
 }
+Open.Core.Css.addOrRemoveClass = function Open_Core_Css$addOrRemoveClass(element, cssClass, add) {
+    /// <summary>
+    /// Adds or removes a class from the given element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to add or remove from.
+    /// </param>
+    /// <param name="cssClass" type="String">
+    /// The CSS class name.
+    /// </param>
+    /// <param name="add" type="Boolean">
+    /// Flag indicating whether the class should be added (true) or removed (false).
+    /// </param>
+    if (add) {
+        element.addClass(cssClass);
+    }
+    else {
+        element.removeClass(cssClass);
+    }
+}
 Open.Core.Css.insertLink = function Open_Core_Css$insertLink(url) {
     /// <summary>
     /// Inserts a CSS link within the document head (only if the CSS is not already present).
@@ -2045,6 +2077,68 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
     /// <returns type="String"></returns>
     Open.Core.Helper._idCounter++;
     return String.format('g.{0}', Open.Core.Helper._idCounter);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.TestHarness
+
+Open.Core.TestHarness = function Open_Core_TestHarness() {
+    /// <summary>
+    /// Shared functionality for working with the TestHarness
+    /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
+    /// </summary>
+    /// <field name="__testClassRegistered" type="Open.Core.TestClassHandler" static="true">
+    /// </field>
+}
+Open.Core.TestHarness.add_testClassRegistered = function Open_Core_TestHarness$add_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.TestHarness.__testClassRegistered = ss.Delegate.combine(Open.Core.TestHarness.__testClassRegistered, value);
+}
+Open.Core.TestHarness.remove_testClassRegistered = function Open_Core_TestHarness$remove_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.TestHarness.__testClassRegistered = ss.Delegate.remove(Open.Core.TestHarness.__testClassRegistered, value);
+}
+Open.Core.TestHarness.registerTestClass = function Open_Core_TestHarness$registerTestClass(testPackage, testClass) {
+    /// <summary>
+    /// Registers a test-class with the harness.
+    /// </summary>
+    /// <param name="testPackage" type="Type">
+    /// Type representing the test-package (normally the 'Application' class).
+    /// </param>
+    /// <param name="testClass" type="Type">
+    /// The type of the test class.
+    /// </param>
+    if (ss.isNullOrUndefined(testPackage) || ss.isNullOrUndefined(testClass)) {
+        return;
+    }
+    if (Open.Core.TestHarness.__testClassRegistered != null) {
+        var e = new Open.Core.TestClassEventArgs();
+        e.testPackage = testPackage;
+        e.testClass = testClass;
+        Open.Core.TestHarness.__testClassRegistered.invoke(Open.Core.TestHarness, e);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.TestClassEventArgs
+
+Open.Core.TestClassEventArgs = function Open_Core_TestClassEventArgs() {
+    /// <field name="testPackage" type="Type">
+    /// </field>
+    /// <field name="testClass" type="Type">
+    /// </field>
+}
+Open.Core.TestClassEventArgs.prototype = {
+    testPackage: null,
+    testClass: null
 }
 
 
@@ -2481,6 +2575,25 @@ Open.Core.Helpers.ScriptLoadHelper = function Open_Core_Helpers_ScriptLoadHelper
     /// </field>
     Open.Core.Helpers.ScriptLoadHelper.initializeBase(this);
 }
+Open.Core.Helpers.ScriptLoadHelper._load$1 = function Open_Core_Helpers_ScriptLoadHelper$_load$1(scriptName, isLoadedProperty, callback) {
+    /// <param name="scriptName" type="String">
+    /// </param>
+    /// <param name="isLoadedProperty" type="Open.Core.PropertyRef">
+    /// </param>
+    /// <param name="callback" type="Action">
+    /// </param>
+    if (isLoadedProperty.get_value()) {
+        Open.Core.Helper.invokeOrDefault(callback);
+        return;
+    }
+    var loader = new Open.Core.Helpers.ScriptLoader();
+    loader.add_loadComplete(function() {
+        isLoadedProperty.set_value(true);
+        Open.Core.Helper.invokeOrDefault(callback);
+    });
+    loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, scriptName, true));
+    loader.start();
+}
 Open.Core.Helpers.ScriptLoadHelper.prototype = {
     _rootScriptFolder$1: '/Open.Core/Scripts/',
     _useDebug$1: false,
@@ -2567,7 +2680,7 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// <param name="callback" type="Action">
         /// Callback to invoke upon completion.
         /// </param>
-        this._load$1('Open.Core.Views', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded), callback);
+        Open.Core.Helpers.ScriptLoadHelper._load$1('Open.Core.Views', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded), callback);
     },
     
     loadLists: function Open_Core_Helpers_ScriptLoadHelper$loadLists(callback) {
@@ -2577,7 +2690,7 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// <param name="callback" type="Action">
         /// Callback to invoke upon completion.
         /// </param>
-        this._load$1('Open.Core.Lists', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded), callback);
+        Open.Core.Helpers.ScriptLoadHelper._load$1('Open.Core.Lists', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded), callback);
     },
     
     _url: function Open_Core_Helpers_ScriptLoadHelper$_url(path, fileName, hasDebug) {
@@ -2599,26 +2712,6 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// <returns type="String"></returns>
         var debug = (hasDebug && this.get_useDebug()) ? '.debug' : null;
         return String.format('{0}{1}.js', name, debug);
-    },
-    
-    _load$1: function Open_Core_Helpers_ScriptLoadHelper$_load$1(scriptName, isLoadedProperty, callback) {
-        /// <param name="scriptName" type="String">
-        /// </param>
-        /// <param name="isLoadedProperty" type="Open.Core.PropertyRef">
-        /// </param>
-        /// <param name="callback" type="Action">
-        /// </param>
-        if (isLoadedProperty.get_value()) {
-            Open.Core.Helper.invokeOrDefault(callback);
-            return;
-        }
-        var loader = new Open.Core.Helpers.ScriptLoader();
-        loader.add_loadComplete(ss.Delegate.create(this, function() {
-            isLoadedProperty.set_value(true);
-            Open.Core.Helper.invokeOrDefault(callback);
-        }));
-        loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, scriptName, true));
-        loader.start();
     }
 }
 
@@ -3197,6 +3290,8 @@ Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
+Open.Core.TestHarness.registerClass('Open.Core.TestHarness');
+Open.Core.TestClassEventArgs.registerClass('Open.Core.TestClassEventArgs');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.ScrollHelper.registerClass('Open.Core.Helpers.ScrollHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
@@ -3264,6 +3359,7 @@ Open.Core.Helper._stringHelper = null;
 Open.Core.Helper._numberHelper = null;
 Open.Core.Helper._scrollHelper = null;
 Open.Core.Helper._idCounter = 0;
+Open.Core.TestHarness.__testClassRegistered = null;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
 Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';

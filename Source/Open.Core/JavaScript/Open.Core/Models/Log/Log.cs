@@ -25,9 +25,13 @@ namespace Open.Core
         /// <param name="message">The messge to write (HTML).</param>
         public static void Warning(string message) { Write(message, LogSeverity.Warning); }
 
-        /// <summary>Writes a error message message to the log.</summary>
+        /// <summary>Writes an error message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
         public static void Error(string message) { Write(message, LogSeverity.Error); }
+
+        /// <summary>Writes a success message to the log.</summary>
+        /// <param name="message">The messge to write (HTML).</param>
+        public static void Success(string message) { Write(message, LogSeverity.Success); }
 
         /// <summary>Writes a message to the log.</summary>
         /// <param name="message">The message to write (HTML).</param>

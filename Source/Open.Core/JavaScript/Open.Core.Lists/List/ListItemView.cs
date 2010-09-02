@@ -11,7 +11,6 @@ namespace Open.Core.Lists
         private jQueryObject htmLabel;
         private jQueryObject imgRightIcon;
         private string text;
-        private string rightIconSrc;
         private readonly PropertyRef isSelectedRef;
 
         /// <summary>Constructor.</summary>
@@ -83,7 +82,7 @@ namespace Open.Core.Lists
                 value = value ?? ListHtml.ChildPointerIcon;
                 if (value == RightIconSrc) return;
                 if (imgRightIcon != null) imgRightIcon.Attribute(Html.Src, value);
-                UpdateChildPointer();
+                UpdateRightIcon();
             }
         }
         #endregion
@@ -125,7 +124,7 @@ namespace Open.Core.Lists
             // Wire up events.
             imgRightIcon.Load(delegate(jQueryEvent @event)
                                   {
-                                      UpdateChildPointer();
+                                      UpdateRightIcon();
                                   });
 
             // Setup databinding.
@@ -138,24 +137,11 @@ namespace Open.Core.Lists
         /// <summary>Refrehses the visual state of the item.</summary>
         public void UpdateVisualState()
         {
-            UpdateCssSelection();
-            UpdateChildPointer();
+            Css.AddOrRemoveClass(Container, ListCss.ItemClasses.Selected, IsSelected);
+            UpdateRightIcon();
         }
 
-        private void UpdateCssSelection()
-        {
-            // Update selection CSS.
-            if (IsSelected)
-            {
-                Container.AddClass(ListCss.ItemClasses.Selected);
-            }
-            else
-            {
-                Container.RemoveClass(ListCss.ItemClasses.Selected);
-            }
-        }
-
-        private void UpdateChildPointer()
+        private void UpdateRightIcon()
         {
             // Setup initial conditions.
             if (Script.IsNullOrUndefined(imgRightIcon)) return;
