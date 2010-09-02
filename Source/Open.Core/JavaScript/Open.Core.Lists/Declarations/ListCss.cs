@@ -12,7 +12,7 @@ namespace Open.Core.Lists
         #endregion
 
         #region Properties
-        public static readonly ListCssClasses Classes = new ListCssClasses();
+        public static readonly ListItemCss ItemClasses = new ListItemCss();
         #endregion
 
         #region Methods
@@ -26,10 +26,12 @@ namespace Open.Core.Lists
         #endregion
     }
 
-    public class ListCssClasses
+    public class ListItemCss
     {
-        public readonly string ListItem = "coreListItem";
-        public readonly string SelectedListItem = "selectedListItem";
-        public readonly string ItemLabel = "itemLabel";
+        public readonly string Root = "c-listItem";
+        public readonly string DefaultRoot = "c-listItem-default";
+        public readonly string Selected = "c-listItem-selected";
+        public readonly string Label = "c-listItem-label";
+        public readonly string IconRight = "c-listItem-iconRight";
     }
 }

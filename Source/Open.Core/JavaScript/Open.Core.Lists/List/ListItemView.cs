@@ -7,29 +7,27 @@ namespace Open.Core.Lists
     public class ListItemView : ViewBase, IListItemView
     {
         #region Head
-        public const string PropText = "Text";
-        public const string PropIsSelected = "IsSelected";
-
         private readonly object model;
-        private jQueryObject spanLabel;
+        private jQueryObject htmLabel;
+        private jQueryObject imgRightIcon;
         private string text;
-        private readonly PropertyRef isSelectedPropertyRef;
-
+        private string rightIconSrc;
+        private readonly PropertyRef isSelectedRef;
 
         /// <summary>Constructor.</summary>
-        /// <param name="liElement">The containing <li></li> element.</param>
+        /// <param name="container">The containing element.</param>
         /// <param name="model">The data model for the list item.</param>
-        public ListItemView(jQueryObject liElement, object model)
+        public ListItemView(jQueryObject container, object model)
         {
             // Setup initial conditions.
             this.model = model;
-            Initialize(liElement);
+            Initialize(container);
 
-            // Retreive property.
-            isSelectedPropertyRef = PropertyRef.GetFromModel(model, PropIsSelected);
+            // Retreive property refs.
+            isSelectedRef = PropertyRef.GetFromModel(model, TreeNode.PropIsSelected);
 
             // Wire up events.
-            if (isSelectedPropertyRef != null) isSelectedPropertyRef.Changed += OnIsSelectedChanged;
+            if (isSelectedRef != null) isSelectedRef.Changed += OnIsSelectedChanged;
 
             // Finish up.
             UpdateVisualState();
@@ -37,7 +35,7 @@ namespace Open.Core.Lists
 
         protected override void OnDisposed()
         {
-            if (isSelectedPropertyRef != null) isSelectedPropertyRef.Changed -= OnIsSelectedChanged;
+            if (isSelectedRef != null) isSelectedRef.Changed -= OnIsSelectedChanged;
             base.OnDisposed();
         }
         #endregion
@@ -46,34 +44,61 @@ namespace Open.Core.Lists
         private void OnIsSelectedChanged(object sender, EventArgs e)
         {
             UpdateVisualState();
-            FirePropertyChanged(PropIsSelected);
+            FirePropertyChanged(TreeNode.PropIsSelected);
         }
         #endregion
 
         #region Properties
-        /// <summary>Gets or sets whether the item is currently selected.</summary>
-        public bool IsSelected
-        {
-            get { return isSelectedPropertyRef == null ? false : (bool)isSelectedPropertyRef.Value; }
-            set
-            {
-                if (value == IsSelected) return;
-                if (isSelectedPropertyRef != null) isSelectedPropertyRef.Value = value;
-            }
-        }
-
         /// <summary>Gets or sets the data model.</summary>
         public object Model { get { return model; } }
-        #endregion
+       #endregion
 
-        #region Properties : Display
+        #region Properties : Data-bound
         public string Text
         {
             get { return text; }
             set
             {
                 text = value;
-                if (spanLabel != null) spanLabel.Html(text);
+                if (htmLabel != null) htmLabel.Html(text);
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return isSelectedRef == null ? false : (bool)isSelectedRef.Value; }
+            set
+            {
+                if (!CanSelect) value = false;
+                if (value == IsSelected) return;
+                if (isSelectedRef != null) isSelectedRef.Value = value;
+            }
+        }
+
+        public string RightIconSrc
+        {
+            get { return imgRightIcon == null ? null : imgRightIcon.GetAttribute(Html.Src); }
+            set
+            {
+                value = value ?? ListHtml.ChildPointerIcon;
+                if (value == RightIconSrc) return;
+                if (imgRightIcon != null) imgRightIcon.Attribute(Html.Src, value);
+                UpdateChildPointer();
+            }
+        }
+        #endregion
+
+        #region Properties : Private
+        private IModel ModelAsBindable { get { return Model as IModel; } }
+        private IListItem ModelAsListItem { get { return Model as IListItem; } }
+        private ITreeNode ModelAsTreeNode { get { return Model as ITreeNode; } }
+
+        private bool CanSelect
+        {
+            get
+            {
+                IListItem item = ModelAsListItem;
+                return item == null ? true : item.CanSelect;
             }
         }
         #endregion
@@ -83,38 +108,91 @@ namespace Open.Core.Lists
         /// <param name="container">The containing <li></li> element.</param>
         protected override void OnInitialize(jQueryObject container)
         {
-            // Insert HTML.
-            spanLabel = Html.CreateElement(Html.Span);
-            spanLabel.AppendTo(container);
+            // Setup initial conditions.
+            container.AddClass(ListCss.ItemClasses.Root);
 
-            // Apply CSS classes.
-            container.AddClass(ListCss.Classes.ListItem);
-            spanLabel.AddClass(ListCss.Classes.ItemLabel);
-            spanLabel.AddClass(Css.Classes.TitleFont);
+            // Construct HTML content and insert into DOM.
+            string customHtml = GetFactoryHtml();
+            jQueryObject content = (customHtml == null)
+                                                    ? ListTemplates.DefaultListItem(Model) // No custom HTML supplied, use default.
+                                                    : jQuery.FromHtml(customHtml);
+            content.AppendTo(container);
+
+            // Retrieve child elements.
+            htmLabel = GetChild(content, ListCss.ItemClasses.Label);
+            imgRightIcon = GetChild(content, ListCss.ItemClasses.IconRight);
+
+            // Wire up events.
+            imgRightIcon.Load(delegate(jQueryEvent @event)
+                                  {
+                                      UpdateChildPointer();
+                                  });
 
             // Setup databinding.
-            SetupBindings(Model as IModel);
+            SetupBindings();
+            UpdateVisualState();
         }
         #endregion
 
-        #region Internal
-        private void UpdateVisualState()
+        #region Methods : UpdateVisualState
+        /// <summary>Refrehses the visual state of the item.</summary>
+        public void UpdateVisualState()
+        {
+            UpdateCssSelection();
+            UpdateChildPointer();
+        }
+
+        private void UpdateCssSelection()
         {
             // Update selection CSS.
             if (IsSelected)
             {
-                Container.AddClass(ListCss.Classes.SelectedListItem);
+                Container.AddClass(ListCss.ItemClasses.Selected);
             }
             else
             {
-                Container.RemoveClass(ListCss.Classes.SelectedListItem);
+                Container.RemoveClass(ListCss.ItemClasses.Selected);
             }
         }
 
-        private void SetupBindings(IModel bindable)
+        private void UpdateChildPointer()
         {
+            // Setup initial conditions.
+            if (Script.IsNullOrUndefined(imgRightIcon)) return;
+
+            // Update visibility state.
+            bool isVisible = false;
+            ITreeNode treeNode = ModelAsTreeNode;
+            if (CanSelect && treeNode != null && treeNode.TotalChildren > 0) isVisible = true;
+            Css.SetVisible(imgRightIcon, isVisible);
+
+            if (!isVisible) return;
+            if (Container.GetHeight() == 0) return;
+
+            // Vertically align the right icon.
+            Html.CenterVertically(imgRightIcon, Container);
+        }
+        #endregion
+
+        #region Internal
+        private static jQueryObject GetChild(jQueryObject parent, string cssClass)
+        {
+            return parent.Children(Css.ToClass(cssClass)).First();  
+        }
+
+        private string GetFactoryHtml()
+        {
+            IHtmlFactory factory = Model as IHtmlFactory;
+            return factory == null ? null : factory.CreateHtml();
+        }
+
+        private void SetupBindings()
+        {
+            IModel bindable = ModelAsBindable;
             if (bindable == null) return;
-            SetBinding(bindable, PropText);
+
+            SetBinding(bindable, ListItem.PropText);
+            SetBinding(bindable, ListItem.PropRightIconSrc);
         }
 
         private void SetBinding(IModel bindable, string propertyName)

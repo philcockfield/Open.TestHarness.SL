@@ -124,6 +124,7 @@
     <EmbeddedResource Include="Content\Css\Core.Controls.css" />
     <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.debug.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.js" />
+    <EmbeddedResource Include="Content\Images\ListItem.ChildPointer.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

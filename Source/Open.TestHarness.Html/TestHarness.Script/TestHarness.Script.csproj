@@ -17,7 +17,7 @@
     <TemplateFile>Properties\TestHarness.Script3.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\TestHarness.Script3.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\TestHarness.Web\Scripts\TestHarness</DeploymentPath>
+    <DeploymentPath>..\TestHarness.Web\Content\Scripts\</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +48,7 @@
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
     <Compile Include="Shell\PanelResizeController.cs" />
+    <Compile Include="Sidebar\SidebarController.cs" />
     <Content Include="Properties\TestHarness.Script3.ruleset" />
     <Content Include="Properties\TestHarness.Script3.script" />
     <Compile Include="Application.cs" />
@@ -57,6 +58,10 @@
     <Folder Include="Base Classes\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Lists\Open.Core.Lists.csproj">
+      <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>
+      <Name>Open.Core.Lists</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Views\Open.Core.Controls.csproj">
       <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
       <Name>Open.Core.Controls</Name>

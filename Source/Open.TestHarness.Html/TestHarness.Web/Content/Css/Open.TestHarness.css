@@ -1,4 +1,4 @@
-﻿/*====== Panels ======*/
+﻿/*-------------- Panels --------------*/
 #testHarness
 {
     position:absolute;
@@ -7,7 +7,30 @@
     top:0px;
     bottom:0px;
 }
-#testHarness .th-sidebar
+
+
+/*-------------- Fonts --------------*/
+#testHarness .titleFont { font-family: "myriad-pro-1","myriad-pro-2"; }
+/* #testHarness .titleFont { font-family: "myriad-pro-semi-condensed-1","myriad-pro-semi-condensed-2"; } */
+
+
+
+
+/*-------------- Toolbars --------------*/
+.th-toolbar
+{
+    background:#e4e4e4;
+    position:absolute;
+    left:0px;
+    top:0px;
+    right:0px;
+    height:34px;
+    border-color:#989898; 
+}
+
+
+/*-------------- Sidebar --------------*/
+#testHarnessSidebar
 {
     background:#e0e5eb;
     position:absolute;
@@ -17,25 +40,21 @@
     width:250px;
 }
 
-
-/*====== Fonts ======*/
-#testHarness .titleFont { font-family: "sovba-1", "sovba-2"; }
-
-
-/*====== Toolbars ======*/
-.th-toolbar
+#testHarnessSidebar .th-sidebarList { top:35px;  }
+#testHarnessSidebar img.th-home
 {
-    background:#e4e4e4;
     position:absolute;
-    left:0px;
-    top:0px;
-    right:0px;
-    height:25px;   
-    border-color:#989898; 
+    display:none;
+}
+
+.c-listItem-label   /* Override: Open.Core.Lists */
+{
+    font-weight:300;
+    font-size:16pt;
 }
 
 
-/*====== Main ======*/
+/*-------------- Main --------------*/
 #testHarness .th-main
 {
     position:absolute;
@@ -55,13 +74,13 @@
 {
     position:absolute;
     left:0px;
-    top:25px;
+    top:34px;
     right:0px;
     bottom:0px;
 }
 
 
-/*====== Output Log ======*/
+/*-------------- Output Log --------------*/
 #testHarnessLog
 {
     background:#f9fafb;
@@ -85,7 +104,8 @@
     position:relative;
     display:table-cell;
     vertical-align:middle;
-    font-size:14pt;
+    font-size:16pt;
+    font-weight:300;
     color:#828282;
 }
 #testHarnessLog p.dropShadow

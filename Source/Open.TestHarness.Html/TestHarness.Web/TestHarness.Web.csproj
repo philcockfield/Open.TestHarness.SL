@@ -82,23 +82,23 @@
     <Compile Include="TestHarnessController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Content Include="Scripts\JQuery\jquery.cookie.js" />
-    <Content Include="Content\Images\Shadow\Drop.12.030.png" />
+    <Content Include="Content\Images\Sidebar.Home.png" />
+    <Content Include="Content\Scripts\mscorlib.debug.js" />
+    <Content Include="Content\Scripts\mscorlib.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.js" />
+    <Content Include="Content\Scripts\Open.Core.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.js" />
     <Content Include="Favicon.ico" />
-    <Content Include="Scripts\JQuery\jquery-1.4.2.min.js" />
-    <Content Include="Scripts\JQuery\jquery-ui-1.8.2.custom.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\TestHarness\mscorlib.debug.js" />
-    <Content Include="Scripts\TestHarness\mscorlib.js" />
-    <Content Include="Scripts\TestHarness\Open.Core.debug.js" />
-    <Content Include="Scripts\TestHarness\Open.Core.js" />
-    <Content Include="Scripts\TestHarness\Open.TestHarness.debug.js" />
-    <Content Include="Scripts\TestHarness\Open.TestHarness.js" />
     <Content Include="Views\TestHarness\Index.aspx" />
     <Content Include="Views\TestHarness\Log.ascx" />
+    <Content Include="Views\TestHarness\Sidebar.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -106,12 +106,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\JQuery\jquery-1.4.1.js" />
-    <Content Include="Scripts\JQuery\jquery-1.4.1.min.js" />
-    <Content Include="Scripts\JQuery\jquery-1.4.1-vsdoc.js" />
-    <Content Include="Scripts\JQuery\jquery.validate.js" />
-    <Content Include="Scripts\JQuery\jquery.validate.min.js" />
-    <Content Include="Scripts\JQuery\jquery.validate-vsdoc.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>

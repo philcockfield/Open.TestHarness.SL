@@ -45,6 +45,20 @@ Open.Core.VerticalDirection.registerEnum('Open.Core.VerticalDirection', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.IHtmlFactory
+
+Open.Core.IHtmlFactory = function() { 
+    /// <summary>
+    /// An object that can create HTML.
+    /// </summary>
+};
+Open.Core.IHtmlFactory.prototype = {
+    createHtml : null
+}
+Open.Core.IHtmlFactory.registerInterface('Open.Core.IHtmlFactory');
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.LogSeverity
 
 Open.Core.LogSeverity = function() { 
@@ -166,7 +180,7 @@ Open.Core.INotifyPropertyChanged.registerInterface('Open.Core.INotifyPropertyCha
 
 Open.Core.IViewFactory = function() { 
     /// <summary>
-    /// Defined a model that is capable of creating the view for itself.
+    /// An object that is can create the view for itself.
     /// </summary>
 };
 Open.Core.IViewFactory.prototype = {
@@ -215,6 +229,17 @@ Open.Core.CssOverflow.prototype = {
     inherit: 4
 }
 Open.Core.CssOverflow.registerEnum('Open.Core.CssOverflow', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.ControllerBase
+
+Open.Core.ControllerBase = function Open_Core_ControllerBase() {
+    /// <summary>
+    /// Base class for UI controllers.
+    /// </summary>
+    Open.Core.ControllerBase.initializeBase(this);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1446,7 +1471,7 @@ Open.Core.Url = function Open_Core_Url() {
 
 Open.Core.Html = function Open_Core_Html() {
     /// <summary>
-    /// HTML utility.
+    /// HTML constants and DOM manipulation.
     /// </summary>
     /// <field name="head" type="String" static="true">
     /// </field>
@@ -1454,13 +1479,19 @@ Open.Core.Html = function Open_Core_Html() {
     /// </field>
     /// <field name="span" type="String" static="true">
     /// </field>
+    /// <field name="img" type="String" static="true">
+    /// </field>
     /// <field name="id" type="String" static="true">
     /// </field>
     /// <field name="href" type="String" static="true">
     /// </field>
+    /// <field name="src" type="String" static="true">
+    /// </field>
     /// <field name="scrollTop" type="String" static="true">
     /// </field>
     /// <field name="scrollHeight" type="String" static="true">
+    /// </field>
+    /// <field name="click" type="String" static="true">
     /// </field>
 }
 Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
@@ -1501,6 +1532,19 @@ Open.Core.Html.createSpan = function Open_Core_Html$createSpan() {
     /// <returns type="jQueryObject"></returns>
     return Open.Core.Html.createElement(Open.Core.Html.span);
 }
+Open.Core.Html.createImage = function Open_Core_Html$createImage(src, alt) {
+    /// <summary>
+    /// Creates an IMG element.
+    /// </summary>
+    /// <param name="src" type="String">
+    /// The URL to the image.
+    /// </param>
+    /// <param name="alt" type="String">
+    /// The alternative text for the image.
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    return $(String.format('<img src=\'{0}\' alt=\'{1}\' />', src, alt));
+}
 Open.Core.Html.createElement = function Open_Core_Html$createElement(tag) {
     /// <summary>
     /// Creates a new element with the given tag.
@@ -1510,6 +1554,19 @@ Open.Core.Html.createElement = function Open_Core_Html$createElement(tag) {
     /// </param>
     /// <returns type="jQueryObject"></returns>
     return $(String.format('<{0}></{0}>', tag));
+}
+Open.Core.Html.centerVertically = function Open_Core_Html$centerVertically(element, within) {
+    /// <summary>
+    /// Sets the top position of an element so it is vertically centered within another element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to vertically center.
+    /// </param>
+    /// <param name="within" type="jQueryObject">
+    /// The element to center within.
+    /// </param>
+    var top = (within.height() / 2) - (element.height() / 2);
+    element.css(Open.Core.Css.top, top + 'px');
 }
 
 
@@ -1536,9 +1593,15 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="display" type="String" static="true">
     /// </field>
+    /// <field name="position" type="String" static="true">
+    /// </field>
     /// <field name="block" type="String" static="true">
     /// </field>
     /// <field name="none" type="String" static="true">
+    /// </field>
+    /// <field name="relative" type="String" static="true">
+    /// </field>
+    /// <field name="absolute" type="String" static="true">
     /// </field>
     /// <field name="px" type="String" static="true">
     /// </field>
@@ -1554,6 +1617,18 @@ Open.Core.Css.isVisible = function Open_Core_Css$isVisible(element) {
     /// </param>
     /// <returns type="Boolean"></returns>
     return (ss.isNullOrUndefined(element)) ? false : element.css(Open.Core.Css.display).toLowerCase() !== Open.Core.Css.none;
+}
+Open.Core.Css.setVisible = function Open_Core_Css$setVisible(element, isVisible) {
+    /// <summary>
+    /// Shows or hides the given element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to effect.
+    /// </param>
+    /// <param name="isVisible" type="Boolean">
+    /// The desired visibility state.
+    /// </param>
+    element.css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
 }
 Open.Core.Css.selectFromId = function Open_Core_Css$selectFromId(identifier) {
     /// <summary>
@@ -1649,7 +1724,7 @@ Open.Core.Css.absoluteFill = function Open_Core_Css$absoluteFill(element) {
     /// <param name="element" type="jQueryObject">
     /// The element to update.
     /// </param>
-    element.css('position', 'absolute');
+    element.css(Open.Core.Css.position, Open.Core.Css.absolute);
     element.css(Open.Core.Css.left, '0px');
     element.css(Open.Core.Css.top, '0px');
     element.css(Open.Core.Css.right, '0px');
@@ -3102,6 +3177,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 
 
 Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
+Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
 Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
@@ -3156,10 +3232,13 @@ Open.Core.Url.escAnd = '%26';
 Open.Core.Html.head = 'head';
 Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
+Open.Core.Html.img = 'img';
 Open.Core.Html.id = 'id';
 Open.Core.Html.href = 'href';
+Open.Core.Html.src = 'src';
 Open.Core.Html.scrollTop = 'scrollTop';
 Open.Core.Html.scrollHeight = 'scrollHeight';
+Open.Core.Html.click = 'click';
 Open.Core.Css.left = 'left';
 Open.Core.Css.right = 'right';
 Open.Core.Css.top = 'top';
@@ -3168,8 +3247,11 @@ Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
 Open.Core.Css.background = 'background';
 Open.Core.Css.display = 'display';
+Open.Core.Css.position = 'position';
 Open.Core.Css.block = 'block';
 Open.Core.Css.none = 'none';
+Open.Core.Css.relative = 'relative';
+Open.Core.Css.absolute = 'absolute';
 Open.Core.Css.px = 'px';
 Open.Core.Css.classes = new Open.Core.CoreCssClasses();
 Open.Core.DomEvents.resize = 'resize';

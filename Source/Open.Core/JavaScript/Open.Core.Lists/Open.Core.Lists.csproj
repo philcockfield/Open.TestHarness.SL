@@ -50,10 +50,15 @@
   <ItemGroup>
     <Content Include="Properties\Open.Core.Lists.ruleset" />
     <Content Include="Properties\Open.Core.Lists.script" />
+    <Compile Include="Declarations\ListHtml.cs" />
     <Compile Include="Declarations\Interfaces\IListItemView.cs" />
     <Compile Include="Declarations\ListCss.cs" />
-    <Compile Include="ListTree\ListTreePanel.cs" />
-    <Compile Include="ListTree\ListTreeView.cs" />
+    <Compile Include="Declarations\Interfaces\IListItem.cs" />
+    <Compile Include="ListTree\View\ListTreeBackController.cs" />
+    <Compile Include="Model\ListItem.cs" />
+    <Compile Include="ListTree\View\ListTreePanel.cs" />
+    <Compile Include="ListTree\View\ListTreeView.cs" />
+    <Compile Include="ListTemplates.cs" />
     <Compile Include="List\ListView.cs" />
     <Compile Include="List\ListItemView.cs" />
     <Compile Include="List\ListItemFactory.cs" />
@@ -62,7 +67,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>
-      <Name>Open.Core %28Script\Open.Core%29</Name>
+      <Name>Open.Core %28Script\Open.Core\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />

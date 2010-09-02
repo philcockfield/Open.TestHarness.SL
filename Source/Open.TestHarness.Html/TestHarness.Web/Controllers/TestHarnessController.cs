@@ -24,9 +24,11 @@ namespace Open.TestHarness.Web.Controllers
             return View(ViewModel);
         }
 
-        public virtual ActionResult TEMP() { return View(); }
-        public virtual ActionResult TEMP2() { return View(); }
-
+        /// <summary>The Sidebar index.</summary>
+        public virtual ActionResult Sidebar()
+        {
+            return View(ViewModel);
+        }
         #endregion
     }
 }

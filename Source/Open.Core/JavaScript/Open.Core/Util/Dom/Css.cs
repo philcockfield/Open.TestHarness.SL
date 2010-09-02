@@ -28,10 +28,13 @@ namespace Open.Core
         public const string Height = "height";
         public const string Background = "background";
         public const string Display = "display";
+        public const string Position = "position";
 
         // Values.
         public const string Block = "block";
         public const string None = "none";
+        public const string Relative = "relative";
+        public const string Absolute = "absolute";
 
         // Units.
         public const string Px = "px";
@@ -46,6 +49,14 @@ namespace Open.Core
         public static bool IsVisible(jQueryObject element)
         {
             return Script.IsNullOrUndefined(element) ? false : element.GetCSS(Display).ToLowerCase() != None;
+        }
+
+        /// <summary>Shows or hides the given element.</summary>
+        /// <param name="element">The element to effect.</param>
+        /// <param name="isVisible">The desired visibility state.</param>
+        public static void SetVisible(jQueryObject element, bool isVisible)
+        {
+            element.CSS(Display, isVisible ? Block : None);
         }
         #endregion
 
@@ -115,7 +126,7 @@ namespace Open.Core
         /// <param name="element">The element to update.</param>
         public static void AbsoluteFill(jQueryObject element)
         {
-            element.CSS("position", "absolute");
+            element.CSS(Position, Absolute);
             element.CSS(Left, "0px");
             element.CSS(Top, "0px");
             element.CSS(Right, "0px");

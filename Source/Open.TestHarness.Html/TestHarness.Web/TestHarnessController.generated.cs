@@ -48,7 +48,7 @@ namespace Open.TestHarness.Web.Controllers {
         public class ActionNamesClass {
             public readonly string Index = "Index";
             public readonly string Log = "Log";
-            public readonly string TEMP = "TEMP";
+            public readonly string Sidebar = "Sidebar";
         }
 
 
@@ -59,7 +59,7 @@ namespace Open.TestHarness.Web.Controllers {
         public class ViewNames {
             public readonly string Index = "~/Views/TestHarness/Index.aspx";
             public readonly string Log = "~/Views/TestHarness/Log.ascx";
-            public readonly string TEMP = "~/Views/TestHarness/TEMP.aspx";
+            public readonly string Sidebar = "~/Views/TestHarness/Sidebar.ascx";
         }
     }
 
@@ -77,8 +77,8 @@ namespace Open.TestHarness.Web.Controllers {
             return callInfo;
         }
 
-        public override System.Web.Mvc.ActionResult TEMP() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.TEMP);
+        public override System.Web.Mvc.ActionResult Sidebar() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Sidebar);
             return callInfo;
         }
 

@@ -201,53 +201,6 @@ public class T4MVC_ActionResult : System.Web.Mvc.ActionResult, IT4MVCActionResul
 
 namespace Links {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public static class Scripts {
-        private const string URLPATH = "~/Scripts";
-        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static class JQuery {
-            private const string URLPATH = "~/Scripts/JQuery";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string jquery_1_4_1_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.4.1-vsdoc.min.js") ? Url("jquery-1.4.1-vsdoc.min.js") : Url("jquery-1.4.1-vsdoc.js");
-                          
-            public static readonly string jquery_1_4_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.4.1.min.js") ? Url("jquery-1.4.1.min.js") : Url("jquery-1.4.1.js");
-                          
-            public static readonly string jquery_1_4_1_min_js = Url("jquery-1.4.1.min.js");
-            public static readonly string jquery_1_4_2_min_js = Url("jquery-1.4.2.min.js");
-            public static readonly string jquery_ui_1_8_2_custom_min_js = Url("jquery-ui-1.8.2.custom.min.js");
-            public static readonly string jquery_cookie_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.cookie.min.js") ? Url("jquery.cookie.min.js") : Url("jquery.cookie.js");
-                          
-            public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
-                          
-            public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
-                          
-            public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
-        }
-    
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static class TestHarness {
-            private const string URLPATH = "~/Scripts/TestHarness";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string mscorlib_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/mscorlib.debug.min.js") ? Url("mscorlib.debug.min.js") : Url("mscorlib.debug.js");
-                          
-            public static readonly string mscorlib_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/mscorlib.min.js") ? Url("mscorlib.min.js") : Url("mscorlib.js");
-                          
-            public static readonly string Open_Core_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.debug.min.js") ? Url("Open.Core.debug.min.js") : Url("Open.Core.debug.js");
-                          
-            public static readonly string Open_Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.min.js") ? Url("Open.Core.min.js") : Url("Open.Core.js");
-                          
-            public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
-                          
-            public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");
-                          
-        }
-    
-    }
-
-    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class Content {
         private const string URLPATH = "~/Content";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -265,14 +218,30 @@ namespace Links {
             private const string URLPATH = "~/Content/Images";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-            public static class Shadow {
-                private const string URLPATH = "~/Content/Images/Shadow";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string Drop_12_030_png = Url("Drop.12.030.png");
-            }
-        
+            public static readonly string Sidebar_Home_png = Url("Sidebar.Home.png");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class Scripts {
+            private const string URLPATH = "~/Content/Scripts";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string mscorlib_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/mscorlib.debug.min.js") ? Url("mscorlib.debug.min.js") : Url("mscorlib.debug.js");
+                          
+            public static readonly string mscorlib_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/mscorlib.min.js") ? Url("mscorlib.min.js") : Url("mscorlib.js");
+                          
+            public static readonly string Open_Core_Controls_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Controls.debug.min.js") ? Url("Open.Core.Controls.debug.min.js") : Url("Open.Core.Controls.debug.js");
+                          
+            public static readonly string Open_Core_Controls_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Controls.min.js") ? Url("Open.Core.Controls.min.js") : Url("Open.Core.Controls.js");
+                          
+            public static readonly string Open_Core_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.debug.min.js") ? Url("Open.Core.debug.min.js") : Url("Open.Core.debug.js");
+                          
+            public static readonly string Open_Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.min.js") ? Url("Open.Core.min.js") : Url("Open.Core.js");
+                          
+            public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
+                          
+            public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");
+                          
         }
     
     }

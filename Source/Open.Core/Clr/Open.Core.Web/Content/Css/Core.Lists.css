@@ -1,22 +1,29 @@
-﻿div .coreListItem
+﻿.c-listItem { position:relative; }
+.c-listItem-default
 {
-    border-bottom-style:solid;
-    border-bottom-color:#d7d7d7;
-    border-bottom-width:1px;
+    position:relative;
     padding:15px 10px;
+    border-bottom:solid 1px #d7d7d7;
 }
 
-.coreListItem .itemLabel
+.c-listItem-selected
+{
+    color:white;
+    background:#1773c1;
+    background: -webkit-gradient(linear, left top, left bottom, from(#1c86e1), to(#1360a0));
+    background: -moz-linear-gradient(top, #1c86e1, #1360a0);
+}
+
+.c-listItem-label
 {
     cursor:default;
     position:relative;
     font-size:14pt;
 }
 
-.selectedListItem
+.c-listItem-iconRight
 {
-    color:white;
-    background:#1773c1;
-    background: -webkit-gradient(linear, left top, left bottom, from(#1c86e1), to(#1360a0));
-    background: -moz-linear-gradient(top, #1c86e1, #1360a0);
+    position:absolute;
+    right:8px;
+    top:21px;
 }

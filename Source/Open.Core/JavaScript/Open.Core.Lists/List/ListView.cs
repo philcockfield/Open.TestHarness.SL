@@ -42,7 +42,7 @@ namespace Open.Core.Lists
 
         private void OnViewPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.Property.Name == ListItemView.PropIsSelected)
+            if (e.Property.Name == TreeNode.PropIsSelected)
             {
                 IListItemView view = sender as IListItemView;
                 if (view != null && view.IsSelected) SelectItem(view);
@@ -69,10 +69,6 @@ namespace Open.Core.Lists
         #endregion
 
         #region Methods
-        protected override void OnInitialize(jQueryObject container)
-        {
-        }
-
         /// <summary>Loads the collection of models into the list.</summary>
         /// <param name="items">A collection models.</param>
         public void Load(IEnumerable items)
@@ -134,12 +130,12 @@ namespace Open.Core.Lists
         #region Internal
         private void SelectItem(IListItemView item)
         {
-            // Setup initial conditions.);
+            // Setup initial conditions.
             if (Script.IsNullOrUndefined(item)) return;
 
             // Update the selection.
             ClearSelection(item);
-            item.IsSelected = true;
+            item.IsSelected = true; // NB: The model is updated as well because the View uses a PropertRef to the model's property behind the scenes.
         }
 
         private void ClearSelection(IListItemView exclude)

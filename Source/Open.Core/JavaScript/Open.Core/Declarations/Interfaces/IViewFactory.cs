@@ -2,7 +2,7 @@ using jQueryApi;
 
 namespace Open.Core
 {
-    /// <summary>Defined a model that is capable of creating the view for itself.</summary>
+    /// <summary>An object that is can create the view for itself.</summary>
     public interface IViewFactory
     {
         /// <summary>Creates a view within the given element.</summary>

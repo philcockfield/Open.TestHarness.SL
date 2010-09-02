@@ -22,12 +22,14 @@ namespace Open.Core.Lists
 
             // Wire up events.
             rootNode.ChildSelectionChanged += OnChildSelectionChanged;
+            GlobalEvents.HorizontalPanelResized += OnHorizontalPanelResized;
         }
 
         protected override void OnDisposed()
         {
             div.Empty();
             rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
+            GlobalEvents.HorizontalPanelResized -= OnHorizontalPanelResized;
             base.OnDisposed();
         }
         #endregion
@@ -40,6 +42,11 @@ namespace Open.Core.Lists
             {
                 listTreeView.SelectedNode = selectedNode;
             }
+        }
+
+        private void OnHorizontalPanelResized(object sender, EventArgs e)
+        {
+            SyncWidth();
         }
         #endregion
 

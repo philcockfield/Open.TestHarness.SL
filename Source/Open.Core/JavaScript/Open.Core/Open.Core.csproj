@@ -48,10 +48,12 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Base Classes\TreeNode.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />
     <Compile Include="Declarations\Enumerations.cs" />
+    <Compile Include="Declarations\Interfaces\IHtmlFactory.cs" />
     <Compile Include="Declarations\Interfaces\ILog.cs" />
     <Compile Include="Declarations\Interfaces\ILogView.cs" />
     <Compile Include="Declarations\Interfaces\IModel.cs" />
