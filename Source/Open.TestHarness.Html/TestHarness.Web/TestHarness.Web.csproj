@@ -84,7 +84,6 @@
     </Compile>
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Images\Sidebar.BackMask.png" />
-    <Content Include="Content\Images\Sidebar.Home.png" />
     <Content Include="Content\Scripts\mscorlib.debug.js" />
     <Content Include="Content\Scripts\mscorlib.js" />
     <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />

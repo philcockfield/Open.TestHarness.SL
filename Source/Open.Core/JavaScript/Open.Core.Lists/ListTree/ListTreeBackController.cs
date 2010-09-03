@@ -3,7 +3,7 @@ using jQueryApi;
 
 namespace Open.Core.Lists
 {
-    /// <summary>A controller for attaching a 'Back' button to a ListTree.</summary>
+    /// <summary>A controller for attaching a 'Back' and 'Home' button to a ListTree.</summary>
     public class ListTreeBackController : ControllerBase
     {
         #region Head
@@ -24,12 +24,16 @@ namespace Open.Core.Lists
 
             // Wire up events.
             listTree.PropertyChanged += OnPropertyChanged;
-
             backButton.Click(OnBackClick);
-            backButton.DoubleClick(OnBackDoubleClick);
-
             backMask.Click(OnBackClick);
-            backMask.DoubleClick(OnBackDoubleClick);
+        }
+
+        protected override void OnDisposed()
+        {
+            listTree.PropertyChanged -= OnPropertyChanged;
+            backButton.Unbind(Html.Click, OnBackClick);
+            backMask.Unbind(Html.Click, OnBackClick);
+            base.OnDisposed();
         }
         #endregion
 
@@ -39,8 +43,17 @@ namespace Open.Core.Lists
             if (e.Property.Name == ListTreeView.PropCurrentListRoot) FadeBackMask();
         }
 
-        private void OnBackClick(jQueryEvent e) { listTree.Back(); }
-        private void OnBackDoubleClick(jQueryEvent e) { listTree.SelectedNode = listTree.RootNode; } // DblClick => Home.
+        private void OnBackClick(jQueryEvent e)
+        {
+            if (GlobalEvents.IsCtrlPressed)
+            {
+                listTree.Home();
+            }
+            else
+            {
+                listTree.Back();
+            }
+        }
         #endregion
 
         #region Properties
@@ -50,7 +63,7 @@ namespace Open.Core.Lists
         /// <summary>Gets the 'Back' button.</summary>
         public jQueryObject BackButton{get { return backButton; }}
 
-        /// <summary>Gets the 'Back Mask'.</summary>
+        /// <summary>Gets the 'Home' button.</summary>
         public jQueryObject BackMask{get { return backMask; }}
 
         private bool ShowBackMask

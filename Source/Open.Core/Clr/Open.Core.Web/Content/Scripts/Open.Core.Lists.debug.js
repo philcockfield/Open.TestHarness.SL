@@ -129,7 +129,7 @@ Open.Core.Lists.ListItemCss.prototype = {
 
 Open.Core.Lists.ListTreeBackController = function Open_Core_Lists_ListTreeBackController(listTree, backButton, backMask) {
     /// <summary>
-    /// A controller for attaching a 'Back' button to a ListTree.
+    /// A controller for attaching a 'Back' and 'Home' button to a ListTree.
     /// </summary>
     /// <param name="listTree" type="Open.Core.Lists.ListTreeView">
     /// The list tree under control.
@@ -152,14 +152,19 @@ Open.Core.Lists.ListTreeBackController = function Open_Core_Lists_ListTreeBackCo
     this._backMask$2 = backMask;
     listTree.add_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged$2));
     backButton.click(ss.Delegate.create(this, this._onBackClick$2));
-    backButton.dblclick(ss.Delegate.create(this, this._onBackDoubleClick$2));
     backMask.click(ss.Delegate.create(this, this._onBackClick$2));
-    backMask.dblclick(ss.Delegate.create(this, this._onBackDoubleClick$2));
 }
 Open.Core.Lists.ListTreeBackController.prototype = {
     _listTree$2: null,
     _backButton$2: null,
     _backMask$2: null,
+    
+    onDisposed: function Open_Core_Lists_ListTreeBackController$onDisposed() {
+        this._listTree$2.remove_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged$2));
+        this._backButton$2.unbind(Open.Core.Html.click, ss.Delegate.create(this, this._onBackClick$2));
+        this._backMask$2.unbind(Open.Core.Html.click, ss.Delegate.create(this, this._onBackClick$2));
+        Open.Core.Lists.ListTreeBackController.callBaseMethod(this, 'onDisposed');
+    },
     
     _onPropertyChanged$2: function Open_Core_Lists_ListTreeBackController$_onPropertyChanged$2(sender, e) {
         /// <param name="sender" type="Object">
@@ -174,13 +179,12 @@ Open.Core.Lists.ListTreeBackController.prototype = {
     _onBackClick$2: function Open_Core_Lists_ListTreeBackController$_onBackClick$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
-        this._listTree$2.back();
-    },
-    
-    _onBackDoubleClick$2: function Open_Core_Lists_ListTreeBackController$_onBackDoubleClick$2(e) {
-        /// <param name="e" type="jQueryEvent">
-        /// </param>
-        this._listTree$2.set_selectedNode(this._listTree$2.get_rootNode());
+        if (Open.Core.GlobalEvents.get_isCtrlPressed()) {
+            this._listTree$2.home();
+        }
+        else {
+            this._listTree$2.back();
+        }
     },
     
     get_listTree: function Open_Core_Lists_ListTreeBackController$get_listTree() {
@@ -201,7 +205,7 @@ Open.Core.Lists.ListTreeBackController.prototype = {
     
     get_backMask: function Open_Core_Lists_ListTreeBackController$get_backMask() {
         /// <summary>
-        /// Gets the 'Back Mask'.
+        /// Gets the 'Home' button.
         /// </summary>
         /// <value type="jQueryObject"></value>
         return this._backMask$2;
@@ -545,6 +549,15 @@ Open.Core.Lists.ListTreeView._getSlideDirection$2 = function Open_Core_Lists_Lis
     }
     return (previousNode.containsDescendent(newNode)) ? Open.Core.HorizontalDirection.left : Open.Core.HorizontalDirection.right;
 }
+Open.Core.Lists.ListTreeView._deselectChildren$2 = function Open_Core_Lists_ListTreeView$_deselectChildren$2(node) {
+    /// <param name="node" type="Open.Core.ITreeNode">
+    /// </param>
+    var $enum1 = ss.IEnumerator.getEnumerator(node.get_children());
+    while ($enum1.moveNext()) {
+        var child = $enum1.get_current();
+        child.set_isSelected(false);
+    }
+}
 Open.Core.Lists.ListTreeView.prototype = {
     
     add_selectionChanged: function Open_Core_Lists_ListTreeView$add_selectionChanged(value) {
@@ -633,7 +646,7 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// <value type="Open.Core.ITreeNode"></value>
         if (this.set(Open.Core.Lists.ListTreeView.propCurrentListRoot, value, null)) {
             if (value != null) {
-                this._deselectChildren$2(value);
+                Open.Core.Lists.ListTreeView._deselectChildren$2(value);
                 if (value.get_totalChildren() > 0) {
                     if (this._previousNode$2 == null) {
                         this._getOrCreatePanel$2(value, true).centerStage();
@@ -699,6 +712,13 @@ Open.Core.Lists.ListTreeView.prototype = {
         this.set_selectedNode(this.get_currentListRoot().get_parent());
     },
     
+    home: function Open_Core_Lists_ListTreeView$home() {
+        /// <summary>
+        /// Moves the selected node to the root node.
+        /// </summary>
+        this.set_selectedNode(this.get_rootNode());
+    },
+    
     _slidePanels$2: function Open_Core_Lists_ListTreeView$_slidePanels$2(previousNode, newNode) {
         /// <param name="previousNode" type="Open.Core.ITreeNode">
         /// </param>
@@ -711,16 +731,6 @@ Open.Core.Lists.ListTreeView.prototype = {
         }
         var panel = this._getOrCreatePanel$2(newNode, true);
         panel.slideOn(direction, null);
-    },
-    
-    _deselectChildren$2: function Open_Core_Lists_ListTreeView$_deselectChildren$2(node) {
-        /// <param name="node" type="Open.Core.ITreeNode">
-        /// </param>
-        var $enum1 = ss.IEnumerator.getEnumerator(node.get_children());
-        while ($enum1.moveNext()) {
-            var child = $enum1.get_current();
-            child.set_isSelected(false);
-        }
     },
     
     _getOrCreatePanel$2: function Open_Core_Lists_ListTreeView$_getOrCreatePanel$2(node, initialize) {

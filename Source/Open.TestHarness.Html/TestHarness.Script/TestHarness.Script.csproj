@@ -60,9 +60,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Util\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Lists\Open.Core.Lists.csproj">
       <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>

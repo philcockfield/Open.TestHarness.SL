@@ -26,14 +26,6 @@ namespace Open.Core
         #endregion
 
         #region Methods
-        /// <summary>Converts HTML characters to their corresonding encoded values.</summary>
-        /// <param name="html">The HTML to encode.</param>
-        public static string Encode(string html)
-        {
-            if (string.IsNullOrEmpty(html)) return html;
-            return html.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
-        }
-
         /// <summary>Creates and appends a DIV element within the given parent.</summary>
         /// <param name="parent">The parent element to insert into</param>
         /// <returns>The inserted Div element.</returns>

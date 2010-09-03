@@ -87,10 +87,10 @@ Open.Core.Controls.LogView.prototype = {
         /// </param>
         this._counter$2++;
         if (message == null) {
-            message = Open.Core.Html.encode('<null>');
+            message = '<null>'.htmlEncode();
         }
         if (message === String.Empty) {
-            message = Open.Core.Html.encode('<Empty String>');
+            message = '<Empty String>'.htmlEncode();
         }
         this._divRow$2 = Open.Core.Html.createDiv();
         this._divRow$2.addClass(cssClass);

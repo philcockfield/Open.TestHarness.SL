@@ -936,11 +936,26 @@ Open.Core.PropertyChangedEventArgs.prototype = {
 // Open.Core.GlobalEvents
 
 Open.Core.GlobalEvents = function Open_Core_GlobalEvents() {
+    /// <summary>
+    /// Handles and fires global events.
+    /// </summary>
     /// <field name="__panelResized" type="EventHandler" static="true">
     /// </field>
     /// <field name="__horizontalPanelResized" type="EventHandler" static="true">
     /// </field>
     /// <field name="__verticalPanelResized" type="EventHandler" static="true">
+    /// </field>
+    /// <field name="_keyShift" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_keyCtrl" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_keyAlt" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_isShiftPressed" type="Boolean" static="true">
+    /// </field>
+    /// <field name="_isCtrlPressed" type="Boolean" static="true">
+    /// </field>
+    /// <field name="_isAltPressed" type="Boolean" static="true">
     /// </field>
 }
 Open.Core.GlobalEvents.add_panelResized = function Open_Core_GlobalEvents$add_panelResized(value) {
@@ -1005,6 +1020,27 @@ Open.Core.GlobalEvents._fireVerticalPanelResized = function Open_Core_GlobalEven
     if (Open.Core.GlobalEvents.__verticalPanelResized != null) {
         Open.Core.GlobalEvents.__verticalPanelResized.invoke(sender, new ss.EventArgs());
     }
+}
+Open.Core.GlobalEvents.get_isShiftPressed = function Open_Core_GlobalEvents$get_isShiftPressed() {
+    /// <summary>
+    /// Gets whether the SHIFT key is currently pressed.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.GlobalEvents._isShiftPressed;
+}
+Open.Core.GlobalEvents.get_isCtrlPressed = function Open_Core_GlobalEvents$get_isCtrlPressed() {
+    /// <summary>
+    /// Gets whether the CTRL key is currently pressed.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.GlobalEvents._isCtrlPressed;
+}
+Open.Core.GlobalEvents.get_isAltPressed = function Open_Core_GlobalEvents$get_isAltPressed() {
+    /// <summary>
+    /// Gets whether the ALT key is currently pressed.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.GlobalEvents._isAltPressed;
 }
 
 
@@ -1693,19 +1729,6 @@ Open.Core.Html = function Open_Core_Html() {
     /// <field name="click" type="String" static="true">
     /// </field>
 }
-Open.Core.Html.encode = function Open_Core_Html$encode(html) {
-    /// <summary>
-    /// Converts HTML characters to their corresonding encoded values.
-    /// </summary>
-    /// <param name="html" type="String">
-    /// The HTML to encode.
-    /// </param>
-    /// <returns type="String"></returns>
-    if (String.isNullOrEmpty(html)) {
-        return html;
-    }
-    return html.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-}
 Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
     /// <summary>
     /// Creates and appends a DIV element within the given parent.
@@ -2248,6 +2271,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_scrollHelper" type="Open.Core.Helpers.ScrollHelper" static="true">
     /// </field>
+    /// <field name="_jQueryHelper" type="Open.Core.Helpers.JQueryHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -2306,6 +2331,13 @@ Open.Core.Helper.get_scroll = function Open_Core_Helper$get_scroll() {
     /// </summary>
     /// <value type="Open.Core.Helpers.ScrollHelper"></value>
     return Open.Core.Helper._scrollHelper || (Open.Core.Helper._scrollHelper = new Open.Core.Helpers.ScrollHelper());
+}
+Open.Core.Helper.get_jQuery = function Open_Core_Helper$get_jQuery() {
+    /// <summary>
+    /// Gets the helper for working with JQuery.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.JQueryHelper"></value>
+    return Open.Core.Helper._jQueryHelper || (Open.Core.Helper._jQueryHelper = new Open.Core.Helpers.JQueryHelper());
 }
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
@@ -2463,6 +2495,32 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             }
         }
         return null;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.JQueryHelper
+
+Open.Core.Helpers.JQueryHelper = function Open_Core_Helpers_JQueryHelper() {
+    /// <summary>
+    /// Utility methods for working with JQuery.
+    /// </summary>
+}
+Open.Core.Helpers.JQueryHelper.prototype = {
+    
+    isKey: function Open_Core_Helpers_JQueryHelper$isKey(e, keyCode) {
+        /// <summary>
+        /// Determines whether the specified code matches the given event.
+        /// </summary>
+        /// <param name="e" type="jQueryEvent">
+        /// The jQuery event.
+        /// </param>
+        /// <param name="keyCode" type="Number" integer="true">
+        /// The code to match.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return e.which == keyCode;
     }
 }
 
@@ -3585,6 +3643,7 @@ Open.Core.Helper.registerClass('Open.Core.Helper');
 Open.Core.TestHarness.registerClass('Open.Core.TestHarness');
 Open.Core.TestClassEventArgs.registerClass('Open.Core.TestClassEventArgs');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
+Open.Core.Helpers.JQueryHelper.registerClass('Open.Core.Helpers.JQueryHelper');
 Open.Core.Helpers.ScrollHelper.registerClass('Open.Core.Helpers.ScrollHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
 Open.Core.Helpers.NumberHelper.registerClass('Open.Core.Helpers.NumberHelper');
@@ -3604,6 +3663,37 @@ Open.Core.TreeNode.propChildren = 'Children';
 Open.Core.GlobalEvents.__panelResized = null;
 Open.Core.GlobalEvents.__horizontalPanelResized = null;
 Open.Core.GlobalEvents.__verticalPanelResized = null;
+Open.Core.GlobalEvents._keyShift = 16;
+Open.Core.GlobalEvents._keyCtrl = 17;
+Open.Core.GlobalEvents._keyAlt = 18;
+Open.Core.GlobalEvents._isShiftPressed = false;
+Open.Core.GlobalEvents._isCtrlPressed = false;
+Open.Core.GlobalEvents._isAltPressed = false;
+(function () {
+    var helper = Open.Core.Helper.get_jQuery();
+    $(document).keydown(function(e) {
+        if (helper.isKey(e, Open.Core.GlobalEvents._keyShift)) {
+            Open.Core.GlobalEvents._isShiftPressed = true;
+        }
+        if (helper.isKey(e, Open.Core.GlobalEvents._keyCtrl)) {
+            Open.Core.GlobalEvents._isCtrlPressed = true;
+        }
+        if (helper.isKey(e, Open.Core.GlobalEvents._keyAlt)) {
+            Open.Core.GlobalEvents._isAltPressed = true;
+        }
+    });
+    $(document).keyup(function(e) {
+        if (helper.isKey(e, Open.Core.GlobalEvents._keyShift)) {
+            Open.Core.GlobalEvents._isShiftPressed = false;
+        }
+        if (helper.isKey(e, Open.Core.GlobalEvents._keyCtrl)) {
+            Open.Core.GlobalEvents._isCtrlPressed = false;
+        }
+        if (helper.isKey(e, Open.Core.GlobalEvents._keyAlt)) {
+            Open.Core.GlobalEvents._isAltPressed = false;
+        }
+    });
+})();
 Open.Core.Log._writer = null;
 Open.Core.LogCss.url = '/Open.Core/Css/Core.Controls.css';
 Open.Core.LogCss._rootClass = 'coreLog';
@@ -3651,6 +3741,7 @@ Open.Core.Helper._collectionHelper = null;
 Open.Core.Helper._stringHelper = null;
 Open.Core.Helper._numberHelper = null;
 Open.Core.Helper._scrollHelper = null;
+Open.Core.Helper._jQueryHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Core.TestHarness.__testClassRegistered = null;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';

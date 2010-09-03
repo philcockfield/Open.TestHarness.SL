@@ -129,6 +129,12 @@ namespace Open.Core.Lists
             if (CurrentListRoot == null || CurrentListRoot.IsRoot) return;
             SelectedNode = CurrentListRoot.Parent;
         }
+
+        /// <summary>Moves the selected node to the root node.</summary>
+        public void Home()
+        {
+            SelectedNode = RootNode;
+        }
         #endregion
 
         #region Internal
@@ -157,7 +163,7 @@ namespace Open.Core.Lists
                        : HorizontalDirection.Right;
         }
 
-        private void DeselectChildren(ITreeNode node)
+        private static void DeselectChildren(ITreeNode node)
         {
             foreach (ITreeNode child in node.Children)
             {
