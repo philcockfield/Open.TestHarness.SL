@@ -45,6 +45,35 @@ Open.Core.VerticalDirection.registerEnum('Open.Core.VerticalDirection', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.LinkTarget
+
+Open.Core.LinkTarget = function() { 
+    /// <summary>
+    /// The target of an HTML link.
+    /// </summary>
+    /// <field name="blank" type="Number" integer="true" static="true">
+    /// Load in a new window.
+    /// </field>
+    /// <field name="self" type="Number" integer="true" static="true">
+    /// Load in the same frame as it was clicked.
+    /// </field>
+    /// <field name="parent" type="Number" integer="true" static="true">
+    /// Load in the parent frameset.
+    /// </field>
+    /// <field name="top" type="Number" integer="true" static="true">
+    /// Load in the full body of the window.
+    /// </field>
+};
+Open.Core.LinkTarget.prototype = {
+    blank: 0, 
+    self: 1, 
+    parent: 2, 
+    top: 2
+}
+Open.Core.LinkTarget.registerEnum('Open.Core.LinkTarget', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.IHtmlFactory
 
 Open.Core.IHtmlFactory = function() { 
@@ -140,7 +169,7 @@ Open.Core.IModel.registerInterface('Open.Core.IModel');
 
 Open.Core.ITreeNode = function() { 
     /// <summary>
-    /// Represents a node within a tree structure.
+    /// Represents a node within a tree data-structure.
     /// </summary>
 };
 Open.Core.ITreeNode.prototype = {
@@ -148,14 +177,22 @@ Open.Core.ITreeNode.prototype = {
     remove_selectionChanged : null,
     add_childSelectionChanged : null,
     remove_childSelectionChanged : null,
+    add_childAdded : null,
+    remove_childAdded : null,
+    add_childRemoved : null,
+    remove_childRemoved : null,
+    add_childrenChanged : null,
+    remove_childrenChanged : null,
     get_parent : null,
     get_isRoot : null,
     get_isSelected : null,
     set_isSelected : null,
     get_children : null,
     get_totalChildren : null,
-    add : null,
-    remove : null,
+    addChild : null,
+    insertChild : null,
+    removeChild : null,
+    clearChildren : null,
     contains : null,
     containsDescendent : null,
     childAt : null
@@ -204,6 +241,7 @@ Open.Core.IView.prototype = {
     get_isDisposed : null,
     get_isInitialized : null,
     initialize : null,
+    get_container : null,
     dispose : null
 }
 Open.Core.IView.registerInterface('Open.Core.IView');
@@ -417,9 +455,21 @@ Open.Core.ModelBase.prototype = {
 // Open.Core.TreeNode
 
 Open.Core.TreeNode = function Open_Core_TreeNode() {
+    /// <summary>
+    /// Represents a node within a tree data-structure.
+    /// </summary>
     /// <field name="__selectionChanged$1" type="EventHandler">
     /// </field>
     /// <field name="__childSelectionChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="__childAdded$1" type="Open.Core.TreeNodeHandler">
+    /// </field>
+    /// <field name="__childRemoved$1" type="Open.Core.TreeNodeHandler">
+    /// </field>
+    /// <field name="__childrenChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="nullIndex" type="Number" integer="true" static="true">
+    /// The index number of a node if it's not-known or is not applicable to the scenario.
     /// </field>
     /// <field name="propIsSelected" type="String" static="true">
     /// </field>
@@ -457,7 +507,7 @@ Open.Core.TreeNode._fromDictionary$1 = function Open_Core_TreeNode$_fromDictiona
         while ($enum1.moveNext()) {
             var child = $enum1.get_current();
             var childNode = Open.Core.TreeNode._fromDictionary$1(child, factory);
-            node.add(childNode);
+            node.addChild(childNode);
         }
     }
     return node;
@@ -530,6 +580,63 @@ Open.Core.TreeNode.prototype = {
         }
     },
     
+    add_childAdded: function Open_Core_TreeNode$add_childAdded(value) {
+        /// <param name="value" type="Function" />
+        this.__childAdded$1 = ss.Delegate.combine(this.__childAdded$1, value);
+    },
+    remove_childAdded: function Open_Core_TreeNode$remove_childAdded(value) {
+        /// <param name="value" type="Function" />
+        this.__childAdded$1 = ss.Delegate.remove(this.__childAdded$1, value);
+    },
+    
+    __childAdded$1: null,
+    
+    _fireChildAdded$1: function Open_Core_TreeNode$_fireChildAdded$1(e) {
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        if (this.__childAdded$1 != null) {
+            this.__childAdded$1.invoke(this, e);
+        }
+        this._fireChildrenChanged$1();
+    },
+    
+    add_childRemoved: function Open_Core_TreeNode$add_childRemoved(value) {
+        /// <param name="value" type="Function" />
+        this.__childRemoved$1 = ss.Delegate.combine(this.__childRemoved$1, value);
+    },
+    remove_childRemoved: function Open_Core_TreeNode$remove_childRemoved(value) {
+        /// <param name="value" type="Function" />
+        this.__childRemoved$1 = ss.Delegate.remove(this.__childRemoved$1, value);
+    },
+    
+    __childRemoved$1: null,
+    
+    _fireChildRemoved$1: function Open_Core_TreeNode$_fireChildRemoved$1(e) {
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        if (this.__childRemoved$1 != null) {
+            this.__childRemoved$1.invoke(this, e);
+        }
+        this._fireChildrenChanged$1();
+    },
+    
+    add_childrenChanged: function Open_Core_TreeNode$add_childrenChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__childrenChanged$1 = ss.Delegate.combine(this.__childrenChanged$1, value);
+    },
+    remove_childrenChanged: function Open_Core_TreeNode$remove_childrenChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__childrenChanged$1 = ss.Delegate.remove(this.__childrenChanged$1, value);
+    },
+    
+    __childrenChanged$1: null,
+    
+    _fireChildrenChanged$1: function Open_Core_TreeNode$_fireChildrenChanged$1() {
+        if (this.__childrenChanged$1 != null) {
+            this.__childrenChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
     _parent$1: null,
     _childList$1: null,
     
@@ -589,6 +696,11 @@ Open.Core.TreeNode.prototype = {
         return this._childList$1 || (this._childList$1 = []);
     },
     
+    toString: function Open_Core_TreeNode$toString() {
+        /// <returns type="String"></returns>
+        return String.format('[{0}({1})]', Type.getInstanceType(this).get_name(), this.get_totalChildren());
+    },
+    
     toJson: function Open_Core_TreeNode$toJson() {
         /// <returns type="String"></returns>
         return Open.Core.Helper.get_json().serialize(this._toDictionary$1());
@@ -603,20 +715,35 @@ Open.Core.TreeNode.prototype = {
         /// </param>
     },
     
-    add: function Open_Core_TreeNode$add(node) {
+    addChild: function Open_Core_TreeNode$addChild(node) {
         /// <param name="node" type="Open.Core.ITreeNode">
         /// </param>
+        this.insertChild(Open.Core.TreeNode.nullIndex, node);
+    },
+    
+    insertChild: function Open_Core_TreeNode$insertChild(index, node) {
+        /// <param name="index" type="Number" integer="true">
+        /// </param>
+        /// <param name="node" type="Open.Core.ITreeNode">
+        /// </param>
+        if (node == null) {
+            return;
+        }
         if (this.contains(node)) {
             return;
         }
-        this.get__childList$1().add(node);
+        if (index < 0) {
+            index = this.get_totalChildren();
+        }
+        this.get__childList$1().insert(index, node);
         node.add_selectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$1));
         if (node.get_parent() !== this) {
             Open.Core.TreeNode._setParent$1(node, this);
         }
+        this._fireChildAdded$1(new Open.Core.TreeNodeEventArgs(node, index));
     },
     
-    remove: function Open_Core_TreeNode$remove(node) {
+    removeChild: function Open_Core_TreeNode$removeChild(node) {
         /// <param name="node" type="Open.Core.ITreeNode">
         /// </param>
         if (!this.contains(node)) {
@@ -626,6 +753,15 @@ Open.Core.TreeNode.prototype = {
         node.remove_selectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$1));
         if (node.get_parent() === this) {
             Open.Core.TreeNode._setParent$1(node, null);
+        }
+        this._fireChildRemoved$1(new Open.Core.TreeNodeEventArgs(node, Open.Core.TreeNode.nullIndex));
+    },
+    
+    clearChildren: function Open_Core_TreeNode$clearChildren() {
+        var $enum1 = ss.IEnumerator.getEnumerator(this.get__childList$1().clone());
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            this.removeChild(child);
         }
     },
     
@@ -713,6 +849,57 @@ Open.Core.ViewBase.prototype = {
         /// </summary>
         /// <param name="container" type="jQueryObject">
         /// </param>
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.TreeNodeEventArgs
+
+Open.Core.TreeNodeEventArgs = function Open_Core_TreeNodeEventArgs(node, index) {
+    /// <summary>
+    /// Event arguments accompanying a 'TreeNode' operation.
+    /// </summary>
+    /// <param name="node" type="Open.Core.ITreeNode">
+    /// The tree-node which is the subject of the event.
+    /// </param>
+    /// <param name="index" type="Number" integer="true">
+    /// The index of the node within it's parent (-1 if not known or applicable).
+    /// </param>
+    /// <field name="_node$1" type="Open.Core.ITreeNode">
+    /// </field>
+    /// <field name="_index$1" type="Number" integer="true">
+    /// </field>
+    Open.Core.TreeNodeEventArgs.initializeBase(this);
+    this._node$1 = node;
+    this._index$1 = index;
+}
+Open.Core.TreeNodeEventArgs.prototype = {
+    _node$1: null,
+    _index$1: 0,
+    
+    get_node: function Open_Core_TreeNodeEventArgs$get_node() {
+        /// <summary>
+        /// Gets the tree-node which is the subject of the event.
+        /// </summary>
+        /// <value type="Open.Core.ITreeNode"></value>
+        return this._node$1;
+    },
+    
+    get_index: function Open_Core_TreeNodeEventArgs$get_index() {
+        /// <summary>
+        /// Gets the index of the node within it's parent (-1 if not known or applicable).
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this._index$1;
+    },
+    
+    get_hasIndex: function Open_Core_TreeNodeEventArgs$get_hasIndex() {
+        /// <summary>
+        /// Gets whether an index value exists.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        return this.get_index() !== Open.Core.TreeNode.nullIndex;
     }
 }
 
@@ -1506,6 +1693,19 @@ Open.Core.Html = function Open_Core_Html() {
     /// <field name="click" type="String" static="true">
     /// </field>
 }
+Open.Core.Html.encode = function Open_Core_Html$encode(html) {
+    /// <summary>
+    /// Converts HTML characters to their corresonding encoded values.
+    /// </summary>
+    /// <param name="html" type="String">
+    /// The HTML to encode.
+    /// </param>
+    /// <returns type="String"></returns>
+    if (String.isNullOrEmpty(html)) {
+        return html;
+    }
+    return html.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+}
 Open.Core.Html.appendDiv = function Open_Core_Html$appendDiv(parent) {
     /// <summary>
     /// Creates and appends a DIV element within the given parent.
@@ -1579,6 +1779,54 @@ Open.Core.Html.centerVertically = function Open_Core_Html$centerVertically(eleme
     /// </param>
     var top = (within.height() / 2) - (element.height() / 2);
     element.css(Open.Core.Css.top, top + 'px');
+}
+Open.Core.Html.childAt = function Open_Core_Html$childAt(index, parent) {
+    /// <summary>
+    /// Retrieves the child at the specified index, otherwise Null.
+    /// </summary>
+    /// <param name="index" type="Number" integer="true">
+    /// The index of the child (0-based).
+    /// </param>
+    /// <param name="parent" type="jQueryObject">
+    /// The parent to look within.
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    var element = parent.children(String.format(':nth-child({0})', index + 1));
+    return (element.length === 0) ? null : element;
+}
+Open.Core.Html.getOrCreateId = function Open_Core_Html$getOrCreateId(element) {
+    /// <summary>
+    /// Gets the elements ID, creating a unique ID of the element doesn't already have one.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to get the ID for.
+    /// </param>
+    /// <returns type="String"></returns>
+    var id = element.attr(Open.Core.Html.id);
+    if (String.isNullOrEmpty(id)) {
+        id = Open.Core.Helper.createId();
+        element.attr(Open.Core.Html.id, id);
+    }
+    return id;
+}
+Open.Core.Html.toHyperlink = function Open_Core_Html$toHyperlink(url, text, target) {
+    /// <summary>
+    /// Formats the an hyperlink.
+    /// </summary>
+    /// <param name="url" type="String">
+    /// The url to link to.
+    /// </param>
+    /// <param name="text" type="String">
+    /// The display text of the link (null to use the URL).
+    /// </param>
+    /// <param name="target" type="Open.Core.LinkTarget">
+    /// The target attribute.
+    /// </param>
+    /// <returns type="String"></returns>
+    if (text == null) {
+        text = url;
+    }
+    return String.format('<a href=\'{0}\' target=\'_{2}\'>{1}</a>', url, text, Open.Core.LinkTarget.toString(target));
 }
 
 
@@ -2076,7 +2324,7 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
     /// </summary>
     /// <returns type="String"></returns>
     Open.Core.Helper._idCounter++;
-    return String.format('g.{0}', Open.Core.Helper._idCounter);
+    return String.format('gid{0}', Open.Core.Helper._idCounter);
 }
 
 
@@ -2105,22 +2353,22 @@ Open.Core.TestHarness.remove_testClassRegistered = function Open_Core_TestHarnes
     /// <param name="value" type="Function" />
     Open.Core.TestHarness.__testClassRegistered = ss.Delegate.remove(Open.Core.TestHarness.__testClassRegistered, value);
 }
-Open.Core.TestHarness.registerTestClass = function Open_Core_TestHarness$registerTestClass(testPackage, testClass) {
+Open.Core.TestHarness.registerTestClass = function Open_Core_TestHarness$registerTestClass(entryPoint, testClass) {
     /// <summary>
     /// Registers a test-class with the harness.
     /// </summary>
-    /// <param name="testPackage" type="Type">
+    /// <param name="entryPoint" type="Type">
     /// Type representing the test-package (normally the 'Application' class).
     /// </param>
     /// <param name="testClass" type="Type">
     /// The type of the test class.
     /// </param>
-    if (ss.isNullOrUndefined(testPackage) || ss.isNullOrUndefined(testClass)) {
+    if (ss.isNullOrUndefined(entryPoint) || ss.isNullOrUndefined(testClass)) {
         return;
     }
     if (Open.Core.TestHarness.__testClassRegistered != null) {
         var e = new Open.Core.TestClassEventArgs();
-        e.testPackage = testPackage;
+        e.entryPoint = entryPoint;
         e.testClass = testClass;
         Open.Core.TestHarness.__testClassRegistered.invoke(Open.Core.TestHarness, e);
     }
@@ -2131,13 +2379,13 @@ Open.Core.TestHarness.registerTestClass = function Open_Core_TestHarness$registe
 // Open.Core.TestClassEventArgs
 
 Open.Core.TestClassEventArgs = function Open_Core_TestClassEventArgs() {
-    /// <field name="testPackage" type="Type">
+    /// <field name="entryPoint" type="Type">
     /// </field>
     /// <field name="testClass" type="Type">
     /// </field>
 }
 Open.Core.TestClassEventArgs.prototype = {
-    testPackage: null,
+    entryPoint: null,
     testClass: null
 }
 
@@ -2172,6 +2420,49 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             list.add(item);
         }
         return list;
+    },
+    
+    filter: function Open_Core_Helpers_CollectionHelper$filter(collection, predicate) {
+        /// <summary>
+        /// Constructs a subset of the collection based on the response of an include-filter.
+        /// </summary>
+        /// <param name="collection" type="ss.IEnumerable">
+        /// The collection to filter.
+        /// </param>
+        /// <param name="predicate" type="Open.Core.IsMatch">
+        /// The predicate to match.
+        /// </param>
+        /// <returns type="Array"></returns>
+        var list = [];
+        var $enum1 = ss.IEnumerator.getEnumerator(collection);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            if (predicate.invoke(item)) {
+                list.add(item);
+            }
+        }
+        return list;
+    },
+    
+    first: function Open_Core_Helpers_CollectionHelper$first(collection, predicate) {
+        /// <summary>
+        /// Retrieves the first item that matches the given filter (or null if there is no match).
+        /// </summary>
+        /// <param name="collection" type="ss.IEnumerable">
+        /// The collection to examine.
+        /// </param>
+        /// <param name="predicate" type="Open.Core.IsMatch">
+        /// The predicate to match.
+        /// </param>
+        /// <returns type="Object"></returns>
+        var $enum1 = ss.IEnumerator.getEnumerator(collection);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            if (predicate.invoke(item)) {
+                return item;
+            }
+        }
+        return null;
     }
 }
 
@@ -3273,6 +3564,7 @@ Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel,
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
+Open.Core.TreeNodeEventArgs.registerClass('Open.Core.TreeNodeEventArgs', ss.EventArgs);
 Open.Core.PropertyChangedEventArgs.registerClass('Open.Core.PropertyChangedEventArgs', ss.EventArgs);
 Open.Core.GlobalEvents.registerClass('Open.Core.GlobalEvents');
 Open.Core.Log.registerClass('Open.Core.Log');
@@ -3306,6 +3598,7 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Core.TreeNode.nullIndex = -1;
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
 Open.Core.GlobalEvents.__panelResized = null;

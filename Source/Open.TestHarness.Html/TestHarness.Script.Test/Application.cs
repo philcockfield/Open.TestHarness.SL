@@ -9,13 +9,10 @@ namespace TestHarness.Test
     {
         public static void Main(Dictionary args)
         {
-            Log.Success("Tests loaded");
-
             Type testPackage = typeof (Application);
             TH.RegisterTestClass(testPackage, typeof(MyTestClass1));
             TH.RegisterTestClass(testPackage, typeof(MyTestClass1));
             TH.RegisterTestClass(testPackage, typeof(MyTestClass2));
-
         }
     }
 }

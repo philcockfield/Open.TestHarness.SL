@@ -6,14 +6,25 @@
     right:0px;
     top:0px;
     bottom:0px;
+    border-top:solid 1px #384148;
+}
+
+#testHarness .th-topHighlight
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    height:1px;
+    border-top:solid 1px white;
 }
 
 
 /*-------------- Fonts --------------*/
-#testHarness .titleFont { font-family: "myriad-pro-1","myriad-pro-2"; }
-/* #testHarness .titleFont { font-family: "myriad-pro-semi-condensed-1","myriad-pro-semi-condensed-2"; } */
-
-
+#testHarness .titleFont 
+{ 
+    font-family: "myriad-pro-1","myriad-pro-2", "Segoe UI"; 
+}
 
 
 /*-------------- Toolbars --------------*/
@@ -29,6 +40,7 @@
 }
 
 
+
 /*-------------- Sidebar --------------*/
 #testHarnessSidebar
 {
@@ -40,8 +52,20 @@
     width:250px;
 }
 
+#testHarness .th-sidebarToolbar
+{
+    background:#5c6a77;
+    background: -webkit-gradient(linear, left top, left bottom, from(#7e8d9b), to(#5a6875));
+    background: -moz-linear-gradient(top, #7e8d9b, #5a6875);
+}
+#testHarness .th-sidebarToolbar-highlight 
+{ 
+    opacity:0.30; filter:alpha(opacity=30);
+}
+
+
 #testHarnessSidebar .th-sidebarList { top:35px;  }
-#testHarnessSidebar img.th-home
+#testHarnessSidebar img.th-backMask
 {
     position:absolute;
     display:none;
@@ -52,6 +76,7 @@
     font-weight:300;
     font-size:16pt;
 }
+
 
 
 /*-------------- Main --------------*/
@@ -66,8 +91,9 @@
 
 #testHarness .th-mainToolbar
 {
-    background:#f2f2f2;
-    border-color:#d9d9d9;
+    background:#f0f0f0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e4e4e4));
+    background: -moz-linear-gradient(top, #f4f4f4, #e4e4e4);
 }
 
 #testHarness .th-mainContent

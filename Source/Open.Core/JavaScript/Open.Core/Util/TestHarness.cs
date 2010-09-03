@@ -15,16 +15,16 @@ namespace Open.Core
 
         #region Methods
         /// <summary>Registers a test-class with the harness.</summary>
-        /// <param name="testPackage">Type representing the test-package (normally the 'Application' class).</param>
+        /// <param name="entryPoint">Type representing the test-package (normally the 'Application' class).</param>
         /// <param name="testClass">The type of the test class.</param>
-        public static void RegisterTestClass(Type testPackage, Type testClass)
+        public static void RegisterTestClass(Type entryPoint, Type testClass)
         {
-            if (Script.IsNullOrUndefined(testPackage) || Script.IsNullOrUndefined(testClass)) return;
+            if (Script.IsNullOrUndefined(entryPoint) || Script.IsNullOrUndefined(testClass)) return;
             if (TestClassRegistered != null)
             {
                 // Alert the test-harness via an event.
                 TestClassEventArgs e = new TestClassEventArgs();
-                e.TestPackage = testPackage;
+                e.EntryPoint = entryPoint;
                 e.TestClass = testClass;
                 TestClassRegistered(typeof (TestHarness), e);
             }
@@ -35,7 +35,7 @@ namespace Open.Core
     public delegate void TestClassHandler(object sender, TestClassEventArgs e);
     public class TestClassEventArgs
     {
-        public Type TestPackage;
+        public Type EntryPoint;
         public Type TestClass;
     }
 }

@@ -13,4 +13,20 @@ namespace Open.Core
         Up = 0,
         Down = 1,
     }
+
+    /// <summary>The target of an HTML link.</summary>
+    public enum LinkTarget
+    {
+        /// <summary>Load in a new window.</summary>
+        Blank = 0,
+
+        /// <summary>Load in the same frame as it was clicked.</summary>
+        Self = 1,
+
+        /// <summary>Load in the parent frameset.</summary>
+        Parent = 2,
+
+        /// <summary>Load in the full body of the window.</summary>
+        Top = 2
+    }
 }

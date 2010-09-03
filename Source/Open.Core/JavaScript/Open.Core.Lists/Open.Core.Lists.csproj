@@ -54,10 +54,10 @@
     <Compile Include="Declarations\Interfaces\IListItemView.cs" />
     <Compile Include="Declarations\ListCss.cs" />
     <Compile Include="Declarations\Interfaces\IListItem.cs" />
-    <Compile Include="ListTree\View\ListTreeBackController.cs" />
+    <Compile Include="ListTree\ListTreeBackController.cs" />
     <Compile Include="Model\ListItem.cs" />
-    <Compile Include="ListTree\View\ListTreePanel.cs" />
-    <Compile Include="ListTree\View\ListTreeView.cs" />
+    <Compile Include="ListTree\ListTreePanel.cs" />
+    <Compile Include="ListTree\ListTreeView.cs" />
     <Compile Include="ListTemplates.cs" />
     <Compile Include="List\ListView.cs" />
     <Compile Include="List\ListItemView.cs" />

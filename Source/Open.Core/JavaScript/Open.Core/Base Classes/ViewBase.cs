@@ -17,7 +17,7 @@ namespace Open.Core
 
         #region Properties
         /// <summary>Gets the element that the view is contained within.</summary>
-        protected jQueryObject Container { get { return container; } }
+        public jQueryObject Container { get { return container; } }
         #endregion
 
         #region Methods

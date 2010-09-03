@@ -4,6 +4,7 @@ using jQueryApi;
 
 namespace Open.Core.Lists
 {
+    /// <summary>Renders a single list within a tree-of lists.</summary>
     internal class ListTreePanel : ViewBase
     {
         #region Head
@@ -21,15 +22,24 @@ namespace Open.Core.Lists
             this.rootNode = rootNode;
 
             // Wire up events.
-            rootNode.ChildSelectionChanged += OnChildSelectionChanged;
             GlobalEvents.HorizontalPanelResized += OnHorizontalPanelResized;
+            rootNode.ChildSelectionChanged += OnChildSelectionChanged;
+            rootNode.ChildAdded += OnChildAdded;
+            rootNode.ChildRemoved += OnChildRemoved;
         }
 
         protected override void OnDisposed()
         {
+            // Setup initial conditions.
             div.Empty();
-            rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
+
+            // Unwire events.
             GlobalEvents.HorizontalPanelResized -= OnHorizontalPanelResized;
+            rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
+            rootNode.ChildAdded -= OnChildAdded;
+            rootNode.ChildRemoved -= OnChildRemoved;
+
+            // Finish up.
             base.OnDisposed();
         }
         #endregion
@@ -44,14 +54,15 @@ namespace Open.Core.Lists
             }
         }
 
-        private void OnHorizontalPanelResized(object sender, EventArgs e)
-        {
-            SyncWidth();
-        }
+        private void OnHorizontalPanelResized(object sender, EventArgs e) { SyncWidth(); }
+        private void OnChildAdded(object sender, TreeNodeEventArgs e) { listView.Insert(e.Index, e.Node); }
+        private void OnChildRemoved(object sender, TreeNodeEventArgs e) { listView.Remove(e.Node); }
         #endregion
 
         #region Properties
         public ITreeNode RootNode { get { return rootNode; } }
+        public bool IsCenterStage { get { return div.GetCSS(Css.Left) == "0px"; } }
+
         private int Width { get { return rootDiv.GetWidth(); } }
         private int SlideDuration { get { return Helper.Number.ToMsecs(listTreeView.SlideDuration); } }
         #endregion
@@ -87,15 +98,15 @@ namespace Open.Core.Lists
 
             // Perform animation.
             div.Animate(
-                properties, 
-                SlideDuration, 
-                listTreeView.SlideEasing, 
-                delegate
-                    {
-                        // On complete.
-                        Hide();
-                        Helper.InvokeOrDefault(onComplete);
-                    });
+                        properties, 
+                        SlideDuration, 
+                        listTreeView.SlideEasing, 
+                        delegate
+                            {
+                                // On complete.
+                                Hide();
+                                Helper.InvokeOrDefault(onComplete);
+                            });
         }
 
         public void SlideOn(HorizontalDirection direction, Action onComplete)
@@ -112,14 +123,14 @@ namespace Open.Core.Lists
 
             // Perform animation.
             div.Animate(
-                properties,
-                SlideDuration,
-                listTreeView.SlideEasing,
-                delegate
-                    {
-                        // On complete.
-                        Helper.InvokeOrDefault(onComplete);
-                    });
+                        properties,
+                        SlideDuration,
+                        listTreeView.SlideEasing,
+                        delegate
+                            {
+                                // On complete.
+                                Helper.InvokeOrDefault(onComplete);
+                            });
         }
 
         public void CenterStage()

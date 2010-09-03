@@ -3,7 +3,7 @@ using jQueryApi;
 using Open.Core;
 using Open.Core.UI;
 
-namespace Open.TestHarness.Shell
+namespace Open.TestHarness.Controllers
 {
     /// <summary>Handles resizing of panels within the shell.</summary>
     public class PanelResizeController : ControllerBase

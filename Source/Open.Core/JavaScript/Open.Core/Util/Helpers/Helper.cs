@@ -57,7 +57,7 @@ namespace Open.Core
         public static string CreateId()
         {
             idCounter++;
-            return string.Format("g.{0}", idCounter);
+            return string.Format("gid{0}", idCounter);
         }
         #endregion
     }

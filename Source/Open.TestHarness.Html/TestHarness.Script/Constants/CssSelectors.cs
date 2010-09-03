@@ -7,7 +7,7 @@ namespace Open.TestHarness
         public static readonly string Sidebar = "#testHarnessSidebar";
         public static readonly string SidebarList = "#testHarnessSidebar .th-sidebarList";
         public static readonly string SidebarToolbar = "#testHarnessSidebar div.th-toolbar";
-        public static readonly string HomeButton = "#testHarnessSidebar img.th-home";
+        public static readonly string BackMask = "#testHarnessSidebar img.th-backMask";
 
         // Main.
         public static readonly string Main = "#testHarness .th-main";

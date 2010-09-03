@@ -8,17 +8,30 @@ namespace Open.Core
     public delegate TreeNode TreeNodeFactory(Dictionary node);
 
 
+    /// <summary>Represents a node within a tree data-structure.</summary>
     public abstract class TreeNode : ModelBase, ITreeNode, IDisposable
     {
-        #region Event Handlers
+        #region Events : ITreeNode
         public event EventHandler SelectionChanged;
         private void FireSelectionChanged() { if (SelectionChanged != null) SelectionChanged(this, new EventArgs()); }
 
         public event EventHandler ChildSelectionChanged;
         private void FireChildSelectionChanged() { if (ChildSelectionChanged != null) ChildSelectionChanged(this, new EventArgs()); }
+
+        public event TreeNodeHandler ChildAdded;
+        private void FireChildAdded(TreeNodeEventArgs e) { if (ChildAdded != null) ChildAdded(this, e); FireChildrenChanged(); }
+
+        public event TreeNodeHandler ChildRemoved;
+        private void FireChildRemoved(TreeNodeEventArgs e) { if (ChildRemoved != null) ChildRemoved(this, e); FireChildrenChanged(); }
+
+        public event EventHandler ChildrenChanged;
+        private void FireChildrenChanged(){if (ChildrenChanged != null) ChildrenChanged(this, new EventArgs());}
         #endregion
 
         #region Head
+        /// <summary>The index number of a node if it's not-known or is not applicable to the scenario.</summary>
+        public const int NullIndex = -1;
+
         public const string PropIsSelected = "IsSelected";
         public const string PropChildren = "Children";
 
@@ -66,6 +79,10 @@ namespace Open.Core
         private ArrayList ChildList { get { return childList ?? (childList = new ArrayList()); } }
         #endregion
 
+        #region Methods
+        public override string ToString() { return string.Format("[{0}({1})]", GetType().Name, TotalChildren); }
+        #endregion
+
         #region Methods : JSON
         public override string ToJson() { return Helper.Json.Serialize(ToDictionary()); }
 
@@ -84,22 +101,29 @@ namespace Open.Core
         #endregion
 
         #region Methods : Children Collection
-        public void Add(ITreeNode node)
+        public void AddChild(ITreeNode node) { InsertChild(NullIndex, node); }
+
+        public void InsertChild(int index, ITreeNode node)
         {
-            // Ignore if the node has already been added.
-            if (Contains(node)) return;
+            // Setup initial conditions.
+            if (node == null) return;
+            if (Contains(node)) return; // Ignore if the node has already been added.
+            if (index < 0) index = TotalChildren;
 
             // Store the node.
-            ChildList.Add(node);
+            ChildList.Insert(index, node);
 
             // Wire up events.
             node.SelectionChanged += OnChildSelectionChanged;
 
             // Ensure the parent node is set to this.
             if (node.Parent != this) SetParent(node, this);
+
+            // Finish up.
+            FireChildAdded(new TreeNodeEventArgs(node, index));
         }
 
-        public void Remove(ITreeNode node)
+        public void RemoveChild(ITreeNode node)
         {
             // Ignore if the node has already been added.
             if (!Contains(node)) return;
@@ -112,6 +136,17 @@ namespace Open.Core
 
             // De-register this as the nodes parent.
             if (node.Parent == this) SetParent(node, null);
+
+            // Finish up.
+            FireChildRemoved(new TreeNodeEventArgs(node, NullIndex));
+        }
+
+        public void ClearChildren()
+        {
+            foreach (ITreeNode child in ChildList.Clone())
+            {
+                RemoveChild(child);
+            }
         }
 
         public ITreeNode ChildAt(int index) { return childList == null ? null : ChildList[index] as ITreeNode; }
@@ -150,7 +185,7 @@ namespace Open.Core
                 foreach (Dictionary child in children)
                 {
                     TreeNode childNode = FromDictionary(child, factory);
-                    node.Add(childNode);
+                    node.AddChild(childNode);
                 }
             }
 

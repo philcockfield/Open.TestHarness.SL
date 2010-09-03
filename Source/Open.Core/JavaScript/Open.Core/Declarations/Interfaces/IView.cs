@@ -15,6 +15,9 @@ namespace Open.Core
         /// <param name="container">The containing element of the view.</param>
         void Initialize(jQueryObject container);
 
+        /// <summary>Gets the element that the view is contained within.</summary>
+        jQueryObject Container { get; }
+
         /// <summary>Destroys the view and clears resources.</summary>
         void Dispose();
     }

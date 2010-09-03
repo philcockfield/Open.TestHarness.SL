@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Html;
 using jQueryApi;
 
 namespace Open.Core.Lists
@@ -68,66 +67,115 @@ namespace Open.Core.Lists
         public int Count { get { return views.Count; } }
         #endregion
 
-        #region Methods
+        #region Methods : Load | Insert
         /// <summary>Loads the collection of models into the list.</summary>
         /// <param name="items">A collection models.</param>
         public void Load(IEnumerable items)
         {
-            // Setup initial conditions.
             Clear();
-            if (Script.IsNullOrUndefined(items)) return;
-            ArrayList models = Helper.Collection.ToArrayList(items);
+            InsertRange(0, items);
+        }
 
-            // Insert a DIV for each model.
-            for (int i = 0; i < models.Count; i++)
+        /// <summary>Loads the collection of models into the list.</summary>
+        /// <param name="startingAt">Index to start inserting at (0-based).</param>
+        /// <param name="models">A collection models.</param>
+        public void InsertRange(int startingAt, IEnumerable models)
+        {
+            // Setup initial conditions.
+            if (Script.IsNullOrUndefined(models)) return;
+            if (startingAt < 0) startingAt = 0;
+
+            // Insert each item.
+            foreach (object model in models)
             {
-                jQueryObject div = Html.AppendDiv(Container);
+                Insert(startingAt, model);
+                startingAt++;
+            }
+        }
+
+        /// <summary>Inserts a list-item for the given model at the specified index.</summary>
+        /// <param name="index">The index to insert at (0-based).</param>
+        /// <param name="model">The data-model for the item.</param>
+        public void Insert(int index, object model)
+        {
+            // Setup initial conditions.
+            jQueryObject insertBefore = InsertBefore(index);
+
+            // Insert the containing DIV.
+            jQueryObject div = Html.CreateDiv();
+            if (insertBefore == null)
+            {
                 div.AppendTo(Container);
             }
+            else
+            {
+                div.InsertBefore(insertBefore);
+            }
 
-            // Create the views for each model.
-            Container.Children(Html.Div).Each(delegate(int index, Element element)
-                                    {
-                                        // Prepare data.
-                                        jQueryObject div = jQuery.FromElement(element);
-                                        object model = models[index];
+            // Construct the view.
+            IView view = ItemFactory.CreateView(div, model);
+            IListItemView listItemView = view as IListItemView;
 
-                                        // Construct the view.
-                                        IView view = ItemFactory.CreateView(div, model);
-                                        IListItemView listItemView = view as IListItemView;
+            // Store values.
+            views.Add(view);
 
-                                        // Store values.
-                                        views.Add(view);
+            // Wire up events.
+            if (listItemView != null) div.Click(delegate(jQueryEvent e) { OnItemClick(e, listItemView); });
 
-                                        // Wire up events.
-                                        if (listItemView != null) div.Click(delegate(jQueryEvent e) { OnItemClick(e, listItemView); });
+            INotifyPropertyChanged observableView = view as INotifyPropertyChanged;
+            if (observableView != null) observableView.PropertyChanged += OnViewPropertyChanged;
+        }
+        #endregion
 
-                                        INotifyPropertyChanged observableView = view as INotifyPropertyChanged;
-                                        if (observableView != null) observableView.PropertyChanged += OnViewPropertyChanged;
-                                    });
+        #region Methods : Remove | Clear
+        /// <summary>Removes the list item with the specified model.</summary>
+        /// <param name="model">The model of the item to remove.</param>
+        public void Remove(object model)
+        {
+            // Setup initial conditions.
+            if (model == null) return;
+            IListItemView view = GetView(model);
+            RemoveView(view as IView);
+        }
+
+        private void RemoveView(IView view)
+        {
+            // Setup initial conditions.
+            if (view == null) return;
+
+            // Unwire events.
+            INotifyPropertyChanged observableView = view as INotifyPropertyChanged;
+            if (observableView != null) observableView.PropertyChanged -= OnViewPropertyChanged;
+
+            // Destroy.
+            view.Dispose();
+
+            // Finish up.
+            views.Remove(view);
         }
 
         /// <summary>Clears the list (disposing of all children).</summary>
         public void Clear()
         {
-            // Dispose of all views.
-            foreach (IView view in views)
+            foreach (IView view in views.Clone())
             {
-                // Unwire events.
-                INotifyPropertyChanged observableView = view as INotifyPropertyChanged;
-                if (observableView != null) observableView.PropertyChanged -= OnViewPropertyChanged;
-
-                // Destroy.
-                view.Dispose();
+                RemoveView(view);
             }
-
-            // Clear DOM elements.
-            Container.Empty();
-            views.Clear();
         }
         #endregion
 
         #region Internal
+        private jQueryObject InsertBefore(int insertAt)
+        {
+            // Prepare the index.
+            if (insertAt < 0 || Count == 0) return null;
+            int lastItem = Count - 1;
+            if (insertAt > lastItem) return null;
+
+            // Query for the child.
+            return Html.ChildAt(insertAt, Container);
+        }
+
         private void SelectItem(IListItemView item)
         {
             // Setup initial conditions.
@@ -140,21 +188,26 @@ namespace Open.Core.Lists
 
         private void ClearSelection(IListItemView exclude)
         {
-            foreach (IListItemView item in GetItems())
+            foreach (IListItemView view in GetListItemViews())
             {
-                if (!Script.IsNullOrUndefined(item) && item != exclude) item.IsSelected = false;
+                if (!Script.IsNullOrUndefined(view) && view != exclude) view.IsSelected = false;
             }
         }
 
-        private IEnumerable GetItems()
+        private IEnumerable GetListItemViews()
         {
-            ArrayList list = new ArrayList(views.Count);
-            foreach (IView view in views)
-            {
-                IListItemView item = view as IListItemView;
-                if (!Script.IsNullOrUndefined(item)) list.Add(item);
-            }
-            return list;
+            return Helper.Collection.Filter(views, delegate(object o)
+                                                       {
+                                                           return (o as IListItemView) != null;
+                                                       });
+        }
+
+        private IListItemView GetView(object model)
+        {
+            return Helper.Collection.First(GetListItemViews(), delegate(object o)
+                                                                   {
+                                                                       return ((IListItemView) o).Model == model;
+                                                                   }) as IListItemView;
         }
         #endregion
     }

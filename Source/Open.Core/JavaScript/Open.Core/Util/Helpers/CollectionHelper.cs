@@ -19,5 +19,30 @@ namespace Open.Core.Helpers
             }
             return list;
         }
+
+        /// <summary>Constructs a subset of the collection based on the response of an include-filter.</summary>
+        /// <param name="collection">The collection to filter.</param>
+        /// <param name="predicate">The predicate to match.</param>
+        public ArrayList Filter(IEnumerable collection, IsMatch predicate)
+        {
+            ArrayList list = new ArrayList();
+            foreach (object item in collection)
+            {
+                if (predicate(item)) list.Add(item);
+            }
+            return list;
+        }
+
+        /// <summary>Retrieves the first item that matches the given filter (or null if there is no match).</summary>
+        /// <param name="collection">The collection to examine.</param>
+        /// <param name="predicate">The predicate to match.</param>
+        public object First(IEnumerable collection, IsMatch predicate)
+        {
+            foreach (object item in collection)
+            {
+                if (predicate(item)) return item;
+            }
+            return null;
+        }
     }
 }

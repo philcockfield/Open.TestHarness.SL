@@ -27,6 +27,7 @@ namespace Open.Core.Lists
 
             // Wire up events.
             if (isSelectedRef != null) isSelectedRef.Changed += OnIsSelectedChanged;
+            if (ModelAsTreeNode != null) ModelAsTreeNode.ChildrenChanged += OnTreeNodeChildrenChanged;
 
             // Finish up.
             UpdateVisualState();
@@ -34,7 +35,14 @@ namespace Open.Core.Lists
 
         protected override void OnDisposed()
         {
+            // Unwire events.
             if (isSelectedRef != null) isSelectedRef.Changed -= OnIsSelectedChanged;
+            if (ModelAsTreeNode != null) ModelAsTreeNode.ChildrenChanged -= OnTreeNodeChildrenChanged;
+
+            // Remove from the DOM.
+            Container.Remove();
+
+            // Finish up.
             base.OnDisposed();
         }
         #endregion
@@ -44,6 +52,11 @@ namespace Open.Core.Lists
         {
             UpdateVisualState();
             FirePropertyChanged(TreeNode.PropIsSelected);
+        }
+
+        private void OnTreeNodeChildrenChanged(object sender, EventArgs e)
+        {
+            UpdateRightIcon();
         }
         #endregion
 

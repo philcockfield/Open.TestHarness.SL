@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Open.TestHarness
+namespace Open.TestHarness.Models
 {
     /// <summary>Represents a class with tests.</summary>
     public class TestClassDef

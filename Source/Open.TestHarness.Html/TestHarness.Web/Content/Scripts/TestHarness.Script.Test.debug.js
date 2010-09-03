@@ -40,7 +40,6 @@ TestHarness.Test.Application = function TestHarness_Test_Application() {
 TestHarness.Test.Application.main = function TestHarness_Test_Application$main(args) {
     /// <param name="args" type="Object">
     /// </param>
-    Open.Core.Log.success('Tests loaded');
     var testPackage = TestHarness.Test.Application;
     Open.Core.TestHarness.registerTestClass(testPackage, TestHarness.Test.MyTestClass1);
     Open.Core.TestHarness.registerTestClass(testPackage, TestHarness.Test.MyTestClass1);

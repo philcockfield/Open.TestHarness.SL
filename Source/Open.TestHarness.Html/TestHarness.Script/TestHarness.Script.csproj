@@ -47,19 +47,21 @@
   <ItemGroup>
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
-    <Compile Include="Models\TestPackageDef.cs" />
+    <Compile Include="Models\ListItems\TestClassListItem.cs" />
+    <Compile Include="Models\TestPackage\TestPackageDef.cs" />
     <Compile Include="Models\TestClassDef.cs" />
-    <Compile Include="Shell\PanelResizeController.cs" />
-    <Compile Include="Sidebar\SidebarController.cs" />
-    <Compile Include="Controllers\GlobalEventController.cs" />
-    <Compile Include="Util\TestPackageLoader.cs" />
+    <Compile Include="Controllers\PanelResizeController.cs" />
+    <Compile Include="Models\ListItems\TestPackageListItem.cs" />
+    <Compile Include="Controllers\SidebarController.cs" />
+    <Compile Include="Controllers\TestPackageController.cs" />
+    <Compile Include="Models\TestPackage\TestPackageLoader.cs" />
     <Content Include="Properties\TestHarness.Script3.ruleset" />
     <Content Include="Properties\TestHarness.Script3.script" />
     <Compile Include="Application.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Base Classes\" />
+    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Lists\Open.Core.Lists.csproj">

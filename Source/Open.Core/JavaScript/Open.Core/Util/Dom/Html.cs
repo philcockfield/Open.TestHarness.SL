@@ -26,6 +26,14 @@ namespace Open.Core
         #endregion
 
         #region Methods
+        /// <summary>Converts HTML characters to their corresonding encoded values.</summary>
+        /// <param name="html">The HTML to encode.</param>
+        public static string Encode(string html)
+        {
+            if (string.IsNullOrEmpty(html)) return html;
+            return html.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+        }
+
         /// <summary>Creates and appends a DIV element within the given parent.</summary>
         /// <param name="parent">The parent element to insert into</param>
         /// <returns>The inserted Div element.</returns>
@@ -69,6 +77,38 @@ namespace Open.Core
         {
             int top = (within.GetHeight() / 2) - (element.GetHeight() / 2);
             element.CSS(Css.Top, top + "px");
+        }
+
+        /// <summary>Retrieves the child at the specified index, otherwise Null.</summary>
+        /// <param name="index">The index of the child (0-based).</param>
+        /// <param name="parent">The parent to look within.</param>
+        public static jQueryObject ChildAt(int index, jQueryObject parent)
+        {
+            jQueryObject element = parent.Children(string.Format(":nth-child({0})", index + 1));
+            return element.Length == 0 ? null : element;
+        }
+
+        /// <summary>Gets the elements ID, creating a unique ID of the element doesn't already have one.</summary>
+        /// <param name="element">The element to get the ID for.</param>
+        public static string GetOrCreateId(jQueryObject element)
+        {
+            string id = element.GetAttribute(Id);
+            if (string.IsNullOrEmpty(id))
+            {
+                id = Helper.CreateId();
+                element.Attribute(Id, id);
+            }
+            return id;
+        }
+
+        /// <summary>Formats the an hyperlink.</summary>
+        /// <param name="url">The url to link to.</param>
+        /// <param name="text">The display text of the link (null to use the URL).</param>
+        /// <param name="target">The target attribute.</param>
+        public static string ToHyperlink(string url, string text, LinkTarget target)
+        {
+            if (text == null) text = url;
+            return string.Format("<a href='{0}' target='_{2}'>{1}</a>", url, text, target.ToString());
         }
         #endregion
     }

@@ -127,9 +127,9 @@ Open.Core.Lists.ListItemCss.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Lists.ListTreeBackController
 
-Open.Core.Lists.ListTreeBackController = function Open_Core_Lists_ListTreeBackController(listTree, backButton, homeButton) {
+Open.Core.Lists.ListTreeBackController = function Open_Core_Lists_ListTreeBackController(listTree, backButton, backMask) {
     /// <summary>
-    /// A controller for attaching a 'Back' and 'Home' button to a ListTree.
+    /// A controller for attaching a 'Back' button to a ListTree.
     /// </summary>
     /// <param name="listTree" type="Open.Core.Lists.ListTreeView">
     /// The list tree under control.
@@ -137,41 +137,38 @@ Open.Core.Lists.ListTreeBackController = function Open_Core_Lists_ListTreeBackCo
     /// <param name="backButton" type="jQueryObject">
     /// The back button.
     /// </param>
-    /// <param name="homeButton" type="jQueryObject">
-    /// The home button.
+    /// <param name="backMask" type="jQueryObject">
+    /// The mask which causes the back-button to look like a back button.
     /// </param>
     /// <field name="_listTree$2" type="Open.Core.Lists.ListTreeView">
     /// </field>
     /// <field name="_backButton$2" type="jQueryObject">
     /// </field>
-    /// <field name="_homeButton$2" type="jQueryObject">
+    /// <field name="_backMask$2" type="jQueryObject">
     /// </field>
     Open.Core.Lists.ListTreeBackController.initializeBase(this);
     this._listTree$2 = listTree;
     this._backButton$2 = backButton;
-    this._homeButton$2 = homeButton;
-    listTree.add_selectionChanged(ss.Delegate.create(this, this._onSelectionChanged$2));
+    this._backMask$2 = backMask;
+    listTree.add_propertyChanged(ss.Delegate.create(this, this._onPropertyChanged$2));
     backButton.click(ss.Delegate.create(this, this._onBackClick$2));
-    homeButton.click(ss.Delegate.create(this, this._onHomeClick$2));
+    backButton.dblclick(ss.Delegate.create(this, this._onBackDoubleClick$2));
+    backMask.click(ss.Delegate.create(this, this._onBackClick$2));
+    backMask.dblclick(ss.Delegate.create(this, this._onBackDoubleClick$2));
 }
 Open.Core.Lists.ListTreeBackController.prototype = {
     _listTree$2: null,
     _backButton$2: null,
-    _homeButton$2: null,
+    _backMask$2: null,
     
-    onDisposed: function Open_Core_Lists_ListTreeBackController$onDisposed() {
-        this._listTree$2.remove_selectionChanged(ss.Delegate.create(this, this._onSelectionChanged$2));
-        this._backButton$2.unbind(Open.Core.Html.click, ss.Delegate.create(this, this._onBackClick$2));
-        this._homeButton$2.unbind(Open.Core.Html.click, ss.Delegate.create(this, this._onHomeClick$2));
-        Open.Core.Lists.ListTreeBackController.callBaseMethod(this, 'onDisposed');
-    },
-    
-    _onSelectionChanged$2: function Open_Core_Lists_ListTreeBackController$_onSelectionChanged$2(sender, e) {
+    _onPropertyChanged$2: function Open_Core_Lists_ListTreeBackController$_onPropertyChanged$2(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
-        /// <param name="e" type="ss.EventArgs">
+        /// <param name="e" type="Open.Core.PropertyChangedEventArgs">
         /// </param>
-        this._updateHomeButton$2();
+        if (e.get_property().get_name() === Open.Core.Lists.ListTreeView.propCurrentListRoot) {
+            this._fadeBackMask$2();
+        }
     },
     
     _onBackClick$2: function Open_Core_Lists_ListTreeBackController$_onBackClick$2(e) {
@@ -180,7 +177,7 @@ Open.Core.Lists.ListTreeBackController.prototype = {
         this._listTree$2.back();
     },
     
-    _onHomeClick$2: function Open_Core_Lists_ListTreeBackController$_onHomeClick$2(e) {
+    _onBackDoubleClick$2: function Open_Core_Lists_ListTreeBackController$_onBackDoubleClick$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
         this._listTree$2.set_selectedNode(this._listTree$2.get_rootNode());
@@ -202,15 +199,15 @@ Open.Core.Lists.ListTreeBackController.prototype = {
         return this._backButton$2;
     },
     
-    get_homeButton: function Open_Core_Lists_ListTreeBackController$get_homeButton() {
+    get_backMask: function Open_Core_Lists_ListTreeBackController$get_backMask() {
         /// <summary>
-        /// Gets the 'Home' button.
+        /// Gets the 'Back Mask'.
         /// </summary>
         /// <value type="jQueryObject"></value>
-        return this._homeButton$2;
+        return this._backMask$2;
     },
     
-    get__showHome$2: function Open_Core_Lists_ListTreeBackController$get__showHome$2() {
+    get__showBackMask$2: function Open_Core_Lists_ListTreeBackController$get__showBackMask$2() {
         /// <value type="Boolean"></value>
         var node = this._listTree$2.get_selectedNode();
         if (node == null) {
@@ -225,17 +222,17 @@ Open.Core.Lists.ListTreeBackController.prototype = {
         return true;
     },
     
-    _updateHomeButton$2: function Open_Core_Lists_ListTreeBackController$_updateHomeButton$2() {
+    _fadeBackMask$2: function Open_Core_Lists_ListTreeBackController$_fadeBackMask$2() {
         var duration = Open.Core.Helper.get_number().toMsecs(this._listTree$2.get_slideDuration());
-        var isVisible = Open.Core.Css.isVisible(this._homeButton$2);
-        if (this.get__showHome$2()) {
+        var isVisible = Open.Core.Css.isVisible(this._backMask$2);
+        if (this.get__showBackMask$2()) {
             if (!isVisible) {
-                this._homeButton$2.fadeIn(duration);
+                this._backMask$2.fadeIn(duration);
             }
         }
         else {
             if (isVisible) {
-                this._homeButton$2.fadeOut(duration);
+                this._backMask$2.fadeOut(duration);
             }
         }
     }
@@ -307,6 +304,11 @@ Open.Core.Lists.ListItem.prototype = {
         /// </summary>
         /// <returns type="String"></returns>
         return null;
+    },
+    
+    toString: function Open_Core_Lists_ListItem$toString() {
+        /// <returns type="String"></returns>
+        return String.format('{0} {1}', Open.Core.Lists.ListItem.callBaseMethod(this, 'toString'), this.get_text());
     }
 }
 
@@ -315,6 +317,9 @@ Open.Core.Lists.ListItem.prototype = {
 // Open.Core.Lists._listTreePanel
 
 Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(listTreeView, rootDiv, rootNode) {
+    /// <summary>
+    /// Renders a single list within a tree-of lists.
+    /// </summary>
     /// <param name="listTreeView" type="Open.Core.Lists.ListTreeView">
     /// </param>
     /// <param name="rootDiv" type="jQueryObject">
@@ -335,8 +340,10 @@ Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(listTre
     this._listTreeView$2 = listTreeView;
     this._rootDiv$2 = rootDiv;
     this._rootNode$2 = rootNode;
-    rootNode.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
     Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
+    rootNode.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
+    rootNode.add_childAdded(ss.Delegate.create(this, this._onChildAdded$2));
+    rootNode.add_childRemoved(ss.Delegate.create(this, this._onChildRemoved$2));
 }
 Open.Core.Lists._listTreePanel.prototype = {
     _div$2: null,
@@ -347,8 +354,10 @@ Open.Core.Lists._listTreePanel.prototype = {
     
     onDisposed: function Open_Core_Lists__listTreePanel$onDisposed() {
         this._div$2.empty();
-        this._rootNode$2.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
         Open.Core.GlobalEvents.remove_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
+        this._rootNode$2.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
+        this._rootNode$2.remove_childAdded(ss.Delegate.create(this, this._onChildAdded$2));
+        this._rootNode$2.remove_childRemoved(ss.Delegate.create(this, this._onChildRemoved$2));
         Open.Core.Lists._listTreePanel.callBaseMethod(this, 'onDisposed');
     },
     
@@ -371,9 +380,30 @@ Open.Core.Lists._listTreePanel.prototype = {
         this._syncWidth$2();
     },
     
+    _onChildAdded$2: function Open_Core_Lists__listTreePanel$_onChildAdded$2(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        this._listView$2.insert(e.get_index(), e.get_node());
+    },
+    
+    _onChildRemoved$2: function Open_Core_Lists__listTreePanel$_onChildRemoved$2(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        this._listView$2.remove(e.get_node());
+    },
+    
     get_rootNode: function Open_Core_Lists__listTreePanel$get_rootNode() {
         /// <value type="Open.Core.ITreeNode"></value>
         return this._rootNode$2;
+    },
+    
+    get_isCenterStage: function Open_Core_Lists__listTreePanel$get_isCenterStage() {
+        /// <value type="Boolean"></value>
+        return this._div$2.css(Open.Core.Css.left) === '0px';
     },
     
     get__width$2: function Open_Core_Lists__listTreePanel$get__width$2() {
@@ -496,6 +526,8 @@ Open.Core.Lists.ListTreeView = function Open_Core_Lists_ListTreeView(container) 
     /// </field>
     /// <field name="_panels$2" type="Array">
     /// </field>
+    /// <field name="_previousNode$2" type="Open.Core.ITreeNode">
+    /// </field>
     this._slideEasing$2 = 'swing';
     this._panels$2 = [];
     Open.Core.Lists.ListTreeView.initializeBase(this);
@@ -540,6 +572,7 @@ Open.Core.Lists.ListTreeView.prototype = {
     
     _div$2: null,
     _slideDuration$2: 0.4,
+    _previousNode$2: null,
     
     onDisposed: function Open_Core_Lists_ListTreeView$onDisposed() {
         this._reset$2();
@@ -598,20 +631,20 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// Gets or sets the node which is the root of the current list (may be the same as SelectedNode).
         /// </summary>
         /// <value type="Open.Core.ITreeNode"></value>
-        var previousNode = this.get_currentListRoot();
         if (this.set(Open.Core.Lists.ListTreeView.propCurrentListRoot, value, null)) {
             if (value != null) {
                 this._deselectChildren$2(value);
                 if (value.get_totalChildren() > 0) {
-                    if (previousNode == null) {
+                    if (this._previousNode$2 == null) {
                         this._getOrCreatePanel$2(value, true).centerStage();
                     }
                     else {
-                        this._slidePanels$2(previousNode, value);
+                        this._slidePanels$2(this._previousNode$2, value);
                     }
                 }
             }
             this.firePropertyChanged(Open.Core.Lists.ListTreeView.propCurrentListRoot);
+            this._previousNode$2 = value;
         }
         return value;
     },
@@ -855,47 +888,116 @@ Open.Core.Lists.ListView.prototype = {
         /// A collection models.
         /// </param>
         this.clear();
-        if (ss.isNullOrUndefined(items)) {
+        this.insertRange(0, items);
+    },
+    
+    insertRange: function Open_Core_Lists_ListView$insertRange(startingAt, models) {
+        /// <summary>
+        /// Loads the collection of models into the list.
+        /// </summary>
+        /// <param name="startingAt" type="Number" integer="true">
+        /// Index to start inserting at (0-based).
+        /// </param>
+        /// <param name="models" type="ss.IEnumerable">
+        /// A collection models.
+        /// </param>
+        if (ss.isNullOrUndefined(models)) {
             return;
         }
-        var models = Open.Core.Helper.get_collection().toArrayList(items);
-        for (var i = 0; i < models.length; i++) {
-            var div = Open.Core.Html.appendDiv(this.get_container());
+        if (startingAt < 0) {
+            startingAt = 0;
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(models);
+        while ($enum1.moveNext()) {
+            var model = $enum1.get_current();
+            this.insert(startingAt, model);
+            startingAt++;
+        }
+    },
+    
+    insert: function Open_Core_Lists_ListView$insert(index, model) {
+        /// <summary>
+        /// Inserts a list-item for the given model at the specified index.
+        /// </summary>
+        /// <param name="index" type="Number" integer="true">
+        /// The index to insert at (0-based).
+        /// </param>
+        /// <param name="model" type="Object">
+        /// The data-model for the item.
+        /// </param>
+        var insertBefore = this._insertBefore$2(index);
+        var div = Open.Core.Html.createDiv();
+        if (insertBefore == null) {
             div.appendTo(this.get_container());
         }
-        this.get_container().children(Open.Core.Html.div).each(ss.Delegate.create(this, function(index, element) {
-            var div = $(element);
-            var model = models[index];
-            var view = this.get__itemFactory$2().createView(div, model);
-            var listItemView = Type.safeCast(view, Open.Core.Lists.IListItemView);
-            this._views$2.add(view);
-            if (listItemView != null) {
-                div.click(ss.Delegate.create(this, function(e) {
-                    this._onItemClick$2(e, listItemView);
-                }));
-            }
-            var observableView = Type.safeCast(view, Open.Core.INotifyPropertyChanged);
-            if (observableView != null) {
-                observableView.add_propertyChanged(ss.Delegate.create(this, this._onViewPropertyChanged$2));
-            }
-        }));
+        else {
+            div.insertBefore(insertBefore);
+        }
+        var view = this.get__itemFactory$2().createView(div, model);
+        var listItemView = Type.safeCast(view, Open.Core.Lists.IListItemView);
+        this._views$2.add(view);
+        if (listItemView != null) {
+            div.click(ss.Delegate.create(this, function(e) {
+                this._onItemClick$2(e, listItemView);
+            }));
+        }
+        var observableView = Type.safeCast(view, Open.Core.INotifyPropertyChanged);
+        if (observableView != null) {
+            observableView.add_propertyChanged(ss.Delegate.create(this, this._onViewPropertyChanged$2));
+        }
+    },
+    
+    remove: function Open_Core_Lists_ListView$remove(model) {
+        /// <summary>
+        /// Removes the list item with the specified model.
+        /// </summary>
+        /// <param name="model" type="Object">
+        /// The model of the item to remove.
+        /// </param>
+        if (model == null) {
+            return;
+        }
+        var view = this._getView$2(model);
+        this._removeView$2(Type.safeCast(view, Open.Core.IView));
+    },
+    
+    _removeView$2: function Open_Core_Lists_ListView$_removeView$2(view) {
+        /// <param name="view" type="Open.Core.IView">
+        /// </param>
+        if (view == null) {
+            return;
+        }
+        var observableView = Type.safeCast(view, Open.Core.INotifyPropertyChanged);
+        if (observableView != null) {
+            observableView.remove_propertyChanged(ss.Delegate.create(this, this._onViewPropertyChanged$2));
+        }
+        view.dispose();
+        this._views$2.remove(view);
     },
     
     clear: function Open_Core_Lists_ListView$clear() {
         /// <summary>
         /// Clears the list (disposing of all children).
         /// </summary>
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$2);
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$2.clone());
         while ($enum1.moveNext()) {
             var view = $enum1.get_current();
-            var observableView = Type.safeCast(view, Open.Core.INotifyPropertyChanged);
-            if (observableView != null) {
-                observableView.remove_propertyChanged(ss.Delegate.create(this, this._onViewPropertyChanged$2));
-            }
-            view.dispose();
+            this._removeView$2(view);
         }
-        this.get_container().empty();
-        this._views$2.clear();
+    },
+    
+    _insertBefore$2: function Open_Core_Lists_ListView$_insertBefore$2(insertAt) {
+        /// <param name="insertAt" type="Number" integer="true">
+        /// </param>
+        /// <returns type="jQueryObject"></returns>
+        if (insertAt < 0 || this.get_count() === 0) {
+            return null;
+        }
+        var lastItem = this.get_count() - 1;
+        if (insertAt > lastItem) {
+            return null;
+        }
+        return Open.Core.Html.childAt(insertAt, this.get_container());
     },
     
     _selectItem$2: function Open_Core_Lists_ListView$_selectItem$2(item) {
@@ -911,27 +1013,29 @@ Open.Core.Lists.ListView.prototype = {
     _clearSelection$2: function Open_Core_Lists_ListView$_clearSelection$2(exclude) {
         /// <param name="exclude" type="Open.Core.Lists.IListItemView">
         /// </param>
-        var $enum1 = ss.IEnumerator.getEnumerator(this._getItems$2());
+        var $enum1 = ss.IEnumerator.getEnumerator(this._getListItemViews$2());
         while ($enum1.moveNext()) {
-            var item = $enum1.get_current();
-            if (!ss.isNullOrUndefined(item) && item !== exclude) {
-                item.set_isSelected(false);
+            var view = $enum1.get_current();
+            if (!ss.isNullOrUndefined(view) && view !== exclude) {
+                view.set_isSelected(false);
             }
         }
     },
     
-    _getItems$2: function Open_Core_Lists_ListView$_getItems$2() {
+    _getListItemViews$2: function Open_Core_Lists_ListView$_getListItemViews$2() {
         /// <returns type="ss.IEnumerable"></returns>
-        var list = new Array(this._views$2.length);
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$2);
-        while ($enum1.moveNext()) {
-            var view = $enum1.get_current();
-            var item = Type.safeCast(view, Open.Core.Lists.IListItemView);
-            if (!ss.isNullOrUndefined(item)) {
-                list.add(item);
-            }
-        }
-        return list;
+        return Open.Core.Helper.get_collection().filter(this._views$2, ss.Delegate.create(this, function(o) {
+            return (Type.safeCast(o, Open.Core.Lists.IListItemView)) != null;
+        }));
+    },
+    
+    _getView$2: function Open_Core_Lists_ListView$_getView$2(model) {
+        /// <param name="model" type="Object">
+        /// </param>
+        /// <returns type="Open.Core.Lists.IListItemView"></returns>
+        return Type.safeCast(Open.Core.Helper.get_collection().first(this._getListItemViews$2(), ss.Delegate.create(this, function(o) {
+            return (o).get_model() === model;
+        })), Open.Core.Lists.IListItemView);
     }
 }
 
@@ -966,6 +1070,9 @@ Open.Core.Lists.ListItemView = function Open_Core_Lists_ListItemView(container, 
     if (this._isSelectedRef$2 != null) {
         this._isSelectedRef$2.add_changed(ss.Delegate.create(this, this._onIsSelectedChanged$2));
     }
+    if (this.get__modelAsTreeNode$2() != null) {
+        this.get__modelAsTreeNode$2().add_childrenChanged(ss.Delegate.create(this, this._onTreeNodeChildrenChanged$2));
+    }
     this.updateVisualState();
 }
 Open.Core.Lists.ListItemView._getChild$2 = function Open_Core_Lists_ListItemView$_getChild$2(parent, cssClass) {
@@ -987,6 +1094,10 @@ Open.Core.Lists.ListItemView.prototype = {
         if (this._isSelectedRef$2 != null) {
             this._isSelectedRef$2.remove_changed(ss.Delegate.create(this, this._onIsSelectedChanged$2));
         }
+        if (this.get__modelAsTreeNode$2() != null) {
+            this.get__modelAsTreeNode$2().remove_childrenChanged(ss.Delegate.create(this, this._onTreeNodeChildrenChanged$2));
+        }
+        this.get_container().remove();
         Open.Core.Lists.ListItemView.callBaseMethod(this, 'onDisposed');
     },
     
@@ -997,6 +1108,14 @@ Open.Core.Lists.ListItemView.prototype = {
         /// </param>
         this.updateVisualState();
         this.firePropertyChanged(Open.Core.TreeNode.propIsSelected);
+    },
+    
+    _onTreeNodeChildrenChanged$2: function Open_Core_Lists_ListItemView$_onTreeNodeChildrenChanged$2(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this._updateRightIcon$2();
     },
     
     get_model: function Open_Core_Lists_ListItemView$get_model() {

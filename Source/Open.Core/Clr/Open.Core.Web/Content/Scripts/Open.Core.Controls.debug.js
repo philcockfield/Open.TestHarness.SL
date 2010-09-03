@@ -86,6 +86,12 @@ Open.Core.Controls.LogView.prototype = {
         /// <param name="cssClass" type="String">
         /// </param>
         this._counter$2++;
+        if (message == null) {
+            message = Open.Core.Html.encode('<null>');
+        }
+        if (message === String.Empty) {
+            message = Open.Core.Html.encode('<Empty String>');
+        }
         this._divRow$2 = Open.Core.Html.createDiv();
         this._divRow$2.addClass(cssClass);
         this._divRow$2.addClass(Open.Core.LogCss.listItemClass);

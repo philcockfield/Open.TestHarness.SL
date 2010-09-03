@@ -3,44 +3,44 @@ using jQueryApi;
 
 namespace Open.Core.Lists
 {
-    /// <summary>A controller for attaching a 'Back' and 'Home' button to a ListTree.</summary>
+    /// <summary>A controller for attaching a 'Back' button to a ListTree.</summary>
     public class ListTreeBackController : ControllerBase
     {
         #region Head
         private readonly ListTreeView listTree;
         private readonly jQueryObject backButton;
-        private readonly jQueryObject homeButton;
+        private readonly jQueryObject backMask;
 
         /// <summary>Constructor.</summary>
         /// <param name="listTree">The list tree under control.</param>
         /// <param name="backButton">The back button.</param>
-        /// <param name="homeButton">The home button.</param>
-        public ListTreeBackController(ListTreeView listTree, jQueryObject backButton, jQueryObject homeButton)
+        /// <param name="backMask">The mask which causes the back-button to look like a back button.</param>
+        public ListTreeBackController(ListTreeView listTree, jQueryObject backButton, jQueryObject backMask)
         {
             // Store values.
             this.listTree = listTree;
             this.backButton = backButton;
-            this.homeButton = homeButton;
+            this.backMask = backMask;
 
             // Wire up events.
-            listTree.SelectionChanged += OnSelectionChanged;
-            backButton.Click(OnBackClick);
-            homeButton.Click(OnHomeClick);
-        }
+            listTree.PropertyChanged += OnPropertyChanged;
 
-        protected override void OnDisposed()
-        {
-            listTree.SelectionChanged -= OnSelectionChanged;
-            backButton.Unbind(Html.Click, OnBackClick);
-            homeButton.Unbind(Html.Click, OnHomeClick);
-            base.OnDisposed();
+            backButton.Click(OnBackClick);
+            backButton.DoubleClick(OnBackDoubleClick);
+
+            backMask.Click(OnBackClick);
+            backMask.DoubleClick(OnBackDoubleClick);
         }
         #endregion
 
         #region Event Handlers
-        private void OnSelectionChanged(object sender, EventArgs e) { UpdateHomeButton(); }
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.Property.Name == ListTreeView.PropCurrentListRoot) FadeBackMask();
+        }
+
         private void OnBackClick(jQueryEvent e) { listTree.Back(); }
-        private void OnHomeClick(jQueryEvent e) { listTree.SelectedNode = listTree.RootNode; }
+        private void OnBackDoubleClick(jQueryEvent e) { listTree.SelectedNode = listTree.RootNode; } // DblClick => Home.
         #endregion
 
         #region Properties
@@ -50,10 +50,10 @@ namespace Open.Core.Lists
         /// <summary>Gets the 'Back' button.</summary>
         public jQueryObject BackButton{get { return backButton; }}
 
-        /// <summary>Gets the 'Home' button.</summary>
-        public jQueryObject HomeButton{get { return homeButton; }}
+        /// <summary>Gets the 'Back Mask'.</summary>
+        public jQueryObject BackMask{get { return backMask; }}
 
-        private bool ShowHome
+        private bool ShowBackMask
         {
             get
             {
@@ -67,17 +67,17 @@ namespace Open.Core.Lists
         #endregion
 
         #region Internal
-        private void UpdateHomeButton()
+        private void FadeBackMask()
         {
             int duration = Helper.Number.ToMsecs(listTree.SlideDuration);
-            bool isVisible = Css.IsVisible(homeButton);
-            if (ShowHome)
+            bool isVisible = Css.IsVisible(backMask);
+            if (ShowBackMask)
             {
-                if (!isVisible) homeButton.FadeIn(duration);
+                if (!isVisible) backMask.FadeIn(duration);
             }
             else
             {
-                if (isVisible) homeButton.FadeOut(duration);
+                if (isVisible) backMask.FadeOut(duration);
             }
         }
         #endregion

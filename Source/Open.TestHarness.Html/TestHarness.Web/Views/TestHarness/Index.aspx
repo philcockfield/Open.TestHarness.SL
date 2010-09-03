@@ -12,6 +12,9 @@
     <link rel="Stylesheet" href="/Open.Core/Css/Core.Controls.css" type="text/css" />
     <link rel="Stylesheet" href="/Open.Core/Css/Core.Lists.css" type="text/css" />
     <link rel="Stylesheet" href="/Content/Css/Open.TestHarness.css" type="text/css" />
+    <!--[if IE]>
+    <link rel="Stylesheet" href="/Content/Css/Open.TestHarness.IE.css" type="text/css" />
+    <![endif]-->
 
     <!-- TypeKit -->
     <script type="text/javascript" src="http://use.typekit.com/pdx3yro.js"></script>
@@ -36,11 +39,13 @@
     <div id="testHarness">
          <% Html.RenderAction(MVC.TestHarness.ActionNames.Sidebar); %>
         <div class="th-main">
-            <div class="th-mainToolbar th-toolbar panelBorder panelBorderBottom"></div>
+            <div class="th-mainToolbar th-toolbar panelBorder panelBorderBottom">
+                <div class="th-topHighlight"></div>
+            </div>
             <div class="th-mainContent">
                 <% Html.RenderAction(MVC.TestHarness.ActionNames.Log);%>
             </div>
+        </div>
     </div>
-
 </body>
 </html>

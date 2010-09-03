@@ -37,6 +37,8 @@ namespace Open.Core.Lists
         ///     - itemLabel:    The display text of the item.
         /// </remarks>
         public virtual string CreateHtml() { return null; }
+
+        public override string ToString() { return string.Format("{0} {1}", base.ToString(), Text); }
         #endregion
 
         #region Methods : Static

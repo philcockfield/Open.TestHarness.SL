@@ -218,6 +218,7 @@ namespace Links {
             private const string URLPATH = "~/Content/Images";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string Sidebar_BackMask_png = Url("Sidebar.BackMask.png");
             public static readonly string Sidebar_Home_png = Url("Sidebar.Home.png");
         }
     
@@ -238,9 +239,17 @@ namespace Links {
                           
             public static readonly string Open_Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.min.js") ? Url("Open.Core.min.js") : Url("Open.Core.js");
                           
+            public static readonly string Open_Core_Lists_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Lists.debug.min.js") ? Url("Open.Core.Lists.debug.min.js") : Url("Open.Core.Lists.debug.js");
+                          
+            public static readonly string Open_Core_Lists_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Lists.min.js") ? Url("Open.Core.Lists.min.js") : Url("Open.Core.Lists.js");
+                          
             public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
                           
             public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");
+                          
+            public static readonly string TestHarness_Script_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Script.Test.debug.min.js") ? Url("TestHarness.Script.Test.debug.min.js") : Url("TestHarness.Script.Test.debug.js");
+                          
+            public static readonly string TestHarness_Script_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Script.Test.min.js") ? Url("TestHarness.Script.Test.min.js") : Url("TestHarness.Script.Test.js");
                           
         }
     

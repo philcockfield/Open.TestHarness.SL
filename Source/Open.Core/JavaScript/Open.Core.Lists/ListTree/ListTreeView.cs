@@ -20,6 +20,7 @@ namespace Open.Core.Lists
         private double slideDuration = 0.4;
         EffectEasing slideEasing = EffectEasing.Swing;
         private readonly ArrayList panels = new ArrayList();
+        private ITreeNode previousNode;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
@@ -71,7 +72,6 @@ namespace Open.Core.Lists
             get { return (ITreeNode)Get(PropCurrentListRoot, null); }
             set
             {
-                ITreeNode previousNode = CurrentListRoot;
                 if (Set(PropCurrentListRoot, value, null))
                 {
                     // Update the list.
@@ -92,8 +92,10 @@ namespace Open.Core.Lists
                             }
                         }
                     }
+
                     // Finish up.
                     FirePropertyChanged(PropCurrentListRoot);
+                    previousNode = value;
                 }
             }
         }
