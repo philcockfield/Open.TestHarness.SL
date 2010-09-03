@@ -54,13 +54,6 @@
 
 #testHarness .th-sidebarToolbar
 {
-    background:#5c6a77;
-    background: -webkit-gradient(linear, left top, left bottom, from(#7e8d9b), to(#5a6875));
-    background: -moz-linear-gradient(top, #7e8d9b, #5a6875);
-}
-#testHarness .th-sidebarToolbar-highlight 
-{ 
-    opacity:0.30; filter:alpha(opacity=30);
 }
 
 
@@ -91,9 +84,9 @@
 
 #testHarness .th-mainToolbar
 {
-    background:#f0f0f0;
+    background:#3e4850;
     background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e4e4e4));
-    background: -moz-linear-gradient(top, #f4f4f4, #e4e4e4);
+    background: -moz-linear-gradient(top, #4e5b65, #e4e4e4);
 }
 
 #testHarness .th-mainContent
