@@ -452,6 +452,49 @@ Open.Core.ModelBase.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Keyboard
+
+Open.Core.Keyboard = function Open_Core_Keyboard() {
+    /// <summary>
+    /// Global monitoring of keyboard state.
+    /// </summary>
+    /// <field name="_keyShift" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_keyCtrl" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_keyAlt" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="_isShiftPressed" type="Boolean" static="true">
+    /// </field>
+    /// <field name="_isCtrlPressed" type="Boolean" static="true">
+    /// </field>
+    /// <field name="_isAltPressed" type="Boolean" static="true">
+    /// </field>
+}
+Open.Core.Keyboard.get_isShiftPressed = function Open_Core_Keyboard$get_isShiftPressed() {
+    /// <summary>
+    /// Gets whether the SHIFT key is currently pressed.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.Keyboard._isShiftPressed;
+}
+Open.Core.Keyboard.get_isCtrlPressed = function Open_Core_Keyboard$get_isCtrlPressed() {
+    /// <summary>
+    /// Gets whether the CTRL key is currently pressed.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.Keyboard._isCtrlPressed;
+}
+Open.Core.Keyboard.get_isAltPressed = function Open_Core_Keyboard$get_isAltPressed() {
+    /// <summary>
+    /// Gets whether the ALT key is currently pressed.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.Keyboard._isAltPressed;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.TreeNode
 
 Open.Core.TreeNode = function Open_Core_TreeNode() {
@@ -945,18 +988,6 @@ Open.Core.GlobalEvents = function Open_Core_GlobalEvents() {
     /// </field>
     /// <field name="__verticalPanelResized" type="EventHandler" static="true">
     /// </field>
-    /// <field name="_keyShift" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="_keyCtrl" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="_keyAlt" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="_isShiftPressed" type="Boolean" static="true">
-    /// </field>
-    /// <field name="_isCtrlPressed" type="Boolean" static="true">
-    /// </field>
-    /// <field name="_isAltPressed" type="Boolean" static="true">
-    /// </field>
 }
 Open.Core.GlobalEvents.add_panelResized = function Open_Core_GlobalEvents$add_panelResized(value) {
     /// <summary>
@@ -1020,27 +1051,6 @@ Open.Core.GlobalEvents._fireVerticalPanelResized = function Open_Core_GlobalEven
     if (Open.Core.GlobalEvents.__verticalPanelResized != null) {
         Open.Core.GlobalEvents.__verticalPanelResized.invoke(sender, new ss.EventArgs());
     }
-}
-Open.Core.GlobalEvents.get_isShiftPressed = function Open_Core_GlobalEvents$get_isShiftPressed() {
-    /// <summary>
-    /// Gets whether the SHIFT key is currently pressed.
-    /// </summary>
-    /// <value type="Boolean"></value>
-    return Open.Core.GlobalEvents._isShiftPressed;
-}
-Open.Core.GlobalEvents.get_isCtrlPressed = function Open_Core_GlobalEvents$get_isCtrlPressed() {
-    /// <summary>
-    /// Gets whether the CTRL key is currently pressed.
-    /// </summary>
-    /// <value type="Boolean"></value>
-    return Open.Core.GlobalEvents._isCtrlPressed;
-}
-Open.Core.GlobalEvents.get_isAltPressed = function Open_Core_GlobalEvents$get_isAltPressed() {
-    /// <summary>
-    /// Gets whether the ALT key is currently pressed.
-    /// </summary>
-    /// <value type="Boolean"></value>
-    return Open.Core.GlobalEvents._isAltPressed;
 }
 
 
@@ -3620,6 +3630,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 
 Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
+Open.Core.Keyboard.registerClass('Open.Core.Keyboard');
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
 Open.Core.TreeNodeEventArgs.registerClass('Open.Core.TreeNodeEventArgs', ss.EventArgs);
@@ -3657,43 +3668,43 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Core.Keyboard._keyShift = 16;
+Open.Core.Keyboard._keyCtrl = 17;
+Open.Core.Keyboard._keyAlt = 18;
+Open.Core.Keyboard._isShiftPressed = false;
+Open.Core.Keyboard._isCtrlPressed = false;
+Open.Core.Keyboard._isAltPressed = false;
+(function () {
+    var helper = Open.Core.Helper.get_jQuery();
+    $(document).keydown(function(e) {
+        if (helper.isKey(e, Open.Core.Keyboard._keyShift)) {
+            Open.Core.Keyboard._isShiftPressed = true;
+        }
+        if (helper.isKey(e, Open.Core.Keyboard._keyCtrl)) {
+            Open.Core.Keyboard._isCtrlPressed = true;
+        }
+        if (helper.isKey(e, Open.Core.Keyboard._keyAlt)) {
+            Open.Core.Keyboard._isAltPressed = true;
+        }
+    });
+    $(document).keyup(function(e) {
+        if (helper.isKey(e, Open.Core.Keyboard._keyShift)) {
+            Open.Core.Keyboard._isShiftPressed = false;
+        }
+        if (helper.isKey(e, Open.Core.Keyboard._keyCtrl)) {
+            Open.Core.Keyboard._isCtrlPressed = false;
+        }
+        if (helper.isKey(e, Open.Core.Keyboard._keyAlt)) {
+            Open.Core.Keyboard._isAltPressed = false;
+        }
+    });
+})();
 Open.Core.TreeNode.nullIndex = -1;
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
 Open.Core.GlobalEvents.__panelResized = null;
 Open.Core.GlobalEvents.__horizontalPanelResized = null;
 Open.Core.GlobalEvents.__verticalPanelResized = null;
-Open.Core.GlobalEvents._keyShift = 16;
-Open.Core.GlobalEvents._keyCtrl = 17;
-Open.Core.GlobalEvents._keyAlt = 18;
-Open.Core.GlobalEvents._isShiftPressed = false;
-Open.Core.GlobalEvents._isCtrlPressed = false;
-Open.Core.GlobalEvents._isAltPressed = false;
-(function () {
-    var helper = Open.Core.Helper.get_jQuery();
-    $(document).keydown(function(e) {
-        if (helper.isKey(e, Open.Core.GlobalEvents._keyShift)) {
-            Open.Core.GlobalEvents._isShiftPressed = true;
-        }
-        if (helper.isKey(e, Open.Core.GlobalEvents._keyCtrl)) {
-            Open.Core.GlobalEvents._isCtrlPressed = true;
-        }
-        if (helper.isKey(e, Open.Core.GlobalEvents._keyAlt)) {
-            Open.Core.GlobalEvents._isAltPressed = true;
-        }
-    });
-    $(document).keyup(function(e) {
-        if (helper.isKey(e, Open.Core.GlobalEvents._keyShift)) {
-            Open.Core.GlobalEvents._isShiftPressed = false;
-        }
-        if (helper.isKey(e, Open.Core.GlobalEvents._keyCtrl)) {
-            Open.Core.GlobalEvents._isCtrlPressed = false;
-        }
-        if (helper.isKey(e, Open.Core.GlobalEvents._keyAlt)) {
-            Open.Core.GlobalEvents._isAltPressed = false;
-        }
-    });
-})();
 Open.Core.Log._writer = null;
 Open.Core.LogCss.url = '/Open.Core/Css/Core.Controls.css';
 Open.Core.LogCss._rootClass = 'coreLog';

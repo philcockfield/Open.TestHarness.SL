@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
+    <Compile Include="Global\Keyboard.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />
     <Compile Include="Declarations\Enumerations.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="Declarations\Interfaces\INotifyPropertyChanged.cs" />
     <Compile Include="Declarations\Interfaces\IViewFactory.cs" />
     <Compile Include="Declarations\Events\PropertyChangedEventArgs.cs" />
-    <Compile Include="Models\GlobalEvents.cs" />
+    <Compile Include="Global\GlobalEvents.cs" />
     <Compile Include="Models\Log\Log.cs" />
     <Compile Include="Models\Log\LogWriter.cs" />
     <Compile Include="Models\Log\LogCss.cs" />

@@ -45,7 +45,7 @@ namespace Open.Core.Lists
 
         private void OnBackClick(jQueryEvent e)
         {
-            if (GlobalEvents.IsCtrlPressed)
+            if (Keyboard.IsCtrlPressed)
             {
                 listTree.Home();
             }

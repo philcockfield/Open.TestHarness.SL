@@ -179,7 +179,7 @@ Open.Core.Lists.ListTreeBackController.prototype = {
     _onBackClick$2: function Open_Core_Lists_ListTreeBackController$_onBackClick$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
-        if (Open.Core.GlobalEvents.get_isCtrlPressed()) {
+        if (Open.Core.Keyboard.get_isCtrlPressed()) {
             this._listTree$2.home();
         }
         else {
