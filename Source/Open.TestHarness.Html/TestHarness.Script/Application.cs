@@ -6,7 +6,6 @@ using Open.Core.Controls;
 using Open.TestHarness.Controllers;
 using Open.TestHarness.Models;
 using Open.TestHarness.Views;
-using TH = Open.Core.TestHarness;
 
 namespace Open.TestHarness
 {
@@ -14,7 +13,6 @@ namespace Open.TestHarness
     {
         #region Head
         private static ShellView shell;
-
         private static PanelResizeController resizeController;
         private static SidebarController sidebarController;
         #endregion
@@ -41,8 +39,8 @@ namespace Open.TestHarness
             // =================================
 
             //TEMP : Insert sample TestPackage 
-            string scriptUrl = "/Content/Scripts/TestHarness.Script.Test.debug.js";
-            string initMethod = "TestHarness.Test.Application.main";
+            const string scriptUrl = "/Content/Scripts/Test.debug.js";
+            const string initMethod = "Test.Application.main";
 
             TestPackageInfo packageDef = TestPackageInfo.SingletonFromUrl(scriptUrl, initMethod);
             sidebarController.AddPackage(packageDef);

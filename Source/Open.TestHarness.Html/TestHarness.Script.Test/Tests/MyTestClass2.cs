@@ -1,6 +1,6 @@
 using Open.Core;
 
-namespace TestHarness.Test
+namespace Test
 {
     public class MyTestClass2
     {

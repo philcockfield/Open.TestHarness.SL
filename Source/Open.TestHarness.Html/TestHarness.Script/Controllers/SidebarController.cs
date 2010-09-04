@@ -37,9 +37,11 @@ namespace Open.TestHarness.Controllers
         private void TEMP( ) //TEMP - Add sample nodes to SidePanel.
         {
             MyNode rootNode = new MyNode("Root");
+            view.RootList.RootNode = rootNode;
+
             rootNode.AddChild(new MyNode("Recent"));
-            rootNode.AddChild(new MyNode("Child 2 (Can't Select)"));
-            rootNode.AddChild(new MyNode("Child 3"));
+            //rootNode.AddChild(new MyNode("Child 2 (Can't Select)"));
+            //rootNode.AddChild(new MyNode("Child 3"));
 
             MyNode child1 = rootNode.ChildAt(0) as MyNode;
             MyNode child2 = ((MyNode)rootNode.ChildAt(1));
@@ -54,10 +56,9 @@ namespace Open.TestHarness.Controllers
             recent1.AddChild(new MyNode("Recent Grandchild 2"));
             recent1.AddChild(new MyNode("Recent Grandchild 3"));
 
-            child2.AddChild(new MyNode("Yo Child"));
-            child3.AddChild(new MyNode("Yo Child"));
+            //child2.AddChild(new MyNode("Yo Child"));
+            //child3.AddChild(new MyNode("Yo Child"));
 
-            view.RootList.RootNode = rootNode;
 
             // ---
 
@@ -78,9 +79,9 @@ namespace Open.TestHarness.Controllers
 
             // ---
 
-            child1.Text = "My Recent Foo";
-            child2.CanSelect = false;
-            child2.IsSelected = true;
+            //child1.Text = "My Recent Foo";
+            //child2.CanSelect = false;
+            //child2.IsSelected = true;
         }
         #endregion
 

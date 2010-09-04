@@ -1,7 +1,6 @@
 using System;
 using jQueryApi;
 using Open.Core;
-using TH = Open.Core.TestHarness;
 
 namespace Open.TestHarness.Models
 {
@@ -28,12 +27,12 @@ namespace Open.TestHarness.Models
             this.initMethod = initMethod;
 
             // Wire up events.
-            TH.TestClassRegistered += OnTestClassRegistered;
+            Testing.TestClassRegistered += OnTestClassRegistered;
         }
 
         public void Dispose()
         {
-            TH.TestClassRegistered -= OnTestClassRegistered;
+            Testing.TestClassRegistered -= OnTestClassRegistered;
         }
         #endregion
 

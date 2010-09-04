@@ -76,8 +76,8 @@ Open.TestHarness.Application.main = function Open_TestHarness_Application$main(a
     Open.TestHarness.Application._shell = new Open.TestHarness.Views.ShellView($(Open.TestHarness.CssSelectors.root));
     Open.TestHarness.Application._resizeController = new Open.TestHarness.Controllers.PanelResizeController();
     Open.TestHarness.Application._sidebarController = new Open.TestHarness.Controllers.SidebarController();
-    var scriptUrl = '/Content/Scripts/TestHarness.Script.Test.debug.js';
-    var initMethod = 'TestHarness.Test.Application.main';
+    var scriptUrl = '/Content/Scripts/Test.debug.js';
+    var initMethod = 'Test.Application.main';
     var packageDef = Open.TestHarness.Models.TestPackageInfo.singletonFromUrl(scriptUrl, initMethod);
     Open.TestHarness.Application._sidebarController.addPackage(packageDef);
 }
@@ -582,7 +582,7 @@ Open.TestHarness.Models.TestPackageLoader = function Open_TestHarness_Models_Tes
     this._parent = parent;
     this._scriptUrl = scriptUrl;
     this._initMethod = initMethod;
-    Open.Core.TestHarness.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
+    Open.Testing.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
 }
 Open.TestHarness.Models.TestPackageLoader.prototype = {
     _parent: null,
@@ -593,7 +593,7 @@ Open.TestHarness.Models.TestPackageLoader.prototype = {
     _isInitializing: false,
     
     dispose: function Open_TestHarness_Models_TestPackageLoader$dispose() {
-        Open.Core.TestHarness.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
+        Open.Testing.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
     },
     
     _onTestClassRegistered: function Open_TestHarness_Models_TestPackageLoader$_onTestClassRegistered(sender, e) {
@@ -758,9 +758,8 @@ Open.TestHarness.Controllers.SidebarController.prototype = {
     
     _TEMP$2: function Open_TestHarness_Controllers_SidebarController$_TEMP$2() {
         var rootNode = new Open.TestHarness.Controllers.MyNode('Root');
+        this._view$2.get_rootList().set_rootNode(rootNode);
         rootNode.addChild(new Open.TestHarness.Controllers.MyNode('Recent'));
-        rootNode.addChild(new Open.TestHarness.Controllers.MyNode('Child 2 (Can\'t Select)'));
-        rootNode.addChild(new Open.TestHarness.Controllers.MyNode('Child 3'));
         var child1 = Type.safeCast(rootNode.childAt(0), Open.TestHarness.Controllers.MyNode);
         var child2 = (rootNode.childAt(1));
         var child3 = (rootNode.childAt(2));
@@ -771,12 +770,6 @@ Open.TestHarness.Controllers.SidebarController.prototype = {
         recent1.addChild(new Open.TestHarness.Controllers.MyNode('Recent Grandchild 1'));
         recent1.addChild(new Open.TestHarness.Controllers.MyNode('Recent Grandchild 2'));
         recent1.addChild(new Open.TestHarness.Controllers.MyNode('Recent Grandchild 3'));
-        child2.addChild(new Open.TestHarness.Controllers.MyNode('Yo Child'));
-        child3.addChild(new Open.TestHarness.Controllers.MyNode('Yo Child'));
-        this._view$2.get_rootList().set_rootNode(rootNode);
-        child1.set_text('My Recent Foo');
-        child2.set_canSelect(false);
-        child2.set_isSelected(true);
     },
     
     addPackage: function Open_TestHarness_Controllers_SidebarController$addPackage(testPackage) {

@@ -2489,53 +2489,6 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.TestHarness
-
-Open.Core.TestHarness = function Open_Core_TestHarness() {
-    /// <summary>
-    /// Shared functionality for working with the TestHarness
-    /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
-    /// </summary>
-    /// <field name="__testClassRegistered" type="Open.Core.TestClassHandler" static="true">
-    /// </field>
-}
-Open.Core.TestHarness.add_testClassRegistered = function Open_Core_TestHarness$add_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Core.TestHarness.__testClassRegistered = ss.Delegate.combine(Open.Core.TestHarness.__testClassRegistered, value);
-}
-Open.Core.TestHarness.remove_testClassRegistered = function Open_Core_TestHarness$remove_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Core.TestHarness.__testClassRegistered = ss.Delegate.remove(Open.Core.TestHarness.__testClassRegistered, value);
-}
-Open.Core.TestHarness.registerTestClass = function Open_Core_TestHarness$registerTestClass(entryPoint, testClass) {
-    /// <summary>
-    /// Registers a test-class with the harness.
-    /// </summary>
-    /// <param name="entryPoint" type="Type">
-    /// Type representing the test-package (normally the 'Application' class).
-    /// </param>
-    /// <param name="testClass" type="Type">
-    /// The type of the test class.
-    /// </param>
-    if (ss.isNullOrUndefined(entryPoint) || ss.isNullOrUndefined(testClass)) {
-        return;
-    }
-    if (Open.Core.TestHarness.__testClassRegistered != null) {
-        var e = new Open.Core.TestClassEventArgs();
-        e.entryPoint = entryPoint;
-        e.testClass = testClass;
-        Open.Core.TestHarness.__testClassRegistered.invoke(Open.Core.TestHarness, e);
-    }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // Open.Core.TestClassEventArgs
 
 Open.Core.TestClassEventArgs = function Open_Core_TestClassEventArgs() {
@@ -3858,6 +3811,55 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 }
 
 
+Type.registerNamespace('Open');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing
+
+Open.Testing = function Open_Testing() {
+    /// <summary>
+    /// Shared functionality for working with the TestHarness
+    /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
+    /// </summary>
+    /// <field name="__testClassRegistered" type="Open.Core.TestClassHandler" static="true">
+    /// </field>
+}
+Open.Testing.add_testClassRegistered = function Open_Testing$add_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.__testClassRegistered = ss.Delegate.combine(Open.Testing.__testClassRegistered, value);
+}
+Open.Testing.remove_testClassRegistered = function Open_Testing$remove_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.__testClassRegistered = ss.Delegate.remove(Open.Testing.__testClassRegistered, value);
+}
+Open.Testing.registerClass = function Open_Testing$registerClass(entryPoint, testClass) {
+    /// <summary>
+    /// Registers a test-class with the harness.
+    /// </summary>
+    /// <param name="entryPoint" type="Type">
+    /// Type representing the test-package (normally the 'Application' class).
+    /// </param>
+    /// <param name="testClass" type="Type">
+    /// The type of the test class.
+    /// </param>
+    if (ss.isNullOrUndefined(entryPoint) || ss.isNullOrUndefined(testClass)) {
+        return;
+    }
+    if (Open.Testing.__testClassRegistered != null) {
+        var e = new Open.Core.TestClassEventArgs();
+        e.entryPoint = entryPoint;
+        e.testClass = testClass;
+        Open.Testing.__testClassRegistered.invoke(Open.Testing, e);
+    }
+}
+
+
 Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
 Open.Core.Keyboard.registerClass('Open.Core.Keyboard');
@@ -3881,7 +3883,6 @@ Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
-Open.Core.TestHarness.registerClass('Open.Core.TestHarness');
 Open.Core.TestClassEventArgs.registerClass('Open.Core.TestClassEventArgs');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
@@ -3899,6 +3900,7 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Testing.registerClass('Open.Testing');
 Open.Core.Keyboard._isShiftPressed = false;
 Open.Core.Keyboard._isCtrlPressed = false;
 Open.Core.Keyboard._isAltPressed = false;
@@ -3983,7 +3985,6 @@ Open.Core.Helper._scrollHelper = null;
 Open.Core.Helper._jQueryHelper = null;
 Open.Core.Helper._treeHelper = null;
 Open.Core.Helper._idCounter = 0;
-Open.Core.TestHarness.__testClassRegistered = null;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
 Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';
@@ -3992,6 +3993,7 @@ Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';
 Open.Core.UI.PanelResizerBase._cookie = null;
 Open.Core.UI.PanelResizerBase._resizeScript = '\r\n$(\'{0}\').resizable({\r\n    handles: \'{1}\',\r\n    start: {2},\r\n    stop: {3},\r\n    resize: {4}\r\n    });\r\n';
+Open.Testing.__testClassRegistered = null;
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)
