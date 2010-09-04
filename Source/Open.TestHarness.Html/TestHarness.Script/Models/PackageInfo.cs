@@ -18,7 +18,7 @@ namespace Open.TestHarness.Models
         #region Head
         private static readonly ArrayList singletons = new ArrayList();
         private readonly ArrayList classes = new ArrayList();
-        private readonly TestPackageLoader loader;
+        private readonly PackageLoader loader;
         private readonly string name;
 
         /// <summary>Constructor.</summary>
@@ -32,7 +32,7 @@ namespace Open.TestHarness.Models
 
             // Store values.
             name = GetName(scriptUrl);
-            loader = new TestPackageLoader(this, scriptUrl.ToLowerCase(), initMethod);
+            loader = new PackageLoader(this, scriptUrl.ToLowerCase(), initMethod);
         }
         #endregion
 
@@ -44,7 +44,7 @@ namespace Open.TestHarness.Models
         public string Name { get { return name; } }
 
         /// <summary>Gets the package loader.</summary>
-        public TestPackageLoader Loader{get { return loader; }}
+        public PackageLoader Loader{get { return loader; }}
 
         /// <summary>Gets or sets whether the package has been loaded.</summary>
         /// <remarks>If not loaded use the 'Loader'.</remarks>
@@ -66,7 +66,7 @@ namespace Open.TestHarness.Models
         {
             if (testClass == null) return;
             if (Contains(testClass)) return;
-            classes.Add(ClassInfo.GetSingleton(testClass));
+            classes.Add(ClassInfo.GetSingleton(testClass, this));
         }
 
         /// <summary>Determines whether the test-class has already been added to the package.</summary>

@@ -1991,6 +1991,16 @@ Open.Core.Html.toBold = function Open_Core_Html$toBold(text) {
     /// <returns type="String"></returns>
     return String.format('<b>{0}</b>', text);
 }
+Open.Core.Html.spanIndent = function Open_Core_Html$spanIndent(pixels) {
+    /// <summary>
+    /// Creates a SPAN element with a magin-left set to the specified pixels (useful for indenting text).
+    /// </summary>
+    /// <param name="pixels" type="Number" integer="true">
+    /// The number of pixels to indent.
+    /// </param>
+    /// <returns type="String"></returns>
+    return String.format('<span style=\'margin-left:{0}px;\'></span>', pixels);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////

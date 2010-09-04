@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Models\ListItemNodes\MethodListItem.cs" />
     <Compile Include="Models\ListItemNodes\ClassListItem.cs" />
     <Compile Include="Models\MethodInfo.cs" />
@@ -55,8 +56,8 @@
     <Compile Include="Controllers\PanelResizeController.cs" />
     <Compile Include="Models\ListItemNodes\PackageListItem.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
-    <Compile Include="Controllers\TestPackageController.cs" />
-    <Compile Include="Controllers\TestPackageLoader.cs" />
+    <Compile Include="Controllers\PackageController.cs" />
+    <Compile Include="Controllers\PackageLoader.cs" />
     <Compile Include="Views\ShellView.cs" />
     <Compile Include="Views\SideBarView.cs" />
     <Compile Include="Views\MethodListView.cs" />

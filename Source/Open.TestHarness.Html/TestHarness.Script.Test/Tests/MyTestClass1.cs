@@ -1,3 +1,4 @@
+using System;
 using Open.Core;
 
 namespace Test
@@ -35,6 +36,11 @@ namespace Test
         public void Test__Three()
         {
             Log.Info("MyTestClass1 : Test 3 Invoked");
+        }
+
+        public void Contains_Error()
+        {
+            throw new Exception("My error.");
         }
 
         private void PrivateMethod() { }

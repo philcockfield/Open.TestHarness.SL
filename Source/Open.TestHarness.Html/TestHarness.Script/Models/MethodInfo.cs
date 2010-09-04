@@ -41,6 +41,34 @@ namespace Open.TestHarness.Models
         #endregion
 
         #region Methods
+        /// <summary>Invokes the method.</summary>
+        public void Invoke()
+        {
+            // Setup initial conditions.
+            object instance = ClassInfo.Instance;
+
+            // Invoke the method.
+            try
+            {
+                Function func = Helper.Reflection.GetFunction(instance, Name);
+                if (func == null) return;
+                func.Call(instance);
+            }
+            catch (Exception error)
+            {
+                Log.Error(
+                    string.Format("<b>Exception</b> Failed while executing '<b>{1}</b>'.<br/>{0}Message: {2}<br/>{0}Method: {3}<br/>{0}Class: {4}<br/>{0}Package: {5}", 
+                    Html.SpanIndent(30),
+                    DisplayName, 
+                    error.Message,
+                    Helper.String.ToCamelCase(Name),
+                    ClassInfo.ClassType.FullName,
+                    Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrl, null, LinkTarget.Blank)));
+            }
+        }
+        #endregion
+
+        #region Methods : Static
         /// <summary>Determines whether the specified DictionaryEntry represents a valid test-method.</summary>
         /// <param name="item">The Dictionaty item to examine.</param>
         public static bool IsTestMethod(DictionaryEntry item)

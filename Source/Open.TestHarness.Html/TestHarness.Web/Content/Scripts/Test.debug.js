@@ -64,6 +64,10 @@ Test.MyTestClass1.prototype = {
         Open.Core.Log.info('MyTestClass1 : Test 3 Invoked');
     },
     
+    contains_Error: function Test_MyTestClass1$contains_Error() {
+        throw new Error('My error.');
+    },
+    
     _privateMethod: function Test_MyTestClass1$_privateMethod() {
     }
 }

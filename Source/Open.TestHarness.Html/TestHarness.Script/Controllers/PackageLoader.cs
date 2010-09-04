@@ -5,7 +5,7 @@ using Open.Core;
 namespace Open.TestHarness.Models
 {
     /// <summary>Handles loading a test-package and executing the entry point assembly.</summary>
-    public class TestPackageLoader : IDisposable
+    public class PackageLoader : IDisposable
     {
         #region Head
         private readonly PackageInfo parent;
@@ -19,7 +19,7 @@ namespace Open.TestHarness.Models
         /// <param name="parent">The test-package this object is loading.</param>
         /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        public TestPackageLoader(PackageInfo parent, string scriptUrl, string initMethod)
+        public PackageLoader(PackageInfo parent, string scriptUrl, string initMethod)
         {
             // Store values.
             this.parent = parent;

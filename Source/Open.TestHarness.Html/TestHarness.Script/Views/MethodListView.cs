@@ -36,12 +36,6 @@ namespace Open.TestHarness.Views
             // Construct the data-model root.
             rootNode = new ListItem();
             listView.RootNode = rootNode;
-
-            //TEMP 
-            MethodClicked += delegate
-                                 {
-                                     Log.Debug("!! Method Clicked: " + SelectedMethod.DisplayName);
-                                 };
         }
         #endregion
 
@@ -73,7 +67,6 @@ namespace Open.TestHarness.Views
             get { return (MethodInfo) Get(PropSelectedMethod, null); }
             set { Set(PropSelectedMethod, value, null); } 
         }
-
         #endregion
 
         #region Methods

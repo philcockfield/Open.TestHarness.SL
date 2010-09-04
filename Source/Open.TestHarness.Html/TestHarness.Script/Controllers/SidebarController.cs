@@ -27,7 +27,7 @@ namespace Open.TestHarness.Controllers
         protected override void OnDisposed()
         {
             view.Dispose();
-            foreach (TestPackageController controller in packageControllers)
+            foreach (PackageController controller in packageControllers)
             {
                 controller.Dispose();
             }
@@ -102,7 +102,7 @@ namespace Open.TestHarness.Controllers
             view.RootList.RootNode.AddChild(node);
 
             // Create the controller.
-            TestPackageController controller = new TestPackageController(node, view);
+            PackageController controller = new PackageController(node, view);
             packageControllers.Add(controller);
             controller.Loaded += delegate
                                      {
@@ -117,7 +117,7 @@ namespace Open.TestHarness.Controllers
         {
             // Setup initial conditions.
             if (testPackage == null) return;
-            TestPackageController controller = GetController(testPackage);
+            PackageController controller = GetController(testPackage);
             if (controller == null) return;
 
             // Remove from tree.
@@ -130,12 +130,12 @@ namespace Open.TestHarness.Controllers
         #endregion
 
         #region Internal
-        private TestPackageController GetController(PackageInfo testPackage)
+        private PackageController GetController(PackageInfo testPackage)
         {
             return Helper.Collection.First(packageControllers, delegate(object o)
                                                 {
-                                                    return ((TestPackageController) o).TestPackage == testPackage;
-                                                }) as TestPackageController; 
+                                                    return ((PackageController) o).TestPackage == testPackage;
+                                                }) as PackageController; 
         }
         #endregion
     }

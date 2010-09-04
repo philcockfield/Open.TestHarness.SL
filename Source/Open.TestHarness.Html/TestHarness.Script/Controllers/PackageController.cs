@@ -6,7 +6,7 @@ using Open.TestHarness.Views;
 namespace Open.TestHarness.Controllers
 {
     /// <summary>Controller for a single test package.</summary>
-    public class TestPackageController : ControllerBase
+    public class PackageController : ControllerBase
     {
         #region Events
         /// <summary>Fires when the package has laoded.</summary>
@@ -20,12 +20,12 @@ namespace Open.TestHarness.Controllers
 
         private readonly PackageListItem rootNode;
         private readonly SidebarView sidebarView;
-
+        private ClassController selectedClassController;
 
         /// <summary>Constructor.</summary>
         /// <param name="rootNode">The root list-item node.</param>
         /// <param name="sidebarView">The Sidebar control.</param>
-        public TestPackageController(PackageListItem rootNode, SidebarView sidebarView)
+        public PackageController(PackageListItem rootNode, SidebarView sidebarView)
         {
             // Store values.
             this.rootNode = rootNode;
@@ -34,16 +34,18 @@ namespace Open.TestHarness.Controllers
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
             rootNode.ChildSelectionChanged += OnChildSelectionChanged;
-//            sidebarView.HideMethodList(null);
-
-            // TODO - attach to TestMethod changed.
-//TEMP             sidebarView.TestMethodList +=
         }
 
         protected override void OnDisposed()
         {
+            // Unwire event.
             rootNode.SelectionChanged -= OnSelectionChanged;
             rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
+
+            // Dispose of child resources.
+            if (selectedClassController != null) selectedClassController.Dispose();
+
+            // Finish up.
             base.OnDisposed();
         }
         #endregion
@@ -76,6 +78,8 @@ namespace Open.TestHarness.Controllers
             {
                 if (Set(PropSelectedClass, value, null))
                 {
+                    if (selectedClassController != null) selectedClassController.Dispose();
+                    if (value != null) selectedClassController = new ClassController(value, sidebarView);
                     sidebarView.MethodList.ClassInfo = value;
                 }
             }
@@ -87,7 +91,7 @@ namespace Open.TestHarness.Controllers
         {
             // Setup initial conditions.
             if (TestPackage.IsLoaded) return;
-            TestPackageLoader loader = TestPackage.Loader;
+            PackageLoader loader = TestPackage.Loader;
             string link = Html.ToHyperlink(loader.ScriptUrl, null, LinkTarget.Blank);
 
             // Create time-out handler.

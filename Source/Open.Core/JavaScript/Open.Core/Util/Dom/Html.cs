@@ -106,6 +106,10 @@ namespace Open.Core
         /// <summary>Wraps the given text in <b></b> elements.</summary>
         /// <param name="text">The text to wrap.</param>
         public static string ToBold(string text) { return string.Format("<b>{0}</b>", text); }
+
+        /// <summary>Creates a SPAN element with a magin-left set to the specified pixels (useful for indenting text).</summary>
+        /// <param name="pixels">The number of pixels to indent.</param>
+        public static string SpanIndent(int pixels) { return string.Format("<span style='margin-left:{0}px;'></span>", pixels); }
         #endregion
     }
 }

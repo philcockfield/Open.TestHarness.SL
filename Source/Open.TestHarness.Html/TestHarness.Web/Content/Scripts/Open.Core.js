@@ -79,6 +79,7 @@ Open.Core.Html.childAt=function(index,parent){var $0=parent.children(String.form
 Open.Core.Html.getOrCreateId=function(element){var $0=element.attr('id');if(String.isNullOrEmpty($0)){$0=Open.Core.Helper.createId();element.attr('id',$0);}return $0;}
 Open.Core.Html.toHyperlink=function(url,text,target){if(text==null){text=url;}return String.format('<a href=\'{0}\' target=\'_{2}\'>{1}</a>',url,text,Open.Core.LinkTarget.toString(target));}
 Open.Core.Html.toBold=function(text){return String.format('<b>{0}</b>',text);}
+Open.Core.Html.spanIndent=function(pixels){return String.format('<span style=\'margin-left:{0}px;\'></span>',pixels);}
 Open.Core.Css=function(){}
 Open.Core.Css.isVisible=function(element){return (ss.isNullOrUndefined(element))?false:element.css('display').toLowerCase()!=='none';}
 Open.Core.Css.setVisible=function(element,isVisible){element.css('display',(isVisible)?'block':'none');}
