@@ -582,7 +582,7 @@ Open.TestHarness.Models.TestPackageLoader = function Open_TestHarness_Models_Tes
     this._parent = parent;
     this._scriptUrl = scriptUrl;
     this._initMethod = initMethod;
-    Open.Testing.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
+    Open.TestHarness.TestHarnessEvents.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
 }
 Open.TestHarness.Models.TestPackageLoader.prototype = {
     _parent: null,
@@ -593,13 +593,13 @@ Open.TestHarness.Models.TestPackageLoader.prototype = {
     _isInitializing: false,
     
     dispose: function Open_TestHarness_Models_TestPackageLoader$dispose() {
-        Open.Testing.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
+        Open.TestHarness.TestHarnessEvents.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered));
     },
     
     _onTestClassRegistered: function Open_TestHarness_Models_TestPackageLoader$_onTestClassRegistered(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
-        /// <param name="e" type="Open.Core.TestClassEventArgs">
+        /// <param name="e" type="Open.TestHarness.TestClassEventArgs">
         /// </param>
         if (!this._isInitializing) {
             return;

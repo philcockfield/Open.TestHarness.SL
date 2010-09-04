@@ -2488,21 +2488,6 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-// Open.Core.TestClassEventArgs
-
-Open.Core.TestClassEventArgs = function Open_Core_TestClassEventArgs() {
-    /// <field name="entryPoint" type="Type">
-    /// </field>
-    /// <field name="testClass" type="Type">
-    /// </field>
-}
-Open.Core.TestClassEventArgs.prototype = {
-    entryPoint: null,
-    testClass: null
-}
-
-
 Type.registerNamespace('Open.Core.Helpers');
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3821,22 +3806,6 @@ Open.Testing = function Open_Testing() {
     /// Shared functionality for working with the TestHarness
     /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
     /// </summary>
-    /// <field name="__testClassRegistered" type="Open.Core.TestClassHandler" static="true">
-    /// </field>
-}
-Open.Testing.add_testClassRegistered = function Open_Testing$add_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.__testClassRegistered = ss.Delegate.combine(Open.Testing.__testClassRegistered, value);
-}
-Open.Testing.remove_testClassRegistered = function Open_Testing$remove_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.__testClassRegistered = ss.Delegate.remove(Open.Testing.__testClassRegistered, value);
 }
 Open.Testing.registerClass = function Open_Testing$registerClass(entryPoint, testClass) {
     /// <summary>
@@ -3851,11 +3820,56 @@ Open.Testing.registerClass = function Open_Testing$registerClass(entryPoint, tes
     if (ss.isNullOrUndefined(entryPoint) || ss.isNullOrUndefined(testClass)) {
         return;
     }
-    if (Open.Testing.__testClassRegistered != null) {
-        var e = new Open.Core.TestClassEventArgs();
-        e.entryPoint = entryPoint;
-        e.testClass = testClass;
-        Open.Testing.__testClassRegistered.invoke(Open.Testing, e);
+    var e = new Open.TestHarness.TestClassEventArgs();
+    e.entryPoint = entryPoint;
+    e.testClass = testClass;
+    Open.TestHarness.TestHarnessEvents._fireTestClassRegistered(e);
+}
+
+
+Type.registerNamespace('Open.TestHarness');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.TestClassEventArgs
+
+Open.TestHarness.TestClassEventArgs = function Open_TestHarness_TestClassEventArgs() {
+    /// <field name="entryPoint" type="Type">
+    /// </field>
+    /// <field name="testClass" type="Type">
+    /// </field>
+}
+Open.TestHarness.TestClassEventArgs.prototype = {
+    entryPoint: null,
+    testClass: null
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.TestHarnessEvents
+
+Open.TestHarness.TestHarnessEvents = function Open_TestHarness_TestHarnessEvents() {
+    /// <field name="__testClassRegistered" type="Open.TestHarness.TestClassHandler" static="true">
+    /// </field>
+}
+Open.TestHarness.TestHarnessEvents.add_testClassRegistered = function Open_TestHarness_TestHarnessEvents$add_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.TestHarness.TestHarnessEvents.__testClassRegistered = ss.Delegate.combine(Open.TestHarness.TestHarnessEvents.__testClassRegistered, value);
+}
+Open.TestHarness.TestHarnessEvents.remove_testClassRegistered = function Open_TestHarness_TestHarnessEvents$remove_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.TestHarness.TestHarnessEvents.__testClassRegistered = ss.Delegate.remove(Open.TestHarness.TestHarnessEvents.__testClassRegistered, value);
+}
+Open.TestHarness.TestHarnessEvents._fireTestClassRegistered = function Open_TestHarness_TestHarnessEvents$_fireTestClassRegistered(e) {
+    /// <param name="e" type="Open.TestHarness.TestClassEventArgs">
+    /// </param>
+    if (Open.TestHarness.TestHarnessEvents.__testClassRegistered != null) {
+        Open.TestHarness.TestHarnessEvents.__testClassRegistered.invoke(Open.TestHarness.TestHarnessEvents, e);
     }
 }
 
@@ -3883,7 +3897,6 @@ Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
-Open.Core.TestClassEventArgs.registerClass('Open.Core.TestClassEventArgs');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
 Open.Core.Helpers.JQueryHelper.registerClass('Open.Core.Helpers.JQueryHelper');
@@ -3901,6 +3914,8 @@ Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Testing.registerClass('Open.Testing');
+Open.TestHarness.TestClassEventArgs.registerClass('Open.TestHarness.TestClassEventArgs');
+Open.TestHarness.TestHarnessEvents.registerClass('Open.TestHarness.TestHarnessEvents');
 Open.Core.Keyboard._isShiftPressed = false;
 Open.Core.Keyboard._isCtrlPressed = false;
 Open.Core.Keyboard._isAltPressed = false;
@@ -3993,7 +4008,7 @@ Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';
 Open.Core.UI.PanelResizerBase._cookie = null;
 Open.Core.UI.PanelResizerBase._resizeScript = '\r\n$(\'{0}\').resizable({\r\n    handles: \'{1}\',\r\n    start: {2},\r\n    stop: {3},\r\n    resize: {4}\r\n    });\r\n';
-Open.Testing.__testClassRegistered = null;
+Open.TestHarness.TestHarnessEvents.__testClassRegistered = null;
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)

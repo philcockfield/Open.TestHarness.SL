@@ -27,12 +27,12 @@ namespace Open.TestHarness.Models
             this.initMethod = initMethod;
 
             // Wire up events.
-            Testing.TestClassRegistered += OnTestClassRegistered;
+            TestHarnessEvents.TestClassRegistered += OnTestClassRegistered;
         }
 
         public void Dispose()
         {
-            Testing.TestClassRegistered -= OnTestClassRegistered;
+            TestHarnessEvents.TestClassRegistered -= OnTestClassRegistered;
         }
         #endregion
 
