@@ -1,4 +1,3 @@
-using System;
 using jQueryApi;
 
 namespace Open.Core.Controls
@@ -21,12 +20,12 @@ namespace Open.Core.Controls
             scrollDelay = new DelayedAction(0.05, OnScrollDelayElapsed);
 
             // Wire up events.
-            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { UpdateVisualState(); });
-            GlobalEvents.HorizontalPanelResized += delegate { UpdateVisualState(); };
+            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { UpdateLayout(); });
+            GlobalEvents.HorizontalPanelResized += delegate { UpdateLayout(); };
             GlobalEvents.VerticalPanelResized += delegate { scrollDelay.Start(); };
 
             // Finish up.
-            UpdateVisualState();
+            UpdateLayout();
         }
 
         protected override void OnDisposed()
@@ -41,6 +40,7 @@ namespace Open.Core.Controls
         private void OnScrollDelayElapsed()
         {
             if (divRow == null) return;
+            UpdateLayout();
             Helper.Scroll.ToBottom(divList, ScrollDuration, EffectEasing.Swing, null);
         }
         #endregion
@@ -107,10 +107,9 @@ namespace Open.Core.Controls
             divRow = null;
             divList.Html(string.Empty);
         }
-        #endregion
 
-        #region Internal
-        private void UpdateVisualState()
+        /// <summary>Updates the visual layout.</summary>
+        public void UpdateLayout()
         {
             // Setup initial conditions.
             if (!IsInitialized) return;
