@@ -34,6 +34,7 @@ namespace Open.TestHarness.Controllers
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
             rootNode.ChildSelectionChanged += OnChildSelectionChanged;
+//            sidebarView.HideMethodList(null);
 
             // TODO - attach to TestMethod changed.
 //TEMP             sidebarView.TestMethodList +=

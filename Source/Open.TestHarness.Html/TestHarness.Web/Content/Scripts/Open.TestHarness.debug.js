@@ -1059,7 +1059,7 @@ Open.TestHarness.Views.SidebarView = function Open_TestHarness_Views_SidebarView
     this._methodList$2 = new Open.TestHarness.Views.MethodListView($(Open.TestHarness.CssSelectors.testList));
     this._backController$2 = new Open.Core.Lists.ListTreeBackController(this._rootList$2, $(Open.TestHarness.CssSelectors.sidebarToolbar), $(Open.TestHarness.CssSelectors.backMask));
     this._rootList$2.add_selectedParentChanged(ss.Delegate.create(this, function() {
-        this._syncTestListVisibility$2();
+        this._syncMethodListVisibility$2();
     }));
     this.updateVisualState();
     this.get_rootList().get_container().click(ss.Delegate.create(this, function(eevent) {
@@ -1092,24 +1092,24 @@ Open.TestHarness.Views.SidebarView.prototype = {
         return this._methodList$2;
     },
     
-    get_isTestListVisible: function Open_TestHarness_Views_SidebarView$get_isTestListVisible() {
+    get_isMethodListVisible: function Open_TestHarness_Views_SidebarView$get_isMethodListVisible() {
         /// <summary>
         /// Gets or sets whether the TestList panel is visible.
         /// </summary>
         /// <value type="Boolean"></value>
         return this.get(Open.TestHarness.Views.SidebarView.propIsTestListVisible, false);
     },
-    set_isTestListVisible: function Open_TestHarness_Views_SidebarView$set_isTestListVisible(value) {
+    set_isMethodListVisible: function Open_TestHarness_Views_SidebarView$set_isMethodListVisible(value) {
         /// <summary>
         /// Gets or sets whether the TestList panel is visible.
         /// </summary>
         /// <value type="Boolean"></value>
         if (this.set(Open.TestHarness.Views.SidebarView.propIsTestListVisible, value, false)) {
             if (value) {
-                this.showTestList(null);
+                this.showMethodList(null);
             }
             else {
-                this.hideTestList(null);
+                this.hideMethodList(null);
             }
         }
         return value;
@@ -1122,44 +1122,44 @@ Open.TestHarness.Views.SidebarView.prototype = {
         this._syncRootListHeight$2();
     },
     
-    showTestList: function Open_TestHarness_Views_SidebarView$showTestList(onComplete) {
+    showMethodList: function Open_TestHarness_Views_SidebarView$showMethodList(onComplete) {
         /// <summary>
         /// Reveals the test list.
         /// </summary>
         /// <param name="onComplete" type="Action">
         /// The action to invoke when complete
         /// </param>
-        this.set_isTestListVisible(true);
-        var height = this._getTargetTestListHeight$2();
+        this.set_isMethodListVisible(true);
+        var height = this._getTargetMethodListHeight$2();
         this._animateHeights$2(height, onComplete);
     },
     
-    hideTestList: function Open_TestHarness_Views_SidebarView$hideTestList(onComplete) {
+    hideMethodList: function Open_TestHarness_Views_SidebarView$hideMethodList(onComplete) {
         /// <summary>
         /// Hides the test list.
         /// </summary>
         /// <param name="onComplete" type="Action">
         /// The action to invoke when complete
         /// </param>
-        this.set_isTestListVisible(false);
+        this.set_isMethodListVisible(false);
         this._animateHeights$2(0, onComplete);
     },
     
-    _animateHeights$2: function Open_TestHarness_Views_SidebarView$_animateHeights$2(testListHeight, onComplete) {
-        /// <param name="testListHeight" type="Number" integer="true">
+    _animateHeights$2: function Open_TestHarness_Views_SidebarView$_animateHeights$2(methodListHeight, onComplete) {
+        /// <param name="methodListHeight" type="Number" integer="true">
         /// </param>
         /// <param name="onComplete" type="Action">
         /// </param>
-        var testListProps = {};
-        testListProps[Open.Core.Css.height] = testListHeight;
+        var methodListProps = {};
+        methodListProps[Open.Core.Css.height] = methodListHeight;
         var rootListProps = {};
-        rootListProps[Open.Core.Css.bottom] = testListHeight;
-        var isShowing = testListHeight > 0;
+        rootListProps[Open.Core.Css.bottom] = methodListHeight;
+        var isShowing = methodListHeight > 0;
         if (isShowing) {
             Open.Core.Css.setVisible(this.get_methodList().get_container(), true);
         }
         this.get_methodList().updateLayout();
-        this._animate$2(isShowing, this.get_methodList().get_container(), testListProps, null);
+        this._animate$2(isShowing, this.get_methodList().get_container(), methodListProps, null);
         this._animate$2(isShowing, this.get_rootList().get_container(), rootListProps, onComplete);
     },
     
@@ -1184,12 +1184,12 @@ Open.TestHarness.Views.SidebarView.prototype = {
         this.get_rootList().get_container().css(Open.Core.Css.bottom, this.get_methodList().get_container().height() + Open.Core.Css.px);
     },
     
-    _syncTestListVisibility$2: function Open_TestHarness_Views_SidebarView$_syncTestListVisibility$2() {
+    _syncMethodListVisibility$2: function Open_TestHarness_Views_SidebarView$_syncMethodListVisibility$2() {
         var node = this._rootList$2.get_selectedParent();
-        this.set_isTestListVisible(node != null && (Type.canCast(node, Open.TestHarness.Models.PackageListItem)));
+        this.set_isMethodListVisible(node != null && (Type.canCast(node, Open.TestHarness.Models.PackageListItem)));
     },
     
-    _getTargetTestListHeight$2: function Open_TestHarness_Views_SidebarView$_getTargetTestListHeight$2() {
+    _getTargetMethodListHeight$2: function Open_TestHarness_Views_SidebarView$_getTargetMethodListHeight$2() {
         /// <returns type="Number" integer="true"></returns>
         return 250;
     }

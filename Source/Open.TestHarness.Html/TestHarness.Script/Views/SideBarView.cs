@@ -39,7 +39,7 @@ namespace Open.TestHarness.Views
                 jQuery.Select(CssSelectors.BackMask));
 
             // Wire up events.
-            rootList.SelectedParentChanged += delegate { SyncTestListVisibility(); };
+            rootList.SelectedParentChanged += delegate { SyncMethodListVisibility(); };
 
             // Finish up.
             UpdateVisualState();
@@ -69,14 +69,14 @@ namespace Open.TestHarness.Views
         public MethodListView MethodList{get { return methodList; }}
 
         /// <summary>Gets or sets whether the TestList panel is visible.</summary>
-        public bool IsTestListVisible
+        public bool IsMethodListVisible
         {
             get { return (bool) Get(PropIsTestListVisible, false); }
             set
             {
                 if (Set(PropIsTestListVisible, value, false))
                 {
-                    if (value) { ShowTestList(null); } else { HideTestList(null); }
+                    if (value) { ShowMethodList(null); } else { HideMethodList(null); }
                 }
             }
         }
@@ -91,42 +91,42 @@ namespace Open.TestHarness.Views
 
         /// <summary>Reveals the test list.</summary>
         /// <param name="onComplete">The action to invoke when complete</param>
-        public void ShowTestList(Action onComplete)
+        public void ShowMethodList(Action onComplete)
         {
             // Setup initial conditions.
-            IsTestListVisible = true;
+            IsMethodListVisible = true;
 
             // Prepare properties.
-            int height = GetTargetTestListHeight();
+            int height = GetTargetMethodListHeight();
             AnimateHeights(height, onComplete);
         }
 
         /// <summary>Hides the test list.</summary>
         /// <param name="onComplete">The action to invoke when complete</param>
-        public void HideTestList(Action onComplete)
+        public void HideMethodList(Action onComplete)
         {
-            IsTestListVisible = false;
+            IsMethodListVisible = false;
             AnimateHeights(0, onComplete);
         }
         #endregion
 
         #region Internal
-        private void AnimateHeights(int testListHeight, Action onComplete)
+        private void AnimateHeights(int methodListHeight, Action onComplete)
         {
             // Prepare properties.
-            Dictionary testListProps = new Dictionary();
-            testListProps[Css.Height] = testListHeight;
+            Dictionary methodListProps = new Dictionary();
+            methodListProps[Css.Height] = methodListHeight;
 
             Dictionary rootListProps = new Dictionary();
-            rootListProps[Css.Bottom] = testListHeight;
+            rootListProps[Css.Bottom] = methodListHeight;
 
             // Show or hide.
-            bool isShowing = testListHeight > 0;
+            bool isShowing = methodListHeight > 0;
             if (isShowing) Css.SetVisible(MethodList.Container, true);
             MethodList.UpdateLayout();
 
             //Animate.
-            Animate(isShowing, MethodList.Container, testListProps, null);
+            Animate(isShowing, MethodList.Container, methodListProps, null);
             Animate(isShowing, RootList.Container, rootListProps, onComplete);
         }
 
@@ -148,14 +148,14 @@ namespace Open.TestHarness.Views
             RootList.Container.CSS(Css.Bottom, MethodList.Container.GetHeight() + Css.Px);
         }
 
-        private void SyncTestListVisibility()
+        private void SyncMethodListVisibility()
         {
-            // Show or hide the TestList based on the kind of root-tree-node that is currently selected.
+            // Show or hide the MethodList based on the kind of root-tree-node that is currently selected.
             object node = rootList.SelectedParent;
-            IsTestListVisible = node != null && (node is PackageListItem);
+            IsMethodListVisible = node != null && (node is PackageListItem);
         }
 
-        private int GetTargetTestListHeight()
+        private int GetTargetMethodListHeight()
         {
             return 250; // TODO - GetTargetTestListHeight
         }
