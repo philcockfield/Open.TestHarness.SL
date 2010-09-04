@@ -27,15 +27,15 @@ Open.Core.Controls.LogView = function Open_Core_Controls_LogView(container) {
     this.initialize(container);
     this._scrollDelay$2 = new Open.Core.DelayedAction(0.05, ss.Delegate.create(this, this._onScrollDelayElapsed$2));
     $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
-        this._updateVisualState$2();
+        this.updateLayout();
     }));
     Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this, function() {
-        this._updateVisualState$2();
+        this.updateLayout();
     }));
     Open.Core.GlobalEvents.add_verticalPanelResized(ss.Delegate.create(this, function() {
         this._scrollDelay$2.start();
     }));
-    this._updateVisualState$2();
+    this.updateLayout();
 }
 Open.Core.Controls.LogView.prototype = {
     _divList$2: null,
@@ -54,6 +54,7 @@ Open.Core.Controls.LogView.prototype = {
         if (this._divRow$2 == null) {
             return;
         }
+        this.updateLayout();
         Open.Core.Helper.get_scroll().toBottom(this._divList$2, this.get_scrollDuration(), 'swing', null);
     },
     
@@ -125,7 +126,10 @@ Open.Core.Controls.LogView.prototype = {
         this._divList$2.html(String.Empty);
     },
     
-    _updateVisualState$2: function Open_Core_Controls_LogView$_updateVisualState$2() {
+    updateLayout: function Open_Core_Controls_LogView$updateLayout() {
+        /// <summary>
+        /// Updates the visual layout.
+        /// </summary>
         if (!this.get_isInitialized()) {
             return;
         }

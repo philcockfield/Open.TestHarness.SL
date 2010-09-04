@@ -1199,7 +1199,11 @@ Open.TestHarness.Views.TestListView = function Open_TestHarness_Views_TestListVi
     /// <param name="container" type="jQueryObject">
     /// The containing div.
     /// </param>
+    /// <field name="__methodClicked$2" type="EventHandler">
+    /// </field>
     /// <field name="propTestClass" type="String" static="true">
+    /// </field>
+    /// <field name="propSelectedMethod" type="String" static="true">
     /// </field>
     /// <field name="_listView$2" type="Open.Core.Lists.ListTreeView">
     /// </field>
@@ -1211,10 +1215,46 @@ Open.TestHarness.Views.TestListView = function Open_TestHarness_Views_TestListVi
     this._listView$2.set_slideDuration(Open.TestHarness.Views.SidebarView.slideDuration);
     this._rootNode$2 = new Open.Core.Lists.ListItem();
     this._listView$2.set_rootNode(this._rootNode$2);
+    this.add_methodClicked(ss.Delegate.create(this, function() {
+        Open.Core.Log.debug('!! Method Clicked: ' + this.get_selectedMethod().get_displayName());
+    }));
 }
 Open.TestHarness.Views.TestListView.prototype = {
+    
+    add_methodClicked: function Open_TestHarness_Views_TestListView$add_methodClicked(value) {
+        /// <summary>
+        /// Fires when each time a method in the list is clicked (see the 'SelectedMethod' property).
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__methodClicked$2 = ss.Delegate.combine(this.__methodClicked$2, value);
+    },
+    remove_methodClicked: function Open_TestHarness_Views_TestListView$remove_methodClicked(value) {
+        /// <summary>
+        /// Fires when each time a method in the list is clicked (see the 'SelectedMethod' property).
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__methodClicked$2 = ss.Delegate.remove(this.__methodClicked$2, value);
+    },
+    
+    __methodClicked$2: null,
+    
+    _fireMethodClicked$2: function Open_TestHarness_Views_TestListView$_fireMethodClicked$2() {
+        if (this.__methodClicked$2 != null) {
+            this.__methodClicked$2.invoke(this, new ss.EventArgs());
+        }
+    },
+    
     _listView$2: null,
     _rootNode$2: null,
+    
+    _onItemClick$2: function Open_TestHarness_Views_TestListView$_onItemClick$2(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this.set_selectedMethod((sender).get_testMethod());
+        this._fireMethodClicked$2();
+    },
     
     get_testClass: function Open_TestHarness_Views_TestListView$get_testClass() {
         /// <summary>
@@ -1234,6 +1274,22 @@ Open.TestHarness.Views.TestListView.prototype = {
         return value;
     },
     
+    get_selectedMethod: function Open_TestHarness_Views_TestListView$get_selectedMethod() {
+        /// <summary>
+        /// Gets or sets the currently selected method..
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestMethodInfo"></value>
+        return this.get(Open.TestHarness.Views.TestListView.propSelectedMethod, null);
+    },
+    set_selectedMethod: function Open_TestHarness_Views_TestListView$set_selectedMethod(value) {
+        /// <summary>
+        /// Gets or sets the currently selected method..
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestMethodInfo"></value>
+        this.set(Open.TestHarness.Views.TestListView.propSelectedMethod, value, null);
+        return value;
+    },
+    
     updateLayout: function Open_TestHarness_Views_TestListView$updateLayout() {
         /// <summary>
         /// Updates the visual state of the control.
@@ -1244,7 +1300,7 @@ Open.TestHarness.Views.TestListView.prototype = {
     _populateList$2: function Open_TestHarness_Views_TestListView$_populateList$2(testClass) {
         /// <param name="testClass" type="Open.TestHarness.Models.TestClassInfo">
         /// </param>
-        this._rootNode$2.clearChildren();
+        this._clearChildren$2();
         if (testClass == null) {
             return;
         }
@@ -1260,10 +1316,18 @@ Open.TestHarness.Views.TestListView.prototype = {
         /// </param>
         /// <returns type="Open.TestHarness.Models.TestMethodListItem"></returns>
         var item = new Open.TestHarness.Models.TestMethodListItem(method);
-        item.add_click(ss.Delegate.create(this, function() {
-            Open.Core.Log.debug('CLICK - List Item method - ' + method.get_displayName());
-        }));
+        item.add_click(ss.Delegate.create(this, this._onItemClick$2));
         return item;
+    },
+    
+    _clearChildren$2: function Open_TestHarness_Views_TestListView$_clearChildren$2() {
+        var $enum1 = ss.IEnumerator.getEnumerator(this._rootNode$2.get_children());
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            child.remove_click(ss.Delegate.create(this, this._onItemClick$2));
+        }
+        this._rootNode$2.clearChildren();
+        this.set_selectedMethod(null);
     }
 }
 
@@ -1315,6 +1379,7 @@ Open.TestHarness.Controllers.TestPackageController._loadTimeout$2 = 10;
 Open.TestHarness.Views.SidebarView.slideDuration = 0.2;
 Open.TestHarness.Views.SidebarView.propIsTestListVisible = 'IsTestListVisible';
 Open.TestHarness.Views.TestListView.propTestClass = 'TestClass';
+Open.TestHarness.Views.TestListView.propSelectedMethod = 'SelectedMethod';
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)

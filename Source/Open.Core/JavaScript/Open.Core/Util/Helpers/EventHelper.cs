@@ -11,8 +11,6 @@ namespace Open.Core.Helpers
         /// <returns>True if the event was fired, or False if the source object did not expose a Public or Internal 'FireClick' method.</returns>
         public bool FireClick(object source)
         {
-            Log.Title("FIRE CLICK"); //TEMP 
-
             // Setup initial conditions.
             Dictionary obj = source as Dictionary;
             if (obj == null) return false;
@@ -23,11 +21,6 @@ namespace Open.Core.Helpers
 
             // Fire the event by invoking the method.
             func.Call(source);
-
-
-            //TEMP 
-            Log.Debug("F: " + func);
-            Log.LineBreak();
 
             // Finish up.
             return true;

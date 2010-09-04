@@ -2613,7 +2613,6 @@ Open.Core.Helpers.EventHelper.prototype = {
         /// The source object to fire the event.
         /// </param>
         /// <returns type="Boolean"></returns>
-        Open.Core.Log.title('FIRE CLICK');
         var obj = Type.safeCast(source, Object);
         if (obj == null) {
             return false;
@@ -2623,8 +2622,6 @@ Open.Core.Helpers.EventHelper.prototype = {
             return false;
         }
         func.call(source);
-        Open.Core.Log.debug('F: ' + func);
-        Open.Core.Log.lineBreak();
         return true;
     }
 }
