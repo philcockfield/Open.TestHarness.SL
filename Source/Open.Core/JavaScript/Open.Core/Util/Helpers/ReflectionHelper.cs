@@ -26,5 +26,34 @@ namespace Open.Core.Helpers
             }
             return false;
         }
+
+
+        /// <summary>Retrieves the named function from the specified object.</summary>
+        /// <param name="source">The source object containing the function.</param>
+        /// <param name="name">The name of the function.</param>
+        /// <returns>The function, or null if the function could not be found.</returns>
+        /// <remarks>
+        ///     This method first looks for a 'public' version of the function name, and if not
+        ///     found attempts to retrieve the 'internal' version of the function by prepending
+        ///     an underscore to the name, eg '_myMethod'.
+        /// </remarks>
+        public Function GetFunction(object source, string name)
+        {
+            // Setup initial conditions.
+            Dictionary obj = source as Dictionary;
+            if (obj == null) return null;
+            name = Helper.String.ToCamelCase(name);
+
+            // Look for public function.
+            Function func = obj[name] as Function;
+            if (!Script.IsNullOrUndefined(func)) return func;
+
+            // Look for private function.
+            func = obj["_" + name] as Function;
+            if (!Script.IsNullOrUndefined(func)) return func;
+
+            // Finish up.
+            return null;
+        }
     }
 }

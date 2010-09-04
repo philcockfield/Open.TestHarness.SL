@@ -17,6 +17,7 @@ namespace Open.Core
         private static ScrollHelper ScrollHelper;
         private static JQueryHelper JQueryHelper;
         private static TreeHelper TreeHelper;
+        private static EventHelper EventHelper;
 
         private static int idCounter;
         #endregion
@@ -51,6 +52,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with Tree data-structures.</summary>
         public static TreeHelper Tree { get { return TreeHelper ?? (TreeHelper = new TreeHelper()); } }
+
+        /// <summary>Gets the helper for working with events.</summary>
+        public static EventHelper Event { get { return EventHelper ?? (EventHelper = new EventHelper()); } }
         #endregion
 
         #region Methods

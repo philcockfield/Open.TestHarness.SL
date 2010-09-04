@@ -197,6 +197,8 @@ Open.Core.ITreeNode = function() {
 Open.Core.ITreeNode.prototype = {
     add_selectionChanged : null,
     remove_selectionChanged : null,
+    add_click : null,
+    remove_click : null,
     add_childSelectionChanged : null,
     remove_childSelectionChanged : null,
     add_addingChild : null,
@@ -524,6 +526,8 @@ Open.Core.TreeNode = function Open_Core_TreeNode() {
     /// </summary>
     /// <field name="__selectionChanged$1" type="EventHandler">
     /// </field>
+    /// <field name="__click$1" type="EventHandler">
+    /// </field>
     /// <field name="__childSelectionChanged$1" type="EventHandler">
     /// </field>
     /// <field name="__addingChild$1" type="Open.Core.TreeNodeHandler">
@@ -628,6 +632,23 @@ Open.Core.TreeNode.prototype = {
     _fireSelectionChanged$1: function Open_Core_TreeNode$_fireSelectionChanged$1() {
         if (this.__selectionChanged$1 != null) {
             this.__selectionChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    add_click: function Open_Core_TreeNode$add_click(value) {
+        /// <param name="value" type="Function" />
+        this.__click$1 = ss.Delegate.combine(this.__click$1, value);
+    },
+    remove_click: function Open_Core_TreeNode$remove_click(value) {
+        /// <param name="value" type="Function" />
+        this.__click$1 = ss.Delegate.remove(this.__click$1, value);
+    },
+    
+    __click$1: null,
+    
+    _fireClick: function Open_Core_TreeNode$_fireClick() {
+        if (this.__click$1 != null) {
+            this.__click$1.invoke(this, new ss.EventArgs());
         }
     },
     
@@ -2394,6 +2415,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_treeHelper" type="Open.Core.Helpers.TreeHelper" static="true">
     /// </field>
+    /// <field name="_eventHelper" type="Open.Core.Helpers.EventHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -2466,6 +2489,13 @@ Open.Core.Helper.get_tree = function Open_Core_Helper$get_tree() {
     /// </summary>
     /// <value type="Open.Core.Helpers.TreeHelper"></value>
     return Open.Core.Helper._treeHelper || (Open.Core.Helper._treeHelper = new Open.Core.Helpers.TreeHelper());
+}
+Open.Core.Helper.get_event = function Open_Core_Helper$get_event() {
+    /// <summary>
+    /// Gets the helper for working with events.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.EventHelper"></value>
+    return Open.Core.Helper._eventHelper || (Open.Core.Helper._eventHelper = new Open.Core.Helpers.EventHelper());
 }
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
@@ -2561,6 +2591,41 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             }
         }
         return null;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.EventHelper
+
+Open.Core.Helpers.EventHelper = function Open_Core_Helpers_EventHelper() {
+    /// <summary>
+    /// Utility methods for working with events.
+    /// </summary>
+}
+Open.Core.Helpers.EventHelper.prototype = {
+    
+    fireClick: function Open_Core_Helpers_EventHelper$fireClick(source) {
+        /// <summary>
+        /// Fires the click event from the source object (if it exposes a parameterless 'FireClick' method).
+        /// </summary>
+        /// <param name="source" type="Object">
+        /// The source object to fire the event.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        Open.Core.Log.title('FIRE CLICK');
+        var obj = Type.safeCast(source, Object);
+        if (obj == null) {
+            return false;
+        }
+        var func = Open.Core.Helper.get_reflection().getFunction(source, 'FireClick');
+        if (func == null) {
+            return false;
+        }
+        func.call(source);
+        Open.Core.Log.debug('F: ' + func);
+        Open.Core.Log.lineBreak();
+        return true;
     }
 }
 
@@ -2787,6 +2852,33 @@ Open.Core.Helpers.ReflectionHelper.prototype = {
             }
         }
         return false;
+    },
+    
+    getFunction: function Open_Core_Helpers_ReflectionHelper$getFunction(source, name) {
+        /// <summary>
+        /// Retrieves the named function from the specified object.
+        /// </summary>
+        /// <param name="source" type="Object">
+        /// The source object containing the function.
+        /// </param>
+        /// <param name="name" type="String">
+        /// The name of the function.
+        /// </param>
+        /// <returns type="Function"></returns>
+        var obj = Type.safeCast(source, Object);
+        if (obj == null) {
+            return null;
+        }
+        name = Open.Core.Helper.get_string().toCamelCase(name);
+        var func = Type.safeCast(obj[name], Function);
+        if (!ss.isNullOrUndefined(func)) {
+            return func;
+        }
+        func = Type.safeCast(obj['_' + name], Function);
+        if (!ss.isNullOrUndefined(func)) {
+            return func;
+        }
+        return null;
     }
 }
 
@@ -3891,6 +3983,7 @@ Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
+Open.Core.Helpers.EventHelper.registerClass('Open.Core.Helpers.EventHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
 Open.Core.Helpers.JQueryHelper.registerClass('Open.Core.Helpers.JQueryHelper');
 Open.Core.Helpers.ScrollHelper.registerClass('Open.Core.Helpers.ScrollHelper');
@@ -3992,6 +4085,7 @@ Open.Core.Helper._numberHelper = null;
 Open.Core.Helper._scrollHelper = null;
 Open.Core.Helper._jQueryHelper = null;
 Open.Core.Helper._treeHelper = null;
+Open.Core.Helper._eventHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';

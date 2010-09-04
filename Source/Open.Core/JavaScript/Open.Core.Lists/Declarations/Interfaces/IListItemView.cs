@@ -1,3 +1,5 @@
+using System;
+
 namespace Open.Core.Lists
 {
     /// <summary>Represents a single item within a list.</summary>

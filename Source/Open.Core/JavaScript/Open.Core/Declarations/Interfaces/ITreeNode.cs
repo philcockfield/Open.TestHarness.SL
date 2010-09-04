@@ -9,6 +9,9 @@ namespace Open.Core
         /// <summary>Fires when the IsSelected value changes.</summary>
         event EventHandler SelectionChanged;
 
+        /// <summary>Fires when the node is clicked.</summary>
+        event EventHandler Click;
+
         /// <summary>Fires when the IsSelected value on a child node changes.</summary>
         event EventHandler ChildSelectionChanged;
 

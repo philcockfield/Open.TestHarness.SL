@@ -1251,8 +1251,19 @@ Open.TestHarness.Views.TestListView.prototype = {
         var $enum1 = ss.IEnumerator.getEnumerator(testClass);
         while ($enum1.moveNext()) {
             var method = $enum1.get_current();
-            this._rootNode$2.addChild(new Open.TestHarness.Models.TestMethodListItem(method));
+            this._rootNode$2.addChild(this._createListItem$2(method));
         }
+    },
+    
+    _createListItem$2: function Open_TestHarness_Views_TestListView$_createListItem$2(method) {
+        /// <param name="method" type="Open.TestHarness.Models.TestMethodInfo">
+        /// </param>
+        /// <returns type="Open.TestHarness.Models.TestMethodListItem"></returns>
+        var item = new Open.TestHarness.Models.TestMethodListItem(method);
+        item.add_click(ss.Delegate.create(this, function() {
+            Open.Core.Log.debug('CLICK - List Item method - ' + method.get_displayName());
+        }));
+        return item;
     }
 }
 

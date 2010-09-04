@@ -39,10 +39,10 @@ namespace Open.Core.Lists
         #endregion
 
         #region Event Handlers
-        private void OnItemClick(jQueryEvent e, IListItemView view)
+        private void OnItemClick(jQueryEvent e, IListItemView item)
         {
-            if (SelectionMode == ListSelectionMode.None) return;
-            view.IsSelected = true;
+            Helper.Event.FireClick(item.Model);
+            if (SelectionMode != ListSelectionMode.None) item.IsSelected = true;
         }
 
         private void OnViewPropertyChanged(object sender, PropertyChangedEventArgs e)

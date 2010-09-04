@@ -910,15 +910,15 @@ Open.Core.Lists.ListView.prototype = {
         Open.Core.Lists.ListView.callBaseMethod(this, 'onInitialize', [ container ]);
     },
     
-    _onItemClick$2: function Open_Core_Lists_ListView$_onItemClick$2(e, view) {
+    _onItemClick$2: function Open_Core_Lists_ListView$_onItemClick$2(e, item) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
-        /// <param name="view" type="Open.Core.Lists.IListItemView">
+        /// <param name="item" type="Open.Core.Lists.IListItemView">
         /// </param>
-        if (this.get_selectionMode() === Open.Core.Lists.ListSelectionMode.none) {
-            return;
+        Open.Core.Helper.get_event().fireClick(item.get_model());
+        if (this.get_selectionMode() !== Open.Core.Lists.ListSelectionMode.none) {
+            item.set_isSelected(true);
         }
-        view.set_isSelected(true);
     },
     
     _onViewPropertyChanged$2: function Open_Core_Lists_ListView$_onViewPropertyChanged$2(sender, e) {

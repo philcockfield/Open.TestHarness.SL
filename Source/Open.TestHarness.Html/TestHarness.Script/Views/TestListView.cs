@@ -61,8 +61,20 @@ namespace Open.TestHarness.Views
             if (testClass == null) return;
             foreach (TestMethodInfo method in testClass)
             {
-                rootNode.AddChild(new TestMethodListItem(method));
+                rootNode.AddChild(CreateListItem(method));
             }
+        }
+
+        private TestMethodListItem CreateListItem(TestMethodInfo method)
+        {
+            TestMethodListItem item = new TestMethodListItem(method);
+
+            item.Click += delegate
+                              {
+                                  Log.Debug("CLICK - List Item method - " + method.DisplayName); //TEMP 
+                              };
+
+            return item;
         }
         #endregion
     }

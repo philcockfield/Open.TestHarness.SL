@@ -15,6 +15,9 @@ namespace Open.Core
         public event EventHandler SelectionChanged;
         private void FireSelectionChanged() { if (SelectionChanged != null) SelectionChanged(this, new EventArgs()); }
 
+        public event EventHandler Click;
+        internal void FireClick(){if (Click != null) Click(this, new EventArgs());} // NB: Access = 'internal' so the FireClick helper method can access it.
+
         public event EventHandler ChildSelectionChanged;
         private void FireChildSelectionChanged() { if (ChildSelectionChanged != null) ChildSelectionChanged(this, new EventArgs()); }
 
@@ -29,7 +32,6 @@ namespace Open.Core
 
         public event TreeNodeHandler RemovingChild;
         private void FireRemovingChild(TreeNodeEventArgs e) { if (RemovingChild != null) RemovingChild(this, e); }
-
 
         public event EventHandler ChildrenChanged;
         private void FireChildrenChanged(){if (ChildrenChanged != null) ChildrenChanged(this, new EventArgs());}
