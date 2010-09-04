@@ -42,7 +42,7 @@ namespace Open.TestHarness
             const string scriptUrl = "/Content/Scripts/Test.debug.js";
             const string initMethod = "Test.Application.main";
 
-            TestPackageInfo packageDef = TestPackageInfo.SingletonFromUrl(scriptUrl, initMethod);
+            PackageInfo packageDef = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
             sidebarController.AddPackage(packageDef);
         }
         #endregion

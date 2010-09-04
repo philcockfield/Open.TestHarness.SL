@@ -8,7 +8,7 @@ namespace Open.TestHarness.Models
     public class TestPackageLoader : IDisposable
     {
         #region Head
-        private readonly TestPackageInfo parent;
+        private readonly PackageInfo parent;
         private readonly string scriptUrl;
         private readonly string initMethod;
         private bool isLoaded;
@@ -19,7 +19,7 @@ namespace Open.TestHarness.Models
         /// <param name="parent">The test-package this object is loading.</param>
         /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        public TestPackageLoader(TestPackageInfo parent, string scriptUrl, string initMethod)
+        public TestPackageLoader(PackageInfo parent, string scriptUrl, string initMethod)
         {
             // Store values.
             this.parent = parent;

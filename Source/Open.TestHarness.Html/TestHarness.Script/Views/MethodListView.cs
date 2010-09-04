@@ -7,7 +7,7 @@ using Open.TestHarness.Models;
 namespace Open.TestHarness.Views
 {
     /// <summary>The list of tests.</summary>
-    public class TestListView : ViewBase
+    public class MethodListView : ViewBase
     {
         #region Events
         /// <summary>Fires when each time a method in the list is clicked (see the 'SelectedMethod' property).</summary>
@@ -16,7 +16,7 @@ namespace Open.TestHarness.Views
         #endregion
 
         #region Head
-        public const string PropTestClass = "TestClass";
+        public const string PropClassInfo = "ClassInfo";
         public const string PropSelectedMethod = "SelectedMethod";
 
         private readonly ListTreeView listView;
@@ -24,7 +24,7 @@ namespace Open.TestHarness.Views
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing div.</param>
-        public TestListView(jQueryObject container)
+        public MethodListView(jQueryObject container)
         {
             // Setup initial conditions.
             Initialize(container);
@@ -48,19 +48,19 @@ namespace Open.TestHarness.Views
         #region Event Handlers
         private void OnItemClick(object sender, EventArgs e)
         {
-            SelectedMethod = ((TestMethodListItem)sender).TestMethod;
+            SelectedMethod = ((MethodListItem)sender).Method;
             FireMethodClicked();
         }
         #endregion
 
         #region Properties
         /// <summary>Gets or sets the test class the view is listing methods for.</summary>
-        public TestClassInfo TestClass
+        public ClassInfo ClassInfo
         {
-            get { return (TestClassInfo) Get(PropTestClass, null); }
+            get { return (ClassInfo) Get(PropClassInfo, null); }
             set
             {
-                if (Set(PropTestClass, value, null))
+                if (Set(PropClassInfo, value, null))
                 {
                     PopulateList(value);
                 }
@@ -68,9 +68,9 @@ namespace Open.TestHarness.Views
         }
 
         /// <summary>Gets or sets the currently selected method..</summary>
-        public TestMethodInfo SelectedMethod
+        public MethodInfo SelectedMethod
         {
-            get { return (TestMethodInfo) Get(PropSelectedMethod, null); }
+            get { return (MethodInfo) Get(PropSelectedMethod, null); }
             set { Set(PropSelectedMethod, value, null); } 
         }
 
@@ -85,27 +85,26 @@ namespace Open.TestHarness.Views
         #endregion
 
         #region Internal
-        private void PopulateList(TestClassInfo testClass)
+        private void PopulateList(ClassInfo @class)
         {
             ClearChildren();
-            if (testClass == null) return;
-            foreach (TestMethodInfo method in testClass)
+            if (@class == null) return;
+            foreach (MethodInfo method in @class)
             {
                 rootNode.AddChild(CreateListItem(method));
             }
         }
 
-        private TestMethodListItem CreateListItem(TestMethodInfo method)
+        private MethodListItem CreateListItem(MethodInfo method)
         {
-            TestMethodListItem item = new TestMethodListItem(method);
+            MethodListItem item = new MethodListItem(method);
             item.Click += OnItemClick;
             return item;
         }
 
-
         private void ClearChildren()
         {
-            foreach (TestMethodListItem child in rootNode.Children)
+            foreach (MethodListItem child in rootNode.Children)
             {
                 child.Click -= OnItemClick;
             }

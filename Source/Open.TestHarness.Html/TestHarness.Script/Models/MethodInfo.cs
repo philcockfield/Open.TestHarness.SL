@@ -5,7 +5,7 @@ using Open.Core;
 namespace Open.TestHarness.Models
 {
     /// <summary>Represents a single test method.</summary>
-    public class TestMethodInfo : ModelBase
+    public class MethodInfo : ModelBase
     {
         #region Head
         public const string KeyConstructor = "constructor";
@@ -14,16 +14,16 @@ namespace Open.TestHarness.Models
         public const string KeyField = "_";
         public const string KeyFunction = "function";
 
-        private readonly TestClassInfo testClass;
+        private readonly ClassInfo classInfo;
         private readonly string name;
         private readonly string displayName;
 
         /// <summary>Constructor.</summary>
-        /// <param name="testClass">The test-class that this method is a member of.</param>
+        /// <param name="classInfo">The test-class that this method is a member of.</param>
         /// <param name="name">The name of the method.</param>
-        public TestMethodInfo(TestClassInfo testClass, string name)
+        public MethodInfo(ClassInfo classInfo, string name)
         {
-            this.testClass = testClass;
+            this.classInfo = classInfo;
             this.name = name;
             displayName = FormatName(name);
         }
@@ -31,7 +31,7 @@ namespace Open.TestHarness.Models
 
         #region Properties
         /// <summary>Gets the test-class that this method is a member of.</summary>
-        public TestClassInfo TestClass { get { return testClass; } }
+        public ClassInfo ClassInfo { get { return classInfo; } }
 
         /// <summary>Gets the name of the method.</summary>
         public string Name { get { return name; } }

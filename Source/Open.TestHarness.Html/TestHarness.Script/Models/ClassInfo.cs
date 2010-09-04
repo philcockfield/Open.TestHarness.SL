@@ -5,8 +5,8 @@ using Open.Core;
 namespace Open.TestHarness.Models
 {
     /// <summary>Represents a class with tests.</summary>
-    /// <remarks>Enumerates on the [TestMethodInfo]'s within the class.</remarks>
-    public class TestClassInfo : ModelBase, IEnumerable
+    /// <remarks>Enumerates on the [MethodInfo]'s within the class.</remarks>
+    public class ClassInfo : ModelBase, IEnumerable
     {
         #region Head
         private static Dictionary singletons;
@@ -17,10 +17,10 @@ namespace Open.TestHarness.Models
 
         /// <summary>Constructor.</summary>
         /// <param name="classType">The type of the test class.</param>
-        private TestClassInfo(Type classType)
+        private ClassInfo(Type classType)
         {
             this.classType = classType;
-            displayName = TestMethodInfo.FormatName(classType.Name);
+            displayName = MethodInfo.FormatName(classType.Name);
             GetMethods();
         }
         #endregion
@@ -53,15 +53,15 @@ namespace Open.TestHarness.Models
         #region Methods : Static
         /// <summary>Retrieves the singleton instance of the definition for the given package type.</summary>
         /// <param name="testClass">The Type of the test class.</param>
-        public static TestClassInfo GetSingleton(Type testClass)
+        public static ClassInfo GetSingleton(Type testClass)
         {
             // Setup initial conditions.
             if (singletons == null) singletons = new Dictionary();
             string key = testClass.FullName;
-            if (singletons.ContainsKey(key)) return singletons[key] as TestClassInfo;
+            if (singletons.ContainsKey(key)) return singletons[key] as ClassInfo;
 
             // Create the package-def.
-            TestClassInfo def = new TestClassInfo(testClass);
+            ClassInfo def = new ClassInfo(testClass);
             singletons[key] = def;
 
             // Finish up.
@@ -75,8 +75,8 @@ namespace Open.TestHarness.Models
             if (Instance == null) return;
             foreach (DictionaryEntry item in Instance)
             {
-                if (!TestMethodInfo.IsTestMethod(item)) continue;
-                methods.Add(new TestMethodInfo(this, item.Key));
+                if (!MethodInfo.IsTestMethod(item)) continue;
+                methods.Add(new MethodInfo(this, item.Key));
             }
         }
         #endregion

@@ -16,7 +16,7 @@ namespace Open.TestHarness.Views
 
         private readonly ListTreeView rootList;
         private readonly ListTreeBackController backController;
-        private readonly TestListView testList;
+        private readonly MethodListView methodList;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing DIV.</param>
@@ -30,7 +30,7 @@ namespace Open.TestHarness.Views
             rootList.SlideDuration = SlideDuration;
 
             // Create the test-list.
-            testList = new TestListView(jQuery.Select(CssSelectors.TestList));
+            methodList = new MethodListView(jQuery.Select(CssSelectors.TestList));
 
             // Create controllers.
             backController = new ListTreeBackController(
@@ -66,7 +66,7 @@ namespace Open.TestHarness.Views
         public ListTreeView RootList { get { return rootList; } }
 
         /// <summary>Gets the Test-List view.</summary>
-        public TestListView TestList{get { return testList; }}
+        public MethodListView MethodList{get { return methodList; }}
 
         /// <summary>Gets or sets whether the TestList panel is visible.</summary>
         public bool IsTestListVisible
@@ -122,11 +122,11 @@ namespace Open.TestHarness.Views
 
             // Show or hide.
             bool isShowing = testListHeight > 0;
-            if (isShowing) Css.SetVisible(TestList.Container, true);
-            TestList.UpdateLayout();
+            if (isShowing) Css.SetVisible(MethodList.Container, true);
+            MethodList.UpdateLayout();
 
             //Animate.
-            Animate(isShowing, TestList.Container, testListProps, null);
+            Animate(isShowing, MethodList.Container, testListProps, null);
             Animate(isShowing, RootList.Container, rootListProps, onComplete);
         }
 
@@ -138,21 +138,21 @@ namespace Open.TestHarness.Views
                     EffectEasing.Swing,
                                     delegate
                                     {
-                                        if (!isShowing) Css.SetVisible(TestList.Container, false);
+                                        if (!isShowing) Css.SetVisible(MethodList.Container, false);
                                         Helper.InvokeOrDefault(onComplete);
                                     });
         }
 
         private void SyncRootListHeight()
         {
-            RootList.Container.CSS(Css.Bottom, TestList.Container.GetHeight() + Css.Px);
+            RootList.Container.CSS(Css.Bottom, MethodList.Container.GetHeight() + Css.Px);
         }
 
         private void SyncTestListVisibility()
         {
             // Show or hide the TestList based on the kind of root-tree-node that is currently selected.
             object node = rootList.SelectedParent;
-            IsTestListVisible = node != null && (node is TestPackageListItem);
+            IsTestListVisible = node != null && (node is PackageListItem);
         }
 
         private int GetTargetTestListHeight()

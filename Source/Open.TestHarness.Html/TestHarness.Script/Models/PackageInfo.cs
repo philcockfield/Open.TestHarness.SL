@@ -10,10 +10,10 @@ namespace Open.TestHarness.Models
     ///     Test classes will only be picked up if the declared initMethod registers them
     ///     by using the 'RegisterClass()' method, eg:
     /// 
-    ///           Testing.RegisterClass(typeof(MyTestClass1));
+    ///           Testing.RegisterClass(typeof(MyClass1));
     /// 
     /// </remarks>
-    public class TestPackageInfo : ModelBase, IEnumerable
+    public class PackageInfo : ModelBase, IEnumerable
     {
         #region Head
         private static readonly ArrayList singletons = new ArrayList();
@@ -24,7 +24,7 @@ namespace Open.TestHarness.Models
         /// <summary>Constructor.</summary>
         /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        private TestPackageInfo(string scriptUrl, string initMethod)
+        private PackageInfo(string scriptUrl, string initMethod)
         {
             // Setup initial conditions.
             if (string.IsNullOrEmpty(scriptUrl)) throw new Exception("A URL to the test-package script must be specified.");
@@ -66,7 +66,7 @@ namespace Open.TestHarness.Models
         {
             if (testClass == null) return;
             if (Contains(testClass)) return;
-            classes.Add(TestClassInfo.GetSingleton(testClass));
+            classes.Add(ClassInfo.GetSingleton(testClass));
         }
 
         /// <summary>Determines whether the test-class has already been added to the package.</summary>
@@ -75,11 +75,11 @@ namespace Open.TestHarness.Models
 
         /// <summary>Determines whether the test-class has already been added to the package.</summary>
         /// <param name="testClass">The type of the test class.</param>
-        public TestClassInfo GetTestClassDef(Type testClass)
+        public ClassInfo GetTestClassDef(Type testClass)
         {
             if (testClass == null) return null;
             string typeName = testClass.FullName;
-            foreach (TestClassInfo item in classes)
+            foreach (ClassInfo item in classes)
             {
                 if (item.ClassType.FullName == typeName) return item;
             }
@@ -91,18 +91,18 @@ namespace Open.TestHarness.Models
         /// <summary>Retrieves (or creates) the singleton instance of the definition for the given package type.</summary>
         /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        public static TestPackageInfo SingletonFromUrl(string scriptUrl, string initMethod)
+        public static PackageInfo SingletonFromUrl(string scriptUrl, string initMethod)
         {
             // Retrieve the existing singleton (if there is one).
-            TestPackageInfo def = Helper.Collection.First(singletons, delegate(object o)
+            PackageInfo def = Helper.Collection.First(singletons, delegate(object o)
                                                                          {
-                                                                             return ((TestPackageInfo)o).Id == scriptUrl.ToLowerCase();
-                                                                         }) as TestPackageInfo;
+                                                                             return ((PackageInfo)o).Id == scriptUrl.ToLowerCase();
+                                                                         }) as PackageInfo;
 
             // Create and return the package-def.
             if (def == null)
             {
-                def = new TestPackageInfo(scriptUrl, initMethod);
+                def = new PackageInfo(scriptUrl, initMethod);
                 singletons.Add(def);
             }
 

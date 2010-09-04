@@ -3,26 +3,26 @@
 namespace Open.TestHarness.Models
 {
     /// <summary>A list-item node for a TestClass.</summary>
-    public class TestClassListItem : ListItem
+    public class ClassListItem : ListItem
     {
         #region Head
-        private readonly TestClassInfo testClass;
+        private readonly ClassInfo classInfo;
 
         /// <summary>Constructor.</summary>
-        /// <param name="testClass">The test-class this node represents.</param>
-        public TestClassListItem(TestClassInfo testClass)
+        /// <param name="classInfo">The test-class this node represents.</param>
+        public ClassListItem(ClassInfo classInfo)
         {
             // Setup initial conditions.
-            this.testClass = testClass;
+            this.classInfo = classInfo;
 
             // Set default values.
-            Text = testClass.DisplayName;
+            Text = classInfo.DisplayName;
         }
         #endregion
 
         #region Properties
         /// <summary>Gets the test-package this node represents.</summary>
-        public TestClassInfo TestClass { get { return testClass; } }
+        public ClassInfo ClassInfo { get { return classInfo; } }
         #endregion
     }
 }

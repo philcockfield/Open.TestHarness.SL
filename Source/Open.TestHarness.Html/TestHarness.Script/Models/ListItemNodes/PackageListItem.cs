@@ -3,14 +3,14 @@
 namespace Open.TestHarness.Models
 {
     /// <summary>A list-item node for a TestPackage.</summary>
-    public class TestPackageListItem : ListItem
+    public class PackageListItem : ListItem
     {
         #region Head
-        private readonly TestPackageInfo testPackage;
+        private readonly PackageInfo testPackage;
 
         /// <summary>Constructor.</summary>
         /// <param name="testPackage">The test-package this node represents.</param>
-        public TestPackageListItem(TestPackageInfo testPackage)
+        public PackageListItem(PackageInfo testPackage)
         {
             // Setup initial conditions.
             this.testPackage = testPackage;
@@ -22,7 +22,7 @@ namespace Open.TestHarness.Models
 
         #region Properties
         /// <summary>Gets the test-package this node represents.</summary>
-        public TestPackageInfo TestPackage { get { return testPackage; } }
+        public PackageInfo TestPackage { get { return testPackage; } }
         #endregion
     }
 }

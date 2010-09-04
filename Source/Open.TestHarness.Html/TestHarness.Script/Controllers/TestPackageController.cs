@@ -1,6 +1,7 @@
 using System;
 using Open.Core;
 using Open.TestHarness.Models;
+using Open.TestHarness.Views;
 
 namespace Open.TestHarness.Controllers
 {
@@ -14,22 +15,28 @@ namespace Open.TestHarness.Controllers
         #endregion
 
         #region Head
-        public const string PropSelectedTestClass = "SelectedTestClass";
+        public const string PropSelectedClass = "SelectedClass";
         private const double loadTimeout = 10; // secs.
 
-        private readonly TestPackageListItem rootNode;
+        private readonly PackageListItem rootNode;
+        private readonly SidebarView sidebarView;
 
 
         /// <summary>Constructor.</summary>
         /// <param name="rootNode">The root list-item node.</param>
-        public TestPackageController(TestPackageListItem rootNode)
+        /// <param name="sidebarView">The Sidebar control.</param>
+        public TestPackageController(PackageListItem rootNode, SidebarView sidebarView)
         {
             // Store values.
             this.rootNode = rootNode;
+            this.sidebarView = sidebarView;
 
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
             rootNode.ChildSelectionChanged += OnChildSelectionChanged;
+
+            // TODO - attach to TestMethod changed.
+//TEMP             sidebarView.TestMethodList +=
         }
 
         protected override void OnDisposed()
@@ -48,27 +55,27 @@ namespace Open.TestHarness.Controllers
 
         private void OnChildSelectionChanged(object sender, EventArgs e)
         {
-            TestClassListItem item = Helper.Tree.FirstSelectedChild(RootNode) as TestClassListItem;
-            SelectedTestClass = item == null ? null : item.TestClass;
+            ClassListItem item = Helper.Tree.FirstSelectedChild(RootNode) as ClassListItem;
+            SelectedClass = item == null ? null : item.ClassInfo;
         }
         #endregion
 
         #region Properties
         /// <summary>Gets the test-package that is under control.</summary>
-        public TestPackageInfo TestPackage { get { return rootNode.TestPackage; } }
+        public PackageInfo TestPackage { get { return rootNode.TestPackage; } }
 
         /// <summary>Gets the root list-item node.</summary>
-        public TestPackageListItem RootNode { get { return rootNode; } }
+        public PackageListItem RootNode { get { return rootNode; } }
 
         /// <summary>Gets or sets the currently selected test class.</summary>
-        public TestClassInfo SelectedTestClass
+        public ClassInfo SelectedClass
         {
-            get { return (TestClassInfo) Get(PropSelectedTestClass, null); }
+            get { return (ClassInfo) Get(PropSelectedClass, null); }
             set
             {
-                if (Set(PropSelectedTestClass, value, null))
+                if (Set(PropSelectedClass, value, null))
                 {
-                    Application.Shell.Sidebar.TestList.TestClass = value;
+                    sidebarView.MethodList.ClassInfo = value;
                 }
             }
         }
@@ -107,9 +114,9 @@ namespace Open.TestHarness.Controllers
 
         private void AddChildNodes()
         {
-            foreach (TestClassInfo testClass in TestPackage)
+            foreach (ClassInfo testClass in TestPackage)
             {
-                TestClassListItem node = new TestClassListItem(testClass);
+                ClassListItem node = new ClassListItem(testClass);
                 RootNode.AddChild(node);
             }
         }

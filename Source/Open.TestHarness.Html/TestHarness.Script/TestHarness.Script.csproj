@@ -47,19 +47,19 @@
   <ItemGroup>
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
-    <Compile Include="Models\ListItemNodes\TestMethodListItem.cs" />
-    <Compile Include="Models\ListItemNodes\TestClassListItem.cs" />
-    <Compile Include="Models\TestMethodInfo.cs" />
-    <Compile Include="Models\TestPackageInfo.cs" />
-    <Compile Include="Models\TestClassInfo.cs" />
+    <Compile Include="Models\ListItemNodes\MethodListItem.cs" />
+    <Compile Include="Models\ListItemNodes\ClassListItem.cs" />
+    <Compile Include="Models\MethodInfo.cs" />
+    <Compile Include="Models\PackageInfo.cs" />
+    <Compile Include="Models\ClassInfo.cs" />
     <Compile Include="Controllers\PanelResizeController.cs" />
-    <Compile Include="Models\ListItemNodes\TestPackageListItem.cs" />
+    <Compile Include="Models\ListItemNodes\PackageListItem.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\TestPackageController.cs" />
     <Compile Include="Controllers\TestPackageLoader.cs" />
     <Compile Include="Views\ShellView.cs" />
     <Compile Include="Views\SideBarView.cs" />
-    <Compile Include="Views\TestListView.cs" />
+    <Compile Include="Views\MethodListView.cs" />
     <Content Include="Properties\TestHarness.Script3.ruleset" />
     <Content Include="Properties\TestHarness.Script3.script" />
     <Compile Include="Application.cs" />

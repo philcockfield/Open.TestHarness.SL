@@ -92,17 +92,17 @@ namespace Open.TestHarness.Controllers
         #region Methods
         /// <summary>Adds a test-package to the controller.</summary>
         /// <param name="testPackage">The test-package to add.</param>
-        public void AddPackage(TestPackageInfo testPackage)
+        public void AddPackage(PackageInfo testPackage)
         {
             // Setup initial conditions.
             if (testPackage == null) return;
 
             // Create the list-item node and insert it within the tree.
-            TestPackageListItem node = new TestPackageListItem(testPackage);
+            PackageListItem node = new PackageListItem(testPackage);
             view.RootList.RootNode.AddChild(node);
 
             // Create the controller.
-            TestPackageController controller = new TestPackageController(node);
+            TestPackageController controller = new TestPackageController(node, view);
             packageControllers.Add(controller);
             controller.Loaded += delegate
                                      {
@@ -113,7 +113,7 @@ namespace Open.TestHarness.Controllers
 
         /// <summary>Removes the specified package.</summary>
         /// <param name="testPackage">The test-package to remove.</param>
-        public void RemovePackage(TestPackageInfo testPackage)
+        public void RemovePackage(PackageInfo testPackage)
         {
             // Setup initial conditions.
             if (testPackage == null) return;
@@ -130,7 +130,7 @@ namespace Open.TestHarness.Controllers
         #endregion
 
         #region Internal
-        private TestPackageController GetController(TestPackageInfo testPackage)
+        private TestPackageController GetController(PackageInfo testPackage)
         {
             return Helper.Collection.First(packageControllers, delegate(object o)
                                                 {
