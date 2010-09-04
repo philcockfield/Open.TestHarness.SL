@@ -22,6 +22,6 @@ namespace Open.TestHarness
 
         // Log.
         public static readonly string LogTitlebar = "#testHarnessLog .th-log-tb";
-        public static readonly string Log = "#testHarnessLog .coreLog";
+        public static readonly string Log = "#testHarnessLog .c-log";
     }
 }

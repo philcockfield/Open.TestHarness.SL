@@ -7,11 +7,11 @@ namespace Open.Core
         public const string Url = "/Open.Core/Css/Core.Controls.css";
 
         // Classes.
-        private const string RootClass = "coreLog";
-        public const string ListItemClass = "coreLog-listItem";
-        public const string LineBreakClass = "coreLog-lineBreak";
-        public const string CounterClass = "coreLog-counter";
-        public const string MessageClass = "coreLog-message";
+        private const string RootClass = "c-log";
+        public const string ListItemClass = "c-log-listItem";
+        public const string LineBreakClass = "c-log-lineBreak";
+        public const string CounterClass = "c-log-counter";
+        public const string MessageClass = "c-log-message";
 
         // Selectors.
         public static readonly string List = "div." + RootClass + "-list";
