@@ -7,11 +7,10 @@ namespace Open.TestHarness.Models
 {
     /// <summary>Represents a package of tests from a single JavaScript file.</summary>
     /// <remarks>
-    ///     Test classes will only be picked up if the declared initMethod registers test-classes
-    ///     by using the 'RegisterTestClass()' method, eg:
+    ///     Test classes will only be picked up if the declared initMethod registers them
+    ///     by using the 'RegisterClass()' method, eg:
     /// 
-    ///                 Type testPackage = typeof (Application);
-    ///                 TestHarness.RegisterTestClass(testPackage, typeof(MyTestClass1));
+    ///           Testing.RegisterClass(typeof(MyTestClass1));
     /// 
     /// </remarks>
     public class TestPackageInfo : ModelBase, IEnumerable

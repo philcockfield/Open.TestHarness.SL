@@ -9,11 +9,9 @@ namespace Test
     {
         public static void Main(Dictionary args)
         {
-            Type testPackage = typeof (Application);
-
-            Testing.RegisterClass(testPackage, typeof(MyTestClass1));
-            Testing.RegisterClass(testPackage, typeof(MyTestClass1));
-            Testing.RegisterClass(testPackage, typeof(MyTestClass2));
+            Testing.RegisterClass(typeof(MyTestClass1));
+            Testing.RegisterClass(typeof(MyTestClass1));
+            Testing.RegisterClass(typeof(MyTestClass2));
         }
     }
 }

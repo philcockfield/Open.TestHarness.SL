@@ -77,10 +77,9 @@ Test.Application = function Test_Application() {
 Test.Application.main = function Test_Application$main(args) {
     /// <param name="args" type="Object">
     /// </param>
-    var testPackage = Test.Application;
-    Open.Testing.registerClass(testPackage, Test.MyTestClass1);
-    Open.Testing.registerClass(testPackage, Test.MyTestClass1);
-    Open.Testing.registerClass(testPackage, Test.MyTestClass2);
+    Open.Testing.registerClass(Test.MyTestClass1);
+    Open.Testing.registerClass(Test.MyTestClass1);
+    Open.Testing.registerClass(Test.MyTestClass2);
 }
 
 

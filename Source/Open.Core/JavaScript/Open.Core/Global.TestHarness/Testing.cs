@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using Open.TestHarness;
 
 namespace Open
@@ -12,16 +11,14 @@ namespace Open
     {
         #region Methods
         /// <summary>Registers a test-class with the harness.</summary>
-        /// <param name="entryPoint">Type representing the test-package (normally the 'Application' class).</param>
         /// <param name="testClass">The type of the test class.</param>
-        public static void RegisterClass(Type entryPoint, Type testClass)
+        public static void RegisterClass(Type testClass)
         {
             // Setup initial conditions.
-            if (Script.IsNullOrUndefined(entryPoint) || Script.IsNullOrUndefined(testClass)) return;
+            if (Script.IsNullOrUndefined(testClass)) return;
 
             // Alert the test-harness via an event.
             TestClassEventArgs e = new TestClassEventArgs();
-            e.EntryPoint = entryPoint;
             e.TestClass = testClass;
             TestHarnessEvents.FireTestClassRegistered(e);
         }
@@ -34,7 +31,6 @@ namespace Open.TestHarness
     public delegate void TestClassHandler(object sender, TestClassEventArgs e);
     public class TestClassEventArgs
     {
-        public Type EntryPoint;
         public Type TestClass;
     }
 

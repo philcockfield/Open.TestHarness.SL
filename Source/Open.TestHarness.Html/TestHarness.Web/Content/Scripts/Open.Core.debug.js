@@ -3807,21 +3807,17 @@ Open.Testing = function Open_Testing() {
     /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
     /// </summary>
 }
-Open.Testing.registerClass = function Open_Testing$registerClass(entryPoint, testClass) {
+Open.Testing.registerClass = function Open_Testing$registerClass(testClass) {
     /// <summary>
     /// Registers a test-class with the harness.
     /// </summary>
-    /// <param name="entryPoint" type="Type">
-    /// Type representing the test-package (normally the 'Application' class).
-    /// </param>
     /// <param name="testClass" type="Type">
     /// The type of the test class.
     /// </param>
-    if (ss.isNullOrUndefined(entryPoint) || ss.isNullOrUndefined(testClass)) {
+    if (ss.isNullOrUndefined(testClass)) {
         return;
     }
     var e = new Open.TestHarness.TestClassEventArgs();
-    e.entryPoint = entryPoint;
     e.testClass = testClass;
     Open.TestHarness.TestHarnessEvents._fireTestClassRegistered(e);
 }
@@ -3833,13 +3829,10 @@ Type.registerNamespace('Open.TestHarness');
 // Open.TestHarness.TestClassEventArgs
 
 Open.TestHarness.TestClassEventArgs = function Open_TestHarness_TestClassEventArgs() {
-    /// <field name="entryPoint" type="Type">
-    /// </field>
     /// <field name="testClass" type="Type">
     /// </field>
 }
 Open.TestHarness.TestClassEventArgs.prototype = {
-    entryPoint: null,
     testClass: null
 }
 
