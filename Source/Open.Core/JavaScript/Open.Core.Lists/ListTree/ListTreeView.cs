@@ -139,6 +139,15 @@ namespace Open.Core.Lists
         {
             SelectedNode = RootNode;
         }
+
+        /// <summary>Updates the visual state of the control.</summary>
+        public void UpdateLayout()
+        {
+            foreach (ListTreePanel panel in panels)
+            {
+                panel.SyncWidth();
+            }
+        }
         #endregion
 
         #region Internal

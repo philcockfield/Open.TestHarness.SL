@@ -1,7 +1,6 @@
 using jQueryApi;
 using Open.Core;
 using Open.Core.Lists;
-using Open.TestHarness.Controllers;
 using Open.TestHarness.Models;
 
 namespace Open.TestHarness.Views
@@ -47,8 +46,15 @@ namespace Open.TestHarness.Views
         }
         #endregion
 
-        #region Internal
+        #region Methods
+        /// <summary>Updates the visual state of the control.</summary>
+        public void UpdateVisualState()
+        {
+            listView.UpdateVisualState();
+        }
+        #endregion
 
+        #region Internal
         private void PopulateList(TestClassInfo testClass)
         {
             rootNode.ClearChildren();
@@ -59,6 +65,5 @@ namespace Open.TestHarness.Views
             }
         }
         #endregion
-
     }
 }

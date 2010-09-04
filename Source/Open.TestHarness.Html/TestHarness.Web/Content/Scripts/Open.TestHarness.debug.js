@@ -1046,17 +1046,6 @@ Open.TestHarness.Views.SidebarView = function Open_TestHarness_Views_SidebarView
     this.get_rootList().get_container().click(ss.Delegate.create(this, function(eevent) {
     }));
 }
-Open.TestHarness.Views.SidebarView._animate$2 = function Open_TestHarness_Views_SidebarView$_animate$2(div, properties, onComplete) {
-    /// <param name="div" type="jQueryObject">
-    /// </param>
-    /// <param name="properties" type="Object">
-    /// </param>
-    /// <param name="onComplete" type="Action">
-    /// </param>
-    div.animate(properties, Open.Core.Helper.get_number().toMsecs(Open.TestHarness.Views.SidebarView.slideDuration), 'swing', function() {
-        Open.Core.Helper.invokeOrDefault(onComplete);
-    });
-}
 Open.TestHarness.Views.SidebarView.prototype = {
     _rootList$2: null,
     _backController$2: null,
@@ -1146,8 +1135,30 @@ Open.TestHarness.Views.SidebarView.prototype = {
         testListProps[Open.Core.Css.height] = testListHeight;
         var rootListProps = {};
         rootListProps[Open.Core.Css.bottom] = testListHeight;
-        Open.TestHarness.Views.SidebarView._animate$2(this.get_testList().get_container(), testListProps, null);
-        Open.TestHarness.Views.SidebarView._animate$2(this.get_rootList().get_container(), rootListProps, onComplete);
+        var isShowing = testListHeight > 0;
+        if (isShowing) {
+            Open.Core.Css.setVisible(this.get_testList().get_container(), true);
+        }
+        this.get_testList().updateVisualState();
+        this._animate$2(isShowing, this.get_testList().get_container(), testListProps, null);
+        this._animate$2(isShowing, this.get_rootList().get_container(), rootListProps, onComplete);
+    },
+    
+    _animate$2: function Open_TestHarness_Views_SidebarView$_animate$2(isShowing, div, properties, onComplete) {
+        /// <param name="isShowing" type="Boolean">
+        /// </param>
+        /// <param name="div" type="jQueryObject">
+        /// </param>
+        /// <param name="properties" type="Object">
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// </param>
+        div.animate(properties, Open.Core.Helper.get_number().toMsecs(Open.TestHarness.Views.SidebarView.slideDuration), 'swing', ss.Delegate.create(this, function() {
+            if (!isShowing) {
+                Open.Core.Css.setVisible(this.get_testList().get_container(), false);
+            }
+            Open.Core.Helper.invokeOrDefault(onComplete);
+        }));
     },
     
     _syncRootListHeight$2: function Open_TestHarness_Views_SidebarView$_syncRootListHeight$2() {
@@ -1209,6 +1220,13 @@ Open.TestHarness.Views.TestListView.prototype = {
             this._populateList$2(value);
         }
         return value;
+    },
+    
+    updateVisualState: function Open_TestHarness_Views_TestListView$updateVisualState() {
+        /// <summary>
+        /// Updates the visual state of the control.
+        /// </summary>
+        this._listView$2.updateVisualState();
     },
     
     _populateList$2: function Open_TestHarness_Views_TestListView$_populateList$2(testClass) {

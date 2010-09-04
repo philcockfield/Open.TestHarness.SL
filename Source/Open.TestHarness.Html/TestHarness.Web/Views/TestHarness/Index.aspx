@@ -42,7 +42,7 @@
             <div class="th-mainToolbar th-toolbar panelBorder panelBorderBottom">
                 <div class="topHighlightLine"></div>
             </div>
-            <div class="th-mainContent">
+            <div class="th-content absoluteFill">
                 <% Html.RenderAction(MVC.TestHarness.ActionNames.Log);%>
             </div>
         </div>

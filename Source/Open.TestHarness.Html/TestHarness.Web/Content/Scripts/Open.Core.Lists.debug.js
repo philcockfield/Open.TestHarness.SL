@@ -401,7 +401,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         /// </param>
         /// <param name="e" type="ss.EventArgs">
         /// </param>
-        this._syncWidth$2();
+        this.syncWidth();
     },
     
     _onAddedChild$2: function Open_Core_Lists__listTreePanel$_onAddedChild$2(sender, e) {
@@ -464,7 +464,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         Open.Core.Css.absoluteFill(this._div$2);
         this._listView$2 = new Open.Core.Lists.ListView(this._div$2);
         this._listView$2.load(this._node$2.get_children());
-        this._syncWidth$2();
+        this.syncWidth();
     },
     
     slideOff: function Open_Core_Lists__listTreePanel$slideOff(direction, onComplete) {
@@ -503,7 +503,7 @@ Open.Core.Lists._listTreePanel.prototype = {
     centerStage: function Open_Core_Lists__listTreePanel$centerStage() {
         this._div$2.css(Open.Core.Css.left, '0px');
         this._div$2.css(Open.Core.Css.display, Open.Core.Css.block);
-        this._syncWidth$2();
+        this.syncWidth();
     },
     
     setPosition: function Open_Core_Lists__listTreePanel$setPosition(direction, isVisible) {
@@ -514,15 +514,15 @@ Open.Core.Lists._listTreePanel.prototype = {
         var startLeft = (direction === Open.Core.HorizontalDirection.right) ? 0 - this.get__width$2() : this.get__width$2();
         this._div$2.css(Open.Core.Css.left, startLeft + Open.Core.Css.px);
         this._div$2.css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
-        this._syncWidth$2();
+        this.syncWidth();
+    },
+    
+    syncWidth: function Open_Core_Lists__listTreePanel$syncWidth() {
+        this._div$2.width(this.get__width$2());
     },
     
     _hide$2: function Open_Core_Lists__listTreePanel$_hide$2() {
         this._div$2.css(Open.Core.Css.display, Open.Core.Css.none);
-    },
-    
-    _syncWidth$2: function Open_Core_Lists__listTreePanel$_syncWidth$2() {
-        this._div$2.width(this.get__width$2());
     },
     
     _getSelectedChild$2: function Open_Core_Lists__listTreePanel$_getSelectedChild$2() {
@@ -775,6 +775,17 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// Moves the selected node to the root node.
         /// </summary>
         this.set_selectedNode(this.get_rootNode());
+    },
+    
+    updateVisualState: function Open_Core_Lists_ListTreeView$updateVisualState() {
+        /// <summary>
+        /// Updates the visual state of the control.
+        /// </summary>
+        var $enum1 = ss.IEnumerator.getEnumerator(this._panels$2);
+        while ($enum1.moveNext()) {
+            var panel = $enum1.get_current();
+            panel.syncWidth();
+        }
     },
     
     _slidePanels$2: function Open_Core_Lists_ListTreeView$_slidePanels$2(previousNode, newNode) {

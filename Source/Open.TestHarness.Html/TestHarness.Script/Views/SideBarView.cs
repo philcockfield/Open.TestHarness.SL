@@ -113,19 +113,24 @@ namespace Open.TestHarness.Views
         #region Internal
         private void AnimateHeights(int testListHeight, Action onComplete)
         {
-            // Prepare properties
+            // Prepare properties.
             Dictionary testListProps = new Dictionary();
             testListProps[Css.Height] = testListHeight;
 
             Dictionary rootListProps = new Dictionary();
             rootListProps[Css.Bottom] = testListHeight;
 
+            // Show or hide.
+            bool isShowing = testListHeight > 0;
+            if (isShowing) Css.SetVisible(TestList.Container, true);
+            TestList.UpdateVisualState();
+
             //Animate.
-            Animate(TestList.Container, testListProps, null);
-            Animate(RootList.Container, rootListProps, onComplete);
+            Animate(isShowing, TestList.Container, testListProps, null);
+            Animate(isShowing, RootList.Container, rootListProps, onComplete);
         }
 
-        private static void Animate(jQueryObject div, Dictionary properties, Action onComplete)
+        private void Animate(bool isShowing, jQueryObject div, Dictionary properties, Action onComplete)
         {
             div.Animate(
                     properties,
@@ -133,6 +138,7 @@ namespace Open.TestHarness.Views
                     EffectEasing.Swing,
                                     delegate
                                     {
+                                        if (!isShowing) Css.SetVisible(TestList.Container, false);
                                         Helper.InvokeOrDefault(onComplete);
                                     });
         }

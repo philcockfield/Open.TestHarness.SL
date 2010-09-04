@@ -166,11 +166,11 @@ namespace Open.Core.Lists
             div.CSS(Css.Display, isVisible ? Css.Block : Css.None);
             SyncWidth();
         }
+        public void SyncWidth() { div.Width(Width); }
         #endregion
 
         #region Internal
         private void Hide() { div.CSS(Css.Display, Css.None); }
-        private void SyncWidth() { div.Width(Width); }
 
         private ITreeNode GetSelectedChild()
         {
