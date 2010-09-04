@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-
 namespace Open.Core.Lists
 {
     /// <summary>CSS declarations for lists.</summary>
@@ -12,7 +9,8 @@ namespace Open.Core.Lists
         #endregion
 
         #region Properties
-        public static readonly ListItemCss ItemClasses = new ListItemCss();
+        public static readonly ListItemClasses ItemClasses = new ListItemClasses();
+        public static readonly ListClasses Classes = new ListClasses();
         #endregion
 
         #region Methods
@@ -26,7 +24,12 @@ namespace Open.Core.Lists
         #endregion
     }
 
-    public class ListItemCss
+    public class ListClasses
+    {
+        public readonly string Root = "c-list";
+    }
+
+    public class ListItemClasses
     {
         public readonly string Root = "c-listItem";
         public readonly string DefaultRoot = "c-listItem-default";

@@ -9,20 +9,29 @@ namespace Open.Core
         /// <summary>Fires when the IsSelected value changes.</summary>
         event EventHandler SelectionChanged;
 
-        /// <summary>Fires when when the IsSelected value on a child node changes.</summary>
+        /// <summary>Fires when the IsSelected value on a child node changes.</summary>
         event EventHandler ChildSelectionChanged;
 
-        /// <summary>Fires when when a child node is added.</summary>
-        event TreeNodeHandler ChildAdded;
+        /// <summary>Fires immediately before a child node is added.</summary>
+        event TreeNodeHandler AddingChild;
 
-        /// <summary>Fires when when a child node is removed.</summary>
-        event TreeNodeHandler ChildRemoved;
+        /// <summary>Fires when a child node is added.</summary>
+        event TreeNodeHandler AddedChild;
+
+        /// <summary>Fires immediate before a child node is removed.</summary>
+        event TreeNodeHandler RemovingChild;
+
+        /// <summary>Fires when a child node is removed.</summary>
+        event TreeNodeHandler RemovedChild;
 
         /// <summary>Fires when a child node is either added or removed.</summary>
         event EventHandler ChildrenChanged;
 
         /// <summary>Gets the parent node.</summary>
         ITreeNode Parent { get;  }
+
+        /// <summary>Gets the root node of the hierarchy.</summary>
+        ITreeNode Root { get; }
 
         /// <summary>Gets whether the node is at the root of the tree (ie. does not have a parent).</summary>
         bool IsRoot { get; }
@@ -34,7 +43,7 @@ namespace Open.Core
         IEnumerable Children { get;  }
 
         /// <summary>Gets the total number of children.</summary>
-        int TotalChildren { get; }
+        int ChildCount { get; }
 
         /// <summary>Adds the given node to the end of the Children collection.</summary>
         /// <param name="node">The node to add.</param>

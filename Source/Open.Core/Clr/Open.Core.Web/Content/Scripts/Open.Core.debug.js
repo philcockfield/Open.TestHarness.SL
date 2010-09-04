@@ -7,6 +7,28 @@ function executeScript() {
 Type.registerNamespace('Open.Core');
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Key
+
+Open.Core.Key = function() { 
+    /// <summary>
+    /// Keyboard key codes.
+    /// </summary>
+    /// <field name="shift" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="ctrl" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="alt" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.Key.prototype = {
+    shift: 16, 
+    ctrl: 17, 
+    alt: 18
+}
+Open.Core.Key.registerEnum('Open.Core.Key', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.HorizontalDirection
 
 Open.Core.HorizontalDirection = function() { 
@@ -177,18 +199,23 @@ Open.Core.ITreeNode.prototype = {
     remove_selectionChanged : null,
     add_childSelectionChanged : null,
     remove_childSelectionChanged : null,
-    add_childAdded : null,
-    remove_childAdded : null,
-    add_childRemoved : null,
-    remove_childRemoved : null,
+    add_addingChild : null,
+    remove_addingChild : null,
+    add_addedChild : null,
+    remove_addedChild : null,
+    add_removingChild : null,
+    remove_removingChild : null,
+    add_removedChild : null,
+    remove_removedChild : null,
     add_childrenChanged : null,
     remove_childrenChanged : null,
     get_parent : null,
+    get_root : null,
     get_isRoot : null,
     get_isSelected : null,
     set_isSelected : null,
     get_children : null,
-    get_totalChildren : null,
+    get_childCount : null,
     addChild : null,
     insertChild : null,
     removeChild : null,
@@ -458,12 +485,6 @@ Open.Core.Keyboard = function Open_Core_Keyboard() {
     /// <summary>
     /// Global monitoring of keyboard state.
     /// </summary>
-    /// <field name="_keyShift" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="_keyCtrl" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="_keyAlt" type="Number" integer="true" static="true">
-    /// </field>
     /// <field name="_isShiftPressed" type="Boolean" static="true">
     /// </field>
     /// <field name="_isCtrlPressed" type="Boolean" static="true">
@@ -505,9 +526,13 @@ Open.Core.TreeNode = function Open_Core_TreeNode() {
     /// </field>
     /// <field name="__childSelectionChanged$1" type="EventHandler">
     /// </field>
-    /// <field name="__childAdded$1" type="Open.Core.TreeNodeHandler">
+    /// <field name="__addingChild$1" type="Open.Core.TreeNodeHandler">
     /// </field>
-    /// <field name="__childRemoved$1" type="Open.Core.TreeNodeHandler">
+    /// <field name="__addedChild$1" type="Open.Core.TreeNodeHandler">
+    /// </field>
+    /// <field name="__removedChild$1" type="Open.Core.TreeNodeHandler">
+    /// </field>
+    /// <field name="__removingChild$1" type="Open.Core.TreeNodeHandler">
     /// </field>
     /// <field name="__childrenChanged$1" type="EventHandler">
     /// </field>
@@ -623,44 +648,82 @@ Open.Core.TreeNode.prototype = {
         }
     },
     
-    add_childAdded: function Open_Core_TreeNode$add_childAdded(value) {
+    add_addingChild: function Open_Core_TreeNode$add_addingChild(value) {
         /// <param name="value" type="Function" />
-        this.__childAdded$1 = ss.Delegate.combine(this.__childAdded$1, value);
+        this.__addingChild$1 = ss.Delegate.combine(this.__addingChild$1, value);
     },
-    remove_childAdded: function Open_Core_TreeNode$remove_childAdded(value) {
+    remove_addingChild: function Open_Core_TreeNode$remove_addingChild(value) {
         /// <param name="value" type="Function" />
-        this.__childAdded$1 = ss.Delegate.remove(this.__childAdded$1, value);
+        this.__addingChild$1 = ss.Delegate.remove(this.__addingChild$1, value);
     },
     
-    __childAdded$1: null,
+    __addingChild$1: null,
+    
+    _fireAddingChild$1: function Open_Core_TreeNode$_fireAddingChild$1(e) {
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        if (this.__addingChild$1 != null) {
+            this.__addingChild$1.invoke(this, e);
+        }
+    },
+    
+    add_addedChild: function Open_Core_TreeNode$add_addedChild(value) {
+        /// <param name="value" type="Function" />
+        this.__addedChild$1 = ss.Delegate.combine(this.__addedChild$1, value);
+    },
+    remove_addedChild: function Open_Core_TreeNode$remove_addedChild(value) {
+        /// <param name="value" type="Function" />
+        this.__addedChild$1 = ss.Delegate.remove(this.__addedChild$1, value);
+    },
+    
+    __addedChild$1: null,
     
     _fireChildAdded$1: function Open_Core_TreeNode$_fireChildAdded$1(e) {
         /// <param name="e" type="Open.Core.TreeNodeEventArgs">
         /// </param>
-        if (this.__childAdded$1 != null) {
-            this.__childAdded$1.invoke(this, e);
+        if (this.__addedChild$1 != null) {
+            this.__addedChild$1.invoke(this, e);
         }
         this._fireChildrenChanged$1();
     },
     
-    add_childRemoved: function Open_Core_TreeNode$add_childRemoved(value) {
+    add_removedChild: function Open_Core_TreeNode$add_removedChild(value) {
         /// <param name="value" type="Function" />
-        this.__childRemoved$1 = ss.Delegate.combine(this.__childRemoved$1, value);
+        this.__removedChild$1 = ss.Delegate.combine(this.__removedChild$1, value);
     },
-    remove_childRemoved: function Open_Core_TreeNode$remove_childRemoved(value) {
+    remove_removedChild: function Open_Core_TreeNode$remove_removedChild(value) {
         /// <param name="value" type="Function" />
-        this.__childRemoved$1 = ss.Delegate.remove(this.__childRemoved$1, value);
+        this.__removedChild$1 = ss.Delegate.remove(this.__removedChild$1, value);
     },
     
-    __childRemoved$1: null,
+    __removedChild$1: null,
     
     _fireChildRemoved$1: function Open_Core_TreeNode$_fireChildRemoved$1(e) {
         /// <param name="e" type="Open.Core.TreeNodeEventArgs">
         /// </param>
-        if (this.__childRemoved$1 != null) {
-            this.__childRemoved$1.invoke(this, e);
+        if (this.__removedChild$1 != null) {
+            this.__removedChild$1.invoke(this, e);
         }
         this._fireChildrenChanged$1();
+    },
+    
+    add_removingChild: function Open_Core_TreeNode$add_removingChild(value) {
+        /// <param name="value" type="Function" />
+        this.__removingChild$1 = ss.Delegate.combine(this.__removingChild$1, value);
+    },
+    remove_removingChild: function Open_Core_TreeNode$remove_removingChild(value) {
+        /// <param name="value" type="Function" />
+        this.__removingChild$1 = ss.Delegate.remove(this.__removingChild$1, value);
+    },
+    
+    __removingChild$1: null,
+    
+    _fireRemovingChild$1: function Open_Core_TreeNode$_fireRemovingChild$1(e) {
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        if (this.__removingChild$1 != null) {
+            this.__removingChild$1.invoke(this, e);
+        }
     },
     
     add_childrenChanged: function Open_Core_TreeNode$add_childrenChanged(value) {
@@ -707,6 +770,11 @@ Open.Core.TreeNode.prototype = {
         return this._parent$1;
     },
     
+    get_root: function Open_Core_TreeNode$get_root() {
+        /// <value type="Open.Core.ITreeNode"></value>
+        return this._getRoot$1();
+    },
+    
     get_isRoot: function Open_Core_TreeNode$get_isRoot() {
         /// <value type="Boolean"></value>
         return this.get_parent() == null;
@@ -717,7 +785,7 @@ Open.Core.TreeNode.prototype = {
         return this.get__childList$1();
     },
     
-    get_totalChildren: function Open_Core_TreeNode$get_totalChildren() {
+    get_childCount: function Open_Core_TreeNode$get_childCount() {
         /// <value type="Number" integer="true"></value>
         return (this._childList$1 == null) ? 0 : this._childList$1.length;
     },
@@ -741,7 +809,7 @@ Open.Core.TreeNode.prototype = {
     
     toString: function Open_Core_TreeNode$toString() {
         /// <returns type="String"></returns>
-        return String.format('[{0}({1})]', Type.getInstanceType(this).get_name(), this.get_totalChildren());
+        return String.format('[{0}({1})]', Type.getInstanceType(this).get_name(), this.get_childCount());
     },
     
     toJson: function Open_Core_TreeNode$toJson() {
@@ -776,14 +844,16 @@ Open.Core.TreeNode.prototype = {
             return;
         }
         if (index < 0) {
-            index = this.get_totalChildren();
+            index = this.get_childCount();
         }
+        var args = new Open.Core.TreeNodeEventArgs(node, index);
+        this._fireAddingChild$1(args);
         this.get__childList$1().insert(index, node);
         node.add_selectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$1));
         if (node.get_parent() !== this) {
             Open.Core.TreeNode._setParent$1(node, this);
         }
-        this._fireChildAdded$1(new Open.Core.TreeNodeEventArgs(node, index));
+        this._fireChildAdded$1(args);
     },
     
     removeChild: function Open_Core_TreeNode$removeChild(node) {
@@ -792,12 +862,14 @@ Open.Core.TreeNode.prototype = {
         if (!this.contains(node)) {
             return;
         }
+        var args = new Open.Core.TreeNodeEventArgs(node, Open.Core.TreeNode.nullIndex);
+        this._fireRemovingChild$1(args);
         this.get__childList$1().remove(node);
         node.remove_selectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$1));
         if (node.get_parent() === this) {
             Open.Core.TreeNode._setParent$1(node, null);
         }
-        this._fireChildRemoved$1(new Open.Core.TreeNodeEventArgs(node, Open.Core.TreeNode.nullIndex));
+        this._fireChildRemoved$1(args);
     },
     
     clearChildren: function Open_Core_TreeNode$clearChildren() {
@@ -841,6 +913,24 @@ Open.Core.TreeNode.prototype = {
         }
         json[Open.Core.TreeNode.propChildren] = children;
         return json;
+    },
+    
+    _getRoot$1: function Open_Core_TreeNode$_getRoot$1() {
+        /// <returns type="Open.Core.ITreeNode"></returns>
+        if (this.get_isRoot()) {
+            return null;
+        }
+        var parentNode = this.get_parent();
+        do {
+            if (parentNode == null) {
+                break;
+            }
+            if (parentNode.get_isRoot()) {
+                return parentNode;
+            }
+            parentNode = parentNode.get_parent();
+        } while (parentNode != null);
+        return null;
     }
 }
 
@@ -1070,6 +1160,15 @@ Open.Core.Log.get__writer = function Open_Core_Log$get__writer() {
     /// </summary>
     /// <value type="Open.Core.LogWriter"></value>
     return Open.Core.Log._writer || (Open.Core.Log._writer = new Open.Core.LogWriter());
+}
+Open.Core.Log.title = function Open_Core_Log$title(message) {
+    /// <summary>
+    /// Writes a informational message to the log (as a bold title).
+    /// </summary>
+    /// <param name="message" type="String">
+    /// The messge to write (HTML).
+    /// </param>
+    Open.Core.Log.write(Open.Core.Html.toBold(message), Open.Core.LogSeverity.info);
 }
 Open.Core.Log.info = function Open_Core_Log$info(message) {
     /// <summary>
@@ -1861,6 +1960,16 @@ Open.Core.Html.toHyperlink = function Open_Core_Html$toHyperlink(url, text, targ
     }
     return String.format('<a href=\'{0}\' target=\'_{2}\'>{1}</a>', url, text, Open.Core.LinkTarget.toString(target));
 }
+Open.Core.Html.toBold = function Open_Core_Html$toBold(text) {
+    /// <summary>
+    /// Wraps the given text in <b></b> elements.
+    /// </summary>
+    /// <param name="text" type="String">
+    /// The text to wrap.
+    /// </param>
+    /// <returns type="String"></returns>
+    return String.format('<b>{0}</b>', text);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2283,6 +2392,8 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_jQueryHelper" type="Open.Core.Helpers.JQueryHelper" static="true">
     /// </field>
+    /// <field name="_treeHelper" type="Open.Core.Helpers.TreeHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -2348,6 +2459,13 @@ Open.Core.Helper.get_jQuery = function Open_Core_Helper$get_jQuery() {
     /// </summary>
     /// <value type="Open.Core.Helpers.JQueryHelper"></value>
     return Open.Core.Helper._jQueryHelper || (Open.Core.Helper._jQueryHelper = new Open.Core.Helpers.JQueryHelper());
+}
+Open.Core.Helper.get_tree = function Open_Core_Helper$get_tree() {
+    /// <summary>
+    /// Gets the helper for working with Tree data-structures.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.TreeHelper"></value>
+    return Open.Core.Helper._treeHelper || (Open.Core.Helper._treeHelper = new Open.Core.Helpers.TreeHelper());
 }
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
@@ -2510,6 +2628,66 @@ Open.Core.Helpers.CollectionHelper.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.TreeHelper
+
+Open.Core.Helpers.TreeHelper = function Open_Core_Helpers_TreeHelper() {
+    /// <summary>
+    /// Utility methods for working with Tree data-structures.
+    /// </summary>
+}
+Open.Core.Helpers.TreeHelper.prototype = {
+    
+    firstRemainingParent: function Open_Core_Helpers_TreeHelper$firstRemainingParent(root, orphan) {
+        /// <summary>
+        /// Retrieves the first ancestor of a node that still exists as a descendent of the root node.
+        /// </summary>
+        /// <param name="root" type="Open.Core.ITreeNode">
+        /// The root node.
+        /// </param>
+        /// <param name="orphan" type="Open.Core.ITreeNode">
+        /// The orphaned node.
+        /// </param>
+        /// <returns type="Open.Core.ITreeNode"></returns>
+        if (root == null || orphan == null) {
+            return null;
+        }
+        var parent = orphan.get_parent();
+        do {
+            if (parent == null) {
+                break;
+            }
+            if (parent === root || root.containsDescendent(parent)) {
+                return parent;
+            }
+            parent = parent.get_parent();
+        } while (parent != null);
+        return null;
+    },
+    
+    firstSelectedChild: function Open_Core_Helpers_TreeHelper$firstSelectedChild(node) {
+        /// <summary>
+        /// Retrieves the first selected child node.
+        /// </summary>
+        /// <param name="node" type="Open.Core.ITreeNode">
+        /// The node to look within.
+        /// </param>
+        /// <returns type="Open.Core.ITreeNode"></returns>
+        if (node == null) {
+            return null;
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(node.get_children());
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            if (child.get_isSelected()) {
+                return child;
+            }
+        }
+        return null;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Helpers.JQueryHelper
 
 Open.Core.Helpers.JQueryHelper = function Open_Core_Helpers_JQueryHelper() {
@@ -2526,7 +2704,7 @@ Open.Core.Helpers.JQueryHelper.prototype = {
         /// <param name="e" type="jQueryEvent">
         /// The jQuery event.
         /// </param>
-        /// <param name="keyCode" type="Number" integer="true">
+        /// <param name="keyCode" type="Open.Core.Key">
         /// The code to match.
         /// </param>
         /// <returns type="Boolean"></returns>
@@ -2788,6 +2966,58 @@ Open.Core.Helpers.StringHelper.prototype = {
             return value;
         }
         return value.substr(0, 1).toLowerCase() + value.substring(1, value.length);
+    },
+    
+    toSentenceCase: function Open_Core_Helpers_StringHelper$toSentenceCase(value) {
+        /// <summary>
+        /// Converts the given string to SentenceCase.
+        /// </summary>
+        /// <param name="value" type="String">
+        /// The value to convert.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (ss.isUndefined(value)) {
+            return value;
+        }
+        if (String.isNullOrEmpty(value)) {
+            return value;
+        }
+        return value.substr(0, 1).toUpperCase() + value.substring(1, value.length);
+    },
+    
+    removeEnd: function Open_Core_Helpers_StringHelper$removeEnd(text, remove) {
+        /// <summary>
+        /// Removes the specified text from the end of a string if it's present (not case sensitive).
+        /// </summary>
+        /// <param name="text" type="String">
+        /// The string to effect.
+        /// </param>
+        /// <param name="remove" type="String">
+        /// The text to remove.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (String.isNullOrEmpty(text) || String.isNullOrEmpty(remove)) {
+            return text;
+        }
+        if (!text.toLowerCase().endsWith(remove.toLowerCase())) {
+            return text;
+        }
+        return text.substr(0, text.length - remove.length);
+    },
+    
+    stripPath: function Open_Core_Helpers_StringHelper$stripPath(url) {
+        /// <summary>
+        /// Removes the preceeding path of a URL returning just the end segment.
+        /// </summary>
+        /// <param name="url" type="String">
+        /// The URL to process.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (String.isNullOrEmpty(url)) {
+            return url;
+        }
+        var parts = url.split('/');
+        return (parts.length === 0) ? url : parts[parts.length - 1];
     }
 }
 
@@ -3654,6 +3884,7 @@ Open.Core.Helper.registerClass('Open.Core.Helper');
 Open.Core.TestHarness.registerClass('Open.Core.TestHarness');
 Open.Core.TestClassEventArgs.registerClass('Open.Core.TestClassEventArgs');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
+Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
 Open.Core.Helpers.JQueryHelper.registerClass('Open.Core.Helpers.JQueryHelper');
 Open.Core.Helpers.ScrollHelper.registerClass('Open.Core.Helpers.ScrollHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
@@ -3668,33 +3899,30 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
-Open.Core.Keyboard._keyShift = 16;
-Open.Core.Keyboard._keyCtrl = 17;
-Open.Core.Keyboard._keyAlt = 18;
 Open.Core.Keyboard._isShiftPressed = false;
 Open.Core.Keyboard._isCtrlPressed = false;
 Open.Core.Keyboard._isAltPressed = false;
 (function () {
-    var helper = Open.Core.Helper.get_jQuery();
+    var h = Open.Core.Helper.get_jQuery();
     $(document).keydown(function(e) {
-        if (helper.isKey(e, Open.Core.Keyboard._keyShift)) {
+        if (h.isKey(e, Open.Core.Key.shift)) {
             Open.Core.Keyboard._isShiftPressed = true;
         }
-        if (helper.isKey(e, Open.Core.Keyboard._keyCtrl)) {
+        if (h.isKey(e, Open.Core.Key.ctrl)) {
             Open.Core.Keyboard._isCtrlPressed = true;
         }
-        if (helper.isKey(e, Open.Core.Keyboard._keyAlt)) {
+        if (h.isKey(e, Open.Core.Key.alt)) {
             Open.Core.Keyboard._isAltPressed = true;
         }
     });
     $(document).keyup(function(e) {
-        if (helper.isKey(e, Open.Core.Keyboard._keyShift)) {
+        if (h.isKey(e, Open.Core.Key.shift)) {
             Open.Core.Keyboard._isShiftPressed = false;
         }
-        if (helper.isKey(e, Open.Core.Keyboard._keyCtrl)) {
+        if (h.isKey(e, Open.Core.Key.ctrl)) {
             Open.Core.Keyboard._isCtrlPressed = false;
         }
-        if (helper.isKey(e, Open.Core.Keyboard._keyAlt)) {
+        if (h.isKey(e, Open.Core.Key.alt)) {
             Open.Core.Keyboard._isAltPressed = false;
         }
     });
@@ -3753,6 +3981,7 @@ Open.Core.Helper._stringHelper = null;
 Open.Core.Helper._numberHelper = null;
 Open.Core.Helper._scrollHelper = null;
 Open.Core.Helper._jQueryHelper = null;
+Open.Core.Helper._treeHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Core.TestHarness.__testClassRegistered = null;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';

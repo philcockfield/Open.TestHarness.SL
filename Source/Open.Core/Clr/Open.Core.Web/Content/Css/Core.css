@@ -25,7 +25,25 @@ div { -moz-user-select: none; }
     bottom:0px;
 }
 
+.topHighlightLine
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    height:1px;
+    border-top:solid 1px white;
+}
+
+
+/* ----------- Vertical Alignment ----------- */
 div.table { position:absolute; display:table; }
+.vAlignedCell
+{  
+    position:relative;
+    display:table-cell;
+    vertical-align:middle;
+}
 
 
 /* ----------- Typography ----------- */
@@ -75,3 +93,23 @@ div.table { position:absolute; display:table; }
     display:table-cell;
     vertical-align:middle;
 }
+
+/* ----------- Opacity ----------- */
+.opacity003 { opacity:0.03; filter:alpha(opacity=3) }
+.opacity005 { opacity:0.05; filter:alpha(opacity=5) }
+.opacity007 { opacity:0.08; filter:alpha(opacity=8) }
+.opacity010 { opacity:0.1; filter:alpha(opacity=10) }
+.opacity015 { opacity:0.15; filter:alpha(opacity=15) }
+.opacity020 { opacity:0.2; filter:alpha(opacity=20) }
+.opacity025 { opacity:0.25; filter:alpha(opacity=25) }
+.opacity030 { opacity:0.3; filter:alpha(opacity=30) }
+.opacity035 { opacity:0.35; filter:alpha(opacity=35) }
+.opacity040 { opacity:0.4; filter:alpha(opacity=40) }
+.opacity050 { opacity:0.5; filter:alpha(opacity=50) }
+.opacity060 { opacity:0.60; filter:alpha(opacity=60) }
+.opacity065 { opacity:0.65; filter:alpha(opacity=65) }
+.opacity070 { opacity:0.70; filter:alpha(opacity=70) }
+.opacity080 { opacity:0.80; filter:alpha(opacity=80) }
+.opacity090 { opacity:0.90; filter:alpha(opacity=90) }
+
+

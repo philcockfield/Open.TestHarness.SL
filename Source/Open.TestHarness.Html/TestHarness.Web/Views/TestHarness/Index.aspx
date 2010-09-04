@@ -40,7 +40,7 @@
          <% Html.RenderAction(MVC.TestHarness.ActionNames.Sidebar); %>
         <div class="th-main">
             <div class="th-mainToolbar th-toolbar panelBorder panelBorderBottom">
-                <div class="th-topHighlight"></div>
+                <div class="topHighlightLine"></div>
             </div>
             <div class="th-mainContent">
                 <% Html.RenderAction(MVC.TestHarness.ActionNames.Log);%>

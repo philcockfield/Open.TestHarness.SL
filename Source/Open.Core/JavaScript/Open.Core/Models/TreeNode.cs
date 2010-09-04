@@ -18,11 +18,18 @@ namespace Open.Core
         public event EventHandler ChildSelectionChanged;
         private void FireChildSelectionChanged() { if (ChildSelectionChanged != null) ChildSelectionChanged(this, new EventArgs()); }
 
-        public event TreeNodeHandler ChildAdded;
-        private void FireChildAdded(TreeNodeEventArgs e) { if (ChildAdded != null) ChildAdded(this, e); FireChildrenChanged(); }
+        public event TreeNodeHandler AddingChild;
+        private void FireAddingChild(TreeNodeEventArgs e) { if (AddingChild != null) AddingChild(this, e); }
 
-        public event TreeNodeHandler ChildRemoved;
-        private void FireChildRemoved(TreeNodeEventArgs e) { if (ChildRemoved != null) ChildRemoved(this, e); FireChildrenChanged(); }
+        public event TreeNodeHandler AddedChild;
+        private void FireChildAdded(TreeNodeEventArgs e) { if (AddedChild != null) AddedChild(this, e); FireChildrenChanged(); }
+
+        public event TreeNodeHandler RemovedChild;
+        private void FireChildRemoved(TreeNodeEventArgs e) { if (RemovedChild != null) RemovedChild(this, e); FireChildrenChanged(); }
+
+        public event TreeNodeHandler RemovingChild;
+        private void FireRemovingChild(TreeNodeEventArgs e) { if (RemovingChild != null) RemovingChild(this, e); }
+
 
         public event EventHandler ChildrenChanged;
         private void FireChildrenChanged(){if (ChildrenChanged != null) ChildrenChanged(this, new EventArgs());}
@@ -62,11 +69,12 @@ namespace Open.Core
         }
         #endregion
 
-        #region Properties
+        #region Properties : ITreeNode
         public ITreeNode Parent { get { return parent; } }
+        public ITreeNode Root { get { return GetRoot(); } }
         public bool IsRoot { get { return Parent == null; } }
         public IEnumerable Children { get { return ChildList; } }
-        public int TotalChildren { get { return childList == null ? 0 : childList.Count; } }
+        public int ChildCount { get { return childList == null ? 0 : childList.Count; } }
 
         public bool IsSelected
         {
@@ -80,7 +88,7 @@ namespace Open.Core
         #endregion
 
         #region Methods
-        public override string ToString() { return string.Format("[{0}({1})]", GetType().Name, TotalChildren); }
+        public override string ToString() { return string.Format("[{0}({1})]", GetType().Name, ChildCount); }
         #endregion
 
         #region Methods : JSON
@@ -108,7 +116,11 @@ namespace Open.Core
             // Setup initial conditions.
             if (node == null) return;
             if (Contains(node)) return; // Ignore if the node has already been added.
-            if (index < 0) index = TotalChildren;
+            if (index < 0) index = ChildCount;
+
+            // Fire pre-event.
+            TreeNodeEventArgs args = new TreeNodeEventArgs(node, index);
+            FireAddingChild(args);
 
             // Store the node.
             ChildList.Insert(index, node);
@@ -119,14 +131,18 @@ namespace Open.Core
             // Ensure the parent node is set to this.
             if (node.Parent != this) SetParent(node, this);
 
-            // Finish up.
-            FireChildAdded(new TreeNodeEventArgs(node, index));
+            // Fire post-event.
+            FireChildAdded(args);
         }
 
         public void RemoveChild(ITreeNode node)
         {
             // Ignore if the node has already been added.
             if (!Contains(node)) return;
+
+            // Fire pre-event.
+            TreeNodeEventArgs args = new TreeNodeEventArgs(node, NullIndex);
+            FireRemovingChild(args);
 
             // Remove the child.
             ChildList.Remove(node);
@@ -137,8 +153,8 @@ namespace Open.Core
             // De-register this as the nodes parent.
             if (node.Parent == this) SetParent(node, null);
 
-            // Finish up.
-            FireChildRemoved(new TreeNodeEventArgs(node, NullIndex));
+            // Fire post-event.
+            FireChildRemoved(args);
         }
 
         public void ClearChildren()
@@ -198,6 +214,19 @@ namespace Open.Core
             TreeNode concrete = node as TreeNode;
             if (concrete == null) return;
             concrete.parent = value;
+        }
+
+        private ITreeNode GetRoot()
+        {
+            if (IsRoot) return null;
+            ITreeNode parentNode = Parent;
+            do
+            {
+                if (parentNode == null) break;
+                if (parentNode.IsRoot) return parentNode;
+                parentNode = parentNode.Parent;
+            } while (parentNode != null);
+            return null;
         }
 
         private static bool IsDescendent(ITreeNode parent, ITreeNode node)

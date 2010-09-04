@@ -13,13 +13,19 @@ Open.TestHarness.CssSelectors = function Open_TestHarness_CssSelectors() {
     /// <summary>
     /// Constants for common CSS selectors.
     /// </summary>
+    /// <field name="root" type="String" static="true">
+    /// </field>
     /// <field name="sidebar" type="String" static="true">
     /// </field>
-    /// <field name="sidebarList" type="String" static="true">
+    /// <field name="sidebarRootList" type="String" static="true">
     /// </field>
     /// <field name="sidebarToolbar" type="String" static="true">
     /// </field>
     /// <field name="backMask" type="String" static="true">
+    /// </field>
+    /// <field name="testList" type="String" static="true">
+    /// </field>
+    /// <field name="testListContent" type="String" static="true">
     /// </field>
     /// <field name="main" type="String" static="true">
     /// </field>
@@ -48,26 +54,65 @@ Open.TestHarness.Elements = function Open_TestHarness_Elements() {
 // Open.TestHarness.Application
 
 Open.TestHarness.Application = function Open_TestHarness_Application() {
+    /// <field name="_shell" type="Open.TestHarness.Views.ShellView" static="true">
+    /// </field>
     /// <field name="_resizeController" type="Open.TestHarness.Controllers.PanelResizeController" static="true">
     /// </field>
     /// <field name="_sidebarController" type="Open.TestHarness.Controllers.SidebarController" static="true">
     /// </field>
+}
+Open.TestHarness.Application.get_shell = function Open_TestHarness_Application$get_shell() {
+    /// <summary>
+    /// Gets the root view of the application shell.
+    /// </summary>
+    /// <value type="Open.TestHarness.Views.ShellView"></value>
+    return Open.TestHarness.Application._shell;
 }
 Open.TestHarness.Application.main = function Open_TestHarness_Application$main(args) {
     /// <param name="args" type="Object">
     /// </param>
     var logView = new Open.Core.Controls.LogView($(Open.TestHarness.CssSelectors.log).first());
     Open.Core.Log.registerView(logView);
+    Open.TestHarness.Application._shell = new Open.TestHarness.Views.ShellView($(Open.TestHarness.CssSelectors.root));
     Open.TestHarness.Application._resizeController = new Open.TestHarness.Controllers.PanelResizeController();
     Open.TestHarness.Application._sidebarController = new Open.TestHarness.Controllers.SidebarController();
     var scriptUrl = '/Content/Scripts/TestHarness.Script.Test.debug.js';
     var initMethod = 'TestHarness.Test.Application.main';
-    var packageDef = Open.TestHarness.Models.TestPackageDef.singletonFromUrl(scriptUrl, initMethod);
+    var packageDef = Open.TestHarness.Models.TestPackageInfo.singletonFromUrl(scriptUrl, initMethod);
     Open.TestHarness.Application._sidebarController.addPackage(packageDef);
 }
 
 
 Type.registerNamespace('Open.TestHarness.Models');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.Models.TestMethodListItem
+
+Open.TestHarness.Models.TestMethodListItem = function Open_TestHarness_Models_TestMethodListItem(testMethod) {
+    /// <summary>
+    /// A list-item node for a single Test-Method.
+    /// </summary>
+    /// <param name="testMethod" type="Open.TestHarness.Models.TestMethodInfo">
+    /// The test-method this node represents.
+    /// </param>
+    /// <field name="_testMethod$3" type="Open.TestHarness.Models.TestMethodInfo">
+    /// </field>
+    Open.TestHarness.Models.TestMethodListItem.initializeBase(this);
+    this._testMethod$3 = testMethod;
+    this.set_text(testMethod.get_displayName());
+}
+Open.TestHarness.Models.TestMethodListItem.prototype = {
+    _testMethod$3: null,
+    
+    get_testMethod: function Open_TestHarness_Models_TestMethodListItem$get_testMethod() {
+        /// <summary>
+        /// Gets the test-package this node represents.
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestMethodInfo"></value>
+        return this._testMethod$3;
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Open.TestHarness.Models.TestClassListItem
@@ -76,14 +121,14 @@ Open.TestHarness.Models.TestClassListItem = function Open_TestHarness_Models_Tes
     /// <summary>
     /// A list-item node for a TestClass.
     /// </summary>
-    /// <param name="testClass" type="Open.TestHarness.Models.TestClassDef">
+    /// <param name="testClass" type="Open.TestHarness.Models.TestClassInfo">
     /// The test-class this node represents.
     /// </param>
-    /// <field name="_testClass$3" type="Open.TestHarness.Models.TestClassDef">
+    /// <field name="_testClass$3" type="Open.TestHarness.Models.TestClassInfo">
     /// </field>
     Open.TestHarness.Models.TestClassListItem.initializeBase(this);
     this._testClass$3 = testClass;
-    this.set_text(testClass.get_type().get_name());
+    this.set_text(testClass.get_classType().get_name());
 }
 Open.TestHarness.Models.TestClassListItem.prototype = {
     _testClass$3: null,
@@ -92,16 +137,120 @@ Open.TestHarness.Models.TestClassListItem.prototype = {
         /// <summary>
         /// Gets the test-package this node represents.
         /// </summary>
-        /// <value type="Open.TestHarness.Models.TestClassDef"></value>
+        /// <value type="Open.TestHarness.Models.TestClassInfo"></value>
         return this._testClass$3;
     }
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.TestHarness.Models.TestPackageDef
+// Open.TestHarness.Models.TestMethodInfo
 
-Open.TestHarness.Models.TestPackageDef = function Open_TestHarness_Models_TestPackageDef(scriptUrl, initMethod) {
+Open.TestHarness.Models.TestMethodInfo = function Open_TestHarness_Models_TestMethodInfo(testClass, name) {
+    /// <summary>
+    /// Represents a single test method.
+    /// </summary>
+    /// <param name="testClass" type="Open.TestHarness.Models.TestClassInfo">
+    /// The test-class that this method is a member of.
+    /// </param>
+    /// <param name="name" type="String">
+    /// The name of the method.
+    /// </param>
+    /// <field name="keyConstructor" type="String" static="true">
+    /// </field>
+    /// <field name="keyGetter" type="String" static="true">
+    /// </field>
+    /// <field name="keySetter" type="String" static="true">
+    /// </field>
+    /// <field name="keyField" type="String" static="true">
+    /// </field>
+    /// <field name="keyFunction" type="String" static="true">
+    /// </field>
+    /// <field name="_testClass$1" type="Open.TestHarness.Models.TestClassInfo">
+    /// </field>
+    /// <field name="_name$1" type="String">
+    /// </field>
+    /// <field name="_displayName$1" type="String">
+    /// </field>
+    Open.TestHarness.Models.TestMethodInfo.initializeBase(this);
+    this._testClass$1 = testClass;
+    this._name$1 = name;
+    this._displayName$1 = Open.TestHarness.Models.TestMethodInfo.formatName(name);
+}
+Open.TestHarness.Models.TestMethodInfo.isTestMethod = function Open_TestHarness_Models_TestMethodInfo$isTestMethod(item) {
+    /// <summary>
+    /// Determines whether the specified DictionaryEntry represents a valid test-method.
+    /// </summary>
+    /// <param name="item" type="DictionaryEntry">
+    /// The Dictionaty item to examine.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    var key = item.key;
+    if (typeof(item.value) !== Open.TestHarness.Models.TestMethodInfo.keyFunction) {
+        return false;
+    }
+    if (key.startsWith(Open.TestHarness.Models.TestMethodInfo.keyField)) {
+        return false;
+    }
+    if (key.startsWith(Open.TestHarness.Models.TestMethodInfo.keyGetter)) {
+        return false;
+    }
+    if (key.startsWith(Open.TestHarness.Models.TestMethodInfo.keySetter)) {
+        return false;
+    }
+    if (key === Open.TestHarness.Models.TestMethodInfo.keyConstructor) {
+        return false;
+    }
+    return true;
+}
+Open.TestHarness.Models.TestMethodInfo.formatName = function Open_TestHarness_Models_TestMethodInfo$formatName(name) {
+    /// <summary>
+    /// Formats a name into a display name (replace underscores with spaces etc.).
+    /// </summary>
+    /// <param name="name" type="String">
+    /// The name to format.
+    /// </param>
+    /// <returns type="String"></returns>
+    name = name.replaceAll('__', ': ');
+    name = name.replaceAll('_', ' ');
+    name = Open.Core.Helper.get_string().toSentenceCase(name);
+    return name;
+}
+Open.TestHarness.Models.TestMethodInfo.prototype = {
+    _testClass$1: null,
+    _name$1: null,
+    _displayName$1: null,
+    
+    get_testClass: function Open_TestHarness_Models_TestMethodInfo$get_testClass() {
+        /// <summary>
+        /// Gets the test-class that this method is a member of.
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestClassInfo"></value>
+        return this._testClass$1;
+    },
+    
+    get_name: function Open_TestHarness_Models_TestMethodInfo$get_name() {
+        /// <summary>
+        /// Gets the name of the method.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._name$1;
+    },
+    
+    get_displayName: function Open_TestHarness_Models_TestMethodInfo$get_displayName() {
+        /// <summary>
+        /// Gets the display version of the name.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._displayName$1;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.Models.TestPackageInfo
+
+Open.TestHarness.Models.TestPackageInfo = function Open_TestHarness_Models_TestPackageInfo(scriptUrl, initMethod) {
     /// <summary>
     /// Represents a package of tests from a single JavaScript file.
     /// </summary>
@@ -111,23 +260,33 @@ Open.TestHarness.Models.TestPackageDef = function Open_TestHarness_Models_TestPa
     /// <param name="initMethod" type="String">
     /// The entry point method to invoke upon load completion.
     /// </param>
-    /// <field name="_singletons" type="Array" static="true">
+    /// <field name="_singletons$1" type="Array" static="true">
     /// </field>
-    /// <field name="_classes" type="Array">
+    /// <field name="_classes$1" type="Array">
     /// </field>
-    /// <field name="_loader" type="Open.TestHarness.Models.TestPackageLoader">
+    /// <field name="_loader$1" type="Open.TestHarness.Models.TestPackageLoader">
     /// </field>
-    this._classes = [];
-    this._loader = new Open.TestHarness.Models.TestPackageLoader(this, scriptUrl.toLowerCase(), initMethod);
+    /// <field name="_name$1" type="String">
+    /// </field>
+    this._classes$1 = [];
+    Open.TestHarness.Models.TestPackageInfo.initializeBase(this);
+    if (String.isNullOrEmpty(scriptUrl)) {
+        throw new Error('A URL to the test-package script must be specified.');
+    }
+    if (String.isNullOrEmpty(initMethod)) {
+        throw new Error('An entry point method must be specified.');
+    }
+    this._name$1 = Open.TestHarness.Models.TestPackageInfo._getName$1(scriptUrl);
+    this._loader$1 = new Open.TestHarness.Models.TestPackageLoader(this, scriptUrl.toLowerCase(), initMethod);
 }
-Open.TestHarness.Models.TestPackageDef.get_singletons = function Open_TestHarness_Models_TestPackageDef$get_singletons() {
+Open.TestHarness.Models.TestPackageInfo.get_singletons = function Open_TestHarness_Models_TestPackageInfo$get_singletons() {
     /// <summary>
     /// Gets the collection of singleton TestPackageDef instances.
     /// </summary>
     /// <value type="Array"></value>
-    return Open.TestHarness.Models.TestPackageDef._singletons;
+    return Open.TestHarness.Models.TestPackageInfo._singletons$1;
 }
-Open.TestHarness.Models.TestPackageDef.singletonFromUrl = function Open_TestHarness_Models_TestPackageDef$singletonFromUrl(scriptUrl, initMethod) {
+Open.TestHarness.Models.TestPackageInfo.singletonFromUrl = function Open_TestHarness_Models_TestPackageInfo$singletonFromUrl(scriptUrl, initMethod) {
     /// <summary>
     /// Retrieves (or creates) the singleton instance of the definition for the given package type.
     /// </summary>
@@ -137,20 +296,34 @@ Open.TestHarness.Models.TestPackageDef.singletonFromUrl = function Open_TestHarn
     /// <param name="initMethod" type="String">
     /// The entry point method to invoke upon load completion.
     /// </param>
-    /// <returns type="Open.TestHarness.Models.TestPackageDef"></returns>
-    var def = Type.safeCast(Open.Core.Helper.get_collection().first(Open.TestHarness.Models.TestPackageDef._singletons, function(o) {
+    /// <returns type="Open.TestHarness.Models.TestPackageInfo"></returns>
+    var def = Type.safeCast(Open.Core.Helper.get_collection().first(Open.TestHarness.Models.TestPackageInfo._singletons$1, function(o) {
         return (o).get_id() === scriptUrl.toLowerCase();
-    }), Open.TestHarness.Models.TestPackageDef);
+    }), Open.TestHarness.Models.TestPackageInfo);
     if (def == null) {
-        def = new Open.TestHarness.Models.TestPackageDef(scriptUrl, initMethod);
-        Open.TestHarness.Models.TestPackageDef._singletons.add(def);
+        def = new Open.TestHarness.Models.TestPackageInfo(scriptUrl, initMethod);
+        Open.TestHarness.Models.TestPackageInfo._singletons$1.add(def);
     }
     return def;
 }
-Open.TestHarness.Models.TestPackageDef.prototype = {
-    _loader: null,
+Open.TestHarness.Models.TestPackageInfo._getName$1 = function Open_TestHarness_Models_TestPackageInfo$_getName$1(scriptUrl) {
+    /// <param name="scriptUrl" type="String">
+    /// </param>
+    /// <returns type="String"></returns>
+    var s = Open.Core.Helper.get_string();
+    scriptUrl = s.removeEnd(scriptUrl, '.js');
+    scriptUrl = s.removeEnd(scriptUrl, '.debug');
+    scriptUrl = s.stripPath(scriptUrl);
+    if (String.isNullOrEmpty(scriptUrl.trim())) {
+        scriptUrl = '<Untitled>'.htmlEncode();
+    }
+    return scriptUrl;
+}
+Open.TestHarness.Models.TestPackageInfo.prototype = {
+    _loader$1: null,
+    _name$1: null,
     
-    get_id: function Open_TestHarness_Models_TestPackageDef$get_id() {
+    get_id: function Open_TestHarness_Models_TestPackageInfo$get_id() {
         /// <summary>
         /// Gets the unique ID of the package.
         /// </summary>
@@ -158,15 +331,23 @@ Open.TestHarness.Models.TestPackageDef.prototype = {
         return this.get_loader().get_scriptUrl();
     },
     
-    get_loader: function Open_TestHarness_Models_TestPackageDef$get_loader() {
+    get_name: function Open_TestHarness_Models_TestPackageInfo$get_name() {
+        /// <summary>
+        /// Gets the display name of the package.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._name$1;
+    },
+    
+    get_loader: function Open_TestHarness_Models_TestPackageInfo$get_loader() {
         /// <summary>
         /// Gets the package loader.
         /// </summary>
         /// <value type="Open.TestHarness.Models.TestPackageLoader"></value>
-        return this._loader;
+        return this._loader$1;
     },
     
-    get_isLoaded: function Open_TestHarness_Models_TestPackageDef$get_isLoaded() {
+    get_isLoaded: function Open_TestHarness_Models_TestPackageInfo$get_isLoaded() {
         /// <summary>
         /// Gets or sets whether the package has been loaded.
         /// </summary>
@@ -174,20 +355,20 @@ Open.TestHarness.Models.TestPackageDef.prototype = {
         return this.get_loader().get_isLoaded();
     },
     
-    get_count: function Open_TestHarness_Models_TestPackageDef$get_count() {
+    get_count: function Open_TestHarness_Models_TestPackageInfo$get_count() {
         /// <summary>
         /// Gets the number of test classes within the package.
         /// </summary>
         /// <value type="Number" integer="true"></value>
-        return this._classes.length;
+        return this._classes$1.length;
     },
     
-    getEnumerator: function Open_TestHarness_Models_TestPackageDef$getEnumerator() {
+    getEnumerator: function Open_TestHarness_Models_TestPackageInfo$getEnumerator() {
         /// <returns type="ss.IEnumerator"></returns>
-        return this._classes.getEnumerator();
+        return this._classes$1.getEnumerator();
     },
     
-    addClass: function Open_TestHarness_Models_TestPackageDef$addClass(testClass) {
+    addClass: function Open_TestHarness_Models_TestPackageInfo$addClass(testClass) {
         /// <summary>
         /// Adds a test-class to the package.
         /// </summary>
@@ -200,10 +381,10 @@ Open.TestHarness.Models.TestPackageDef.prototype = {
         if (this.contains(testClass)) {
             return;
         }
-        this._classes.add(Open.TestHarness.Models.TestClassDef.getSingleton(testClass));
+        this._classes$1.add(Open.TestHarness.Models.TestClassInfo.getSingleton(testClass));
     },
     
-    contains: function Open_TestHarness_Models_TestPackageDef$contains(testClass) {
+    contains: function Open_TestHarness_Models_TestPackageInfo$contains(testClass) {
         /// <summary>
         /// Determines whether the test-class has already been added to the package.
         /// </summary>
@@ -214,22 +395,22 @@ Open.TestHarness.Models.TestPackageDef.prototype = {
         return this.getTestClassDef(testClass) != null;
     },
     
-    getTestClassDef: function Open_TestHarness_Models_TestPackageDef$getTestClassDef(testClass) {
+    getTestClassDef: function Open_TestHarness_Models_TestPackageInfo$getTestClassDef(testClass) {
         /// <summary>
         /// Determines whether the test-class has already been added to the package.
         /// </summary>
         /// <param name="testClass" type="Type">
         /// The type of the test class.
         /// </param>
-        /// <returns type="Open.TestHarness.Models.TestClassDef"></returns>
+        /// <returns type="Open.TestHarness.Models.TestClassInfo"></returns>
         if (testClass == null) {
             return null;
         }
         var typeName = testClass.get_fullName();
-        var $enum1 = ss.IEnumerator.getEnumerator(this._classes);
+        var $enum1 = ss.IEnumerator.getEnumerator(this._classes$1);
         while ($enum1.moveNext()) {
             var item = $enum1.get_current();
-            if (item.get_type().get_fullName() === typeName) {
+            if (item.get_classType().get_fullName() === typeName) {
                 return item;
             }
         }
@@ -239,49 +420,104 @@ Open.TestHarness.Models.TestPackageDef.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.TestHarness.Models.TestClassDef
+// Open.TestHarness.Models.TestClassInfo
 
-Open.TestHarness.Models.TestClassDef = function Open_TestHarness_Models_TestClassDef(type) {
+Open.TestHarness.Models.TestClassInfo = function Open_TestHarness_Models_TestClassInfo(classType) {
     /// <summary>
     /// Represents a class with tests.
     /// </summary>
-    /// <param name="type" type="Type">
+    /// <param name="classType" type="Type">
     /// The type of the test class.
     /// </param>
-    /// <field name="_singletons" type="Object" static="true">
+    /// <field name="_singletons$1" type="Object" static="true">
     /// </field>
-    /// <field name="_type" type="Type">
+    /// <field name="_classType$1" type="Type">
     /// </field>
-    this._type = type;
+    /// <field name="_instance$1" type="Object">
+    /// </field>
+    /// <field name="_methods$1" type="Array">
+    /// </field>
+    this._methods$1 = [];
+    Open.TestHarness.Models.TestClassInfo.initializeBase(this);
+    this._classType$1 = classType;
+    this._getMethods$1();
 }
-Open.TestHarness.Models.TestClassDef.getSingleton = function Open_TestHarness_Models_TestClassDef$getSingleton(testClass) {
+Open.TestHarness.Models.TestClassInfo.getSingleton = function Open_TestHarness_Models_TestClassInfo$getSingleton(testClass) {
     /// <summary>
     /// Retrieves the singleton instance of the definition for the given package type.
     /// </summary>
     /// <param name="testClass" type="Type">
     /// The Type of the test class.
     /// </param>
-    /// <returns type="Open.TestHarness.Models.TestClassDef"></returns>
-    if (Open.TestHarness.Models.TestClassDef._singletons == null) {
-        Open.TestHarness.Models.TestClassDef._singletons = {};
+    /// <returns type="Open.TestHarness.Models.TestClassInfo"></returns>
+    if (Open.TestHarness.Models.TestClassInfo._singletons$1 == null) {
+        Open.TestHarness.Models.TestClassInfo._singletons$1 = {};
     }
     var key = testClass.get_fullName();
-    if (Object.keyExists(Open.TestHarness.Models.TestClassDef._singletons, key)) {
-        return Type.safeCast(Open.TestHarness.Models.TestClassDef._singletons[key], Open.TestHarness.Models.TestClassDef);
+    if (Object.keyExists(Open.TestHarness.Models.TestClassInfo._singletons$1, key)) {
+        return Type.safeCast(Open.TestHarness.Models.TestClassInfo._singletons$1[key], Open.TestHarness.Models.TestClassInfo);
     }
-    var def = new Open.TestHarness.Models.TestClassDef(testClass);
-    Open.TestHarness.Models.TestClassDef._singletons[key] = def;
+    var def = new Open.TestHarness.Models.TestClassInfo(testClass);
+    Open.TestHarness.Models.TestClassInfo._singletons$1[key] = def;
     return def;
 }
-Open.TestHarness.Models.TestClassDef.prototype = {
-    _type: null,
+Open.TestHarness.Models.TestClassInfo.prototype = {
+    _classType$1: null,
+    _instance$1: null,
     
-    get_type: function Open_TestHarness_Models_TestClassDef$get_type() {
+    get_classType: function Open_TestHarness_Models_TestClassInfo$get_classType() {
         /// <summary>
         /// Gets the type of the test class.
         /// </summary>
         /// <value type="Type"></value>
-        return this._type;
+        return this._classType$1;
+    },
+    
+    get_instance: function Open_TestHarness_Models_TestClassInfo$get_instance() {
+        /// <summary>
+        /// Gets the test instance of the class.
+        /// </summary>
+        /// <value type="Object"></value>
+        return this._instance$1 || (this._instance$1 = Type.safeCast(new this._classType$1(), Object));
+    },
+    
+    get_count: function Open_TestHarness_Models_TestClassInfo$get_count() {
+        /// <summary>
+        /// Gets the number of test-methods within the class.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this._methods$1.length;
+    },
+    
+    reset: function Open_TestHarness_Models_TestClassInfo$reset() {
+        /// <summary>
+        /// Resets the test-class instance.
+        /// </summary>
+        this._instance$1 = null;
+    },
+    
+    getEnumerator: function Open_TestHarness_Models_TestClassInfo$getEnumerator() {
+        /// <returns type="ss.IEnumerator"></returns>
+        return this._methods$1.getEnumerator();
+    },
+    
+    toString: function Open_TestHarness_Models_TestClassInfo$toString() {
+        /// <returns type="String"></returns>
+        return String.format('[{0}:{1}]', Type.getInstanceType(this).get_name(), this.get_classType().get_name());
+    },
+    
+    _getMethods$1: function Open_TestHarness_Models_TestClassInfo$_getMethods$1() {
+        if (this.get_instance() == null) {
+            return;
+        }
+        var $dict1 = this.get_instance();
+        for (var $key2 in $dict1) {
+            var item = { key: $key2, value: $dict1[$key2] };
+            if (!Open.TestHarness.Models.TestMethodInfo.isTestMethod(item)) {
+                continue;
+            }
+            this._methods$1.add(new Open.TestHarness.Models.TestMethodInfo(this, item.key));
+        }
     }
 }
 
@@ -293,14 +529,14 @@ Open.TestHarness.Models.TestPackageListItem = function Open_TestHarness_Models_T
     /// <summary>
     /// A list-item node for a TestPackage.
     /// </summary>
-    /// <param name="testPackage" type="Open.TestHarness.Models.TestPackageDef">
+    /// <param name="testPackage" type="Open.TestHarness.Models.TestPackageInfo">
     /// The test-package this node represents.
     /// </param>
-    /// <field name="_testPackage$3" type="Open.TestHarness.Models.TestPackageDef">
+    /// <field name="_testPackage$3" type="Open.TestHarness.Models.TestPackageInfo">
     /// </field>
     Open.TestHarness.Models.TestPackageListItem.initializeBase(this);
     this._testPackage$3 = testPackage;
-    this.set_text('FOO! TestPackage');
+    this.set_text(testPackage.get_name());
 }
 Open.TestHarness.Models.TestPackageListItem.prototype = {
     _testPackage$3: null,
@@ -309,7 +545,7 @@ Open.TestHarness.Models.TestPackageListItem.prototype = {
         /// <summary>
         /// Gets the test-package this node represents.
         /// </summary>
-        /// <value type="Open.TestHarness.Models.TestPackageDef"></value>
+        /// <value type="Open.TestHarness.Models.TestPackageInfo"></value>
         return this._testPackage$3;
     }
 }
@@ -322,7 +558,7 @@ Open.TestHarness.Models.TestPackageLoader = function Open_TestHarness_Models_Tes
     /// <summary>
     /// Handles loading a test-package and executing the entry point assembly.
     /// </summary>
-    /// <param name="parent" type="Open.TestHarness.Models.TestPackageDef">
+    /// <param name="parent" type="Open.TestHarness.Models.TestPackageInfo">
     /// The test-package this object is loading.
     /// </param>
     /// <param name="scriptUrl" type="String">
@@ -331,7 +567,7 @@ Open.TestHarness.Models.TestPackageLoader = function Open_TestHarness_Models_Tes
     /// <param name="initMethod" type="String">
     /// The entry point method to invoke upon load completion.
     /// </param>
-    /// <field name="_parent" type="Open.TestHarness.Models.TestPackageDef">
+    /// <field name="_parent" type="Open.TestHarness.Models.TestPackageInfo">
     /// </field>
     /// <field name="_scriptUrl" type="String">
     /// </field>
@@ -498,25 +734,20 @@ Open.TestHarness.Controllers.SidebarController = function Open_TestHarness_Contr
     /// <summary>
     /// Controller for the side-bar.
     /// </summary>
-    /// <field name="_listTree$2" type="Open.Core.Lists.ListTreeView">
-    /// </field>
-    /// <field name="_backController$2" type="Open.Core.Lists.ListTreeBackController">
-    /// </field>
     /// <field name="_packageControllers$2" type="Array">
+    /// </field>
+    /// <field name="_view$2" type="Open.TestHarness.Views.SidebarView">
     /// </field>
     this._packageControllers$2 = [];
     Open.TestHarness.Controllers.SidebarController.initializeBase(this);
-    this._listTree$2 = new Open.Core.Lists.ListTreeView($(Open.TestHarness.CssSelectors.sidebarList));
-    this._listTree$2.set_slideDuration(0.2);
-    this._backController$2 = new Open.Core.Lists.ListTreeBackController(this._listTree$2, $(Open.TestHarness.CssSelectors.sidebarToolbar), $(Open.TestHarness.CssSelectors.backMask));
+    this._view$2 = Open.TestHarness.Application.get_shell().get_sidebar();
     this._TEMP$2();
 }
 Open.TestHarness.Controllers.SidebarController.prototype = {
-    _listTree$2: null,
-    _backController$2: null,
+    _view$2: null,
     
     onDisposed: function Open_TestHarness_Controllers_SidebarController$onDisposed() {
-        this._backController$2.dispose();
+        this._view$2.dispose();
         var $enum1 = ss.IEnumerator.getEnumerator(this._packageControllers$2);
         while ($enum1.moveNext()) {
             var controller = $enum1.get_current();
@@ -542,7 +773,7 @@ Open.TestHarness.Controllers.SidebarController.prototype = {
         recent1.addChild(new Open.TestHarness.Controllers.MyNode('Recent Grandchild 3'));
         child2.addChild(new Open.TestHarness.Controllers.MyNode('Yo Child'));
         child3.addChild(new Open.TestHarness.Controllers.MyNode('Yo Child'));
-        this._listTree$2.set_rootNode(rootNode);
+        this._view$2.get_rootList().set_rootNode(rootNode);
         child1.set_text('My Recent Foo');
         child2.set_canSelect(false);
         child2.set_isSelected(true);
@@ -552,19 +783,47 @@ Open.TestHarness.Controllers.SidebarController.prototype = {
         /// <summary>
         /// Adds a test-package to the controller.
         /// </summary>
-        /// <param name="testPackage" type="Open.TestHarness.Models.TestPackageDef">
+        /// <param name="testPackage" type="Open.TestHarness.Models.TestPackageInfo">
         /// The test-package to add.
         /// </param>
         if (testPackage == null) {
             return;
         }
         var node = new Open.TestHarness.Models.TestPackageListItem(testPackage);
-        this._listTree$2.get_rootNode().addChild(node);
+        this._view$2.get_rootList().get_rootNode().addChild(node);
         var controller = new Open.TestHarness.Controllers.TestPackageController(node);
         this._packageControllers$2.add(controller);
         controller.add_loaded(ss.Delegate.create(this, function() {
-            this._listTree$2.set_currentListRoot(controller.get_rootNode());
+            this._view$2.get_rootList().set_selectedParent(controller.get_rootNode());
         }));
+    },
+    
+    removePackage: function Open_TestHarness_Controllers_SidebarController$removePackage(testPackage) {
+        /// <summary>
+        /// Removes the specified package.
+        /// </summary>
+        /// <param name="testPackage" type="Open.TestHarness.Models.TestPackageInfo">
+        /// The test-package to remove.
+        /// </param>
+        if (testPackage == null) {
+            return;
+        }
+        var controller = this._getController$2(testPackage);
+        if (controller == null) {
+            return;
+        }
+        this._view$2.get_rootList().get_rootNode().removeChild(controller.get_rootNode());
+        Open.Core.Log.info(String.format('Test package unloaded: {0}', Open.Core.Html.toHyperlink(testPackage.get_id(), null, Open.Core.LinkTarget.blank)));
+        Open.Core.Log.lineBreak();
+    },
+    
+    _getController$2: function Open_TestHarness_Controllers_SidebarController$_getController$2(testPackage) {
+        /// <param name="testPackage" type="Open.TestHarness.Models.TestPackageInfo">
+        /// </param>
+        /// <returns type="Open.TestHarness.Controllers.TestPackageController"></returns>
+        return Type.safeCast(Open.Core.Helper.get_collection().first(this._packageControllers$2, ss.Delegate.create(this, function(o) {
+            return (o).get_testPackage() === testPackage;
+        })), Open.TestHarness.Controllers.TestPackageController);
     }
 }
 
@@ -599,6 +858,8 @@ Open.TestHarness.Controllers.TestPackageController = function Open_TestHarness_C
     /// </param>
     /// <field name="__loaded$2" type="EventHandler">
     /// </field>
+    /// <field name="propSelectedTestClass" type="String" static="true">
+    /// </field>
     /// <field name="_loadTimeout$2" type="Number" static="true">
     /// </field>
     /// <field name="_rootNode$2" type="Open.TestHarness.Models.TestPackageListItem">
@@ -606,6 +867,7 @@ Open.TestHarness.Controllers.TestPackageController = function Open_TestHarness_C
     Open.TestHarness.Controllers.TestPackageController.initializeBase(this);
     this._rootNode$2 = rootNode;
     rootNode.add_selectionChanged(ss.Delegate.create(this, this._onSelectionChanged$2));
+    rootNode.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
 }
 Open.TestHarness.Controllers.TestPackageController.prototype = {
     
@@ -634,21 +896,36 @@ Open.TestHarness.Controllers.TestPackageController.prototype = {
     
     _rootNode$2: null,
     
+    onDisposed: function Open_TestHarness_Controllers_TestPackageController$onDisposed() {
+        this._rootNode$2.remove_selectionChanged(ss.Delegate.create(this, this._onSelectionChanged$2));
+        this._rootNode$2.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
+        Open.TestHarness.Controllers.TestPackageController.callBaseMethod(this, 'onDisposed');
+    },
+    
     _onSelectionChanged$2: function Open_TestHarness_Controllers_TestPackageController$_onSelectionChanged$2(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="ss.EventArgs">
         /// </param>
         if (this.get_rootNode().get_isSelected()) {
-            this._load$2();
+            this._download$2();
         }
+    },
+    
+    _onChildSelectionChanged$2: function Open_TestHarness_Controllers_TestPackageController$_onChildSelectionChanged$2(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        var item = Type.safeCast(Open.Core.Helper.get_tree().firstSelectedChild(this.get_rootNode()), Open.TestHarness.Models.TestClassListItem);
+        this.set_selectedTestClass((item == null) ? null : item.get_testClass());
     },
     
     get_testPackage: function Open_TestHarness_Controllers_TestPackageController$get_testPackage() {
         /// <summary>
         /// Gets the test-package that is under control.
         /// </summary>
-        /// <value type="Open.TestHarness.Models.TestPackageDef"></value>
+        /// <value type="Open.TestHarness.Models.TestPackageInfo"></value>
         return this._rootNode$2.get_testPackage();
     },
     
@@ -660,7 +937,25 @@ Open.TestHarness.Controllers.TestPackageController.prototype = {
         return this._rootNode$2;
     },
     
-    _load$2: function Open_TestHarness_Controllers_TestPackageController$_load$2() {
+    get_selectedTestClass: function Open_TestHarness_Controllers_TestPackageController$get_selectedTestClass() {
+        /// <summary>
+        /// Gets or sets the currently selected test class.
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestClassInfo"></value>
+        return this.get(Open.TestHarness.Controllers.TestPackageController.propSelectedTestClass, null);
+    },
+    set_selectedTestClass: function Open_TestHarness_Controllers_TestPackageController$set_selectedTestClass(value) {
+        /// <summary>
+        /// Gets or sets the currently selected test class.
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestClassInfo"></value>
+        if (this.set(Open.TestHarness.Controllers.TestPackageController.propSelectedTestClass, value, null)) {
+            Open.TestHarness.Application.get_shell().get_sidebar().get_testList().set_testClass(value);
+        }
+        return value;
+    },
+    
+    _download$2: function Open_TestHarness_Controllers_TestPackageController$_download$2() {
         if (this.get_testPackage().get_isLoaded()) {
             return;
         }
@@ -694,35 +989,298 @@ Open.TestHarness.Controllers.TestPackageController.prototype = {
 }
 
 
+Type.registerNamespace('Open.TestHarness.Views');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.Views.ShellView
+
+Open.TestHarness.Views.ShellView = function Open_TestHarness_Views_ShellView(container) {
+    /// <summary>
+    /// The root view of the application shell.
+    /// </summary>
+    /// <param name="container" type="jQueryObject">
+    /// The containing DIV.
+    /// </param>
+    /// <field name="_sidebar$2" type="Open.TestHarness.Views.SidebarView">
+    /// </field>
+    Open.TestHarness.Views.ShellView.initializeBase(this);
+    this.initialize(container);
+    this._sidebar$2 = new Open.TestHarness.Views.SidebarView($(Open.TestHarness.CssSelectors.sidebar));
+}
+Open.TestHarness.Views.ShellView.prototype = {
+    _sidebar$2: null,
+    
+    get_sidebar: function Open_TestHarness_Views_ShellView$get_sidebar() {
+        /// <summary>
+        /// Gets the view for the SideBar.
+        /// </summary>
+        /// <value type="Open.TestHarness.Views.SidebarView"></value>
+        return this._sidebar$2;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.Views.SidebarView
+
+Open.TestHarness.Views.SidebarView = function Open_TestHarness_Views_SidebarView(container) {
+    /// <summary>
+    /// The view for the side-bar.
+    /// </summary>
+    /// <param name="container" type="jQueryObject">
+    /// The containing DIV.
+    /// </param>
+    /// <field name="slideDuration" type="Number" static="true">
+    /// </field>
+    /// <field name="propIsTestListVisible" type="String" static="true">
+    /// </field>
+    /// <field name="_rootList$2" type="Open.Core.Lists.ListTreeView">
+    /// </field>
+    /// <field name="_backController$2" type="Open.Core.Lists.ListTreeBackController">
+    /// </field>
+    /// <field name="_testList$2" type="Open.TestHarness.Views.TestListView">
+    /// </field>
+    Open.TestHarness.Views.SidebarView.initializeBase(this);
+    this.initialize(container);
+    this._rootList$2 = new Open.Core.Lists.ListTreeView($(Open.TestHarness.CssSelectors.sidebarRootList));
+    this._rootList$2.set_slideDuration(Open.TestHarness.Views.SidebarView.slideDuration);
+    this._testList$2 = new Open.TestHarness.Views.TestListView($(Open.TestHarness.CssSelectors.testList));
+    this._backController$2 = new Open.Core.Lists.ListTreeBackController(this._rootList$2, $(Open.TestHarness.CssSelectors.sidebarToolbar), $(Open.TestHarness.CssSelectors.backMask));
+    this._rootList$2.add_selectedParentChanged(ss.Delegate.create(this, function() {
+        this._syncTestListVisibility$2();
+    }));
+    this.updateVisualState();
+    this.get_rootList().get_container().click(ss.Delegate.create(this, function(eevent) {
+    }));
+}
+Open.TestHarness.Views.SidebarView._animate$2 = function Open_TestHarness_Views_SidebarView$_animate$2(div, properties, onComplete) {
+    /// <param name="div" type="jQueryObject">
+    /// </param>
+    /// <param name="properties" type="Object">
+    /// </param>
+    /// <param name="onComplete" type="Action">
+    /// </param>
+    div.animate(properties, Open.Core.Helper.get_number().toMsecs(Open.TestHarness.Views.SidebarView.slideDuration), 'swing', function() {
+        Open.Core.Helper.invokeOrDefault(onComplete);
+    });
+}
+Open.TestHarness.Views.SidebarView.prototype = {
+    _rootList$2: null,
+    _backController$2: null,
+    _testList$2: null,
+    
+    onDisposed: function Open_TestHarness_Views_SidebarView$onDisposed() {
+        this._backController$2.dispose();
+        this._rootList$2.dispose();
+        Open.TestHarness.Views.SidebarView.callBaseMethod(this, 'onDisposed');
+    },
+    
+    get_rootList: function Open_TestHarness_Views_SidebarView$get_rootList() {
+        /// <summary>
+        /// Gets the main List-Tree view.
+        /// </summary>
+        /// <value type="Open.Core.Lists.ListTreeView"></value>
+        return this._rootList$2;
+    },
+    
+    get_testList: function Open_TestHarness_Views_SidebarView$get_testList() {
+        /// <summary>
+        /// Gets the Test-List view.
+        /// </summary>
+        /// <value type="Open.TestHarness.Views.TestListView"></value>
+        return this._testList$2;
+    },
+    
+    get_isTestListVisible: function Open_TestHarness_Views_SidebarView$get_isTestListVisible() {
+        /// <summary>
+        /// Gets or sets whether the TestList panel is visible.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        return this.get(Open.TestHarness.Views.SidebarView.propIsTestListVisible, false);
+    },
+    set_isTestListVisible: function Open_TestHarness_Views_SidebarView$set_isTestListVisible(value) {
+        /// <summary>
+        /// Gets or sets whether the TestList panel is visible.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        if (this.set(Open.TestHarness.Views.SidebarView.propIsTestListVisible, value, false)) {
+            if (value) {
+                this.showTestList(null);
+            }
+            else {
+                this.hideTestList(null);
+            }
+        }
+        return value;
+    },
+    
+    updateVisualState: function Open_TestHarness_Views_SidebarView$updateVisualState() {
+        /// <summary>
+        /// Refreshes the visual state.
+        /// </summary>
+        this._syncRootListHeight$2();
+    },
+    
+    showTestList: function Open_TestHarness_Views_SidebarView$showTestList(onComplete) {
+        /// <summary>
+        /// Reveals the test list.
+        /// </summary>
+        /// <param name="onComplete" type="Action">
+        /// The action to invoke when complete
+        /// </param>
+        this.set_isTestListVisible(true);
+        var height = this._getTargetTestListHeight$2();
+        this._animateHeights$2(height, onComplete);
+    },
+    
+    hideTestList: function Open_TestHarness_Views_SidebarView$hideTestList(onComplete) {
+        /// <summary>
+        /// Hides the test list.
+        /// </summary>
+        /// <param name="onComplete" type="Action">
+        /// The action to invoke when complete
+        /// </param>
+        this.set_isTestListVisible(false);
+        this._animateHeights$2(0, onComplete);
+    },
+    
+    _animateHeights$2: function Open_TestHarness_Views_SidebarView$_animateHeights$2(testListHeight, onComplete) {
+        /// <param name="testListHeight" type="Number" integer="true">
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// </param>
+        var testListProps = {};
+        testListProps[Open.Core.Css.height] = testListHeight;
+        var rootListProps = {};
+        rootListProps[Open.Core.Css.bottom] = testListHeight;
+        Open.TestHarness.Views.SidebarView._animate$2(this.get_testList().get_container(), testListProps, null);
+        Open.TestHarness.Views.SidebarView._animate$2(this.get_rootList().get_container(), rootListProps, onComplete);
+    },
+    
+    _syncRootListHeight$2: function Open_TestHarness_Views_SidebarView$_syncRootListHeight$2() {
+        this.get_rootList().get_container().css(Open.Core.Css.bottom, this.get_testList().get_container().height() + Open.Core.Css.px);
+    },
+    
+    _syncTestListVisibility$2: function Open_TestHarness_Views_SidebarView$_syncTestListVisibility$2() {
+        var node = this._rootList$2.get_selectedParent();
+        this.set_isTestListVisible(node != null && (Type.canCast(node, Open.TestHarness.Models.TestPackageListItem)));
+    },
+    
+    _getTargetTestListHeight$2: function Open_TestHarness_Views_SidebarView$_getTargetTestListHeight$2() {
+        /// <returns type="Number" integer="true"></returns>
+        return 250;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness.Views.TestListView
+
+Open.TestHarness.Views.TestListView = function Open_TestHarness_Views_TestListView(container) {
+    /// <summary>
+    /// The list of tests.
+    /// </summary>
+    /// <param name="container" type="jQueryObject">
+    /// The containing div.
+    /// </param>
+    /// <field name="propTestClass" type="String" static="true">
+    /// </field>
+    /// <field name="_listView$2" type="Open.Core.Lists.ListTreeView">
+    /// </field>
+    /// <field name="_rootNode$2" type="Open.Core.Lists.ListItem">
+    /// </field>
+    Open.TestHarness.Views.TestListView.initializeBase(this);
+    this.initialize(container);
+    this._listView$2 = new Open.Core.Lists.ListTreeView($(Open.TestHarness.CssSelectors.testListContent));
+    this._listView$2.set_slideDuration(Open.TestHarness.Views.SidebarView.slideDuration);
+    this._rootNode$2 = new Open.Core.Lists.ListItem();
+    this._listView$2.set_rootNode(this._rootNode$2);
+}
+Open.TestHarness.Views.TestListView.prototype = {
+    _listView$2: null,
+    _rootNode$2: null,
+    
+    get_testClass: function Open_TestHarness_Views_TestListView$get_testClass() {
+        /// <summary>
+        /// Gets or sets the test class the view is listing methods for.
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestClassInfo"></value>
+        return this.get(Open.TestHarness.Views.TestListView.propTestClass, null);
+    },
+    set_testClass: function Open_TestHarness_Views_TestListView$set_testClass(value) {
+        /// <summary>
+        /// Gets or sets the test class the view is listing methods for.
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.TestClassInfo"></value>
+        if (this.set(Open.TestHarness.Views.TestListView.propTestClass, value, null)) {
+            this._populateList$2(value);
+        }
+        return value;
+    },
+    
+    _populateList$2: function Open_TestHarness_Views_TestListView$_populateList$2(testClass) {
+        /// <param name="testClass" type="Open.TestHarness.Models.TestClassInfo">
+        /// </param>
+        this._rootNode$2.clearChildren();
+        if (testClass == null) {
+            return;
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(testClass);
+        while ($enum1.moveNext()) {
+            var method = $enum1.get_current();
+            this._rootNode$2.addChild(new Open.TestHarness.Models.TestMethodListItem(method));
+        }
+    }
+}
+
+
 Open.TestHarness.CssSelectors.registerClass('Open.TestHarness.CssSelectors');
 Open.TestHarness.Elements.registerClass('Open.TestHarness.Elements');
 Open.TestHarness.Application.registerClass('Open.TestHarness.Application');
+Open.TestHarness.Models.TestMethodListItem.registerClass('Open.TestHarness.Models.TestMethodListItem', Open.Core.Lists.ListItem);
 Open.TestHarness.Models.TestClassListItem.registerClass('Open.TestHarness.Models.TestClassListItem', Open.Core.Lists.ListItem);
-Open.TestHarness.Models.TestPackageDef.registerClass('Open.TestHarness.Models.TestPackageDef', null, ss.IEnumerable);
-Open.TestHarness.Models.TestClassDef.registerClass('Open.TestHarness.Models.TestClassDef');
+Open.TestHarness.Models.TestMethodInfo.registerClass('Open.TestHarness.Models.TestMethodInfo', Open.Core.ModelBase);
+Open.TestHarness.Models.TestPackageInfo.registerClass('Open.TestHarness.Models.TestPackageInfo', Open.Core.ModelBase, ss.IEnumerable);
+Open.TestHarness.Models.TestClassInfo.registerClass('Open.TestHarness.Models.TestClassInfo', Open.Core.ModelBase, ss.IEnumerable);
 Open.TestHarness.Models.TestPackageListItem.registerClass('Open.TestHarness.Models.TestPackageListItem', Open.Core.Lists.ListItem);
 Open.TestHarness.Models.TestPackageLoader.registerClass('Open.TestHarness.Models.TestPackageLoader', null, ss.IDisposable);
 Open.TestHarness.Controllers.PanelResizeController.registerClass('Open.TestHarness.Controllers.PanelResizeController', Open.Core.ControllerBase);
 Open.TestHarness.Controllers.SidebarController.registerClass('Open.TestHarness.Controllers.SidebarController', Open.Core.ControllerBase);
 Open.TestHarness.Controllers.MyNode.registerClass('Open.TestHarness.Controllers.MyNode', Open.Core.Lists.ListItem);
 Open.TestHarness.Controllers.TestPackageController.registerClass('Open.TestHarness.Controllers.TestPackageController', Open.Core.ControllerBase);
+Open.TestHarness.Views.ShellView.registerClass('Open.TestHarness.Views.ShellView', Open.Core.ViewBase);
+Open.TestHarness.Views.SidebarView.registerClass('Open.TestHarness.Views.SidebarView', Open.Core.ViewBase);
+Open.TestHarness.Views.TestListView.registerClass('Open.TestHarness.Views.TestListView', Open.Core.ViewBase);
+Open.TestHarness.CssSelectors.root = '#testHarness';
 Open.TestHarness.CssSelectors.sidebar = '#testHarnessSidebar';
-Open.TestHarness.CssSelectors.sidebarList = '#testHarnessSidebar .th-sidebarList';
+Open.TestHarness.CssSelectors.sidebarRootList = '#testHarnessSidebar .th-sidebarRootList';
 Open.TestHarness.CssSelectors.sidebarToolbar = '#testHarnessSidebar div.th-toolbar';
 Open.TestHarness.CssSelectors.backMask = '#testHarnessSidebar img.th-backMask';
+Open.TestHarness.CssSelectors.testList = '#testHarnessSidebar .th-testList';
+Open.TestHarness.CssSelectors.testListContent = '#testHarnessSidebar .th-testList-content';
 Open.TestHarness.CssSelectors.main = '#testHarness .th-main';
-Open.TestHarness.CssSelectors.logTitlebar = '#testHarnessLog .th-log-titlebar';
+Open.TestHarness.CssSelectors.logTitlebar = '#testHarnessLog .th-log-tb';
 Open.TestHarness.CssSelectors.log = '#testHarnessLog .coreLog';
 Open.TestHarness.Elements.root = 'testHarness';
 Open.TestHarness.Elements.outputLog = 'testHarnessLog';
+Open.TestHarness.Application._shell = null;
 Open.TestHarness.Application._resizeController = null;
 Open.TestHarness.Application._sidebarController = null;
-Open.TestHarness.Models.TestPackageDef._singletons = [];
-Open.TestHarness.Models.TestClassDef._singletons = null;
+Open.TestHarness.Models.TestMethodInfo.keyConstructor = 'constructor';
+Open.TestHarness.Models.TestMethodInfo.keyGetter = 'get_';
+Open.TestHarness.Models.TestMethodInfo.keySetter = 'set_';
+Open.TestHarness.Models.TestMethodInfo.keyField = '_';
+Open.TestHarness.Models.TestMethodInfo.keyFunction = 'function';
+Open.TestHarness.Models.TestPackageInfo._singletons$1 = [];
+Open.TestHarness.Models.TestClassInfo._singletons$1 = null;
 Open.TestHarness.Controllers.PanelResizeController._sidebarMinWidth$2 = 200;
 Open.TestHarness.Controllers.PanelResizeController._sidebarMaxWidthMargin$2 = 80;
 Open.TestHarness.Controllers.PanelResizeController._outputLogMaxHeightMargin$2 = 80;
-Open.TestHarness.Controllers.TestPackageController._loadTimeout$2 = 5;
+Open.TestHarness.Controllers.TestPackageController.propSelectedTestClass = 'SelectedTestClass';
+Open.TestHarness.Controllers.TestPackageController._loadTimeout$2 = 10;
+Open.TestHarness.Views.SidebarView.slideDuration = 0.2;
+Open.TestHarness.Views.SidebarView.propIsTestListVisible = 'IsTestListVisible';
+Open.TestHarness.Views.TestListView.propTestClass = 'TestClass';
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)

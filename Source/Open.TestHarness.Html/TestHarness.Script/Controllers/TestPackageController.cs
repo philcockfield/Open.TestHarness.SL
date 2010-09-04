@@ -14,8 +14,11 @@ namespace Open.TestHarness.Controllers
         #endregion
 
         #region Head
-        private const double loadTimeout = 5; // secs.
+        public const string PropSelectedTestClass = "SelectedTestClass";
+        private const double loadTimeout = 10; // secs.
+
         private readonly TestPackageListItem rootNode;
+
 
         /// <summary>Constructor.</summary>
         /// <param name="rootNode">The root list-item node.</param>
@@ -26,26 +29,53 @@ namespace Open.TestHarness.Controllers
 
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
+            rootNode.ChildSelectionChanged += OnChildSelectionChanged;
+        }
+
+        protected override void OnDisposed()
+        {
+            rootNode.SelectionChanged -= OnSelectionChanged;
+            rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
+            base.OnDisposed();
         }
         #endregion
 
         #region Event Handlers
         private void OnSelectionChanged(object sender, EventArgs e)
         {
-            if (RootNode.IsSelected) Load();
+            if (RootNode.IsSelected) Download();
+        }
+
+        private void OnChildSelectionChanged(object sender, EventArgs e)
+        {
+            TestClassListItem item = Helper.Tree.FirstSelectedChild(RootNode) as TestClassListItem;
+            SelectedTestClass = item == null ? null : item.TestClass;
         }
         #endregion
 
         #region Properties
         /// <summary>Gets the test-package that is under control.</summary>
-        public TestPackageDef TestPackage { get { return rootNode.TestPackage; } }
+        public TestPackageInfo TestPackage { get { return rootNode.TestPackage; } }
 
         /// <summary>Gets the root list-item node.</summary>
         public TestPackageListItem RootNode { get { return rootNode; } }
+
+        /// <summary>Gets or sets the currently selected test class.</summary>
+        public TestClassInfo SelectedTestClass
+        {
+            get { return (TestClassInfo) Get(PropSelectedTestClass, null); }
+            set
+            {
+                if (Set(PropSelectedTestClass, value, null))
+                {
+                    Application.Shell.Sidebar.TestList.TestClass = value;
+                }
+            }
+        }
         #endregion
 
         #region Internal
-        private void Load()
+        private void Download()
         {
             // Setup initial conditions.
             if (TestPackage.IsLoaded) return;
@@ -77,7 +107,7 @@ namespace Open.TestHarness.Controllers
 
         private void AddChildNodes()
         {
-            foreach (TestClassDef testClass in TestPackage)
+            foreach (TestClassInfo testClass in TestPackage)
             {
                 TestClassListItem node = new TestClassListItem(testClass);
                 RootNode.AddChild(node);

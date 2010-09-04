@@ -13,6 +13,10 @@ namespace Open.Core
         #endregion
 
         #region Methods : Write
+        /// <summary>Writes a informational message to the log (as a bold title).</summary>
+        /// <param name="message">The messge to write (HTML).</param>
+        public static void Title(string message) { Write(Html.ToBold(message), LogSeverity.Info); }
+
         /// <summary>Writes a informational message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
         public static void Info(string message) { Write(message, LogSeverity.Info); }

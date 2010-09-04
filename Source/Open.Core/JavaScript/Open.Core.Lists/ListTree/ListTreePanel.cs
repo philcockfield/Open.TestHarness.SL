@@ -8,36 +8,39 @@ namespace Open.Core.Lists
     internal class ListTreePanel : ViewBase
     {
         #region Head
-        private jQueryObject div;
-        private readonly ListTreeView listTreeView;
-        private ListView listView;
         private readonly jQueryObject rootDiv;
-        private readonly ITreeNode rootNode;
+        private jQueryObject div;
+        private readonly ITreeNode node;
+        private readonly ListTreeView parentList;
+        private ListView listView;
 
-        public ListTreePanel(ListTreeView listTreeView, jQueryObject rootDiv, ITreeNode rootNode)
+        public ListTreePanel(ListTreeView parentList, jQueryObject rootDiv, ITreeNode node)
         {
             // Store value.
-            this.listTreeView = listTreeView;
+            this.parentList = parentList;
             this.rootDiv = rootDiv;
-            this.rootNode = rootNode;
+            this.node = node;
 
             // Wire up events.
             GlobalEvents.HorizontalPanelResized += OnHorizontalPanelResized;
-            rootNode.ChildSelectionChanged += OnChildSelectionChanged;
-            rootNode.ChildAdded += OnChildAdded;
-            rootNode.ChildRemoved += OnChildRemoved;
+            node.ChildSelectionChanged += OnChildSelectionChanged;
+            node.AddedChild += OnAddedChild;
+            node.RemovedChild += OnRemovedChild;
+            if (node.Parent != null) node.Parent.RemovingChild += OnParentRemovingChild;
         }
+
 
         protected override void OnDisposed()
         {
             // Setup initial conditions.
-            div.Empty();
+            div.Remove();
 
             // Unwire events.
             GlobalEvents.HorizontalPanelResized -= OnHorizontalPanelResized;
-            rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
-            rootNode.ChildAdded -= OnChildAdded;
-            rootNode.ChildRemoved -= OnChildRemoved;
+            node.ChildSelectionChanged -= OnChildSelectionChanged;
+            node.AddedChild -= OnAddedChild;
+            node.RemovedChild -= OnRemovedChild;
+            if (node.Parent != null) node.Parent.RemovingChild -= OnParentRemovingChild;
 
             // Finish up.
             base.OnDisposed();
@@ -50,21 +53,37 @@ namespace Open.Core.Lists
             ITreeNode selectedNode = GetSelectedChild();
             if (!Script.IsNullOrUndefined(selectedNode))
             {
-                listTreeView.SelectedNode = selectedNode;
+                parentList.SelectedNode = selectedNode;
             }
         }
 
         private void OnHorizontalPanelResized(object sender, EventArgs e) { SyncWidth(); }
-        private void OnChildAdded(object sender, TreeNodeEventArgs e) { listView.Insert(e.Index, e.Node); }
-        private void OnChildRemoved(object sender, TreeNodeEventArgs e) { listView.Remove(e.Node); }
+        private void OnAddedChild(object sender, TreeNodeEventArgs e) { listView.Insert(e.Index, e.Node); }
+        private void OnRemovedChild(object sender, TreeNodeEventArgs e) { listView.Remove(e.Node); }
+
+        private void OnParentRemovingChild(object sender, TreeNodeEventArgs e)
+        {
+            // Setup initial conditions.
+            if (e.Node != node) return;
+
+            // Slide the list-tree back to the next remaining parent.
+            if (parentList.RootNode != null)
+            {
+                ITreeNode ancestor = Helper.Tree.FirstRemainingParent(parentList.RootNode, node);
+                parentList.SelectedParent = ancestor ?? parentList.RootNode;
+            }
+
+            // The node for this panel has been removed.  Dispose of the panel.
+            Dispose();
+        }
         #endregion
 
         #region Properties
-        public ITreeNode RootNode { get { return rootNode; } }
+        public ITreeNode Node { get { return node; } }
         public bool IsCenterStage { get { return div.GetCSS(Css.Left) == "0px"; } }
 
         private int Width { get { return rootDiv.GetWidth(); } }
-        private int SlideDuration { get { return Helper.Number.ToMsecs(listTreeView.SlideDuration); } }
+        private int SlideDuration { get { return Helper.Number.ToMsecs(parentList.SlideDuration); } }
         #endregion
 
         #region Methods
@@ -78,7 +97,7 @@ namespace Open.Core.Lists
 
             // Create list.
             listView = new ListView(div);
-            listView.Load(rootNode.Children);
+            listView.Load(node.Children);
 
             // Finish up.
             SyncWidth();
@@ -100,7 +119,7 @@ namespace Open.Core.Lists
             div.Animate(
                         properties, 
                         SlideDuration, 
-                        listTreeView.SlideEasing, 
+                        parentList.SlideEasing, 
                         delegate
                             {
                                 // On complete.
@@ -125,7 +144,7 @@ namespace Open.Core.Lists
             div.Animate(
                         properties,
                         SlideDuration,
-                        listTreeView.SlideEasing,
+                        parentList.SlideEasing,
                         delegate
                             {
                                 // On complete.
@@ -143,7 +162,7 @@ namespace Open.Core.Lists
         public void SetPosition(HorizontalDirection direction, bool isVisible)
         {
             int startLeft = direction == HorizontalDirection.Right ? 0 - Width : Width;
-            div.CSS(Css.Left, startLeft + "px");
+            div.CSS(Css.Left, startLeft + Css.Px);
             div.CSS(Css.Display, isVisible ? Css.Block : Css.None);
             SyncWidth();
         }
@@ -155,9 +174,9 @@ namespace Open.Core.Lists
 
         private ITreeNode GetSelectedChild()
         {
-            foreach (ITreeNode node in rootNode.Children)
+            foreach (ITreeNode item in node.Children)
             {
-                if (node.IsSelected) return node;
+                if (item.IsSelected) return item;
             }
             return null;
         }

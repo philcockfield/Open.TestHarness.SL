@@ -49,6 +49,7 @@ namespace Open.TestHarness.Web.Controllers {
             public readonly string Index = "Index";
             public readonly string Log = "Log";
             public readonly string Sidebar = "Sidebar";
+            public readonly string TestList = "TestList";
         }
 
 
@@ -60,6 +61,7 @@ namespace Open.TestHarness.Web.Controllers {
             public readonly string Index = "~/Views/TestHarness/Index.aspx";
             public readonly string Log = "~/Views/TestHarness/Log.ascx";
             public readonly string Sidebar = "~/Views/TestHarness/Sidebar.ascx";
+            public readonly string TestList = "~/Views/TestHarness/TestList.ascx";
         }
     }
 
@@ -79,6 +81,11 @@ namespace Open.TestHarness.Web.Controllers {
 
         public override System.Web.Mvc.ActionResult Sidebar() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Sidebar);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult TestList() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.TestList);
             return callInfo;
         }
 

@@ -47,14 +47,19 @@
   <ItemGroup>
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />
+    <Compile Include="Models\ListItems\TestMethodListItem.cs" />
     <Compile Include="Models\ListItems\TestClassListItem.cs" />
-    <Compile Include="Models\TestPackage\TestPackageDef.cs" />
-    <Compile Include="Models\TestClassDef.cs" />
+    <Compile Include="Models\TestMethodInfo.cs" />
+    <Compile Include="Models\TestPackage\TestPackageInfo.cs" />
+    <Compile Include="Models\TestClassInfo.cs" />
     <Compile Include="Controllers\PanelResizeController.cs" />
     <Compile Include="Models\ListItems\TestPackageListItem.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\TestPackageController.cs" />
     <Compile Include="Models\TestPackage\TestPackageLoader.cs" />
+    <Compile Include="Views\ShellView.cs" />
+    <Compile Include="Views\SideBarView.cs" />
+    <Compile Include="Views\TestListView.cs" />
     <Content Include="Properties\TestHarness.Script3.ruleset" />
     <Content Include="Properties\TestHarness.Script3.script" />
     <Compile Include="Application.cs" />

@@ -66,7 +66,8 @@ namespace Open.Core.Controls
             // Setup initial conditions.
             counter++;
             if (message == null) message = "<null>".HtmlEncode();
-            if (message == string.Empty) message = "<Empty String>".HtmlEncode();
+            if (message == string.Empty) message = "<empty-string>".HtmlEncode();
+            if (string.IsNullOrEmpty(message.Trim())) message = "<whitespace>".HtmlEncode();
 
             // Create the row.
             divRow = Html.CreateDiv();

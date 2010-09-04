@@ -102,6 +102,10 @@ namespace Open.Core
             if (text == null) text = url;
             return string.Format("<a href='{0}' target='_{2}'>{1}</a>", url, text, target.ToString());
         }
+
+        /// <summary>Wraps the given text in <b></b> elements.</summary>
+        /// <param name="text">The text to wrap.</param>
+        public static string ToBold(string text) { return string.Format("<b>{0}</b>", text); }
         #endregion
     }
 }

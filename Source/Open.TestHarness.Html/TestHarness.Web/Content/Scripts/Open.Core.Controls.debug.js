@@ -90,7 +90,10 @@ Open.Core.Controls.LogView.prototype = {
             message = '<null>'.htmlEncode();
         }
         if (message === String.Empty) {
-            message = '<Empty String>'.htmlEncode();
+            message = '<empty-string>'.htmlEncode();
+        }
+        if (String.isNullOrEmpty(message.trim())) {
+            message = '<whitespace>'.htmlEncode();
         }
         this._divRow$2 = Open.Core.Html.createDiv();
         this._divRow$2.addClass(cssClass);

@@ -104,6 +104,7 @@
     <Content Include="Views\TestHarness\Index.aspx" />
     <Content Include="Views\TestHarness\Log.ascx" />
     <Content Include="Views\TestHarness\Sidebar.ascx" />
+    <Content Include="Views\TestHarness\TestList.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -122,6 +123,7 @@
     <Content Include="App_GlobalResources\TestHarnessStrings.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>TestHarnessStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

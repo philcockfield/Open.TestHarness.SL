@@ -85,7 +85,9 @@ Open.Core.Lists.ListCss = function Open_Core_Lists_ListCss() {
     /// </field>
     /// <field name="_isCssInserted" type="Boolean" static="true">
     /// </field>
-    /// <field name="itemClasses" type="Open.Core.Lists.ListItemCss" static="true">
+    /// <field name="itemClasses" type="Open.Core.Lists.ListItemClasses" static="true">
+    /// </field>
+    /// <field name="classes" type="Open.Core.Lists.ListClasses" static="true">
     /// </field>
 }
 Open.Core.Lists.ListCss.insertCss = function Open_Core_Lists_ListCss$insertCss() {
@@ -101,9 +103,21 @@ Open.Core.Lists.ListCss.insertCss = function Open_Core_Lists_ListCss$insertCss()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.Lists.ListItemCss
+// Open.Core.Lists.ListClasses
 
-Open.Core.Lists.ListItemCss = function Open_Core_Lists_ListItemCss() {
+Open.Core.Lists.ListClasses = function Open_Core_Lists_ListClasses() {
+    /// <field name="root" type="String">
+    /// </field>
+}
+Open.Core.Lists.ListClasses.prototype = {
+    root: 'c-list'
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Lists.ListItemClasses
+
+Open.Core.Lists.ListItemClasses = function Open_Core_Lists_ListItemClasses() {
     /// <field name="root" type="String">
     /// </field>
     /// <field name="defaultRoot" type="String">
@@ -115,7 +129,7 @@ Open.Core.Lists.ListItemCss = function Open_Core_Lists_ListItemCss() {
     /// <field name="iconRight" type="String">
     /// </field>
 }
-Open.Core.Lists.ListItemCss.prototype = {
+Open.Core.Lists.ListItemClasses.prototype = {
     root: 'c-listItem',
     defaultRoot: 'c-listItem-default',
     selected: 'c-listItem-selected',
@@ -171,7 +185,7 @@ Open.Core.Lists.ListTreeBackController.prototype = {
         /// </param>
         /// <param name="e" type="Open.Core.PropertyChangedEventArgs">
         /// </param>
-        if (e.get_property().get_name() === Open.Core.Lists.ListTreeView.propCurrentListRoot) {
+        if (e.get_property().get_name() === Open.Core.Lists.ListTreeView.propSelectedParent) {
             this._fadeBackMask$2();
         }
     },
@@ -179,7 +193,7 @@ Open.Core.Lists.ListTreeBackController.prototype = {
     _onBackClick$2: function Open_Core_Lists_ListTreeBackController$_onBackClick$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
-        if (Open.Core.Keyboard.get_isCtrlPressed()) {
+        if (Open.Core.Keyboard.get_isAltPressed()) {
             this._listTree$2.home();
         }
         else {
@@ -213,14 +227,14 @@ Open.Core.Lists.ListTreeBackController.prototype = {
     
     get__showBackMask$2: function Open_Core_Lists_ListTreeBackController$get__showBackMask$2() {
         /// <value type="Boolean"></value>
-        var node = this._listTree$2.get_selectedNode();
+        var node = this._listTree$2.get_selectedParent();
         if (node == null) {
             return false;
         }
         if (node.get_isRoot()) {
             return false;
         }
-        if (node.get_totalChildren() === 0 && node.get_parent().get_isRoot()) {
+        if (node.get_childCount() === 0 && node.get_parent().get_isRoot()) {
             return false;
         }
         return true;
@@ -320,48 +334,54 @@ Open.Core.Lists.ListItem.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Lists._listTreePanel
 
-Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(listTreeView, rootDiv, rootNode) {
+Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(parentList, rootDiv, node) {
     /// <summary>
     /// Renders a single list within a tree-of lists.
     /// </summary>
-    /// <param name="listTreeView" type="Open.Core.Lists.ListTreeView">
+    /// <param name="parentList" type="Open.Core.Lists.ListTreeView">
     /// </param>
     /// <param name="rootDiv" type="jQueryObject">
     /// </param>
-    /// <param name="rootNode" type="Open.Core.ITreeNode">
+    /// <param name="node" type="Open.Core.ITreeNode">
     /// </param>
+    /// <field name="_rootDiv$2" type="jQueryObject">
+    /// </field>
     /// <field name="_div$2" type="jQueryObject">
     /// </field>
-    /// <field name="_listTreeView$2" type="Open.Core.Lists.ListTreeView">
+    /// <field name="_node$2" type="Open.Core.ITreeNode">
+    /// </field>
+    /// <field name="_parentList$2" type="Open.Core.Lists.ListTreeView">
     /// </field>
     /// <field name="_listView$2" type="Open.Core.Lists.ListView">
     /// </field>
-    /// <field name="_rootDiv$2" type="jQueryObject">
-    /// </field>
-    /// <field name="_rootNode$2" type="Open.Core.ITreeNode">
-    /// </field>
     Open.Core.Lists._listTreePanel.initializeBase(this);
-    this._listTreeView$2 = listTreeView;
+    this._parentList$2 = parentList;
     this._rootDiv$2 = rootDiv;
-    this._rootNode$2 = rootNode;
+    this._node$2 = node;
     Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
-    rootNode.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
-    rootNode.add_childAdded(ss.Delegate.create(this, this._onChildAdded$2));
-    rootNode.add_childRemoved(ss.Delegate.create(this, this._onChildRemoved$2));
+    node.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
+    node.add_addedChild(ss.Delegate.create(this, this._onAddedChild$2));
+    node.add_removedChild(ss.Delegate.create(this, this._onRemovedChild$2));
+    if (node.get_parent() != null) {
+        node.get_parent().add_removingChild(ss.Delegate.create(this, this._onParentRemovingChild$2));
+    }
 }
 Open.Core.Lists._listTreePanel.prototype = {
-    _div$2: null,
-    _listTreeView$2: null,
-    _listView$2: null,
     _rootDiv$2: null,
-    _rootNode$2: null,
+    _div$2: null,
+    _node$2: null,
+    _parentList$2: null,
+    _listView$2: null,
     
     onDisposed: function Open_Core_Lists__listTreePanel$onDisposed() {
-        this._div$2.empty();
+        this._div$2.remove();
         Open.Core.GlobalEvents.remove_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
-        this._rootNode$2.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
-        this._rootNode$2.remove_childAdded(ss.Delegate.create(this, this._onChildAdded$2));
-        this._rootNode$2.remove_childRemoved(ss.Delegate.create(this, this._onChildRemoved$2));
+        this._node$2.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
+        this._node$2.remove_addedChild(ss.Delegate.create(this, this._onAddedChild$2));
+        this._node$2.remove_removedChild(ss.Delegate.create(this, this._onRemovedChild$2));
+        if (this._node$2.get_parent() != null) {
+            this._node$2.get_parent().remove_removingChild(ss.Delegate.create(this, this._onParentRemovingChild$2));
+        }
         Open.Core.Lists._listTreePanel.callBaseMethod(this, 'onDisposed');
     },
     
@@ -372,7 +392,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         /// </param>
         var selectedNode = this._getSelectedChild$2();
         if (!ss.isNullOrUndefined(selectedNode)) {
-            this._listTreeView$2.set_selectedNode(selectedNode);
+            this._parentList$2.set_selectedNode(selectedNode);
         }
     },
     
@@ -384,7 +404,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         this._syncWidth$2();
     },
     
-    _onChildAdded$2: function Open_Core_Lists__listTreePanel$_onChildAdded$2(sender, e) {
+    _onAddedChild$2: function Open_Core_Lists__listTreePanel$_onAddedChild$2(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="Open.Core.TreeNodeEventArgs">
@@ -392,7 +412,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         this._listView$2.insert(e.get_index(), e.get_node());
     },
     
-    _onChildRemoved$2: function Open_Core_Lists__listTreePanel$_onChildRemoved$2(sender, e) {
+    _onRemovedChild$2: function Open_Core_Lists__listTreePanel$_onRemovedChild$2(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="Open.Core.TreeNodeEventArgs">
@@ -400,9 +420,24 @@ Open.Core.Lists._listTreePanel.prototype = {
         this._listView$2.remove(e.get_node());
     },
     
-    get_rootNode: function Open_Core_Lists__listTreePanel$get_rootNode() {
+    _onParentRemovingChild$2: function Open_Core_Lists__listTreePanel$_onParentRemovingChild$2(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Core.TreeNodeEventArgs">
+        /// </param>
+        if (e.get_node() !== this._node$2) {
+            return;
+        }
+        if (this._parentList$2.get_rootNode() != null) {
+            var ancestor = Open.Core.Helper.get_tree().firstRemainingParent(this._parentList$2.get_rootNode(), this._node$2);
+            this._parentList$2.set_selectedParent(ancestor || this._parentList$2.get_rootNode());
+        }
+        this.dispose();
+    },
+    
+    get_node: function Open_Core_Lists__listTreePanel$get_node() {
         /// <value type="Open.Core.ITreeNode"></value>
-        return this._rootNode$2;
+        return this._node$2;
     },
     
     get_isCenterStage: function Open_Core_Lists__listTreePanel$get_isCenterStage() {
@@ -417,7 +452,7 @@ Open.Core.Lists._listTreePanel.prototype = {
     
     get__slideDuration$2: function Open_Core_Lists__listTreePanel$get__slideDuration$2() {
         /// <value type="Number" integer="true"></value>
-        return Open.Core.Helper.get_number().toMsecs(this._listTreeView$2.get_slideDuration());
+        return Open.Core.Helper.get_number().toMsecs(this._parentList$2.get_slideDuration());
     },
     
     onInitialize: function Open_Core_Lists__listTreePanel$onInitialize(container) {
@@ -428,7 +463,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         this._hide$2();
         Open.Core.Css.absoluteFill(this._div$2);
         this._listView$2 = new Open.Core.Lists.ListView(this._div$2);
-        this._listView$2.load(this._rootNode$2.get_children());
+        this._listView$2.load(this._node$2.get_children());
         this._syncWidth$2();
     },
     
@@ -443,7 +478,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         this.centerStage();
         var properties = {};
         properties[Open.Core.Css.left] = (direction === Open.Core.HorizontalDirection.left) ? 0 - this.get__width$2() : this.get__width$2();
-        this._div$2.animate(properties, this.get__slideDuration$2(), this._listTreeView$2.get_slideEasing(), ss.Delegate.create(this, function() {
+        this._div$2.animate(properties, this.get__slideDuration$2(), this._parentList$2.get_slideEasing(), ss.Delegate.create(this, function() {
             this._hide$2();
             Open.Core.Helper.invokeOrDefault(onComplete);
         }));
@@ -460,7 +495,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         this.setPosition(direction, true);
         var properties = {};
         properties[Open.Core.Css.left] = 0;
-        this._div$2.animate(properties, this.get__slideDuration$2(), this._listTreeView$2.get_slideEasing(), ss.Delegate.create(this, function() {
+        this._div$2.animate(properties, this.get__slideDuration$2(), this._parentList$2.get_slideEasing(), ss.Delegate.create(this, function() {
             Open.Core.Helper.invokeOrDefault(onComplete);
         }));
     },
@@ -477,7 +512,7 @@ Open.Core.Lists._listTreePanel.prototype = {
         /// <param name="isVisible" type="Boolean">
         /// </param>
         var startLeft = (direction === Open.Core.HorizontalDirection.right) ? 0 - this.get__width$2() : this.get__width$2();
-        this._div$2.css(Open.Core.Css.left, startLeft + 'px');
+        this._div$2.css(Open.Core.Css.left, startLeft + Open.Core.Css.px);
         this._div$2.css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
         this._syncWidth$2();
     },
@@ -492,11 +527,11 @@ Open.Core.Lists._listTreePanel.prototype = {
     
     _getSelectedChild$2: function Open_Core_Lists__listTreePanel$_getSelectedChild$2() {
         /// <returns type="Open.Core.ITreeNode"></returns>
-        var $enum1 = ss.IEnumerator.getEnumerator(this._rootNode$2.get_children());
+        var $enum1 = ss.IEnumerator.getEnumerator(this._node$2.get_children());
         while ($enum1.moveNext()) {
-            var node = $enum1.get_current();
-            if (node.get_isSelected()) {
-                return node;
+            var item = $enum1.get_current();
+            if (item.get_isSelected()) {
+                return item;
             }
         }
         return null;
@@ -514,13 +549,15 @@ Open.Core.Lists.ListTreeView = function Open_Core_Lists_ListTreeView(container) 
     /// <param name="container" type="jQueryObject">
     /// The containing element.
     /// </param>
-    /// <field name="__selectionChanged$2" type="EventHandler">
+    /// <field name="__selectedNodeChanged$2" type="EventHandler">
+    /// </field>
+    /// <field name="__selectedParentChanged$2" type="EventHandler">
     /// </field>
     /// <field name="propRootNode" type="String" static="true">
     /// </field>
     /// <field name="propSelectedNode" type="String" static="true">
     /// </field>
-    /// <field name="propCurrentListRoot" type="String" static="true">
+    /// <field name="propSelectedParent" type="String" static="true">
     /// </field>
     /// <field name="_div$2" type="jQueryObject">
     /// </field>
@@ -560,26 +597,49 @@ Open.Core.Lists.ListTreeView._deselectChildren$2 = function Open_Core_Lists_List
 }
 Open.Core.Lists.ListTreeView.prototype = {
     
-    add_selectionChanged: function Open_Core_Lists_ListTreeView$add_selectionChanged(value) {
+    add_selectedNodeChanged: function Open_Core_Lists_ListTreeView$add_selectedNodeChanged(value) {
         /// <summary>
-        /// Fires when the selected node changes.
+        /// Fires when the selected-node property changes.
         /// </summary>
         /// <param name="value" type="Function" />
-        this.__selectionChanged$2 = ss.Delegate.combine(this.__selectionChanged$2, value);
+        this.__selectedNodeChanged$2 = ss.Delegate.combine(this.__selectedNodeChanged$2, value);
     },
-    remove_selectionChanged: function Open_Core_Lists_ListTreeView$remove_selectionChanged(value) {
+    remove_selectedNodeChanged: function Open_Core_Lists_ListTreeView$remove_selectedNodeChanged(value) {
         /// <summary>
-        /// Fires when the selected node changes.
+        /// Fires when the selected-node property changes.
         /// </summary>
         /// <param name="value" type="Function" />
-        this.__selectionChanged$2 = ss.Delegate.remove(this.__selectionChanged$2, value);
+        this.__selectedNodeChanged$2 = ss.Delegate.remove(this.__selectedNodeChanged$2, value);
     },
     
-    __selectionChanged$2: null,
+    __selectedNodeChanged$2: null,
     
-    _fireSelectionChanged$2: function Open_Core_Lists_ListTreeView$_fireSelectionChanged$2() {
-        if (this.__selectionChanged$2 != null) {
-            this.__selectionChanged$2.invoke(this, new ss.EventArgs());
+    _fireSelectedNodeChanged$2: function Open_Core_Lists_ListTreeView$_fireSelectedNodeChanged$2() {
+        if (this.__selectedNodeChanged$2 != null) {
+            this.__selectedNodeChanged$2.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    add_selectedParentChanged: function Open_Core_Lists_ListTreeView$add_selectedParentChanged(value) {
+        /// <summary>
+        /// Fires when the selected-parent property changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__selectedParentChanged$2 = ss.Delegate.combine(this.__selectedParentChanged$2, value);
+    },
+    remove_selectedParentChanged: function Open_Core_Lists_ListTreeView$remove_selectedParentChanged(value) {
+        /// <summary>
+        /// Fires when the selected-parent property changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__selectedParentChanged$2 = ss.Delegate.remove(this.__selectedParentChanged$2, value);
+    },
+    
+    __selectedParentChanged$2: null,
+    
+    _fireSelectedParentChanged$2: function Open_Core_Lists_ListTreeView$_fireSelectedParentChanged$2() {
+        if (this.__selectedParentChanged$2 != null) {
+            this.__selectedParentChanged$2.invoke(this, new ss.EventArgs());
         }
     },
     
@@ -624,39 +684,37 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// </summary>
         /// <value type="Open.Core.ITreeNode"></value>
         if (this.set(Open.Core.Lists.ListTreeView.propSelectedNode, value, null)) {
-            if (value != null && value.get_totalChildren() > 0) {
-                this.set_currentListRoot(value);
+            if (value != null && (value.get_childCount() > 0 || value.get_isRoot())) {
+                this.set_selectedParent(value);
             }
-            this._fireSelectionChanged$2();
+            this._fireSelectedNodeChanged$2();
         }
         return value;
     },
     
-    get_currentListRoot: function Open_Core_Lists_ListTreeView$get_currentListRoot() {
+    get_selectedParent: function Open_Core_Lists_ListTreeView$get_selectedParent() {
         /// <summary>
         /// Gets or sets the node which is the root of the current list (may be the same as SelectedNode).
         /// </summary>
         /// <value type="Open.Core.ITreeNode"></value>
-        return this.get(Open.Core.Lists.ListTreeView.propCurrentListRoot, null);
+        return this.get(Open.Core.Lists.ListTreeView.propSelectedParent, null);
     },
-    set_currentListRoot: function Open_Core_Lists_ListTreeView$set_currentListRoot(value) {
+    set_selectedParent: function Open_Core_Lists_ListTreeView$set_selectedParent(value) {
         /// <summary>
         /// Gets or sets the node which is the root of the current list (may be the same as SelectedNode).
         /// </summary>
         /// <value type="Open.Core.ITreeNode"></value>
-        if (this.set(Open.Core.Lists.ListTreeView.propCurrentListRoot, value, null)) {
+        if (this.set(Open.Core.Lists.ListTreeView.propSelectedParent, value, null)) {
             if (value != null) {
                 Open.Core.Lists.ListTreeView._deselectChildren$2(value);
-                if (value.get_totalChildren() > 0) {
-                    if (this._previousNode$2 == null) {
-                        this._getOrCreatePanel$2(value, true).centerStage();
-                    }
-                    else {
-                        this._slidePanels$2(this._previousNode$2, value);
-                    }
+                if (this._previousNode$2 == null) {
+                    this._getOrCreatePanel$2(value, true).centerStage();
+                }
+                else {
+                    this._slidePanels$2(this._previousNode$2, value);
                 }
             }
-            this.firePropertyChanged(Open.Core.Lists.ListTreeView.propCurrentListRoot);
+            this._fireSelectedParentChanged$2();
             this._previousNode$2 = value;
         }
         return value;
@@ -706,10 +764,10 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// <summary>
         /// Moves the selected node to the parent of the current node.
         /// </summary>
-        if (this.get_currentListRoot() == null || this.get_currentListRoot().get_isRoot()) {
+        if (this.get_selectedParent() == null || this.get_selectedParent().get_isRoot()) {
             return;
         }
-        this.set_selectedNode(this.get_currentListRoot().get_parent());
+        this.set_selectedNode(this.get_selectedParent().get_parent());
     },
     
     home: function Open_Core_Lists_ListTreeView$home() {
@@ -753,7 +811,7 @@ Open.Core.Lists.ListTreeView.prototype = {
         var $enum1 = ss.IEnumerator.getEnumerator(this._panels$2);
         while ($enum1.moveNext()) {
             var panel = $enum1.get_current();
-            if (panel.get_rootNode() === node) {
+            if (panel.get_node() === node) {
                 return panel;
             }
         }
@@ -833,6 +891,13 @@ Open.Core.Lists.ListView = function Open_Core_Lists_ListView(container) {
 }
 Open.Core.Lists.ListView.prototype = {
     _itemFactory$2: null,
+    
+    onInitialize: function Open_Core_Lists_ListView$onInitialize(container) {
+        /// <param name="container" type="jQueryObject">
+        /// </param>
+        container.addClass(Open.Core.Lists.ListCss.classes.root);
+        Open.Core.Lists.ListView.callBaseMethod(this, 'onInitialize', [ container ]);
+    },
     
     _onItemClick$2: function Open_Core_Lists_ListView$_onItemClick$2(e, view) {
         /// <param name="e" type="jQueryEvent">
@@ -1239,7 +1304,7 @@ Open.Core.Lists.ListItemView.prototype = {
         }
         var isVisible = false;
         var treeNode = this.get__modelAsTreeNode$2();
-        if (this.get__canSelect$2() && treeNode != null && treeNode.get_totalChildren() > 0) {
+        if (this.get__canSelect$2() && treeNode != null && treeNode.get_childCount() > 0) {
             isVisible = true;
         }
         Open.Core.Css.setVisible(this._imgRightIcon$2, isVisible);
@@ -1303,7 +1368,8 @@ Open.Core.Lists._listItemFactory.prototype = {
 
 Open.Core.Lists.ListHtml.registerClass('Open.Core.Lists.ListHtml');
 Open.Core.Lists.ListCss.registerClass('Open.Core.Lists.ListCss');
-Open.Core.Lists.ListItemCss.registerClass('Open.Core.Lists.ListItemCss');
+Open.Core.Lists.ListClasses.registerClass('Open.Core.Lists.ListClasses');
+Open.Core.Lists.ListItemClasses.registerClass('Open.Core.Lists.ListItemClasses');
 Open.Core.Lists.ListTreeBackController.registerClass('Open.Core.Lists.ListTreeBackController', Open.Core.ControllerBase);
 Open.Core.Lists.ListItem.registerClass('Open.Core.Lists.ListItem', Open.Core.TreeNode, Open.Core.Lists.IListItem, Open.Core.IHtmlFactory);
 Open.Core.Lists._listTreePanel.registerClass('Open.Core.Lists._listTreePanel', Open.Core.ViewBase);
@@ -1315,13 +1381,14 @@ Open.Core.Lists._listItemFactory.registerClass('Open.Core.Lists._listItemFactory
 Open.Core.Lists.ListHtml.childPointerIcon = '/Open.Core/Images/ListItem.ChildPointer.png';
 Open.Core.Lists.ListCss.url = '/Open.Core/Css/Core.Lists.css';
 Open.Core.Lists.ListCss._isCssInserted = false;
-Open.Core.Lists.ListCss.itemClasses = new Open.Core.Lists.ListItemCss();
+Open.Core.Lists.ListCss.itemClasses = new Open.Core.Lists.ListItemClasses();
+Open.Core.Lists.ListCss.classes = new Open.Core.Lists.ListClasses();
 Open.Core.Lists.ListItem.propText = 'Text';
 Open.Core.Lists.ListItem.propCanSelect = 'CanSelect';
 Open.Core.Lists.ListItem.propRightIconSrc = 'RightIconSrc';
 Open.Core.Lists.ListTreeView.propRootNode = 'RootNode';
 Open.Core.Lists.ListTreeView.propSelectedNode = 'SelectedNode';
-Open.Core.Lists.ListTreeView.propCurrentListRoot = 'CurrentListRoot';
+Open.Core.Lists.ListTreeView.propSelectedParent = 'SelectedParent';
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)

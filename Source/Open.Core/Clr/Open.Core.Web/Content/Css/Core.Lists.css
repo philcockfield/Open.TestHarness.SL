@@ -1,4 +1,6 @@
-﻿.c-listItem { position:relative; }
+﻿.c-list { overflow:auto; }
+
+.c-listItem { position:relative; }
 .c-listItem-default
 {
     position:relative;

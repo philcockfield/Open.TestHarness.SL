@@ -1,5 +1,4 @@
-﻿using System;
-using jQueryApi;
+﻿using jQueryApi;
 
 namespace Open.Core.Lists
 {
@@ -40,12 +39,12 @@ namespace Open.Core.Lists
         #region Event Handlers
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.Property.Name == ListTreeView.PropCurrentListRoot) FadeBackMask();
+            if (e.Property.Name == ListTreeView.PropSelectedParent) FadeBackMask();
         }
 
         private void OnBackClick(jQueryEvent e)
         {
-            if (Keyboard.IsCtrlPressed)
+            if (Keyboard.IsAltPressed)
             {
                 listTree.Home();
             }
@@ -70,10 +69,10 @@ namespace Open.Core.Lists
         {
             get
             {
-                ITreeNode node = listTree.SelectedNode;
+                ITreeNode node = listTree.SelectedParent;
                 if (node == null) return false;
                 if (node.IsRoot) return false;
-                if (node.TotalChildren == 0 && node.Parent.IsRoot) return false;
+                if (node.ChildCount == 0 && node.Parent.IsRoot) return false;
                 return true;
             }
         }

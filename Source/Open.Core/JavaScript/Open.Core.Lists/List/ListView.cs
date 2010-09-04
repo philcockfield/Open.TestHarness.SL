@@ -30,6 +30,12 @@ namespace Open.Core.Lists
             Initialize(container);
             ListCss.InsertCss();
         }
+
+        protected override void OnInitialize(jQueryObject container)
+        {
+            container.AddClass(ListCss.Classes.Root);
+            base.OnInitialize(container);
+        }
         #endregion
 
         #region Event Handlers

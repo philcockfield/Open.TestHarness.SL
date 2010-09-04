@@ -3,14 +3,18 @@ using Open.Core.Helpers;
 
 namespace Open.Core
 {
+    /// <summary>Keyboard key codes.</summary>
+    public enum Key
+    {
+        Shift = 16,
+        Ctrl = 17,
+        Alt = 18,
+    }
+
     /// <summary>Global monitoring of keyboard state.</summary>
     public static class Keyboard
     {
         #region Head
-        private const int keyShift = 16;
-        private const int keyCtrl = 17;
-        private const int keyAlt = 18;
-
         private static bool isShiftPressed;
         private static bool isCtrlPressed;
         private static bool isAltPressed;
@@ -18,18 +22,18 @@ namespace Open.Core
         /// <summary>Constructor.</summary>
         static Keyboard()
         {
-            JQueryHelper helper = Helper.JQuery;
+            JQueryHelper h = Helper.JQuery;
             jQuery.Document.Keydown(delegate(jQueryEvent e)
                                         {
-                                            if (helper.IsKey(e, keyShift)) isShiftPressed = true;
-                                            if (helper.IsKey(e, keyCtrl)) isCtrlPressed = true;
-                                            if (helper.IsKey(e, keyAlt)) isAltPressed = true;
+                                            if (h.IsKey(e, Key.Shift)) isShiftPressed = true;
+                                            if (h.IsKey(e, Key.Ctrl)) isCtrlPressed = true;
+                                            if (h.IsKey(e, Key.Alt)) isAltPressed = true;
                                         });
             jQuery.Document.Keyup(delegate(jQueryEvent e)
                                       {
-                                          if (helper.IsKey(e, keyShift)) isShiftPressed = false;
-                                          if (helper.IsKey(e, keyCtrl)) isCtrlPressed = false;
-                                          if (helper.IsKey(e, keyAlt)) isAltPressed = false;
+                                          if (h.IsKey(e, Key.Shift)) isShiftPressed = false;
+                                          if (h.IsKey(e, Key.Ctrl)) isCtrlPressed = false;
+                                          if (h.IsKey(e, Key.Alt)) isAltPressed = false;
                                       });
         }
         #endregion

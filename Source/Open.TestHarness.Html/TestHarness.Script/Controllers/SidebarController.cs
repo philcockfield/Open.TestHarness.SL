@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
-using jQueryApi;
 using Open.Core;
 using Open.Core.Lists;
 using Open.TestHarness.Models;
+using Open.TestHarness.Views;
 
 namespace Open.TestHarness.Controllers
 {
@@ -11,31 +10,23 @@ namespace Open.TestHarness.Controllers
     public class SidebarController : ControllerBase
     {
         #region Head
-        private readonly ListTreeView listTree;
-        private readonly ListTreeBackController backController;
         private readonly ArrayList packageControllers = new ArrayList();
+        private readonly SidebarView view;
+
 
         /// <summary>Constructor.</summary>
         public SidebarController()
         {
             // Setup initial conditions.
-            listTree = new ListTreeView(jQuery.Select(CssSelectors.SidebarList));
-            listTree.SlideDuration = 0.2;
+            view = Application.Shell.Sidebar;
 
-            // Create controllers.
-            backController = new ListTreeBackController(
-                listTree, 
-                jQuery.Select(CssSelectors.SidebarToolbar), 
-                jQuery.Select(CssSelectors.BackMask));
-
-
+            // Wire up events.
             TEMP();
-
         }
 
         protected override void OnDisposed()
         {
-            backController.Dispose();
+            view.Dispose();
             foreach (TestPackageController controller in packageControllers)
             {
                 controller.Dispose();
@@ -43,7 +34,7 @@ namespace Open.TestHarness.Controllers
             base.OnDisposed();
         }
 
-        private void TEMP( ) //TEMP 
+        private void TEMP( ) //TEMP - Add sample nodes to SidePanel.
         {
             MyNode rootNode = new MyNode("Root");
             rootNode.AddChild(new MyNode("Recent"));
@@ -66,7 +57,7 @@ namespace Open.TestHarness.Controllers
             child2.AddChild(new MyNode("Yo Child"));
             child3.AddChild(new MyNode("Yo Child"));
 
-            listTree.RootNode = rootNode;
+            view.RootList.RootNode = rootNode;
 
             // ---
 
@@ -83,7 +74,7 @@ namespace Open.TestHarness.Controllers
 
             //Log.LineBreak();
             //rootNode.RemoveChild(insert2);
-//            rootNode.RemoveChild(insert1);
+            //rootNode.RemoveChild(insert1);
 
             // ---
 
@@ -93,32 +84,62 @@ namespace Open.TestHarness.Controllers
         }
         #endregion
 
+        #region Event Handlers
+        
+        #endregion
+
         #region Methods
         /// <summary>Adds a test-package to the controller.</summary>
         /// <param name="testPackage">The test-package to add.</param>
-        public void AddPackage(TestPackageDef testPackage)
+        public void AddPackage(TestPackageInfo testPackage)
         {
             // Setup initial conditions.
             if (testPackage == null) return;
 
             // Create the list-item node and insert it within the tree.
             TestPackageListItem node = new TestPackageListItem(testPackage);
-            listTree.RootNode.AddChild(node);
+            view.RootList.RootNode.AddChild(node);
 
             // Create the controller.
             TestPackageController controller = new TestPackageController(node);
             packageControllers.Add(controller);
-
             controller.Loaded += delegate
                                      {
-                                         listTree.CurrentListRoot = controller.RootNode;
+                                         // When the controller loads, reveal it in the list.
+                                         view.RootList.SelectedParent = controller.RootNode;
                                      };
+        }
 
+        /// <summary>Removes the specified package.</summary>
+        /// <param name="testPackage">The test-package to remove.</param>
+        public void RemovePackage(TestPackageInfo testPackage)
+        {
+            // Setup initial conditions.
+            if (testPackage == null) return;
+            TestPackageController controller = GetController(testPackage);
+            if (controller == null) return;
+
+            // Remove from tree.
+            view.RootList.RootNode.RemoveChild(controller.RootNode);
+
+            // Finish up.
+            Log.Info(string.Format("Test package unloaded: {0}", Html.ToHyperlink(testPackage.Id, null, LinkTarget.Blank)));
+            Log.LineBreak();
+        }
+        #endregion
+
+        #region Internal
+        private TestPackageController GetController(TestPackageInfo testPackage)
+        {
+            return Helper.Collection.First(packageControllers, delegate(object o)
+                                                {
+                                                    return ((TestPackageController) o).TestPackage == testPackage;
+                                                }) as TestPackageController; 
         }
         #endregion
     }
 
-    public class MyNode : ListItem //TEMP 
+    public class MyNode : ListItem //TEMP - MyNode structure
     {
         public MyNode(string text) { Text = text; }
 

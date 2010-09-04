@@ -211,6 +211,7 @@ namespace Links {
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string Open_TestHarness_css = Url("Open.TestHarness.css");
+            public static readonly string Open_TestHarness_IE_css = Url("Open.TestHarness.IE.css");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -219,7 +220,6 @@ namespace Links {
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string Sidebar_BackMask_png = Url("Sidebar.BackMask.png");
-            public static readonly string Sidebar_Home_png = Url("Sidebar.Home.png");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

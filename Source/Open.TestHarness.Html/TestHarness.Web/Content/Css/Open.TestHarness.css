@@ -9,15 +9,14 @@
     border-top:solid 1px #384148;
 }
 
-#testHarness .th-topHighlight
+#testHarness p.dropShadow
 {
     position:absolute;
     left:0px;
     right:0px;
     top:0px;
-    height:1px;
-    border-top:solid 1px white;
 }
+
 
 
 /*-------------- Fonts --------------*/
@@ -40,7 +39,6 @@
 }
 
 
-
 /*-------------- Sidebar --------------*/
 #testHarnessSidebar
 {
@@ -51,25 +49,34 @@
     bottom:0px;
     width:250px;
 }
-
-#testHarness .th-sidebarToolbar
-{
-}
-
-
-#testHarnessSidebar .th-sidebarList { top:35px;  }
+#testHarness .th-sidebarToolbar { }
+#testHarnessSidebar .th-sidebarRootList { top:35px;  }
 #testHarnessSidebar img.th-backMask
 {
     position:absolute;
     display:none;
 }
-
 .c-listItem-label   /* Override: Open.Core.Lists */
 {
     font-weight:300;
     font-size:16pt;
 }
 
+
+/*-------------- Test List --------------*/
+#testHarnessSidebar .th-testList
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    height:0px;
+}
+#testHarnessSidebar .th-testList-tb { background:#d5d9df; }
+#testHarnessSidebar .th-testList .tb-height { height:34px; }
+#testHarnessSidebar p.title { position:relative; margin:0px 8px; }
+#testHarnessSidebar p.dropShadow { top:35px; }
+#testHarnessSidebar .th-testList-content { top:35px; }
 
 
 /*-------------- Main --------------*/
@@ -116,21 +123,13 @@
     top:33px;
 }
 
-#testHarnessLog .th-log-titlebar { height:32px; }
-#testHarnessLog .th-log-titlebar div.table { left:8px; height:32px; }
-#testHarnessLog .th-log-titlebar p.title
+#testHarnessLog .th-log-tb { }
+#testHarnessLog .tb-height { height:32px; }
+#testHarnessLog .th-log-tb div.table { left:8px; height:32px; }
+#testHarnessLog p.dropShadow { top:33px; }
+#testHarnessLog .th-log-tb p.title
 {
-    position:relative;
-    display:table-cell;
-    vertical-align:middle;
     font-size:16pt;
     font-weight:300;
     color:#828282;
-}
-#testHarnessLog p.dropShadow
-{
-    position:absolute;
-    left:0px;
-    right:0px;
-    top:33px;
 }

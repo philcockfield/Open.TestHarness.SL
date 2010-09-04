@@ -162,7 +162,7 @@ namespace Open.Core.Lists
             // Update visibility state.
             bool isVisible = false;
             ITreeNode treeNode = ModelAsTreeNode;
-            if (CanSelect && treeNode != null && treeNode.TotalChildren > 0) isVisible = true;
+            if (CanSelect && treeNode != null && treeNode.ChildCount > 0) isVisible = true;
             Css.SetVisible(imgRightIcon, isVisible);
 
             if (!isVisible) return;

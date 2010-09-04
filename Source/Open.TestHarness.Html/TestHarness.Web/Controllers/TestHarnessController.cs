@@ -8,6 +8,7 @@ namespace Open.TestHarness.Web.Controllers
         #region Head
         private const string KeyOutputTitle = "Output_Title";
         private const string KeyAppTitle = "App_Title";
+        private const string KeyTestListTitle = "TestList_Title";
         #endregion
 
         #region Methods : Actions
@@ -28,6 +29,13 @@ namespace Open.TestHarness.Web.Controllers
         /// <summary>The Sidebar index.</summary>
         public virtual ActionResult Sidebar()
         {
+            return View(ViewModel);
+        }
+
+        /// <summary>The panel that contains the list of tests within the Sidebar.</summary>
+        public virtual ActionResult TestList()
+        {
+            ViewModel.TestListTitle = GetResource(KeyTestListTitle);
             return View(ViewModel);
         }
         #endregion

@@ -7,14 +7,20 @@ namespace Open.Core.Lists
     /// <summary>Represents a tree structure of lists.</summary>
     public class ListTreeView : ViewBase
     {
-        #region Head
-        /// <summary>Fires when the selected node changes.</summary>
-        public event EventHandler SelectionChanged;
-        private void FireSelectionChanged(){if (SelectionChanged != null) SelectionChanged(this, new EventArgs());}
+        #region Events
+        /// <summary>Fires when the selected-node property changes.</summary>
+        public event EventHandler SelectedNodeChanged;
+        private void FireSelectedNodeChanged() { if (SelectedNodeChanged != null) SelectedNodeChanged(this, new EventArgs()); }
 
+        /// <summary>Fires when the selected-parent property changes.</summary>
+        public event EventHandler SelectedParentChanged;
+        private void FireSelectedParentChanged(){if (SelectedParentChanged != null) SelectedParentChanged(this, new EventArgs());}
+        #endregion
+
+        #region Head
         public const string PropRootNode = "RootNode";
         public const string PropSelectedNode = "SelectedNode";
-        public const string PropCurrentListRoot = "CurrentListRoot";
+        public const string PropSelectedParent = "SelectedParent";
 
         private jQueryObject div;
         private double slideDuration = 0.4;
@@ -60,41 +66,39 @@ namespace Open.Core.Lists
             {
                 if (Set(PropSelectedNode, value, null))
                 {
-                    if (value != null && value.TotalChildren > 0) CurrentListRoot = value;
-                    FireSelectionChanged();
+                    if (value != null && (value.ChildCount > 0 || value.IsRoot)) SelectedParent = value;
+                    FireSelectedNodeChanged();
                 }
             }
         }
 
         /// <summary>Gets or sets the node which is the root of the current list (may be the same as SelectedNode).</summary>
-        public ITreeNode CurrentListRoot
+        public ITreeNode SelectedParent
         {
-            get { return (ITreeNode)Get(PropCurrentListRoot, null); }
+            get { return (ITreeNode)Get(PropSelectedParent, null); }
             set
             {
-                if (Set(PropCurrentListRoot, value, null))
+                if (Set(PropSelectedParent, value, null))
                 {
                     // Update the list.
                     if (value != null)
                     {
                         DeselectChildren(value);
-                        if (value.TotalChildren > 0)
+
+                        if (previousNode == null)
                         {
-                            if (previousNode == null)
-                            {
-                                // There is not previous node to slide from.  Show the list immediately.
-                                GetOrCreatePanel(value, true).CenterStage();
-                            }
-                            else
-                            {
-                                // Slide the panel into view.
-                                SlidePanels(previousNode, value);
-                            }
+                            // There is no previous node to slide from.  Show the list immediately.
+                            GetOrCreatePanel(value, true).CenterStage();
+                        }
+                        else
+                        {
+                            // Slide the panel into view.
+                            SlidePanels(previousNode, value);
                         }
                     }
 
                     // Finish up.
-                    FirePropertyChanged(PropCurrentListRoot);
+                    FireSelectedParentChanged();
                     previousNode = value;
                 }
             }
@@ -126,8 +130,8 @@ namespace Open.Core.Lists
         /// <summary>Moves the selected node to the parent of the current node.</summary>
         public void Back()
         {
-            if (CurrentListRoot == null || CurrentListRoot.IsRoot) return;
-            SelectedNode = CurrentListRoot.Parent;
+            if (SelectedParent == null || SelectedParent.IsRoot) return;
+            SelectedNode = SelectedParent.Parent;
         }
 
         /// <summary>Moves the selected node to the root node.</summary>
@@ -185,7 +189,7 @@ namespace Open.Core.Lists
         {
             foreach (ListTreePanel panel in panels)
             {
-                if (panel.RootNode == node) return panel;
+                if (panel.Node == node) return panel;
             }
             return null;
         }
