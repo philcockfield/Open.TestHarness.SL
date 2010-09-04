@@ -13,12 +13,14 @@ namespace Open.TestHarness.Models
         private readonly Type classType;
         private Dictionary instance;
         private readonly ArrayList methods = new ArrayList();
+        private readonly string displayName;
 
         /// <summary>Constructor.</summary>
         /// <param name="classType">The type of the test class.</param>
         private TestClassInfo(Type classType)
         {
             this.classType = classType;
+            displayName = TestMethodInfo.FormatName(classType.Name);
             GetMethods();
         }
         #endregion
@@ -26,6 +28,9 @@ namespace Open.TestHarness.Models
         #region Properties
         /// <summary>Gets the type of the test class.</summary>
         public Type ClassType { get { return classType; } }
+
+        /// <summary>Gets the display version of the class name.</summary>
+        public string DisplayName { get { return displayName; } }
 
         /// <summary>Gets the test instance of the class.</summary>
         public Dictionary Instance { get { return instance ?? (instance = Type.CreateInstance(classType) as Dictionary); } }

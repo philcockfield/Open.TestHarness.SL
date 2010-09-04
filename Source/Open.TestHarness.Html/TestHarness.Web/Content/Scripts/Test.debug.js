@@ -7,13 +7,13 @@ function executeScript() {
 Type.registerNamespace('Test');
 
 ////////////////////////////////////////////////////////////////////////////////
-// Test.MyTestClass2
+// Test.MyTest_Class__2
 
-Test.MyTestClass2 = function Test_MyTestClass2() {
+Test.MyTest_Class__2 = function Test_MyTest_Class__2() {
 }
-Test.MyTestClass2.prototype = {
+Test.MyTest_Class__2.prototype = {
     
-    test1: function Test_MyTestClass2$test1() {
+    test1: function Test_MyTest_Class__2$test1() {
         Open.Core.Log.info('MyTestClass2 : Test 1 Invoked');
     }
 }
@@ -79,11 +79,11 @@ Test.Application.main = function Test_Application$main(args) {
     /// </param>
     Open.Testing.registerClass(Test.MyTestClass1);
     Open.Testing.registerClass(Test.MyTestClass1);
-    Open.Testing.registerClass(Test.MyTestClass2);
+    Open.Testing.registerClass(Test.MyTest_Class__2);
 }
 
 
-Test.MyTestClass2.registerClass('Test.MyTestClass2');
+Test.MyTest_Class__2.registerClass('Test.MyTest_Class__2');
 Test.MyTestClass1.registerClass('Test.MyTestClass1');
 Test.Application.registerClass('Test.Application');
 

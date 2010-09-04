@@ -2,7 +2,7 @@ using Open.Core;
 
 namespace Test
 {
-    public class MyTestClass2
+    public class MyTest_Class__2
     {
         public void Test1()
         {

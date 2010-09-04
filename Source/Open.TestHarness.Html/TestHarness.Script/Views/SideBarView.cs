@@ -123,7 +123,7 @@ namespace Open.TestHarness.Views
             // Show or hide.
             bool isShowing = testListHeight > 0;
             if (isShowing) Css.SetVisible(TestList.Container, true);
-            TestList.UpdateVisualState();
+            TestList.UpdateLayout();
 
             //Animate.
             Animate(isShowing, TestList.Container, testListProps, null);
@@ -157,7 +157,7 @@ namespace Open.TestHarness.Views
 
         private int GetTargetTestListHeight()
         {
-            return 250; // TODO
+            return 250; // TODO - GetTargetTestListHeight
         }
         #endregion
     }

@@ -16,7 +16,7 @@ namespace Open.TestHarness.Models
             this.testClass = testClass;
 
             // Set default values.
-            Text = testClass.ClassType.Name;
+            Text = testClass.DisplayName;
         }
         #endregion
 

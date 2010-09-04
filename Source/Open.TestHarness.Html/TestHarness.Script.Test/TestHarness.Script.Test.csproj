@@ -48,7 +48,7 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests\MyTestClass2.cs" />
+    <Compile Include="Tests\MyTest_Class__2.cs" />
     <Compile Include="Tests\MyTestClass1.cs" />
     <Content Include="Properties\TestHarness.Script.Test.ruleset" />
     <Content Include="Properties\TestHarness.Script.Test.script" />

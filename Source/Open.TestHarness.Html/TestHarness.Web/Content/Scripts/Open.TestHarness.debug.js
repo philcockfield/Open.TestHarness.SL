@@ -128,7 +128,7 @@ Open.TestHarness.Models.TestClassListItem = function Open_TestHarness_Models_Tes
     /// </field>
     Open.TestHarness.Models.TestClassListItem.initializeBase(this);
     this._testClass$3 = testClass;
-    this.set_text(testClass.get_classType().get_name());
+    this.set_text(testClass.get_displayName());
 }
 Open.TestHarness.Models.TestClassListItem.prototype = {
     _testClass$3: null,
@@ -437,9 +437,12 @@ Open.TestHarness.Models.TestClassInfo = function Open_TestHarness_Models_TestCla
     /// </field>
     /// <field name="_methods$1" type="Array">
     /// </field>
+    /// <field name="_displayName$1" type="String">
+    /// </field>
     this._methods$1 = [];
     Open.TestHarness.Models.TestClassInfo.initializeBase(this);
     this._classType$1 = classType;
+    this._displayName$1 = Open.TestHarness.Models.TestMethodInfo.formatName(classType.get_name());
     this._getMethods$1();
 }
 Open.TestHarness.Models.TestClassInfo.getSingleton = function Open_TestHarness_Models_TestClassInfo$getSingleton(testClass) {
@@ -464,6 +467,7 @@ Open.TestHarness.Models.TestClassInfo.getSingleton = function Open_TestHarness_M
 Open.TestHarness.Models.TestClassInfo.prototype = {
     _classType$1: null,
     _instance$1: null,
+    _displayName$1: null,
     
     get_classType: function Open_TestHarness_Models_TestClassInfo$get_classType() {
         /// <summary>
@@ -471,6 +475,14 @@ Open.TestHarness.Models.TestClassInfo.prototype = {
         /// </summary>
         /// <value type="Type"></value>
         return this._classType$1;
+    },
+    
+    get_displayName: function Open_TestHarness_Models_TestClassInfo$get_displayName() {
+        /// <summary>
+        /// Gets the display version of the class name.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._displayName$1;
     },
     
     get_instance: function Open_TestHarness_Models_TestClassInfo$get_instance() {
@@ -1139,7 +1151,7 @@ Open.TestHarness.Views.SidebarView.prototype = {
         if (isShowing) {
             Open.Core.Css.setVisible(this.get_testList().get_container(), true);
         }
-        this.get_testList().updateVisualState();
+        this.get_testList().updateLayout();
         this._animate$2(isShowing, this.get_testList().get_container(), testListProps, null);
         this._animate$2(isShowing, this.get_rootList().get_container(), rootListProps, onComplete);
     },
@@ -1222,11 +1234,11 @@ Open.TestHarness.Views.TestListView.prototype = {
         return value;
     },
     
-    updateVisualState: function Open_TestHarness_Views_TestListView$updateVisualState() {
+    updateLayout: function Open_TestHarness_Views_TestListView$updateLayout() {
         /// <summary>
         /// Updates the visual state of the control.
         /// </summary>
-        this._listView$2.updateVisualState();
+        this._listView$2.updateLayout();
     },
     
     _populateList$2: function Open_TestHarness_Views_TestListView$_populateList$2(testClass) {

@@ -777,7 +777,7 @@ Open.Core.Lists.ListTreeView.prototype = {
         this.set_selectedNode(this.get_rootNode());
     },
     
-    updateVisualState: function Open_Core_Lists_ListTreeView$updateVisualState() {
+    updateLayout: function Open_Core_Lists_ListTreeView$updateLayout() {
         /// <summary>
         /// Updates the visual state of the control.
         /// </summary>

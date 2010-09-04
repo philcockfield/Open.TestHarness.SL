@@ -48,9 +48,9 @@ namespace Open.TestHarness.Views
 
         #region Methods
         /// <summary>Updates the visual state of the control.</summary>
-        public void UpdateVisualState()
+        public void UpdateLayout()
         {
-            listView.UpdateVisualState();
+            listView.UpdateLayout();
         }
         #endregion
 

@@ -11,7 +11,7 @@ namespace Test
         {
             Testing.RegisterClass(typeof(MyTestClass1));
             Testing.RegisterClass(typeof(MyTestClass1));
-            Testing.RegisterClass(typeof(MyTestClass2));
+            Testing.RegisterClass(typeof(MyTest_Class__2));
         }
     }
 }
