@@ -94,8 +94,8 @@
     <Content Include="Content\Scripts\Open.Core.Lists.js" />
     <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
     <Content Include="Content\Scripts\Open.TestHarness.js" />
-    <Content Include="Content\Scripts\Test.debug.js" />
-    <Content Include="Content\Scripts\Test.js" />
+    <Content Include="Content\Scripts\TestHarness.Test.debug.js" />
+    <Content Include="Content\Scripts\TestHarness.Test.js" />
     <Content Include="Favicon.ico" />
   </ItemGroup>
   <ItemGroup>

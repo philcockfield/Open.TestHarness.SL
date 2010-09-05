@@ -39,7 +39,7 @@ namespace Open.TestHarness
             // =================================
 
             //TEMP : Insert sample TestPackage 
-            const string scriptUrl = "/Content/Scripts/Test.debug.js";
+            const string scriptUrl = "/Content/Scripts/TestHarness.Test.debug.js";
             const string initMethod = "Test.Application.main";
 
             PackageInfo packageDef = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);

@@ -13,7 +13,7 @@
     <LangVersion>ISO-2</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Test</RootNamespace>
-    <AssemblyName>Test</AssemblyName>
+    <AssemblyName>TestHarness.Test</AssemblyName>
     <TemplateFile>Properties\TestHarness.Script.Test.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\TestHarness.Script.Test.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Debug\Test.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\TestHarness.Test.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Release\Test.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\TestHarness.Test.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=0.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
@@ -48,6 +48,7 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\LoadHelperTest.cs" />
     <Compile Include="Tests\MyTest_Class__2.cs" />
     <Compile Include="Tests\MyTestClass1.cs" />
     <Content Include="Properties\TestHarness.Script.Test.ruleset" />

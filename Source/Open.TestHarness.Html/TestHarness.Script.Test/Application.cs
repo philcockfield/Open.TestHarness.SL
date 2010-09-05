@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using Open;
-using Open.Core;
 
 namespace Test
 {
@@ -12,6 +10,7 @@ namespace Test
             Testing.RegisterClass(typeof(MyTestClass1));
             Testing.RegisterClass(typeof(MyTestClass1));
             Testing.RegisterClass(typeof(MyTest_Class__2));
+            Testing.RegisterClass(typeof(LoadHelperTest));
         }
     }
 }
