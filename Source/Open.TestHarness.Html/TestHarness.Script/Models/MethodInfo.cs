@@ -8,15 +8,16 @@ namespace Open.TestHarness.Models
     public class MethodInfo : ModelBase
     {
         #region Head
-        public const string KeyConstructor = "constructor";
         public const string KeyGetter = "get_";
         public const string KeySetter = "set_";
         public const string KeyField = "_";
         public const string KeyFunction = "function";
 
+
         private readonly ClassInfo classInfo;
         private readonly string name;
         private readonly string displayName;
+        private bool isSpecial;
 
         /// <summary>Constructor.</summary>
         /// <param name="classInfo">The test-class that this method is a member of.</param>
@@ -26,6 +27,7 @@ namespace Open.TestHarness.Models
             this.classInfo = classInfo;
             this.name = name;
             displayName = FormatName(name);
+            isSpecial = MethodHelper.IsSpecial(Name);
         }
         #endregion
 
@@ -38,6 +40,9 @@ namespace Open.TestHarness.Models
 
         /// <summary>Gets the display version of the name.</summary>
         public string DisplayName { get { return displayName; } }
+
+        /// <summary>Gets or sets whether this method is one of the special Setup/Teardown methods.</summary>
+        public bool IsSpecial { get { return isSpecial; } }
         #endregion
 
         #region Methods
@@ -46,6 +51,9 @@ namespace Open.TestHarness.Models
         {
             // Setup initial conditions.
             object instance = ClassInfo.Instance;
+
+            // Invoke the pre "setup" method (if this a standard test-method and is not itself one of the special methods).
+            if (!IsSpecial && ClassInfo.TestInitialize != null) ClassInfo.TestInitialize.Invoke();
 
             // Invoke the method.
             try
@@ -65,6 +73,9 @@ namespace Open.TestHarness.Models
                     ClassInfo.ClassType.FullName,
                     Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrl, null, LinkTarget.Blank)));
             }
+
+            // Invoke the post "teardown" method (if this a standard test-method and is not itself one of the special methods).
+            if (!IsSpecial && ClassInfo.TestCleanup != null) ClassInfo.TestCleanup.Invoke();
         }
         #endregion
 
@@ -73,12 +84,20 @@ namespace Open.TestHarness.Models
         /// <param name="item">The Dictionaty item to examine.</param>
         public static bool IsTestMethod(DictionaryEntry item)
         {
+            // Setup initial conditions.
             string key = item.Key;
             if (Type.GetScriptType(item.Value) != KeyFunction) return false;
+
+            // Check for special methods.
+            if (MethodHelper.IsConstructor(key)) return false;
+            if (MethodHelper.IsSpecial(key)) return false;
+
+            // Check for non-method signatures.
             if (key.StartsWith(KeyField)) return false;
             if (key.StartsWith(KeyGetter)) return false;
             if (key.StartsWith(KeySetter)) return false;
-            if (key == KeyConstructor) return false;
+
+            // Finish up.
             return true;
         }
 

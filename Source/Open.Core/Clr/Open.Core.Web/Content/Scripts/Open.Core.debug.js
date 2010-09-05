@@ -2693,6 +2693,29 @@ Open.Core.Helpers.TreeHelper.prototype = {
             }
         }
         return null;
+    },
+    
+    deselectChildren: function Open_Core_Helpers_TreeHelper$deselectChildren(parent) {
+        /// <summary>
+        /// Deselects all children of the given node.
+        /// </summary>
+        /// <param name="parent" type="Open.Core.ITreeNode">
+        /// The node to deselect the children of.
+        /// </param>
+        /// <returns type="Number" integer="true"></returns>
+        if (parent == null) {
+            return 0;
+        }
+        var total = 0;
+        var $enum1 = ss.IEnumerator.getEnumerator(parent.get_children());
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            if (child.get_isSelected()) {
+                child.set_isSelected(false);
+                total++;
+            }
+        }
+        return total;
     }
 }
 

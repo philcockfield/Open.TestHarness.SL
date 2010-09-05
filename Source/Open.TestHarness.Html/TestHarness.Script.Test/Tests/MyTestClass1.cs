@@ -5,6 +5,15 @@ namespace Test
 {
     public class MyTestClass1
     {
+        #region Head
+        public MyTestClass1() { }
+
+        public void ClassInitialize() { Log.Info("Class Initialize: " + GetType().Name); }
+        public void ClassCleanup() { Log.Info("Class Cleanup: " + GetType().Name); }
+        public void TestInitialize() { Log.Info("Test Initialize"); }
+        public void TestCleanup() { Log.Info("Test Cleanup"); }
+        #endregion
+
         #region Fields and Properties
         public string PublicField = "Foo";
         private string PrivateField = "Foo";
@@ -22,7 +31,7 @@ namespace Test
         }
         #endregion
 
-
+        #region Methods : Tests
         public void Test1()
         {
             Log.Info("MyTestClass1 : Test 1 Invoked");
@@ -44,5 +53,6 @@ namespace Test
         }
 
         private void PrivateMethod() { }
+        #endregion
     }
 }

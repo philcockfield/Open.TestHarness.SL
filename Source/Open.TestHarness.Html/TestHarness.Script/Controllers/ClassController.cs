@@ -23,11 +23,20 @@ namespace Open.TestHarness.Controllers
 
             // Wire up events.
             sidebarView.MethodList.MethodClicked += OnMethodClicked;
+
+            // Invoke the class-setup method.
+            if (classInfo.ClassInitialize != null) classInfo.ClassInitialize.Invoke();
         }
 
         protected override void OnDisposed()
         {
+            // Unwire events.
             sidebarView.MethodList.MethodClicked -= OnMethodClicked;
+
+            // Invoke the class-teardown method.
+            if (classInfo.ClassCleanup != null) classInfo.ClassCleanup.Invoke();
+
+            // Finish up.
             base.OnDisposed();
         }
         #endregion
@@ -39,10 +48,25 @@ namespace Open.TestHarness.Controllers
         #region Event Handlers
         private void OnMethodClicked(object sender, EventArgs e)
         {
-            MethodInfo method = SelectedMethod;
-            if (method != null) method.Invoke();
+            InvokeSelectedMethod();
         }
         #endregion
 
+        #region Methods
+        /// <summary>Invokes the currently selected method (including pre/post TestInitialize and TestCleanup methods).</summary>
+        /// <returns>True if the method was invoked, or False if there was not currently selected method.</returns>
+        public bool InvokeSelectedMethod()
+        {
+            // Setup initial conditions.
+            MethodInfo method = SelectedMethod;
+            if (method == null) return false;
+
+            // Invoke the method.
+            method.Invoke();
+
+            // Finish up.
+            return true;
+        }
+        #endregion
     }
 }

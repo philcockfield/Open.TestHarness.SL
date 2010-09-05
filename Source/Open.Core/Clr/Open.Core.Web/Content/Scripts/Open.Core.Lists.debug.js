@@ -586,15 +586,6 @@ Open.Core.Lists.ListTreeView._getSlideDirection$2 = function Open_Core_Lists_Lis
     }
     return (previousNode.containsDescendent(newNode)) ? Open.Core.HorizontalDirection.left : Open.Core.HorizontalDirection.right;
 }
-Open.Core.Lists.ListTreeView._deselectChildren$2 = function Open_Core_Lists_ListTreeView$_deselectChildren$2(node) {
-    /// <param name="node" type="Open.Core.ITreeNode">
-    /// </param>
-    var $enum1 = ss.IEnumerator.getEnumerator(node.get_children());
-    while ($enum1.moveNext()) {
-        var child = $enum1.get_current();
-        child.set_isSelected(false);
-    }
-}
 Open.Core.Lists.ListTreeView.prototype = {
     
     add_selectedNodeChanged: function Open_Core_Lists_ListTreeView$add_selectedNodeChanged(value) {
@@ -705,8 +696,10 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// </summary>
         /// <value type="Open.Core.ITreeNode"></value>
         if (this.set(Open.Core.Lists.ListTreeView.propSelectedParent, value, null)) {
+            if (this._previousNode$2 != null) {
+                Open.Core.Helper.get_tree().deselectChildren(this._previousNode$2);
+            }
             if (value != null) {
-                Open.Core.Lists.ListTreeView._deselectChildren$2(value);
                 if (this._previousNode$2 == null) {
                     this._getOrCreatePanel$2(value, true).centerStage();
                 }

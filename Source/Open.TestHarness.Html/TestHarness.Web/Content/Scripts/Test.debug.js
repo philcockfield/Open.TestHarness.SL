@@ -29,6 +29,23 @@ Test.MyTestClass1 = function Test_MyTestClass1() {
     /// </field>
 }
 Test.MyTestClass1.prototype = {
+    
+    classInitialize: function Test_MyTestClass1$classInitialize() {
+        Open.Core.Log.info('Class Initialize: ' + Type.getInstanceType(this).get_name());
+    },
+    
+    classCleanup: function Test_MyTestClass1$classCleanup() {
+        Open.Core.Log.info('Class Cleanup: ' + Type.getInstanceType(this).get_name());
+    },
+    
+    testInitialize: function Test_MyTestClass1$testInitialize() {
+        Open.Core.Log.info('Test Initialize');
+    },
+    
+    testCleanup: function Test_MyTestClass1$testCleanup() {
+        Open.Core.Log.info('Test Cleanup');
+    },
+    
     publicField: 'Foo',
     _privateField: 'Foo',
     

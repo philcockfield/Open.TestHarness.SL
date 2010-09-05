@@ -51,6 +51,97 @@ Open.TestHarness.Elements = function Open_TestHarness_Elements() {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.TestHarness._methodHelper
+
+Open.TestHarness._methodHelper = function Open_TestHarness__methodHelper() {
+    /// <summary>
+    /// Helper classes for examining methods.
+    /// </summary>
+    /// <field name="keyConstructor" type="String" static="true">
+    /// </field>
+    /// <field name="keyClassInitialize" type="String" static="true">
+    /// </field>
+    /// <field name="keyClassCleanup" type="String" static="true">
+    /// </field>
+    /// <field name="keyTestInitialize" type="String" static="true">
+    /// </field>
+    /// <field name="keyTestCleanup" type="String" static="true">
+    /// </field>
+}
+Open.TestHarness._methodHelper.isConstructor = function Open_TestHarness__methodHelper$isConstructor(methodName) {
+    /// <summary>
+    /// Determines whether the specified method-name represents a constructor.
+    /// </summary>
+    /// <param name="methodName" type="String">
+    /// The name of the method.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return methodName === Open.TestHarness._methodHelper.keyConstructor;
+}
+Open.TestHarness._methodHelper.isClassInitialize = function Open_TestHarness__methodHelper$isClassInitialize(methodName) {
+    /// <summary>
+    /// Determines whether the specified method-name represents the 'ClassInitialize' method.
+    /// </summary>
+    /// <param name="methodName" type="String">
+    /// The name of the method.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return methodName === Open.TestHarness._methodHelper.keyClassInitialize;
+}
+Open.TestHarness._methodHelper.isClassCleanup = function Open_TestHarness__methodHelper$isClassCleanup(methodName) {
+    /// <summary>
+    /// Determines whether the specified method-name represents the 'ClassCleanup' method.
+    /// </summary>
+    /// <param name="methodName" type="String">
+    /// The name of the method.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return methodName === Open.TestHarness._methodHelper.keyClassCleanup;
+}
+Open.TestHarness._methodHelper.isTestInitialize = function Open_TestHarness__methodHelper$isTestInitialize(methodName) {
+    /// <summary>
+    /// Determines whether the specified method-name represents the 'TestInitialize' method.
+    /// </summary>
+    /// <param name="methodName" type="String">
+    /// The name of the method.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return methodName === Open.TestHarness._methodHelper.keyTestInitialize;
+}
+Open.TestHarness._methodHelper.isTestCleanup = function Open_TestHarness__methodHelper$isTestCleanup(methodName) {
+    /// <summary>
+    /// Determines whether the specified method-name represents the 'TestCleanup' method.
+    /// </summary>
+    /// <param name="methodName" type="String">
+    /// The name of the method.
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    return methodName === Open.TestHarness._methodHelper.keyTestCleanup;
+}
+Open.TestHarness._methodHelper.isSpecial = function Open_TestHarness__methodHelper$isSpecial(methodName) {
+    /// <summary>
+    /// Determines whether the specified DictionaryEntry is one of the special Setup/Teardown methods.
+    /// </summary>
+    /// <param name="methodName" type="String">
+    /// </param>
+    /// <returns type="Boolean"></returns>
+    if (Open.TestHarness._methodHelper.isClassInitialize(methodName)) {
+        return true;
+    }
+    if (Open.TestHarness._methodHelper.isClassCleanup(methodName)) {
+        return true;
+    }
+    if (Open.TestHarness._methodHelper.isTestInitialize(methodName)) {
+        return true;
+    }
+    if (Open.TestHarness._methodHelper.isTestCleanup(methodName)) {
+        return true;
+    }
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.TestHarness.Application
 
 Open.TestHarness.Application = function Open_TestHarness_Application() {
@@ -106,6 +197,9 @@ Open.TestHarness.Controllers.ClassController = function Open_TestHarness_Control
     this._classInfo$2 = classInfo;
     this._sidebarView$2 = sidebarView;
     sidebarView.get_methodList().add_methodClicked(ss.Delegate.create(this, this._onMethodClicked$2));
+    if (classInfo.get_classInitialize() != null) {
+        classInfo.get_classInitialize().invoke();
+    }
 }
 Open.TestHarness.Controllers.ClassController.prototype = {
     _classInfo$2: null,
@@ -113,6 +207,9 @@ Open.TestHarness.Controllers.ClassController.prototype = {
     
     onDisposed: function Open_TestHarness_Controllers_ClassController$onDisposed() {
         this._sidebarView$2.get_methodList().remove_methodClicked(ss.Delegate.create(this, this._onMethodClicked$2));
+        if (this._classInfo$2.get_classCleanup() != null) {
+            this._classInfo$2.get_classCleanup().invoke();
+        }
         Open.TestHarness.Controllers.ClassController.callBaseMethod(this, 'onDisposed');
     },
     
@@ -126,10 +223,20 @@ Open.TestHarness.Controllers.ClassController.prototype = {
         /// </param>
         /// <param name="e" type="ss.EventArgs">
         /// </param>
+        this.invokeSelectedMethod();
+    },
+    
+    invokeSelectedMethod: function Open_TestHarness_Controllers_ClassController$invokeSelectedMethod() {
+        /// <summary>
+        /// Invokes the currently selected method (including pre/post TestInitialize and TestCleanup methods).
+        /// </summary>
+        /// <returns type="Boolean"></returns>
         var method = this.get__selectedMethod$2();
-        if (method != null) {
-            method.invoke();
+        if (method == null) {
+            return false;
         }
+        method.invoke();
+        return true;
     }
 }
 
@@ -529,8 +636,6 @@ Open.TestHarness.Models.MethodInfo = function Open_TestHarness_Models_MethodInfo
     /// <param name="name" type="String">
     /// The name of the method.
     /// </param>
-    /// <field name="keyConstructor" type="String" static="true">
-    /// </field>
     /// <field name="keyGetter" type="String" static="true">
     /// </field>
     /// <field name="keySetter" type="String" static="true">
@@ -545,10 +650,13 @@ Open.TestHarness.Models.MethodInfo = function Open_TestHarness_Models_MethodInfo
     /// </field>
     /// <field name="_displayName$1" type="String">
     /// </field>
+    /// <field name="_isSpecial$1" type="Boolean">
+    /// </field>
     Open.TestHarness.Models.MethodInfo.initializeBase(this);
     this._classInfo$1 = classInfo;
     this._name$1 = name;
     this._displayName$1 = Open.TestHarness.Models.MethodInfo.formatName(name);
+    this._isSpecial$1 = Open.TestHarness._methodHelper.isSpecial(this.get_name());
 }
 Open.TestHarness.Models.MethodInfo.isTestMethod = function Open_TestHarness_Models_MethodInfo$isTestMethod(item) {
     /// <summary>
@@ -562,6 +670,12 @@ Open.TestHarness.Models.MethodInfo.isTestMethod = function Open_TestHarness_Mode
     if (typeof(item.value) !== Open.TestHarness.Models.MethodInfo.keyFunction) {
         return false;
     }
+    if (Open.TestHarness._methodHelper.isConstructor(key)) {
+        return false;
+    }
+    if (Open.TestHarness._methodHelper.isSpecial(key)) {
+        return false;
+    }
     if (key.startsWith(Open.TestHarness.Models.MethodInfo.keyField)) {
         return false;
     }
@@ -569,9 +683,6 @@ Open.TestHarness.Models.MethodInfo.isTestMethod = function Open_TestHarness_Mode
         return false;
     }
     if (key.startsWith(Open.TestHarness.Models.MethodInfo.keySetter)) {
-        return false;
-    }
-    if (key === Open.TestHarness.Models.MethodInfo.keyConstructor) {
         return false;
     }
     return true;
@@ -593,6 +704,7 @@ Open.TestHarness.Models.MethodInfo.prototype = {
     _classInfo$1: null,
     _name$1: null,
     _displayName$1: null,
+    _isSpecial$1: false,
     
     get_classInfo: function Open_TestHarness_Models_MethodInfo$get_classInfo() {
         /// <summary>
@@ -618,11 +730,22 @@ Open.TestHarness.Models.MethodInfo.prototype = {
         return this._displayName$1;
     },
     
+    get_isSpecial: function Open_TestHarness_Models_MethodInfo$get_isSpecial() {
+        /// <summary>
+        /// Gets or sets whether this method is one of the special Setup/Teardown methods.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        return this._isSpecial$1;
+    },
+    
     invoke: function Open_TestHarness_Models_MethodInfo$invoke() {
         /// <summary>
         /// Invokes the method.
         /// </summary>
         var instance = this.get_classInfo().get_instance();
+        if (!this.get_isSpecial() && this.get_classInfo().get_testInitialize() != null) {
+            this.get_classInfo().get_testInitialize().invoke();
+        }
         try {
             var func = Open.Core.Helper.get_reflection().getFunction(instance, this.get_name());
             if (func == null) {
@@ -632,6 +755,9 @@ Open.TestHarness.Models.MethodInfo.prototype = {
         }
         catch (error) {
             Open.Core.Log.error(String.format('<b>Exception</b> Failed while executing \'<b>{1}</b>\'.<br/>{0}Message: {2}<br/>{0}Method: {3}<br/>{0}Class: {4}<br/>{0}Package: {5}', Open.Core.Html.spanIndent(30), this.get_displayName(), error.message, Open.Core.Helper.get_string().toCamelCase(this.get_name()), this.get_classInfo().get_classType().get_fullName(), Open.Core.Html.toHyperlink(this.get_classInfo().get_packageInfo().get_loader().get_scriptUrl(), null, Open.Core.LinkTarget.blank)));
+        }
+        if (!this.get_isSpecial() && this.get_classInfo().get_testCleanup() != null) {
+            this.get_classInfo().get_testCleanup().invoke();
         }
     }
 }
@@ -834,6 +960,14 @@ Open.TestHarness.Models.ClassInfo = function Open_TestHarness_Models_ClassInfo(c
     /// </field>
     /// <field name="_displayName$1" type="String">
     /// </field>
+    /// <field name="_classInitialize$1" type="Open.TestHarness.Models.MethodInfo">
+    /// </field>
+    /// <field name="_classCleanup$1" type="Open.TestHarness.Models.MethodInfo">
+    /// </field>
+    /// <field name="_testInitialize$1" type="Open.TestHarness.Models.MethodInfo">
+    /// </field>
+    /// <field name="_testCleanup$1" type="Open.TestHarness.Models.MethodInfo">
+    /// </field>
     this._methods$1 = [];
     Open.TestHarness.Models.ClassInfo.initializeBase(this);
     this._classType$1 = classType;
@@ -868,6 +1002,10 @@ Open.TestHarness.Models.ClassInfo.prototype = {
     _packageInfo$1: null,
     _instance$1: null,
     _displayName$1: null,
+    _classInitialize$1: null,
+    _classCleanup$1: null,
+    _testInitialize$1: null,
+    _testCleanup$1: null,
     
     get_classType: function Open_TestHarness_Models_ClassInfo$get_classType() {
         /// <summary>
@@ -909,6 +1047,38 @@ Open.TestHarness.Models.ClassInfo.prototype = {
         return this._methods$1.length;
     },
     
+    get_classInitialize: function Open_TestHarness_Models_ClassInfo$get_classInitialize() {
+        /// <summary>
+        /// Gets the 'ClassInitialize' special method (or null if one isn't declared).
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.MethodInfo"></value>
+        return this._classInitialize$1;
+    },
+    
+    get_classCleanup: function Open_TestHarness_Models_ClassInfo$get_classCleanup() {
+        /// <summary>
+        /// Gets the 'ClassCleanup' special method (or null if one isn't declared).
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.MethodInfo"></value>
+        return this._classCleanup$1;
+    },
+    
+    get_testInitialize: function Open_TestHarness_Models_ClassInfo$get_testInitialize() {
+        /// <summary>
+        /// Gets the 'TestInitialize' special method (or null if one isn't declared).
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.MethodInfo"></value>
+        return this._testInitialize$1;
+    },
+    
+    get_testCleanup: function Open_TestHarness_Models_ClassInfo$get_testCleanup() {
+        /// <summary>
+        /// Gets the 'TestCleanup' special method (or null if one isn't declared).
+        /// </summary>
+        /// <value type="Open.TestHarness.Models.MethodInfo"></value>
+        return this._testCleanup$1;
+    },
+    
     reset: function Open_TestHarness_Models_ClassInfo$reset() {
         /// <summary>
         /// Resets the test-class instance.
@@ -933,11 +1103,42 @@ Open.TestHarness.Models.ClassInfo.prototype = {
         var $dict1 = this.get_instance();
         for (var $key2 in $dict1) {
             var item = { key: $key2, value: $dict1[$key2] };
-            if (!Open.TestHarness.Models.MethodInfo.isTestMethod(item)) {
-                continue;
+            if (Open.TestHarness.Models.MethodInfo.isTestMethod(item)) {
+                this._methods$1.add(this._createMethod$1(item));
             }
-            this._methods$1.add(new Open.TestHarness.Models.MethodInfo(this, item.key));
+            else {
+                this._assignSpecialMethod$1(item);
+            }
         }
+    },
+    
+    _assignSpecialMethod$1: function Open_TestHarness_Models_ClassInfo$_assignSpecialMethod$1(item) {
+        /// <param name="item" type="DictionaryEntry">
+        /// </param>
+        var key = item.key;
+        if (!Open.TestHarness._methodHelper.isSpecial(key)) {
+            return;
+        }
+        var method = this._createMethod$1(item);
+        if (Open.TestHarness._methodHelper.isClassInitialize(key)) {
+            this._classInitialize$1 = method;
+        }
+        else if (Open.TestHarness._methodHelper.isClassCleanup(key)) {
+            this._classCleanup$1 = method;
+        }
+        else if (Open.TestHarness._methodHelper.isTestInitialize(key)) {
+            this._testInitialize$1 = method;
+        }
+        else if (Open.TestHarness._methodHelper.isTestCleanup(key)) {
+            this._testCleanup$1 = method;
+        }
+    },
+    
+    _createMethod$1: function Open_TestHarness_Models_ClassInfo$_createMethod$1(item) {
+        /// <param name="item" type="DictionaryEntry">
+        /// </param>
+        /// <returns type="Open.TestHarness.Models.MethodInfo"></returns>
+        return new Open.TestHarness.Models.MethodInfo(this, item.key);
     }
 }
 
@@ -1434,6 +1635,7 @@ Open.TestHarness.Views.MethodListView.prototype = {
 
 Open.TestHarness.CssSelectors.registerClass('Open.TestHarness.CssSelectors');
 Open.TestHarness.Elements.registerClass('Open.TestHarness.Elements');
+Open.TestHarness._methodHelper.registerClass('Open.TestHarness._methodHelper');
 Open.TestHarness.Application.registerClass('Open.TestHarness.Application');
 Open.TestHarness.Controllers.ClassController.registerClass('Open.TestHarness.Controllers.ClassController', Open.Core.ControllerBase);
 Open.TestHarness.Controllers.PanelResizeController.registerClass('Open.TestHarness.Controllers.PanelResizeController', Open.Core.ControllerBase);
@@ -1462,6 +1664,11 @@ Open.TestHarness.CssSelectors.logTitlebar = '#testHarnessLog .th-log-tb';
 Open.TestHarness.CssSelectors.log = '#testHarnessLog .c-log';
 Open.TestHarness.Elements.root = 'testHarness';
 Open.TestHarness.Elements.outputLog = 'testHarnessLog';
+Open.TestHarness._methodHelper.keyConstructor = 'constructor';
+Open.TestHarness._methodHelper.keyClassInitialize = 'classInitialize';
+Open.TestHarness._methodHelper.keyClassCleanup = 'classCleanup';
+Open.TestHarness._methodHelper.keyTestInitialize = 'testInitialize';
+Open.TestHarness._methodHelper.keyTestCleanup = 'testCleanup';
 Open.TestHarness.Application._shell = null;
 Open.TestHarness.Application._resizeController = null;
 Open.TestHarness.Application._sidebarController = null;
@@ -1470,7 +1677,6 @@ Open.TestHarness.Controllers.PanelResizeController._sidebarMaxWidthMargin$2 = 80
 Open.TestHarness.Controllers.PanelResizeController._outputLogMaxHeightMargin$2 = 80;
 Open.TestHarness.Controllers.PackageController.propSelectedClass = 'SelectedClass';
 Open.TestHarness.Controllers.PackageController._loadTimeout$2 = 10;
-Open.TestHarness.Models.MethodInfo.keyConstructor = 'constructor';
 Open.TestHarness.Models.MethodInfo.keyGetter = 'get_';
 Open.TestHarness.Models.MethodInfo.keySetter = 'set_';
 Open.TestHarness.Models.MethodInfo.keyField = '_';

@@ -80,11 +80,12 @@ namespace Open.Core.Lists
             {
                 if (Set(PropSelectedParent, value, null))
                 {
+                    // Deselect children of the previous value.
+                    if (previousNode != null) Helper.Tree.DeselectChildren(previousNode);
+
                     // Update the list.
                     if (value != null)
                     {
-                        DeselectChildren(value);
-
                         if (previousNode == null)
                         {
                             // There is no previous node to slide from.  Show the list immediately.
@@ -174,14 +175,6 @@ namespace Open.Core.Lists
             return previousNode.ContainsDescendent(newNode) 
                        ? HorizontalDirection.Left 
                        : HorizontalDirection.Right;
-        }
-
-        private static void DeselectChildren(ITreeNode node)
-        {
-            foreach (ITreeNode child in node.Children)
-            {
-                child.IsSelected = false;
-            }
         }
 
         private ListTreePanel GetOrCreatePanel(ITreeNode node, bool initialize)

@@ -32,5 +32,23 @@ namespace Open.Core.Helpers
             }
             return null;
         }
+
+        /// <summary>Deselects all children of the given node.</summary>
+        /// <param name="parent">The node to deselect the children of.</param>
+        /// <returns>The total number of children that were deselected.</returns>
+        public int DeselectChildren(ITreeNode parent)
+        {
+            if (parent == null) return 0;
+            int total = 0;
+            foreach (ITreeNode child in parent.Children)
+            {
+                if (child.IsSelected)
+                {
+                    child.IsSelected = false;
+                    total++;
+                }
+            }
+            return total;
+        }
     }
 }

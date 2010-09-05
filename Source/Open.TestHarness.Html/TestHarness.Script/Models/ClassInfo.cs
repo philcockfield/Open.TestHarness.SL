@@ -16,14 +16,22 @@ namespace Open.TestHarness.Models
         private readonly ArrayList methods = new ArrayList();
         private readonly string displayName;
 
+        private MethodInfo classInitialize;
+        private MethodInfo classCleanup;
+        private MethodInfo testInitialize;
+        private MethodInfo testCleanup;
+
         /// <summary>Constructor.</summary>
         /// <param name="classType">The type of the test class.</param>
         /// <param name="packageInfo">The package the class belongs to.</param>
         private ClassInfo(Type classType, PackageInfo packageInfo)
         {
+            // Setup initial conditions.
             this.classType = classType;
             this.packageInfo = packageInfo;
             displayName = MethodInfo.FormatName(classType.Name);
+
+            // Get methods.
             GetMethods();
         }
         #endregion
@@ -43,6 +51,20 @@ namespace Open.TestHarness.Models
 
         /// <summary>Gets the number of test-methods within the class.</summary>
         public int Count { get { return methods.Count; } }
+        #endregion
+
+        #region Properties : Special Methods
+        /// <summary>Gets the 'ClassInitialize' special method (or null if one isn't declared).</summary>
+        public MethodInfo ClassInitialize { get { return classInitialize; } }
+
+        /// <summary>Gets the 'ClassCleanup' special method (or null if one isn't declared).</summary>
+        public MethodInfo ClassCleanup { get { return classCleanup; } }
+
+        /// <summary>Gets the 'TestInitialize' special method (or null if one isn't declared).</summary>
+        public MethodInfo TestInitialize { get { return testInitialize; } }
+
+        /// <summary>Gets the 'TestCleanup' special method (or null if one isn't declared).</summary>
+        public MethodInfo TestCleanup { get { return testCleanup; } }
         #endregion
 
         #region Methods
@@ -82,10 +104,32 @@ namespace Open.TestHarness.Models
             if (Instance == null) return;
             foreach (DictionaryEntry item in Instance)
             {
-                if (!MethodInfo.IsTestMethod(item)) continue;
-                methods.Add(new MethodInfo(this, item.Key));
+                if (MethodInfo.IsTestMethod(item))
+                {
+                    methods.Add(CreateMethod(item));
+                }
+                else
+                {
+                    AssignSpecialMethod(item);
+                }
             }
         }
+
+        private void AssignSpecialMethod(DictionaryEntry item)
+        {
+            // Setup initial conditions.
+            string key = item.Key;
+            if (!MethodHelper.IsSpecial(key)) return;
+            MethodInfo method = CreateMethod(item);
+
+            // Match and assign the methods.
+            if (MethodHelper.IsClassInitialize(key)) { classInitialize = method; }
+            else if (MethodHelper.IsClassCleanup(key)) { classCleanup = method; }
+            else if (MethodHelper.IsTestInitialize(key)) { testInitialize = method; }
+            else if (MethodHelper.IsTestCleanup(key)) { testCleanup = method; }
+        }
+
+        private MethodInfo CreateMethod(DictionaryEntry item) { return new MethodInfo(this, item.Key); }
         #endregion
     }
 }

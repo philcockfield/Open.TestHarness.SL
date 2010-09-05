@@ -58,6 +58,7 @@
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PackageLoader.cs" />
+    <Compile Include="Util\MethodHelper.cs" />
     <Compile Include="Views\ShellView.cs" />
     <Compile Include="Views\SideBarView.cs" />
     <Compile Include="Views\MethodListView.cs" />
