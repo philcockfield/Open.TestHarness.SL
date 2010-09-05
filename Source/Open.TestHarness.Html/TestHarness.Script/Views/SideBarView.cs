@@ -38,19 +38,8 @@ namespace Open.TestHarness.Views
                 jQuery.Select(CssSelectors.SidebarToolbar),
                 jQuery.Select(CssSelectors.BackMask));
 
-            // Wire up events.
-            rootList.SelectedParentChanged += delegate { SyncMethodListVisibility(); };
-
             // Finish up.
             UpdateVisualState();
-
-
-            //TEMP ==============
-            RootList.Container.Click(delegate(jQueryEvent @event)
-                                         {
-//                                             TestList.TEMP();
-                                             //IsTestListVisible = !IsTestListVisible;
-                                         });
         }
 
         protected override void OnDisposed()
@@ -146,13 +135,6 @@ namespace Open.TestHarness.Views
         private void SyncRootListHeight()
         {
             RootList.Container.CSS(Css.Bottom, MethodList.Container.GetHeight() + Css.Px);
-        }
-
-        private void SyncMethodListVisibility()
-        {
-            // Show or hide the MethodList based on the kind of root-tree-node that is currently selected.
-            object node = rootList.SelectedParent;
-            IsMethodListVisible = node != null && (node is PackageListItem);
         }
 
         private int GetTargetMethodListHeight()

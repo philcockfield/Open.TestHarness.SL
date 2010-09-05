@@ -21,17 +21,21 @@ namespace Open.Core.Helpers
         }
 
         /// <summary>Retrieves the first selected child node.</summary>
-        /// <param name="node">The node to look within.</param>
+        /// <param name="parent">The node to look within.</param>
         /// <returns>The first selected child, or null if no children are selected.</returns>
-        public ITreeNode FirstSelectedChild(ITreeNode node)
+        public ITreeNode FirstSelectedChild(ITreeNode parent)
         {
-            if (node == null) return null;
-            foreach (ITreeNode child in node.Children)
+            if (parent == null) return null;
+            foreach (ITreeNode child in parent.Children)
             {
                 if (child.IsSelected) return child;
             }
             return null;
         }
+
+        /// <summary>Determines whether at least one of the children of the given node are selected.</summary>
+        /// <param name="parent">The parent to examine.</param>
+        public bool HasSelectedChild(ITreeNode parent) { return FirstSelectedChild(parent) != null; }
 
         /// <summary>Deselects all children of the given node.</summary>
         /// <param name="parent">The node to deselect the children of.</param>

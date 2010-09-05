@@ -1,13 +1,13 @@
 using System;
 using Open.TestHarness;
 
-namespace Open
+namespace Testing
 {
     /// <summary>
     ///     Shared functionality for working with the TestHarness 
     ///     (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
     /// </summary>
-    public static class Testing
+    public static class TestHarness
     {
         #region Methods
         /// <summary>Registers a test-class with the harness.</summary>

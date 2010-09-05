@@ -85,10 +85,6 @@ namespace Open.TestHarness.Controllers
         }
         #endregion
 
-        #region Event Handlers
-        
-        #endregion
-
         #region Methods
         /// <summary>Adds a test-package to the controller.</summary>
         /// <param name="testPackage">The test-package to add.</param>

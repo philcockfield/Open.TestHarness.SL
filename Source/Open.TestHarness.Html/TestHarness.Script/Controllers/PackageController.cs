@@ -1,5 +1,6 @@
 using System;
 using Open.Core;
+using Open.Core.Lists;
 using Open.TestHarness.Models;
 using Open.TestHarness.Views;
 
@@ -34,6 +35,7 @@ namespace Open.TestHarness.Controllers
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
             rootNode.ChildSelectionChanged += OnChildSelectionChanged;
+            RootList.SelectedParentChanged += OnRootListSelectedParentChanged;
         }
 
         protected override void OnDisposed()
@@ -41,6 +43,7 @@ namespace Open.TestHarness.Controllers
             // Unwire event.
             rootNode.SelectionChanged -= OnSelectionChanged;
             rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
+            RootList.SelectedParentChanged -= OnRootListSelectedParentChanged;
 
             // Dispose of child resources.
             if (selectedClassController != null) selectedClassController.Dispose();
@@ -51,19 +54,28 @@ namespace Open.TestHarness.Controllers
         #endregion
 
         #region Event Handlers
+        private void OnRootListSelectedParentChanged(object sender, EventArgs e)
+        {
+            UpdateMethodListVisibility();
+        }
+
         private void OnSelectionChanged(object sender, EventArgs e)
         {
             if (RootNode.IsSelected) Download();
-        }
+       }
 
         private void OnChildSelectionChanged(object sender, EventArgs e)
         {
             ClassListItem item = Helper.Tree.FirstSelectedChild(RootNode) as ClassListItem;
             SelectedClass = item == null ? null : item.ClassInfo;
+            UpdateMethodListVisibility();
         }
         #endregion
 
         #region Properties
+        /// <summary>Gets whether this package is currently selected within the tree..</summary>
+        public bool IsSelected { get { return sidebarView.RootList.SelectedParent == RootNode; } }
+
         /// <summary>Gets the test-package that is under control.</summary>
         public PackageInfo TestPackage { get { return rootNode.TestPackage; } }
 
@@ -84,6 +96,8 @@ namespace Open.TestHarness.Controllers
                 }
             }
         }
+
+        private ListTreeView RootList { get { return sidebarView.RootList; } }
         #endregion
 
         #region Internal
@@ -124,6 +138,13 @@ namespace Open.TestHarness.Controllers
                 ClassListItem node = new ClassListItem(testClass);
                 RootNode.AddChild(node);
             }
+        }
+
+        private void UpdateMethodListVisibility()
+        {
+            // Show or hide the MethodList based on the kind of root-tree-node that is currently selected.
+            PackageListItem node = RootList.SelectedParent as PackageListItem;
+            sidebarView.IsMethodListVisible = (node != null) && Helper.Tree.HasSelectedChild(node);
         }
         #endregion
     }

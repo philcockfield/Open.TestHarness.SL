@@ -1,5 +1,6 @@
 using System.Collections;
 using Open;
+using Testing;
 
 namespace Test
 {
@@ -7,10 +8,10 @@ namespace Test
     {
         public static void Main(Dictionary args)
         {
-            Testing.RegisterClass(typeof(MyTestClass1));
-            Testing.RegisterClass(typeof(MyTestClass1));
-            Testing.RegisterClass(typeof(MyTest_Class__2));
-            Testing.RegisterClass(typeof(LoadHelperTest));
+            TestHarness.RegisterClass(typeof(MyTestClass1));
+            TestHarness.RegisterClass(typeof(MyTestClass1));
+            TestHarness.RegisterClass(typeof(MyTest_Class__2));
+            TestHarness.RegisterClass(typeof(LoadHelperTest));
         }
     }
 }
