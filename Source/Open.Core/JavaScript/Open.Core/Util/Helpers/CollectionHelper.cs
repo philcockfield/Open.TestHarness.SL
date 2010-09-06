@@ -44,5 +44,18 @@ namespace Open.Core.Helpers
             }
             return null;
         }
+
+        /// <summary>Clears the collection, disposing of all disposable children.</summary>
+        /// <param name="collection">The collection to clear and dispose.</param>
+        public void DisposeAndClear(ArrayList collection)
+        {
+            if (collection == null) return;
+            foreach (object item in collection)
+            {
+                IDisposable disposable = item as IDisposable;
+                if (disposable != null) disposable.Dispose();
+            }
+            collection.Clear();
+        }
     }
 }

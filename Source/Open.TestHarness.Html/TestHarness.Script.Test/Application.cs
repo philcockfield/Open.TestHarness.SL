@@ -1,6 +1,6 @@
 using System.Collections;
-using Open;
-using Testing;
+using Open.Testing;
+using Test.Samples;
 
 namespace Test
 {
@@ -9,9 +9,9 @@ namespace Test
         public static void Main(Dictionary args)
         {
             TestHarness.RegisterClass(typeof(MyTestClass1));
-            TestHarness.RegisterClass(typeof(MyTestClass1));
+            TestHarness.RegisterClass(typeof(MyTestClass1)); // Registered twice.
             TestHarness.RegisterClass(typeof(MyTest_Class__2));
-            TestHarness.RegisterClass(typeof(LoadHelperTest));
+            TestHarness.RegisterClass(typeof(ControlsTest));
         }
     }
 }

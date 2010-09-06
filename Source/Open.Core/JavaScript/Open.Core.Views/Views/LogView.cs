@@ -20,7 +20,7 @@ namespace Open.Core.Controls
             scrollDelay = new DelayedAction(0.05, OnScrollDelayElapsed);
 
             // Wire up events.
-            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { UpdateLayout(); });
+            GlobalEvents.WindowResize += delegate { UpdateLayout(); };
             GlobalEvents.HorizontalPanelResized += delegate { UpdateLayout(); };
             GlobalEvents.VerticalPanelResized += delegate { scrollDelay.Start(); };
 

@@ -1,10 +1,10 @@
 using System.Collections;
 using Open.Core;
 using Open.Core.Lists;
-using Open.TestHarness.Models;
-using Open.TestHarness.Views;
+using Open.Testing.Models;
+using Open.Testing.Views;
 
-namespace Open.TestHarness.Controllers
+namespace Open.Testing.Controllers
 {
     /// <summary>Controller for the side-bar.</summary>
     public class SidebarController : ControllerBase

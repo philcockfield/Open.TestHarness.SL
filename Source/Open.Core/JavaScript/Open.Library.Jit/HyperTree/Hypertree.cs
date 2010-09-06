@@ -39,12 +39,12 @@ namespace Open.Library.Jit
             Css.InsertLink(JitCss.HypertreeUrl);
 
             // Wire up events.
-            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { OnWindowResized(); });
+            GlobalEvents.WindowResize += delegate { OnWindowResize(); };
         }
         #endregion
 
         #region Event Handlers
-        private void OnWindowResized()
+        private void OnWindowResize()
         {
             if (resizeDelay == null) resizeDelay = new DelayedAction(0.2, delegate { UpdateSize(); });
             resizeDelay.Start();

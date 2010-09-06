@@ -22,8 +22,7 @@ using T4MVC;
 
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static class MVC {
-    public static Open.TestHarness.Web.Controllers.TestHarnessController TestHarness = new Open.TestHarness.Web.Controllers.T4MVC_TestHarnessController();
-    public static T4MVC.SharedController Shared = new T4MVC.SharedController();
+    public static Open.Testing.Web.Controllers.TestHarnessController TestHarness = new Open.Testing.Web.Controllers.T4MVC_TestHarnessController();
 }
 
 namespace T4MVC {
@@ -247,9 +246,9 @@ namespace Links {
                           
             public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");
                           
-            public static readonly string TestHarness_Script_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Script.Test.debug.min.js") ? Url("TestHarness.Script.Test.debug.min.js") : Url("TestHarness.Script.Test.debug.js");
+            public static readonly string TestHarness_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Test.debug.min.js") ? Url("TestHarness.Test.debug.min.js") : Url("TestHarness.Test.debug.js");
                           
-            public static readonly string TestHarness_Script_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Script.Test.min.js") ? Url("TestHarness.Script.Test.min.js") : Url("TestHarness.Script.Test.js");
+            public static readonly string TestHarness_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Test.min.js") ? Url("TestHarness.Test.min.js") : Url("TestHarness.Test.js");
                           
         }
     

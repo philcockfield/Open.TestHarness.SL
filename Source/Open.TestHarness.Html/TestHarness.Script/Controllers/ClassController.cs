@@ -1,9 +1,9 @@
 using System;
 using Open.Core;
-using Open.TestHarness.Models;
-using Open.TestHarness.Views;
+using Open.Testing.Models;
+using Open.Testing.Views;
 
-namespace Open.TestHarness.Controllers
+namespace Open.Testing.Controllers
 {
     /// <summary>Controlls the selected test-class.</summary>
     public class ClassController : ControllerBase
@@ -35,6 +35,9 @@ namespace Open.TestHarness.Controllers
 
             // Invoke the class-teardown method.
             if (classInfo.ClassCleanup != null) classInfo.ClassCleanup.Invoke();
+
+            // Clear any visual controls from the screen.
+            TestHarness.ClearControls();
 
             // Finish up.
             base.OnDisposed();

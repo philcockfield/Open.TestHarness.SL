@@ -1,6 +1,6 @@
 ﻿using Open.Core.Lists;
 
-namespace Open.TestHarness.Models
+namespace Open.Testing.Models
 {
     /// <summary>A list-item node for a TestPackage.</summary>
     public class PackageListItem : ListItem

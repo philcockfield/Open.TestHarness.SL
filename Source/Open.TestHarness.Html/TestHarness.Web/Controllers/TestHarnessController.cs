@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-namespace Open.TestHarness.Web.Controllers
+namespace Open.Testing.Web.Controllers
 {
     public partial class TestHarnessController : ControllerBase
     {
@@ -36,6 +35,12 @@ namespace Open.TestHarness.Web.Controllers
         public virtual ActionResult TestList()
         {
             ViewModel.TestListTitle = GetResource(KeyTestListTitle);
+            return View(ViewModel);
+        }
+
+        /// <summary>The Main content panel.</summary>
+        public virtual ActionResult Main()
+        {
             return View(ViewModel);
         }
         #endregion

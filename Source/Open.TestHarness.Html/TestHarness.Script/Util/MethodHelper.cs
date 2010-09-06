@@ -1,4 +1,4 @@
-namespace Open.TestHarness
+namespace Open.Testing
 {
     /// <summary>Helper classes for examining methods.</summary>
     internal class MethodHelper

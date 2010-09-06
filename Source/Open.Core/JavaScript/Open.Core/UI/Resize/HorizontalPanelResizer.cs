@@ -61,7 +61,7 @@ namespace Open.Core.UI
             // Clear the height value (which assigned during the resize).
             Panel.CSS(Css.Height, String.Empty);
         }
-        protected override void OnWindowSizeChanged()
+        protected override void OnWindowResize()
         {
             if (!IsInitialized) return;
             SetMinMaxWidth();

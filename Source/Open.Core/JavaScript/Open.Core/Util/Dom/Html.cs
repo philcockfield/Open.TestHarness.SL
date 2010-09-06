@@ -110,6 +110,15 @@ namespace Open.Core
         /// <summary>Creates a SPAN element with a magin-left set to the specified pixels (useful for indenting text).</summary>
         /// <param name="pixels">The number of pixels to indent.</param>
         public static string SpanIndent(int pixels) { return string.Format("<span style='margin-left:{0}px;'></span>", pixels); }
+
+        /// <summary>Retrieves the width of the specified element.</summary>
+        /// <param name="cssSelector">The CSS selector of the element to measure.</param>
+        public static int Width(string cssSelector) { return jQuery.Select(cssSelector).GetWidth(); }
+
+        /// <summary>Retrieves the height of the specified element.</summary>
+        /// <param name="cssSelector">The CSS selector of the element to measure.</param>
+        public static int Height(string cssSelector) { return jQuery.Select(cssSelector).GetHeight(); }
+
         #endregion
     }
 }

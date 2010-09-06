@@ -73,8 +73,8 @@ Open.Library.Jit.Hypertree = function Open_Library_Jit_Hypertree(containerElemen
     }
     this._containerElement = containerElement;
     Open.Core.Css.insertLink(Open.Library.Jit.JitCss.hypertreeUrl);
-    $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
-        this._onWindowResized();
+    Open.Core.GlobalEvents.add_windowResize(ss.Delegate.create(this, function() {
+        this._onWindowResize();
     }));
 }
 Open.Library.Jit.Hypertree.findWithin = function Open_Library_Jit_Hypertree$findWithin(id, node) {
@@ -212,7 +212,7 @@ Open.Library.Jit.Hypertree.prototype = {
     _clickedNode: null,
     _nodeInserter: null,
     
-    _onWindowResized: function Open_Library_Jit_Hypertree$_onWindowResized() {
+    _onWindowResize: function Open_Library_Jit_Hypertree$_onWindowResize() {
         if (this._resizeDelay == null) {
             this._resizeDelay = new Open.Core.DelayedAction(0.2, ss.Delegate.create(this, function() {
                 this._updateSize();

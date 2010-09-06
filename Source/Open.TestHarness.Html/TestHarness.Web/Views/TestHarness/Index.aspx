@@ -19,7 +19,7 @@
     <!-- TypeKit -->
     <script type="text/javascript" src="http://use.typekit.com/pdx3yro.js"></script>
     <script type="text/javascript">try { Typekit.load(); } catch (e) { }</script>   
-    
+
     <% Html.InsertCoreJQuery();%>
     <% Html.InsertCoreScripts();%>
     <script src="/Open.Core/Scripts/Open.Core.Controls.debug.js" type="text/javascript"></script>
@@ -29,23 +29,15 @@
     <script src="/Content/Scripts/Open.TestHarness.debug.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            Open.TestHarness.Application.main();
+            Open.Testing.Application.main();
         });
     </script>
 
 </head>
 <body>
-
     <div id="testHarness">
-         <% Html.RenderAction(MVC.TestHarness.ActionNames.Sidebar); %>
-        <div class="th-main">
-            <div class="th-mainToolbar th-toolbar panelBorder panelBorderBottom">
-                <div class="topHighlightLine"></div>
-            </div>
-            <div class="th-content absoluteFill">
-                <% Html.RenderAction(MVC.TestHarness.ActionNames.Log);%>
-            </div>
-        </div>
+        <% Html.RenderAction(MVC.TestHarness.ActionNames.Sidebar); %>
+        <% Html.RenderAction(MVC.TestHarness.ActionNames.Main); %>
     </div>
 </body>
 </html>

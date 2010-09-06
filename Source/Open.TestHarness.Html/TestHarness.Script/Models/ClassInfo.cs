@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using Open.Core;
 
-namespace Open.TestHarness.Models
+namespace Open.Testing.Models
 {
     /// <summary>Represents a class with tests.</summary>
     /// <remarks>Enumerates on the [MethodInfo]'s within the class.</remarks>

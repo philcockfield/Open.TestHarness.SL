@@ -19,7 +19,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace Open.TestHarness.Web.Controllers {
+namespace Open.Testing.Web.Controllers {
     public partial class TestHarnessController {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public TestHarnessController() { }
@@ -50,6 +50,7 @@ namespace Open.TestHarness.Web.Controllers {
             public readonly string Log = "Log";
             public readonly string Sidebar = "Sidebar";
             public readonly string TestList = "TestList";
+            public readonly string Main = "Main";
         }
 
 
@@ -60,13 +61,14 @@ namespace Open.TestHarness.Web.Controllers {
         public class ViewNames {
             public readonly string Index = "~/Views/TestHarness/Index.aspx";
             public readonly string Log = "~/Views/TestHarness/Log.ascx";
+            public readonly string Main = "~/Views/TestHarness/Main.ascx";
             public readonly string Sidebar = "~/Views/TestHarness/Sidebar.ascx";
             public readonly string TestList = "~/Views/TestHarness/TestList.ascx";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public class T4MVC_TestHarnessController: Open.TestHarness.Web.Controllers.TestHarnessController {
+    public class T4MVC_TestHarnessController: TestHarnessController {
         public T4MVC_TestHarnessController() : base(Dummy.Instance) { }
 
         public override System.Web.Mvc.ActionResult Index() {
@@ -86,6 +88,11 @@ namespace Open.TestHarness.Web.Controllers {
 
         public override System.Web.Mvc.ActionResult TestList() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.TestList);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Main() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Main);
             return callInfo;
         }
 

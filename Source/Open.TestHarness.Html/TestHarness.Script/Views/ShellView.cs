@@ -1,7 +1,7 @@
 ﻿using jQueryApi;
 using Open.Core;
 
-namespace Open.TestHarness.Views
+namespace Open.Testing.Views
 {
     /// <summary>The root view of the application shell.</summary>
     public class ShellView : ViewBase

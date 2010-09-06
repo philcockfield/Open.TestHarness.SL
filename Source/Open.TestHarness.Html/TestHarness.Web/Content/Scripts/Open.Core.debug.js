@@ -1099,6 +1099,8 @@ Open.Core.GlobalEvents = function Open_Core_GlobalEvents() {
     /// </field>
     /// <field name="__verticalPanelResized" type="EventHandler" static="true">
     /// </field>
+    /// <field name="__windowResize" type="EventHandler" static="true">
+    /// </field>
 }
 Open.Core.GlobalEvents.add_panelResized = function Open_Core_GlobalEvents$add_panelResized(value) {
     /// <summary>
@@ -1161,6 +1163,25 @@ Open.Core.GlobalEvents._fireVerticalPanelResized = function Open_Core_GlobalEven
     /// </param>
     if (Open.Core.GlobalEvents.__verticalPanelResized != null) {
         Open.Core.GlobalEvents.__verticalPanelResized.invoke(sender, new ss.EventArgs());
+    }
+}
+Open.Core.GlobalEvents.add_windowResize = function Open_Core_GlobalEvents$add_windowResize(value) {
+    /// <summary>
+    /// Fires when the browser Window is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__windowResize = ss.Delegate.combine(Open.Core.GlobalEvents.__windowResize, value);
+}
+Open.Core.GlobalEvents.remove_windowResize = function Open_Core_GlobalEvents$remove_windowResize(value) {
+    /// <summary>
+    /// Fires when the browser Window is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__windowResize = ss.Delegate.remove(Open.Core.GlobalEvents.__windowResize, value);
+}
+Open.Core.GlobalEvents._fireWindowResize = function Open_Core_GlobalEvents$_fireWindowResize() {
+    if (Open.Core.GlobalEvents.__windowResize != null) {
+        Open.Core.GlobalEvents.__windowResize.invoke(Open.Core.GlobalEvents, new ss.EventArgs());
     }
 }
 
@@ -2001,6 +2022,26 @@ Open.Core.Html.spanIndent = function Open_Core_Html$spanIndent(pixels) {
     /// <returns type="String"></returns>
     return String.format('<span style=\'margin-left:{0}px;\'></span>', pixels);
 }
+Open.Core.Html.width = function Open_Core_Html$width(cssSelector) {
+    /// <summary>
+    /// Retrieves the width of the specified element.
+    /// </summary>
+    /// <param name="cssSelector" type="String">
+    /// The CSS selector of the element to measure.
+    /// </param>
+    /// <returns type="Number" integer="true"></returns>
+    return $(cssSelector).width();
+}
+Open.Core.Html.height = function Open_Core_Html$height(cssSelector) {
+    /// <summary>
+    /// Retrieves the height of the specified element.
+    /// </summary>
+    /// <param name="cssSelector" type="String">
+    /// The CSS selector of the element to measure.
+    /// </param>
+    /// <returns type="Number" integer="true"></returns>
+    return $(cssSelector).height();
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2528,7 +2569,203 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
 }
 
 
+Type.registerNamespace('Open.Testing');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.SizeMode
+
+Open.Testing.SizeMode = function() { 
+    /// <summary>
+    /// Flags representing the various different sizing strategies for a hosted control.
+    /// </summary>
+    /// <field name="control" type="Number" integer="true" static="true">
+    /// The size is determined by the control.
+    /// </field>
+    /// <field name="fill" type="Number" integer="true" static="true">
+    /// The control is sized to fill the host container.
+    /// </field>
+    /// <field name="fillWithMargin" type="Number" integer="true" static="true">
+    /// The control is sized to fill the host container but is surrounded by some whitespace.
+    /// </field>
+};
+Open.Testing.SizeMode.prototype = {
+    control: 0, 
+    fill: 1, 
+    fillWithMargin: 2
+}
+Open.Testing.SizeMode.registerEnum('Open.Testing.SizeMode', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.TestHarness
+
+Open.Testing.TestHarness = function Open_Testing_TestHarness() {
+    /// <summary>
+    /// Shared functionality for working with the TestHarness
+    /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
+    /// </summary>
+}
+Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$registerClass(testClass) {
+    /// <summary>
+    /// Registers a test-class with the harness.
+    /// </summary>
+    /// <param name="testClass" type="Type">
+    /// The type of the test class.
+    /// </param>
+    if (ss.isNullOrUndefined(testClass)) {
+        return;
+    }
+    var e = new Open.Testing.Internal.TestClassEventArgs();
+    e.testClass = testClass;
+    Open.Testing.Internal.TestHarnessEvents._fireTestClassRegistered(e);
+}
+Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addControl(sizeMode) {
+    /// <summary>
+    /// Adds a control to the host canvas.
+    /// </summary>
+    /// <param name="sizeMode" type="Open.Testing.SizeMode">
+    /// The strategy used to size the control.
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    var e = new Open.Testing.Internal.TestControlEventArgs();
+    e.sizeMode = sizeMode;
+    e.controlContainer = Open.Core.Html.createDiv();
+    Open.Testing.Internal.TestHarnessEvents._fireControlAdded(e);
+    return e.controlContainer;
+}
+Open.Testing.TestHarness.clearControls = function Open_Testing_TestHarness$clearControls() {
+    /// <summary>
+    /// Clears all added controls from the host canvas.
+    /// </summary>
+    Open.Testing.Internal.TestHarnessEvents._fireClearControls();
+}
+
+
+Type.registerNamespace('Open.Testing.Internal');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Internal.TestHarnessEvents
+
+Open.Testing.Internal.TestHarnessEvents = function Open_Testing_Internal_TestHarnessEvents() {
+    /// <field name="__testClassRegistered" type="Open.Testing.Internal.TestClassHandler" static="true">
+    /// </field>
+    /// <field name="__controlAdded" type="Open.Testing.Internal.TestControlHandler" static="true">
+    /// </field>
+    /// <field name="__clearControls" type="EventHandler" static="true">
+    /// </field>
+}
+Open.Testing.Internal.TestHarnessEvents.add_testClassRegistered = function Open_Testing_Internal_TestHarnessEvents$add_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.Internal.TestHarnessEvents.__testClassRegistered = ss.Delegate.combine(Open.Testing.Internal.TestHarnessEvents.__testClassRegistered, value);
+}
+Open.Testing.Internal.TestHarnessEvents.remove_testClassRegistered = function Open_Testing_Internal_TestHarnessEvents$remove_testClassRegistered(value) {
+    /// <summary>
+    /// Fires when a test class is registered.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.Internal.TestHarnessEvents.__testClassRegistered = ss.Delegate.remove(Open.Testing.Internal.TestHarnessEvents.__testClassRegistered, value);
+}
+Open.Testing.Internal.TestHarnessEvents._fireTestClassRegistered = function Open_Testing_Internal_TestHarnessEvents$_fireTestClassRegistered(e) {
+    /// <param name="e" type="Open.Testing.Internal.TestClassEventArgs">
+    /// </param>
+    if (Open.Testing.Internal.TestHarnessEvents.__testClassRegistered != null) {
+        Open.Testing.Internal.TestHarnessEvents.__testClassRegistered.invoke(Open.Testing.Internal.TestHarnessEvents, e);
+    }
+}
+Open.Testing.Internal.TestHarnessEvents.add_controlAdded = function Open_Testing_Internal_TestHarnessEvents$add_controlAdded(value) {
+    /// <summary>
+    /// Fires when a control is added to the host canvas.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.Internal.TestHarnessEvents.__controlAdded = ss.Delegate.combine(Open.Testing.Internal.TestHarnessEvents.__controlAdded, value);
+}
+Open.Testing.Internal.TestHarnessEvents.remove_controlAdded = function Open_Testing_Internal_TestHarnessEvents$remove_controlAdded(value) {
+    /// <summary>
+    /// Fires when a control is added to the host canvas.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.Internal.TestHarnessEvents.__controlAdded = ss.Delegate.remove(Open.Testing.Internal.TestHarnessEvents.__controlAdded, value);
+}
+Open.Testing.Internal.TestHarnessEvents._fireControlAdded = function Open_Testing_Internal_TestHarnessEvents$_fireControlAdded(e) {
+    /// <param name="e" type="Open.Testing.Internal.TestControlEventArgs">
+    /// </param>
+    if (Open.Testing.Internal.TestHarnessEvents.__controlAdded != null) {
+        Open.Testing.Internal.TestHarnessEvents.__controlAdded.invoke(Open.Testing.Internal.TestHarnessEvents, e);
+    }
+}
+Open.Testing.Internal.TestHarnessEvents.add_clearControls = function Open_Testing_Internal_TestHarnessEvents$add_clearControls(value) {
+    /// <summary>
+    /// Fires when the host canvas is to be cleared of controls.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.Internal.TestHarnessEvents.__clearControls = ss.Delegate.combine(Open.Testing.Internal.TestHarnessEvents.__clearControls, value);
+}
+Open.Testing.Internal.TestHarnessEvents.remove_clearControls = function Open_Testing_Internal_TestHarnessEvents$remove_clearControls(value) {
+    /// <summary>
+    /// Fires when the host canvas is to be cleared of controls.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Testing.Internal.TestHarnessEvents.__clearControls = ss.Delegate.remove(Open.Testing.Internal.TestHarnessEvents.__clearControls, value);
+}
+Open.Testing.Internal.TestHarnessEvents._fireClearControls = function Open_Testing_Internal_TestHarnessEvents$_fireClearControls() {
+    if (Open.Testing.Internal.TestHarnessEvents.__clearControls != null) {
+        Open.Testing.Internal.TestHarnessEvents.__clearControls.invoke(Open.Testing.Internal.TestHarnessEvents, new ss.EventArgs());
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Internal.TestClassEventArgs
+
+Open.Testing.Internal.TestClassEventArgs = function Open_Testing_Internal_TestClassEventArgs() {
+    /// <field name="testClass" type="Type">
+    /// </field>
+}
+Open.Testing.Internal.TestClassEventArgs.prototype = {
+    testClass: null
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Internal.TestControlEventArgs
+
+Open.Testing.Internal.TestControlEventArgs = function Open_Testing_Internal_TestControlEventArgs() {
+    /// <field name="sizeMode" type="Open.Testing.SizeMode">
+    /// </field>
+    /// <field name="controlContainer" type="jQueryObject">
+    /// </field>
+}
+Open.Testing.Internal.TestControlEventArgs.prototype = {
+    sizeMode: 0,
+    controlContainer: null
+}
+
+
 Type.registerNamespace('Open.Core.Helpers');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.ScriptLibrary
+
+Open.Core.Helpers.ScriptLibrary = function() { 
+    /// <summary>
+    /// The various Core script libraries.
+    /// </summary>
+    /// <field name="controls" type="Number" integer="true" static="true">
+    /// The general set of UI controls.
+    /// </field>
+    /// <field name="lists" type="Number" integer="true" static="true">
+    /// The List controls.
+    /// </field>
+};
+Open.Core.Helpers.ScriptLibrary.prototype = {
+    controls: 0, 
+    lists: 1
+}
+Open.Core.Helpers.ScriptLibrary.registerEnum('Open.Core.Helpers.ScriptLibrary', false);
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Helpers.CollectionHelper
@@ -2601,6 +2838,27 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             }
         }
         return null;
+    },
+    
+    disposeAndClear: function Open_Core_Helpers_CollectionHelper$disposeAndClear(collection) {
+        /// <summary>
+        /// Clears the collection, disposing of all disposable children.
+        /// </summary>
+        /// <param name="collection" type="Array">
+        /// The collection to clear and dispose.
+        /// </param>
+        if (collection == null) {
+            return;
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(collection);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            var disposable = Type.safeCast(item, ss.IDisposable);
+            if (disposable != null) {
+                disposable.dispose();
+            }
+        }
+        collection.clear();
     }
 }
 
@@ -2674,18 +2932,18 @@ Open.Core.Helpers.TreeHelper.prototype = {
         return null;
     },
     
-    firstSelectedChild: function Open_Core_Helpers_TreeHelper$firstSelectedChild(node) {
+    firstSelectedChild: function Open_Core_Helpers_TreeHelper$firstSelectedChild(parent) {
         /// <summary>
         /// Retrieves the first selected child node.
         /// </summary>
-        /// <param name="node" type="Open.Core.ITreeNode">
+        /// <param name="parent" type="Open.Core.ITreeNode">
         /// The node to look within.
         /// </param>
         /// <returns type="Open.Core.ITreeNode"></returns>
-        if (node == null) {
+        if (parent == null) {
             return null;
         }
-        var $enum1 = ss.IEnumerator.getEnumerator(node.get_children());
+        var $enum1 = ss.IEnumerator.getEnumerator(parent.get_children());
         while ($enum1.moveNext()) {
             var child = $enum1.get_current();
             if (child.get_isSelected()) {
@@ -2693,6 +2951,17 @@ Open.Core.Helpers.TreeHelper.prototype = {
             }
         }
         return null;
+    },
+    
+    hasSelectedChild: function Open_Core_Helpers_TreeHelper$hasSelectedChild(parent) {
+        /// <summary>
+        /// Determines whether at least one of the children of the given node are selected.
+        /// </summary>
+        /// <param name="parent" type="Open.Core.ITreeNode">
+        /// The parent to examine.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return this.firstSelectedChild(parent) != null;
     },
     
     deselectChildren: function Open_Core_Helpers_TreeHelper$deselectChildren(parent) {
@@ -3218,37 +3487,28 @@ Open.Core.Helpers.ScriptLoadHelper = function Open_Core_Helpers_ScriptLoadHelper
     /// </field>
     /// <field name="_jit$1" type="Open.Core.Helpers.JitScriptLoader">
     /// </field>
-    /// <field name="_isListsLoaded$1" type="Boolean">
+    /// <field name="_loadedLibraries$1" type="Array">
     /// </field>
-    /// <field name="_isViewsLoaded$1" type="Boolean">
-    /// </field>
+    this._loadedLibraries$1 = [];
     Open.Core.Helpers.ScriptLoadHelper.initializeBase(this);
 }
-Open.Core.Helpers.ScriptLoadHelper._load$1 = function Open_Core_Helpers_ScriptLoadHelper$_load$1(scriptName, isLoadedProperty, callback) {
-    /// <param name="scriptName" type="String">
+Open.Core.Helpers.ScriptLoadHelper._toLibraryName$1 = function Open_Core_Helpers_ScriptLoadHelper$_toLibraryName$1(library) {
+    /// <param name="library" type="Open.Core.Helpers.ScriptLibrary">
     /// </param>
-    /// <param name="isLoadedProperty" type="Open.Core.PropertyRef">
-    /// </param>
-    /// <param name="callback" type="Action">
-    /// </param>
-    if (isLoadedProperty.get_value()) {
-        Open.Core.Helper.invokeOrDefault(callback);
-        return;
+    /// <returns type="String"></returns>
+    switch (library) {
+        case Open.Core.Helpers.ScriptLibrary.controls:
+            return 'Open.Core.Controls';
+        case Open.Core.Helpers.ScriptLibrary.lists:
+            return 'Open.Core.Lists';
+        default:
+            throw new Error(String.format('{0} not supported.', Open.Core.Helpers.ScriptLibrary.toString(library)));
     }
-    var loader = new Open.Core.Helpers.ScriptLoader();
-    loader.add_loadComplete(function() {
-        isLoadedProperty.set_value(true);
-        Open.Core.Helper.invokeOrDefault(callback);
-    });
-    loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, scriptName, true));
-    loader.start();
 }
 Open.Core.Helpers.ScriptLoadHelper.prototype = {
     _rootScriptFolder$1: '/Open.Core/Scripts/',
     _useDebug$1: false,
     _jit$1: null,
-    _isListsLoaded$1: false,
-    _isViewsLoaded$1: false,
     
     get_useDebug: function Open_Core_Helpers_ScriptLoadHelper$get_useDebug() {
         /// <summary>
@@ -3290,56 +3550,38 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         return this._jit$1 || (this._jit$1 = new Open.Core.Helpers.JitScriptLoader());
     },
     
-    get_isListsLoaded: function Open_Core_Helpers_ScriptLoadHelper$get_isListsLoaded() {
+    isLoaded: function Open_Core_Helpers_ScriptLoadHelper$isLoaded(library) {
         /// <summary>
-        /// Gets whether the Lists library has been loaded.
+        /// Determines whether the specified library has been loaded.
         /// </summary>
-        /// <value type="Boolean"></value>
-        return this._isListsLoaded$1;
-    },
-    set_isListsLoaded: function Open_Core_Helpers_ScriptLoadHelper$set_isListsLoaded(value) {
-        /// <summary>
-        /// Gets whether the Lists library has been loaded.
-        /// </summary>
-        /// <value type="Boolean"></value>
-        this._isListsLoaded$1 = value;
-        return value;
+        /// <param name="library" type="Open.Core.Helpers.ScriptLibrary">
+        /// The library to look for.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return this._loadedLibraries$1.contains(library);
     },
     
-    get_isViewsLoaded: function Open_Core_Helpers_ScriptLoadHelper$get_isViewsLoaded() {
+    loadLibrary: function Open_Core_Helpers_ScriptLoadHelper$loadLibrary(library, callback) {
         /// <summary>
-        /// Gets whether the Views library has been loaded.
+        /// Loads the specified library.
         /// </summary>
-        /// <value type="Boolean"></value>
-        return this._isViewsLoaded$1;
-    },
-    set_isViewsLoaded: function Open_Core_Helpers_ScriptLoadHelper$set_isViewsLoaded(value) {
-        /// <summary>
-        /// Gets whether the Views library has been loaded.
-        /// </summary>
-        /// <value type="Boolean"></value>
-        this._isViewsLoaded$1 = value;
-        return value;
-    },
-    
-    loadViews: function Open_Core_Helpers_ScriptLoadHelper$loadViews(callback) {
-        /// <summary>
-        /// Loads the Views library.
-        /// </summary>
+        /// <param name="library" type="Open.Core.Helpers.ScriptLibrary">
+        /// Flag indicating the library to load.
+        /// </param>
         /// <param name="callback" type="Action">
         /// Callback to invoke upon completion.
         /// </param>
-        Open.Core.Helpers.ScriptLoadHelper._load$1('Open.Core.Views', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded), callback);
-    },
-    
-    loadLists: function Open_Core_Helpers_ScriptLoadHelper$loadLists(callback) {
-        /// <summary>
-        /// Loads the Lists library.
-        /// </summary>
-        /// <param name="callback" type="Action">
-        /// Callback to invoke upon completion.
-        /// </param>
-        Open.Core.Helpers.ScriptLoadHelper._load$1('Open.Core.Lists', this.getPropertyRef(Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded), callback);
+        if (this.isLoaded(library)) {
+            Open.Core.Helper.invokeOrDefault(callback);
+            return;
+        }
+        var loader = new Open.Core.Helpers.ScriptLoader();
+        loader.add_loadComplete(ss.Delegate.create(this, function() {
+            this._loadedLibraries$1.add(library);
+            Open.Core.Helper.invokeOrDefault(callback);
+        }));
+        loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, Open.Core.Helpers.ScriptLoadHelper._toLibraryName$1(library), true));
+        loader.start();
     },
     
     _url: function Open_Core_Helpers_ScriptLoadHelper$_url(path, fileName, hasDebug) {
@@ -3487,7 +3729,7 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         this.get_panel().css(Open.Core.Css.height, String.Empty);
     },
     
-    onWindowSizeChanged: function Open_Core_UI_HorizontalPanelResizer$onWindowSizeChanged() {
+    onWindowResize: function Open_Core_UI_HorizontalPanelResizer$onWindowResize() {
         if (!this.isInitialized) {
             return;
         }
@@ -3575,8 +3817,8 @@ Open.Core.UI.PanelResizerBase = function Open_Core_UI_PanelResizerBase(cssSelect
         Open.Core.UI.PanelResizerBase._cookie = new Open.Core.Cookie('PanelResizeStore');
         Open.Core.UI.PanelResizerBase._cookie.set_expires(5000);
     }
-    $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
-        this.onWindowSizeChanged();
+    Open.Core.GlobalEvents.add_windowResize(ss.Delegate.create(this, function() {
+        this.onWindowResize();
     }));
     this._loadSize();
 }
@@ -3714,7 +3956,7 @@ Open.Core.UI.PanelResizerBase.prototype = {
     onStopped: function Open_Core_UI_PanelResizerBase$onStopped() {
     },
     
-    onWindowSizeChanged: function Open_Core_UI_PanelResizerBase$onWindowSizeChanged() {
+    onWindowResize: function Open_Core_UI_PanelResizerBase$onWindowResize() {
     },
     
     getRootContainer: function Open_Core_UI_PanelResizerBase$getRootContainer() {
@@ -3876,7 +4118,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         this.get_panel().css(Open.Core.Css.top, String.Empty);
     },
     
-    onWindowSizeChanged: function Open_Core_UI_VerticalPanelResizer$onWindowSizeChanged() {
+    onWindowResize: function Open_Core_UI_VerticalPanelResizer$onWindowResize() {
         if (!this.isInitialized) {
             return;
         }
@@ -3918,77 +4160,6 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 }
 
 
-Type.registerNamespace('Open');
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Testing
-
-Open.Testing = function Open_Testing() {
-    /// <summary>
-    /// Shared functionality for working with the TestHarness
-    /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
-    /// </summary>
-}
-Open.Testing.registerClass = function Open_Testing$registerClass(testClass) {
-    /// <summary>
-    /// Registers a test-class with the harness.
-    /// </summary>
-    /// <param name="testClass" type="Type">
-    /// The type of the test class.
-    /// </param>
-    if (ss.isNullOrUndefined(testClass)) {
-        return;
-    }
-    var e = new Open.TestHarness.TestClassEventArgs();
-    e.testClass = testClass;
-    Open.TestHarness.TestHarnessEvents._fireTestClassRegistered(e);
-}
-
-
-Type.registerNamespace('Open.TestHarness');
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.TestHarness.TestClassEventArgs
-
-Open.TestHarness.TestClassEventArgs = function Open_TestHarness_TestClassEventArgs() {
-    /// <field name="testClass" type="Type">
-    /// </field>
-}
-Open.TestHarness.TestClassEventArgs.prototype = {
-    testClass: null
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.TestHarness.TestHarnessEvents
-
-Open.TestHarness.TestHarnessEvents = function Open_TestHarness_TestHarnessEvents() {
-    /// <field name="__testClassRegistered" type="Open.TestHarness.TestClassHandler" static="true">
-    /// </field>
-}
-Open.TestHarness.TestHarnessEvents.add_testClassRegistered = function Open_TestHarness_TestHarnessEvents$add_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.TestHarness.TestHarnessEvents.__testClassRegistered = ss.Delegate.combine(Open.TestHarness.TestHarnessEvents.__testClassRegistered, value);
-}
-Open.TestHarness.TestHarnessEvents.remove_testClassRegistered = function Open_TestHarness_TestHarnessEvents$remove_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.TestHarness.TestHarnessEvents.__testClassRegistered = ss.Delegate.remove(Open.TestHarness.TestHarnessEvents.__testClassRegistered, value);
-}
-Open.TestHarness.TestHarnessEvents._fireTestClassRegistered = function Open_TestHarness_TestHarnessEvents$_fireTestClassRegistered(e) {
-    /// <param name="e" type="Open.TestHarness.TestClassEventArgs">
-    /// </param>
-    if (Open.TestHarness.TestHarnessEvents.__testClassRegistered != null) {
-        Open.TestHarness.TestHarnessEvents.__testClassRegistered.invoke(Open.TestHarness.TestHarnessEvents, e);
-    }
-}
-
-
 Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
 Open.Core.Keyboard.registerClass('Open.Core.Keyboard');
@@ -4012,6 +4183,10 @@ Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
+Open.Testing.TestHarness.registerClass('Open.Testing.TestHarness');
+Open.Testing.Internal.TestHarnessEvents.registerClass('Open.Testing.Internal.TestHarnessEvents');
+Open.Testing.Internal.TestClassEventArgs.registerClass('Open.Testing.Internal.TestClassEventArgs');
+Open.Testing.Internal.TestControlEventArgs.registerClass('Open.Testing.Internal.TestControlEventArgs');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.EventHelper.registerClass('Open.Core.Helpers.EventHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
@@ -4029,9 +4204,6 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
-Open.Testing.registerClass('Open.Testing');
-Open.TestHarness.TestClassEventArgs.registerClass('Open.TestHarness.TestClassEventArgs');
-Open.TestHarness.TestHarnessEvents.registerClass('Open.TestHarness.TestHarnessEvents');
 Open.Core.Keyboard._isShiftPressed = false;
 Open.Core.Keyboard._isCtrlPressed = false;
 Open.Core.Keyboard._isAltPressed = false;
@@ -4066,6 +4238,14 @@ Open.Core.TreeNode.propChildren = 'Children';
 Open.Core.GlobalEvents.__panelResized = null;
 Open.Core.GlobalEvents.__horizontalPanelResized = null;
 Open.Core.GlobalEvents.__verticalPanelResized = null;
+Open.Core.GlobalEvents.__windowResize = null;
+(function () {
+    $(function() {
+        $(window).bind(Open.Core.DomEvents.resize, function(e) {
+            Open.Core.GlobalEvents._fireWindowResize();
+        });
+    });
+})();
 Open.Core.Log._writer = null;
 Open.Core.LogCss.url = '/Open.Core/Css/Core.Controls.css';
 Open.Core.LogCss._rootClass = 'c-log';
@@ -4117,6 +4297,9 @@ Open.Core.Helper._jQueryHelper = null;
 Open.Core.Helper._treeHelper = null;
 Open.Core.Helper._eventHelper = null;
 Open.Core.Helper._idCounter = 0;
+Open.Testing.Internal.TestHarnessEvents.__testClassRegistered = null;
+Open.Testing.Internal.TestHarnessEvents.__controlAdded = null;
+Open.Testing.Internal.TestHarnessEvents.__clearControls = null;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
 Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';
@@ -4125,7 +4308,6 @@ Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';
 Open.Core.UI.PanelResizerBase._cookie = null;
 Open.Core.UI.PanelResizerBase._resizeScript = '\r\n$(\'{0}\').resizable({\r\n    handles: \'{1}\',\r\n    start: {2},\r\n    stop: {3},\r\n    resize: {4}\r\n    });\r\n';
-Open.TestHarness.TestHarnessEvents.__testClassRegistered = null;
 
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)

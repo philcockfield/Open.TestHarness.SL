@@ -1,7 +1,9 @@
 using System;
+using jQueryApi;
 using Open.Core;
+using Open.Testing;
 
-namespace Test
+namespace Test.Samples
 {
     public class MyTestClass1
     {

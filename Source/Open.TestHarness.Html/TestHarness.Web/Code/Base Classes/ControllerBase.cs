@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Web.Mvc;
 
-namespace Open.TestHarness.Web.Controllers
+namespace Open.Testing.Web.Controllers
 {
     /// <summary>Base class for controllers.</summary>
     public abstract class ControllerBase : Core.Web.ControllerBase

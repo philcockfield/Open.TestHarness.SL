@@ -3,7 +3,7 @@ using System.Collections;
 using Open.Core;
 using Open.Core.Helpers;
 
-namespace Open.TestHarness.Models
+namespace Open.Testing.Models
 {
     /// <summary>Represents a package of tests from a single JavaScript file.</summary>
     /// <remarks>

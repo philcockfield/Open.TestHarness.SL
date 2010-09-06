@@ -1,6 +1,6 @@
 // Open.Core.Controls.js
 (function(){function executeScript(){
-Type.registerNamespace('Open.Core.Controls');Open.Core.Controls.LogView=function(container){Open.Core.Controls.LogView.initializeBase(this);this.initialize(container);this.$2_4=new Open.Core.DelayedAction(0.05,ss.Delegate.create(this,this.$2_5));$(window).bind(Open.Core.DomEvents.resize,ss.Delegate.create(this,function($p1_0){
+Type.registerNamespace('Open.Core.Controls');Open.Core.Controls.LogView=function(container){Open.Core.Controls.LogView.initializeBase(this);this.initialize(container);this.$2_4=new Open.Core.DelayedAction(0.05,ss.Delegate.create(this,this.$2_5));Open.Core.GlobalEvents.add_windowResize(ss.Delegate.create(this,function(){
 this.updateLayout();}));Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this,function(){
 this.updateLayout();}));Open.Core.GlobalEvents.add_verticalPanelResized(ss.Delegate.create(this,function(){
 this.$2_4.start();}));this.updateLayout();}

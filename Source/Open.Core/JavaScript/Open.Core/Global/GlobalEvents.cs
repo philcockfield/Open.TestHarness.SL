@@ -1,4 +1,5 @@
 using System;
+using jQueryApi;
 
 namespace Open.Core
 {
@@ -17,6 +18,21 @@ namespace Open.Core
         /// <summary>Fires when any VerticalPanelResizer is resizing.</summary>
         public static event EventHandler VerticalPanelResized;
         internal static void FireVerticalPanelResized(object sender) { if (VerticalPanelResized != null) VerticalPanelResized(sender, new EventArgs()); }
+
+        /// <summary>Fires when the browser Window is resizing.</summary>
+        public static event EventHandler WindowResize;
+        private static void FireWindowResize() { if (WindowResize != null) WindowResize(typeof(GlobalEvents), new EventArgs()); }
+        #endregion
+
+        #region Head
+        /// <summary>Constructor.</summary>
+        static GlobalEvents()
+        {
+            jQuery.OnDocumentReady(delegate
+                                       {
+                                           jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { FireWindowResize(); });
+                                       });
+        }
         #endregion
     }
 }

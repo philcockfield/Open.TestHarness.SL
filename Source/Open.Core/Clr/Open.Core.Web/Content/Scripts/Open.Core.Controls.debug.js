@@ -26,7 +26,7 @@ Open.Core.Controls.LogView = function Open_Core_Controls_LogView(container) {
     Open.Core.Controls.LogView.initializeBase(this);
     this.initialize(container);
     this._scrollDelay$2 = new Open.Core.DelayedAction(0.05, ss.Delegate.create(this, this._onScrollDelayElapsed$2));
-    $(window).bind(Open.Core.DomEvents.resize, ss.Delegate.create(this, function(e) {
+    Open.Core.GlobalEvents.add_windowResize(ss.Delegate.create(this, function() {
         this.updateLayout();
     }));
     Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this, function() {

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using Open.Core;
 
-namespace Open.TestHarness.Models
+namespace Open.Testing.Models
 {
     /// <summary>Represents a single test method.</summary>
     public class MethodInfo : ModelBase

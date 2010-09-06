@@ -51,7 +51,7 @@ namespace Open.Core.UI
             }
 
             // Wire up events.
-            jQuery.Window.Bind(DomEvents.Resize, delegate(jQueryEvent e) { OnWindowSizeChanged(); });
+            GlobalEvents.WindowResize += delegate { OnWindowResize(); };
 
             // Finish up.
             LoadSize();
@@ -102,7 +102,7 @@ namespace Open.Core.UI
         protected virtual void OnStarted() { }
         protected virtual void OnResize() { }
         protected virtual void OnStopped() { }
-        protected virtual void OnWindowSizeChanged() { } 
+        protected virtual void OnWindowResize() { } 
 
         protected jQueryObject GetRootContainer() { return HasRootContainer ? jQuery.Select(RootContainerId) : null; }
 

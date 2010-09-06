@@ -2,9 +2,9 @@ using System;
 using jQueryApi;
 using Open.Core;
 using Open.Core.Lists;
-using Open.TestHarness.Models;
+using Open.Testing.Models;
 
-namespace Open.TestHarness.Views
+namespace Open.Testing.Views
 {
     /// <summary>The list of tests.</summary>
     public class MethodListView : ViewBase

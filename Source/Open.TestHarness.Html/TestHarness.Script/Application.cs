@@ -3,18 +3,22 @@ using System.Collections;
 using jQueryApi;
 using Open.Core;
 using Open.Core.Controls;
-using Open.TestHarness.Controllers;
-using Open.TestHarness.Models;
-using Open.TestHarness.Views;
+using Open.Testing.Controllers;
+using Open.Testing.Models;
+using Open.Testing.Views;
 
-namespace Open.TestHarness
+namespace Open.Testing
 {
     public class Application
     {
         #region Head
+        // View.
         private static ShellView shell;
+
+        // Controllers.
         private static PanelResizeController resizeController;
         private static SidebarController sidebarController;
+        private static ControlHostController controlHostController;
         #endregion
 
         #region Properties
@@ -32,18 +36,34 @@ namespace Open.TestHarness
             // Create views.
             shell = new ShellView(jQuery.Select(CssSelectors.Root));
 
-            // Create TestHarness controllers.
+            // Create controllers.
             resizeController = new PanelResizeController();
             sidebarController = new SidebarController();
+            controlHostController = new ControlHostController();
 
             // =================================
 
-            //TEMP : Insert sample TestPackage 
+            //TEMP : Insert sample packages.
+            AddTestHarnessPackage();
+            AddCorePackage();
+        }
+
+        private static void AddTestHarnessPackage()
+        {
             const string scriptUrl = "/Content/Scripts/TestHarness.Test.debug.js";
             const string initMethod = "Test.Application.main";
 
-            PackageInfo packageDef = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
-            sidebarController.AddPackage(packageDef);
+            PackageInfo testHarnessPackage = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
+            sidebarController.AddPackage(testHarnessPackage);
+        }
+
+        private static void AddCorePackage()
+        {
+            const string scriptUrl = "/Content/Scripts/Open.Core.Test.debug.js";
+            const string initMethod = "Open.Core.Test.Application.main";
+
+            PackageInfo testHarnessPackage = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
+            sidebarController.AddPackage(testHarnessPackage);
         }
         #endregion
     }

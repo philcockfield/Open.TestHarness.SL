@@ -71,9 +71,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SharedController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="T4MVC.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,18 +81,6 @@
     </Compile>
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Images\Sidebar.BackMask.png" />
-    <Content Include="Content\Scripts\mscorlib.debug.js" />
-    <Content Include="Content\Scripts\mscorlib.js" />
-    <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.Controls.js" />
-    <Content Include="Content\Scripts\Open.Core.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.js" />
-    <Content Include="Content\Scripts\Open.Core.Lists.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.Lists.js" />
-    <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
-    <Content Include="Content\Scripts\Open.TestHarness.js" />
-    <Content Include="Content\Scripts\TestHarness.Test.debug.js" />
-    <Content Include="Content\Scripts\TestHarness.Test.js" />
     <Content Include="Favicon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -103,8 +88,10 @@
     <Content Include="Global.asax" />
     <Content Include="Views\TestHarness\Index.aspx" />
     <Content Include="Views\TestHarness\Log.ascx" />
+    <Content Include="Views\TestHarness\Main.ascx" />
     <Content Include="Views\TestHarness\Sidebar.ascx" />
     <Content Include="Views\TestHarness\TestList.ascx" />
+    <Content Include="Views\TestHarness\ViewPage1.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -116,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="Content\Scripts\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-namespace Open.TestHarness
+namespace Open.Testing
 {
     /// <summary>Constants for element IDs.</summary>
     public static class Elements

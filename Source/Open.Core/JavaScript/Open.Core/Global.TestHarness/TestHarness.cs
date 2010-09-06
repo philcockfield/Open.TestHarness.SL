@@ -1,8 +1,24 @@
 using System;
-using Open.TestHarness;
+using jQueryApi;
+using Open.Core;
+using Open.Testing.Internal;
 
-namespace Testing
+namespace Open.Testing
 {
+    /// <summary>Flags representing the various different sizing strategies for a hosted control.</summary>
+    public enum SizeMode
+    {
+        /// <summary>The size is determined by the control.</summary>
+        Control = 0,
+
+        /// <summary>The control is sized to fill the host container.</summary>
+        Fill = 1,
+
+        /// <summary>The control is sized to fill the host container but is surrounded by some whitespace.</summary>
+        FillWithMargin = 2,
+    }
+
+
     /// <summary>
     ///     Shared functionality for working with the TestHarness 
     ///     (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
@@ -22,22 +38,28 @@ namespace Testing
             e.TestClass = testClass;
             TestHarnessEvents.FireTestClassRegistered(e);
         }
+
+
+        /// <summary>Adds a control to the host canvas.</summary>
+        /// <param name="sizeMode">The strategy used to size the control.</param>
+        /// <returns>A DIV element to contain the control.</returns>
+        public static jQueryObject AddControl(SizeMode sizeMode)
+        {
+            // Alert the test-harness via an event.
+            TestControlEventArgs e = new TestControlEventArgs();
+            e.SizeMode = sizeMode;
+            e.ControlContainer = Html.CreateDiv();
+            TestHarnessEvents.FireControlAdded(e);
+
+            // Finish up.
+            return e.ControlContainer;
+        }
+
+        /// <summary>Clears all added controls from the host canvas.</summary>
+        public static void ClearControls()
+        {
+            TestHarnessEvents.FireClearControls();
+        }
         #endregion
-    }
-}
-
-namespace Open.TestHarness
-{
-    public delegate void TestClassHandler(object sender, TestClassEventArgs e);
-    public class TestClassEventArgs
-    {
-        public Type TestClass;
-    }
-
-    public static class TestHarnessEvents
-    {
-        /// <summary>Fires when a test class is registered.</summary>
-        public static event TestClassHandler TestClassRegistered;
-        internal static void FireTestClassRegistered(TestClassEventArgs e) { if (TestClassRegistered != null) TestClassRegistered(typeof(TestHarnessEvents), e); }
     }
 }

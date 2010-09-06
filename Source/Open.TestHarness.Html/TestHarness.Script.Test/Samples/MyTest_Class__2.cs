@@ -1,6 +1,6 @@
 using Open.Core;
 
-namespace Test
+namespace Test.Samples
 {
     public class MyTest_Class__2
     {

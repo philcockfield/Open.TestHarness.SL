@@ -1,8 +1,9 @@
 using System;
 using jQueryApi;
 using Open.Core;
+using Open.Testing.Internal;
 
-namespace Open.TestHarness.Models
+namespace Open.Testing.Models
 {
     /// <summary>Handles loading a test-package and executing the entry point assembly.</summary>
     public class PackageLoader : IDisposable

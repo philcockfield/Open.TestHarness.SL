@@ -50,6 +50,10 @@
   <ItemGroup>
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
+    <Compile Include="Global.TestHarness\TestHarness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Global.TestHarness\TestHarnessEvents.cs" />
     <Compile Include="Global\Keyboard.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />
@@ -96,7 +100,6 @@
     <Compile Include="UI\Resize\VerticalPanelResizer.cs" />
     <Compile Include="Util\Helpers\Helper.cs" />
     <Compile Include="Util\Helpers\DelegateHelper.cs" />
-    <Compile Include="Global.TestHarness\TestHarness.cs" />
     <Content Include="Properties\Open.Core.Script.ruleset" />
     <Content Include="Properties\Open.Core.Script.script" />
     <Compile Include="Declarations\Delegates.cs" />

@@ -62,7 +62,7 @@ namespace Open.Core.UI
             Panel.CSS(Css.Width, String.Empty);
             Panel.CSS(Css.Top, String.Empty);
         }
-        protected override void OnWindowSizeChanged()
+        protected override void OnWindowResize()
         {
             if (!IsInitialized) return;
             SetMinMaxHeight();

@@ -3,7 +3,7 @@ using jQueryApi;
 using Open.Core;
 using Open.Core.UI;
 
-namespace Open.TestHarness.Controllers
+namespace Open.Testing.Controllers
 {
     /// <summary>Handles resizing of panels within the shell.</summary>
     public class PanelResizeController : ControllerBase
@@ -27,16 +27,31 @@ namespace Open.TestHarness.Controllers
             sideBarResizer.MinWidth = SidebarMinWidth;
             sideBarResizer.MaxWidthMargin = SidebarMaxWidthMargin;
             InitializeResizer(sideBarResizer);
-            SyncMainPanelWidth();
 
             // Setup the 'Output Log' resizer.
             outputResizer = new VerticalPanelResizer(Css.ToId(Elements.OutputLog), "TH_OL");
             outputResizer.Resized += delegate
                                          {
+                                             SyncControlHostHeight();
                                          };
-            outputResizer.MinHeight = jQuery.Select(CssSelectors.LogTitlebar).GetHeight();
+            outputResizer.MinHeight = Html.Height(CssSelectors.LogTitlebar);
             outputResizer.MaxHeightMargin = OutputLogMaxHeightMargin;
             InitializeResizer(outputResizer);
+
+            // Wire up events.
+            GlobalEvents.WindowResize += delegate { SyncControlHostHeight(); };
+
+            // Finish up.
+            UpdateLayout();
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>Updates the layout of the panels.</summary>
+        public void UpdateLayout()
+        {
+            SyncMainPanelWidth();
+            SyncControlHostHeight();
         }
         #endregion
 
@@ -52,12 +67,16 @@ namespace Open.TestHarness.Controllers
             jQuery.Select(CssSelectors.Main)
                 .CSS(
                     Css.Left,
-                    jQuery.Select(CssSelectors.Sidebar).GetWidth() + 1 + Css.Px);
+                    (Html.Width(CssSelectors.Sidebar) + 1) + Css.Px);
+        }
 
-            //Css.SelectFromId(Elements.Main)
-            //    .CSS(
-            //        Css.Left,
-            //        Css.SelectFromId(Elements.SideBar).GetWidth() + 1 + Css.Px);
+        private static void SyncControlHostHeight()
+        {
+            int height = Html.Height(CssSelectors.MainContent) - Html.Height(CssSelectors.LogContainer);
+            jQuery.Select(CssSelectors.ControlHost)
+                .CSS(
+                    Css.Height,
+                    (height - 1) + Css.Px); 
         }
         #endregion
     }
