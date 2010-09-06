@@ -25,6 +25,12 @@ namespace Open.Testing
         public event MethodEventHandler MethodClicked;
         internal void FireMethodClicked(MethodEventArgs e){if (MethodClicked != null) MethodClicked(this, e);}
         #endregion
+
+        #region Methods : Display
+        /// <summary>Fires when the width of the control-host changes.</summary>
+        public event EventHandler ControlHostSizeChanged;
+        internal void FireControlHostSizeChanged() { if (ControlHostSizeChanged != null) ControlHostSizeChanged(this, new EventArgs()); }
+        #endregion
     }
 
 

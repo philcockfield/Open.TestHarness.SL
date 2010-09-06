@@ -169,7 +169,7 @@ namespace Open.Core.Lists
             if (Container.GetHeight() == 0) return;
 
             // Vertically align the right icon.
-            Html.CenterVertically(imgRightIcon, Container);
+            Css.CenterVertically(imgRightIcon, Container);
         }
         #endregion
 

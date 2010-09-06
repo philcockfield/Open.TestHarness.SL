@@ -1318,7 +1318,7 @@ Open.Core.Lists.ListItemView.prototype = {
         if (this.get_container().height() === 0) {
             return;
         }
-        Open.Core.Html.centerVertically(this._imgRightIcon$2, this.get_container());
+        Open.Core.Css.centerVertically(this._imgRightIcon$2, this.get_container());
     },
     
     _getFactoryHtml$2: function Open_Core_Lists_ListItemView$_getFactoryHtml$2() {

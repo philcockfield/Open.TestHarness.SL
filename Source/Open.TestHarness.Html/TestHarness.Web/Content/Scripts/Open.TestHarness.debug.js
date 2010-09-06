@@ -116,6 +116,8 @@ Open.Testing.TestHarnessEvents = function Open_Testing_TestHarnessEvents() {
     /// </field>
     /// <field name="__methodClicked" type="Open.Testing.MethodEventHandler">
     /// </field>
+    /// <field name="__controlHostSizeChanged" type="EventHandler">
+    /// </field>
 }
 Open.Testing.TestHarnessEvents.prototype = {
     
@@ -214,6 +216,29 @@ Open.Testing.TestHarnessEvents.prototype = {
         /// </param>
         if (this.__methodClicked != null) {
             this.__methodClicked.invoke(this, e);
+        }
+    },
+    
+    add_controlHostSizeChanged: function Open_Testing_TestHarnessEvents$add_controlHostSizeChanged(value) {
+        /// <summary>
+        /// Fires when the width of the control-host changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__controlHostSizeChanged = ss.Delegate.combine(this.__controlHostSizeChanged, value);
+    },
+    remove_controlHostSizeChanged: function Open_Testing_TestHarnessEvents$remove_controlHostSizeChanged(value) {
+        /// <summary>
+        /// Fires when the width of the control-host changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__controlHostSizeChanged = ss.Delegate.remove(this.__controlHostSizeChanged, value);
+    },
+    
+    __controlHostSizeChanged: null,
+    
+    _fireControlHostSizeChanged: function Open_Testing_TestHarnessEvents$_fireControlHostSizeChanged() {
+        if (this.__controlHostSizeChanged != null) {
+            this.__controlHostSizeChanged.invoke(this, new ss.EventArgs());
         }
     }
 }
@@ -515,7 +540,7 @@ Open.Testing.Controllers.ControlHostController.prototype = {
         /// </param>
         /// <param name="e" type="Open.Testing.Internal.TestControlEventArgs">
         /// </param>
-        this._addView$3(e.controlContainer);
+        this._addView$3(e.controlContainer, e.sizeMode);
     },
     
     _onClearControls$3: function Open_Testing_Controllers_ControlHostController$_onClearControls$3(sender, e) {
@@ -533,11 +558,22 @@ Open.Testing.Controllers.ControlHostController.prototype = {
         Open.Core.Helper.get_collection().disposeAndClear(this._views$3);
     },
     
-    _addView$3: function Open_Testing_Controllers_ControlHostController$_addView$3(controlContainer) {
+    _addView$3: function Open_Testing_Controllers_ControlHostController$_addView$3(controlContainer, sizeMode) {
         /// <param name="controlContainer" type="jQueryObject">
         /// </param>
-        var view = new Open.Testing.Views.ControlWrapperView(this._divControlHost$3, controlContainer);
+        /// <param name="sizeMode" type="Open.Testing.SizeMode">
+        /// </param>
+        var view = new Open.Testing.Views.ControlWrapperView(this._divControlHost$3, controlContainer, sizeMode, this._views$3);
         this._views$3.add(view);
+        if (this._views$3.length > 1) {
+            var $enum1 = ss.IEnumerator.getEnumerator(this._views$3);
+            while ($enum1.moveNext()) {
+                var item = $enum1.get_current();
+                if (item.get_sizeMode() === Open.Testing.SizeMode.fill) {
+                    item.set_sizeMode(Open.Testing.SizeMode.fillWithMargin);
+                }
+            }
+        }
     }
 }
 
@@ -559,23 +595,26 @@ Open.Testing.Controllers.PanelResizeController = function Open_Testing_Controlle
     /// </field>
     /// <field name="_outputResizer$3" type="Open.Core.UI.VerticalPanelResizer">
     /// </field>
+    /// <field name="_events$3" type="Open.Testing.TestHarnessEvents">
+    /// </field>
     Open.Testing.Controllers.PanelResizeController.initializeBase(this);
+    this._events$3 = this.get_common().get_events();
     this._sideBarResizer$3 = new Open.Core.UI.HorizontalPanelResizer(Open.Testing.CssSelectors.sidebar, 'TH_SB');
     this._sideBarResizer$3.add_resized(ss.Delegate.create(this, function() {
-        Open.Testing.Controllers.PanelResizeController._syncMainPanelWidth$3();
+        this._syncMainPanelWidth$3();
     }));
     this._sideBarResizer$3.set_minWidth(Open.Testing.Controllers.PanelResizeController._sidebarMinWidth$3);
     this._sideBarResizer$3.set_maxWidthMargin(Open.Testing.Controllers.PanelResizeController._sidebarMaxWidthMargin$3);
     Open.Testing.Controllers.PanelResizeController._initializeResizer$3(this._sideBarResizer$3);
     this._outputResizer$3 = new Open.Core.UI.VerticalPanelResizer(Open.Core.Css.toId(Open.Testing.Elements.outputLog), 'TH_OL');
     this._outputResizer$3.add_resized(ss.Delegate.create(this, function() {
-        Open.Testing.Controllers.PanelResizeController._syncControlHostHeight$3();
+        this._syncControlHostHeight$3();
     }));
     this._outputResizer$3.set_minHeight(Open.Core.Html.height(Open.Testing.CssSelectors.logTitlebar));
     this._outputResizer$3.set_maxHeightMargin(Open.Testing.Controllers.PanelResizeController._outputLogMaxHeightMargin$3);
     Open.Testing.Controllers.PanelResizeController._initializeResizer$3(this._outputResizer$3);
     Open.Core.GlobalEvents.add_windowResize(ss.Delegate.create(this, function() {
-        Open.Testing.Controllers.PanelResizeController._syncControlHostHeight$3();
+        this._syncControlHostHeight$3();
     }));
     this.updateLayout();
 }
@@ -585,23 +624,28 @@ Open.Testing.Controllers.PanelResizeController._initializeResizer$3 = function O
     resizer.set_rootContainerId(Open.Testing.Elements.root);
     resizer.initialize();
 }
-Open.Testing.Controllers.PanelResizeController._syncMainPanelWidth$3 = function Open_Testing_Controllers_PanelResizeController$_syncMainPanelWidth$3() {
-    $(Open.Testing.CssSelectors.main).css(Open.Core.Css.left, (Open.Core.Html.width(Open.Testing.CssSelectors.sidebar) + 1) + Open.Core.Css.px);
-}
-Open.Testing.Controllers.PanelResizeController._syncControlHostHeight$3 = function Open_Testing_Controllers_PanelResizeController$_syncControlHostHeight$3() {
-    var height = Open.Core.Html.height(Open.Testing.CssSelectors.mainContent) - Open.Core.Html.height(Open.Testing.CssSelectors.logContainer);
-    $(Open.Testing.CssSelectors.controlHost).css(Open.Core.Css.height, (height - 1) + Open.Core.Css.px);
-}
 Open.Testing.Controllers.PanelResizeController.prototype = {
     _sideBarResizer$3: null,
     _outputResizer$3: null,
+    _events$3: null,
     
     updateLayout: function Open_Testing_Controllers_PanelResizeController$updateLayout() {
         /// <summary>
         /// Updates the layout of the panels.
         /// </summary>
-        Open.Testing.Controllers.PanelResizeController._syncMainPanelWidth$3();
-        Open.Testing.Controllers.PanelResizeController._syncControlHostHeight$3();
+        this._syncMainPanelWidth$3();
+        this._syncControlHostHeight$3();
+    },
+    
+    _syncMainPanelWidth$3: function Open_Testing_Controllers_PanelResizeController$_syncMainPanelWidth$3() {
+        $(Open.Testing.CssSelectors.main).css(Open.Core.Css.left, (Open.Core.Html.width(Open.Testing.CssSelectors.sidebar) + 1) + Open.Core.Css.px);
+        this._events$3._fireControlHostSizeChanged();
+    },
+    
+    _syncControlHostHeight$3: function Open_Testing_Controllers_PanelResizeController$_syncControlHostHeight$3() {
+        var height = Open.Core.Html.height(Open.Testing.CssSelectors.mainContent) - Open.Core.Html.height(Open.Testing.CssSelectors.logContainer);
+        $(Open.Testing.CssSelectors.controlHost).css(Open.Core.Css.height, (height - 1) + Open.Core.Css.px);
+        this._events$3._fireControlHostSizeChanged();
     }
 }
 
@@ -1652,36 +1696,185 @@ Type.registerNamespace('Open.Testing.Views');
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Testing.Views.ControlWrapperView
 
-Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapperView(divControlHost, controlContainer) {
+Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapperView(divHost, content, sizeMode, allViews) {
     /// <summary>
     /// Represents the container for a test-control.
     /// </summary>
-    /// <param name="divControlHost" type="jQueryObject">
+    /// <param name="divHost" type="jQueryObject">
     /// The control host DIV.
     /// </param>
-    /// <param name="controlContainer" type="jQueryObject">
+    /// <param name="content" type="jQueryObject">
     /// The control content (supplied by the test class. This is the control that is under test).
     /// </param>
+    /// <param name="sizeMode" type="Open.Testing.SizeMode">
+    /// The sizing strategy to use for the control.
+    /// </param>
+    /// <param name="allViews" type="ss.IEnumerable">
+    /// The Collection of all controls.
+    /// </param>
+    /// <field name="_fillMargin$3" type="Number" integer="true" static="true">
+    /// </field>
     /// <field name="_divRoot$3" type="jQueryObject">
     /// </field>
-    /// <field name="_controlContainer$3" type="jQueryObject">
+    /// <field name="_content$3" type="jQueryObject">
+    /// </field>
+    /// <field name="_sizeMode$3" type="Open.Testing.SizeMode">
+    /// </field>
+    /// <field name="_allViews$3" type="ss.IEnumerable">
+    /// </field>
+    /// <field name="_index$3" type="Number" integer="true">
+    /// </field>
+    /// <field name="_events$3" type="Open.Testing.TestHarnessEvents">
+    /// </field>
+    /// <field name="_sizeDelay$3" type="Open.Core.DelayedAction">
     /// </field>
     Open.Testing.Views.ControlWrapperView.initializeBase(this);
-    this._controlContainer$3 = controlContainer;
-    this.initialize(divControlHost);
+    this.initialize(divHost);
+    this._content$3 = content;
+    this._sizeMode$3 = sizeMode;
+    this._allViews$3 = allViews;
+    this._index$3 = divHost.children().length;
+    this._events$3 = this.get_common().get_events();
+    this._sizeDelay$3 = new Open.Core.DelayedAction(0.2, ss.Delegate.create(this, this.updateLayout));
     this._divRoot$3 = Open.Core.Html.createDiv();
-    this._divRoot$3.appendTo(divControlHost);
-    this._divRoot$3.append('Yo!');
-    this._divRoot$3.css('background', 'orange');
-    this._divRoot$3.css('border', 'solid 1px black');
+    this._divRoot$3.css(Open.Core.Css.position, Open.Core.Css.absolute);
+    this._divRoot$3.appendTo(divHost);
+    content.css(Open.Core.Css.position, Open.Core.Css.absolute);
+    content.appendTo(this._divRoot$3);
+    this._events$3.add_controlHostSizeChanged(ss.Delegate.create(this, this._onHostResized$3));
+    this.updateLayout();
 }
 Open.Testing.Views.ControlWrapperView.prototype = {
     _divRoot$3: null,
-    _controlContainer$3: null,
+    _content$3: null,
+    _sizeMode$3: 0,
+    _allViews$3: null,
+    _index$3: 0,
+    _events$3: null,
+    _sizeDelay$3: null,
     
     onDisposed: function Open_Testing_Views_ControlWrapperView$onDisposed() {
+        /// <summary>
+        /// Destructor.
+        /// </summary>
+        this._events$3.remove_controlHostSizeChanged(ss.Delegate.create(this, this._onHostResized$3));
         this._divRoot$3.remove();
         Open.Testing.Views.ControlWrapperView.callBaseMethod(this, 'onDisposed');
+    },
+    
+    _onHostResized$3: function Open_Testing_Views_ControlWrapperView$_onHostResized$3(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        Open.Core.Css.setOverflow(this.get_container(), Open.Core.CssOverflow.hidden);
+        this._sizeDelay$3.start();
+    },
+    
+    get_sizeMode: function Open_Testing_Views_ControlWrapperView$get_sizeMode() {
+        /// <summary>
+        /// Gets or sets the items size mode.
+        /// </summary>
+        /// <value type="Open.Testing.SizeMode"></value>
+        return this._sizeMode$3;
+    },
+    set_sizeMode: function Open_Testing_Views_ControlWrapperView$set_sizeMode(value) {
+        /// <summary>
+        /// Gets or sets the items size mode.
+        /// </summary>
+        /// <value type="Open.Testing.SizeMode"></value>
+        this._sizeMode$3 = value;
+        this.updateLayout();
+        return value;
+    },
+    
+    updateLayout: function Open_Testing_Views_ControlWrapperView$updateLayout() {
+        /// <summary>
+        /// Updates the layout of the control.
+        /// </summary>
+        this._updateSize$3();
+        this._updatePosition$3();
+    },
+    
+    _updateSize$3: function Open_Testing_Views_ControlWrapperView$_updateSize$3() {
+        Open.Core.Log.info('Upd: ' + Open.Testing.SizeMode.toString(this.get_sizeMode()));
+        switch (this._sizeMode$3) {
+            case Open.Testing.SizeMode.control:
+                break;
+            case Open.Testing.SizeMode.fill:
+                this._setSize$3(0, 0);
+                break;
+            case Open.Testing.SizeMode.fillWithMargin:
+                this._setSize$3(Open.Testing.Views.ControlWrapperView._fillMargin$3, Open.Testing.Views.ControlWrapperView._fillMargin$3);
+                break;
+            default:
+                throw new Error(Open.Testing.SizeMode.toString(this._sizeMode$3));
+        }
+        Open.Core.Css.setOverflow(this.get_container(), Open.Core.CssOverflow.auto);
+    },
+    
+    _setSize$3: function Open_Testing_Views_ControlWrapperView$_setSize$3(xPadding, yPadding) {
+        /// <param name="xPadding" type="Number" integer="true">
+        /// </param>
+        /// <param name="yPadding" type="Number" integer="true">
+        /// </param>
+        var width = (this.get_container().width() - (xPadding * 2));
+        var height = (this.get_container().height() - (yPadding * 2));
+        Open.Core.Css.setSize(this._content$3, width, height);
+        Open.Core.Log.debug('W:' + width + ', H:' + height);
+    },
+    
+    _updatePosition$3: function Open_Testing_Views_ControlWrapperView$_updatePosition$3() {
+        this._divRoot$3.css(Open.Core.Css.left, this._getLeft$3() + Open.Core.Css.px);
+        var top = (this.get_container().children().length === 1) ? this._getTop$3() : this._getStackedTop$3();
+        this._divRoot$3.css(Open.Core.Css.top, top + Open.Core.Css.px);
+    },
+    
+    _getLeft$3: function Open_Testing_Views_ControlWrapperView$_getLeft$3() {
+        /// <returns type="Number" integer="true"></returns>
+        switch (this._sizeMode$3) {
+            case Open.Testing.SizeMode.control:
+                return (this.get_container().width() / 2) - (this._content$3.width() / 2);
+            case Open.Testing.SizeMode.fill:
+                return 0;
+            case Open.Testing.SizeMode.fillWithMargin:
+                return Open.Testing.Views.ControlWrapperView._fillMargin$3;
+            default:
+                throw new Error(Open.Testing.SizeMode.toString(this._sizeMode$3));
+        }
+    },
+    
+    _getTop$3: function Open_Testing_Views_ControlWrapperView$_getTop$3() {
+        /// <returns type="Number" integer="true"></returns>
+        switch (this._sizeMode$3) {
+            case Open.Testing.SizeMode.control:
+                return (this.get_container().height() / 2) - (this._content$3.height() / 2);
+            case Open.Testing.SizeMode.fill:
+                return 0;
+            case Open.Testing.SizeMode.fillWithMargin:
+                return Open.Testing.Views.ControlWrapperView._fillMargin$3;
+            default:
+                throw new Error(Open.Testing.SizeMode.toString(this._sizeMode$3));
+        }
+    },
+    
+    _getStackedTop$3: function Open_Testing_Views_ControlWrapperView$_getStackedTop$3() {
+        /// <returns type="Number" integer="true"></returns>
+        return this._getOffsetHeight$3() + ((this._index$3 + 1) * Open.Testing.Views.ControlWrapperView._fillMargin$3);
+    },
+    
+    _getOffsetHeight$3: function Open_Testing_Views_ControlWrapperView$_getOffsetHeight$3() {
+        /// <returns type="Number" integer="true"></returns>
+        var height = 0;
+        var $enum1 = ss.IEnumerator.getEnumerator(this._allViews$3);
+        while ($enum1.moveNext()) {
+            var wrapper = $enum1.get_current();
+            if (wrapper === this) {
+                break;
+            }
+            height += wrapper._content$3.height();
+        }
+        return height;
     }
 }
 
@@ -2049,6 +2242,7 @@ Open.Testing.Models.MethodInfo.keyField = '_';
 Open.Testing.Models.MethodInfo.keyFunction = 'function';
 Open.Testing.Models.PackageInfo._singletons$1 = [];
 Open.Testing.Models.ClassInfo._singletons$1 = null;
+Open.Testing.Views.ControlWrapperView._fillMargin$3 = 30;
 Open.Testing.Views.SidebarView.slideDuration = 0.2;
 Open.Testing.Views.SidebarView.propIsTestListVisible = 'IsTestListVisible';
 Open.Testing.Views.MethodListView.propClassInfo = 'ClassInfo';

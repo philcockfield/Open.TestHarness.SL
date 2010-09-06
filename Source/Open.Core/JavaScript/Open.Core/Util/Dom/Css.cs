@@ -29,6 +29,8 @@ namespace Open.Core
         public const string Background = "background";
         public const string Display = "display";
         public const string Position = "position";
+        public const string Padding = "padding";
+        public const string Overflow = "overflow";
 
         // Values.
         public const string Block = "block";
@@ -49,14 +51,6 @@ namespace Open.Core
         public static bool IsVisible(jQueryObject element)
         {
             return Script.IsNullOrUndefined(element) ? false : element.GetCSS(Display).ToLowerCase() != None;
-        }
-
-        /// <summary>Shows or hides the given element.</summary>
-        /// <param name="element">The element to effect.</param>
-        /// <param name="isVisible">The desired visibility state.</param>
-        public static void SetVisible(jQueryObject element, bool isVisible)
-        {
-            element.CSS(Display, isVisible ? Block : None);
         }
         #endregion
 
@@ -154,7 +148,7 @@ namespace Open.Core
         /// <param name="value">The overflow value.</param>
         public static void SetOverflow(jQueryObject element, CssOverflow value)
         {
-            element.CSS("overflow", value.ToString());
+            element.CSS(Overflow, value.ToString());
         }
 
         /// <summary>Applies a drop shadow.</summary>
@@ -166,7 +160,55 @@ namespace Open.Core
             element.CSS("background-repeat", "repeat-x");
             element.CSS("height", "12px");
         }
+
+        /// <summary>Shows or hides the given element.</summary>
+        /// <param name="element">The element to effect.</param>
+        /// <param name="isVisible">The desired visibility state.</param>
+        public static void SetVisible(jQueryObject element, bool isVisible)
+        {
+            element.CSS(Display, isVisible ? Block : None);
+        }
+
+        /// <summary>Sets the size of the element.</summary>
+        /// <param name="element">The element to effect.</param>
+        /// <param name="width">The pixel width of the element.</param>
+        /// <param name="height">The pixel height of the element.</param>
+        public static void SetSize(jQueryObject element, int width, int height)
+        {
+            element.CSS(Width, width + Px);
+            element.CSS(Height, height + Px);
+        }
         #endregion
+
+        #region Methods : Centering
+        /// <summary>Sets the left and top position of an element so it is centered within another element.</summary>
+        /// <param name="element">The element to center.</param>
+        /// <param name="within">The element to center within.</param>
+        public static void Center(jQueryObject element, jQueryObject within)
+        {
+            CenterHorizontally(element, within);
+            CenterVertically(element, within);
+        }
+
+        /// <summary>Sets the left position of an element so it is horizontally centered within another element.</summary>
+        /// <param name="element">The element to horizontally center.</param>
+        /// <param name="within">The element to center within.</param>
+        public static void CenterHorizontally(jQueryObject element, jQueryObject within)
+        {
+            int left = (within.GetWidth() / 2) - (element.GetWidth() / 2);
+            element.CSS(Css.Left, left + "px");
+        }
+
+        /// <summary>Sets the top position of an element so it is vertically centered within another element.</summary>
+        /// <param name="element">The element to vertically center.</param>
+        /// <param name="within">The element to center within.</param>
+        public static void CenterVertically(jQueryObject element, jQueryObject within)
+        {
+            int top = (within.GetHeight() / 2) - (element.GetHeight() / 2);
+            element.CSS(Css.Top, top + "px");
+        }
+        #endregion
+
     }
 
     public class CoreCssClasses

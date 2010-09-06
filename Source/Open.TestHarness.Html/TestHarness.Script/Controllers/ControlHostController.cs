@@ -42,7 +42,7 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.ControlContainer); }
+        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.ControlContainer, e.SizeMode); }
         private void OnClearControls(object sender, EventArgs e) { Clear(); }
         #endregion
 
@@ -55,10 +55,20 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Internal
-        private void AddView(jQueryObject controlContainer)
+        private void AddView(jQueryObject controlContainer, SizeMode sizeMode)
         {
-            ControlWrapperView view = new ControlWrapperView(divControlHost, controlContainer);
+            // Create and add the view.
+            ControlWrapperView view = new ControlWrapperView(divControlHost, controlContainer, sizeMode, views);
             views.Add(view);
+
+            // If there is more than one view, set all existing 'Fill' modes to 'FillWithMargin' (to avoid scrollbar issue).
+            if (views.Count > 1)
+            {
+                foreach (ControlWrapperView item in views)
+                {
+                    if (item.SizeMode == SizeMode.Fill) item.SizeMode = SizeMode.FillWithMargin;
+                }
+            }
         }
         #endregion
     }

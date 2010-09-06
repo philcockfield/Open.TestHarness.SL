@@ -14,6 +14,13 @@ namespace Open.Core
         Down = 1,
     }
 
+    /// <summary>Flags representing the width or height of an object.</summary>
+    public enum SizeDimension
+    {
+        Width = 0,
+        Height = 1
+    }
+
     /// <summary>The target of an HTML link.</summary>
     public enum LinkTarget
     {

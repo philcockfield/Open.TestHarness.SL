@@ -67,6 +67,25 @@ Open.Core.VerticalDirection.registerEnum('Open.Core.VerticalDirection', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.SizeDimension
+
+Open.Core.SizeDimension = function() { 
+    /// <summary>
+    /// Flags representing the width or height of an object.
+    /// </summary>
+    /// <field name="width" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="height" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.SizeDimension.prototype = {
+    width: 0, 
+    height: 1
+}
+Open.Core.SizeDimension.registerEnum('Open.Core.SizeDimension', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.LinkTarget
 
 Open.Core.LinkTarget = function() { 
@@ -1340,14 +1359,62 @@ Open.Core.GlobalEvents = function Open_Core_GlobalEvents() {
     /// <summary>
     /// Handles and fires global events.
     /// </summary>
+    /// <field name="__windowResize" type="EventHandler" static="true">
+    /// </field>
+    /// <field name="__windowResizeComplete" type="EventHandler" static="true">
+    /// </field>
     /// <field name="__panelResized" type="EventHandler" static="true">
+    /// </field>
+    /// <field name="__panelResizeComplete" type="EventHandler" static="true">
     /// </field>
     /// <field name="__horizontalPanelResized" type="EventHandler" static="true">
     /// </field>
     /// <field name="__verticalPanelResized" type="EventHandler" static="true">
     /// </field>
-    /// <field name="__windowResize" type="EventHandler" static="true">
+    /// <field name="_resizeDelay" type="Number" static="true">
     /// </field>
+    /// <field name="_windowResizeDelay" type="Open.Core.DelayedAction" static="true">
+    /// </field>
+    /// <field name="_panelResizeDelay" type="Open.Core.DelayedAction" static="true">
+    /// </field>
+}
+Open.Core.GlobalEvents.add_windowResize = function Open_Core_GlobalEvents$add_windowResize(value) {
+    /// <summary>
+    /// Fires when the browser Window is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__windowResize = ss.Delegate.combine(Open.Core.GlobalEvents.__windowResize, value);
+}
+Open.Core.GlobalEvents.remove_windowResize = function Open_Core_GlobalEvents$remove_windowResize(value) {
+    /// <summary>
+    /// Fires when the browser Window is resizing.
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__windowResize = ss.Delegate.remove(Open.Core.GlobalEvents.__windowResize, value);
+}
+Open.Core.GlobalEvents._fireWindowResize = function Open_Core_GlobalEvents$_fireWindowResize() {
+    if (Open.Core.GlobalEvents.__windowResize != null) {
+        Open.Core.GlobalEvents.__windowResize.invoke(Open.Core.GlobalEvents, new ss.EventArgs());
+    }
+}
+Open.Core.GlobalEvents.add_windowResizeComplete = function Open_Core_GlobalEvents$add_windowResizeComplete(value) {
+    /// <summary>
+    /// Fires when the browser Window is completed resizing (uses an event-delay).
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__windowResizeComplete = ss.Delegate.combine(Open.Core.GlobalEvents.__windowResizeComplete, value);
+}
+Open.Core.GlobalEvents.remove_windowResizeComplete = function Open_Core_GlobalEvents$remove_windowResizeComplete(value) {
+    /// <summary>
+    /// Fires when the browser Window is completed resizing (uses an event-delay).
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__windowResizeComplete = ss.Delegate.remove(Open.Core.GlobalEvents.__windowResizeComplete, value);
+}
+Open.Core.GlobalEvents._fireWindowResizeComplete = function Open_Core_GlobalEvents$_fireWindowResizeComplete() {
+    if (Open.Core.GlobalEvents.__windowResizeComplete != null) {
+        Open.Core.GlobalEvents.__windowResizeComplete.invoke(Open.Core.GlobalEvents, new ss.EventArgs());
+    }
 }
 Open.Core.GlobalEvents.add_panelResized = function Open_Core_GlobalEvents$add_panelResized(value) {
     /// <summary>
@@ -1368,6 +1435,25 @@ Open.Core.GlobalEvents._firePanelResized = function Open_Core_GlobalEvents$_fire
     /// </param>
     if (Open.Core.GlobalEvents.__panelResized != null) {
         Open.Core.GlobalEvents.__panelResized.invoke(sender, new ss.EventArgs());
+    }
+}
+Open.Core.GlobalEvents.add_panelResizeComplete = function Open_Core_GlobalEvents$add_panelResizeComplete(value) {
+    /// <summary>
+    /// Fires when the PanelResizer has compled resizing (uses an event-delay).
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__panelResizeComplete = ss.Delegate.combine(Open.Core.GlobalEvents.__panelResizeComplete, value);
+}
+Open.Core.GlobalEvents.remove_panelResizeComplete = function Open_Core_GlobalEvents$remove_panelResizeComplete(value) {
+    /// <summary>
+    /// Fires when the PanelResizer has compled resizing (uses an event-delay).
+    /// </summary>
+    /// <param name="value" type="Function" />
+    Open.Core.GlobalEvents.__panelResizeComplete = ss.Delegate.remove(Open.Core.GlobalEvents.__panelResizeComplete, value);
+}
+Open.Core.GlobalEvents._firePanelResizeComplete = function Open_Core_GlobalEvents$_firePanelResizeComplete() {
+    if (Open.Core.GlobalEvents.__panelResizeComplete != null) {
+        Open.Core.GlobalEvents.__panelResizeComplete.invoke(Open.Core.GlobalEvents, new ss.EventArgs());
     }
 }
 Open.Core.GlobalEvents.add_horizontalPanelResized = function Open_Core_GlobalEvents$add_horizontalPanelResized(value) {
@@ -1410,25 +1496,6 @@ Open.Core.GlobalEvents._fireVerticalPanelResized = function Open_Core_GlobalEven
     /// </param>
     if (Open.Core.GlobalEvents.__verticalPanelResized != null) {
         Open.Core.GlobalEvents.__verticalPanelResized.invoke(sender, new ss.EventArgs());
-    }
-}
-Open.Core.GlobalEvents.add_windowResize = function Open_Core_GlobalEvents$add_windowResize(value) {
-    /// <summary>
-    /// Fires when the browser Window is resizing.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Core.GlobalEvents.__windowResize = ss.Delegate.combine(Open.Core.GlobalEvents.__windowResize, value);
-}
-Open.Core.GlobalEvents.remove_windowResize = function Open_Core_GlobalEvents$remove_windowResize(value) {
-    /// <summary>
-    /// Fires when the browser Window is resizing.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Core.GlobalEvents.__windowResize = ss.Delegate.remove(Open.Core.GlobalEvents.__windowResize, value);
-}
-Open.Core.GlobalEvents._fireWindowResize = function Open_Core_GlobalEvents$_fireWindowResize() {
-    if (Open.Core.GlobalEvents.__windowResize != null) {
-        Open.Core.GlobalEvents.__windowResize.invoke(Open.Core.GlobalEvents, new ss.EventArgs());
     }
 }
 
@@ -2188,19 +2255,6 @@ Open.Core.Html.createElement = function Open_Core_Html$createElement(tag) {
     /// <returns type="jQueryObject"></returns>
     return $(String.format('<{0}></{0}>', tag));
 }
-Open.Core.Html.centerVertically = function Open_Core_Html$centerVertically(element, within) {
-    /// <summary>
-    /// Sets the top position of an element so it is vertically centered within another element.
-    /// </summary>
-    /// <param name="element" type="jQueryObject">
-    /// The element to vertically center.
-    /// </param>
-    /// <param name="within" type="jQueryObject">
-    /// The element to center within.
-    /// </param>
-    var top = (within.height() / 2) - (element.height() / 2);
-    element.css(Open.Core.Css.top, top + 'px');
-}
 Open.Core.Html.childAt = function Open_Core_Html$childAt(index, parent) {
     /// <summary>
     /// Retrieves the child at the specified index, otherwise Null.
@@ -2316,6 +2370,10 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="position" type="String" static="true">
     /// </field>
+    /// <field name="padding" type="String" static="true">
+    /// </field>
+    /// <field name="overflow" type="String" static="true">
+    /// </field>
     /// <field name="block" type="String" static="true">
     /// </field>
     /// <field name="none" type="String" static="true">
@@ -2338,18 +2396,6 @@ Open.Core.Css.isVisible = function Open_Core_Css$isVisible(element) {
     /// </param>
     /// <returns type="Boolean"></returns>
     return (ss.isNullOrUndefined(element)) ? false : element.css(Open.Core.Css.display).toLowerCase() !== Open.Core.Css.none;
-}
-Open.Core.Css.setVisible = function Open_Core_Css$setVisible(element, isVisible) {
-    /// <summary>
-    /// Shows or hides the given element.
-    /// </summary>
-    /// <param name="element" type="jQueryObject">
-    /// The element to effect.
-    /// </param>
-    /// <param name="isVisible" type="Boolean">
-    /// The desired visibility state.
-    /// </param>
-    element.css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
 }
 Open.Core.Css.selectFromId = function Open_Core_Css$selectFromId(identifier) {
     /// <summary>
@@ -2481,7 +2527,7 @@ Open.Core.Css.setOverflow = function Open_Core_Css$setOverflow(element, value) {
     /// <param name="value" type="Open.Core.CssOverflow">
     /// The overflow value.
     /// </param>
-    element.css('overflow', Open.Core.CssOverflow.toString(value));
+    element.css(Open.Core.Css.overflow, Open.Core.CssOverflow.toString(value));
 }
 Open.Core.Css.applyDropshadow = function Open_Core_Css$applyDropshadow(element, opacity) {
     /// <summary>
@@ -2496,6 +2542,73 @@ Open.Core.Css.applyDropshadow = function Open_Core_Css$applyDropshadow(element, 
     element.css('background-image', String.format('url(/Open.Core/Images/DropShadow.12.{0}.png)', opacity));
     element.css('background-repeat', 'repeat-x');
     element.css('height', '12px');
+}
+Open.Core.Css.setVisible = function Open_Core_Css$setVisible(element, isVisible) {
+    /// <summary>
+    /// Shows or hides the given element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to effect.
+    /// </param>
+    /// <param name="isVisible" type="Boolean">
+    /// The desired visibility state.
+    /// </param>
+    element.css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
+}
+Open.Core.Css.setSize = function Open_Core_Css$setSize(element, width, height) {
+    /// <summary>
+    /// Sets the size of the element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to effect.
+    /// </param>
+    /// <param name="width" type="Number" integer="true">
+    /// The pixel width of the element.
+    /// </param>
+    /// <param name="height" type="Number" integer="true">
+    /// The pixel height of the element.
+    /// </param>
+    element.css(Open.Core.Css.width, width + Open.Core.Css.px);
+    element.css(Open.Core.Css.height, height + Open.Core.Css.px);
+}
+Open.Core.Css.center = function Open_Core_Css$center(element, within) {
+    /// <summary>
+    /// Sets the left and top position of an element so it is centered within another element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to center.
+    /// </param>
+    /// <param name="within" type="jQueryObject">
+    /// The element to center within.
+    /// </param>
+    Open.Core.Css.centerHorizontally(element, within);
+    Open.Core.Css.centerVertically(element, within);
+}
+Open.Core.Css.centerHorizontally = function Open_Core_Css$centerHorizontally(element, within) {
+    /// <summary>
+    /// Sets the left position of an element so it is horizontally centered within another element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to horizontally center.
+    /// </param>
+    /// <param name="within" type="jQueryObject">
+    /// The element to center within.
+    /// </param>
+    var left = (within.width() / 2) - (element.width() / 2);
+    element.css(Open.Core.Css.left, left + 'px');
+}
+Open.Core.Css.centerVertically = function Open_Core_Css$centerVertically(element, within) {
+    /// <summary>
+    /// Sets the top position of an element so it is vertically centered within another element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to vertically center.
+    /// </param>
+    /// <param name="within" type="jQueryObject">
+    /// The element to center within.
+    /// </param>
+    var top = (within.height() / 2) - (element.height() / 2);
+    element.css(Open.Core.Css.top, top + 'px');
 }
 
 
@@ -2651,15 +2764,15 @@ Open.Core.Size = function Open_Core_Size(width, height) {
     /// <summary>
     /// Represents a width and a height.
     /// </summary>
-    /// <param name="width" type="Number">
+    /// <param name="width" type="Number" integer="true">
     /// The pixel width of the element.
     /// </param>
-    /// <param name="height" type="Number">
+    /// <param name="height" type="Number" integer="true">
     /// The pixel height of the element.
     /// </param>
-    /// <field name="_width" type="Number">
+    /// <field name="_width" type="Number" integer="true">
     /// </field>
-    /// <field name="_height" type="Number">
+    /// <field name="_height" type="Number" integer="true">
     /// </field>
     this._width = width;
     this._height = height;
@@ -2672,7 +2785,7 @@ Open.Core.Size.prototype = {
         /// <summary>
         /// Gets or sets the pixel width of the element.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return this._width;
     },
     
@@ -2680,7 +2793,7 @@ Open.Core.Size.prototype = {
         /// <summary>
         /// Gets or sets the pixel height of the element.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return this._height;
     }
 }
@@ -4439,15 +4552,28 @@ Open.Core.Keyboard._isAltPressed = false;
 Open.Core.TreeNode.nullIndex = -1;
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
+Open.Core.GlobalEvents.__windowResize = null;
+Open.Core.GlobalEvents.__windowResizeComplete = null;
 Open.Core.GlobalEvents.__panelResized = null;
+Open.Core.GlobalEvents.__panelResizeComplete = null;
 Open.Core.GlobalEvents.__horizontalPanelResized = null;
 Open.Core.GlobalEvents.__verticalPanelResized = null;
-Open.Core.GlobalEvents.__windowResize = null;
+Open.Core.GlobalEvents._resizeDelay = 0.1;
+Open.Core.GlobalEvents._windowResizeDelay = null;
+Open.Core.GlobalEvents._panelResizeDelay = null;
 (function () {
+    Open.Core.GlobalEvents._windowResizeDelay = new Open.Core.DelayedAction(Open.Core.GlobalEvents._resizeDelay, Open.Core.GlobalEvents._fireWindowResizeComplete);
+    Open.Core.GlobalEvents._panelResizeDelay = new Open.Core.DelayedAction(Open.Core.GlobalEvents._resizeDelay, Open.Core.GlobalEvents._firePanelResizeComplete);
     $(function() {
         $(window).bind(Open.Core.DomEvents.resize, function(e) {
             Open.Core.GlobalEvents._fireWindowResize();
         });
+    });
+    Open.Core.GlobalEvents.add_windowResize(function() {
+        Open.Core.GlobalEvents._windowResizeDelay.start();
+    });
+    Open.Core.GlobalEvents.add_panelResized(function() {
+        Open.Core.GlobalEvents._panelResizeDelay.start();
     });
 })();
 Open.Core.Log._writer = null;
@@ -4482,6 +4608,8 @@ Open.Core.Css.height = 'height';
 Open.Core.Css.background = 'background';
 Open.Core.Css.display = 'display';
 Open.Core.Css.position = 'position';
+Open.Core.Css.padding = 'padding';
+Open.Core.Css.overflow = 'overflow';
 Open.Core.Css.block = 'block';
 Open.Core.Css.none = 'none';
 Open.Core.Css.relative = 'relative';

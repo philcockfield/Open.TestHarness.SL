@@ -11,18 +11,46 @@ Type.registerNamespace('Test.Samples');
 
 Test.Samples.ControlsTest = function Test_Samples_ControlsTest() {
 }
+Test.Samples.ControlsTest._addControl = function Test_Samples_ControlsTest$_addControl(sizeMode) {
+    /// <param name="sizeMode" type="Open.Testing.SizeMode">
+    /// </param>
+    var div = Open.Testing.TestHarness.addControl(sizeMode);
+    new Test.Samples.MyView(div, sizeMode);
+}
 Test.Samples.ControlsTest.prototype = {
     
     add_Control__Default: function Test_Samples_ControlsTest$add_Control__Default() {
-        var div1 = Open.Testing.TestHarness.addControl(Open.Testing.SizeMode.control);
-        div1.append('Control 1');
-        var div2 = Open.Testing.TestHarness.addControl(Open.Testing.SizeMode.control);
-        div2.append('Control 2');
+        Test.Samples.ControlsTest._addControl(Open.Testing.SizeMode.control);
+    },
+    
+    add_Control__Fill: function Test_Samples_ControlsTest$add_Control__Fill() {
+        Test.Samples.ControlsTest._addControl(Open.Testing.SizeMode.fill);
+    },
+    
+    add_Control__FillWithMargin: function Test_Samples_ControlsTest$add_Control__FillWithMargin() {
+        Test.Samples.ControlsTest._addControl(Open.Testing.SizeMode.fillWithMargin);
     },
     
     clear: function Test_Samples_ControlsTest$clear() {
         Open.Testing.TestHarness.clearControls();
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Test.Samples.MyView
+
+Test.Samples.MyView = function Test_Samples_MyView(container, sizeMode) {
+    /// <param name="container" type="jQueryObject">
+    /// </param>
+    /// <param name="sizeMode" type="Open.Testing.SizeMode">
+    /// </param>
+    Test.Samples.MyView.initializeBase(this);
+    this.initialize(container);
+    container.append(String.format('Control [{0}]', Open.Testing.SizeMode.toString(sizeMode)));
+    container.css(Open.Core.Css.background, '#f0ebc5');
+    container.css(Open.Core.Css.width, '300px');
+    container.css(Open.Core.Css.height, '200px');
 }
 
 
@@ -128,6 +156,7 @@ Test.Application.main = function Test_Application$main(args) {
 
 
 Test.Samples.ControlsTest.registerClass('Test.Samples.ControlsTest');
+Test.Samples.MyView.registerClass('Test.Samples.MyView', Open.Core.ViewBase);
 Test.Samples.MyTest_Class__2.registerClass('Test.Samples.MyTest_Class__2');
 Test.Samples.MyTestClass1.registerClass('Test.Samples.MyTestClass1');
 Test.Application.registerClass('Test.Application');

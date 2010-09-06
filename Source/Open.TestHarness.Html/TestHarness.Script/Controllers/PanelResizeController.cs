@@ -15,9 +15,13 @@ namespace Open.Testing.Controllers
 
         private readonly HorizontalPanelResizer sideBarResizer;
         private readonly VerticalPanelResizer outputResizer;
+        private readonly TestHarnessEvents events;
 
         public PanelResizeController()
         {
+            // Setup initial conditions.
+            events = Common.Events;
+
             // Setup the 'SidePanel' resizer.
             sideBarResizer = new HorizontalPanelResizer(CssSelectors.Sidebar, "TH_SB");
             sideBarResizer.Resized += delegate
@@ -62,21 +66,23 @@ namespace Open.Testing.Controllers
             resizer.Initialize();
         }
 
-        private static void SyncMainPanelWidth()
+        private void SyncMainPanelWidth()
         {
             jQuery.Select(CssSelectors.Main)
                 .CSS(
                     Css.Left,
                     (Html.Width(CssSelectors.Sidebar) + 1) + Css.Px);
+            events.FireControlHostSizeChanged();
         }
 
-        private static void SyncControlHostHeight()
+        private void SyncControlHostHeight()
         {
             int height = Html.Height(CssSelectors.MainContent) - Html.Height(CssSelectors.LogContainer);
             jQuery.Select(CssSelectors.ControlHost)
                 .CSS(
                     Css.Height,
-                    (height - 1) + Css.Px); 
+                    (height - 1) + Css.Px);
+            events.FireControlHostSizeChanged();
         }
         #endregion
     }

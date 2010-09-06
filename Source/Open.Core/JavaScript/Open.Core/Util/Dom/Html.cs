@@ -50,7 +50,7 @@ namespace Open.Core
         /// <summary>Creates an IMG element.</summary>
         /// <param name="src">The URL to the image.</param>
         /// <param name="alt">The alternative text for the image.</param>
-        public static jQueryObject CreateImage(string src, string  alt)
+        public static jQueryObject CreateImage(string src, string alt)
         {
             return jQuery.FromHtml(string.Format("<img src='{0}' alt='{1}' />", src, alt));
         }
@@ -60,15 +60,6 @@ namespace Open.Core
         public static jQueryObject CreateElement(string tag)
         {
             return jQuery.FromHtml(string.Format("<{0}></{0}>", tag));
-        }
-
-        /// <summary>Sets the top position of an element so it is vertically centered within another element.</summary>
-        /// <param name="element">The element to vertically center.</param>
-        /// <param name="within">The element to center within.</param>
-        public static void CenterVertically(jQueryObject element, jQueryObject within)
-        {
-            int top = (within.GetHeight() / 2) - (element.GetHeight() / 2);
-            element.CSS(Css.Top, top + "px");
         }
 
         /// <summary>Retrieves the child at the specified index, otherwise Null.</summary>
@@ -118,7 +109,6 @@ namespace Open.Core
         /// <summary>Retrieves the height of the specified element.</summary>
         /// <param name="cssSelector">The CSS selector of the element to measure.</param>
         public static int Height(string cssSelector) { return jQuery.Select(cssSelector).GetHeight(); }
-
         #endregion
     }
 }
