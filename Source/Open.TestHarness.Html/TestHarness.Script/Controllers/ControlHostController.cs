@@ -13,18 +13,18 @@ namespace Open.Testing.Controllers
         #region Head
         private readonly jQueryObject divControlHost;
         private readonly ArrayList views = new ArrayList();
-
+        private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
         public ControlHostController()
         {
             // Setup initial conditions.
             divControlHost = jQuery.Select(CssSelectors.ControlHost);
+            events = Common.Events;
 
             // Wire up events.
-            TestHarnessEvents myEvents = Common.Events;
-            myEvents.ControlAdded += OnControlAdded;
-            myEvents.ClearControls += OnClearControls;
+            events.ControlAdded += OnControlAdded;
+            events.ClearControls += OnClearControls;
         }
 
         protected override void OnDisposed()
@@ -33,7 +33,6 @@ namespace Open.Testing.Controllers
             Clear();
 
             // Unwire events.
-            TestHarnessEvents events = Common.Events;
             events.ControlAdded -= OnControlAdded;
             events.ClearControls -= OnClearControls;
 

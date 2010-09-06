@@ -3,12 +3,11 @@ using System.Collections;
 using jQueryApi;
 using Open.Core;
 using Open.Core.Lists;
-using Open.Testing.Models;
 
 namespace Open.Testing.Views
 {
     /// <summary>The view for the side-bar.</summary>
-    public class SidebarView : ViewBase
+    public class SidebarView : TestHarnessViewBase
     {
         #region Head
         public const double SlideDuration = 0.2; // secs.

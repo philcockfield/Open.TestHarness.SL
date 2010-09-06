@@ -15,6 +15,7 @@ namespace Open.Testing.Models
         private bool isLoaded;
         private Exception error;
         private bool isInitializing;
+        private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
         /// <param name="parent">The test-package this object is loading.</param>
@@ -26,14 +27,15 @@ namespace Open.Testing.Models
             this.parent = parent;
             this.scriptUrl = scriptUrl;
             this.initMethod = initMethod;
+            events = Common.Events;
 
             // Wire up events.
-            Common.Events.TestClassRegistered += OnTestClassRegistered;
+            events.TestClassRegistered += OnTestClassRegistered;
         }
 
         protected override void OnDisposed()
         {
-            Common.Events.TestClassRegistered -= OnTestClassRegistered;
+            events.TestClassRegistered -= OnTestClassRegistered;
             base.OnDisposed();
         }
         #endregion

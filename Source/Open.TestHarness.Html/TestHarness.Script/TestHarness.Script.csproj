@@ -45,6 +45,7 @@
     <Reference Include="Script.jQuery" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base Classes\TestHarnessViewBase.cs" />
     <Compile Include="Base Classes\TestHarnessControllerBase.cs" />
     <Compile Include="Constants\CssSelectors.cs" />
     <Compile Include="Constants\Elements.cs" />

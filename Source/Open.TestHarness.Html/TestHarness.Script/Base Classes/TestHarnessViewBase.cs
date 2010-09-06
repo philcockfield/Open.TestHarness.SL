@@ -2,8 +2,8 @@ using Open.Core;
 
 namespace Open.Testing
 {
-    /// <summary>The base class for controllers within the TestHarness.</summary>
-    public abstract class TestHarnessControllerBase : ControllerBase
+    /// <summary>The base class for views within the TestHarness.</summary>
+    public abstract class TestHarnessViewBase : ViewBase
     {
         #region Head
         private Common common;

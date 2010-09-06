@@ -7,20 +7,15 @@ using Open.Testing.Models;
 namespace Open.Testing.Views
 {
     /// <summary>The list of tests.</summary>
-    public class MethodListView : ViewBase
+    public class MethodListView : TestHarnessViewBase
     {
-        #region Events
-        /// <summary>Fires when each time a method in the list is clicked (see the 'SelectedMethod' property).</summary>
-        public event EventHandler MethodClicked;
-        private void FireMethodClicked(){if (MethodClicked != null) MethodClicked(this, new EventArgs());}
-        #endregion
-
         #region Head
         public const string PropClassInfo = "ClassInfo";
         public const string PropSelectedMethod = "SelectedMethod";
 
         private readonly ListTreeView listView;
         private readonly ListItem rootNode;
+        private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing div.</param>
@@ -28,6 +23,7 @@ namespace Open.Testing.Views
         {
             // Setup initial conditions.
             Initialize(container);
+            events = Common.Events;
 
             // Create the list-tree.
             listView = new ListTreeView(jQuery.Select(CssSelectors.TestListContent));
@@ -43,7 +39,7 @@ namespace Open.Testing.Views
         private void OnItemClick(object sender, EventArgs e)
         {
             SelectedMethod = ((MethodListItem)sender).Method;
-            FireMethodClicked();
+            events.FireMethodClicked(new MethodEventArgs(SelectedMethod));
         }
         #endregion
 

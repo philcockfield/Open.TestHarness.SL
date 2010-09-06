@@ -4,7 +4,7 @@ using Open.Core;
 namespace Open.Testing.Views
 {
     /// <summary>The root view of the application shell.</summary>
-    public class ShellView : ViewBase
+    public class ShellView : TestHarnessViewBase
     {
         #region Head
         private readonly SidebarView sidebar;

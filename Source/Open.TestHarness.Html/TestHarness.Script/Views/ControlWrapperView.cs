@@ -4,7 +4,7 @@ using Open.Core;
 namespace Open.Testing.Views
 {
     /// <summary>Represents the container for a test-control.</summary>
-    public class ControlWrapperView : ViewBase
+    public class ControlWrapperView : TestHarnessViewBase
     {
         #region Head
         private readonly jQueryObject divRoot;

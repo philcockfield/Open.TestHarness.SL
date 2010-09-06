@@ -1,5 +1,3 @@
-using System;
-using Open.Core;
 using Open.Testing.Models;
 using Open.Testing.Views;
 
@@ -11,6 +9,7 @@ namespace Open.Testing.Controllers
         #region Head
         private readonly ClassInfo classInfo;
         private readonly SidebarView sidebarView;
+        private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
         /// <param name="classInfo">The test-class that is under control.</param>
@@ -19,9 +18,10 @@ namespace Open.Testing.Controllers
             // Setup initial conditions.
             this.classInfo = classInfo;
             sidebarView = Common.Shell.Sidebar;
+            events = Common.Events;
 
             // Wire up events.
-            sidebarView.MethodList.MethodClicked += OnMethodClicked;
+            events.MethodClicked += OnMethodClicked;
 
             // Invoke the class-setup method.
             if (classInfo.ClassInitialize != null) classInfo.ClassInitialize.Invoke();
@@ -30,7 +30,7 @@ namespace Open.Testing.Controllers
         protected override void OnDisposed()
         {
             // Unwire events.
-            sidebarView.MethodList.MethodClicked -= OnMethodClicked;
+            events.MethodClicked -= OnMethodClicked;
 
             // Invoke the class-teardown method.
             if (classInfo.ClassCleanup != null) classInfo.ClassCleanup.Invoke();
@@ -48,7 +48,7 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnMethodClicked(object sender, EventArgs e)
+        private void OnMethodClicked(object sender, MethodEventArgs e)
         {
             InvokeSelectedMethod();
         }
