@@ -9,6 +9,7 @@ namespace Open.Core.Test
         public static void Main(Dictionary args)
         {
             TestHarness.RegisterClass(typeof(LoadHelperTest));
+            TestHarness.RegisterClass(typeof(DiContainerTest));
         }
     }
 }

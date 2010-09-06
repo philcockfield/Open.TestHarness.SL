@@ -6,7 +6,7 @@ using Open.Core.UI;
 namespace Open.Testing.Controllers
 {
     /// <summary>Handles resizing of panels within the shell.</summary>
-    public class PanelResizeController : ControllerBase
+    public class PanelResizeController : TestHarnessControllerBase
     {
         #region Head
         private const int SidebarMinWidth = 200;

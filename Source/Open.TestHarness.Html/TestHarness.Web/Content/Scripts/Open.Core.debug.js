@@ -481,6 +481,253 @@ Open.Core.ModelBase.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.DiContainer
+
+Open.Core.DiContainer = function Open_Core_DiContainer() {
+    /// <summary>
+    /// A simple DI container.
+    /// </summary>
+    /// <field name="_singletons" type="Array">
+    /// </field>
+    /// <field name="_defaultContainer" type="Open.Core.DiContainer" static="true">
+    /// </field>
+    this._singletons = [];
+}
+Open.Core.DiContainer.get_defaultContainer = function Open_Core_DiContainer$get_defaultContainer() {
+    /// <summary>
+    /// Gets the default DI container.
+    /// </summary>
+    /// <value type="Open.Core.DiContainer"></value>
+    return Open.Core.DiContainer._defaultContainer || (Open.Core.DiContainer._defaultContainer = new Open.Core.DiContainer());
+}
+Open.Core.DiContainer.prototype = {
+    
+    dispose: function Open_Core_DiContainer$dispose() {
+        /// <summary>
+        /// Destructor.
+        /// </summary>
+        Open.Core.Helper.get_collection().disposeAndClear(this._singletons);
+    },
+    
+    getSingleton: function Open_Core_DiContainer$getSingleton(key) {
+        /// <summary>
+        /// Retrieves the singleton that matches the given type.
+        /// </summary>
+        /// <param name="key" type="Type">
+        /// The type-key (either the Type of the singleton, or an interface).
+        /// </param>
+        /// <returns type="Object"></returns>
+        var wrapper = this._fromKey(key);
+        return (wrapper == null) ? null : wrapper.get_instance();
+    },
+    
+    getOrCreateSingleton: function Open_Core_DiContainer$getOrCreateSingleton(key, create) {
+        /// <summary>
+        /// Retrieves the singleton that matches the given type, and if not found creates and registers an instance using the given factory.
+        /// </summary>
+        /// <param name="key" type="Type">
+        /// The type-key (either the Type of the singleton, or an interface).
+        /// </param>
+        /// <param name="create" type="Func">
+        /// Factory used to create the new instance if the singleton has not yet been registered.
+        /// </param>
+        /// <returns type="Object"></returns>
+        var instance = this.getSingleton(key);
+        if (instance != null) {
+            return instance;
+        }
+        instance = create.invoke();
+        this.registerSingleton(key, instance);
+        return instance;
+    },
+    
+    registerSingleton: function Open_Core_DiContainer$registerSingleton(key, instance) {
+        /// <summary>
+        /// Registers the given object as a singleton within the container (replacing any existing instance).
+        /// </summary>
+        /// <param name="key" type="Type">
+        /// The type-key (either the Type of the singleton, or an interface).
+        /// </param>
+        /// <param name="instance" type="Object">
+        /// The instance.
+        /// </param>
+        if (key == null) {
+            throw new Error('Singleton key cannot be null');
+        }
+        if (instance == null) {
+            throw new Error('Singleton instance cannot be null');
+        }
+        this.unregisterSingleton(key);
+        var wrapper = new Open.Core._diInstanceWrapper(key, instance);
+        this._singletons.add(wrapper);
+    },
+    
+    unregisterSingleton: function Open_Core_DiContainer$unregisterSingleton(key) {
+        /// <summary>
+        /// Removes the specified singleton from the container.
+        /// </summary>
+        /// <param name="key" type="Type">
+        /// The type-key (either the Type of the singleton, or an interface).
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        var wrapper = this._fromKey(key);
+        if (wrapper == null) {
+            return false;
+        }
+        wrapper.dispose();
+        this._singletons.remove(wrapper);
+        return true;
+    },
+    
+    containsSingleton: function Open_Core_DiContainer$containsSingleton(key) {
+        /// <summary>
+        /// Determines whether the a singleton with the given key exists within the container.
+        /// </summary>
+        /// <param name="key" type="Type">
+        /// The type-key (either the Type of the singleton, or an interface).
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return this._fromKey(key) != null;
+    },
+    
+    _fromKey: function Open_Core_DiContainer$_fromKey(key) {
+        /// <param name="key" type="Type">
+        /// </param>
+        /// <returns type="Open.Core._diInstanceWrapper"></returns>
+        if (key == null) {
+            return null;
+        }
+        return Type.safeCast(Open.Core.Helper.get_collection().first(this._singletons, ss.Delegate.create(this, function(o) {
+            return (o).get_key() === key;
+        })), Open.Core._diInstanceWrapper);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core._diInstanceWrapper
+
+Open.Core._diInstanceWrapper = function Open_Core__diInstanceWrapper(key, instance) {
+    /// <param name="key" type="Type">
+    /// </param>
+    /// <param name="instance" type="Object">
+    /// </param>
+    /// <field name="_key" type="Type">
+    /// </field>
+    /// <field name="_instance" type="Object">
+    /// </field>
+    this._key = key;
+    this._instance = instance;
+}
+Open.Core._diInstanceWrapper.prototype = {
+    _key: null,
+    _instance: null,
+    
+    dispose: function Open_Core__diInstanceWrapper$dispose() {
+        this._key = null;
+        this._instance = null;
+    },
+    
+    get_key: function Open_Core__diInstanceWrapper$get_key() {
+        /// <value type="Type"></value>
+        return this._key;
+    },
+    
+    get_instance: function Open_Core__diInstanceWrapper$get_instance() {
+        /// <value type="Object"></value>
+        return this._instance;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Should
+
+Open.Core.Should = function Open_Core_Should() {
+    /// <summary>
+    /// Testing assertions.
+    /// </summary>
+}
+Open.Core.Should.equal = function Open_Core_Should$equal(subject, value) {
+    /// <summary>
+    /// Asserts that an object is equal to another object (uses != comparison).
+    /// </summary>
+    /// <param name="subject" type="Object">
+    /// The value being compared.
+    /// </param>
+    /// <param name="value" type="Object">
+    /// The value to compare to.
+    /// </param>
+    if (subject !== value) {
+        Open.Core.Should._throwError('The two values are not equal.');
+    }
+}
+Open.Core.Should.notEqual = function Open_Core_Should$notEqual(subject, value) {
+    /// <summary>
+    /// Asserts that an object is not equal to another object (uses != comparison).
+    /// </summary>
+    /// <param name="subject" type="Object">
+    /// The value being compared.
+    /// </param>
+    /// <param name="value" type="Object">
+    /// The value to compare to.
+    /// </param>
+    if (subject === value) {
+        Open.Core.Should._throwError('The two values should not be equal.');
+    }
+}
+Open.Core.Should.notBeNull = function Open_Core_Should$notBeNull(subject) {
+    /// <summary>
+    /// Asserts that an object is not null.
+    /// </summary>
+    /// <param name="subject" type="Object">
+    /// The value being examined.
+    /// </param>
+    if (subject == null) {
+        Open.Core.Should._throwError('Value should not be null.');
+    }
+}
+Open.Core.Should.beNull = function Open_Core_Should$beNull(subject) {
+    /// <summary>
+    /// Asserts that an object is not null.
+    /// </summary>
+    /// <param name="subject" type="Object">
+    /// The value being examined.
+    /// </param>
+    if (subject != null) {
+        Open.Core.Should._throwError('Value should be null.');
+    }
+}
+Open.Core.Should.beTrue = function Open_Core_Should$beTrue(value) {
+    /// <summary>
+    /// Asserts that an value is True.
+    /// </summary>
+    /// <param name="value" type="Boolean">
+    /// The value being examined.
+    /// </param>
+    if (!value) {
+        Open.Core.Should._throwError('Value should be True.');
+    }
+}
+Open.Core.Should.beFalse = function Open_Core_Should$beFalse(value) {
+    /// <summary>
+    /// Asserts that an value is False.
+    /// </summary>
+    /// <param name="value" type="Boolean">
+    /// The value being examined.
+    /// </param>
+    if (value) {
+        Open.Core.Should._throwError('Value should be False.');
+    }
+}
+Open.Core.Should._throwError = function Open_Core_Should$_throwError(message) {
+    /// <param name="message" type="String">
+    /// </param>
+    throw new Error(String.format('AssertionException: ' + message));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Keyboard
 
 Open.Core.Keyboard = function Open_Core_Keyboard() {
@@ -2569,6 +2816,54 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
 }
 
 
+Type.registerNamespace('Open.Testing.Internal');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Internal.ITestHarnessEvents
+
+Open.Testing.Internal.ITestHarnessEvents = function() { 
+};
+Open.Testing.Internal.ITestHarnessEvents.prototype = {
+    add_testClassRegistered : null,
+    remove_testClassRegistered : null,
+    fireTestClassRegistered : null,
+    add_controlAdded : null,
+    remove_controlAdded : null,
+    fireControlAdded : null,
+    add_clearControls : null,
+    remove_clearControls : null,
+    fireClearControls : null
+}
+Open.Testing.Internal.ITestHarnessEvents.registerInterface('Open.Testing.Internal.ITestHarnessEvents');
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Internal.TestClassEventArgs
+
+Open.Testing.Internal.TestClassEventArgs = function Open_Testing_Internal_TestClassEventArgs() {
+    /// <field name="testClass" type="Type">
+    /// </field>
+}
+Open.Testing.Internal.TestClassEventArgs.prototype = {
+    testClass: null
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Internal.TestControlEventArgs
+
+Open.Testing.Internal.TestControlEventArgs = function Open_Testing_Internal_TestControlEventArgs() {
+    /// <field name="sizeMode" type="Open.Testing.SizeMode">
+    /// </field>
+    /// <field name="controlContainer" type="jQueryObject">
+    /// </field>
+}
+Open.Testing.Internal.TestControlEventArgs.prototype = {
+    sizeMode: 0,
+    controlContainer: null
+}
+
+
 Type.registerNamespace('Open.Testing');
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2604,6 +2899,12 @@ Open.Testing.TestHarness = function Open_Testing_TestHarness() {
     /// Shared functionality for working with the TestHarness
     /// (so that test assemblies don't have to reference to TestHarness project [and corresponding dependences]).
     /// </summary>
+    /// <field name="_events" type="Open.Testing.Internal.ITestHarnessEvents" static="true">
+    /// </field>
+}
+Open.Testing.TestHarness.get__events = function Open_Testing_TestHarness$get__events() {
+    /// <value type="Open.Testing.Internal.ITestHarnessEvents"></value>
+    return Open.Testing.TestHarness._events || (Open.Testing.TestHarness._events = Type.safeCast(Open.Core.DiContainer.get_defaultContainer().getSingleton(Open.Testing.Internal.ITestHarnessEvents), Open.Testing.Internal.ITestHarnessEvents));
 }
 Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$registerClass(testClass) {
     /// <summary>
@@ -2615,9 +2916,12 @@ Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$regis
     if (ss.isNullOrUndefined(testClass)) {
         return;
     }
+    if (Open.Testing.TestHarness.get__events() == null) {
+        return;
+    }
     var e = new Open.Testing.Internal.TestClassEventArgs();
     e.testClass = testClass;
-    Open.Testing.Internal.TestHarnessEvents._fireTestClassRegistered(e);
+    Open.Testing.TestHarness.get__events().fireTestClassRegistered(e);
 }
 Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addControl(sizeMode) {
     /// <summary>
@@ -2630,117 +2934,14 @@ Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addContr
     var e = new Open.Testing.Internal.TestControlEventArgs();
     e.sizeMode = sizeMode;
     e.controlContainer = Open.Core.Html.createDiv();
-    Open.Testing.Internal.TestHarnessEvents._fireControlAdded(e);
+    Open.Testing.TestHarness.get__events().fireControlAdded(e);
     return e.controlContainer;
 }
 Open.Testing.TestHarness.clearControls = function Open_Testing_TestHarness$clearControls() {
     /// <summary>
     /// Clears all added controls from the host canvas.
     /// </summary>
-    Open.Testing.Internal.TestHarnessEvents._fireClearControls();
-}
-
-
-Type.registerNamespace('Open.Testing.Internal');
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Testing.Internal.TestHarnessEvents
-
-Open.Testing.Internal.TestHarnessEvents = function Open_Testing_Internal_TestHarnessEvents() {
-    /// <field name="__testClassRegistered" type="Open.Testing.Internal.TestClassHandler" static="true">
-    /// </field>
-    /// <field name="__controlAdded" type="Open.Testing.Internal.TestControlHandler" static="true">
-    /// </field>
-    /// <field name="__clearControls" type="EventHandler" static="true">
-    /// </field>
-}
-Open.Testing.Internal.TestHarnessEvents.add_testClassRegistered = function Open_Testing_Internal_TestHarnessEvents$add_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.Internal.TestHarnessEvents.__testClassRegistered = ss.Delegate.combine(Open.Testing.Internal.TestHarnessEvents.__testClassRegistered, value);
-}
-Open.Testing.Internal.TestHarnessEvents.remove_testClassRegistered = function Open_Testing_Internal_TestHarnessEvents$remove_testClassRegistered(value) {
-    /// <summary>
-    /// Fires when a test class is registered.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.Internal.TestHarnessEvents.__testClassRegistered = ss.Delegate.remove(Open.Testing.Internal.TestHarnessEvents.__testClassRegistered, value);
-}
-Open.Testing.Internal.TestHarnessEvents._fireTestClassRegistered = function Open_Testing_Internal_TestHarnessEvents$_fireTestClassRegistered(e) {
-    /// <param name="e" type="Open.Testing.Internal.TestClassEventArgs">
-    /// </param>
-    if (Open.Testing.Internal.TestHarnessEvents.__testClassRegistered != null) {
-        Open.Testing.Internal.TestHarnessEvents.__testClassRegistered.invoke(Open.Testing.Internal.TestHarnessEvents, e);
-    }
-}
-Open.Testing.Internal.TestHarnessEvents.add_controlAdded = function Open_Testing_Internal_TestHarnessEvents$add_controlAdded(value) {
-    /// <summary>
-    /// Fires when a control is added to the host canvas.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.Internal.TestHarnessEvents.__controlAdded = ss.Delegate.combine(Open.Testing.Internal.TestHarnessEvents.__controlAdded, value);
-}
-Open.Testing.Internal.TestHarnessEvents.remove_controlAdded = function Open_Testing_Internal_TestHarnessEvents$remove_controlAdded(value) {
-    /// <summary>
-    /// Fires when a control is added to the host canvas.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.Internal.TestHarnessEvents.__controlAdded = ss.Delegate.remove(Open.Testing.Internal.TestHarnessEvents.__controlAdded, value);
-}
-Open.Testing.Internal.TestHarnessEvents._fireControlAdded = function Open_Testing_Internal_TestHarnessEvents$_fireControlAdded(e) {
-    /// <param name="e" type="Open.Testing.Internal.TestControlEventArgs">
-    /// </param>
-    if (Open.Testing.Internal.TestHarnessEvents.__controlAdded != null) {
-        Open.Testing.Internal.TestHarnessEvents.__controlAdded.invoke(Open.Testing.Internal.TestHarnessEvents, e);
-    }
-}
-Open.Testing.Internal.TestHarnessEvents.add_clearControls = function Open_Testing_Internal_TestHarnessEvents$add_clearControls(value) {
-    /// <summary>
-    /// Fires when the host canvas is to be cleared of controls.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.Internal.TestHarnessEvents.__clearControls = ss.Delegate.combine(Open.Testing.Internal.TestHarnessEvents.__clearControls, value);
-}
-Open.Testing.Internal.TestHarnessEvents.remove_clearControls = function Open_Testing_Internal_TestHarnessEvents$remove_clearControls(value) {
-    /// <summary>
-    /// Fires when the host canvas is to be cleared of controls.
-    /// </summary>
-    /// <param name="value" type="Function" />
-    Open.Testing.Internal.TestHarnessEvents.__clearControls = ss.Delegate.remove(Open.Testing.Internal.TestHarnessEvents.__clearControls, value);
-}
-Open.Testing.Internal.TestHarnessEvents._fireClearControls = function Open_Testing_Internal_TestHarnessEvents$_fireClearControls() {
-    if (Open.Testing.Internal.TestHarnessEvents.__clearControls != null) {
-        Open.Testing.Internal.TestHarnessEvents.__clearControls.invoke(Open.Testing.Internal.TestHarnessEvents, new ss.EventArgs());
-    }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Testing.Internal.TestClassEventArgs
-
-Open.Testing.Internal.TestClassEventArgs = function Open_Testing_Internal_TestClassEventArgs() {
-    /// <field name="testClass" type="Type">
-    /// </field>
-}
-Open.Testing.Internal.TestClassEventArgs.prototype = {
-    testClass: null
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Testing.Internal.TestControlEventArgs
-
-Open.Testing.Internal.TestControlEventArgs = function Open_Testing_Internal_TestControlEventArgs() {
-    /// <field name="sizeMode" type="Open.Testing.SizeMode">
-    /// </field>
-    /// <field name="controlContainer" type="jQueryObject">
-    /// </field>
-}
-Open.Testing.Internal.TestControlEventArgs.prototype = {
-    sizeMode: 0,
-    controlContainer: null
+    Open.Testing.TestHarness.get__events().fireClearControls();
 }
 
 
@@ -2804,7 +3005,7 @@ Open.Core.Helpers.CollectionHelper.prototype = {
         /// <param name="collection" type="ss.IEnumerable">
         /// The collection to filter.
         /// </param>
-        /// <param name="predicate" type="Open.Core.IsMatch">
+        /// <param name="predicate" type="Open.Core.FuncBool">
         /// The predicate to match.
         /// </param>
         /// <returns type="Array"></returns>
@@ -2826,7 +3027,7 @@ Open.Core.Helpers.CollectionHelper.prototype = {
         /// <param name="collection" type="ss.IEnumerable">
         /// The collection to examine.
         /// </param>
-        /// <param name="predicate" type="Open.Core.IsMatch">
+        /// <param name="predicate" type="Open.Core.FuncBool">
         /// The predicate to match.
         /// </param>
         /// <returns type="Object"></returns>
@@ -4162,6 +4363,9 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 
 Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
+Open.Core.DiContainer.registerClass('Open.Core.DiContainer', null, ss.IDisposable);
+Open.Core._diInstanceWrapper.registerClass('Open.Core._diInstanceWrapper', null, ss.IDisposable);
+Open.Core.Should.registerClass('Open.Core.Should');
 Open.Core.Keyboard.registerClass('Open.Core.Keyboard');
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
 Open.Core.ViewBase.registerClass('Open.Core.ViewBase', Open.Core.ModelBase, Open.Core.IView);
@@ -4183,10 +4387,9 @@ Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
 Open.Core.Helper.registerClass('Open.Core.Helper');
-Open.Testing.TestHarness.registerClass('Open.Testing.TestHarness');
-Open.Testing.Internal.TestHarnessEvents.registerClass('Open.Testing.Internal.TestHarnessEvents');
 Open.Testing.Internal.TestClassEventArgs.registerClass('Open.Testing.Internal.TestClassEventArgs');
 Open.Testing.Internal.TestControlEventArgs.registerClass('Open.Testing.Internal.TestControlEventArgs');
+Open.Testing.TestHarness.registerClass('Open.Testing.TestHarness');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
 Open.Core.Helpers.EventHelper.registerClass('Open.Core.Helpers.EventHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
@@ -4204,6 +4407,7 @@ Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
 Open.Core.UI.VerticalPanelResizer.registerClass('Open.Core.UI.VerticalPanelResizer', Open.Core.UI.PanelResizerBase);
+Open.Core.DiContainer._defaultContainer = null;
 Open.Core.Keyboard._isShiftPressed = false;
 Open.Core.Keyboard._isCtrlPressed = false;
 Open.Core.Keyboard._isAltPressed = false;
@@ -4297,9 +4501,7 @@ Open.Core.Helper._jQueryHelper = null;
 Open.Core.Helper._treeHelper = null;
 Open.Core.Helper._eventHelper = null;
 Open.Core.Helper._idCounter = 0;
-Open.Testing.Internal.TestHarnessEvents.__testClassRegistered = null;
-Open.Testing.Internal.TestHarnessEvents.__controlAdded = null;
-Open.Testing.Internal.TestHarnessEvents.__clearControls = null;
+Open.Testing.TestHarness._events = null;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
 Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';

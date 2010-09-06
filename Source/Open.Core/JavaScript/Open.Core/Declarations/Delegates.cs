@@ -10,5 +10,5 @@
     /// <summary>Filter delegate used to determine whether an object is a match.</summary>
     /// <param name="obj">The object to examine.</param>
     /// <returns>True if the object is a match, otherwise False.</returns>
-    public delegate bool IsMatch(object obj);
+    public delegate bool FuncBool(object obj);
 }

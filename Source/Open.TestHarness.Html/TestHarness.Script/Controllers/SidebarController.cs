@@ -7,7 +7,7 @@ using Open.Testing.Views;
 namespace Open.Testing.Controllers
 {
     /// <summary>Controller for the side-bar.</summary>
-    public class SidebarController : ControllerBase
+    public class SidebarController : TestHarnessControllerBase
     {
         #region Head
         private readonly ArrayList packageControllers = new ArrayList();
@@ -18,7 +18,7 @@ namespace Open.Testing.Controllers
         public SidebarController()
         {
             // Setup initial conditions.
-            view = Application.Shell.Sidebar;
+            view = Common.Shell.Sidebar;
 
             // Wire up events.
             TEMP();
@@ -98,7 +98,7 @@ namespace Open.Testing.Controllers
             view.RootList.RootNode.AddChild(node);
 
             // Create the controller.
-            PackageController controller = new PackageController(node, view);
+            PackageController controller = new PackageController(node);
             packageControllers.Add(controller);
             controller.Loaded += delegate
                                      {

@@ -6,7 +6,7 @@ using Open.Testing.Internal;
 namespace Open.Testing.Models
 {
     /// <summary>Handles loading a test-package and executing the entry point assembly.</summary>
-    public class PackageLoader : IDisposable
+    public class PackageLoader : TestHarnessControllerBase, IDisposable
     {
         #region Head
         private readonly PackageInfo parent;
@@ -28,12 +28,13 @@ namespace Open.Testing.Models
             this.initMethod = initMethod;
 
             // Wire up events.
-            TestHarnessEvents.TestClassRegistered += OnTestClassRegistered;
+            Common.Events.TestClassRegistered += OnTestClassRegistered;
         }
 
-        public void Dispose()
+        protected override void OnDisposed()
         {
-            TestHarnessEvents.TestClassRegistered -= OnTestClassRegistered;
+            Common.Events.TestClassRegistered -= OnTestClassRegistered;
+            base.OnDisposed();
         }
         #endregion
 

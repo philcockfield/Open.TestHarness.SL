@@ -29,7 +29,7 @@ namespace Open.Testing.Models
             // Setup initial conditions.
             this.classType = classType;
             this.packageInfo = packageInfo;
-            displayName = MethodInfo.FormatName(classType.Name);
+            displayName = Helper.String.RemoveEnd(MethodInfo.FormatName(classType.Name), "Test");
 
             // Get methods.
             GetMethods();

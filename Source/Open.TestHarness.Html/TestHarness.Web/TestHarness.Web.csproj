@@ -91,7 +91,6 @@
     <Content Include="Views\TestHarness\Main.ascx" />
     <Content Include="Views\TestHarness\Sidebar.ascx" />
     <Content Include="Views\TestHarness\TestList.ascx" />
-    <Content Include="Views\TestHarness\ViewPage1.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

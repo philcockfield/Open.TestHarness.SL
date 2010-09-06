@@ -50,10 +50,12 @@
   <ItemGroup>
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
-    <Compile Include="Global.TestHarness\TestHarness.cs">
+    <Compile Include="Composite\DiContainer.cs" />
+    <Compile Include="Testing\ITestHarnessEvents.cs" />
+    <Compile Include="Testing\Should.cs" />
+    <Compile Include="Testing\TestHarness.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Global.TestHarness\TestHarnessEvents.cs" />
     <Compile Include="Global\Keyboard.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />

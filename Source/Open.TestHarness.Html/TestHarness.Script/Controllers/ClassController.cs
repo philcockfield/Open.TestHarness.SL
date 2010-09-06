@@ -6,7 +6,7 @@ using Open.Testing.Views;
 namespace Open.Testing.Controllers
 {
     /// <summary>Controlls the selected test-class.</summary>
-    public class ClassController : ControllerBase
+    public class ClassController : TestHarnessControllerBase
     {
         #region Head
         private readonly ClassInfo classInfo;
@@ -14,12 +14,11 @@ namespace Open.Testing.Controllers
 
         /// <summary>Constructor.</summary>
         /// <param name="classInfo">The test-class that is under control.</param>
-        /// <param name="sidebarView">The Sidebar control.</param>
-        public ClassController(ClassInfo classInfo, SidebarView sidebarView)
+        public ClassController(ClassInfo classInfo)
         {
             // Setup initial conditions.
             this.classInfo = classInfo;
-            this.sidebarView = sidebarView;
+            sidebarView = Common.Shell.Sidebar;
 
             // Wire up events.
             sidebarView.MethodList.MethodClicked += OnMethodClicked;

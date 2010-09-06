@@ -4,6 +4,7 @@ using jQueryApi;
 using Open.Core;
 using Open.Core.Controls;
 using Open.Testing.Controllers;
+using Open.Testing.Internal;
 using Open.Testing.Models;
 using Open.Testing.Views;
 
@@ -16,25 +17,31 @@ namespace Open.Testing
         private static ShellView shell;
 
         // Controllers.
+        private static DiContainer container;
         private static PanelResizeController resizeController;
         private static SidebarController sidebarController;
         private static ControlHostController controlHostController;
         #endregion
 
         #region Properties
-        /// <summary>Gets the root view of the application shell.</summary>
-        public static ShellView Shell { get { return shell; } }
+        /// <summary>Gets the DI container.</summary>
+        public static DiContainer Container { get { return container ?? (container = DiContainer.DefaultContainer); } }
         #endregion
 
         #region Methods
         public static void Main(Dictionary args)
         {
+            // Setup the DI container.
+            Container.RegisterSingleton(typeof(ITestHarnessEvents), new TestHarnessEvents());
+            Container.RegisterSingleton(typeof(Common), new Common());
+
             // Setup the output log.
             LogView logView = new LogView(jQuery.Select(CssSelectors.Log).First());
             Log.RegisterView(logView);
 
             // Create views.
             shell = new ShellView(jQuery.Select(CssSelectors.Root));
+            Container.RegisterSingleton(typeof(ShellView), shell);
 
             // Create controllers.
             resizeController = new PanelResizeController();

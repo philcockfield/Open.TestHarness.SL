@@ -7,7 +7,7 @@ using Open.Testing.Views;
 namespace Open.Testing.Controllers
 {
     /// <summary>Controller for a single test package.</summary>
-    public class PackageController : ControllerBase
+    public class PackageController : TestHarnessControllerBase
     {
         #region Events
         /// <summary>Fires when the package has laoded.</summary>
@@ -25,12 +25,11 @@ namespace Open.Testing.Controllers
 
         /// <summary>Constructor.</summary>
         /// <param name="rootNode">The root list-item node.</param>
-        /// <param name="sidebarView">The Sidebar control.</param>
-        public PackageController(PackageListItem rootNode, SidebarView sidebarView)
+        public PackageController(PackageListItem rootNode)
         {
             // Store values.
             this.rootNode = rootNode;
-            this.sidebarView = sidebarView;
+            sidebarView = Common.Shell.Sidebar;
 
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
@@ -91,7 +90,7 @@ namespace Open.Testing.Controllers
                 if (Set(PropSelectedClass, value, null))
                 {
                     if (selectedClassController != null) selectedClassController.Dispose();
-                    if (value != null) selectedClassController = new ClassController(value, sidebarView);
+                    if (value != null) selectedClassController = new ClassController(value);
                     sidebarView.MethodList.ClassInfo = value;
                 }
             }

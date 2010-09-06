@@ -17,7 +17,7 @@ namespace Open.Testing.Models
         private readonly ClassInfo classInfo;
         private readonly string name;
         private readonly string displayName;
-        private bool isSpecial;
+        private readonly bool isSpecial;
 
         /// <summary>Constructor.</summary>
         /// <param name="classInfo">The test-class that this method is a member of.</param>

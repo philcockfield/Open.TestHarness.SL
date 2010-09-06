@@ -25,6 +25,17 @@ namespace Open.Testing
     /// </summary>
     public static class TestHarness
     {
+        #region Head
+        private static ITestHarnessEvents events;
+        #endregion
+
+        #region Properties
+        private static ITestHarnessEvents Events
+        {
+            get { return events ?? (events = DiContainer.DefaultContainer.GetSingleton(typeof(ITestHarnessEvents)) as ITestHarnessEvents); }
+        }
+        #endregion
+
         #region Methods
         /// <summary>Registers a test-class with the harness.</summary>
         /// <param name="testClass">The type of the test class.</param>
@@ -32,13 +43,13 @@ namespace Open.Testing
         {
             // Setup initial conditions.
             if (Script.IsNullOrUndefined(testClass)) return;
+            if (Events == null) return;
 
             // Alert the test-harness via an event.
             TestClassEventArgs e = new TestClassEventArgs();
             e.TestClass = testClass;
-            TestHarnessEvents.FireTestClassRegistered(e);
+            Events.FireTestClassRegistered(e);
         }
-
 
         /// <summary>Adds a control to the host canvas.</summary>
         /// <param name="sizeMode">The strategy used to size the control.</param>
@@ -49,7 +60,7 @@ namespace Open.Testing
             TestControlEventArgs e = new TestControlEventArgs();
             e.SizeMode = sizeMode;
             e.ControlContainer = Html.CreateDiv();
-            TestHarnessEvents.FireControlAdded(e);
+            Events.FireControlAdded(e);
 
             // Finish up.
             return e.ControlContainer;
@@ -58,8 +69,24 @@ namespace Open.Testing
         /// <summary>Clears all added controls from the host canvas.</summary>
         public static void ClearControls()
         {
-            TestHarnessEvents.FireClearControls();
+            Events.FireClearControls();
         }
         #endregion
+    }
+}
+
+namespace Open.Testing.Internal
+{
+    public delegate void TestClassHandler(object sender, TestClassEventArgs e);
+    public class TestClassEventArgs
+    {
+        public Type TestClass;
+    }
+
+    public delegate void TestControlHandler(object sender, TestControlEventArgs e);
+    public class TestControlEventArgs
+    {
+        public SizeMode SizeMode;
+        public jQueryObject ControlContainer;
     }
 }

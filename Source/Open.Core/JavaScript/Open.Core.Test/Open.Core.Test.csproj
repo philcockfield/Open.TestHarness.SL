@@ -48,6 +48,7 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewTests\DiContainerTest.cs" />
     <Compile Include="ViewTests\LoadHelperTest.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />

@@ -8,7 +8,7 @@ using Open.Testing.Views;
 namespace Open.Testing.Controllers
 {
     /// <summary>Controls the 'Control Host' panel where test-controls are displayed.</summary>
-    public class ControlHostController : ControllerBase
+    public class ControlHostController : TestHarnessControllerBase
     {
         #region Head
         private readonly jQueryObject divControlHost;
@@ -22,8 +22,9 @@ namespace Open.Testing.Controllers
             divControlHost = jQuery.Select(CssSelectors.ControlHost);
 
             // Wire up events.
-            TestHarnessEvents.ControlAdded += OnControlAdded;
-            TestHarnessEvents.ClearControls += OnClearControls;
+            TestHarnessEvents myEvents = Common.Events;
+            myEvents.ControlAdded += OnControlAdded;
+            myEvents.ClearControls += OnClearControls;
         }
 
         protected override void OnDisposed()
@@ -32,8 +33,9 @@ namespace Open.Testing.Controllers
             Clear();
 
             // Unwire events.
-            TestHarnessEvents.ControlAdded -= OnControlAdded;
-            TestHarnessEvents.ClearControls -= OnClearControls;
+            TestHarnessEvents events = Common.Events;
+            events.ControlAdded -= OnControlAdded;
+            events.ClearControls -= OnClearControls;
 
             // Finish up.
             base.OnDisposed();

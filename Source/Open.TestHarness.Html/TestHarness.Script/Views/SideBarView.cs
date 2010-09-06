@@ -139,7 +139,7 @@ namespace Open.Testing.Views
 
         private int GetTargetMethodListHeight()
         {
-            return 250; // TODO - GetTargetTestListHeight
+            return 450; // TODO - GetTargetTestListHeight
         }
         #endregion
     }
