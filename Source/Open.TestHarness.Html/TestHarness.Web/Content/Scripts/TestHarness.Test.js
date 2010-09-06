@@ -1,7 +1,7 @@
 // TestHarness.Test.js
 (function(){function executeScript(){
 Type.registerNamespace('Test.Samples');Test.Samples.ControlsTest=function(){}
-Test.Samples.ControlsTest.$0=function($p0){var $0=Open.Testing.TestHarness.addControl($p0);new Test.Samples.MyView($0,$p0);}
+Test.Samples.ControlsTest.$0=function($p0){var $0=Open.Core.Html.createDiv();new Test.Samples.MyView($0,$p0);Open.Testing.TestHarness.addControl($0,$p0);}
 Test.Samples.ControlsTest.prototype={add_Control__Default:function(){Test.Samples.ControlsTest.$0(0);},add_Control__Fill:function(){Test.Samples.ControlsTest.$0(1);},add_Control__FillWithMargin:function(){Test.Samples.ControlsTest.$0(2);},clear:function(){Open.Testing.TestHarness.clearControls();}}
 Test.Samples.MyView=function(container,sizeMode){Test.Samples.MyView.initializeBase(this);this.initialize(container);container.append(String.format('Control [{0}]',Open.Testing.SizeMode.toString(sizeMode)));container.css(Open.Core.Css.background,'#f0ebc5');container.css(Open.Core.Css.width,'300px');container.css(Open.Core.Css.height,'200px');}
 Test.Samples.MyTest_Class__2=function(){}

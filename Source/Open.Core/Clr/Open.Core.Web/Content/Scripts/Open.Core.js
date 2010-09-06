@@ -147,12 +147,12 @@ Open.Core.Helper.createId=function(){Open.Core.Helper.$B++;return String.format(
 Type.registerNamespace('Open.Testing.Internal');Open.Testing.Internal.ITestHarnessEvents=function(){};Open.Testing.Internal.ITestHarnessEvents.registerInterface('Open.Testing.Internal.ITestHarnessEvents');Open.Testing.Internal.TestClassEventArgs=function(){}
 Open.Testing.Internal.TestClassEventArgs.prototype={testClass:null}
 Open.Testing.Internal.TestControlEventArgs=function(){}
-Open.Testing.Internal.TestControlEventArgs.prototype={sizeMode:0,controlContainer:null}
+Open.Testing.Internal.TestControlEventArgs.prototype={sizeMode:0,content:null}
 Type.registerNamespace('Open.Testing');Open.Testing.SizeMode=function(){};Open.Testing.SizeMode.prototype = {control:0,fill:1,fillWithMargin:2}
 Open.Testing.SizeMode.registerEnum('Open.Testing.SizeMode',false);Open.Testing.TestHarness=function(){}
 Open.Testing.TestHarness.get_$1=function(){return Open.Testing.TestHarness.$0||(Open.Testing.TestHarness.$0=Type.safeCast(Open.Core.DiContainer.get_defaultContainer().getSingleton(Open.Testing.Internal.ITestHarnessEvents),Open.Testing.Internal.ITestHarnessEvents));}
 Open.Testing.TestHarness.registerClass=function(testClass){if(ss.isNullOrUndefined(testClass)){return;}if(Open.Testing.TestHarness.get_$1()==null){return;}var $0=new Open.Testing.Internal.TestClassEventArgs();$0.testClass=testClass;Open.Testing.TestHarness.get_$1().fireTestClassRegistered($0);}
-Open.Testing.TestHarness.addControl=function(sizeMode){var $0=new Open.Testing.Internal.TestControlEventArgs();$0.sizeMode=sizeMode;$0.controlContainer=Open.Core.Html.createDiv();Open.Testing.TestHarness.get_$1().fireControlAdded($0);return $0.controlContainer;}
+Open.Testing.TestHarness.addControl=function(content,sizeMode){var $0=new Open.Testing.Internal.TestControlEventArgs();$0.sizeMode=sizeMode;$0.content=content;Open.Testing.TestHarness.get_$1().fireControlAdded($0);return $0.content;}
 Open.Testing.TestHarness.clearControls=function(){Open.Testing.TestHarness.get_$1().fireClearControls();}
 Type.registerNamespace('Open.Core.Helpers');Open.Core.Helpers.ScriptLibrary=function(){};Open.Core.Helpers.ScriptLibrary.prototype = {controls:0,lists:1}
 Open.Core.Helpers.ScriptLibrary.registerEnum('Open.Core.Helpers.ScriptLibrary',false);Open.Core.Helpers.CollectionHelper=function(){}

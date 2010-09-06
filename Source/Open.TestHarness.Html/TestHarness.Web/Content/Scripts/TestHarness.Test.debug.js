@@ -14,8 +14,9 @@ Test.Samples.ControlsTest = function Test_Samples_ControlsTest() {
 Test.Samples.ControlsTest._addControl = function Test_Samples_ControlsTest$_addControl(sizeMode) {
     /// <param name="sizeMode" type="Open.Testing.SizeMode">
     /// </param>
-    var div = Open.Testing.TestHarness.addControl(sizeMode);
+    var div = Open.Core.Html.createDiv();
     new Test.Samples.MyView(div, sizeMode);
+    Open.Testing.TestHarness.addControl(div, sizeMode);
 }
 Test.Samples.ControlsTest.prototype = {
     

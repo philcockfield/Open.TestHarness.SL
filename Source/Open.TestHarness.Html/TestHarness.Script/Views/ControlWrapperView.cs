@@ -80,12 +80,11 @@ namespace Open.Testing.Views
         public SizeMode SizeMode
         {
             get { return sizeMode; }
-            set
-            {
-                sizeMode = value;
-                UpdateLayout();
-            }
+            set { sizeMode = value; }
         }
+
+        /// <summary>Gets the HTML content.</summary>
+        public jQueryObject Content { get { return content; } }
         #endregion
 
         #region Methods
@@ -100,8 +99,6 @@ namespace Open.Testing.Views
         #region Internal
         private void UpdateSize()
         {
-            Log.Info("Upd: " + SizeMode.ToString()); //TEMP 
-
             switch (sizeMode)
             {
                 case SizeMode.Control:
@@ -173,7 +170,7 @@ namespace Open.Testing.Views
             foreach (ControlWrapperView wrapper in allViews)
             {
                 if (wrapper == this) break;
-                height += wrapper.content.GetHeight();
+                height += wrapper.Content.GetHeight();
             }
             return height;
         }

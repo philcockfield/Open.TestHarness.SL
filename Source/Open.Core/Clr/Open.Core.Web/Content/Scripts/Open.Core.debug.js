@@ -2968,12 +2968,12 @@ Open.Testing.Internal.TestClassEventArgs.prototype = {
 Open.Testing.Internal.TestControlEventArgs = function Open_Testing_Internal_TestControlEventArgs() {
     /// <field name="sizeMode" type="Open.Testing.SizeMode">
     /// </field>
-    /// <field name="controlContainer" type="jQueryObject">
+    /// <field name="content" type="jQueryObject">
     /// </field>
 }
 Open.Testing.Internal.TestControlEventArgs.prototype = {
     sizeMode: 0,
-    controlContainer: null
+    content: null
 }
 
 
@@ -3036,19 +3036,22 @@ Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$regis
     e.testClass = testClass;
     Open.Testing.TestHarness.get__events().fireTestClassRegistered(e);
 }
-Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addControl(sizeMode) {
+Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addControl(content, sizeMode) {
     /// <summary>
     /// Adds a control to the host canvas.
     /// </summary>
+    /// <param name="content" type="jQueryObject">
+    /// The HTML content of the control.
+    /// </param>
     /// <param name="sizeMode" type="Open.Testing.SizeMode">
     /// The strategy used to size the control.
     /// </param>
     /// <returns type="jQueryObject"></returns>
     var e = new Open.Testing.Internal.TestControlEventArgs();
     e.sizeMode = sizeMode;
-    e.controlContainer = Open.Core.Html.createDiv();
+    e.content = content;
     Open.Testing.TestHarness.get__events().fireControlAdded(e);
-    return e.controlContainer;
+    return e.content;
 }
 Open.Testing.TestHarness.clearControls = function Open_Testing_TestHarness$clearControls() {
     /// <summary>

@@ -52,18 +52,19 @@ namespace Open.Testing
         }
 
         /// <summary>Adds a control to the host canvas.</summary>
+        /// <param name="content">The HTML content of the control.</param>
         /// <param name="sizeMode">The strategy used to size the control.</param>
         /// <returns>A DIV element to contain the control.</returns>
-        public static jQueryObject AddControl(SizeMode sizeMode)
+        public static jQueryObject AddControl(jQueryObject content, SizeMode sizeMode)
         {
             // Alert the test-harness via an event.
             TestControlEventArgs e = new TestControlEventArgs();
             e.SizeMode = sizeMode;
-            e.ControlContainer = Html.CreateDiv();
+            e.Content = content;
             Events.FireControlAdded(e);
 
             // Finish up.
-            return e.ControlContainer;
+            return e.Content;
         }
 
         /// <summary>Clears all added controls from the host canvas.</summary>
@@ -87,6 +88,6 @@ namespace Open.Testing.Internal
     public class TestControlEventArgs
     {
         public SizeMode SizeMode;
-        public jQueryObject ControlContainer;
+        public jQueryObject Content;
     }
 }

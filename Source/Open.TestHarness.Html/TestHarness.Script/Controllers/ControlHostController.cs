@@ -42,7 +42,7 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.ControlContainer, e.SizeMode); }
+        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.Content, e.SizeMode); }
         private void OnClearControls(object sender, EventArgs e) { Clear(); }
         #endregion
 
@@ -68,6 +68,17 @@ namespace Open.Testing.Controllers
                 {
                     if (item.SizeMode == SizeMode.Fill) item.SizeMode = SizeMode.FillWithMargin;
                 }
+            }
+
+            // Finish up.
+            UpdateLayout();
+        }
+
+        private void UpdateLayout()
+        {
+            foreach (ControlWrapperView item in views)
+            {
+                item.UpdateLayout();
             }
         }
         #endregion

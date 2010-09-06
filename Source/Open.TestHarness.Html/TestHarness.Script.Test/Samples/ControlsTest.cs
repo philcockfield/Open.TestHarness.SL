@@ -20,8 +20,10 @@ namespace Test.Samples
         #region Internal
         private static void AddControl(SizeMode sizeMode)
         {
-            jQueryObject div = TestHarness.AddControl(sizeMode);
+            jQueryObject div = Html.CreateDiv();
             new MyView(div, sizeMode);
+
+            TestHarness.AddControl(div, sizeMode);
         }
         #endregion
     }

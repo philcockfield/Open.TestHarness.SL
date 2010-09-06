@@ -540,7 +540,7 @@ Open.Testing.Controllers.ControlHostController.prototype = {
         /// </param>
         /// <param name="e" type="Open.Testing.Internal.TestControlEventArgs">
         /// </param>
-        this._addView$3(e.controlContainer, e.sizeMode);
+        this._addView$3(e.content, e.sizeMode);
     },
     
     _onClearControls$3: function Open_Testing_Controllers_ControlHostController$_onClearControls$3(sender, e) {
@@ -573,6 +573,15 @@ Open.Testing.Controllers.ControlHostController.prototype = {
                     item.set_sizeMode(Open.Testing.SizeMode.fillWithMargin);
                 }
             }
+        }
+        this._updateLayout$3();
+    },
+    
+    _updateLayout$3: function Open_Testing_Controllers_ControlHostController$_updateLayout$3() {
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$3);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            item.updateLayout();
         }
     }
 }
@@ -1784,8 +1793,15 @@ Open.Testing.Views.ControlWrapperView.prototype = {
         /// </summary>
         /// <value type="Open.Testing.SizeMode"></value>
         this._sizeMode$3 = value;
-        this.updateLayout();
         return value;
+    },
+    
+    get_content: function Open_Testing_Views_ControlWrapperView$get_content() {
+        /// <summary>
+        /// Gets the HTML content.
+        /// </summary>
+        /// <value type="jQueryObject"></value>
+        return this._content$3;
     },
     
     updateLayout: function Open_Testing_Views_ControlWrapperView$updateLayout() {
@@ -1797,7 +1813,6 @@ Open.Testing.Views.ControlWrapperView.prototype = {
     },
     
     _updateSize$3: function Open_Testing_Views_ControlWrapperView$_updateSize$3() {
-        Open.Core.Log.info('Upd: ' + Open.Testing.SizeMode.toString(this.get_sizeMode()));
         switch (this._sizeMode$3) {
             case Open.Testing.SizeMode.control:
                 break;
@@ -1821,7 +1836,6 @@ Open.Testing.Views.ControlWrapperView.prototype = {
         var width = (this.get_container().width() - (xPadding * 2));
         var height = (this.get_container().height() - (yPadding * 2));
         Open.Core.Css.setSize(this._content$3, width, height);
-        Open.Core.Log.debug('W:' + width + ', H:' + height);
     },
     
     _updatePosition$3: function Open_Testing_Views_ControlWrapperView$_updatePosition$3() {
@@ -1872,7 +1886,7 @@ Open.Testing.Views.ControlWrapperView.prototype = {
             if (wrapper === this) {
                 break;
             }
-            height += wrapper._content$3.height();
+            height += wrapper.get_content().height();
         }
         return height;
     }
