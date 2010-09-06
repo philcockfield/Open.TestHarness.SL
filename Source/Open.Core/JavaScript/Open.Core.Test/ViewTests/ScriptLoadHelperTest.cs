@@ -3,7 +3,7 @@ using Open.Core.Helpers;
 
 namespace Open.Core.Test.ViewTests
 {
-    public class LoadHelperTest
+    public class ScriptLoadHelperTest
     {
         public void LoadControls()
         {

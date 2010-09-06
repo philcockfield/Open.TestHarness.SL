@@ -8,13 +8,15 @@ namespace Open.Testing
 
         // Sidebar.
         public static readonly string Sidebar = "#testHarnessSidebar";
+        public static readonly string SidebarContent = "#testHarnessSidebar .th-content";
         public static readonly string SidebarRootList = "#testHarnessSidebar .th-sidebarRootList";
         public static readonly string SidebarToolbar = "#testHarnessSidebar div.th-toolbar";
         public static readonly string BackMask = "#testHarnessSidebar img.th-backMask";
 
         // Test List.
-        public static readonly string TestList = "#testHarnessSidebar .th-testList";
-        public static readonly string TestListContent = "#testHarnessSidebar .th-testList-content";
+        public static readonly string MethodList = "#testHarnessSidebar .th-testList";
+        public static readonly string MethodListTitlebar = "#testHarnessSidebar .th-testList-tb";
+        public static readonly string MethodListContent = "#testHarnessSidebar .th-testList-content";
         
 
         // Main.

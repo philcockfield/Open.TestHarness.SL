@@ -51,6 +51,7 @@
     <Compile Include="Constants\Elements.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ControlHostController.cs" />
+    <Compile Include="Controllers\MethodListHeightController.cs" />
     <Compile Include="Events\TestHarnessEvents.cs" />
     <Compile Include="Models\ListItemNodes\MethodListItem.cs" />
     <Compile Include="Models\ListItemNodes\ClassListItem.cs" />

@@ -118,6 +118,33 @@ namespace Open.Core.Lists
             get { return slideEasing; }
             set { slideEasing = value; }
         }
+
+
+        /// <summary>Gets the scroll height of the list.</summary>
+        public int ScrollHeight
+        {
+            get
+            {
+                ListTreePanel panel = SelectedPanel;
+                return panel == null
+                            ? Container.GetHeight()
+                            : panel.ListView.ScrollHeight;
+            }
+        }
+
+        /// <summary>Gets the offset height of the items within the list.</summary>
+        public int ContentHeight
+        {
+            get
+            {
+                ListTreePanel panel = SelectedPanel;
+                return panel == null
+                            ? 0
+                            : panel.ListView.ContentHeight;
+            }
+        }
+
+        private ListTreePanel SelectedPanel { get { return GetPanel(SelectedParent); } }
         #endregion
 
         #region Methods
@@ -189,6 +216,7 @@ namespace Open.Core.Lists
 
         private ListTreePanel GetPanel(ITreeNode node)
         {
+            if (node == null) return null;
             foreach (ListTreePanel panel in panels)
             {
                 if (panel.Node == node) return panel;

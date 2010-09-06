@@ -23,7 +23,11 @@ namespace Open.Testing
         #region Events : Methods | Classes | Packages
         /// <summary>Fires when each time a method in the list is clicked.</summary>
         public event MethodEventHandler MethodClicked;
-        internal void FireMethodClicked(MethodEventArgs e){if (MethodClicked != null) MethodClicked(this, e);}
+        internal void FireMethodClicked(MethodInfo methodInfo){if (MethodClicked != null) MethodClicked(this, new MethodEventArgs(methodInfo));}
+
+        /// <summary>Fires when when the selected class changes.</summary>
+        public event ClassEventHandler SelectedClassChanged;
+        internal void FireSelectedClassChanged(ClassInfo classInfo) { if (SelectedClassChanged != null) SelectedClassChanged(this, new ClassEventArgs(classInfo)); }
         #endregion
 
         #region Methods : Display
@@ -40,4 +44,12 @@ namespace Open.Testing
         public MethodEventArgs(MethodInfo methodInfo){MethodInfo = methodInfo;}
         public MethodInfo MethodInfo;
     }
+
+    public delegate void ClassEventHandler(object sender, ClassEventArgs e);
+    public class ClassEventArgs
+    {
+        public ClassEventArgs(ClassInfo classInfo) { ClassInfo = classInfo; }
+        public ClassInfo ClassInfo;
+    }
+
 }

@@ -21,7 +21,7 @@ namespace Open.Core.Lists
         #region Head
         private ListItemFactory itemFactory;
         private ListSelectionMode selectionMode = ListSelectionMode.Single;
-        private readonly ArrayList views = new ArrayList();
+        private readonly ArrayList itemViews = new ArrayList();
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
@@ -70,7 +70,27 @@ namespace Open.Core.Lists
         }
 
         /// <summary>Gets the number of items currently in the list.</summary>
-        public int Count { get { return views.Count; } }
+        public int Count { get { return itemViews.Count; } }
+
+        /// <summary>Gets the current height of the list.</summary>
+        public int Height { get { return Container.GetHeight(); } }
+
+        /// <summary>Gets the current scroll height of the list (the height of the list within it's scrolling pane).</summary>
+        public int ScrollHeight { get { return Int32.Parse(Container.GetAttribute(Html.ScrollHeight)); } }
+
+        /// <summary>Gets the offset height of the items within the list.</summary>
+        public int ContentHeight
+        {
+            get
+            {
+                int height = 0;
+                foreach (ListItemView view in itemViews)
+                {
+                    height += view.Container.GetHeight();
+                }
+                return height;
+            }
+        }
         #endregion
 
         #region Methods : Load | Insert
@@ -123,7 +143,7 @@ namespace Open.Core.Lists
             IListItemView listItemView = view as IListItemView;
 
             // Store values.
-            views.Add(view);
+            itemViews.Add(view);
 
             // Wire up events.
             if (listItemView != null) div.Click(delegate(jQueryEvent e) { OnItemClick(e, listItemView); });
@@ -157,13 +177,13 @@ namespace Open.Core.Lists
             view.Dispose();
 
             // Finish up.
-            views.Remove(view);
+            itemViews.Remove(view);
         }
 
         /// <summary>Clears the list (disposing of all children).</summary>
         public void Clear()
         {
-            foreach (IView view in views.Clone())
+            foreach (IView view in itemViews.Clone())
             {
                 RemoveView(view);
             }
@@ -202,7 +222,7 @@ namespace Open.Core.Lists
 
         private IEnumerable GetListItemViews()
         {
-            return Helper.Collection.Filter(views, delegate(object o)
+            return Helper.Collection.Filter(itemViews, delegate(object o)
                                                        {
                                                            return (o as IListItemView) != null;
                                                        });

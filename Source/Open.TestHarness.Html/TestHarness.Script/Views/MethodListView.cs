@@ -26,7 +26,7 @@ namespace Open.Testing.Views
             events = Common.Events;
 
             // Create the list-tree.
-            listView = new ListTreeView(jQuery.Select(CssSelectors.TestListContent));
+            listView = new ListTreeView(jQuery.Select(CssSelectors.MethodListContent));
             listView.SlideDuration = SidebarView.SlideDuration;
 
             // Construct the data-model root.
@@ -39,7 +39,7 @@ namespace Open.Testing.Views
         private void OnItemClick(object sender, EventArgs e)
         {
             SelectedMethod = ((MethodListItem)sender).Method;
-            events.FireMethodClicked(new MethodEventArgs(SelectedMethod));
+            events.FireMethodClicked(SelectedMethod);
         }
         #endregion
 
@@ -63,6 +63,11 @@ namespace Open.Testing.Views
             get { return (MethodInfo) Get(PropSelectedMethod, null); }
             set { Set(PropSelectedMethod, value, null); } 
         }
+
+        /// <summary>Gets the offset height of the items within the list and the title bar.</summary>
+        public int OffsetHeight { get { return listView.ContentHeight + DivTitleBar.GetHeight() + 1; } }
+
+        private jQueryObject DivTitleBar { get { return Container.Children(CssSelectors.MethodListTitlebar); } }
         #endregion
 
         #region Methods
@@ -74,19 +79,19 @@ namespace Open.Testing.Views
         #endregion
 
         #region Internal
-        private void PopulateList(ClassInfo @class)
+        private void PopulateList(ClassInfo classInfo)
         {
             ClearChildren();
-            if (@class == null) return;
-            foreach (MethodInfo method in @class)
+            if (classInfo == null) return;
+            foreach (MethodInfo method in classInfo)
             {
                 rootNode.AddChild(CreateListItem(method));
             }
         }
 
-        private MethodListItem CreateListItem(MethodInfo method)
+        private MethodListItem CreateListItem(MethodInfo methodInfo)
         {
-            MethodListItem item = new MethodListItem(method);
+            MethodListItem item = new MethodListItem(methodInfo);
             item.Click += OnItemClick;
             return item;
         }

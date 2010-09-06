@@ -1,4 +1,5 @@
 using System.Collections;
+using jQueryApi;
 using Open.Core;
 using Open.Core.Lists;
 using Open.Testing.Models;
@@ -40,8 +41,6 @@ namespace Open.Testing.Controllers
             view.RootList.RootNode = rootNode;
 
             rootNode.AddChild(new MyNode("Recent"));
-            //rootNode.AddChild(new MyNode("Child 2 (Can't Select)"));
-            //rootNode.AddChild(new MyNode("Child 3"));
 
             MyNode child1 = rootNode.ChildAt(0) as MyNode;
             MyNode child2 = ((MyNode)rootNode.ChildAt(1));
@@ -55,33 +54,6 @@ namespace Open.Testing.Controllers
             recent1.AddChild(new MyNode("Recent Grandchild 1"));
             recent1.AddChild(new MyNode("Recent Grandchild 2"));
             recent1.AddChild(new MyNode("Recent Grandchild 3"));
-
-            //child2.AddChild(new MyNode("Yo Child"));
-            //child3.AddChild(new MyNode("Yo Child"));
-
-
-            // ---
-
-            //MyNode insert1 = new MyNode("Inserted 1");
-            //MyNode insert2 = new MyNode("Inserted 2");
-            //MyNode insert3 = new MyNode("Inserted 3");
-            //ArrayList inserts = new ArrayList();
-            //inserts.Add(insert1);
-            //inserts.Add(insert2);
-            //inserts.Add(insert3);
-
-            //rootNode.AddChild(insert1);
-            //rootNode.InsertChild(1, insert2);
-
-            //Log.LineBreak();
-            //rootNode.RemoveChild(insert2);
-            //rootNode.RemoveChild(insert1);
-
-            // ---
-
-            //child1.Text = "My Recent Foo";
-            //child2.CanSelect = false;
-            //child2.IsSelected = true;
         }
         #endregion
 

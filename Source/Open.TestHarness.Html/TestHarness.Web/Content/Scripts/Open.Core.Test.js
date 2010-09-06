@@ -5,12 +5,12 @@ Open.Core.Test.ViewTests.DiContainerTest.prototype={$0:null,testInitialize:funct
 return $0;}));Open.Core.Should.equal($1,$0);Open.Core.Should.equal(this.$0.getSingleton(Open.Core.Test.ViewTests.IMyInterface),$0);}}
 Open.Core.Test.ViewTests.MyClass=function(){Open.Core.Test.ViewTests.MyClass.initializeBase(this);}
 Open.Core.Test.ViewTests.IMyInterface=function(){}
-Open.Core.Test.ViewTests.LoadHelperTest=function(){}
-Open.Core.Test.ViewTests.LoadHelperTest.prototype={loadControls:function(){Open.Core.Log.info('Helper.ScriptLoader.IsLoaded: '+Open.Core.Helper.get_scriptLoader().isLoaded(0));Open.Core.Helper.get_scriptLoader().loadLibrary(0,ss.Delegate.create(this,function(){
+Open.Core.Test.ViewTests.ScriptLoadHelperTest=function(){}
+Open.Core.Test.ViewTests.ScriptLoadHelperTest.prototype={loadControls:function(){Open.Core.Log.info('Helper.ScriptLoader.IsLoaded: '+Open.Core.Helper.get_scriptLoader().isLoaded(0));Open.Core.Helper.get_scriptLoader().loadLibrary(0,ss.Delegate.create(this,function(){
 Open.Core.Log.info('Callback - '+Open.Core.Helper.get_scriptLoader().isLoaded(0));}));Open.Core.Log.lineBreak();}}
 Type.registerNamespace('Open.Core.Test');Open.Core.Test.Application=function(){}
-Open.Core.Test.Application.main=function(args){Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.LoadHelperTest);Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.DiContainerTest);}
-Open.Core.Test.ViewTests.DiContainerTest.registerClass('Open.Core.Test.ViewTests.DiContainerTest');Open.Core.Test.ViewTests.IMyInterface.registerClass('Open.Core.Test.ViewTests.IMyInterface');Open.Core.Test.ViewTests.MyClass.registerClass('Open.Core.Test.ViewTests.MyClass',Open.Core.Test.ViewTests.IMyInterface);Open.Core.Test.ViewTests.LoadHelperTest.registerClass('Open.Core.Test.ViewTests.LoadHelperTest');Open.Core.Test.Application.registerClass('Open.Core.Test.Application');
+Open.Core.Test.Application.main=function(args){Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.ScriptLoadHelperTest);Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.DiContainerTest);}
+Open.Core.Test.ViewTests.DiContainerTest.registerClass('Open.Core.Test.ViewTests.DiContainerTest');Open.Core.Test.ViewTests.IMyInterface.registerClass('Open.Core.Test.ViewTests.IMyInterface');Open.Core.Test.ViewTests.MyClass.registerClass('Open.Core.Test.ViewTests.MyClass',Open.Core.Test.ViewTests.IMyInterface);Open.Core.Test.ViewTests.ScriptLoadHelperTest.registerClass('Open.Core.Test.ViewTests.ScriptLoadHelperTest');Open.Core.Test.Application.registerClass('Open.Core.Test.Application');
 // ---- Do not remove this footer ----
 // This script was generated using Script# v0.6.0.0 (http://projects.nikhilk.net/ScriptSharp)
 // -----------------------------------

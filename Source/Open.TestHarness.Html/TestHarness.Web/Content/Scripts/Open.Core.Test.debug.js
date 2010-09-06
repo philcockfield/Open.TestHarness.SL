@@ -95,13 +95,13 @@ Open.Core.Test.ViewTests.IMyInterface = function Open_Core_Test_ViewTests_IMyInt
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.Test.ViewTests.LoadHelperTest
+// Open.Core.Test.ViewTests.ScriptLoadHelperTest
 
-Open.Core.Test.ViewTests.LoadHelperTest = function Open_Core_Test_ViewTests_LoadHelperTest() {
+Open.Core.Test.ViewTests.ScriptLoadHelperTest = function Open_Core_Test_ViewTests_ScriptLoadHelperTest() {
 }
-Open.Core.Test.ViewTests.LoadHelperTest.prototype = {
+Open.Core.Test.ViewTests.ScriptLoadHelperTest.prototype = {
     
-    loadControls: function Open_Core_Test_ViewTests_LoadHelperTest$loadControls() {
+    loadControls: function Open_Core_Test_ViewTests_ScriptLoadHelperTest$loadControls() {
         Open.Core.Log.info('Helper.ScriptLoader.IsLoaded: ' + Open.Core.Helper.get_scriptLoader().isLoaded(Open.Core.Helpers.ScriptLibrary.controls));
         Open.Core.Helper.get_scriptLoader().loadLibrary(Open.Core.Helpers.ScriptLibrary.controls, ss.Delegate.create(this, function() {
             Open.Core.Log.info('Callback - ' + Open.Core.Helper.get_scriptLoader().isLoaded(Open.Core.Helpers.ScriptLibrary.controls));
@@ -121,7 +121,7 @@ Open.Core.Test.Application = function Open_Core_Test_Application() {
 Open.Core.Test.Application.main = function Open_Core_Test_Application$main(args) {
     /// <param name="args" type="Object">
     /// </param>
-    Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.LoadHelperTest);
+    Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.ScriptLoadHelperTest);
     Open.Testing.TestHarness.registerClass(Open.Core.Test.ViewTests.DiContainerTest);
 }
 
@@ -129,7 +129,7 @@ Open.Core.Test.Application.main = function Open_Core_Test_Application$main(args)
 Open.Core.Test.ViewTests.DiContainerTest.registerClass('Open.Core.Test.ViewTests.DiContainerTest');
 Open.Core.Test.ViewTests.IMyInterface.registerClass('Open.Core.Test.ViewTests.IMyInterface');
 Open.Core.Test.ViewTests.MyClass.registerClass('Open.Core.Test.ViewTests.MyClass', Open.Core.Test.ViewTests.IMyInterface);
-Open.Core.Test.ViewTests.LoadHelperTest.registerClass('Open.Core.Test.ViewTests.LoadHelperTest');
+Open.Core.Test.ViewTests.ScriptLoadHelperTest.registerClass('Open.Core.Test.ViewTests.ScriptLoadHelperTest');
 Open.Core.Test.Application.registerClass('Open.Core.Test.Application');
 
 // ---- Do not remove this footer ----

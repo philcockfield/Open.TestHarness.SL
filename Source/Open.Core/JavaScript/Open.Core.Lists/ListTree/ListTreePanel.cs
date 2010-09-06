@@ -29,6 +29,21 @@ namespace Open.Core.Lists
             if (node.Parent != null) node.Parent.RemovingChild += OnParentRemovingChild;
         }
 
+        protected override void OnInitialize(jQueryObject container)
+        {
+            // Insert HTML container.
+            div = Html.AppendDiv(container);
+            div = container.Children(Html.Div).Last(); // NB: Ensure we get a stable reference to the div.
+            Hide();
+            Css.AbsoluteFill(div);
+
+            // Create list.
+            listView = new ListView(div);
+            listView.Load(node.Children);
+
+            // Finish up.
+            SyncWidth();
+        }
 
         protected override void OnDisposed()
         {
@@ -81,28 +96,13 @@ namespace Open.Core.Lists
         #region Properties
         public ITreeNode Node { get { return node; } }
         public bool IsCenterStage { get { return div.GetCSS(Css.Left) == "0px"; } }
+        public ListView ListView { get { return listView; } }
 
         private int Width { get { return rootDiv.GetWidth(); } }
         private int SlideDuration { get { return Helper.Number.ToMsecs(parentList.SlideDuration); } }
         #endregion
 
         #region Methods
-        protected override void OnInitialize(jQueryObject container)
-        {
-            // Insert HTML container.
-            div = Html.AppendDiv(container);
-            div = container.Children(Html.Div).Last(); // NB: Ensure we get a stable reference to the div.
-            Hide();
-            Css.AbsoluteFill(div);
-
-            // Create list.
-            listView = new ListView(div);
-            listView.Load(node.Children);
-
-            // Finish up.
-            SyncWidth();
-        }
-
         public void SlideOff(HorizontalDirection direction, Action onComplete)
         {
             // Setup initial conditions.

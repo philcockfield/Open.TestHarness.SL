@@ -3,6 +3,7 @@ using System.Collections;
 using jQueryApi;
 using Open.Core;
 using Open.Core.Lists;
+using Open.Testing.Controllers;
 
 namespace Open.Testing.Views
 {
@@ -16,6 +17,7 @@ namespace Open.Testing.Views
         private readonly ListTreeView rootList;
         private readonly ListTreeBackController backController;
         private readonly MethodListView methodList;
+        private readonly MethodListHeightController methodListHeightController;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing DIV.</param>
@@ -29,23 +31,45 @@ namespace Open.Testing.Views
             rootList.SlideDuration = SlideDuration;
 
             // Create the test-list.
-            methodList = new MethodListView(jQuery.Select(CssSelectors.TestList));
+            methodList = new MethodListView(jQuery.Select(CssSelectors.MethodList));
 
             // Create controllers.
             backController = new ListTreeBackController(
-                rootList,
-                jQuery.Select(CssSelectors.SidebarToolbar),
-                jQuery.Select(CssSelectors.BackMask));
+                    rootList,
+                    jQuery.Select(CssSelectors.SidebarToolbar),
+                    jQuery.Select(CssSelectors.BackMask));
+            methodListHeightController = new MethodListHeightController(this);
+
+            // Wire up events.
+            GlobalEvents.WindowResizeComplete += OnSizeChanged;
+            GlobalEvents.PanelResizeComplete += OnSizeChanged;
 
             // Finish up.
-            UpdateVisualState();
+            UpdateLayout();
         }
 
         protected override void OnDisposed()
         {
-            backController.Dispose();
+            // Unwire events.
+            GlobalEvents.WindowResizeComplete -= OnSizeChanged;
+            GlobalEvents.PanelResizeComplete -= OnSizeChanged;
+
+            // Dispose of views.
             rootList.Dispose();
+
+            // Dispose of controllers.
+            backController.Dispose();
+            methodListHeightController.Dispose();
+
+            // Finish up.
             base.OnDisposed();
+        }
+        #endregion
+
+        #region Event Handlers
+        private void OnSizeChanged(object sender, EventArgs e)
+        {
+            UpdateLayout();
         }
         #endregion
 
@@ -60,85 +84,23 @@ namespace Open.Testing.Views
         public bool IsMethodListVisible
         {
             get { return (bool) Get(PropIsTestListVisible, false); }
-            set
-            {
-                if (Set(PropIsTestListVisible, value, false))
-                {
-                    if (value) { ShowMethodList(null); } else { HideMethodList(null); }
-                }
-            }
+            set { Set(PropIsTestListVisible, value, false); } 
         }
         #endregion
 
         #region Methods
         /// <summary>Refreshes the visual state.</summary>
-        public void UpdateVisualState()
+        public void UpdateLayout()
         {
+            methodListHeightController.UpdateLayout();
             SyncRootListHeight();
-        }
-
-        /// <summary>Reveals the test list.</summary>
-        /// <param name="onComplete">The action to invoke when complete</param>
-        public void ShowMethodList(Action onComplete)
-        {
-            // Setup initial conditions.
-            IsMethodListVisible = true;
-
-            // Prepare properties.
-            int height = GetTargetMethodListHeight();
-            AnimateHeights(height, onComplete);
-        }
-
-        /// <summary>Hides the test list.</summary>
-        /// <param name="onComplete">The action to invoke when complete</param>
-        public void HideMethodList(Action onComplete)
-        {
-            IsMethodListVisible = false;
-            AnimateHeights(0, onComplete);
         }
         #endregion
 
         #region Internal
-        private void AnimateHeights(int methodListHeight, Action onComplete)
-        {
-            // Prepare properties.
-            Dictionary methodListProps = new Dictionary();
-            methodListProps[Css.Height] = methodListHeight;
-
-            Dictionary rootListProps = new Dictionary();
-            rootListProps[Css.Bottom] = methodListHeight;
-
-            // Show or hide.
-            bool isShowing = methodListHeight > 0;
-            if (isShowing) Css.SetVisible(MethodList.Container, true);
-            MethodList.UpdateLayout();
-
-            //Animate.
-            Animate(isShowing, MethodList.Container, methodListProps, null);
-            Animate(isShowing, RootList.Container, rootListProps, onComplete);
-        }
-
-        private void Animate(bool isShowing, jQueryObject div, Dictionary properties, Action onComplete)
-        {
-            div.Animate(
-                    properties,
-                    Helper.Number.ToMsecs(SlideDuration),
-                    EffectEasing.Swing,
-                                    delegate
-                                    {
-                                        if (!isShowing) Css.SetVisible(MethodList.Container, false);
-                                        Helper.InvokeOrDefault(onComplete);
-                                    });
-        }
-
         private void SyncRootListHeight()
         {
             RootList.Container.CSS(Css.Bottom, MethodList.Container.GetHeight() + Css.Px);
-        }
-
-        private int GetTargetMethodListHeight()
-        {
-            return 450; // TODO - GetTargetTestListHeight
         }
         #endregion
     }

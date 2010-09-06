@@ -373,6 +373,18 @@ Open.Core.Lists._listTreePanel.prototype = {
     _parentList$2: null,
     _listView$2: null,
     
+    onInitialize: function Open_Core_Lists__listTreePanel$onInitialize(container) {
+        /// <param name="container" type="jQueryObject">
+        /// </param>
+        this._div$2 = Open.Core.Html.appendDiv(container);
+        this._div$2 = container.children(Open.Core.Html.div).last();
+        this._hide$2();
+        Open.Core.Css.absoluteFill(this._div$2);
+        this._listView$2 = new Open.Core.Lists.ListView(this._div$2);
+        this._listView$2.load(this._node$2.get_children());
+        this.syncWidth();
+    },
+    
     onDisposed: function Open_Core_Lists__listTreePanel$onDisposed() {
         this._div$2.remove();
         Open.Core.GlobalEvents.remove_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
@@ -445,6 +457,11 @@ Open.Core.Lists._listTreePanel.prototype = {
         return this._div$2.css(Open.Core.Css.left) === '0px';
     },
     
+    get_listView: function Open_Core_Lists__listTreePanel$get_listView() {
+        /// <value type="Open.Core.Lists.ListView"></value>
+        return this._listView$2;
+    },
+    
     get__width$2: function Open_Core_Lists__listTreePanel$get__width$2() {
         /// <value type="Number" integer="true"></value>
         return this._rootDiv$2.width();
@@ -453,18 +470,6 @@ Open.Core.Lists._listTreePanel.prototype = {
     get__slideDuration$2: function Open_Core_Lists__listTreePanel$get__slideDuration$2() {
         /// <value type="Number" integer="true"></value>
         return Open.Core.Helper.get_number().toMsecs(this._parentList$2.get_slideDuration());
-    },
-    
-    onInitialize: function Open_Core_Lists__listTreePanel$onInitialize(container) {
-        /// <param name="container" type="jQueryObject">
-        /// </param>
-        this._div$2 = Open.Core.Html.appendDiv(container);
-        this._div$2 = container.children(Open.Core.Html.div).last();
-        this._hide$2();
-        Open.Core.Css.absoluteFill(this._div$2);
-        this._listView$2 = new Open.Core.Lists.ListView(this._div$2);
-        this._listView$2.load(this._node$2.get_children());
-        this.syncWidth();
     },
     
     slideOff: function Open_Core_Lists__listTreePanel$slideOff(direction, onComplete) {
@@ -745,6 +750,29 @@ Open.Core.Lists.ListTreeView.prototype = {
         return value;
     },
     
+    get_scrollHeight: function Open_Core_Lists_ListTreeView$get_scrollHeight() {
+        /// <summary>
+        /// Gets the scroll height of the list.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        var panel = this.get__selectedPanel$2();
+        return (panel == null) ? this.get_container().height() : panel.get_listView().get_scrollHeight();
+    },
+    
+    get_contentHeight: function Open_Core_Lists_ListTreeView$get_contentHeight() {
+        /// <summary>
+        /// Gets the offset height of the items within the list.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        var panel = this.get__selectedPanel$2();
+        return (panel == null) ? 0 : panel.get_listView().get_contentHeight();
+    },
+    
+    get__selectedPanel$2: function Open_Core_Lists_ListTreeView$get__selectedPanel$2() {
+        /// <value type="Open.Core.Lists._listTreePanel"></value>
+        return this._getPanel$2(this.get_selectedParent());
+    },
+    
     onInitialize: function Open_Core_Lists_ListTreeView$onInitialize(container) {
         /// <param name="container" type="jQueryObject">
         /// </param>
@@ -812,6 +840,9 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// <param name="node" type="Open.Core.ITreeNode">
         /// </param>
         /// <returns type="Open.Core.Lists._listTreePanel"></returns>
+        if (node == null) {
+            return null;
+        }
         var $enum1 = ss.IEnumerator.getEnumerator(this._panels$2);
         while ($enum1.moveNext()) {
             var panel = $enum1.get_current();
@@ -885,10 +916,10 @@ Open.Core.Lists.ListView = function Open_Core_Lists_ListView(container) {
     /// </field>
     /// <field name="_selectionMode$2" type="Open.Core.Lists.ListSelectionMode">
     /// </field>
-    /// <field name="_views$2" type="Array">
+    /// <field name="_itemViews$2" type="Array">
     /// </field>
     this._selectionMode$2 = Open.Core.Lists.ListSelectionMode.single;
-    this._views$2 = [];
+    this._itemViews$2 = [];
     Open.Core.Lists.ListView.initializeBase(this);
     this.initialize(container);
     Open.Core.Lists.ListCss.insertCss();
@@ -956,7 +987,37 @@ Open.Core.Lists.ListView.prototype = {
         /// Gets the number of items currently in the list.
         /// </summary>
         /// <value type="Number" integer="true"></value>
-        return this._views$2.length;
+        return this._itemViews$2.length;
+    },
+    
+    get_height: function Open_Core_Lists_ListView$get_height() {
+        /// <summary>
+        /// Gets the current height of the list.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this.get_container().height();
+    },
+    
+    get_scrollHeight: function Open_Core_Lists_ListView$get_scrollHeight() {
+        /// <summary>
+        /// Gets the current scroll height of the list (the height of the list within it's scrolling pane).
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return parseInt(this.get_container().attr(Open.Core.Html.scrollHeight));
+    },
+    
+    get_contentHeight: function Open_Core_Lists_ListView$get_contentHeight() {
+        /// <summary>
+        /// Gets the offset height of the items within the list.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        var height = 0;
+        var $enum1 = ss.IEnumerator.getEnumerator(this._itemViews$2);
+        while ($enum1.moveNext()) {
+            var view = $enum1.get_current();
+            height += view.get_container().height();
+        }
+        return height;
     },
     
     load: function Open_Core_Lists_ListView$load(items) {
@@ -1014,7 +1075,7 @@ Open.Core.Lists.ListView.prototype = {
         }
         var view = this.get__itemFactory$2().createView(div, model);
         var listItemView = Type.safeCast(view, Open.Core.Lists.IListItemView);
-        this._views$2.add(view);
+        this._itemViews$2.add(view);
         if (listItemView != null) {
             div.click(ss.Delegate.create(this, function(e) {
                 this._onItemClick$2(e, listItemView);
@@ -1051,14 +1112,14 @@ Open.Core.Lists.ListView.prototype = {
             observableView.remove_propertyChanged(ss.Delegate.create(this, this._onViewPropertyChanged$2));
         }
         view.dispose();
-        this._views$2.remove(view);
+        this._itemViews$2.remove(view);
     },
     
     clear: function Open_Core_Lists_ListView$clear() {
         /// <summary>
         /// Clears the list (disposing of all children).
         /// </summary>
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$2.clone());
+        var $enum1 = ss.IEnumerator.getEnumerator(this._itemViews$2.clone());
         while ($enum1.moveNext()) {
             var view = $enum1.get_current();
             this._removeView$2(view);
@@ -1103,7 +1164,7 @@ Open.Core.Lists.ListView.prototype = {
     
     _getListItemViews$2: function Open_Core_Lists_ListView$_getListItemViews$2() {
         /// <returns type="ss.IEnumerable"></returns>
-        return Open.Core.Helper.get_collection().filter(this._views$2, ss.Delegate.create(this, function(o) {
+        return Open.Core.Helper.get_collection().filter(this._itemViews$2, ss.Delegate.create(this, function(o) {
             return (Type.safeCast(o, Open.Core.Lists.IListItemView)) != null;
         }));
     },

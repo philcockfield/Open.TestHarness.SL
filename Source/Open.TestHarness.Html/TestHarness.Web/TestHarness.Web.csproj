@@ -81,6 +81,20 @@
     </Compile>
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Images\Sidebar.BackMask.png" />
+    <Content Include="Content\Scripts\mscorlib.debug.js" />
+    <Content Include="Content\Scripts\mscorlib.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.js" />
+    <Content Include="Content\Scripts\Open.Core.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.js" />
+    <Content Include="Content\Scripts\Open.Core.Lists.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Lists.js" />
+    <Content Include="Content\Scripts\Open.Core.Test.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Test.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.js" />
+    <Content Include="Content\Scripts\TestHarness.Test.debug.js" />
+    <Content Include="Content\Scripts\TestHarness.Test.js" />
     <Content Include="Favicon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
-    <Folder Include="Content\Scripts\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

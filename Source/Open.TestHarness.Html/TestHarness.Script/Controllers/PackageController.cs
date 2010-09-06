@@ -21,6 +21,7 @@ namespace Open.Testing.Controllers
 
         private readonly PackageListItem rootNode;
         private readonly SidebarView sidebarView;
+        private readonly TestHarnessEvents events;
         private ClassController selectedClassController;
 
         /// <summary>Constructor.</summary>
@@ -30,11 +31,11 @@ namespace Open.Testing.Controllers
             // Store values.
             this.rootNode = rootNode;
             sidebarView = Common.Shell.Sidebar;
+            events = Common.Events;
 
             // Wire up events.
             rootNode.SelectionChanged += OnSelectionChanged;
             rootNode.ChildSelectionChanged += OnChildSelectionChanged;
-            RootList.SelectedParentChanged += OnRootListSelectedParentChanged;
         }
 
         protected override void OnDisposed()
@@ -42,7 +43,6 @@ namespace Open.Testing.Controllers
             // Unwire event.
             rootNode.SelectionChanged -= OnSelectionChanged;
             rootNode.ChildSelectionChanged -= OnChildSelectionChanged;
-            RootList.SelectedParentChanged -= OnRootListSelectedParentChanged;
 
             // Dispose of child resources.
             if (selectedClassController != null) selectedClassController.Dispose();
@@ -53,11 +53,6 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnRootListSelectedParentChanged(object sender, EventArgs e)
-        {
-            UpdateMethodListVisibility();
-        }
-
         private void OnSelectionChanged(object sender, EventArgs e)
         {
             if (RootNode.IsSelected) Download();
@@ -67,7 +62,6 @@ namespace Open.Testing.Controllers
         {
             ClassListItem item = Helper.Tree.FirstSelectedChild(RootNode) as ClassListItem;
             SelectedClass = item == null ? null : item.ClassInfo;
-            UpdateMethodListVisibility();
         }
         #endregion
 
@@ -92,11 +86,10 @@ namespace Open.Testing.Controllers
                     if (selectedClassController != null) selectedClassController.Dispose();
                     if (value != null) selectedClassController = new ClassController(value);
                     sidebarView.MethodList.ClassInfo = value;
+                    events.FireSelectedClassChanged(value);
                 }
             }
         }
-
-        private ListTreeView RootList { get { return sidebarView.RootList; } }
         #endregion
 
         #region Internal
@@ -137,13 +130,6 @@ namespace Open.Testing.Controllers
                 ClassListItem node = new ClassListItem(testClass);
                 RootNode.AddChild(node);
             }
-        }
-
-        private void UpdateMethodListVisibility()
-        {
-            // Show or hide the MethodList based on the kind of root-tree-node that is currently selected.
-            PackageListItem node = RootList.SelectedParent as PackageListItem;
-            sidebarView.IsMethodListVisible = (node != null) && Helper.Tree.HasSelectedChild(node);
         }
         #endregion
     }

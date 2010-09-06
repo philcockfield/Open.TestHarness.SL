@@ -65,15 +65,19 @@ Open.Testing.CssSelectors = function Open_Testing_CssSelectors() {
     /// </field>
     /// <field name="sidebar" type="String" static="true">
     /// </field>
+    /// <field name="sidebarContent" type="String" static="true">
+    /// </field>
     /// <field name="sidebarRootList" type="String" static="true">
     /// </field>
     /// <field name="sidebarToolbar" type="String" static="true">
     /// </field>
     /// <field name="backMask" type="String" static="true">
     /// </field>
-    /// <field name="testList" type="String" static="true">
+    /// <field name="methodList" type="String" static="true">
     /// </field>
-    /// <field name="testListContent" type="String" static="true">
+    /// <field name="methodListTitlebar" type="String" static="true">
+    /// </field>
+    /// <field name="methodListContent" type="String" static="true">
     /// </field>
     /// <field name="main" type="String" static="true">
     /// </field>
@@ -115,6 +119,8 @@ Open.Testing.TestHarnessEvents = function Open_Testing_TestHarnessEvents() {
     /// <field name="__clearControls" type="EventHandler">
     /// </field>
     /// <field name="__methodClicked" type="Open.Testing.MethodEventHandler">
+    /// </field>
+    /// <field name="__selectedClassChanged" type="Open.Testing.ClassEventHandler">
     /// </field>
     /// <field name="__controlHostSizeChanged" type="EventHandler">
     /// </field>
@@ -211,11 +217,36 @@ Open.Testing.TestHarnessEvents.prototype = {
     
     __methodClicked: null,
     
-    _fireMethodClicked: function Open_Testing_TestHarnessEvents$_fireMethodClicked(e) {
-        /// <param name="e" type="Open.Testing.MethodEventArgs">
+    _fireMethodClicked: function Open_Testing_TestHarnessEvents$_fireMethodClicked(methodInfo) {
+        /// <param name="methodInfo" type="Open.Testing.Models.MethodInfo">
         /// </param>
         if (this.__methodClicked != null) {
-            this.__methodClicked.invoke(this, e);
+            this.__methodClicked.invoke(this, new Open.Testing.MethodEventArgs(methodInfo));
+        }
+    },
+    
+    add_selectedClassChanged: function Open_Testing_TestHarnessEvents$add_selectedClassChanged(value) {
+        /// <summary>
+        /// Fires when when the selected class changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__selectedClassChanged = ss.Delegate.combine(this.__selectedClassChanged, value);
+    },
+    remove_selectedClassChanged: function Open_Testing_TestHarnessEvents$remove_selectedClassChanged(value) {
+        /// <summary>
+        /// Fires when when the selected class changes.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__selectedClassChanged = ss.Delegate.remove(this.__selectedClassChanged, value);
+    },
+    
+    __selectedClassChanged: null,
+    
+    _fireSelectedClassChanged: function Open_Testing_TestHarnessEvents$_fireSelectedClassChanged(classInfo) {
+        /// <param name="classInfo" type="Open.Testing.Models.ClassInfo">
+        /// </param>
+        if (this.__selectedClassChanged != null) {
+            this.__selectedClassChanged.invoke(this, new Open.Testing.ClassEventArgs(classInfo));
         }
     },
     
@@ -256,6 +287,21 @@ Open.Testing.MethodEventArgs = function Open_Testing_MethodEventArgs(methodInfo)
 }
 Open.Testing.MethodEventArgs.prototype = {
     methodInfo: null
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.ClassEventArgs
+
+Open.Testing.ClassEventArgs = function Open_Testing_ClassEventArgs(classInfo) {
+    /// <param name="classInfo" type="Open.Testing.Models.ClassInfo">
+    /// </param>
+    /// <field name="classInfo" type="Open.Testing.Models.ClassInfo">
+    /// </field>
+    this.classInfo = classInfo;
+}
+Open.Testing.ClassEventArgs.prototype = {
+    classInfo: null
 }
 
 
@@ -588,6 +634,140 @@ Open.Testing.Controllers.ControlHostController.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Controllers._methodListHeightController
+
+Open.Testing.Controllers._methodListHeightController = function Open_Testing_Controllers__methodListHeightController(sidebarView) {
+    /// <summary>
+    /// Controls the height of the MethodList.
+    /// </summary>
+    /// <param name="sidebarView" type="Open.Testing.Views.SidebarView">
+    /// The sidebar.
+    /// </param>
+    /// <field name="_sidebarView$3" type="Open.Testing.Views.SidebarView">
+    /// </field>
+    /// <field name="_methodList$3" type="Open.Testing.Views.MethodListView">
+    /// </field>
+    /// <field name="_divSidebarContent$3" type="jQueryObject">
+    /// </field>
+    /// <field name="_events$3" type="Open.Testing.TestHarnessEvents">
+    /// </field>
+    Open.Testing.Controllers._methodListHeightController.initializeBase(this);
+    this._sidebarView$3 = sidebarView;
+    this._methodList$3 = sidebarView.get_methodList();
+    this._divSidebarContent$3 = sidebarView.get_container().children(Open.Testing.CssSelectors.sidebarContent);
+    this._events$3 = this.get_common().get_events();
+    this._events$3.add_selectedClassChanged(ss.Delegate.create(this, this._onSelectedClassChanged$3));
+    this._hideMethodList$3(null);
+}
+Open.Testing.Controllers._methodListHeightController.prototype = {
+    _sidebarView$3: null,
+    _methodList$3: null,
+    _divSidebarContent$3: null,
+    _events$3: null,
+    
+    onDisposed: function Open_Testing_Controllers__methodListHeightController$onDisposed() {
+        this._events$3.remove_selectedClassChanged(ss.Delegate.create(this, this._onSelectedClassChanged$3));
+        Open.Testing.Controllers._methodListHeightController.callBaseMethod(this, 'onDisposed');
+    },
+    
+    _onSelectedClassChanged$3: function Open_Testing_Controllers__methodListHeightController$_onSelectedClassChanged$3(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Testing.ClassEventArgs">
+        /// </param>
+        if (e.classInfo != null) {
+            this._showMethodList$3(null);
+        }
+        else {
+            this._hideMethodList$3(null);
+        }
+    },
+    
+    _showMethodList$3: function Open_Testing_Controllers__methodListHeightController$_showMethodList$3(onComplete) {
+        /// <summary>
+        /// Reveals the method-list.
+        /// </summary>
+        /// <param name="onComplete" type="Action">
+        /// The action to invoke when complete
+        /// </param>
+        this._sidebarView$3.set_isMethodListVisible(true);
+        var height = this._getHeight$3();
+        this._animateHeights$3(height, onComplete);
+    },
+    
+    _hideMethodList$3: function Open_Testing_Controllers__methodListHeightController$_hideMethodList$3(onComplete) {
+        /// <summary>
+        /// Hides the method-list.
+        /// </summary>
+        /// <param name="onComplete" type="Action">
+        /// The action to invoke when complete
+        /// </param>
+        this._sidebarView$3.set_isMethodListVisible(false);
+        this._animateHeights$3(0, onComplete);
+    },
+    
+    updateLayout: function Open_Testing_Controllers__methodListHeightController$updateLayout() {
+        /// <summary>
+        /// Updates the height of the method-list (if it's currently showing).
+        /// </summary>
+        if (!this._sidebarView$3.get_isMethodListVisible()) {
+            return;
+        }
+        this._methodList$3.get_container().css(Open.Core.Css.height, this._getHeight$3() + Open.Core.Css.px);
+    },
+    
+    _animateHeights$3: function Open_Testing_Controllers__methodListHeightController$_animateHeights$3(methodListHeight, onComplete) {
+        /// <param name="methodListHeight" type="Number" integer="true">
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// </param>
+        var methodListProps = {};
+        methodListProps[Open.Core.Css.height] = methodListHeight;
+        var rootListProps = {};
+        rootListProps[Open.Core.Css.bottom] = methodListHeight;
+        var isShowing = methodListHeight > 0;
+        if (isShowing) {
+            Open.Core.Css.setVisible(this._methodList$3.get_container(), true);
+        }
+        this._methodList$3.updateLayout();
+        this._animate$3(isShowing, this._methodList$3.get_container(), methodListProps, null);
+        this._animate$3(isShowing, this._sidebarView$3.get_rootList().get_container(), rootListProps, onComplete);
+    },
+    
+    _animate$3: function Open_Testing_Controllers__methodListHeightController$_animate$3(isShowing, div, properties, onComplete) {
+        /// <param name="isShowing" type="Boolean">
+        /// </param>
+        /// <param name="div" type="jQueryObject">
+        /// </param>
+        /// <param name="properties" type="Object">
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// </param>
+        div.animate(properties, Open.Core.Helper.get_number().toMsecs(Open.Testing.Views.SidebarView.slideDuration), 'swing', ss.Delegate.create(this, function() {
+            if (!isShowing) {
+                Open.Core.Css.setVisible(this._methodList$3.get_container(), false);
+            }
+            Open.Core.Helper.invokeOrDefault(onComplete);
+        }));
+    },
+    
+    _getHeight$3: function Open_Testing_Controllers__methodListHeightController$_getHeight$3() {
+        /// <returns type="Number" integer="true"></returns>
+        var divList = this._methodList$3.get_container();
+        var originalVisibility = Open.Core.Css.isVisible(divList);
+        Open.Core.Css.setVisible(divList, true);
+        var listHeight = this._methodList$3.get_offsetHeight();
+        Open.Core.Css.setVisible(divList, originalVisibility);
+        var maxHeight = (this._divSidebarContent$3.height() * 0.66);
+        if (listHeight > maxHeight) {
+            listHeight = maxHeight;
+        }
+        return listHeight;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Testing.Controllers.PanelResizeController
 
 Open.Testing.Controllers.PanelResizeController = function Open_Testing_Controllers_PanelResizeController() {
@@ -791,14 +971,16 @@ Open.Testing.Controllers.PackageController = function Open_Testing_Controllers_P
     /// </field>
     /// <field name="_sidebarView$3" type="Open.Testing.Views.SidebarView">
     /// </field>
+    /// <field name="_events$3" type="Open.Testing.TestHarnessEvents">
+    /// </field>
     /// <field name="_selectedClassController$3" type="Open.Testing.Controllers.ClassController">
     /// </field>
     Open.Testing.Controllers.PackageController.initializeBase(this);
     this._rootNode$3 = rootNode;
     this._sidebarView$3 = this.get_common().get_shell().get_sidebar();
+    this._events$3 = this.get_common().get_events();
     rootNode.add_selectionChanged(ss.Delegate.create(this, this._onSelectionChanged$3));
     rootNode.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$3));
-    this.get__rootList$3().add_selectedParentChanged(ss.Delegate.create(this, this._onRootListSelectedParentChanged$3));
 }
 Open.Testing.Controllers.PackageController.prototype = {
     
@@ -827,24 +1009,16 @@ Open.Testing.Controllers.PackageController.prototype = {
     
     _rootNode$3: null,
     _sidebarView$3: null,
+    _events$3: null,
     _selectedClassController$3: null,
     
     onDisposed: function Open_Testing_Controllers_PackageController$onDisposed() {
         this._rootNode$3.remove_selectionChanged(ss.Delegate.create(this, this._onSelectionChanged$3));
         this._rootNode$3.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$3));
-        this.get__rootList$3().remove_selectedParentChanged(ss.Delegate.create(this, this._onRootListSelectedParentChanged$3));
         if (this._selectedClassController$3 != null) {
             this._selectedClassController$3.dispose();
         }
         Open.Testing.Controllers.PackageController.callBaseMethod(this, 'onDisposed');
-    },
-    
-    _onRootListSelectedParentChanged$3: function Open_Testing_Controllers_PackageController$_onRootListSelectedParentChanged$3(sender, e) {
-        /// <param name="sender" type="Object">
-        /// </param>
-        /// <param name="e" type="ss.EventArgs">
-        /// </param>
-        this._updateMethodListVisibility$3();
     },
     
     _onSelectionChanged$3: function Open_Testing_Controllers_PackageController$_onSelectionChanged$3(sender, e) {
@@ -864,7 +1038,6 @@ Open.Testing.Controllers.PackageController.prototype = {
         /// </param>
         var item = Type.safeCast(Open.Core.Helper.get_tree().firstSelectedChild(this.get_rootNode()), Open.Testing.Models.ClassListItem);
         this.set_selectedClass((item == null) ? null : item.get_classInfo());
-        this._updateMethodListVisibility$3();
     },
     
     get_isSelected: function Open_Testing_Controllers_PackageController$get_isSelected() {
@@ -911,13 +1084,9 @@ Open.Testing.Controllers.PackageController.prototype = {
                 this._selectedClassController$3 = new Open.Testing.Controllers.ClassController(value);
             }
             this._sidebarView$3.get_methodList().set_classInfo(value);
+            this._events$3._fireSelectedClassChanged(value);
         }
         return value;
-    },
-    
-    get__rootList$3: function Open_Testing_Controllers_PackageController$get__rootList$3() {
-        /// <value type="Open.Core.Lists.ListTreeView"></value>
-        return this._sidebarView$3.get_rootList();
     },
     
     _download$3: function Open_Testing_Controllers_PackageController$_download$3() {
@@ -950,11 +1119,6 @@ Open.Testing.Controllers.PackageController.prototype = {
             var node = new Open.Testing.Models.ClassListItem(testClass);
             this.get_rootNode().addChild(node);
         }
-    },
-    
-    _updateMethodListVisibility$3: function Open_Testing_Controllers_PackageController$_updateMethodListVisibility$3() {
-        var node = Type.safeCast(this.get__rootList$3().get_selectedParent(), Open.Testing.Models.PackageListItem);
-        this._sidebarView$3.set_isMethodListVisible((node != null) && Open.Core.Helper.get_tree().hasSelectedChild(node));
     }
 }
 
@@ -1942,23 +2106,40 @@ Open.Testing.Views.SidebarView = function Open_Testing_Views_SidebarView(contain
     /// </field>
     /// <field name="_methodList$3" type="Open.Testing.Views.MethodListView">
     /// </field>
+    /// <field name="_methodListHeightController$3" type="Open.Testing.Controllers._methodListHeightController">
+    /// </field>
     Open.Testing.Views.SidebarView.initializeBase(this);
     this.initialize(container);
     this._rootList$3 = new Open.Core.Lists.ListTreeView($(Open.Testing.CssSelectors.sidebarRootList));
     this._rootList$3.set_slideDuration(Open.Testing.Views.SidebarView.slideDuration);
-    this._methodList$3 = new Open.Testing.Views.MethodListView($(Open.Testing.CssSelectors.testList));
+    this._methodList$3 = new Open.Testing.Views.MethodListView($(Open.Testing.CssSelectors.methodList));
     this._backController$3 = new Open.Core.Lists.ListTreeBackController(this._rootList$3, $(Open.Testing.CssSelectors.sidebarToolbar), $(Open.Testing.CssSelectors.backMask));
-    this.updateVisualState();
+    this._methodListHeightController$3 = new Open.Testing.Controllers._methodListHeightController(this);
+    Open.Core.GlobalEvents.add_windowResizeComplete(ss.Delegate.create(this, this._onSizeChanged$3));
+    Open.Core.GlobalEvents.add_panelResizeComplete(ss.Delegate.create(this, this._onSizeChanged$3));
+    this.updateLayout();
 }
 Open.Testing.Views.SidebarView.prototype = {
     _rootList$3: null,
     _backController$3: null,
     _methodList$3: null,
+    _methodListHeightController$3: null,
     
     onDisposed: function Open_Testing_Views_SidebarView$onDisposed() {
-        this._backController$3.dispose();
+        Open.Core.GlobalEvents.remove_windowResizeComplete(ss.Delegate.create(this, this._onSizeChanged$3));
+        Open.Core.GlobalEvents.remove_panelResizeComplete(ss.Delegate.create(this, this._onSizeChanged$3));
         this._rootList$3.dispose();
+        this._backController$3.dispose();
+        this._methodListHeightController$3.dispose();
         Open.Testing.Views.SidebarView.callBaseMethod(this, 'onDisposed');
+    },
+    
+    _onSizeChanged$3: function Open_Testing_Views_SidebarView$_onSizeChanged$3(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this.updateLayout();
     },
     
     get_rootList: function Open_Testing_Views_SidebarView$get_rootList() {
@@ -1989,89 +2170,20 @@ Open.Testing.Views.SidebarView.prototype = {
         /// Gets or sets whether the TestList panel is visible.
         /// </summary>
         /// <value type="Boolean"></value>
-        if (this.set(Open.Testing.Views.SidebarView.propIsTestListVisible, value, false)) {
-            if (value) {
-                this.showMethodList(null);
-            }
-            else {
-                this.hideMethodList(null);
-            }
-        }
+        this.set(Open.Testing.Views.SidebarView.propIsTestListVisible, value, false);
         return value;
     },
     
-    updateVisualState: function Open_Testing_Views_SidebarView$updateVisualState() {
+    updateLayout: function Open_Testing_Views_SidebarView$updateLayout() {
         /// <summary>
         /// Refreshes the visual state.
         /// </summary>
+        this._methodListHeightController$3.updateLayout();
         this._syncRootListHeight$3();
-    },
-    
-    showMethodList: function Open_Testing_Views_SidebarView$showMethodList(onComplete) {
-        /// <summary>
-        /// Reveals the test list.
-        /// </summary>
-        /// <param name="onComplete" type="Action">
-        /// The action to invoke when complete
-        /// </param>
-        this.set_isMethodListVisible(true);
-        var height = this._getTargetMethodListHeight$3();
-        this._animateHeights$3(height, onComplete);
-    },
-    
-    hideMethodList: function Open_Testing_Views_SidebarView$hideMethodList(onComplete) {
-        /// <summary>
-        /// Hides the test list.
-        /// </summary>
-        /// <param name="onComplete" type="Action">
-        /// The action to invoke when complete
-        /// </param>
-        this.set_isMethodListVisible(false);
-        this._animateHeights$3(0, onComplete);
-    },
-    
-    _animateHeights$3: function Open_Testing_Views_SidebarView$_animateHeights$3(methodListHeight, onComplete) {
-        /// <param name="methodListHeight" type="Number" integer="true">
-        /// </param>
-        /// <param name="onComplete" type="Action">
-        /// </param>
-        var methodListProps = {};
-        methodListProps[Open.Core.Css.height] = methodListHeight;
-        var rootListProps = {};
-        rootListProps[Open.Core.Css.bottom] = methodListHeight;
-        var isShowing = methodListHeight > 0;
-        if (isShowing) {
-            Open.Core.Css.setVisible(this.get_methodList().get_container(), true);
-        }
-        this.get_methodList().updateLayout();
-        this._animate$3(isShowing, this.get_methodList().get_container(), methodListProps, null);
-        this._animate$3(isShowing, this.get_rootList().get_container(), rootListProps, onComplete);
-    },
-    
-    _animate$3: function Open_Testing_Views_SidebarView$_animate$3(isShowing, div, properties, onComplete) {
-        /// <param name="isShowing" type="Boolean">
-        /// </param>
-        /// <param name="div" type="jQueryObject">
-        /// </param>
-        /// <param name="properties" type="Object">
-        /// </param>
-        /// <param name="onComplete" type="Action">
-        /// </param>
-        div.animate(properties, Open.Core.Helper.get_number().toMsecs(Open.Testing.Views.SidebarView.slideDuration), 'swing', ss.Delegate.create(this, function() {
-            if (!isShowing) {
-                Open.Core.Css.setVisible(this.get_methodList().get_container(), false);
-            }
-            Open.Core.Helper.invokeOrDefault(onComplete);
-        }));
     },
     
     _syncRootListHeight$3: function Open_Testing_Views_SidebarView$_syncRootListHeight$3() {
         this.get_rootList().get_container().css(Open.Core.Css.bottom, this.get_methodList().get_container().height() + Open.Core.Css.px);
-    },
-    
-    _getTargetMethodListHeight$3: function Open_Testing_Views_SidebarView$_getTargetMethodListHeight$3() {
-        /// <returns type="Number" integer="true"></returns>
-        return 450;
     }
 }
 
@@ -2099,7 +2211,7 @@ Open.Testing.Views.MethodListView = function Open_Testing_Views_MethodListView(c
     Open.Testing.Views.MethodListView.initializeBase(this);
     this.initialize(container);
     this._events$3 = this.get_common().get_events();
-    this._listView$3 = new Open.Core.Lists.ListTreeView($(Open.Testing.CssSelectors.testListContent));
+    this._listView$3 = new Open.Core.Lists.ListTreeView($(Open.Testing.CssSelectors.methodListContent));
     this._listView$3.set_slideDuration(Open.Testing.Views.SidebarView.slideDuration);
     this._rootNode$3 = new Open.Core.Lists.ListItem();
     this._listView$3.set_rootNode(this._rootNode$3);
@@ -2115,7 +2227,7 @@ Open.Testing.Views.MethodListView.prototype = {
         /// <param name="e" type="ss.EventArgs">
         /// </param>
         this.set_selectedMethod((sender).get_method());
-        this._events$3._fireMethodClicked(new Open.Testing.MethodEventArgs(this.get_selectedMethod()));
+        this._events$3._fireMethodClicked(this.get_selectedMethod());
     },
     
     get_classInfo: function Open_Testing_Views_MethodListView$get_classInfo() {
@@ -2152,6 +2264,19 @@ Open.Testing.Views.MethodListView.prototype = {
         return value;
     },
     
+    get_offsetHeight: function Open_Testing_Views_MethodListView$get_offsetHeight() {
+        /// <summary>
+        /// Gets the offset height of the items within the list and the title bar.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this._listView$3.get_contentHeight() + this.get__divTitleBar$3().height() + 1;
+    },
+    
+    get__divTitleBar$3: function Open_Testing_Views_MethodListView$get__divTitleBar$3() {
+        /// <value type="jQueryObject"></value>
+        return this.get_container().children(Open.Testing.CssSelectors.methodListTitlebar);
+    },
+    
     updateLayout: function Open_Testing_Views_MethodListView$updateLayout() {
         /// <summary>
         /// Updates the visual state of the control.
@@ -2159,25 +2284,25 @@ Open.Testing.Views.MethodListView.prototype = {
         this._listView$3.updateLayout();
     },
     
-    _populateList$3: function Open_Testing_Views_MethodListView$_populateList$3(cclass) {
-        /// <param name="cclass" type="Open.Testing.Models.ClassInfo">
+    _populateList$3: function Open_Testing_Views_MethodListView$_populateList$3(classInfo) {
+        /// <param name="classInfo" type="Open.Testing.Models.ClassInfo">
         /// </param>
         this._clearChildren$3();
-        if (cclass == null) {
+        if (classInfo == null) {
             return;
         }
-        var $enum1 = ss.IEnumerator.getEnumerator(cclass);
+        var $enum1 = ss.IEnumerator.getEnumerator(classInfo);
         while ($enum1.moveNext()) {
             var method = $enum1.get_current();
             this._rootNode$3.addChild(this._createListItem$3(method));
         }
     },
     
-    _createListItem$3: function Open_Testing_Views_MethodListView$_createListItem$3(method) {
-        /// <param name="method" type="Open.Testing.Models.MethodInfo">
+    _createListItem$3: function Open_Testing_Views_MethodListView$_createListItem$3(methodInfo) {
+        /// <param name="methodInfo" type="Open.Testing.Models.MethodInfo">
         /// </param>
         /// <returns type="Open.Testing.Models.MethodListItem"></returns>
-        var item = new Open.Testing.Models.MethodListItem(method);
+        var item = new Open.Testing.Models.MethodListItem(methodInfo);
         item.add_click(ss.Delegate.create(this, this._onItemClick$3));
         return item;
     },
@@ -2200,11 +2325,13 @@ Open.Testing.CssSelectors.registerClass('Open.Testing.CssSelectors');
 Open.Testing.Elements.registerClass('Open.Testing.Elements');
 Open.Testing.TestHarnessEvents.registerClass('Open.Testing.TestHarnessEvents', null, Open.Testing.Internal.ITestHarnessEvents);
 Open.Testing.MethodEventArgs.registerClass('Open.Testing.MethodEventArgs');
+Open.Testing.ClassEventArgs.registerClass('Open.Testing.ClassEventArgs');
 Open.Testing.Common.registerClass('Open.Testing.Common');
 Open.Testing._methodHelper.registerClass('Open.Testing._methodHelper');
 Open.Testing.Application.registerClass('Open.Testing.Application');
 Open.Testing.Controllers.ClassController.registerClass('Open.Testing.Controllers.ClassController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.ControlHostController.registerClass('Open.Testing.Controllers.ControlHostController', Open.Testing.TestHarnessControllerBase);
+Open.Testing.Controllers._methodListHeightController.registerClass('Open.Testing.Controllers._methodListHeightController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.PanelResizeController.registerClass('Open.Testing.Controllers.PanelResizeController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.SidebarController.registerClass('Open.Testing.Controllers.SidebarController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.MyNode.registerClass('Open.Testing.Controllers.MyNode', Open.Core.Lists.ListItem);
@@ -2222,11 +2349,13 @@ Open.Testing.Views.SidebarView.registerClass('Open.Testing.Views.SidebarView', O
 Open.Testing.Views.MethodListView.registerClass('Open.Testing.Views.MethodListView', Open.Testing.TestHarnessViewBase);
 Open.Testing.CssSelectors.root = '#testHarness';
 Open.Testing.CssSelectors.sidebar = '#testHarnessSidebar';
+Open.Testing.CssSelectors.sidebarContent = '#testHarnessSidebar .th-content';
 Open.Testing.CssSelectors.sidebarRootList = '#testHarnessSidebar .th-sidebarRootList';
 Open.Testing.CssSelectors.sidebarToolbar = '#testHarnessSidebar div.th-toolbar';
 Open.Testing.CssSelectors.backMask = '#testHarnessSidebar img.th-backMask';
-Open.Testing.CssSelectors.testList = '#testHarnessSidebar .th-testList';
-Open.Testing.CssSelectors.testListContent = '#testHarnessSidebar .th-testList-content';
+Open.Testing.CssSelectors.methodList = '#testHarnessSidebar .th-testList';
+Open.Testing.CssSelectors.methodListTitlebar = '#testHarnessSidebar .th-testList-tb';
+Open.Testing.CssSelectors.methodListContent = '#testHarnessSidebar .th-testList-content';
 Open.Testing.CssSelectors.main = '#testHarness .th-main';
 Open.Testing.CssSelectors.mainContent = '#testHarness .th-main .th-content';
 Open.Testing.CssSelectors.controlHost = '#testHarness .th-main .th-content .th-controlHost';

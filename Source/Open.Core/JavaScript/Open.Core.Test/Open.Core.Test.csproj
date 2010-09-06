@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewTests\DiContainerTest.cs" />
-    <Compile Include="ViewTests\LoadHelperTest.cs" />
+    <Compile Include="ViewTests\ScriptLoadHelperTest.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />
     <Compile Include="Properties\AssemblyInfo.cs" />
