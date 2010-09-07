@@ -66,7 +66,7 @@ namespace Open.Core.Test.ViewTests
             Should.BeTrue(container.ContainsSingleton(typeof(IMyInterface)));
         }
 
-        public void ShouldUnregisterContainSingleton()
+        public void ShouldUnregisterSingleton()
         {
             MyClass instance1 = new MyClass();
             container.RegisterSingleton(typeof(IMyInterface), instance1);

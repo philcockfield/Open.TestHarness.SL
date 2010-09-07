@@ -13,7 +13,7 @@ namespace Test.Samples
         public void ClassInitialize() { Log.Info("Class Initialize: " + GetType().Name); }
         public void ClassCleanup() { Log.Info("Class Cleanup: " + GetType().Name); }
         public void TestInitialize() { Log.Info("Test Initialize"); }
-        public void TestCleanup() { Log.Info("Test Cleanup"); }
+        public void TestCleanup() { Log.Info("Test Cleanup"); Log.LineBreak(); }
         #endregion
 
         #region Fields and Properties
