@@ -7,7 +7,7 @@ namespace Test.Samples
     public class ControlsTest
     {
         #region Methods : Tests
-        public void Add_Control__Default() { AddControl(SizeMode.Control); }
+        public void Add_Control__ControlsSize() { AddControl(SizeMode.ControlsSize); }
         public void Add_Control__Fill() { AddControl(SizeMode.Fill); }
         public void Add_Control__FillWithMargin() { AddControl(SizeMode.FillWithMargin); }
 
@@ -20,10 +20,8 @@ namespace Test.Samples
         #region Internal
         private static void AddControl(SizeMode sizeMode)
         {
-            jQueryObject div = Html.CreateDiv();
-            new MyView(div, sizeMode);
-
-            TestHarness.AddControl(div, sizeMode);
+            IView view = new MyView(Html.CreateDiv(), sizeMode);
+            TestHarness.AddControl(view, sizeMode);
         }
         #endregion
     }

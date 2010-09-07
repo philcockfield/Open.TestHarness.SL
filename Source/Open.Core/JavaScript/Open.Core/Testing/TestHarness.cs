@@ -9,7 +9,7 @@ namespace Open.Testing
     public enum SizeMode
     {
         /// <summary>The size is determined by the control.</summary>
-        Control = 0,
+        ControlsSize = 0,
 
         /// <summary>The control is sized to fill the host container.</summary>
         Fill = 1,
@@ -51,20 +51,30 @@ namespace Open.Testing
             Events.FireTestClassRegistered(e);
         }
 
-        /// <summary>Adds a control to the host canvas.</summary>
-        /// <param name="content">The HTML content of the control.</param>
+        /// <summary>Adds a visual control to the host canvas.</summary>
+        /// <param name="control">The control to add.</param>
+        /// <param name="sizeMode">The strategy used to size the content.</param>
+        /// <returns>A DIV element to contain the control.</returns>
+        public static void AddControl(IView control, SizeMode sizeMode)
+        {
+            if (control == null) throw new Exception("A visual control was not specified.");
+            AddHtml(control.Container, sizeMode);
+        }
+
+
+        /// <summary>Adds an HTML element to the host canvas.</summary>
+        /// <param name="element">The HTML content of the control.</param>
         /// <param name="sizeMode">The strategy used to size the control.</param>
         /// <returns>A DIV element to contain the control.</returns>
-        public static jQueryObject AddControl(jQueryObject content, SizeMode sizeMode)
+        public static void  AddHtml(jQueryObject element, SizeMode sizeMode)
         {
+            if (element == null) throw new Exception("An HTML element was not specified.");
+
             // Alert the test-harness via an event.
             TestControlEventArgs e = new TestControlEventArgs();
             e.SizeMode = sizeMode;
-            e.Content = content;
+            e.Content = element;
             Events.FireControlAdded(e);
-
-            // Finish up.
-            return e.Content;
         }
 
         /// <summary>Clears all added controls from the host canvas.</summary>

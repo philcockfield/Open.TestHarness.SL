@@ -101,7 +101,7 @@ namespace Open.Testing.Views
         {
             switch (sizeMode)
             {
-                case SizeMode.Control:
+                case SizeMode.ControlsSize:
                     // Ignore - size of the control is assumed.
                     break;
 
@@ -141,7 +141,7 @@ namespace Open.Testing.Views
         {
             switch (sizeMode)
             {
-                case SizeMode.Control: return (Container.GetWidth()/2) - (content.GetWidth()/2);
+                case SizeMode.ControlsSize: return (Container.GetWidth()/2) - (content.GetWidth()/2);
                 case SizeMode.Fill: return 0;
                 case SizeMode.FillWithMargin: return fillMargin;
                 default: throw new Exception(sizeMode.ToString());
@@ -152,7 +152,7 @@ namespace Open.Testing.Views
         {
             switch (sizeMode)
             {
-                case SizeMode.Control: return (Container.GetHeight()/2) - (content.GetHeight()/2);
+                case SizeMode.ControlsSize: return (Container.GetHeight()/2) - (content.GetHeight()/2);
                 case SizeMode.Fill: return 0;
                 case SizeMode.FillWithMargin: return fillMargin;
                 default: throw new Exception(sizeMode.ToString());
