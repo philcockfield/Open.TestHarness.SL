@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
 <div class="th-main">
-    <div class="th-toolbar panelBorder panelBorderBottom">
+    <div class="th-toolbar th-main-tb panelBorder panelBorderBottom">
         <div class="topHighlightLine"></div>
     </div>
     <div class="th-content absoluteFill">

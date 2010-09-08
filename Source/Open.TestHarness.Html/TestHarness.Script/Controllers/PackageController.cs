@@ -1,6 +1,5 @@
 using System;
 using Open.Core;
-using Open.Core.Lists;
 using Open.Testing.Models;
 using Open.Testing.Views;
 

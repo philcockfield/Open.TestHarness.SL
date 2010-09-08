@@ -106,11 +106,11 @@ namespace Open.Testing.Views
                     break;
 
                 case SizeMode.Fill:
-                    SetSize(0, 0);
+                    SetSizeWithPadding(0, 0);
                     break;
 
                 case SizeMode.FillWithMargin:
-                    SetSize(fillMargin, fillMargin);
+                    SetSizeWithPadding(fillMargin, fillMargin);
                     break;
 
                 default: throw new Exception(sizeMode.ToString());
@@ -120,7 +120,7 @@ namespace Open.Testing.Views
             Css.SetOverflow(Container, CssOverflow.Auto); // Reset the scroll behavior.
         }
 
-        private void SetSize(int xPadding, int yPadding)
+        private void SetSizeWithPadding(int xPadding, int yPadding)
         {
             int width = (Container.GetWidth() - (xPadding * 2));
             int height = (Container.GetHeight() - (yPadding * 2));

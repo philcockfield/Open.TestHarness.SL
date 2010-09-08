@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Samples\ControlsTest.cs" />
     <Compile Include="Samples\ConstructorParams.cs" />
+    <Compile Include="Samples\CssTest.cs" />
     <Compile Include="Samples\MyTest_Class__2.cs" />
     <Compile Include="Samples\MyTestClass1.cs" />
     <Content Include="Properties\TestHarness.Script.Test.ruleset" />

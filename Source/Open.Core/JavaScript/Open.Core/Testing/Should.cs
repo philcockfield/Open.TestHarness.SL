@@ -11,7 +11,16 @@ namespace Open.Core
         /// <param name="value">The value to compare to.</param>
         public static void Equal(object subject, object value)
         {
-            if (subject != value) ThrowError("The two values are not equal.");
+
+            bool isSame = (bool)Script.Literal("{0} == {1}", subject, value);
+
+            //Log.Debug("isSame: " + isSame);
+            //Log.Debug("The Same: " + (subject.ToString() == value.ToString()));
+            //Log.LineBreak();
+
+            if (!isSame) ThrowError(string.Format("The two values '{0}' and '{1}' are not equal.", Format(subject), Format(value)));
+
+//            if (subject != value) ThrowError(string.Format("The two values '{0}' and '{1}' are not equal.", subject, value));
         }
 
         /// <summary>Asserts that an object is not equal to another object (uses != comparison).</summary>
@@ -19,7 +28,7 @@ namespace Open.Core
         /// <param name="value">The value to compare to.</param>
         public static void NotEqual(object subject, object value)
         {
-            if (subject == value) ThrowError("The two values should not be equal.");
+            if (subject == value) ThrowError(string.Format("The two values '{0}' and '{1}' should not be equal.", Format(subject), Format(value)));
         }
 
         /// <summary>Asserts that an object is not null.</summary>
@@ -33,7 +42,7 @@ namespace Open.Core
         /// <param name="subject">The value being examined.</param>
         public static void BeNull(object subject)
         {
-            if (subject != null) ThrowError("Value should be null.");
+            if (subject != null) ThrowError(string.Format("The value '{0}' should actually be null.", Format(subject)));
         }
 
         /// <summary>Asserts that an value is True.</summary>
@@ -55,6 +64,14 @@ namespace Open.Core
         private static void ThrowError(string message)
         {
             throw new Exception(string.Format("AssertionException: " + message));
+        }
+
+        private static string Format(object value)
+        {
+            if (Script.IsUndefined(value)) value = "<undefined>";
+            if (Script.IsNull(value)) value = "<null>";
+            if (value.ToString() == string.Empty) value = "<empty-string>";
+            return value.ToString().HtmlEncode();
         }
         #endregion
     }

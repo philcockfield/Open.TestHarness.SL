@@ -1,7 +1,7 @@
 using System;
 using Open.Core.Helpers;
 
-namespace Open.Core.Test.ViewTests
+namespace Open.Core.Test.UnitTests
 {
     public class ScriptLoadHelperTest
     {

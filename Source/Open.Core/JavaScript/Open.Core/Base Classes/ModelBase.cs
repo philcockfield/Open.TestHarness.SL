@@ -4,11 +4,17 @@ using System.Collections;
 namespace Open.Core
 {
     /// <summary>Base class for data models.</summary>
-    public abstract class ModelBase : IModel, INotifyPropertyChanged, IDisposable
+    public abstract class ModelBase : IModel, INotifyPropertyChanged, IDisposable, INotifyDisposed
     {
         #region Events
-        private bool isDisposed;
         public event PropertyChangedHandler PropertyChanged;
+
+        public event EventHandler Disposed;
+        private void FireDisposed(){if (Disposed != null) Disposed(this, new EventArgs());}
+        #endregion
+
+        #region Head
+        private bool isDisposed;
         private Dictionary propertyBag;
         private ArrayList propertRefs;
         #endregion
@@ -27,14 +33,9 @@ namespace Open.Core
             // Setup initial conditions.
             if (isDisposed) return;
 
-            // Dispose of property-refs.);
-            if (propertRefs != null)
-            {
-                foreach (PropertyRef propertyRef in PropertyRefs)
-                {
-                    propertyRef.Dispose();
-                }
-            }
+            // Dispose of property-refs.
+            Helper.Collection.DisposeAndClear(PropertyRefs);
+            FireDisposed();
 
             // Finish up.
             OnDisposed();

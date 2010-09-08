@@ -31,10 +31,14 @@ namespace Test.Samples
         public MyView(jQueryObject container, SizeMode sizeMode)
         {
             Initialize(container);
-            container.Append(string.Format("Control [{0}]", sizeMode.ToString()));
+            container.Append(string.Format("Control [sizeMode:{0}]", sizeMode.ToString()));
             container.CSS(Css.Background, "#f0ebc5");
             container.CSS(Css.Width, "300px");
             container.CSS(Css.Height, "200px");
+
+            container.CSS("-webkit-border-radius", "10px");
+            container.CSS("-moz-border-radius", "10px");
+            container.CSS("border-radius", "10px");
         }
     }
 }

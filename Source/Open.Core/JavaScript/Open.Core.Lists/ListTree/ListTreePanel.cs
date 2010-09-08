@@ -98,8 +98,8 @@ namespace Open.Core.Lists
         public bool IsCenterStage { get { return div.GetCSS(Css.Left) == "0px"; } }
         public ListView ListView { get { return listView; } }
 
-        private int Width { get { return rootDiv.GetWidth(); } }
-        private int SlideDuration { get { return Helper.Number.ToMsecs(parentList.SlideDuration); } }
+//TEMP         private int Width { get { return rootDiv.GetWidth(); } }
+        private int SlideDuration { get { return Helper.Time.ToMsecs(parentList.SlideDuration); } }
         #endregion
 
         #region Methods

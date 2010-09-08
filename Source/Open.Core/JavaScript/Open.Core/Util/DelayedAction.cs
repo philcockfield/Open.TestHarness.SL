@@ -78,7 +78,7 @@ namespace Open.Core
             {
                 timerId = Window.SetTimeout(
                                         delegate { InvokeAction(); }, 
-                                        Helper.Number.ToMsecs(Delay));
+                                        Helper.Time.ToMsecs(Delay));
             }
             else
             {

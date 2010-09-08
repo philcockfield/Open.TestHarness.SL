@@ -21,7 +21,6 @@
 //------------------------------------------------------
 
 using System;
-using System.Linq;
 
 namespace Open.Core.Common
 {

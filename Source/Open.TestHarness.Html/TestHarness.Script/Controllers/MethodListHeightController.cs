@@ -100,7 +100,7 @@ namespace Open.Testing.Controllers
         {
             div.Animate(
                     properties,
-                    Helper.Number.ToMsecs(SidebarView.SlideDuration),
+                    Helper.Time.ToMsecs(SidebarView.SlideDuration),
                     EffectEasing.Swing,
                     delegate
                             {

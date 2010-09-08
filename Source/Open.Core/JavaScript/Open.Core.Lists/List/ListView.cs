@@ -72,9 +72,6 @@ namespace Open.Core.Lists
         /// <summary>Gets the number of items currently in the list.</summary>
         public int Count { get { return itemViews.Count; } }
 
-        /// <summary>Gets the current height of the list.</summary>
-        public int Height { get { return Container.GetHeight(); } }
-
         /// <summary>Gets the current scroll height of the list (the height of the list within it's scrolling pane).</summary>
         public int ScrollHeight { get { return Int32.Parse(Container.GetAttribute(Html.ScrollHeight)); } }
 

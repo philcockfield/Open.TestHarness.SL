@@ -51,6 +51,7 @@
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\DiContainer.cs" />
+    <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Testing\ITestHarnessEvents.cs" />
     <Compile Include="Testing\Should.cs" />
     <Compile Include="Testing\TestHarness.cs">
@@ -83,12 +84,13 @@
     <Compile Include="Util\Dom\Css.cs" />
     <Compile Include="Declarations\Events\DomEvents.cs" />
     <Compile Include="Util\Helpers\CollectionHelper.cs" />
+    <Compile Include="Util\Helpers\DoubleHelper.cs" />
     <Compile Include="Util\Helpers\EventHelper.cs" />
     <Compile Include="Util\Helpers\TreeHelper.cs" />
     <Compile Include="Util\Helpers\JQueryHelper.cs" />
     <Compile Include="Util\Helpers\ScrollHelper.cs" />
     <Compile Include="Util\Helpers\JsonHelper.cs" />
-    <Compile Include="Util\Helpers\NumberHelper.cs" />
+    <Compile Include="Util\Helpers\TimeHelper.cs" />
     <Compile Include="Util\Helpers\ReflectionHelper.cs" />
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
     <Compile Include="Util\Helpers\StringHelper.cs" />

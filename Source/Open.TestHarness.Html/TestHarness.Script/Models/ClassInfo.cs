@@ -29,7 +29,7 @@ namespace Open.Testing.Models
             // Setup initial conditions.
             this.classType = classType;
             this.packageInfo = packageInfo;
-            displayName = Helper.String.RemoveEnd(MethodInfo.FormatName(classType.Name), "Test");
+            displayName = FormatName(classType.Name);
 
             // Get methods.
             GetMethods();
@@ -99,6 +99,13 @@ namespace Open.Testing.Models
         #endregion
 
         #region Internal
+        private static string FormatName(string name)
+        {
+            name = MethodInfo.FormatName(name);
+            if (!name.EndsWith("UnitTest")) name = Helper.String.RemoveEnd(name, "Test");
+            return name;
+        }
+
         private void GetMethods()
         {
             if (Instance == null) return;

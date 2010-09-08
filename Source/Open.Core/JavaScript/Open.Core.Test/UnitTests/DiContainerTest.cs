@@ -4,7 +4,7 @@
 using System;
 using System.Collections;
 
-namespace Open.Core.Test.ViewTests
+namespace Open.Core.Test.UnitTests
 {
     public class DiContainerTest
     {

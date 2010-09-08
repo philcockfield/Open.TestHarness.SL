@@ -81,7 +81,7 @@ namespace Open.Core.Lists
         #region Internal
         private void FadeBackMask()
         {
-            int duration = Helper.Number.ToMsecs(listTree.SlideDuration);
+            int duration = Helper.Time.ToMsecs(listTree.SlideDuration);
             bool isVisible = Css.IsVisible(backMask);
             if (ShowBackMask)
             {

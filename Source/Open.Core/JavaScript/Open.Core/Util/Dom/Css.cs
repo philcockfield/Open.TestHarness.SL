@@ -31,6 +31,7 @@ namespace Open.Core
         public const string Position = "position";
         public const string Padding = "padding";
         public const string Overflow = "overflow";
+        public const string Opacity = "opacity";
 
         // Values.
         public const string Block = "block";
@@ -177,6 +178,15 @@ namespace Open.Core
         {
             element.CSS(Width, width + Px);
             element.CSS(Height, height + Px);
+        }
+
+        /// <summary>Applies opacity.</summary>
+        /// <param name="element">The element to effect.</param>
+        /// <param name="percent">The opacity percentage (0..1).</param>
+        public static void SetOpacity(jQueryObject element, double percent)
+        {
+            percent = Helper.NumberDouble.WithinBounds(percent, 0, 1);
+            element.CSS(Opacity, percent.ToString());
         }
         #endregion
 

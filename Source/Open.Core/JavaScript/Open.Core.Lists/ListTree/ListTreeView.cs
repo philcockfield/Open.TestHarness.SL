@@ -233,10 +233,8 @@ namespace Open.Core.Lists
 
         private void Reset()
         {
-            foreach (ListTreePanel panel in panels)
-            {
-                panel.Dispose();
-            }
+            Helper.Collection.DisposeAndClear(panels);
+            div.Empty();
         }
         #endregion
     }

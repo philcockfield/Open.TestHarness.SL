@@ -21,7 +21,7 @@ namespace Open.Core.Helpers
             // Animate.
             container.Animate(
                                 props, 
-                                Helper.Number.ToMsecs(duration), 
+                                Helper.Time.ToMsecs(duration), 
                                 easing, 
                                 delegate
                                     {

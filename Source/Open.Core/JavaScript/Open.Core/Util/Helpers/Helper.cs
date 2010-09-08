@@ -13,11 +13,12 @@ namespace Open.Core
         private static ScriptLoadHelper ScriptLoadHelper;
         private static CollectionHelper CollectionHelper;
         private static StringHelper StringHelper;
-        private static NumberHelper NumberHelper;
+        private static TimeHelper TimeHelper;
         private static ScrollHelper ScrollHelper;
         private static JQueryHelper JQueryHelper;
         private static TreeHelper TreeHelper;
         private static EventHelper EventHelper;
+        private static DoubleHelper DoubleHelper;
 
         private static int idCounter;
         #endregion
@@ -42,7 +43,7 @@ namespace Open.Core
         public static StringHelper String { get { return StringHelper ?? (StringHelper = new StringHelper()); } }
 
         /// <summary>Gets the helper for working with numbers.</summary>
-        public static NumberHelper Number { get { return NumberHelper ?? (NumberHelper = new NumberHelper()); } }
+        public static TimeHelper Time { get { return TimeHelper ?? (TimeHelper = new TimeHelper()); } }
 
         /// <summary>Gets the helper for working with scrolling.</summary>
         public static ScrollHelper Scroll { get { return ScrollHelper ?? (ScrollHelper = new ScrollHelper()); } }
@@ -55,6 +56,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with events.</summary>
         public static EventHelper Event { get { return EventHelper ?? (EventHelper = new EventHelper()); } }
+
+        /// <summary>Gets the helper for working with doubles.</summary>
+        public static DoubleHelper NumberDouble { get { return DoubleHelper ?? (DoubleHelper = new DoubleHelper()); } }
         #endregion
 
         #region Methods

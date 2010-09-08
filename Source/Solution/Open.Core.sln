@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.UI.Controls", "..
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Open.Core", "Open.Core", "{21A474C1-9A79-462C-AE09-4DE4AC61AD11}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Open.TestHarness", "Open.TestHarness", "{106850A1-1A9E-4BEE-9609-D386BF2D1C6C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Open.TestHarness.SL", "Open.TestHarness.SL", "{106850A1-1A9E-4BEE-9609-D386BF2D1C6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Model", "..\Open.TestHarness\TestHarness.Model\TestHarness.Model.csproj", "{D95FA890-A6AA-4465-8042-9EFB69EC82F6}"
 EndProject

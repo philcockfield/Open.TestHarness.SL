@@ -48,18 +48,34 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewTests\DiContainerTest.cs" />
-    <Compile Include="ViewTests\ScriptLoadHelperTest.cs" />
+    <Compile Include="Samples\SampleView.cs" />
+    <Compile Include="Samples\SampleListItem.cs" />
+    <Compile Include="Samples\SampleModel.cs" />
+    <Compile Include="UnitTests\DiContainerTest.cs" />
+    <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
+    <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
+    <Compile Include="UnitTests\ViewUnitTest.cs" />
+    <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
+    <Compile Include="ViewTests\Lists\ListTreeTest.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Open.Core.Lists\Open.Core.Lists.csproj">
+      <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>
+      <Name>Open.Core.Lists</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Open.Core.Views\Open.Core.Controls.csproj">
+      <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
+      <Name>Open.Core.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>
       <Name>Open.Core %28Script\Open.Core\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>
