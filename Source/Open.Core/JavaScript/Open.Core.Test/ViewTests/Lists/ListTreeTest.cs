@@ -11,21 +11,17 @@ namespace Open.Core.Test.ViewTests.Lists
         #region Head
         private ListTreeView listTree;
 
-
         public void ClassInitialize()
         {
+            // Setup initial conditions.
             listTree = new ListTreeView(Html.CreateDiv());
-
-            //TEMP 
-            listTree.Container.CSS(Css.Width, "250px");
-            listTree.Container.CSS(Css.Height, "500px");
-//            listTree.Container.CSS(Css.Background, "orange");
-
+            listTree.SetSize(250, 500);
             listTree.Background = "#f2f2f2";
-
             TestHarness.AddControl(listTree, SizeMode.ControlsSize);
 
-
+            // Wire up events.
+            listTree.SelectedNodeChanged += delegate { Log.Info("!! SelectedNodeChanged | SelectedNode: " + listTree.SelectedNode); };
+            listTree.SelectedParentChanged += delegate { Log.Info("!! SelectedParentChanged | SelectedParent: " + listTree.SelectedParent); };
         }
         public void ClassCleanup()
         {
@@ -43,6 +39,8 @@ namespace Open.Core.Test.ViewTests.Lists
         }
 
         public void RootNode__Null() { listTree.RootNode = null; }
+        public void Back() { listTree.Back(); }
+        public void Home() { listTree.Home(); }
         #endregion
 
         #region Internal

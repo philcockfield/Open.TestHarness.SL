@@ -13,7 +13,8 @@ namespace Open.Testing.Views
         private const int fillMargin = 30;
 
         private readonly jQueryObject divRoot;
-        private readonly jQueryObject content;
+        private readonly jQueryObject htmlElement;
+        private IView control;
         private SizeMode sizeMode;
         private readonly IEnumerable allViews;
         private readonly int index;
@@ -22,14 +23,16 @@ namespace Open.Testing.Views
 
         /// <summary>Constructor.</summary>
         /// <param name="divHost">The control host DIV.</param>
-        /// <param name="content">The control content (supplied by the test class. This is the control that is under test).</param>
+        /// <param name="control">The logical IView control (null if not available).</param>
+        /// <param name="htmlElement">The control content (supplied by the test class. This is the control that is under test).</param>
         /// <param name="sizeMode">The sizing strategy to use for the control.</param>
         /// <param name="allViews">The Collection of all controls.</param>
-        public ControlWrapperView(jQueryObject divHost, jQueryObject content, SizeMode sizeMode, IEnumerable allViews)
+        public ControlWrapperView(jQueryObject divHost, IView control, jQueryObject htmlElement, SizeMode sizeMode, IEnumerable allViews)
         {
             // Setup initial conditions.
             Initialize(divHost);
-            this.content = content;
+            this.control = control;
+            this.htmlElement = htmlElement;
             this.sizeMode = sizeMode;
             this.allViews = allViews;
             index = divHost.Children().Length; // Store the order position of the control in the host.
@@ -42,8 +45,8 @@ namespace Open.Testing.Views
             divRoot.AppendTo(divHost);
 
             // Insert the content.
-            content.CSS(Css.Position, Css.Absolute);
-            content.AppendTo(divRoot);
+            htmlElement.CSS(Css.Position, Css.Absolute);
+            htmlElement.AppendTo(divRoot);
 
             // Wire up events.
             events.ControlHostSizeChanged += OnHostResized;
@@ -84,7 +87,10 @@ namespace Open.Testing.Views
         }
 
         /// <summary>Gets the HTML content.</summary>
-        public jQueryObject Content { get { return content; } }
+        public jQueryObject HtmlElement { get { return htmlElement; } }
+
+        /// <summary>Gets the logical control if available (otherwise null).</summary>
+        public IView Control { get { return control; } }
         #endregion
 
         #region Methods
@@ -124,7 +130,7 @@ namespace Open.Testing.Views
         {
             int width = (Container.GetWidth() - (xPadding * 2));
             int height = (Container.GetHeight() - (yPadding * 2));
-            Css.SetSize(content, width, height);
+            Css.SetSize(htmlElement, width, height);
         }
 
         private void UpdatePosition()
@@ -141,7 +147,7 @@ namespace Open.Testing.Views
         {
             switch (sizeMode)
             {
-                case SizeMode.ControlsSize: return (Container.GetWidth()/2) - (content.GetWidth()/2);
+                case SizeMode.ControlsSize: return (Container.GetWidth()/2) - (htmlElement.GetWidth()/2);
                 case SizeMode.Fill: return 0;
                 case SizeMode.FillWithMargin: return fillMargin;
                 default: throw new Exception(sizeMode.ToString());
@@ -152,7 +158,7 @@ namespace Open.Testing.Views
         {
             switch (sizeMode)
             {
-                case SizeMode.ControlsSize: return (Container.GetHeight()/2) - (content.GetHeight()/2);
+                case SizeMode.ControlsSize: return (Container.GetHeight()/2) - (htmlElement.GetHeight()/2);
                 case SizeMode.Fill: return 0;
                 case SizeMode.FillWithMargin: return fillMargin;
                 default: throw new Exception(sizeMode.ToString());
@@ -170,7 +176,7 @@ namespace Open.Testing.Views
             foreach (ControlWrapperView wrapper in allViews)
             {
                 if (wrapper == this) break;
-                height += wrapper.Content.GetHeight();
+                height += wrapper.HtmlElement.GetHeight();
             }
             return height;
         }

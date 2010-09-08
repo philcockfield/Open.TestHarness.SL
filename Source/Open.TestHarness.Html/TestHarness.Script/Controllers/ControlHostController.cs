@@ -42,24 +42,36 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.Content, e.SizeMode); }
+        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.Control, e.HtmlElement, e.SizeMode); }
         private void OnClearControls(object sender, EventArgs e) { Clear(); }
+        private void OnControlSizeChanged(object sender, EventArgs e) { UpdateLayout(); }
         #endregion
 
         #region Methods
         /// <summary>Clears all views.</summary>
         public void Clear()
         {
+            // Unwire events.
+            foreach (ControlWrapperView view in views)
+            {
+                if (view.Control != null) view.Control.SizeChanged -= OnControlSizeChanged;
+                
+            }
+
+            // Dispose of all views.
             Helper.Collection.DisposeAndClear(views);
         }
         #endregion
 
         #region Internal
-        private void AddView(jQueryObject controlContainer, SizeMode sizeMode)
+        private void AddView(IView control, jQueryObject htmlElement, SizeMode sizeMode)
         {
             // Create and add the view.
-            ControlWrapperView view = new ControlWrapperView(divControlHost, controlContainer, sizeMode, views);
+            ControlWrapperView view = new ControlWrapperView(divControlHost, control, htmlElement, sizeMode, views);
             views.Add(view);
+
+            // Wire up events.
+            if (control != null) control.SizeChanged += OnControlSizeChanged;
 
             // If there is more than one view, set all existing 'Fill' modes to 'FillWithMargin' (to avoid scrollbar issue).
             if (views.Count > 1)

@@ -122,7 +122,7 @@ namespace Open.Core
             FireSizeChanged();
         }
 
-        public void SetSizeInternal(int value, SizeDimension dimension, bool withEvent)
+        private void SetSizeInternal(int value, SizeDimension dimension, bool withEvent)
         {
             if (value < 0) value = 0;
 

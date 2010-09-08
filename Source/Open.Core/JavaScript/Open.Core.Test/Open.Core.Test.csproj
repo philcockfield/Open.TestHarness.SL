@@ -56,6 +56,7 @@
     <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
     <Compile Include="UnitTests\ViewUnitTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
+    <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListTreeTest.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />

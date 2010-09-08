@@ -13,10 +13,11 @@ namespace Open.Core.Test.ViewTests.Core
         {
             view = new SampleView(true);
             view.Background = "orange";
-
-            Css.SetSize(view.Container, 50, 50); //TEMP 
+            view.SetSize(150, 100);
 
             TestHarness.AddControl(view, SizeMode.ControlsSize);
+
+            view.SizeChanged += delegate { Log.Info("!! SizeChanged - Width: " + view.Width + ", Height: " + view.Height); };
         }
         public void ClassCleanup() { view.Dispose(); }
 
@@ -41,6 +42,17 @@ namespace Open.Core.Test.ViewTests.Core
             Log.Info("Opacity: " + view.Opacity);
         }
 
+        public void Change__Size()
+        {
+            if (view.Width == 150)
+            {
+              view.SetSize(400, 300);  
+            }
+            else
+            {
+                view.SetSize(150, 100);
+            }
+        }
         #endregion
     }
 }

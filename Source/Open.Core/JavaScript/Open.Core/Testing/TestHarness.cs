@@ -58,9 +58,8 @@ namespace Open.Testing
         public static void AddControl(IView control, SizeMode sizeMode)
         {
             if (control == null) throw new Exception("A visual control was not specified.");
-            AddHtml(control.Container, sizeMode);
+            FireControlAdded(control, control.Container, sizeMode);
         }
-
 
         /// <summary>Adds an HTML element to the host canvas.</summary>
         /// <param name="element">The HTML content of the control.</param>
@@ -69,18 +68,24 @@ namespace Open.Testing
         public static void  AddHtml(jQueryObject element, SizeMode sizeMode)
         {
             if (element == null) throw new Exception("An HTML element was not specified.");
-
-            // Alert the test-harness via an event.
-            TestControlEventArgs e = new TestControlEventArgs();
-            e.SizeMode = sizeMode;
-            e.Content = element;
-            Events.FireControlAdded(e);
+            FireControlAdded(null, element, sizeMode);
         }
 
         /// <summary>Clears all added controls from the host canvas.</summary>
         public static void ClearControls()
         {
             Events.FireClearControls();
+        }
+        #endregion
+
+        #region Internal
+        private static void FireControlAdded(IView control, jQueryObject element, SizeMode sizeMode)
+        {
+            TestControlEventArgs e = new TestControlEventArgs();
+            e.Control = control;
+            e.SizeMode = sizeMode;
+            e.HtmlElement = element;
+            Events.FireControlAdded(e);
         }
         #endregion
     }
@@ -98,6 +103,7 @@ namespace Open.Testing.Internal
     public class TestControlEventArgs
     {
         public SizeMode SizeMode;
-        public jQueryObject Content;
+        public jQueryObject HtmlElement;
+        public IView Control;
     }
 }

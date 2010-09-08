@@ -14,11 +14,12 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(ScriptLoadHelperTest));
             TestHarness.RegisterClass(typeof(DiContainerTest));
             TestHarness.RegisterClass(typeof(ModelBaseUnitTest));
+            TestHarness.RegisterClass(typeof(ViewUnitTest));
 
             // View Tests
-            TestHarness.RegisterClass(typeof(ListTreeTest));
-            TestHarness.RegisterClass(typeof(ViewUnitTest));
             TestHarness.RegisterClass(typeof(ViewBaseTest));
+            TestHarness.RegisterClass(typeof(ListTreeTest));
+            TestHarness.RegisterClass(typeof(ListItemViewTest));
         }
     }
 }
