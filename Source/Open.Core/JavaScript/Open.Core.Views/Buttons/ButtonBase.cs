@@ -106,6 +106,20 @@ namespace Open.Core.Controls
             if (CanToggle) IsPressed = !IsPressed;
             FireClick();
         }
+
+        public void Insert(string cssSeletor, InsertMode mode)
+        {
+            throw new Exception(string.Format("Failed to insert [{0}] at '{1}'.  The insert mode '{2}' is not supported.", GetType().Name, cssSeletor, mode.ToString()));
+            switch (mode)
+            {
+                case InsertMode.Replace:
+                    break;
+                default:
+                    throw new Exception(string.Format("Failed to insert [{0}] at '{1}'.  The insert mode '{2}' is not supported.", GetType().Name, cssSeletor, mode.ToString()));
+            }
+
+            Html.ReplaceWith(cssSeletor, Container, true);
+        }
         #endregion
 
         #region Internal

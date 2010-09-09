@@ -9,9 +9,13 @@ namespace Open.Core.Controls
     {
         #region Head
         public const string Untitled = "Untitled";
+        public const string DefaultPadding = "5px 30px";
+
         public const string PropHtml = "Html";
         public const string PropType = "Type";
         public const string PropValue = "Value";
+        public const string PropPadding = "Padding";
+        public const string PropFontSize = "FontSize";
 
         private readonly jQueryObject htmButton;
 
@@ -24,6 +28,8 @@ namespace Open.Core.Controls
             SyncHtml();
             SyncType();
             SyncValue();
+            SyncPadding();
+            SyncFontSize();
 
             // Wire up events.
             PropertyChanged += OnPropertyChanged;
@@ -33,7 +39,6 @@ namespace Open.Core.Controls
         {
             jQueryObject htmButton = HtmlUtil.CreateElement(HtmlUtil.Button);
             htmButton.Attribute(HtmlUtil.Type, HtmlUtil.Submit);
-            htmButton.CSS(Css.Padding, "5px 30px");
             return htmButton;
         }
         #endregion
@@ -77,12 +82,26 @@ namespace Open.Core.Controls
             get { return (string) Get(PropValue, null); }
             set { if (Set(PropValue, value, null)) SyncValue(); }
         }
+
+        public string Padding
+        {
+            get { return (string)Get(PropPadding, DefaultPadding); }
+            set { if (Set(PropPadding, value, DefaultPadding)) SyncPadding(); }
+        }
+
+        public string FontSize
+        {
+            get { return (string) Get(PropFontSize, null); }
+            set { if (Set(PropFontSize, value, null)) SyncFontSize(); }
+        }
         #endregion
 
         #region Internal
-        private void SyncHtml() { htmButton.Html(Html); }
+        private void SyncHtml() { htmButton.Html(Html); FireSizeChanged(); }
         private void SyncType() { htmButton.Attribute(HtmlUtil.Type, Type); }
         private void SyncValue() { htmButton.Attribute(HtmlUtil.Value, Value); }
+        private void SyncPadding() { htmButton.CSS(Css.Padding, Padding); FireSizeChanged();  }
+        private void SyncFontSize() { htmButton.CSS(Css.FontSize, FontSize); FireSizeChanged(); }
         #endregion
     }
 }

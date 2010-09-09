@@ -9,6 +9,7 @@
                 <p class="title opacity060"><%= Model.TestListTitle %></p>
             </div>
         </div>
+        <span class="runButton"></span>
     </div>
 
     <!-- List -->

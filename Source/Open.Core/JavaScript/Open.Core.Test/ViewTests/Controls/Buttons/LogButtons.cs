@@ -19,6 +19,8 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             Log.Info("Html: " + button.Html);
             Log.Info("Type: " + button.Type);
             Log.Info("Value: " + button.Value);
+            Log.Info("Padding: " + button.Padding);
+            Log.Info("FontSize: " + button.FontSize);
             WriteIButton(button);
         }
     }

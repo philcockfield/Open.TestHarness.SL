@@ -20,6 +20,7 @@ namespace Open.Core
         public const string Type = "type";
         public const string Value = "value";
         public const string Disabled = "disabled";
+        public const string ClassAttr = "class";
 
         // Values.
         public const string Submit = "submit";
@@ -116,6 +117,21 @@ namespace Open.Core
         /// <summary>Retrieves the height of the specified element.</summary>
         /// <param name="cssSelector">The CSS selector of the element to measure.</param>
         public static int Height(string cssSelector) { return jQuery.Select(cssSelector).GetHeight(); }
+
+
+        /// <summary>Replaces an element with the given object.</summary>
+        /// <param name="replaceSeletor">The CSS selector the element(s) to replace.</param>
+        /// <param name="withReplacement">The element to insert.</param>
+        /// <param name="copyCssClasses">Flag indicating if CSS classes should be copied from the old element to the new one.</param>
+        public static void ReplaceWith(string replaceSeletor, jQueryObject withReplacement, bool copyCssClasses)
+        {
+            if (copyCssClasses)
+            {
+                jQueryObject replaceElement = jQuery.Select(replaceSeletor);
+                Css.CopyClasses(replaceElement, withReplacement);
+            }
+            withReplacement.ReplaceAll(replaceSeletor);
+        }
         #endregion
     }
 }

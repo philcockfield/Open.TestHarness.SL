@@ -78,6 +78,13 @@
 #testHarnessSidebar p.dropShadow { top:35px; }
 #testHarnessSidebar .th-testList-content { top:35px; }
 
+#testHarnessSidebar .runButton
+{
+    position:absolute;
+    right:5px;
+    top:5px;
+}
+
 
 /*-------------- Main --------------*/
 #testHarness .th-main

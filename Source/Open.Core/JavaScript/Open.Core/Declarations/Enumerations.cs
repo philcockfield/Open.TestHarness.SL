@@ -44,4 +44,11 @@ namespace Open.Core
         MouseOver = 1,
         Pressed = 2,
     }
+
+    /// <summary>Flags indicating the various strategies for inserting content.</summary>
+    public enum InsertMode
+    {
+        /// <summary>The target element is replaced with the inserted content.</summary>
+        Replace = 0
+    }
 }

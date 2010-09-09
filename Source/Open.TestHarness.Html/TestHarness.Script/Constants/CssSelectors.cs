@@ -17,6 +17,8 @@ namespace Open.Testing
         public static readonly string MethodList = "#testHarnessSidebar .th-testList";
         public static readonly string MethodListTitlebar = "#testHarnessSidebar .th-testList-tb";
         public static readonly string MethodListContent = "#testHarnessSidebar .th-testList-content";
+        public static readonly string MethodListRunButton = "#testHarnessSidebar .runButton";
+        
         
 
         // Main.

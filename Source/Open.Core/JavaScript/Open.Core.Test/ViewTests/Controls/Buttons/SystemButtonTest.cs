@@ -17,7 +17,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             TestHarness.AddControl(button);
 
             // Wire up events.
-            button.Click += delegate { Log.Info("!! <b>Click</b> | IsPressed: " + button.IsPressed); };
+            button.Click += delegate { Log.Info("!! Click | IsPressed: " + button.IsPressed); };
             button.IsPressedChanged += delegate { Log.Info("!! IsPressedChanged | IsPressed: " + button.IsPressed); };
             button.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
                                           {
@@ -36,6 +36,16 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         public void Change_Html()
         {
             button.Html = button.Html == SystemButton.Untitled ? "My <b>Button</b>" : SystemButton.Untitled;
+        }
+
+        public void Change_Padding()
+        {
+            button.Padding = button.Padding == null ? SystemButton.DefaultPadding : null;
+        }
+        
+        public void Change_FontSize()
+        {
+            button.FontSize = button.FontSize == "40pt" ? "8pt" : "40pt";
         }
 
         public void InvokeClick__Force() { button.InvokeClick(true); }

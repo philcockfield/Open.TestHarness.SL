@@ -32,6 +32,7 @@ namespace Open.Core
         public const string Padding = "padding";
         public const string Overflow = "overflow";
         public const string Opacity = "opacity";
+        public const string FontSize = "font-size";
 
         // Values.
         public const string Block = "block";
@@ -95,6 +96,19 @@ namespace Open.Core
             else
             {
                 element.RemoveClass(cssClass);
+            }
+        }
+
+        /// <summary>Copies the CSS classes from one element to another.</summary>
+        /// <param name="source">The source element to copy from.</param>
+        /// <param name="target">The target element to copy to.</param>
+        public static void CopyClasses(jQueryObject source, jQueryObject target)
+        {
+            string classes = source.GetAttribute(Html.ClassAttr);
+            if (string.IsNullOrEmpty(classes)) return;
+            foreach (string className in classes.Split(" "))
+            {
+                target.AddClass(className);
             }
         }
         #endregion
@@ -218,7 +232,6 @@ namespace Open.Core
             element.CSS(Css.Top, top + "px");
         }
         #endregion
-
     }
 
     public class CoreCssClasses

@@ -1,6 +1,7 @@
 using System;
 using jQueryApi;
 using Open.Core;
+using Open.Core.Controls;
 using Open.Core.Lists;
 using Open.Testing.Models;
 
@@ -16,6 +17,7 @@ namespace Open.Testing.Views
         private readonly ListTreeView listView;
         private readonly ListItem rootNode;
         private readonly TestHarnessEvents events;
+        private readonly SystemButton btnRun;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing div.</param>
@@ -32,6 +34,16 @@ namespace Open.Testing.Views
             // Construct the data-model root.
             rootNode = new ListItem();
             listView.RootNode = rootNode;
+
+            // Construct buttons.
+            btnRun = new SystemButton();
+            btnRun.Html = "Run"; // TODO - Get from string resources.
+            btnRun.FontSize = "8pt";
+            btnRun.Padding = "3px 8px";
+            btnRun.Insert(CssSelectors.MethodListRunButton, InsertMode.Replace);
+
+            // Wire up events.
+            btnRun.Click += delegate { Log.Info("!! Run clicked"); }; // TODO - Run all tests in method list.
         }
         #endregion
 

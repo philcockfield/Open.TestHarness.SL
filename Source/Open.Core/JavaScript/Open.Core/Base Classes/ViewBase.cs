@@ -8,21 +8,21 @@ namespace Open.Core
     {
         #region Events
         public event EventHandler IsEnabledChanged;
-        private void FireIsEnabledChanged()
+        protected void FireIsEnabledChanged()
         {
             OnIsEnabledChanged();
             if (IsEnabledChanged != null) IsEnabledChanged(this, new EventArgs());
         }
 
         public event EventHandler IsVisibleChanged;
-        private void FireIsVisibleChanged()
+        protected void FireIsVisibleChanged()
         {
             OnIsVisibleChanged();
             if (IsVisibleChanged != null) IsVisibleChanged(this, new EventArgs());
         }
 
         public event EventHandler SizeChanged;
-        private void FireSizeChanged()
+        protected void FireSizeChanged()
         {
             OnSizeChanged();
             if (SizeChanged != null) SizeChanged(this, new EventArgs());
@@ -158,6 +158,18 @@ namespace Open.Core
 
 
             if (withEvent) FireSizeChanged();
+        }
+
+        public void Insert(string cssSeletor, InsertMode mode)
+        {
+            switch (mode)
+            {
+                case InsertMode.Replace:
+                    Html.ReplaceWith(cssSeletor, Container, true);
+                    break;
+
+                default: throw new Exception(string.Format("Failed to insert [{0}] at '{1}'.  The insert mode '{2}' is not supported.", GetType().Name, cssSeletor, mode.ToString()));
+            }
         }
         #endregion
 

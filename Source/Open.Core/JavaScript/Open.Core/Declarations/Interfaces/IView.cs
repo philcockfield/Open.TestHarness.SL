@@ -44,7 +44,6 @@ namespace Open.Core
         /// <summary>Gets or sets the background CSS for the control.</summary>
         string Background { get; set; }
 
-
         /// <summary>Gets or sets the opacity percentage (0-1).</summary>
         double Opacity { get; set; }
 
@@ -68,6 +67,11 @@ namespace Open.Core
         /// <param name="attribute">The CSS attribute name.</param>
         /// <param name="value">The CSS value.</param>
         void SetCss(string attribute, string value);
+
+        /// <summary>Finds the element at the given CSS selector and replaces it with this button.</summary>
+        /// <param name="cssSeletor">The CSS selector of the element to replace.</param>
+        /// <param name="mode">The strategy used for the insertion.</param>
+        void Insert(string cssSeletor, InsertMode mode);
         #endregion
     }
 }
