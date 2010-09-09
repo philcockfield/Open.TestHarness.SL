@@ -54,8 +54,10 @@
     <Compile Include="UnitTests\DiContainerTest.cs" />
     <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
     <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
-    <Compile Include="UnitTests\ViewUnitTest.cs" />
+    <Compile Include="UnitTests\ViewBaseUnitTest.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\LogButtons.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\SystemButtonTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListTreeTest.cs" />

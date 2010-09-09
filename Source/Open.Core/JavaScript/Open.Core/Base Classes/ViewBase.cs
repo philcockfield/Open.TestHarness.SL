@@ -7,11 +7,26 @@ namespace Open.Core
     public abstract class ViewBase : ModelBase, IView
     {
         #region Events
-        public event EventHandler VisibilityChanged;
-        private void FireVisibilityChanged(){if (VisibilityChanged != null) VisibilityChanged(this, new EventArgs());}
+        public event EventHandler IsEnabledChanged;
+        private void FireIsEnabledChanged()
+        {
+            OnIsEnabledChanged();
+            if (IsEnabledChanged != null) IsEnabledChanged(this, new EventArgs());
+        }
+
+        public event EventHandler IsVisibleChanged;
+        private void FireIsVisibleChanged()
+        {
+            OnIsVisibleChanged();
+            if (IsVisibleChanged != null) IsVisibleChanged(this, new EventArgs());
+        }
 
         public event EventHandler SizeChanged;
-        private void FireSizeChanged(){if (SizeChanged != null) SizeChanged(this, new EventArgs());}
+        private void FireSizeChanged()
+        {
+            OnSizeChanged();
+            if (SizeChanged != null) SizeChanged(this, new EventArgs());
+        }
         #endregion
 
         #region Head
@@ -20,6 +35,7 @@ namespace Open.Core
         public const string PropOpacity = "Opacity";
         public const string PropWidth = "Width";
         public const string PropHeight = "Height";
+        public const string PropIsEnabled = "IsEnabled";
 
         private bool isInitialized;
         private jQueryObject container;
@@ -34,15 +50,11 @@ namespace Open.Core
         public jQueryObject Container { get { return container; } }
         #endregion
 
-        #region Properties : Style
-        public string Background
+        #region Properties : State
+        public bool IsEnabled
         {
-            get { return GetCss(Css.Background); }
-            set
-            {
-                SetCss(Css.Background, value);
-                FirePropertyChanged(PropBackground);
-            }
+            get { return (bool)Get(PropIsEnabled, true); }
+            set { if (Set(PropIsEnabled, value, true)) FireIsEnabledChanged(); }
         }
 
         public bool IsVisible
@@ -52,8 +64,20 @@ namespace Open.Core
             {
                 if (value == IsVisible) return;
                 SetCss(Css.Display, value ? Css.Block : Css.None);
-                FireVisibilityChanged();
+                FireIsVisibleChanged();
                 FirePropertyChanged(PropIsVisible);
+            }
+        }
+        #endregion
+
+        #region Properties : Style
+        public string Background
+        {
+            get { return GetCss(Css.Background); }
+            set
+            {
+                SetCss(Css.Background, value);
+                FirePropertyChanged(PropBackground);
             }
         }
 
@@ -149,6 +173,12 @@ namespace Open.Core
             if (Container == null) throw new Exception("Cannot set CSS on view until it is initialized.");
             Container.CSS(attribute, value);
         }
+        #endregion
+
+        #region Methods : Protected 
+        protected virtual void OnIsEnabledChanged() { }
+        protected virtual void OnIsVisibleChanged() { }
+        protected virtual void OnSizeChanged() { }
         #endregion
     }
 }

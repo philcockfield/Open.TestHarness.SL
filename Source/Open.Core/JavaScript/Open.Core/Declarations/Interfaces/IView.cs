@@ -7,34 +7,43 @@ namespace Open.Core
     public interface IView
     {
         #region Events
+        /// <summary>Fires when the enabled state of the control changes.</summary>
+        event EventHandler IsEnabledChanged;
+
         /// <summary>Fires when the IsVisible property changes.</summary>
-        event EventHandler VisibilityChanged;
+        event EventHandler IsVisibleChanged;
 
         /// <summary>Fires when the size changes.</summary>
         event EventHandler SizeChanged;
         #endregion
 
         #region Initialization
-        /// <summary>Gets or sets whether the view has been initialized.</summary>
-        bool IsInitialized { get; }
-
-        /// <summary>Initializes the view.</summary>
-        /// <param name="container">The containing element of the view.</param>
+        /// <summary>Initializes the control.</summary>
+        /// <param name="container">The containing element of the control.</param>
         void Initialize(jQueryObject container);
 
-        /// <summary>Gets the element that the view is contained within.</summary>
+        /// <summary>Gets the element that the control is contained within.</summary>
         jQueryObject Container { get; }
 
-        /// <summary>Destroys the view and clears resources.</summary>
+        /// <summary>Destroys the control and clears resources.</summary>
         void Dispose();
         #endregion
 
-        #region Styles
-        /// <summary>Gets or sets the background CSS for the view.</summary>
-        string Background { get; set; }
+        #region State
+        /// <summary>Gets or sets whether the control has been initialized.</summary>
+        bool IsInitialized { get; }
+
+        /// <summary>Gets or sets whether the control is enabled.</summary>
+        bool IsEnabled { get; set; }
 
         /// <summary>Gets or sets whether the control is visible.</summary>
         bool IsVisible { get; set; }
+        #endregion
+
+        #region Styles
+        /// <summary>Gets or sets the background CSS for the control.</summary>
+        string Background { get; set; }
+
 
         /// <summary>Gets or sets the opacity percentage (0-1).</summary>
         double Opacity { get; set; }

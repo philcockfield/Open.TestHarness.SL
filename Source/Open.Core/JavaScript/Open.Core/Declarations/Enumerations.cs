@@ -36,4 +36,12 @@ namespace Open.Core
         /// <summary>Load in the full body of the window.</summary>
         Top = 2
     }
+
+    /// <summary>The various kinds of mouse-related states a button can be in.</summary>
+    public enum ButtonMouseState
+    {
+        Normal = 0,
+        MouseOver = 1,
+        Pressed = 2,
+    }
 }

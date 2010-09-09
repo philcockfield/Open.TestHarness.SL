@@ -3,7 +3,7 @@ using Open.Testing;
 
 namespace Open.Core.Test.UnitTests
 {
-    public class ViewUnitTest
+    public class ViewBaseUnitTest
     {
         #region Head
         private SampleView view;
@@ -92,7 +92,7 @@ namespace Open.Core.Test.UnitTests
                             { 
                                 if (args.Property.Name == ViewBase.PropIsVisible) propChangedCount++; 
                             };
-            view.VisibilityChanged += delegate { visibilityChangedCount++; };
+            view.IsVisibleChanged += delegate { visibilityChangedCount++; };
 
             view.IsVisible = false;
             view.IsVisible = false;
@@ -171,6 +171,37 @@ namespace Open.Core.Test.UnitTests
             view.Height = -5;
             Should.Equal(view.Width, 0);
             Should.Equal(view.Height, 0);
+        }
+
+        public void ShouldBeEnabledByDefault()
+        {
+            Should.BeTrue(view.IsEnabled);
+        }
+
+        public void ShouldFireIsEnabledChanged()
+        {
+            int isEnabledChangedCount = 0;
+            int propChangedCount = 0;
+
+            view.IsEnabledChanged += delegate { isEnabledChangedCount++; };
+            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+                                        {
+                                            if (args.Property.Name == ViewBase.PropIsEnabled) propChangedCount++;
+                                        };
+
+            view.IsEnabled = false;
+            view.IsEnabled = false;
+            view.IsEnabled = false;
+
+            Should.BeFalse(view.IsEnabled);
+            Should.Equal(isEnabledChangedCount, 1);
+            Should.Equal(propChangedCount, 1);
+
+            view.IsEnabled = true;
+
+            Should.BeTrue(view.IsEnabled);
+            Should.Equal(isEnabledChangedCount, 2);
+            Should.Equal(propChangedCount, 2);
         }
         #endregion
     }

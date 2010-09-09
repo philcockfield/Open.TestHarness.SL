@@ -30,6 +30,19 @@ namespace Open.Core.Test.ViewTests.Controls
         }
 
         public void Clear() { Log.Clear(); }
+
+        public void Sample1()
+        {
+            Log.Info("This is a log entry");
+            Log.Info("Another entry within the same test.");
+        }
+
+        public void Sample2()
+        {
+            Log.Info("This entry came from another test (Sample2).");
+            Log.Info("Note the section divider visually showing that these entries were emitted from different tests.");
+        }
+
         #endregion
     }
 }

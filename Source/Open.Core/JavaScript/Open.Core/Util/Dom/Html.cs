@@ -11,11 +11,18 @@ namespace Open.Core
         public const string Div = "div";
         public const string Span = "span";
         public const string Img = "img";
+        public const string Button = "button";
 
         // Attributes.
         public const string Id = "id";
         public const string Href = "href";
         public const string Src = "src";
+        public const string Type = "type";
+        public const string Value = "value";
+        public const string Disabled = "disabled";
+
+        // Values.
+        public const string Submit = "submit";
 
         // Properties.
         public const string ScrollTop = "scrollTop";
