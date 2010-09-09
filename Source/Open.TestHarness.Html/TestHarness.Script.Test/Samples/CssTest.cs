@@ -27,7 +27,8 @@ namespace Test.Samples
         private static MyCssView AddControl(SizeMode sizeMode)
         {
             MyCssView view = new MyCssView(Html.CreateDiv(), sizeMode);
-            TestHarness.AddControl(view, sizeMode);
+            TestHarness.SizeMode = sizeMode;
+            TestHarness.AddControl(view);
             return view;
         }
         #endregion

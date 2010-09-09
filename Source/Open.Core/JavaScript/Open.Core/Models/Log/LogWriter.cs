@@ -38,9 +38,9 @@ namespace Open.Core
             }
         }
 
-        public void LineBreak()
+        public void Divider(LogDivider type)
         {
-            foreach (ILogView view in views) { view.LineBreak(); }
+            foreach (ILogView view in views) { view.Divider(type); }
         }
 
         public void Clear()

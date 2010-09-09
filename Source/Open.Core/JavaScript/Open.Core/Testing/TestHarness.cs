@@ -27,12 +27,20 @@ namespace Open.Testing
     {
         #region Head
         private static ITestHarnessEvents events;
+        private static SizeMode sizeMode = SizeMode.ControlsSize;
         #endregion
 
         #region Properties
         private static ITestHarnessEvents Events
         {
             get { return events ?? (events = DiContainer.DefaultContainer.GetSingleton(typeof(ITestHarnessEvents)) as ITestHarnessEvents); }
+        }
+
+        /// <summary>Gets or sets the size strategy for displaying added controls/HTML.</summary>
+        public static SizeMode SizeMode
+        {
+            get { return sizeMode; }
+            set { sizeMode = value; }
         }
         #endregion
 
@@ -53,22 +61,27 @@ namespace Open.Testing
 
         /// <summary>Adds a visual control to the host canvas.</summary>
         /// <param name="control">The control to add.</param>
-        /// <param name="sizeMode">The strategy used to size the content.</param>
         /// <returns>A DIV element to contain the control.</returns>
-        public static void AddControl(IView control, SizeMode sizeMode)
+        public static void AddControl(IView control)
         {
             if (control == null) throw new Exception("A visual control was not specified.");
-            FireControlAdded(control, control.Container, sizeMode);
+            FireControlAdded(control, control.Container);
         }
 
         /// <summary>Adds an HTML element to the host canvas.</summary>
         /// <param name="element">The HTML content of the control.</param>
-        /// <param name="sizeMode">The strategy used to size the control.</param>
         /// <returns>A DIV element to contain the control.</returns>
-        public static void  AddHtml(jQueryObject element, SizeMode sizeMode)
+        public static void  AddHtml(jQueryObject element)
         {
             if (element == null) throw new Exception("An HTML element was not specified.");
-            FireControlAdded(null, element, sizeMode);
+            FireControlAdded(null, element);
+        }
+
+        /// <summary>Clears the controls from the host canvas and resets to orginal state.</summary>
+        public static void Reset()
+        {
+            ClearControls();
+            sizeMode = SizeMode.ControlsSize;
         }
 
         /// <summary>Clears all added controls from the host canvas.</summary>
@@ -79,11 +92,11 @@ namespace Open.Testing
         #endregion
 
         #region Internal
-        private static void FireControlAdded(IView control, jQueryObject element, SizeMode sizeMode)
+        private static void FireControlAdded(IView control, jQueryObject element)
         {
             TestControlEventArgs e = new TestControlEventArgs();
             e.Control = control;
-            e.SizeMode = sizeMode;
+            e.SizeMode = SizeMode;
             e.HtmlElement = element;
             Events.FireControlAdded(e);
         }

@@ -9,6 +9,8 @@ namespace Open.Core
         // Classes.
         private const string RootClass = "c-log";
         public const string ListItemClass = "c-log-listItem";
+        public const string SectionBreak = "c-log-sectionBreak";
+
         public const string LineBreakClass = "c-log-lineBreak";
         public const string CounterClass = "c-log-counter";
         public const string MessageClass = "c-log-message";

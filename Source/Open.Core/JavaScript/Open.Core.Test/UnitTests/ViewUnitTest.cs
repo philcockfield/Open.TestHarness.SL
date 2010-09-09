@@ -11,13 +11,13 @@ namespace Open.Core.Test.UnitTests
         public void TestInitialize()
         {
             view = new SampleView(true);
-            TestHarness.AddControl(view, SizeMode.ControlsSize);
+            TestHarness.AddControl(view);
         }
 
         public void TestCleanup()
         {
             view.Dispose();
-            TestHarness.ClearControls();
+            TestHarness.Reset();
         }
         #endregion
 

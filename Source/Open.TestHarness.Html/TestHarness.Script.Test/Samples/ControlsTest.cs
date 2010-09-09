@@ -11,9 +11,19 @@ namespace Test.Samples
         public void Add_Control__Fill() { AddControl(SizeMode.Fill); }
         public void Add_Control__FillWithMargin() { AddControl(SizeMode.FillWithMargin); }
 
+        public void Reset()
+        {
+            TestHarness.Reset();
+            Log.Info("Reset");
+            Log.Info("SizeMode: " + TestHarness.SizeMode.ToString());
+            Log.LineBreak();
+        }
+
         public void Clear()
         {
             TestHarness.ClearControls();
+            Log.Info("SizeMode: " + TestHarness.SizeMode.ToString());
+            Log.LineBreak();
         }
         #endregion
 
@@ -21,7 +31,8 @@ namespace Test.Samples
         private static void AddControl(SizeMode sizeMode)
         {
             IView view = new MyView(Html.CreateDiv(), sizeMode);
-            TestHarness.AddControl(view, sizeMode);
+            TestHarness.SizeMode = sizeMode;
+            TestHarness.AddControl(view);
         }
         #endregion
     }

@@ -1,3 +1,4 @@
+using System;
 using jQueryApi;
 
 namespace Open.Core.Controls
@@ -10,6 +11,7 @@ namespace Open.Core.Controls
         private int counter = 0;
         private double scrollDuration = 0;
         private readonly DelayedAction scrollDelay;
+        private bool sectionDividerPending;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The container of the log</param>
@@ -70,10 +72,7 @@ namespace Open.Core.Controls
             if (string.IsNullOrEmpty(message.Trim())) message = "<whitespace>".HtmlEncode();
 
             // Create the row.
-            divRow = Html.CreateDiv();
-            divRow.AddClass(cssClass);
-            divRow.AddClass(LogCss.ListItemClass);
-            divRow.Attribute(Html.Id, Helper.CreateId());
+            divRow = CreateRowDiv(cssClass);
 
             // Prepare the 'counter'.
             jQueryObject spanCounter = Html.CreateSpan();
@@ -88,16 +87,8 @@ namespace Open.Core.Controls
             // Perform inserts.
             spanCounter.AppendTo(divRow);
             divMessage.AppendTo(divRow);
-            divRow.AppendTo(divList);
-
-            // Finish up.
-            scrollDelay.Start();
-        }
-
-        public void LineBreak()
-        {
-            if (divRow == null) return;
-            divRow.AddClass(LogCss.LineBreakClass);
+            InsertPendingSectionDivider();
+            InsertRow(divRow);
         }
 
         public void Clear()
@@ -116,6 +107,61 @@ namespace Open.Core.Controls
 
             // Sync list width (prevents horizontal scroll bar appearing).
             divList.Width(Container.GetWidth());
+        }
+        #endregion
+
+        #region Methods : Dividers
+        /// <summary>Inserts a visual divider into the log.</summary>
+        /// <param name="type">The type of divider to insert.</param>
+        public void Divider(LogDivider type)
+        {
+            switch (type)
+            {
+                case LogDivider.LineBreak:
+                    LineBreak();
+                    break;
+
+                case LogDivider.Section:
+                    sectionDividerPending = true;
+                    break;
+
+                default: throw new Exception("Not supporred: " + type.ToString());
+            }
+        }
+
+        private void LineBreak()
+        {
+            if (divRow == null) return;
+            divRow.AddClass(LogCss.LineBreakClass);
+        }
+
+        private void InsertPendingSectionDivider()
+        {
+            // Setup initial conditions.
+            if (!sectionDividerPending) return;
+
+            // Insert the sectino brea.
+            InsertRow(CreateRowDiv(LogCss.SectionBreak));
+
+            // Finish up.
+            sectionDividerPending = false;
+        }
+        #endregion
+
+        #region Internal
+        // NB: Don't make static.  Causes error on logging from event-callbacks.
+        private jQueryObject CreateRowDiv(string cssClass)
+        {
+            jQueryObject  div = Html.CreateDiv();
+            div.AddClass(cssClass);
+            div.AddClass(LogCss.ListItemClass);
+            return div;
+        }
+
+        private void InsertRow(jQueryObject div)
+        {
+            div.AppendTo(divList);
+            scrollDelay.Start();
         }
         #endregion
     }

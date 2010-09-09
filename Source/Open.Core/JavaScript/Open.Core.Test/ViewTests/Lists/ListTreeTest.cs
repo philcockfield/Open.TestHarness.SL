@@ -17,7 +17,7 @@ namespace Open.Core.Test.ViewTests.Lists
             listTree = new ListTreeView(Html.CreateDiv());
             listTree.SetSize(250, 500);
             listTree.Background = "#f2f2f2";
-            TestHarness.AddControl(listTree, SizeMode.ControlsSize);
+            TestHarness.AddControl(listTree);
 
             // Wire up events.
             listTree.SelectedNodeChanged += delegate { Log.Info("!! SelectedNodeChanged | SelectedNode: " + listTree.SelectedNode); };

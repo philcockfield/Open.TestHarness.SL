@@ -19,7 +19,7 @@ namespace Open.Core.Test.ViewTests.Lists
 
             view.Width = 300;
 
-            TestHarness.AddControl(view, SizeMode.ControlsSize);
+            TestHarness.AddControl(view);
         }
         public void ClassCleanup()
         {

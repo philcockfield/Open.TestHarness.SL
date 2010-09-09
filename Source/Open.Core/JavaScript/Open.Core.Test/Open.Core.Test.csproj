@@ -55,6 +55,7 @@
     <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
     <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
     <Compile Include="UnitTests\ViewUnitTest.cs" />
+    <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListTreeTest.cs" />

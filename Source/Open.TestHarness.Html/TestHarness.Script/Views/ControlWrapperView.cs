@@ -140,6 +140,7 @@ namespace Open.Testing.Views
 
             // Top.
             int top = Container.Children().Length == 1 ? GetTop() : GetStackedTop();
+            if (sizeMode != SizeMode.Fill && top < fillMargin) top = fillMargin;
             divRoot.CSS(Css.Top, top + Css.Px);
         }
 

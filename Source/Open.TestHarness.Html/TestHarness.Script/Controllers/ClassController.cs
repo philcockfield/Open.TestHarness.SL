@@ -1,3 +1,4 @@
+using Open.Core;
 using Open.Testing.Models;
 using Open.Testing.Views;
 
@@ -36,7 +37,7 @@ namespace Open.Testing.Controllers
             if (classInfo.ClassCleanup != null) classInfo.ClassCleanup.Invoke();
 
             // Clear any visual controls from the screen.
-            TestHarness.ClearControls();
+            TestHarness.Reset();
 
             // Finish up.
             base.OnDisposed();
@@ -64,6 +65,7 @@ namespace Open.Testing.Controllers
             if (method == null) return false;
 
             // Invoke the method.
+            Log.NewSection();
             method.Invoke();
 
             // Finish up.

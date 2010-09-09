@@ -43,12 +43,17 @@ namespace Open.Core
         public static void Write(string message, LogSeverity severity) { Writer.Write(message, severity); }
         #endregion
 
+        #region Methods : Dividers
+        /// <summary>Inserts a line break to the log.</summary>
+        public static void LineBreak() { Writer.Divider(LogDivider.LineBreak); }
+
+        /// <summary>Inserts a new section divider.</summary>
+        public static void NewSection() { Writer.Divider(LogDivider.Section); }
+        #endregion
+
         #region Methods
         /// <summary>Clears the log.</summary>
         public static void Clear() { Writer.Clear(); }
-
-        /// <summary>Inserts a line break to the log.</summary>
-        public static void LineBreak() { Writer.LineBreak(); }
 
         /// <summary>Registers a log viewer to emit output to (multiple views can be associated with the log).</summary>
         /// <param name="view">The log view to emit to.</param>

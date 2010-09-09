@@ -125,6 +125,7 @@
     <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.debug.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.js" />
+    <EmbeddedResource Include="Content\Images\Log.SectionDivider.Rip.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

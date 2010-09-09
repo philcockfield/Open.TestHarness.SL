@@ -12,7 +12,6 @@ namespace Open.Core.Test.UnitTests
                                     {
                                         Log.Info("Callback - " + Helper.ScriptLoader.IsLoaded(ScriptLibrary.Controls));
                                     });
-            Log.LineBreak();
         }
     }
 }

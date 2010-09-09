@@ -10,6 +10,13 @@ namespace Open.Core
         Success = 4,
     }
 
+    /// <summary>Flags representing the type of visual dividers that can be inserted into the log.</summary>
+    public enum LogDivider
+    {
+        LineBreak = 0,
+        Section = 1,
+    }
+
 
     /// <summary>An output log.</summary>
     public interface ILog
@@ -19,8 +26,9 @@ namespace Open.Core
         /// <param name="severity">The severity of the message.</param>
         void Write(string message, LogSeverity severity);
 
-        /// <summary>Inserts a visual break into the log.</summary>
-        void LineBreak();
+        /// <summary>Inserts a visual divider into the log.</summary>
+        /// <param name="type">The type of divider to insert.</param>
+        void Divider(LogDivider type);
 
         /// <summary>Clears the log.</summary>
         void Clear();

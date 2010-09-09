@@ -14,6 +14,7 @@ namespace Test
             TestHarness.RegisterClass(typeof(ControlsTest));
             TestHarness.RegisterClass(typeof(ConstructorParams));
             TestHarness.RegisterClass(typeof(CssTest));
+            TestHarness.RegisterClass(typeof(MyTest));
         }
     }
 }

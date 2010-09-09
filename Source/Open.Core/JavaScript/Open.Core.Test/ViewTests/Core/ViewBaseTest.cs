@@ -15,7 +15,7 @@ namespace Open.Core.Test.ViewTests.Core
             view.Background = "orange";
             view.SetSize(150, 100);
 
-            TestHarness.AddControl(view, SizeMode.ControlsSize);
+            TestHarness.AddControl(view);
 
             view.SizeChanged += delegate { Log.Info("!! SizeChanged - Width: " + view.Width + ", Height: " + view.Height); };
         }

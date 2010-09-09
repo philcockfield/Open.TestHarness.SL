@@ -34,6 +34,7 @@ div { -moz-user-select: none; }
     border-top:solid 1px white;
 }
 
+img.preload { display:none; }
 
 /* ----------- Vertical Alignment ----------- */
 div.table { position:absolute; display:table; }

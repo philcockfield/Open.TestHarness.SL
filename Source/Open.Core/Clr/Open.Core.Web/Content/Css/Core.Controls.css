@@ -9,6 +9,15 @@ div.c-log-list { overflow:auto; }
     padding:5px 14px;
 }
 
+.c-log-sectionBreak
+{
+    height:19px;
+    padding:0px;
+    background:#eceff3;
+    background-image:url(/Open.Core/Images/Log.SectionDivider.Rip.png);
+    background-repeat:repeat-x;
+}
+
 .c-log-counter 
 { 
     color:#8d8d8d; 
