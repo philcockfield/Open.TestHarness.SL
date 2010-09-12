@@ -51,6 +51,7 @@
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\DiContainer.cs" />
+    <Compile Include="Declarations\Enums\HtmlEnums.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Testing\ITestHarnessEvents.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Global\Keyboard.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Base Classes\ViewBase.cs" />
-    <Compile Include="Declarations\Enumerations.cs" />
+    <Compile Include="Declarations\Enums\Enums.cs" />
     <Compile Include="Declarations\Events\TreeNodeEventArgs.cs" />
     <Compile Include="Declarations\Interfaces\IHtmlFactory.cs" />
     <Compile Include="Declarations\Interfaces\ILog.cs" />

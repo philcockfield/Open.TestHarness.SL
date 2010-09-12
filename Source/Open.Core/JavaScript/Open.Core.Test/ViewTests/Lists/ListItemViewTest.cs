@@ -8,7 +8,6 @@ namespace Open.Core.Test.ViewTests.Lists
     public class ListItemViewTest
     {
         #region Head
-
         private SampleListItem model;
         private ListItemView view;
 
@@ -34,13 +33,23 @@ namespace Open.Core.Test.ViewTests.Lists
         public void Toggle__CanSelect()
         {
             model.CanSelect = !model.CanSelect;
-            Log.Info("CanSelect: " + model.CanSelect);
+            WriteProperties();
         }
 
         public void Toggle__IsSelected()
         {
-            model.IsSelected = !model.IsSelected;
+            bool newValue = !model.IsSelected;
+            if (!model.CanSelect && newValue == true) Log.Info("New value is true.  Because 'CanSelect' == false, the new value will not stick.");
+            model.IsSelected = newValue;
+            WriteProperties();
+        }
+        #endregion
+
+        #region Internal
+        private void WriteProperties()
+        {
             Log.Info("IsSelected: " + model.IsSelected);
+            Log.Info("CanSelect: " + model.CanSelect);
         }
         #endregion
     }

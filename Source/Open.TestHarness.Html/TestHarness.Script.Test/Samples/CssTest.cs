@@ -11,8 +11,7 @@ namespace Test.Samples
 
         public void TestInitialize()
         {
-            TestHarness.ClearControls();
-            view = AddControl(SizeMode.ControlsSize);
+            view = AddControl(ControlDisplayMode.Center);
         }
         #endregion
 
@@ -24,10 +23,10 @@ namespace Test.Samples
         #endregion
 
         #region Internal
-        private static MyCssView AddControl(SizeMode sizeMode)
+        private static MyCssView AddControl(ControlDisplayMode controlDisplayMode)
         {
-            MyCssView view = new MyCssView(Html.CreateDiv(), sizeMode);
-            TestHarness.SizeMode = sizeMode;
+            MyCssView view = new MyCssView(Html.CreateDiv(), controlDisplayMode);
+            TestHarness.DisplayMode = controlDisplayMode;
             TestHarness.AddControl(view);
             return view;
         }
@@ -36,10 +35,10 @@ namespace Test.Samples
 
     public class MyCssView : ViewBase
     {
-        public MyCssView(jQueryObject container, SizeMode sizeMode)
+        public MyCssView(jQueryObject container, ControlDisplayMode controlDisplayMode)
         {
             Initialize(container);
-            container.Append(string.Format("Control [sizeMode:{0}]", sizeMode.ToString()));
+            container.Append(string.Format("Control [sizeMode:{0}]", controlDisplayMode.ToString()));
             container.CSS(Css.Background, "#f0ebc5");
             container.CSS(Css.Width, "300px");
             container.CSS(Css.Height, "200px");

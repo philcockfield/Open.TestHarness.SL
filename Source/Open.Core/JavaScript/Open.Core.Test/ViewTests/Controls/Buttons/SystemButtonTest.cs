@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using Open.Core.Controls;
+using Open.Core.Controls.Buttons;
 using Open.Testing;
 
 namespace Open.Core.Test.ViewTests.Controls.Buttons

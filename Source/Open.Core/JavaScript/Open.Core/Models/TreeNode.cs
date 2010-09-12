@@ -13,7 +13,11 @@ namespace Open.Core
     {
         #region Events : ITreeNode
         public event EventHandler SelectionChanged;
-        private void FireSelectionChanged() { if (SelectionChanged != null) SelectionChanged(this, new EventArgs()); }
+        private void FireSelectionChanged()
+        {
+            OnIsSelectedChanged();
+            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+        }
 
         public event EventHandler Click;
         internal void FireClick(){if (Click != null) Click(this, new EventArgs());} // NB: Access = 'internal' so the FireClick helper method can access it.
@@ -91,6 +95,11 @@ namespace Open.Core
 
         #region Methods
         public override string ToString() { return string.Format("[{0}({1})]", GetType().Name, ChildCount); }
+        #endregion
+
+        #region Methods : Protected
+        /// <summary>Invoked after the 'IsSelected' property changes.</summary>
+        protected virtual void OnIsSelectedChanged() { }
         #endregion
 
         #region Methods : JSON

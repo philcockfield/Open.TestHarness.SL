@@ -118,7 +118,6 @@ namespace Open.Core
         /// <param name="cssSelector">The CSS selector of the element to measure.</param>
         public static int Height(string cssSelector) { return jQuery.Select(cssSelector).GetHeight(); }
 
-
         /// <summary>Replaces an element with the given object.</summary>
         /// <param name="replaceSeletor">The CSS selector the element(s) to replace.</param>
         /// <param name="withReplacement">The element to insert.</param>
@@ -131,6 +130,14 @@ namespace Open.Core
                 Css.CopyClasses(replaceElement, withReplacement);
             }
             withReplacement.ReplaceAll(replaceSeletor);
+        }
+
+        /// <summary>Retreives the OuterHtml of the given element.</summary>
+        /// <param name="element">The element to retrieve the HTML for.</param>
+        public static string ToHtml(jQueryObject element)
+        {
+            if (element == null) return null;
+            return CreateDiv().Append(element.Clone()).GetHtml();
         }
         #endregion
     }

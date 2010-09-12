@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.IO;
+using System.Web;
 using Microsoft.Http;
 using Open.Core.Common;
 
@@ -63,7 +64,10 @@ namespace Open.Core.Web
                 using (var response = client.Get(urlPath))
                 {
                     response.EnsureStatusIsSuccessful();
-                    return response.Content.ReadAsString();
+                    StreamReader reader = new StreamReader(response.Content.ReadAsStream());
+                    var text = reader.ReadToEnd();
+                    reader.Dispose();
+                    return text;
                 }
             }
         }

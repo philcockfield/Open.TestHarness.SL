@@ -6,16 +6,19 @@ using Open.Testing.Internal;
 namespace Open.Testing
 {
     /// <summary>Flags representing the various different sizing strategies for a hosted control.</summary>
-    public enum SizeMode
+    public enum ControlDisplayMode
     {
-        /// <summary>The size is determined by the control.</summary>
-        ControlsSize = 0,
+        /// <summary>No sizing or positioning is applied to the control.</summary>
+        None = 0,
+
+        /// <summary>The size is determined by the control, which is centered within the canvas.</summary>
+        Center = 1,
 
         /// <summary>The control is sized to fill the host container.</summary>
-        Fill = 1,
+        Fill = 2,
 
         /// <summary>The control is sized to fill the host container but is surrounded by some whitespace.</summary>
-        FillWithMargin = 2,
+        FillWithMargin = 3,
     }
 
 
@@ -27,7 +30,7 @@ namespace Open.Testing
     {
         #region Head
         private static ITestHarnessEvents events;
-        private static SizeMode sizeMode = SizeMode.ControlsSize;
+        private static ControlDisplayMode displayMode = ControlDisplayMode.Center;
         #endregion
 
         #region Properties
@@ -37,10 +40,10 @@ namespace Open.Testing
         }
 
         /// <summary>Gets or sets the size strategy for displaying added controls/HTML.</summary>
-        public static SizeMode SizeMode
+        public static ControlDisplayMode DisplayMode
         {
-            get { return sizeMode; }
-            set { sizeMode = value; }
+            get { return displayMode; }
+            set { displayMode = value; }
         }
         #endregion
 
@@ -80,14 +83,14 @@ namespace Open.Testing
         /// <summary>Clears the controls from the host canvas and resets to orginal state.</summary>
         public static void Reset()
         {
-            ClearControls();
-            sizeMode = SizeMode.ControlsSize;
+            displayMode = ControlDisplayMode.Center;
+            Events.FireClearControls();
         }
 
-        /// <summary>Clears all added controls from the host canvas.</summary>
-        public static void ClearControls()
+        /// <summary>Forces the display canvas to run it's layout routine.</summary>
+        public static void UpdateLayout()
         {
-            Events.FireClearControls();
+            Events.FireUpdateLayout();
         }
         #endregion
 
@@ -96,8 +99,8 @@ namespace Open.Testing
         {
             TestControlEventArgs e = new TestControlEventArgs();
             e.Control = control;
-            e.SizeMode = SizeMode;
             e.HtmlElement = element;
+            e.ControlDisplayMode = DisplayMode;
             Events.FireControlAdded(e);
         }
         #endregion
@@ -115,7 +118,7 @@ namespace Open.Testing.Internal
     public delegate void TestControlHandler(object sender, TestControlEventArgs e);
     public class TestControlEventArgs
     {
-        public SizeMode SizeMode;
+        public ControlDisplayMode ControlDisplayMode;
         public jQueryObject HtmlElement;
         public IView Control;
     }

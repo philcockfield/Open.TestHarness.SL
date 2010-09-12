@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Open.Core;
+using Open.Core.Controls.HtmlPrimitive;
 
 namespace Open.Testing.Models
 {
@@ -64,10 +65,27 @@ namespace Open.Testing.Models
             }
             catch (Exception error)
             {
+                HtmlList htmlList = new HtmlList(HtmlListType.Unordered, null);
+
+                htmlList.Add("Foo");
+                htmlList.Add("Foo");
+                htmlList.Add("Foo");
+
+//                htmlList.ToHtml()
+
+
+                //Log.Error(
+                //    string.Format("<b>Exception</b> Failed while executing '<b>{0}</b>'.<br/>{1}",
+                //    DisplayName,
+                //    "yo"));
+
+//                htmlList
+
+                //todo
                 Log.Error(
-                    string.Format("<b>Exception</b> Failed while executing '<b>{1}</b>'.<br/>{0}Message: {2}<br/>{0}Method: {3}<br/>{0}Class: {4}<br/>{0}Package: {5}", 
+                    string.Format("<b>Exception</b> Failed while executing '<b>{1}</b>'.<br/>{0}Message: {2}<br/>{0}Method: {3}<br/>{0}Class: {4}<br/>{0}Package: {5}",
                     Html.SpanIndent(30),
-                    DisplayName, 
+                    DisplayName,
                     error.Message,
                     Helper.String.ToCamelCase(Name),
                     ClassInfo.ClassType.FullName,

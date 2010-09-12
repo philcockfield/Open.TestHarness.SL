@@ -7,8 +7,8 @@ using Open.Testing.Views;
 
 namespace Open.Testing.Controllers
 {
-    /// <summary>Controls the 'Control Host' panel where test-controls are displayed.</summary>
-    public class ControlHostController : TestHarnessControllerBase
+    /// <summary>Controls the 'Host Canvas' panel where controls under test are displayed.</summary>
+    public class HostCanvasController : TestHarnessControllerBase
     {
         #region Head
         private readonly jQueryObject divControlHost;
@@ -16,7 +16,7 @@ namespace Open.Testing.Controllers
         private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
-        public ControlHostController()
+        public HostCanvasController()
         {
             // Setup initial conditions.
             divControlHost = jQuery.Select(CssSelectors.ControlHost);
@@ -25,6 +25,7 @@ namespace Open.Testing.Controllers
             // Wire up events.
             events.ControlAdded += OnControlAdded;
             events.ClearControls += OnClearControls;
+            events.UpdateLayout += OnUpdateLayout;
         }
 
         protected override void OnDisposed()
@@ -35,6 +36,7 @@ namespace Open.Testing.Controllers
             // Unwire events.
             events.ControlAdded -= OnControlAdded;
             events.ClearControls -= OnClearControls;
+            events.UpdateLayout -= OnUpdateLayout;
 
             // Finish up.
             base.OnDisposed();
@@ -42,9 +44,10 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.Control, e.HtmlElement, e.SizeMode); }
+        private void OnControlAdded(object sender, TestControlEventArgs e) { AddView(e.Control, e.HtmlElement, e.ControlDisplayMode); }
         private void OnClearControls(object sender, EventArgs e) { Clear(); }
         private void OnControlSizeChanged(object sender, EventArgs e) { UpdateLayout(); }
+        private void OnUpdateLayout(object sender, EventArgs e) { UpdateLayout(); }
         #endregion
 
         #region Methods
@@ -55,7 +58,6 @@ namespace Open.Testing.Controllers
             foreach (ControlWrapperView view in views)
             {
                 if (view.Control != null) view.Control.SizeChanged -= OnControlSizeChanged;
-                
             }
 
             // Dispose of all views.
@@ -64,10 +66,10 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Internal
-        private void AddView(IView control, jQueryObject htmlElement, SizeMode sizeMode)
+        private void AddView(IView control, jQueryObject htmlElement, ControlDisplayMode controlDisplayMode)
         {
             // Create and add the view.
-            ControlWrapperView view = new ControlWrapperView(divControlHost, control, htmlElement, sizeMode, views);
+            ControlWrapperView view = new ControlWrapperView(divControlHost, control, htmlElement, controlDisplayMode, views);
             views.Add(view);
 
             // Wire up events.
@@ -78,7 +80,7 @@ namespace Open.Testing.Controllers
             {
                 foreach (ControlWrapperView item in views)
                 {
-                    if (item.SizeMode == SizeMode.Fill) item.SizeMode = SizeMode.FillWithMargin;
+                    if (item.DisplayMode == ControlDisplayMode.Fill) item.DisplayMode = ControlDisplayMode.FillWithMargin;
                 }
             }
 

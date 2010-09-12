@@ -106,7 +106,16 @@ namespace Open.Core
         {
             string classes = source.GetAttribute(Html.ClassAttr);
             if (string.IsNullOrEmpty(classes)) return;
-            foreach (string className in classes.Split(" "))
+            AddClasses(target, classes);
+        }
+
+        /// <summary>Adds a single class, or multiple classs from a space seperated list.</summary>
+        /// <param name="target">The target element to add to.</param>
+        /// <param name="classValue">The class attribute value to apply.</param>
+        public static void AddClasses(jQueryObject target, string classValue)
+        {
+            if (string.IsNullOrEmpty(classValue)) return;
+            foreach (string className in classValue.Split(" "))
             {
                 target.AddClass(className);
             }

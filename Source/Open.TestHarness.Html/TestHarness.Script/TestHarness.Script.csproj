@@ -45,14 +45,14 @@
     <Reference Include="Script.jQuery" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base Classes\TestHarnessViewBase.cs" />
-    <Compile Include="Base Classes\TestHarnessControllerBase.cs" />
-    <Compile Include="Constants\CssSelectors.cs" />
-    <Compile Include="Constants\Elements.cs" />
+    <Compile Include="Code\Base Classes\TestHarnessViewBase.cs" />
+    <Compile Include="Code\Base Classes\TestHarnessControllerBase.cs" />
+    <Compile Include="Code\Constants\CssSelectors.cs" />
+    <Compile Include="Code\Constants\Elements.cs" />
     <Compile Include="Controllers\ClassController.cs" />
-    <Compile Include="Controllers\ControlHostController.cs" />
+    <Compile Include="Controllers\HostCanvasController.cs" />
     <Compile Include="Controllers\MethodListHeightController.cs" />
-    <Compile Include="Events\TestHarnessEvents.cs" />
+    <Compile Include="Code\Events\TestHarnessEvents.cs" />
     <Compile Include="Models\ListItemNodes\MethodListItem.cs" />
     <Compile Include="Models\ListItemNodes\ClassListItem.cs" />
     <Compile Include="Models\MethodInfo.cs" />
@@ -63,8 +63,8 @@
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PackageLoader.cs" />
-    <Compile Include="Util\Common.cs" />
-    <Compile Include="Util\MethodHelper.cs" />
+    <Compile Include="Code\Util\Common.cs" />
+    <Compile Include="Code\Util\MethodHelper.cs" />
     <Compile Include="Views\ControlWrapperView.cs" />
     <Compile Include="Views\ShellView.cs" />
     <Compile Include="Views\SideBarView.cs" />

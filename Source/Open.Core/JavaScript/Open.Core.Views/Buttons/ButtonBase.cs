@@ -1,7 +1,7 @@
 using System;
 using jQueryApi;
 
-namespace Open.Core.Controls
+namespace Open.Core.Controls.Buttons
 {
     /// <summary>Base class for buttons.</summary>
     public abstract class ButtonBase : ViewBase, IButton
@@ -65,7 +65,7 @@ namespace Open.Core.Controls
                 InvokeClick(true);
             }
         }
-       #endregion
+        #endregion
 
         #region Properties : IButton
         public bool CanToggle
@@ -105,20 +105,6 @@ namespace Open.Core.Controls
             if (!IsEnabled && !force) return;
             if (CanToggle) IsPressed = !IsPressed;
             FireClick();
-        }
-
-        public void Insert(string cssSeletor, InsertMode mode)
-        {
-            throw new Exception(string.Format("Failed to insert [{0}] at '{1}'.  The insert mode '{2}' is not supported.", GetType().Name, cssSeletor, mode.ToString()));
-            switch (mode)
-            {
-                case InsertMode.Replace:
-                    break;
-                default:
-                    throw new Exception(string.Format("Failed to insert [{0}] at '{1}'.  The insert mode '{2}' is not supported.", GetType().Name, cssSeletor, mode.ToString()));
-            }
-
-            Html.ReplaceWith(cssSeletor, Container, true);
         }
         #endregion
 

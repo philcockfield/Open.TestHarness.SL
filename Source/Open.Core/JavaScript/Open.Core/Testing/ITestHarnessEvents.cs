@@ -15,5 +15,9 @@ namespace Open.Testing.Internal
         /// <summary>Fires when the host canvas is to be cleared of controls.</summary>
         event EventHandler ClearControls;
         void FireClearControls();
+
+        /// <summary>Fires when the TestHarness should run it's layout algorithm on the host canvas.</summary>
+        event EventHandler UpdateLayout;
+        void FireUpdateLayout();
     }
 }

@@ -43,14 +43,12 @@ namespace Open.Core
 
         #region Properties : IView
         public bool IsInitialized { get { return isInitialized; } }
-        #endregion
-
-        #region Properties
-        /// <summary>Gets the element that the view is contained within.</summary>
         public jQueryObject Container { get { return container; } }
+        public string OuterHtml { get { return Html.ToHtml(Container); } }
+        public string InnerHtml { get { return Container.GetHtml(); } }
         #endregion
 
-        #region Properties : State
+        #region Properties : IView - State
         public bool IsEnabled
         {
             get { return (bool)Get(PropIsEnabled, true); }
@@ -121,7 +119,7 @@ namespace Open.Core
         }
         #endregion
 
-        #region Methods
+        #region Methods : IView
         public void Initialize(jQueryObject container)
         {
             // Setup initial conditions.)
@@ -149,14 +147,9 @@ namespace Open.Core
         private void SetSizeInternal(int value, SizeDimension dimension, bool withEvent)
         {
             if (value < 0) value = 0;
-
-            string attr = dimension == SizeDimension.Width ? Css.Width : Css.Height;
-
             SetCss(
                 dimension == SizeDimension.Width ? Css.Width : Css.Height, 
                 value + Css.Px);
-
-
             if (withEvent) FireSizeChanged();
         }
 

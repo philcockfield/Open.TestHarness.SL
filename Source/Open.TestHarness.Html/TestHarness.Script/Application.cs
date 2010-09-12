@@ -20,7 +20,7 @@ namespace Open.Testing
         private static DiContainer container;
         private static PanelResizeController resizeController;
         private static SidebarController sidebarController;
-        private static ControlHostController controlHostController;
+        private static HostCanvasController hostCanvasController;
         #endregion
 
         #region Properties
@@ -46,7 +46,7 @@ namespace Open.Testing
             // Create controllers.
             resizeController = new PanelResizeController();
             sidebarController = new SidebarController();
-            controlHostController = new ControlHostController();
+            hostCanvasController = new HostCanvasController();
 
             // =================================
 

@@ -1,4 +1,5 @@
 using Open.Core.Controls;
+using Open.Core.Controls.Buttons;
 
 namespace Open.Core.Test.ViewTests.Controls.Buttons
 {

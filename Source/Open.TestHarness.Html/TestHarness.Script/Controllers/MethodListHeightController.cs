@@ -29,7 +29,7 @@ namespace Open.Testing.Controllers
             events.SelectedClassChanged += OnSelectedClassChanged;
 
             // Finish up.
-            HideMethodList(null);
+            HideList(null);
         }
 
         protected override void OnDisposed()
@@ -42,15 +42,15 @@ namespace Open.Testing.Controllers
         #region Event Handlers
         private void OnSelectedClassChanged(object sender, ClassEventArgs e)
         {
-            if (e.ClassInfo != null) { ShowMethodList(null); }
-            else { HideMethodList(null); }
+            if (e.ClassInfo != null) { ShowList(null); }
+            else { HideList(null); }
         }
         #endregion
 
         #region Methods
         /// <summary>Reveals the method-list.</summary>
         /// <param name="onComplete">The action to invoke when complete</param>
-        private void ShowMethodList(Action onComplete)
+        private void ShowList(Action onComplete)
         {
             // Setup initial conditions.
             sidebarView.IsMethodListVisible = true;
@@ -62,7 +62,7 @@ namespace Open.Testing.Controllers
 
         /// <summary>Hides the method-list.</summary>
         /// <param name="onComplete">The action to invoke when complete</param>
-        private void HideMethodList(Action onComplete)
+        private void HideList(Action onComplete)
         {
             sidebarView.IsMethodListVisible = false;
             AnimateHeights(0, onComplete);

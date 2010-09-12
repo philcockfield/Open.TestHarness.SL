@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Open.Core.Helpers
 {
@@ -41,6 +42,34 @@ namespace Open.Core.Helpers
             if (string.IsNullOrEmpty(url)) return url;
             string[] parts = url.Split("/");
             return parts.Length == 0 ? url : parts[parts.Length - 1];
+        }
+
+        /// <summary>
+        ///     Converts the given object to a string, formatting appropirate null/undefined/empty-string 
+        ///     versions if the variable is in any of those states.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        [AlternateSignature]
+        public extern string FormatToString(object value);
+        
+        /// <summary>
+        ///     Converts the given object to a string, formatting appropirate null/undefined/empty-string 
+        ///     versions if the variable is in any of those states.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="toString">Function that performs the conversion to a string.</param>
+        public string FormatToString(object value, ToString toString)
+        {
+            // Format null text.
+            if (Script.IsUndefined(value)) return "<undefined>".HtmlEncode();
+            if (value == null || Script.IsNull(value)) return "<null>".HtmlEncode();
+
+            // Convert the value to a string.
+            string text = toString == null ? value.ToString() : toString(value);
+            if (string.IsNullOrEmpty(text)) text = "<empty-string>";
+
+            // Finish up.
+            return text.HtmlEncode();
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 using jQueryApi;
 using HtmlUtil = Open.Core.Html;
 
-namespace Open.Core.Controls
+namespace Open.Core.Controls.Buttons
 {
     /// <summary>A simple button that renders with like the native Browser/OS.</summary>
     public class SystemButton : ButtonBase

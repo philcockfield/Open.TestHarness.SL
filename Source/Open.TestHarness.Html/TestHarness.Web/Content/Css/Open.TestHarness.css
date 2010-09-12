@@ -78,7 +78,7 @@
 #testHarnessSidebar p.dropShadow { top:35px; }
 #testHarnessSidebar .th-testList-content { top:35px; }
 
-#testHarnessSidebar .runButton
+#testHarnessSidebar .th-testList button.runTests
 {
     position:absolute;
     right:5px;

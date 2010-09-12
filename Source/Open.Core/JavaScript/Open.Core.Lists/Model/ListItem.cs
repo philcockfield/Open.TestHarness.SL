@@ -19,7 +19,13 @@ namespace Open.Core.Lists
         public bool CanSelect
         {
             get { return (bool) Get(PropCanSelect, true); }
-            set { Set(PropCanSelect, value, true); }
+            set
+            {
+                if (Set(PropCanSelect, value, true))
+                {
+                    IsSelected = false;
+                }
+            }
         }
 
         public string RightIconSrc
@@ -39,6 +45,12 @@ namespace Open.Core.Lists
         public virtual string CreateHtml() { return null; }
 
         public override string ToString() { return string.Format("{0} {1}", base.ToString(), Text); }
+
+        protected override void OnIsSelectedChanged()
+        {
+            if (!CanSelect && IsSelected) IsSelected = false;
+            base.OnIsSelectedChanged();
+        }
         #endregion
 
         #region Methods : Static

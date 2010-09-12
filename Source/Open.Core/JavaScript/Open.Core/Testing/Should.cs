@@ -11,16 +11,8 @@ namespace Open.Core
         /// <param name="value">The value to compare to.</param>
         public static void Equal(object subject, object value)
         {
-
             bool isSame = (bool)Script.Literal("{0} == {1}", subject, value);
-
-            //Log.Debug("isSame: " + isSame);
-            //Log.Debug("The Same: " + (subject.ToString() == value.ToString()));
-            //Log.LineBreak();
-
             if (!isSame) ThrowError(string.Format("The two values '{0}' and '{1}' are not equal.", Format(subject), Format(value)));
-
-//            if (subject != value) ThrowError(string.Format("The two values '{0}' and '{1}' are not equal.", subject, value));
         }
 
         /// <summary>Asserts that an object is not equal to another object (uses != comparison).</summary>
@@ -68,10 +60,7 @@ namespace Open.Core
 
         private static string Format(object value)
         {
-            if (Script.IsUndefined(value)) value = "<undefined>";
-            if (Script.IsNull(value)) value = "<null>";
-            if (value.ToString() == string.Empty) value = "<empty-string>";
-            return value.ToString().HtmlEncode();
+            return Helper.String.FormatToString(value);
         }
         #endregion
     }

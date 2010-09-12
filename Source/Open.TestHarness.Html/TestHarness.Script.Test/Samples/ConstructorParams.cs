@@ -20,5 +20,6 @@ namespace Test.Samples
         }
         public void Test2() { }
         public void Test3() { }
+        public void Test4() { }
     }
 }

@@ -97,8 +97,6 @@ namespace Open.Core.Lists
         public ITreeNode Node { get { return node; } }
         public bool IsCenterStage { get { return div.GetCSS(Css.Left) == "0px"; } }
         public ListView ListView { get { return listView; } }
-
-//TEMP         private int Width { get { return rootDiv.GetWidth(); } }
         private int SlideDuration { get { return Helper.Time.ToMsecs(parentList.SlideDuration); } }
         #endregion
 

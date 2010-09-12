@@ -11,4 +11,9 @@
     /// <param name="obj">The object to examine.</param>
     /// <returns>True if the object is a match, otherwise False.</returns>
     public delegate bool FuncBool(object obj);
+
+    /// <summary>Converts an object to a string.</summary>
+    /// <param name="obj">The object to convert.</param>
+    /// <remarks>Provides the ability to do external string formatting outside of the object.</remarks>
+    public delegate string ToString(object obj);
 }

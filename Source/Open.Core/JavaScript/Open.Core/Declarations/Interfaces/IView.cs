@@ -17,13 +17,19 @@ namespace Open.Core
         event EventHandler SizeChanged;
         #endregion
 
-        #region Initialization
+        #region Main
         /// <summary>Initializes the control.</summary>
         /// <param name="container">The containing element of the control.</param>
         void Initialize(jQueryObject container);
 
         /// <summary>Gets the element that the control is contained within.</summary>
         jQueryObject Container { get; }
+
+        /// <summary>Gets the complete HTML of the control.</summary>
+        string OuterHtml { get; }
+
+        /// <summary>Gets the inner HTML of the control (the html within the Container, but not including the container's tag).</summary>
+        string InnerHtml { get; }
 
         /// <summary>Destroys the control and clears resources.</summary>
         void Dispose();

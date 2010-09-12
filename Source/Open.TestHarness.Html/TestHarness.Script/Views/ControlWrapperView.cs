@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Html;
 using jQueryApi;
 using Open.Core;
 
@@ -10,12 +9,12 @@ namespace Open.Testing.Views
     public class ControlWrapperView : TestHarnessViewBase
     {
         #region Head
-        private const int fillMargin = 30;
+        private const int FillMargin = 30;
 
         private readonly jQueryObject divRoot;
         private readonly jQueryObject htmlElement;
-        private IView control;
-        private SizeMode sizeMode;
+        private readonly IView control;
+        private ControlDisplayMode displayMode;
         private readonly IEnumerable allViews;
         private readonly int index;
         private readonly TestHarnessEvents events;
@@ -25,15 +24,15 @@ namespace Open.Testing.Views
         /// <param name="divHost">The control host DIV.</param>
         /// <param name="control">The logical IView control (null if not available).</param>
         /// <param name="htmlElement">The control content (supplied by the test class. This is the control that is under test).</param>
-        /// <param name="sizeMode">The sizing strategy to use for the control.</param>
+        /// <param name="displayMode">The sizing strategy to use for the control.</param>
         /// <param name="allViews">The Collection of all controls.</param>
-        public ControlWrapperView(jQueryObject divHost, IView control, jQueryObject htmlElement, SizeMode sizeMode, IEnumerable allViews)
+        public ControlWrapperView(jQueryObject divHost, IView control, jQueryObject htmlElement, ControlDisplayMode displayMode, IEnumerable allViews)
         {
             // Setup initial conditions.
             Initialize(divHost);
             this.control = control;
             this.htmlElement = htmlElement;
-            this.sizeMode = sizeMode;
+            this.displayMode = displayMode;
             this.allViews = allViews;
             index = divHost.Children().Length; // Store the order position of the control in the host.
             events = Common.Events;
@@ -80,10 +79,10 @@ namespace Open.Testing.Views
 
         #region Properties
         /// <summary>Gets or sets the items size mode.</summary>
-        public SizeMode SizeMode
+        public ControlDisplayMode DisplayMode
         {
-            get { return sizeMode; }
-            set { sizeMode = value; }
+            get { return displayMode; }
+            set { displayMode = value; }
         }
 
         /// <summary>Gets the HTML content.</summary>
@@ -105,21 +104,22 @@ namespace Open.Testing.Views
         #region Internal
         private void UpdateSize()
         {
-            switch (sizeMode)
+            switch (displayMode)
             {
-                case SizeMode.ControlsSize:
+                case ControlDisplayMode.None:
+                case ControlDisplayMode.Center:
                     // Ignore - size of the control is assumed.
                     break;
 
-                case SizeMode.Fill:
+                case ControlDisplayMode.Fill:
                     SetSizeWithPadding(0, 0);
                     break;
 
-                case SizeMode.FillWithMargin:
-                    SetSizeWithPadding(fillMargin, fillMargin);
+                case ControlDisplayMode.FillWithMargin:
+                    SetSizeWithPadding(FillMargin, FillMargin);
                     break;
 
-                default: throw new Exception(sizeMode.ToString());
+                default: throw new Exception(displayMode.ToString());
             }
 
             // Finish up.
@@ -135,40 +135,45 @@ namespace Open.Testing.Views
 
         private void UpdatePosition()
         {
+            // Setup initial conditions.
+            if (DisplayMode == ControlDisplayMode.None) return;
+
             // Left.
             divRoot.CSS(Css.Left, GetLeft() + Css.Px);
 
             // Top.
             int top = Container.Children().Length == 1 ? GetTop() : GetStackedTop();
-            if (sizeMode != SizeMode.Fill && top < fillMargin) top = fillMargin;
+            if (displayMode != ControlDisplayMode.Fill && top < FillMargin) top = FillMargin;
             divRoot.CSS(Css.Top, top + Css.Px);
         }
 
         private int GetLeft()
         {
-            switch (sizeMode)
+            switch (displayMode)
             {
-                case SizeMode.ControlsSize: return (Container.GetWidth()/2) - (htmlElement.GetWidth()/2);
-                case SizeMode.Fill: return 0;
-                case SizeMode.FillWithMargin: return fillMargin;
-                default: throw new Exception(sizeMode.ToString());
+                case ControlDisplayMode.None: return -1; // ignore.
+                case ControlDisplayMode.Center: return (Container.GetWidth()/2) - (htmlElement.GetWidth()/2);
+                case ControlDisplayMode.Fill: return 0;
+                case ControlDisplayMode.FillWithMargin: return FillMargin;
+                default: throw new Exception(displayMode.ToString());
             }
         }
 
         private int GetTop()
         {
-            switch (sizeMode)
+            switch (displayMode)
             {
-                case SizeMode.ControlsSize: return (Container.GetHeight()/2) - (htmlElement.GetHeight()/2);
-                case SizeMode.Fill: return 0;
-                case SizeMode.FillWithMargin: return fillMargin;
-                default: throw new Exception(sizeMode.ToString());
+                case ControlDisplayMode.None: return -1; // ignore.
+                case ControlDisplayMode.Center: return (Container.GetHeight() / 2) - (htmlElement.GetHeight() / 2);
+                case ControlDisplayMode.Fill: return 0;
+                case ControlDisplayMode.FillWithMargin: return FillMargin;
+                default: throw new Exception(displayMode.ToString());
             }
         }
 
         private int GetStackedTop()
         {
-            return GetOffsetHeight() + ((index + 1) * fillMargin);
+            return GetOffsetHeight() + ((index + 1) * FillMargin);
         }
 
         private int GetOffsetHeight()
