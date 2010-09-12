@@ -30,8 +30,8 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
             count++;
             string text = "Item " + count;
 
-            jQueryObject ulItem = list.Add("myItemClass");
-            ulItem.Html(text);
+            jQueryObject ulItem = list.Add(text, "myClass1 myClass2");
+            Log.Info("Inserted item: " + Html.ToHtml(ulItem).HtmlEncode());
 
             Write_Properties();
         }
@@ -54,7 +54,7 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
             Write_Properties();
         }
 
-        public void ERROR()
+        public void MyERROR()
         {
             Log.Info("Throwing error now.");
             throw new Exception("Hello"); //TEMP 

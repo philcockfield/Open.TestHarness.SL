@@ -137,3 +137,11 @@
     font-weight:300;
     color:#828282;
 }
+
+#testHarnessLog .logErrorList
+{
+    position:relative;
+    margin-left:35px;
+    margin-top:4px;
+    line-height:20px;
+}

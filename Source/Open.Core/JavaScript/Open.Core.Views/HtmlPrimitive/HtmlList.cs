@@ -53,19 +53,19 @@ namespace Open.Core.Controls.HtmlPrimitive
 
         #region Methods
         /// <summary>Adds a new list item <li></li>.</summary>
-        /// <param name="cssClass">The class(es) to apply to the LI.</param>
-        /// <returns>The LI element.</returns>
-        [AlternateSignature]
-        public extern jQueryObject Add(string cssClass);
-
-        /// <summary>Adds a new list item <li></li>.</summary>
-        /// <param name="cssClass">The class(es) to apply to the LI.</param>
         /// <param name="text">The text to insert within the element.</param>
         /// <returns>The LI element.</returns>
-        public jQueryObject Add(string cssClass, string text)
+        [AlternateSignature]
+        public extern jQueryObject Add(string text);
+
+        /// <summary>Adds a new list item <li></li>.</summary>
+        /// <param name="text">The text to insert within the element.</param>
+        /// <param name="cssClass">The class(es) to apply to the LI.</param>
+        /// <returns>The LI element.</returns>
+        public jQueryObject Add(string text, string cssClass)
         {
             jQueryObject li = Html.CreateElement("li");
-            if (!string.IsNullOrEmpty(text)) li.Append(text);
+            if (!string.IsNullOrEmpty(text)) li.Append(string.Format("<p>{0}</p>", text));
             Css.AddClasses(li, cssClass);
             li.AppendTo(Container);
             FireSizeChanged();

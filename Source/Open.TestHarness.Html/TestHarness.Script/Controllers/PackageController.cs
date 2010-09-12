@@ -117,7 +117,6 @@ namespace Open.Testing.Controllers
                                                 AddChildNodes();
                                                 FireLoaded();
                                             }
-                                            Log.LineBreak();
                                         });
             timeout.Start();
         }

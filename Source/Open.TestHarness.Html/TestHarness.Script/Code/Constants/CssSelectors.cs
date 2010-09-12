@@ -3,6 +3,9 @@ namespace Open.Testing
     /// <summary>Constants for common CSS selectors.</summary>
     public static class CssSelectors
     {
+        // Properties.
+        public static readonly Classes Classes = new Classes();
+
         // Root.
         public static readonly string Root = "#testHarness";
 
@@ -28,5 +31,10 @@ namespace Open.Testing
         public static readonly string LogContainer = "#testHarnessLog";
         public static readonly string LogTitlebar = "#testHarnessLog .th-log-tb";
         public static readonly string Log = "#testHarnessLog .c-log";
+    }
+
+    public class Classes
+    {
+        public readonly string LogErrorList = "logErrorList";
     }
 }

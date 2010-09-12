@@ -60,7 +60,6 @@
     <Compile Include="ViewTests\Controls\Buttons\SystemButtonTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
-    <Compile Include="ViewTests\DougDemo.cs" />
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListTreeTest.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
