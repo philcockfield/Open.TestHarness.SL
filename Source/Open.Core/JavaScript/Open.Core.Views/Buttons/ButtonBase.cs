@@ -23,11 +23,8 @@ namespace Open.Core.Controls.Buttons
 
         /// <summary>Constructor.</summary>
         /// <param name="html">The HTML of the button.</param>
-        protected ButtonBase(jQueryObject html)
+        protected ButtonBase(jQueryObject html) : base(html)
         {
-            // Setup initial conditions.
-            Initialize(html);
-
             // Wire up events.
             html.MouseOver(OnMouseOver);
             html.MouseOut(OnMouseOut);

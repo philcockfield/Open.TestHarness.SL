@@ -22,10 +22,9 @@ namespace Open.Testing.Views
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing div.</param>
-        public MethodListView(jQueryObject container)
+        public MethodListView(jQueryObject container) : base(container)
         {
             // Setup initial conditions.
-            Initialize(container);
             events = Common.Events;
 
             // Create the list-tree.

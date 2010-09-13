@@ -25,16 +25,10 @@ namespace Open.Core.Lists
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
-        public ListView(jQueryObject container)
+        public ListView(jQueryObject container) : base(container)
         {
-            Initialize(container);
             ListCss.InsertCss();
-        }
-
-        protected override void OnInitialize(jQueryObject container)
-        {
             container.AddClass(ListCss.Classes.Root);
-            base.OnInitialize(container);
         }
         #endregion
 

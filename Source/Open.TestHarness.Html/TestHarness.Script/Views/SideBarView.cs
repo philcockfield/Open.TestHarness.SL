@@ -21,11 +21,8 @@ namespace Open.Testing.Views
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing DIV.</param>
-        public SidebarView(jQueryObject container)
+        public SidebarView(jQueryObject container) : base(container)
         {
-            // Setup initial conditions.
-            Initialize(container);
-
             // Create the list-tree.
             rootList = new ListTreeView(jQuery.Select(CssSelectors.SidebarRootList));
             rootList.SlideDuration = SlideDuration;

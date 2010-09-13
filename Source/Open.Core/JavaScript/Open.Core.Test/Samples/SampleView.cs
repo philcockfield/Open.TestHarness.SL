@@ -4,9 +4,8 @@ namespace Open.Core.Test
     {
         public PropertyRef LastPropertyChanged;
 
-        public SampleView(bool initialize)
+        public SampleView() : base(Html.CreateDiv())
         {
-            if (initialize) Initialize(Html.CreateDiv());
             PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { LastPropertyChanged = args.Property; };
         }
     }

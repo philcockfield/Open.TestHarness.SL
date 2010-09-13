@@ -48,7 +48,7 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Samples\Control_Insertion_Test.cs" />
+    <Compile Include="Samples\Canvas_Control_Insertion_Test.cs" />
     <Compile Include="Samples\ConstructorParams.cs" />
     <Compile Include="Samples\CssTest.cs" />
     <Compile Include="Samples\MyTest_Class__2.cs" />

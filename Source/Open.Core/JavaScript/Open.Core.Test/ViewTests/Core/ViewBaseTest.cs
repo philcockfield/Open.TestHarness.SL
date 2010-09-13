@@ -11,7 +11,7 @@ namespace Open.Core.Test.ViewTests.Core
 
         public void ClassInitialize()
         {
-            view = new SampleView(true);
+            view = new SampleView();
             view.Background = "orange";
             view.SetSize(150, 100);
 

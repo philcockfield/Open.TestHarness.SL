@@ -16,20 +16,48 @@ namespace Open.Core.Lists
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
         /// <param name="model">The data model for the list item.</param>
-        public ListItemView(jQueryObject container, object model)
+        public ListItemView(jQueryObject container, object model) : base(container)
         {
             // Setup initial conditions.
             this.model = model;
-            Initialize(container);
 
             // Retreive property refs.
             isSelectedRef = PropertyRef.GetFromModel(model, TreeNode.PropIsSelected);
 
+            // Initialize the LI element.
+            InitializeElement(container);
+
             // Wire up events.
             if (isSelectedRef != null) isSelectedRef.Changed += OnIsSelectedChanged;
             if (ModelAsTreeNode != null) ModelAsTreeNode.ChildrenChanged += OnTreeNodeChildrenChanged;
+        }
 
-            // Finish up.
+        /// <summary>Initializes the list-item.</summary>
+        /// <param name="liElement">The containing <li></li> element.</param>
+        protected void InitializeElement(jQueryObject liElement)
+        {
+            // Setup initial conditions.
+            liElement.AddClass(ListCss.ItemClasses.Root);
+
+            // Construct HTML content and insert into DOM.
+            string customHtml = GetFactoryHtml();
+            jQueryObject content = (customHtml == null)
+                                                    ? ListTemplates.DefaultListItem(Model) // No custom HTML supplied, use default.
+                                                    : jQuery.FromHtml(customHtml);
+            content.AppendTo(liElement);
+
+            // Retrieve child elements.
+            htmLabel = GetChild(content, ListCss.ItemClasses.Label);
+            imgRightIcon = GetChild(content, ListCss.ItemClasses.IconRight);
+
+            // Wire up events.
+            imgRightIcon.Load(delegate(jQueryEvent @event)
+                                        {
+                                            UpdateRightIcon();
+                                        });
+
+            // Setup databinding.
+            SetupBindings();
             UpdateVisualState();
         }
 
@@ -112,37 +140,6 @@ namespace Open.Core.Lists
                 IListItem item = ModelAsListItem;
                 return item == null ? true : item.CanSelect;
             }
-        }
-        #endregion
-
-        #region Methods
-        /// <summary>Initializes the list-item.</summary>
-        /// <param name="container">The containing <li></li> element.</param>
-        protected override void OnInitialize(jQueryObject container)
-        {
-            // Setup initial conditions.
-            container.AddClass(ListCss.ItemClasses.Root);
-
-            // Construct HTML content and insert into DOM.
-            string customHtml = GetFactoryHtml();
-            jQueryObject content = (customHtml == null)
-                                                    ? ListTemplates.DefaultListItem(Model) // No custom HTML supplied, use default.
-                                                    : jQuery.FromHtml(customHtml);
-            content.AppendTo(container);
-
-            // Retrieve child elements.
-            htmLabel = GetChild(content, ListCss.ItemClasses.Label);
-            imgRightIcon = GetChild(content, ListCss.ItemClasses.IconRight);
-
-            // Wire up events.
-            imgRightIcon.Load(delegate(jQueryEvent @event)
-                                  {
-                                      UpdateRightIcon();
-                                  });
-
-            // Setup databinding.
-            SetupBindings();
-            UpdateVisualState();
         }
         #endregion
 

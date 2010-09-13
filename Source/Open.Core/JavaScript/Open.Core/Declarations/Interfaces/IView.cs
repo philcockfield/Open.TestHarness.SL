@@ -18,10 +18,6 @@ namespace Open.Core
         #endregion
 
         #region Main
-        /// <summary>Initializes the control.</summary>
-        /// <param name="container">The containing element of the control.</param>
-        void Initialize(jQueryObject container);
-
         /// <summary>Gets the element that the control is contained within.</summary>
         jQueryObject Container { get; }
 
@@ -36,9 +32,6 @@ namespace Open.Core
         #endregion
 
         #region State
-        /// <summary>Gets or sets whether the control has been initialized.</summary>
-        bool IsInitialized { get; }
-
         /// <summary>Gets or sets whether the control is enabled.</summary>
         bool IsEnabled { get; set; }
 

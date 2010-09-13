@@ -1,10 +1,9 @@
-﻿using jQueryApi;
-using Open.Core;
+﻿using Open.Core;
 using Open.Testing;
 
 namespace Test.Samples
 {
-    public class Control_Insertion_Test
+    public class Canvas_Control_Insertion_Test
     {
         #region Methods : Tests
         public void Add_Control__None() { AddControl(ControlDisplayMode.None); }
@@ -23,27 +22,26 @@ namespace Test.Samples
         #region Internal
         private static void AddControl(ControlDisplayMode displayMode)
         {
-            IView view = new MyView(Html.CreateDiv(), displayMode);
+            IView control = new MyView(displayMode);
             TestHarness.DisplayMode = displayMode;
-            TestHarness.AddControl(view);
-            Log.Info("Control added. DisplayMode: " + displayMode.ToString());
+            TestHarness.AddControl(control);
+            Log.Info("Control added. DisplayMode: " + (displayMode.ToString()));
         }
         #endregion
     }
 
     public class MyView : ViewBase
     {
-        public MyView(jQueryObject container, ControlDisplayMode controlDisplayMode)
+        public MyView(ControlDisplayMode controlDisplayMode) 
         {
-            Initialize(container);
-            container.Append(string.Format("Control [sizeMode:{0}]", controlDisplayMode.ToString()));
-            container.CSS(Css.Background, "#f0ebc5");
-            container.CSS(Css.Width, "300px");
-            container.CSS(Css.Height, "200px");
+            Container.Append(string.Format("Control [sizeMode:{0}]", controlDisplayMode.ToString()));
+            Container.CSS(Css.Background, "#f0ebc5");
+            Container.CSS(Css.Width, "300px");
+            Container.CSS(Css.Height, "200px");
 
-            container.CSS("-webkit-border-radius", "10px");
-            container.CSS("-moz-border-radius", "10px");
-            container.CSS("border-radius", "10px");
+            Container.CSS("-webkit-border-radius", "10px");
+            Container.CSS("-moz-border-radius", "10px");
+            Container.CSS("border-radius", "10px");
         }
     }
 }

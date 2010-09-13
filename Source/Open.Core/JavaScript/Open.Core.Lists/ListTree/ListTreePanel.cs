@@ -8,18 +8,23 @@ namespace Open.Core.Lists
     internal class ListTreePanel : ViewBase
     {
         #region Head
-        private readonly jQueryObject rootDiv;
-        private jQueryObject div;
         private readonly ITreeNode node;
         private readonly ListTreeView parentList;
-        private ListView listView;
+        private readonly ListView listView;
 
-        public ListTreePanel(ListTreeView parentList, jQueryObject rootDiv, ITreeNode node)
+        public ListTreePanel(ListTreeView parentList, ITreeNode node) : base(Html.CreateDiv())
         {
             // Store value.
             this.parentList = parentList;
-            this.rootDiv = rootDiv;
             this.node = node;
+
+            // Insert HTML container.
+            Hide();
+            Css.AbsoluteFill(Container);
+
+            // Create list.
+            listView = new ListView(Container);
+            listView.Load(node.Children);
 
             // Wire up events.
             GlobalEvents.HorizontalPanelResized += OnHorizontalPanelResized;
@@ -27,19 +32,6 @@ namespace Open.Core.Lists
             node.AddedChild += OnAddedChild;
             node.RemovedChild += OnRemovedChild;
             if (node.Parent != null) node.Parent.RemovingChild += OnParentRemovingChild;
-        }
-
-        protected override void OnInitialize(jQueryObject container)
-        {
-            // Insert HTML container.
-            div = Html.AppendDiv(container);
-            div = container.Children(Html.Div).Last(); // NB: Ensure we get a stable reference to the div.
-            Hide();
-            Css.AbsoluteFill(div);
-
-            // Create list.
-            listView = new ListView(div);
-            listView.Load(node.Children);
 
             // Finish up.
             SyncWidth();
@@ -48,7 +40,7 @@ namespace Open.Core.Lists
         protected override void OnDisposed()
         {
             // Setup initial conditions.
-            div.Remove();
+            Container.Remove();
 
             // Unwire events.
             GlobalEvents.HorizontalPanelResized -= OnHorizontalPanelResized;
@@ -95,7 +87,7 @@ namespace Open.Core.Lists
 
         #region Properties
         public ITreeNode Node { get { return node; } }
-        public bool IsCenterStage { get { return div.GetCSS(Css.Left) == "0px"; } }
+        public bool IsCenterStage { get { return GetCss(Css.Left) == "0px"; } }
         public ListView ListView { get { return listView; } }
         private int SlideDuration { get { return Helper.Time.ToMsecs(parentList.SlideDuration); } }
         #endregion
@@ -103,9 +95,6 @@ namespace Open.Core.Lists
         #region Methods
         public void SlideOff(HorizontalDirection direction, Action onComplete)
         {
-            // Setup initial conditions.
-            if (!IsInitialized) return;
-
             // Ensure the panel is on stage.
             CenterStage();
 
@@ -114,7 +103,7 @@ namespace Open.Core.Lists
             properties[Css.Left] = direction == HorizontalDirection.Left ? 0 - Width : Width;
 
             // Perform animation.
-            div.Animate(
+            Container.Animate(
                         properties, 
                         SlideDuration, 
                         parentList.SlideEasing, 
@@ -128,9 +117,6 @@ namespace Open.Core.Lists
 
         public void SlideOn(HorizontalDirection direction, Action onComplete)
         {
-            // Setup initial conditions.
-            if (!IsInitialized) return;
-
             // Prepare the panels starting position.
             SetPosition(direction, true);
 
@@ -139,7 +125,7 @@ namespace Open.Core.Lists
             properties[Css.Left] = 0;
 
             // Perform animation.
-            div.Animate(
+            Container.Animate(
                         properties,
                         SlideDuration,
                         parentList.SlideEasing,
@@ -152,23 +138,23 @@ namespace Open.Core.Lists
 
         public void CenterStage()
         {
-            div.CSS(Css.Left, "0px");
-            div.CSS(Css.Display, Css.Block);
+            Container.CSS(Css.Left, "0px");
+            Container.CSS(Css.Display, Css.Block);
             SyncWidth();
         }
 
         public void SetPosition(HorizontalDirection direction, bool isVisible)
         {
             int startLeft = direction == HorizontalDirection.Right ? 0 - Width : Width;
-            div.CSS(Css.Left, startLeft + Css.Px);
-            div.CSS(Css.Display, isVisible ? Css.Block : Css.None);
+            Container.CSS(Css.Left, startLeft + Css.Px);
+            Container.CSS(Css.Display, isVisible ? Css.Block : Css.None);
             SyncWidth();
         }
-        public void SyncWidth() { div.Width(Width); }
+        public void SyncWidth() { Width = parentList.Width; }
         #endregion
 
         #region Internal
-        private void Hide() { div.CSS(Css.Display, Css.None); }
+        private void Hide() { Container.CSS(Css.Display, Css.None); }
 
         private ITreeNode GetSelectedChild()
         {

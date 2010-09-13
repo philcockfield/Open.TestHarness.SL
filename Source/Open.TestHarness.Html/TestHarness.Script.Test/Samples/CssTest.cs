@@ -35,9 +35,8 @@ namespace Test.Samples
 
     public class MyCssView : ViewBase
     {
-        public MyCssView(jQueryObject container, ControlDisplayMode controlDisplayMode)
+        public MyCssView(jQueryObject container, ControlDisplayMode controlDisplayMode) : base(container)
         {
-            Initialize(container);
             container.Append(string.Format("Control [sizeMode:{0}]", controlDisplayMode.ToString()));
             container.CSS(Css.Background, "#f0ebc5");
             container.CSS(Css.Width, "300px");

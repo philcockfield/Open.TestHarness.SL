@@ -26,10 +26,14 @@ namespace Open.Testing.Views
         /// <param name="htmlElement">The control content (supplied by the test class. This is the control that is under test).</param>
         /// <param name="displayMode">The sizing strategy to use for the control.</param>
         /// <param name="allViews">The Collection of all controls.</param>
-        public ControlWrapperView(jQueryObject divHost, IView control, jQueryObject htmlElement, ControlDisplayMode displayMode, IEnumerable allViews)
+        public ControlWrapperView(
+            jQueryObject divHost, 
+            IView control, 
+            jQueryObject htmlElement, 
+            ControlDisplayMode displayMode, 
+            IEnumerable allViews) : base(divHost)
         {
             // Setup initial conditions.
-            Initialize(divHost);
             this.control = control;
             this.htmlElement = htmlElement;
             this.displayMode = displayMode;

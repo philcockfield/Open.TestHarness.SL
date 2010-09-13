@@ -22,7 +22,7 @@ namespace Open.Core.Lists
         public const string PropSelectedNode = "SelectedNode";
         public const string PropSelectedParent = "SelectedParent";
 
-        private jQueryObject div;
+        private jQueryObject divInner;
         private double slideDuration = 0.4;
         EffectEasing slideEasing = EffectEasing.Swing;
         private readonly ArrayList panels = new ArrayList();
@@ -30,10 +30,12 @@ namespace Open.Core.Lists
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
-        public ListTreeView(jQueryObject container)
+        public ListTreeView(jQueryObject container) : base(container)
         {
-            Initialize(container);
             ListCss.InsertCss();
+            divInner = Html.AppendDiv(container);
+            Css.AbsoluteFill(divInner);
+            Css.SetOverflow(divInner, CssOverflow.Hidden);
         }
 
         protected override void OnDisposed()
@@ -89,7 +91,7 @@ namespace Open.Core.Lists
                         if (previousNode == null)
                         {
                             // There is no previous node to slide from.  Show the list immediately.
-                            GetOrCreatePanel(value, true).CenterStage();
+                            GetOrCreatePanel(value).CenterStage();
                         }
                         else
                         {
@@ -148,13 +150,6 @@ namespace Open.Core.Lists
         #endregion
 
         #region Methods
-        protected override void OnInitialize(jQueryObject container)
-        {
-            div = Html.AppendDiv(container);
-            Css.AbsoluteFill(div);
-            Css.SetOverflow(div, CssOverflow.Hidden);
-        }
-
         /// <summary>Moves the selected node to the parent of the current node.</summary>
         public void Back()
         {
@@ -187,12 +182,12 @@ namespace Open.Core.Lists
             // Slide off the old panel.
             if (previousNode != null)
             {
-                ListTreePanel oldPanel = GetOrCreatePanel(previousNode, true);
+                ListTreePanel oldPanel = GetOrCreatePanel(previousNode);
                 oldPanel.SlideOff(direction, null);
             }
 
             // Slide on the new panel.
-            ListTreePanel panel = GetOrCreatePanel(newNode, true);
+            ListTreePanel panel = GetOrCreatePanel(newNode);
             panel.SlideOn(direction, null);
         }
 
@@ -204,14 +199,9 @@ namespace Open.Core.Lists
                        : HorizontalDirection.Right;
         }
 
-        private ListTreePanel GetOrCreatePanel(ITreeNode node, bool initialize)
+        private ListTreePanel GetOrCreatePanel(ITreeNode node)
         {
-            // Get or create the panel if it doesn't exist.
-            ListTreePanel panel = GetPanel(node) ?? CreatePanel(node);
-
-            // Finish up.
-            if (initialize && !panel.IsInitialized) panel.Initialize(div);
-            return panel;
+            return GetPanel(node) ?? CreatePanel(node);
         }
 
         private ListTreePanel GetPanel(ITreeNode node)
@@ -226,7 +216,8 @@ namespace Open.Core.Lists
 
         private ListTreePanel CreatePanel(ITreeNode node)
         {
-            ListTreePanel panel = new ListTreePanel(this, div, node);
+            ListTreePanel panel = new ListTreePanel(this, node);
+            panel.Container.AppendTo(divInner);
             panels.Add(panel);
             return panel;
         }
@@ -234,7 +225,7 @@ namespace Open.Core.Lists
         private void Reset()
         {
             Helper.Collection.DisposeAndClear(panels);
-            div.Empty();
+            divInner.Empty();
         }
         #endregion
     }

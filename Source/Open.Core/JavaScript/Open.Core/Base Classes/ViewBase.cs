@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core
@@ -37,12 +38,22 @@ namespace Open.Core
         public const string PropHeight = "Height";
         public const string PropIsEnabled = "IsEnabled";
 
-        private bool isInitialized;
-        private jQueryObject container;
+        private readonly jQueryObject container;
+
+        /// <summary>Constructor.</summary>
+        [AlternateSignature]
+        protected extern ViewBase();
+
+        /// <summary>Constructor.</summary>
+        /// <param name="container">The root HTML element of the control (if null a <DIV></DIV> is generated).</param>
+        protected ViewBase(jQueryObject container)
+        {
+            if (container == null) container = Html.CreateDiv();
+            this.container = container;
+        }
         #endregion
 
         #region Properties : IView
-        public bool IsInitialized { get { return isInitialized; } }
         public jQueryObject Container { get { return container; } }
         public string OuterHtml { get { return Html.ToHtml(Container); } }
         public string InnerHtml { get { return Container.GetHtml(); } }
@@ -120,22 +131,6 @@ namespace Open.Core
         #endregion
 
         #region Methods : IView
-        public void Initialize(jQueryObject container)
-        {
-            // Setup initial conditions.)
-            if (IsInitialized) throw new Exception("View is already initialized.");
-
-            // Store reference to the container.
-            this.container = container;
-
-            // Finish up.
-            OnInitialize(this.container);
-            isInitialized = true;
-        }
-
-        /// <summary>Deriving implementation of Initialize.</summary>
-        protected virtual void OnInitialize(jQueryObject container) { }
-
         public void SetSize(int width, int height)
         {
             if (width == Width && height == Height) return;

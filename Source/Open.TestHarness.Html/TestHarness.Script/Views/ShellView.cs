@@ -11,11 +11,8 @@ namespace Open.Testing.Views
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing DIV.</param>
-        public ShellView(jQueryObject container)
+        public ShellView(jQueryObject container) : base(container)
         {
-            // Setup initial conditions.
-            Initialize(container);
-
             // Create child views.
             sidebar = new SidebarView(jQuery.Select(CssSelectors.Sidebar));
         }

@@ -16,12 +16,12 @@ namespace Open.Core.Controls.HtmlPrimitive
         /// <param name="listType">The type of list to construct.</param>
         /// <param name="cssClass">The CSS class attribute to add to the root list element (can be multiple classes).</param>
         public HtmlList(HtmlListType listType, string cssClass)
+            : base(Html.CreateElement(listType == HtmlListType.Unordered ? "ul" : "ol"))
         {
             // Setup initial conditions.
             this.listType = listType;
 
             // Create the root list element.
-            Initialize(Html.CreateElement(listType == HtmlListType.Unordered ? "ul" : "ol"));
             Css.AddClasses(Container, cssClass);
         }
         #endregion

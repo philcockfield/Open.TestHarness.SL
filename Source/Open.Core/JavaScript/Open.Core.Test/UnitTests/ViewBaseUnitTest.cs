@@ -10,7 +10,7 @@ namespace Open.Core.Test.UnitTests
 
         public void TestInitialize()
         {
-            view = new SampleView(true);
+            view = new SampleView();
             TestHarness.AddControl(view);
         }
 
@@ -40,28 +40,11 @@ namespace Open.Core.Test.UnitTests
             Should.BeNull(view.Background);
         }
 
-        public void ShouldNotHaveContainerUntilInitialized()
-        {
-            view = new SampleView(false);
-            Should.BeFalse(view.IsInitialized);
-            Should.BeNull(view.Container);
-
-            jQueryObject div = Html.CreateDiv();
-            view.Initialize(div);
-            Should.Equal(view.Container, div);
-        }
-
         public void ShouldFireBackgroundChangedEvent()
         {
             view.LastPropertyChanged = null;
             view.Background = "orange";
             Should.Equal(view.LastPropertyChanged.Name, ViewBase.PropBackground);
-        }
-
-        public void ShouldNotBeVisibleWhenNotInitialzied()
-        {
-            view = new SampleView(false);
-            Should.BeFalse(view.IsVisible);
         }
 
         public void ShouldBeVisibleByDefault()

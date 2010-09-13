@@ -17,6 +17,9 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
             list.Container.CSS(Css.Background, "orange");
             list.Container.Width(300);
             TestHarness.AddControl(list);
+
+            Add();
+            Add();
         }
         public void ClassCleanup() { }
 

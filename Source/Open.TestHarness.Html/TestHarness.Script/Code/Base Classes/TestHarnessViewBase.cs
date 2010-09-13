@@ -1,3 +1,4 @@
+using jQueryApi;
 using Open.Core;
 
 namespace Open.Testing
@@ -7,6 +8,10 @@ namespace Open.Testing
     {
         #region Head
         private Common common;
+
+        protected TestHarnessViewBase(jQueryObject container) : base(container)
+        {
+        }
         #endregion
 
         #region Properties : Protected

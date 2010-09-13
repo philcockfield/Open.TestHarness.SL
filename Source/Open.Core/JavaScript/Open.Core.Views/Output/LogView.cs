@@ -15,11 +15,11 @@ namespace Open.Core.Controls
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The container of the log</param>
-        public LogView(jQueryObject container)
+        public LogView(jQueryObject container) : base(container)
         {
             // Setup initial conditions.
-            Initialize(container);
             scrollDelay = new DelayedAction(0.05, OnScrollDelayElapsed);
+            divList = container.Children(LogCss.List).First();
 
             // Wire up events.
             GlobalEvents.WindowResize += delegate { UpdateLayout(); };
@@ -57,12 +57,6 @@ namespace Open.Core.Controls
         #endregion
 
         #region Methods : ILogView
-        protected override void OnInitialize(jQueryObject container)
-        {
-            divList = container.Children(LogCss.List).First();
-            base.OnInitialize(container);
-        }
-
         public void Insert(string message, string cssClass)
         {
             // Setup initial conditions.
@@ -102,9 +96,6 @@ namespace Open.Core.Controls
         /// <summary>Updates the visual layout.</summary>
         public void UpdateLayout()
         {
-            // Setup initial conditions.
-            if (!IsInitialized) return;
-
             // Sync list width (prevents horizontal scroll bar appearing).
             divList.Width(Container.GetWidth());
         }

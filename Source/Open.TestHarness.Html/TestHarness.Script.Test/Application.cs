@@ -11,7 +11,7 @@ namespace Test
             TestHarness.RegisterClass(typeof(MyTestClass1));
             TestHarness.RegisterClass(typeof(MyTestClass1)); // Registered twice.
             TestHarness.RegisterClass(typeof(MyTest_Class__2));
-            TestHarness.RegisterClass(typeof(Control_Insertion_Test));
+            TestHarness.RegisterClass(typeof(Canvas_Control_Insertion_Test));
             TestHarness.RegisterClass(typeof(ConstructorParams));
             TestHarness.RegisterClass(typeof(CssTest));
         }
