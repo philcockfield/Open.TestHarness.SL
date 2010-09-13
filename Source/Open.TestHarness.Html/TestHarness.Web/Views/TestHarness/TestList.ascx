@@ -9,7 +9,7 @@
                 <p class="title opacity060"><%= Model.TestListTitle %></p>
             </div>
         </div>
-        <button class="runTests" value="foo"></button>
+        <button class="runTests">Run</button>
     </div>
 
     <!-- List -->

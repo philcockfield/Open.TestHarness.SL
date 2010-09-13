@@ -13,13 +13,16 @@ namespace Open.Testing.Controllers
         #region Head
         private readonly ArrayList packageControllers = new ArrayList();
         private readonly SidebarView view;
-
+        private readonly MethodListController methodListController;
 
         /// <summary>Constructor.</summary>
         public SidebarController()
         {
             // Setup initial conditions.
             view = Common.Shell.Sidebar;
+
+            // Create child controllers.
+            methodListController = new MethodListController();
 
             // Wire up events.
             TEMP();
@@ -28,6 +31,7 @@ namespace Open.Testing.Controllers
         protected override void OnDisposed()
         {
             view.Dispose();
+            methodListController.Dispose();
             foreach (PackageController controller in packageControllers)
             {
                 controller.Dispose();

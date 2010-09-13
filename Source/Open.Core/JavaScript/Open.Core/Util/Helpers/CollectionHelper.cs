@@ -45,6 +45,20 @@ namespace Open.Core.Helpers
             return null;
         }
 
+        /// <summary>Gets the total number of items that match the given predicate.</summary>
+        /// <param name="collection">The collection to examine.</param>
+        /// <param name="predicate">The predicate to match.</param>
+        public int Total(IEnumerable collection, FuncBool predicate)
+        {
+            if (collection == null) return 0;
+            int count = 0;
+            foreach (object item in collection)
+            {
+                if (predicate(item)) count++;
+            }
+            return count;
+        }
+
         /// <summary>Clears the collection, disposing of all disposable children.</summary>
         /// <param name="collection">The collection to clear and dispose.</param>
         public void DisposeAndClear(ArrayList collection)

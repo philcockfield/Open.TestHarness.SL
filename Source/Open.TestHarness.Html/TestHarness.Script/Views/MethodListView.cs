@@ -4,6 +4,7 @@ using Open.Core;
 using Open.Core.Controls;
 using Open.Core.Controls.Buttons;
 using Open.Core.Lists;
+using Open.Testing.Automation;
 using Open.Testing.Models;
 
 namespace Open.Testing.Views
@@ -12,6 +13,10 @@ namespace Open.Testing.Views
     public class MethodListView : TestHarnessViewBase
     {
         #region Head
+        /// <summary>Fires when the 'Run' button is clicked.</summary>
+        public event EventHandler RunClick;
+        private void FireRunClick(){if (RunClick != null) RunClick(this, new EventArgs());}
+
         public const string PropClassInfo = "ClassInfo";
         public const string PropSelectedMethod = "SelectedMethod";
 
@@ -37,15 +42,14 @@ namespace Open.Testing.Views
 
             // Construct buttons.
             btnRun = new SystemButton();
-            btnRun.Html = "Run"; // TODO - Get from string resources.
-            btnRun.FontSize = "8pt";
+            btnRun.FontSize = "8pt"; // TODO - Style button, don't use system button.
             btnRun.Padding = "3px 8px";
             btnRun.Insert(CssSelectors.MethodListRunButton, InsertMode.Replace);
 
             // Wire up events.
-            btnRun.Click += delegate { Log.Info("!! Run clicked"); }; // TODO - Run all tests in method list.
+            btnRun.Click += delegate { FireRunClick(); };
         }
-        #endregion
+       #endregion
 
         #region Event Handlers
         private void OnItemClick(object sender, EventArgs e)

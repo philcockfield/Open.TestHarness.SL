@@ -5,11 +5,20 @@ namespace Open.Core
     {
         #region Head
         private static LogWriter writer;
+        private static bool isActive = true;
         #endregion
 
         #region Properties
+        /// <summary>Gets or sets whether the log is active.  When False nothing is written to the log.</summary>
+        /// <remarks>Use this for pausing output to the log.</remarks>
+        public static bool IsActive
+        {
+            get { return isActive; }
+            set { isActive = value; }
+        }
+
         /// <summary>Gets the specific log-writer instance that the static methods write to.</summary>
-        private static LogWriter Writer { get { return writer ?? (writer = new LogWriter()); } }
+        public static LogWriter Writer { get { return writer ?? (writer = new LogWriter()); } }
         #endregion
 
         #region Methods : Write
@@ -40,20 +49,23 @@ namespace Open.Core
         /// <summary>Writes a message to the log.</summary>
         /// <param name="message">The message to write (HTML).</param>
         /// <param name="severity">The severity of the message.</param>
-        public static void Write(string message, LogSeverity severity) { Writer.Write(message, severity); }
+        public static void Write(string message, LogSeverity severity)
+        {
+            if (IsActive) Writer.Write(message, severity);
+        }
         #endregion
 
         #region Methods : Dividers
         /// <summary>Inserts a line break to the log.</summary>
-        public static void LineBreak() { Writer.Divider(LogDivider.LineBreak); }
+        public static void LineBreak() { if (IsActive) Writer.Divider(LogDivider.LineBreak); }
 
         /// <summary>Inserts a new section divider.</summary>
-        public static void NewSection() { Writer.Divider(LogDivider.Section); }
+        public static void NewSection() { if (IsActive) Writer.Divider(LogDivider.Section); }
         #endregion
 
         #region Methods
         /// <summary>Clears the log.</summary>
-        public static void Clear() { Writer.Clear(); }
+        public static void Clear() { if (IsActive) Writer.Clear(); }
 
         /// <summary>Registers a log viewer to emit output to (multiple views can be associated with the log).</summary>
         /// <param name="view">The log view to emit to.</param>

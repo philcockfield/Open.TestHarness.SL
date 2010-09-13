@@ -138,7 +138,7 @@
     color:#828282;
 }
 
-#testHarnessLog .logErrorList
+#testHarnessLog ul.indentedList
 {
     position:relative;
     margin-left:35px;

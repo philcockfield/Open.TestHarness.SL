@@ -35,6 +35,6 @@ namespace Open.Testing
 
     public class Classes
     {
-        public readonly string LogErrorList = "logErrorList";
+        public readonly string LogIndentedList = "indentedList";
     }
 }

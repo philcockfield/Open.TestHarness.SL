@@ -97,10 +97,12 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Internal
-        protected override void BeforeInsertReplace(jQueryObject replacedElement)
+        protected override void BeforeInsertReplace(jQueryObject e)
         {
-            Value = replacedElement.GetAttribute(HtmlUtil.Value);
-            base.BeforeInsertReplace(replacedElement);
+            Value = e.GetAttribute(HtmlUtil.Value);
+            Type = e.GetAttribute(HtmlUtil.Type);
+            Html = e.GetHtml();
+            base.BeforeInsertReplace(e);
         }
 
         private void SyncHtml() { htmButton.Html(Html); FireSizeChanged(); }

@@ -6,12 +6,12 @@ namespace Open.Core.Controls
     public class LogView : ViewBase, ILogView
     {
         #region Head
-        private jQueryObject divList;
+        private readonly jQueryObject divList;
         private jQueryObject divRow;
         private int counter = 0;
         private double scrollDuration = 0;
         private readonly DelayedAction scrollDelay;
-        private bool sectionDividerPending;
+        private bool canInsertSection = true;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The container of the log</param>
@@ -81,8 +81,10 @@ namespace Open.Core.Controls
             // Perform inserts.
             spanCounter.AppendTo(divRow);
             divMessage.AppendTo(divRow);
-            InsertPendingSectionDivider();
             InsertRow(divRow);
+
+            // Finish up.
+            canInsertSection = true;
         }
 
         public void Clear()
@@ -113,7 +115,7 @@ namespace Open.Core.Controls
                     break;
 
                 case LogDivider.Section:
-                    sectionDividerPending = true;
+                    InsertSectionDivider();
                     break;
 
                 default: throw new Exception("Not supporred: " + type.ToString());
@@ -126,16 +128,16 @@ namespace Open.Core.Controls
             divRow.AddClass(LogCss.LineBreakClass);
         }
 
-        private void InsertPendingSectionDivider()
+        private void InsertSectionDivider()
         {
             // Setup initial conditions.
-            if (!sectionDividerPending) return;
+            if (!canInsertSection) return;
 
-            // Insert the sectino brea.
+            // Insert the section break.
             InsertRow(CreateRowDiv(LogCss.SectionBreak));
 
             // Finish up.
-            sectionDividerPending = false;
+            canInsertSection = false;
         }
         #endregion
 

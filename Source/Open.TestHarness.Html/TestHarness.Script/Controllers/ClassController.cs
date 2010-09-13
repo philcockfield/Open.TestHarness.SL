@@ -1,4 +1,6 @@
+using System;
 using Open.Core;
+using Open.Testing.Automation;
 using Open.Testing.Models;
 using Open.Testing.Views;
 
@@ -23,15 +25,17 @@ namespace Open.Testing.Controllers
 
             // Wire up events.
             events.MethodClicked += OnMethodClicked;
+            sidebarView.MethodList.RunClick += OnRunClick;
 
-            // Invoke the class-setup method.
-            if (classInfo.ClassInitialize != null) classInfo.ClassInitialize.Invoke();
+            // Finish up.
+            Reset();
         }
 
         protected override void OnDisposed()
         {
             // Unwire events.
             events.MethodClicked -= OnMethodClicked;
+            sidebarView.MethodList.RunClick -= OnRunClick;
 
             // Invoke the class-teardown method.
             if (classInfo.ClassCleanup != null) classInfo.ClassCleanup.Invoke();
@@ -44,18 +48,31 @@ namespace Open.Testing.Controllers
         }
         #endregion
 
-        #region Properties
-        private MethodInfo SelectedMethod { get { return sidebarView.MethodList.SelectedMethod; } }
-        #endregion
-
         #region Event Handlers
         private void OnMethodClicked(object sender, MethodEventArgs e)
         {
             InvokeSelectedMethod();
         }
+
+        void OnRunClick(object sender, EventArgs e)
+        {
+            RunAll();
+        }
+        #endregion
+
+        #region Properties
+        private MethodInfo SelectedMethod { get { return sidebarView.MethodList.SelectedMethod; } }
         #endregion
 
         #region Methods
+        /// <summary>Initializes the current class.</summary>
+        public void Reset()
+        {
+            // Invoke the class-setup method.
+            if (classInfo.ClassInitialize != null) classInfo.ClassInitialize.Invoke();
+            Log.NewSection();
+        }
+
         /// <summary>Invokes the currently selected method (including pre/post TestInitialize and TestCleanup methods).</summary>
         /// <returns>True if the method was invoked, or False if there was not currently selected method.</returns>
         public bool InvokeSelectedMethod()
@@ -65,11 +82,34 @@ namespace Open.Testing.Controllers
             if (method == null) return false;
 
             // Invoke the method.
-            Log.NewSection();
             method.Invoke();
+            Log.NewSection();
 
             // Finish up.
             return true;
+        }
+
+        /// <summary>Runs all tests within the class.</summary>
+        public void RunAll()
+        {
+            // Setup initial conditions.
+            ClassTestRunner runner = new ClassTestRunner(classInfo);
+
+            // Pause the output log.
+            bool originalState = Log.IsActive;
+            Log.IsActive = false;
+
+            // Execute the tests.
+            runner.Run();
+
+            // Reset to original state.
+            TestHarness.Reset();
+            Reset(); 
+            Log.IsActive = originalState; // Resume the log.
+            Log.Clear();
+
+            // Write results.
+            runner.WriteResults(Log.Writer);
         }
         #endregion
     }

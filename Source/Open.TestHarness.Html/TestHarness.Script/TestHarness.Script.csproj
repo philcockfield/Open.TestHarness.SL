@@ -45,12 +45,14 @@
     <Reference Include="Script.jQuery" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Automation\ClassTestRunner.cs" />
     <Compile Include="Code\Base Classes\TestHarnessViewBase.cs" />
     <Compile Include="Code\Base Classes\TestHarnessControllerBase.cs" />
     <Compile Include="Code\Constants\CssSelectors.cs" />
     <Compile Include="Code\Constants\Elements.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\HostCanvasController.cs" />
+    <Compile Include="Controllers\MethodListController.cs" />
     <Compile Include="Controllers\MethodListHeightController.cs" />
     <Compile Include="Code\Events\TestHarnessEvents.cs" />
     <Compile Include="Models\ListItemNodes\MethodListItem.cs" />

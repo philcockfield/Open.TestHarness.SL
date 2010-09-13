@@ -48,7 +48,8 @@ namespace Open.Testing.Models
 
         #region Methods
         /// <summary>Invokes the method.</summary>
-        public void Invoke()
+        /// <returns>The exception that occured (if any).</returns>
+        public Exception Invoke()
         {
             // Setup initial conditions.
             object instance = ClassInfo.Instance;
@@ -57,28 +58,38 @@ namespace Open.Testing.Models
             if (!IsSpecial && ClassInfo.TestInitialize != null) ClassInfo.TestInitialize.Invoke();
 
             // Invoke the method.
+            Exception error = null;
             try
             {
                 Function func = Helper.Reflection.GetFunction(instance, Name);
-                if (func == null) return;
-                func.Call(instance);
+                if (func != null) func.Call(instance);
             }
-            catch (Exception error)
+            catch (Exception e)
             {
-                HtmlList htmlList = new HtmlList(HtmlListType.Unordered, CssSelectors.Classes.LogErrorList);
-                htmlList.Add(string.Format("Message: '{0}'", error.Message));
-                htmlList.Add("Method: " + Helper.String.ToCamelCase(Name));
-                htmlList.Add("Class: " + ClassInfo.ClassType.FullName);
-                htmlList.Add("Package: " + Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrl, null, LinkTarget.Blank));
-
-                Log.Error(
-                        string.Format("<b>Exception</b> Failed while executing '<b>{0}</b>'.<br/>{1}", 
-                        DisplayName,
-                        htmlList.OuterHtml));
+                error = e;
+                Log.Error(FormatError(error));
             }
 
             // Invoke the post "teardown" method (if this a standard test-method and is not itself one of the special methods).
             if (!IsSpecial && ClassInfo.TestCleanup != null) ClassInfo.TestCleanup.Invoke();
+
+            // Finish up.
+            return error;
+        }
+
+        /// <summary>Formats an error message.</summary>
+        /// <param name="error">The invoke error.</param>
+        public string FormatError(Exception error)
+        {
+            HtmlList htmlList = new HtmlList(HtmlListType.Unordered, CssSelectors.Classes.LogIndentedList);
+            htmlList.Add(string.Format("Message: '{0}'", error.Message));
+            htmlList.Add("Method: " + Helper.String.ToCamelCase(Name));
+            htmlList.Add("Class: " + ClassInfo.ClassType.FullName);
+            htmlList.Add("Package: " + Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrl, null, LinkTarget.Blank));
+            return string.Format(
+                                "<b>Exception</b> Failed while executing '<b>{0}</b>'.<br/>{1}",
+                                DisplayName,
+                                htmlList.OuterHtml);
         }
         #endregion
 
