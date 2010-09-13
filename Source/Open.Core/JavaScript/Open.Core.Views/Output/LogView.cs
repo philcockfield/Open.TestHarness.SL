@@ -11,7 +11,6 @@ namespace Open.Core.Controls
         private int counter = 0;
         private double scrollDuration = 0;
         private readonly DelayedAction scrollDelay;
-        private bool canInsertSection = true;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The container of the log</param>
@@ -82,9 +81,6 @@ namespace Open.Core.Controls
             spanCounter.AppendTo(divRow);
             divMessage.AppendTo(divRow);
             InsertRow(divRow);
-
-            // Finish up.
-            canInsertSection = true;
         }
 
         public void Clear()
@@ -130,14 +126,7 @@ namespace Open.Core.Controls
 
         private void InsertSectionDivider()
         {
-            // Setup initial conditions.
-            if (!canInsertSection) return;
-
-            // Insert the section break.
             InsertRow(CreateRowDiv(LogCss.SectionBreak));
-
-            // Finish up.
-            canInsertSection = false;
         }
         #endregion
 

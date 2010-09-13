@@ -50,11 +50,12 @@ namespace Open.Testing.Automation
 
         /// <summary>Writes the results of a test run to the output log.</summary>
         /// <param name="log">The log to write to.</param>
-        public void WriteResults(LogWriter log)
+        public void WriteResults(ILog log)
         {
             // Setup initial conditions.
             int successes = Successes;
             int failures = Failures;
+            bool hasFailures = failures > 0;
 
             // Prepare summary details.
             HtmlList list = new HtmlList(HtmlListType.Unordered, CssSelectors.Classes.LogIndentedList);
@@ -63,16 +64,16 @@ namespace Open.Testing.Automation
             string summary = string.Format("Test run for class <b>{0}</b><br/>{1}", classInfo.DisplayName, list.OuterHtml);
 
             // Write to log.
-            log.Write(summary, failures > 0 ? LogSeverity.Error : LogSeverity.Success);
-            log.Divider(LogDivider.LineBreak);
+            log.Write(summary, hasFailures ? LogSeverity.Error : LogSeverity.Success);
 
             // Write out exceptions.
+            if (hasFailures) log.LineBreak();
             foreach (ExecutedTest item in results)
             {
                 if (item.Error == null) continue;
                 log.Write(item.Method.FormatError(item.Error), LogSeverity.Error);
             }
-            log.Divider(LogDivider.Section);
+            log.NewSection();
         }
         #endregion
 
