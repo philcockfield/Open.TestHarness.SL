@@ -102,7 +102,8 @@ namespace Open.Testing.Controllers
             // Create time-out handler.
             DelayedAction timeout = new DelayedAction(loadTimeout, delegate
                             {
-                                Log.Error(string.Format("Failed to download the test-package at '{0}'.  Please ensure the file exists.", link));
+                                loader.Dispose();
+                                Log.Error(string.Format("<b>Failed</b> to download and initialize the test-package at '{0}'.  Please ensure the file exists.", link));
                                 Log.LineBreak();
                             });
 

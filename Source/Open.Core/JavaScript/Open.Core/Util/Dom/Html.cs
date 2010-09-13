@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core
@@ -92,13 +94,19 @@ namespace Open.Core
             return id;
         }
 
-        /// <summary>Formats the an hyperlink.</summary>
+        /// <summary>Formats the URL as a hyperlink, opening it in a new window (Target = _blank).</summary>
+        /// <param name="url">The url to link to.</param>
+        [AlternateSignature]
+        public static extern jQueryObject ToHyperlink(string url);
+
+        /// <summary>Formats the URL as a hyperlink.</summary>
         /// <param name="url">The url to link to.</param>
         /// <param name="text">The display text of the link (null to use the URL).</param>
         /// <param name="target">The target attribute.</param>
         public static string ToHyperlink(string url, string text, LinkTarget target)
         {
             if (text == null) text = url;
+            if (Script.IsUndefined(target)) target = LinkTarget.Blank;
             return string.Format("<a href='{0}' target='_{2}'>{1}</a>", url, text, target.ToString());
         }
 

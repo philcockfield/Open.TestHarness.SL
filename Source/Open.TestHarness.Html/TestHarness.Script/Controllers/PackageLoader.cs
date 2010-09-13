@@ -80,6 +80,8 @@ namespace Open.Testing.Models
             // Download the script.
             jQuery.GetScript(scriptUrl, delegate(object data)
                                             {
+                                                if (IsDisposed) return; // Bail out if the downloader has been disposed.
+
                                                 // Execute the entry-point method.
                                                 try
                                                 {
@@ -89,8 +91,8 @@ namespace Open.Testing.Models
                                                 catch (Exception e)
                                                 {
                                                     Log.Error(string.Format(
-                                                                    "Failed to initialize the script-file at '{0}' with the entry method '{1}()'.<br/>Message: {2}",
-                                                                    scriptUrl, 
+                                                                    "<b>Failed</b> to initialize the script-file at '{0}' with the entry method '{1}()'.<br/>Please ensure there aren't errors in any of the test-class constructors.<br/>Message: '{2}'",
+                                                                    Html.ToHyperlink(scriptUrl), 
                                                                     initMethod, 
                                                                     e.Message));
                                                     error = e;
