@@ -67,6 +67,16 @@ namespace Open.Core
         /// <param name="value">The CSS value.</param>
         void SetCss(string attribute, string value);
 
+        /// <summary>Gets the specified HTML attribute value from the container element.</summary>
+        /// <param name="attribute">The attribute name.</param>
+        /// <returns>The attribute value, or null if it has not been specified.</returns>
+        string GetAttribute(string attribute);
+
+        /// <summary>Assigns the specified HTML attribute value to the container element.</summary>
+        /// <param name="attribute">The attribute name.</param>
+        /// <param name="value">The value.</param>
+        void SetAttribute(string attribute, string value);
+
         /// <summary>Finds the element at the given CSS selector and replaces it with this button.</summary>
         /// <param name="cssSeletor">The CSS selector of the element to replace.</param>
         /// <param name="mode">The strategy used for the insertion.</param>

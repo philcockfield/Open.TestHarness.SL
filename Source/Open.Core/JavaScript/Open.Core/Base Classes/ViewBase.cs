@@ -148,31 +148,54 @@ namespace Open.Core
             if (withEvent) FireSizeChanged();
         }
 
+        /// <summary>Invoked immediately before an Insert operation of mode 'Replace' is executed.</summary>
+        /// <param name="replacedElement">The element being replaced with this control.</param>
+        /// <remarks>Use this to extract any meta-data from the original element before it is removed from the DOM.</remarks>
+        protected virtual void BeforeInsertReplace(jQueryObject replacedElement) { }
+        #endregion
+
+        #region Methods : Insert
         public void Insert(string cssSeletor, InsertMode mode)
         {
             switch (mode)
             {
                 case InsertMode.Replace:
-                    Html.ReplaceWith(cssSeletor, Container, true);
+                    // Retreive the element to replace.
+                    jQueryObject replaceElement = jQuery.Select(cssSeletor);
+                    if (replaceElement == null) throw GetInsertException(cssSeletor, "No such element exists");
+
+                    // Invoke the pre-method
+                    BeforeInsertReplace(replaceElement);
+
+                    // Perform the insertion.
+                    Css.CopyClasses(replaceElement, Container);
+                    Container.ReplaceAll(cssSeletor);
                     break;
 
-                default: throw new Exception(string.Format("Failed to insert [{0}] at '{1}'.  The insert mode '{2}' is not supported.", GetType().Name, cssSeletor, mode.ToString()));
+                default: throw GetInsertException(cssSeletor, string.Format("The insert mode '{0}' is not supported.", mode.ToString()));
             }
+        }
+
+        private Exception GetInsertException(string cssSeletor, string message)
+        {
+            return new Exception(string.Format("Failed to insert [{0}] at '{1}'. {2}", GetType().Name, cssSeletor, message));
         }
         #endregion
 
         #region Methods : CSS
         public string GetCss(string attribute)
         {
-            string value = Container == null ? null : Container.GetCSS(attribute);
+            string value = Container.GetCSS(attribute);
             return string.IsNullOrEmpty(value) ? null : value;
         }
+        public void SetCss(string attribute, string value) { Container.CSS(attribute, value); }
 
-        public void SetCss(string attribute, string value)
+        public string GetAttribute(string attribute)
         {
-            if (Container == null) throw new Exception("Cannot set CSS on view until it is initialized.");
-            Container.CSS(attribute, value);
+            string value = Container.GetAttribute(attribute);
+            return string.IsNullOrEmpty(value) ? null : value;
         }
+        public void SetAttribute(string attribute, string value) { Container.Attribute(attribute, value); }
         #endregion
 
         #region Methods : Protected 
