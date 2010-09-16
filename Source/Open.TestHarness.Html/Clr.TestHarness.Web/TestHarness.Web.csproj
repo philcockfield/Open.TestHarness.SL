@@ -103,6 +103,7 @@
   <ItemGroup>
     <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
+    <Content Include="Views\TestHarness\Bootstrap.aspx" />
     <Content Include="Views\TestHarness\GoogleAnalytics.ascx" />
     <Content Include="Views\TestHarness\Head.ascx" />
     <Content Include="Views\TestHarness\Index.aspx" />

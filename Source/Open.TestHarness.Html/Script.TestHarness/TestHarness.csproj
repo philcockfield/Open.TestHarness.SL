@@ -17,7 +17,7 @@
     <TemplateFile>Properties\TestHarness.Script3.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\TestHarness.Script3.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\TestHarness.Web\Content\Scripts\</DeploymentPath>
+    <DeploymentPath>..\Clr.TestHarness.Web\Content\Scripts\</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

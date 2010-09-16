@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Web", "..\Open.TestHarness.Html\TestHarness.Web\TestHarness.Web.csproj", "{D94FD341-C75C-4EA9-8479-D46DB46048B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Web", "..\Open.TestHarness.Html\Clr.TestHarness.Web\TestHarness.Web.csproj", "{D94FD341-C75C-4EA9-8479-D46DB46048B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Script", "..\Open.TestHarness.Html\TestHarness.Script\TestHarness.Script.csproj", "{E1C9C7B6-0D3B-4F29-A90B-33D0049D6205}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "..\Open.TestHarness.Html\Script.TestHarness\TestHarness.csproj", "{E1C9C7B6-0D3B-4F29-A90B-33D0049D6205}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core", "..\Open.Core\JavaScript\Open.Core\Open.Core.csproj", "{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Controls", "..\Op
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Open.Core", "Open.Core", "{04773D46-7ADA-485A-BB71-263DBB88247B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Script.Test", "..\Open.TestHarness.Html\TestHarness.Script.Test\TestHarness.Script.Test.csproj", "{1F67FFFD-2A3C-41CA-B0C8-BD9DF138FDFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Test", "..\Open.TestHarness.Html\Script.TestHarness.Test\TestHarness.Test.csproj", "{1F67FFFD-2A3C-41CA-B0C8-BD9DF138FDFF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{10AF2722-E6DE-40B2-9270-8AD494B78A5A}"
 EndProject

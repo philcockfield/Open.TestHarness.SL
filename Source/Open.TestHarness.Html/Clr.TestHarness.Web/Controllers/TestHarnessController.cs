@@ -13,6 +13,12 @@ namespace Open.Testing.Web.Controllers
         #endregion
 
         #region Methods : Actions
+        public virtual ActionResult Bootstrap()
+        {
+            return View();
+        }
+
+
         /// <summary>The root of the TestHarness.</summary>
         public virtual ActionResult Index()
         {

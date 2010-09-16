@@ -9,13 +9,15 @@ Type.registerNamespace('Open.Testing');
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Testing.TestHarnessViewBase
 
-Open.Testing.TestHarnessViewBase = function Open_Testing_TestHarnessViewBase() {
+Open.Testing.TestHarnessViewBase = function Open_Testing_TestHarnessViewBase(container) {
     /// <summary>
     /// The base class for views within the TestHarness.
     /// </summary>
+    /// <param name="container" type="jQueryObject">
+    /// </param>
     /// <field name="_common$2" type="Open.Testing.Common">
     /// </field>
-    Open.Testing.TestHarnessViewBase.initializeBase(this);
+    Open.Testing.TestHarnessViewBase.initializeBase(this, [ container ]);
 }
 Open.Testing.TestHarnessViewBase.prototype = {
     _common$2: null,
@@ -61,6 +63,8 @@ Open.Testing.CssSelectors = function Open_Testing_CssSelectors() {
     /// <summary>
     /// Constants for common CSS selectors.
     /// </summary>
+    /// <field name="classes" type="Open.Testing.Classes" static="true">
+    /// </field>
     /// <field name="root" type="String" static="true">
     /// </field>
     /// <field name="sidebar" type="String" static="true">
@@ -79,6 +83,8 @@ Open.Testing.CssSelectors = function Open_Testing_CssSelectors() {
     /// </field>
     /// <field name="methodListContent" type="String" static="true">
     /// </field>
+    /// <field name="methodListRunButton" type="String" static="true">
+    /// </field>
     /// <field name="main" type="String" static="true">
     /// </field>
     /// <field name="mainContent" type="String" static="true">
@@ -91,6 +97,18 @@ Open.Testing.CssSelectors = function Open_Testing_CssSelectors() {
     /// </field>
     /// <field name="log" type="String" static="true">
     /// </field>
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Classes
+
+Open.Testing.Classes = function Open_Testing_Classes() {
+    /// <field name="logIndentedList" type="String">
+    /// </field>
+}
+Open.Testing.Classes.prototype = {
+    logIndentedList: 'indentedList'
 }
 
 
@@ -118,6 +136,8 @@ Open.Testing.TestHarnessEvents = function Open_Testing_TestHarnessEvents() {
     /// </field>
     /// <field name="__clearControls" type="EventHandler">
     /// </field>
+    /// <field name="__updateLayout" type="EventHandler">
+    /// </field>
     /// <field name="__methodClicked" type="Open.Testing.MethodEventHandler">
     /// </field>
     /// <field name="__selectedClassChanged" type="Open.Testing.ClassEventHandler">
@@ -128,16 +148,10 @@ Open.Testing.TestHarnessEvents = function Open_Testing_TestHarnessEvents() {
 Open.Testing.TestHarnessEvents.prototype = {
     
     add_testClassRegistered: function Open_Testing_TestHarnessEvents$add_testClassRegistered(value) {
-        /// <summary>
-        /// Fires when a test class is registered.
-        /// </summary>
         /// <param name="value" type="Function" />
         this.__testClassRegistered = ss.Delegate.combine(this.__testClassRegistered, value);
     },
     remove_testClassRegistered: function Open_Testing_TestHarnessEvents$remove_testClassRegistered(value) {
-        /// <summary>
-        /// Fires when a test class is registered.
-        /// </summary>
         /// <param name="value" type="Function" />
         this.__testClassRegistered = ss.Delegate.remove(this.__testClassRegistered, value);
     },
@@ -153,16 +167,10 @@ Open.Testing.TestHarnessEvents.prototype = {
     },
     
     add_controlAdded: function Open_Testing_TestHarnessEvents$add_controlAdded(value) {
-        /// <summary>
-        /// Fires when a control is added to the host canvas.
-        /// </summary>
         /// <param name="value" type="Function" />
         this.__controlAdded = ss.Delegate.combine(this.__controlAdded, value);
     },
     remove_controlAdded: function Open_Testing_TestHarnessEvents$remove_controlAdded(value) {
-        /// <summary>
-        /// Fires when a control is added to the host canvas.
-        /// </summary>
         /// <param name="value" type="Function" />
         this.__controlAdded = ss.Delegate.remove(this.__controlAdded, value);
     },
@@ -178,16 +186,10 @@ Open.Testing.TestHarnessEvents.prototype = {
     },
     
     add_clearControls: function Open_Testing_TestHarnessEvents$add_clearControls(value) {
-        /// <summary>
-        /// Fires when the host canvas is to be cleared of controls.
-        /// </summary>
         /// <param name="value" type="Function" />
         this.__clearControls = ss.Delegate.combine(this.__clearControls, value);
     },
     remove_clearControls: function Open_Testing_TestHarnessEvents$remove_clearControls(value) {
-        /// <summary>
-        /// Fires when the host canvas is to be cleared of controls.
-        /// </summary>
         /// <param name="value" type="Function" />
         this.__clearControls = ss.Delegate.remove(this.__clearControls, value);
     },
@@ -197,6 +199,23 @@ Open.Testing.TestHarnessEvents.prototype = {
     fireClearControls: function Open_Testing_TestHarnessEvents$fireClearControls() {
         if (this.__clearControls != null) {
             this.__clearControls.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    add_updateLayout: function Open_Testing_TestHarnessEvents$add_updateLayout(value) {
+        /// <param name="value" type="Function" />
+        this.__updateLayout = ss.Delegate.combine(this.__updateLayout, value);
+    },
+    remove_updateLayout: function Open_Testing_TestHarnessEvents$remove_updateLayout(value) {
+        /// <param name="value" type="Function" />
+        this.__updateLayout = ss.Delegate.remove(this.__updateLayout, value);
+    },
+    
+    __updateLayout: null,
+    
+    fireUpdateLayout: function Open_Testing_TestHarnessEvents$fireUpdateLayout() {
+        if (this.__updateLayout != null) {
+            this.__updateLayout.invoke(this, new ss.EventArgs());
         }
     },
     
@@ -442,7 +461,7 @@ Open.Testing.Application = function Open_Testing_Application() {
     /// </field>
     /// <field name="_sidebarController" type="Open.Testing.Controllers.SidebarController" static="true">
     /// </field>
-    /// <field name="_controlHostController" type="Open.Testing.Controllers.ControlHostController" static="true">
+    /// <field name="_hostCanvasController" type="Open.Testing.Controllers.HostCanvasController" static="true">
     /// </field>
 }
 Open.Testing.Application.get_container = function Open_Testing_Application$get_container() {
@@ -453,31 +472,150 @@ Open.Testing.Application.get_container = function Open_Testing_Application$get_c
     return Open.Testing.Application._container || (Open.Testing.Application._container = Open.Core.DiContainer.get_defaultContainer());
 }
 Open.Testing.Application.main = function Open_Testing_Application$main(args) {
+    /// <summary>
+    /// Application entry point.
+    /// </summary>
     /// <param name="args" type="Object">
+    /// Init parameters.
     /// </param>
     Open.Testing.Application.get_container().registerSingleton(Open.Testing.Internal.ITestHarnessEvents, new Open.Testing.TestHarnessEvents());
     Open.Testing.Application.get_container().registerSingleton(Open.Testing.Common, new Open.Testing.Common());
-    var logView = new Open.Core.Controls.LogView($(Open.Testing.CssSelectors.log).first());
-    Open.Core.Log.registerView(logView);
+    Open.Core.Log.set_view(new Open.Core.Controls.LogView($(Open.Testing.CssSelectors.log).first()));
     Open.Testing.Application._shell = new Open.Testing.Views.ShellView($(Open.Testing.CssSelectors.root));
     Open.Testing.Application.get_container().registerSingleton(Open.Testing.Views.ShellView, Open.Testing.Application._shell);
     Open.Testing.Application._resizeController = new Open.Testing.Controllers.PanelResizeController();
     Open.Testing.Application._sidebarController = new Open.Testing.Controllers.SidebarController();
-    Open.Testing.Application._controlHostController = new Open.Testing.Controllers.ControlHostController();
-    Open.Testing.Application._addTestHarnessPackage();
-    Open.Testing.Application._addCorePackage();
+    Open.Testing.Application._hostCanvasController = new Open.Testing.Controllers.HostCanvasController();
+    Open.Testing.Application._addPackage('/Content/Scripts/TestHarness.Test.debug.js', 'Test.Application.main');
+    Open.Testing.Application._addPackage('/Content/Scripts/Open.Core.Test.debug.js', 'Open.Core.Test.Application.main');
+    Open.Testing.Application._addPackage('/Content/Scripts/Quest.Rogue.Test.debug.js', 'Quest.Rogue.Test.Application.main');
+    Open.Testing.Application._addPackage('/Content/Scripts/Quest.OnDemand.Test.debug.js', 'Quest.OnDemand.Test.Application.main');
 }
-Open.Testing.Application._addTestHarnessPackage = function Open_Testing_Application$_addTestHarnessPackage() {
-    var scriptUrl = '/Content/Scripts/TestHarness.Test.debug.js';
-    var initMethod = 'Test.Application.main';
+Open.Testing.Application._addPackage = function Open_Testing_Application$_addPackage(scriptUrl, initMethod) {
+    /// <param name="scriptUrl" type="String">
+    /// </param>
+    /// <param name="initMethod" type="String">
+    /// </param>
     var testHarnessPackage = Open.Testing.Models.PackageInfo.singletonFromUrl(scriptUrl, initMethod);
     Open.Testing.Application._sidebarController.addPackage(testHarnessPackage);
 }
-Open.Testing.Application._addCorePackage = function Open_Testing_Application$_addCorePackage() {
-    var scriptUrl = '/Content/Scripts/Open.Core.Test.debug.js';
-    var initMethod = 'Open.Core.Test.Application.main';
-    var testHarnessPackage = Open.Testing.Models.PackageInfo.singletonFromUrl(scriptUrl, initMethod);
-    Open.Testing.Application._sidebarController.addPackage(testHarnessPackage);
+
+
+Type.registerNamespace('Open.Testing.Automation');
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Automation.ClassTestRunner
+
+Open.Testing.Automation.ClassTestRunner = function Open_Testing_Automation_ClassTestRunner(classInfo) {
+    /// <summary>
+    /// Runs all tests in a single class.
+    /// </summary>
+    /// <param name="classInfo" type="Open.Testing.Models.ClassInfo">
+    /// The class to run.
+    /// </param>
+    /// <field name="_classInfo" type="Open.Testing.Models.ClassInfo">
+    /// </field>
+    /// <field name="_results" type="Array">
+    /// </field>
+    this._results = [];
+    this._classInfo = classInfo;
+}
+Open.Testing.Automation.ClassTestRunner.prototype = {
+    _classInfo: null,
+    
+    get_total: function Open_Testing_Automation_ClassTestRunner$get_total() {
+        /// <summary>
+        /// Gets the total number of tests that have been run.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this._results.length;
+    },
+    
+    get_successes: function Open_Testing_Automation_ClassTestRunner$get_successes() {
+        /// <summary>
+        /// Gets the number of successfully executed methods..
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return Open.Core.Helper.get_collection().total(this._results, ss.Delegate.create(this, function(o) {
+            return (o).error == null;
+        }));
+    },
+    
+    get_failures: function Open_Testing_Automation_ClassTestRunner$get_failures() {
+        /// <summary>
+        /// Gets the number of failed tests.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return this.get_total() - this.get_successes();
+    },
+    
+    run: function Open_Testing_Automation_ClassTestRunner$run() {
+        /// <summary>
+        /// Runs all the tests in the class.
+        /// </summary>
+        var $enum1 = ss.IEnumerator.getEnumerator(this._classInfo);
+        while ($enum1.moveNext()) {
+            var method = $enum1.get_current();
+            var item = new Open.Testing.Automation._executedTest();
+            item.method = method;
+            item.error = method.invoke();
+            this._results.add(item);
+        }
+    },
+    
+    writeResults: function Open_Testing_Automation_ClassTestRunner$writeResults(log) {
+        /// <summary>
+        /// Writes the results of a test run to the output log.
+        /// </summary>
+        /// <param name="log" type="Open.Core.ILog">
+        /// The log to write to.
+        /// </param>
+        var successes = this.get_successes();
+        var failures = this.get_failures();
+        var hasFailures = failures > 0;
+        var list = new Open.Core.Controls.HtmlPrimitive.HtmlList(Open.Core.HtmlListType.unordered, Open.Testing.CssSelectors.classes.logIndentedList);
+        list.add(String.format('Successes: {0} ({1}%)', successes, this._toPercent(successes)));
+        list.add(String.format('Failures: {0} ({1}%)', failures, this._toPercent(failures)));
+        var summary = String.format('Test run for class <b>{0}</b><br/>{1}', this._classInfo.get_displayName(), list.get_outerHtml());
+        log.write(summary, (hasFailures) ? Open.Core.LogSeverity.error : Open.Core.LogSeverity.success);
+        if (hasFailures) {
+            log.lineBreak();
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(this._results);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            if (item.error == null) {
+                continue;
+            }
+            log.write(item.method.formatError(item.error), Open.Core.LogSeverity.error);
+        }
+        log.newSection();
+    },
+    
+    _toPercent: function Open_Testing_Automation_ClassTestRunner$_toPercent(count) {
+        /// <param name="count" type="Number" integer="true">
+        /// </param>
+        /// <returns type="Number"></returns>
+        if (this.get_total() === 0) {
+            return 0;
+        }
+        return Math.round((count / this.get_total()) * 100);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Automation._executedTest
+
+Open.Testing.Automation._executedTest = function Open_Testing_Automation__executedTest() {
+    /// <field name="method" type="Open.Testing.Models.MethodInfo">
+    /// </field>
+    /// <field name="error" type="Error">
+    /// </field>
+}
+Open.Testing.Automation._executedTest.prototype = {
+    method: null,
+    error: null
 }
 
 
@@ -504,9 +642,8 @@ Open.Testing.Controllers.ClassController = function Open_Testing_Controllers_Cla
     this._sidebarView$3 = this.get_common().get_shell().get_sidebar();
     this._events$3 = this.get_common().get_events();
     this._events$3.add_methodClicked(ss.Delegate.create(this, this._onMethodClicked$3));
-    if (classInfo.get_classInitialize() != null) {
-        classInfo.get_classInitialize().invoke();
-    }
+    this._sidebarView$3.get_methodList().add_runClick(ss.Delegate.create(this, this._onRunClick$3));
+    this.reset();
 }
 Open.Testing.Controllers.ClassController.prototype = {
     _classInfo$3: null,
@@ -515,16 +652,12 @@ Open.Testing.Controllers.ClassController.prototype = {
     
     onDisposed: function Open_Testing_Controllers_ClassController$onDisposed() {
         this._events$3.remove_methodClicked(ss.Delegate.create(this, this._onMethodClicked$3));
+        this._sidebarView$3.get_methodList().remove_runClick(ss.Delegate.create(this, this._onRunClick$3));
         if (this._classInfo$3.get_classCleanup() != null) {
             this._classInfo$3.get_classCleanup().invoke();
         }
-        Open.Testing.TestHarness.clearControls();
+        Open.Testing.TestHarness.reset();
         Open.Testing.Controllers.ClassController.callBaseMethod(this, 'onDisposed');
-    },
-    
-    get__selectedMethod$3: function Open_Testing_Controllers_ClassController$get__selectedMethod$3() {
-        /// <value type="Open.Testing.Models.MethodInfo"></value>
-        return this._sidebarView$3.get_methodList().get_selectedMethod();
     },
     
     _onMethodClicked$3: function Open_Testing_Controllers_ClassController$_onMethodClicked$3(sender, e) {
@@ -533,6 +666,29 @@ Open.Testing.Controllers.ClassController.prototype = {
         /// <param name="e" type="Open.Testing.MethodEventArgs">
         /// </param>
         this.invokeSelectedMethod();
+    },
+    
+    _onRunClick$3: function Open_Testing_Controllers_ClassController$_onRunClick$3(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this.runAll();
+    },
+    
+    get__selectedMethod$3: function Open_Testing_Controllers_ClassController$get__selectedMethod$3() {
+        /// <value type="Open.Testing.Models.MethodInfo"></value>
+        return this._sidebarView$3.get_methodList().get_selectedMethod();
+    },
+    
+    reset: function Open_Testing_Controllers_ClassController$reset() {
+        /// <summary>
+        /// Initializes the current class.
+        /// </summary>
+        if (this._classInfo$3.get_classInitialize() != null) {
+            this._classInfo$3.get_classInitialize().invoke();
+        }
+        Open.Core.Log.newSection();
     },
     
     invokeSelectedMethod: function Open_Testing_Controllers_ClassController$invokeSelectedMethod() {
@@ -545,17 +701,33 @@ Open.Testing.Controllers.ClassController.prototype = {
             return false;
         }
         method.invoke();
+        Open.Core.Log.newSection();
         return true;
+    },
+    
+    runAll: function Open_Testing_Controllers_ClassController$runAll() {
+        /// <summary>
+        /// Runs all tests within the class.
+        /// </summary>
+        var runner = new Open.Testing.Automation.ClassTestRunner(this._classInfo$3);
+        var originalState = Open.Core.Log.get_isActive();
+        Open.Core.Log.set_isActive(false);
+        runner.run();
+        Open.Testing.TestHarness.reset();
+        this.reset();
+        Open.Core.Log.set_isActive(originalState);
+        Open.Core.Log.clear();
+        runner.writeResults(Open.Core.Log.get_writer());
     }
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Testing.Controllers.ControlHostController
+// Open.Testing.Controllers.HostCanvasController
 
-Open.Testing.Controllers.ControlHostController = function Open_Testing_Controllers_ControlHostController() {
+Open.Testing.Controllers.HostCanvasController = function Open_Testing_Controllers_HostCanvasController() {
     /// <summary>
-    /// Controls the 'Control Host' panel where test-controls are displayed.
+    /// Controls the 'Host Canvas' panel where controls under test are displayed.
     /// </summary>
     /// <field name="_divControlHost$3" type="jQueryObject">
     /// </field>
@@ -564,32 +736,34 @@ Open.Testing.Controllers.ControlHostController = function Open_Testing_Controlle
     /// <field name="_events$3" type="Open.Testing.TestHarnessEvents">
     /// </field>
     this._views$3 = [];
-    Open.Testing.Controllers.ControlHostController.initializeBase(this);
+    Open.Testing.Controllers.HostCanvasController.initializeBase(this);
     this._divControlHost$3 = $(Open.Testing.CssSelectors.controlHost);
     this._events$3 = this.get_common().get_events();
     this._events$3.add_controlAdded(ss.Delegate.create(this, this._onControlAdded$3));
     this._events$3.add_clearControls(ss.Delegate.create(this, this._onClearControls$3));
+    this._events$3.add_updateLayout(ss.Delegate.create(this, this._onUpdateLayout$3));
 }
-Open.Testing.Controllers.ControlHostController.prototype = {
+Open.Testing.Controllers.HostCanvasController.prototype = {
     _divControlHost$3: null,
     _events$3: null,
     
-    onDisposed: function Open_Testing_Controllers_ControlHostController$onDisposed() {
+    onDisposed: function Open_Testing_Controllers_HostCanvasController$onDisposed() {
         this.clear();
         this._events$3.remove_controlAdded(ss.Delegate.create(this, this._onControlAdded$3));
         this._events$3.remove_clearControls(ss.Delegate.create(this, this._onClearControls$3));
-        Open.Testing.Controllers.ControlHostController.callBaseMethod(this, 'onDisposed');
+        this._events$3.remove_updateLayout(ss.Delegate.create(this, this._onUpdateLayout$3));
+        Open.Testing.Controllers.HostCanvasController.callBaseMethod(this, 'onDisposed');
     },
     
-    _onControlAdded$3: function Open_Testing_Controllers_ControlHostController$_onControlAdded$3(sender, e) {
+    _onControlAdded$3: function Open_Testing_Controllers_HostCanvasController$_onControlAdded$3(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="Open.Testing.Internal.TestControlEventArgs">
         /// </param>
-        this._addView$3(e.content, e.sizeMode);
+        this._addView$3(e.control, e.htmlElement, e.controlDisplayMode);
     },
     
-    _onClearControls$3: function Open_Testing_Controllers_ControlHostController$_onClearControls$3(sender, e) {
+    _onClearControls$3: function Open_Testing_Controllers_HostCanvasController$_onClearControls$3(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="ss.EventArgs">
@@ -597,39 +771,78 @@ Open.Testing.Controllers.ControlHostController.prototype = {
         this.clear();
     },
     
-    clear: function Open_Testing_Controllers_ControlHostController$clear() {
+    _onControlSizeChanged$3: function Open_Testing_Controllers_HostCanvasController$_onControlSizeChanged$3(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this._updateLayout$3();
+    },
+    
+    _onUpdateLayout$3: function Open_Testing_Controllers_HostCanvasController$_onUpdateLayout$3(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        this._updateLayout$3();
+    },
+    
+    clear: function Open_Testing_Controllers_HostCanvasController$clear() {
         /// <summary>
         /// Clears all views.
         /// </summary>
+        var $enum1 = ss.IEnumerator.getEnumerator(this._views$3);
+        while ($enum1.moveNext()) {
+            var view = $enum1.get_current();
+            if (view.get_control() != null) {
+                view.get_control().remove_sizeChanged(ss.Delegate.create(this, this._onControlSizeChanged$3));
+            }
+        }
         Open.Core.Helper.get_collection().disposeAndClear(this._views$3);
     },
     
-    _addView$3: function Open_Testing_Controllers_ControlHostController$_addView$3(controlContainer, sizeMode) {
-        /// <param name="controlContainer" type="jQueryObject">
+    _addView$3: function Open_Testing_Controllers_HostCanvasController$_addView$3(control, htmlElement, controlDisplayMode) {
+        /// <param name="control" type="Open.Core.IView">
         /// </param>
-        /// <param name="sizeMode" type="Open.Testing.SizeMode">
+        /// <param name="htmlElement" type="jQueryObject">
         /// </param>
-        var view = new Open.Testing.Views.ControlWrapperView(this._divControlHost$3, controlContainer, sizeMode, this._views$3);
+        /// <param name="controlDisplayMode" type="Open.Testing.ControlDisplayMode">
+        /// </param>
+        var view = new Open.Testing.Views.ControlWrapperView(this._divControlHost$3, control, htmlElement, controlDisplayMode, this._views$3);
         this._views$3.add(view);
+        if (control != null) {
+            control.add_sizeChanged(ss.Delegate.create(this, this._onControlSizeChanged$3));
+        }
         if (this._views$3.length > 1) {
             var $enum1 = ss.IEnumerator.getEnumerator(this._views$3);
             while ($enum1.moveNext()) {
                 var item = $enum1.get_current();
-                if (item.get_sizeMode() === Open.Testing.SizeMode.fill) {
-                    item.set_sizeMode(Open.Testing.SizeMode.fillWithMargin);
+                if (item.get_displayMode() === Open.Testing.ControlDisplayMode.fill) {
+                    item.set_displayMode(Open.Testing.ControlDisplayMode.fillWithMargin);
                 }
             }
         }
         this._updateLayout$3();
     },
     
-    _updateLayout$3: function Open_Testing_Controllers_ControlHostController$_updateLayout$3() {
+    _updateLayout$3: function Open_Testing_Controllers_HostCanvasController$_updateLayout$3() {
         var $enum1 = ss.IEnumerator.getEnumerator(this._views$3);
         while ($enum1.moveNext()) {
             var item = $enum1.get_current();
             item.updateLayout();
         }
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Controllers.MethodListController
+
+Open.Testing.Controllers.MethodListController = function Open_Testing_Controllers_MethodListController() {
+    /// <summary>
+    /// Controller for the test-method list.
+    /// </summary>
+    Open.Testing.Controllers.MethodListController.initializeBase(this);
 }
 
 
@@ -657,7 +870,7 @@ Open.Testing.Controllers._methodListHeightController = function Open_Testing_Con
     this._divSidebarContent$3 = sidebarView.get_container().children(Open.Testing.CssSelectors.sidebarContent);
     this._events$3 = this.get_common().get_events();
     this._events$3.add_selectedClassChanged(ss.Delegate.create(this, this._onSelectedClassChanged$3));
-    this._hideMethodList$3(null);
+    this._hideList$3(null);
 }
 Open.Testing.Controllers._methodListHeightController.prototype = {
     _sidebarView$3: null,
@@ -676,14 +889,14 @@ Open.Testing.Controllers._methodListHeightController.prototype = {
         /// <param name="e" type="Open.Testing.ClassEventArgs">
         /// </param>
         if (e.classInfo != null) {
-            this._showMethodList$3(null);
+            this._showList$3(null);
         }
         else {
-            this._hideMethodList$3(null);
+            this._hideList$3(null);
         }
     },
     
-    _showMethodList$3: function Open_Testing_Controllers__methodListHeightController$_showMethodList$3(onComplete) {
+    _showList$3: function Open_Testing_Controllers__methodListHeightController$_showList$3(onComplete) {
         /// <summary>
         /// Reveals the method-list.
         /// </summary>
@@ -695,7 +908,7 @@ Open.Testing.Controllers._methodListHeightController.prototype = {
         this._animateHeights$3(height, onComplete);
     },
     
-    _hideMethodList$3: function Open_Testing_Controllers__methodListHeightController$_hideMethodList$3(onComplete) {
+    _hideList$3: function Open_Testing_Controllers__methodListHeightController$_hideList$3(onComplete) {
         /// <summary>
         /// Hides the method-list.
         /// </summary>
@@ -743,7 +956,7 @@ Open.Testing.Controllers._methodListHeightController.prototype = {
         /// </param>
         /// <param name="onComplete" type="Action">
         /// </param>
-        div.animate(properties, Open.Core.Helper.get_number().toMsecs(Open.Testing.Views.SidebarView.slideDuration), 'swing', ss.Delegate.create(this, function() {
+        div.animate(properties, Open.Core.Helper.get_time().toMsecs(Open.Testing.Views.SidebarView.slideDuration), 'swing', ss.Delegate.create(this, function() {
             if (!isShowing) {
                 Open.Core.Css.setVisible(this._methodList$3.get_container(), false);
             }
@@ -850,16 +1063,21 @@ Open.Testing.Controllers.SidebarController = function Open_Testing_Controllers_S
     /// </field>
     /// <field name="_view$3" type="Open.Testing.Views.SidebarView">
     /// </field>
+    /// <field name="_methodListController$3" type="Open.Testing.Controllers.MethodListController">
+    /// </field>
     this._packageControllers$3 = [];
     Open.Testing.Controllers.SidebarController.initializeBase(this);
     this._view$3 = this.get_common().get_shell().get_sidebar();
+    this._methodListController$3 = new Open.Testing.Controllers.MethodListController();
     this._TEMP$3();
 }
 Open.Testing.Controllers.SidebarController.prototype = {
     _view$3: null,
+    _methodListController$3: null,
     
     onDisposed: function Open_Testing_Controllers_SidebarController$onDisposed() {
         this._view$3.dispose();
+        this._methodListController$3.dispose();
         var $enum1 = ss.IEnumerator.getEnumerator(this._packageControllers$3);
         while ($enum1.moveNext()) {
             var controller = $enum1.get_current();
@@ -1096,7 +1314,8 @@ Open.Testing.Controllers.PackageController.prototype = {
         var loader = this.get_testPackage().get_loader();
         var link = Open.Core.Html.toHyperlink(loader.get_scriptUrl(), null, Open.Core.LinkTarget.blank);
         var timeout = new Open.Core.DelayedAction(Open.Testing.Controllers.PackageController._loadTimeout$3, ss.Delegate.create(this, function() {
-            Open.Core.Log.error(String.format('Failed to download the test-package at \'{0}\'.  Please ensure the file exists.', link));
+            loader.dispose();
+            Open.Core.Log.error(String.format('<b>Failed</b> to download and initialize the test-package at \'{0}\'.  Please ensure the file exists.', link));
             Open.Core.Log.lineBreak();
         }));
         Open.Core.Log.info(String.format('Downloading test-package: {0} ...', link));
@@ -1107,7 +1326,7 @@ Open.Testing.Controllers.PackageController.prototype = {
                 this._addChildNodes$3();
                 this._fireLoaded$3();
             }
-            Open.Core.Log.lineBreak();
+            Open.Core.Log.newSection();
         }));
         timeout.start();
     },
@@ -1302,23 +1521,42 @@ Open.Testing.Models.MethodInfo.prototype = {
         /// <summary>
         /// Invokes the method.
         /// </summary>
+        /// <returns type="Error"></returns>
         var instance = this.get_classInfo().get_instance();
         if (!this.get_isSpecial() && this.get_classInfo().get_testInitialize() != null) {
             this.get_classInfo().get_testInitialize().invoke();
         }
+        var error = null;
         try {
             var func = Open.Core.Helper.get_reflection().getFunction(instance, this.get_name());
-            if (func == null) {
-                return;
+            if (func != null) {
+                func.call(instance);
             }
-            func.call(instance);
         }
-        catch (error) {
-            Open.Core.Log.error(String.format('<b>Exception</b> Failed while executing \'<b>{1}</b>\'.<br/>{0}Message: {2}<br/>{0}Method: {3}<br/>{0}Class: {4}<br/>{0}Package: {5}', Open.Core.Html.spanIndent(30), this.get_displayName(), error.message, Open.Core.Helper.get_string().toCamelCase(this.get_name()), this.get_classInfo().get_classType().get_fullName(), Open.Core.Html.toHyperlink(this.get_classInfo().get_packageInfo().get_loader().get_scriptUrl(), null, Open.Core.LinkTarget.blank)));
+        catch (e) {
+            error = e;
+            Open.Core.Log.error(this.formatError(error));
         }
         if (!this.get_isSpecial() && this.get_classInfo().get_testCleanup() != null) {
             this.get_classInfo().get_testCleanup().invoke();
         }
+        return error;
+    },
+    
+    formatError: function Open_Testing_Models_MethodInfo$formatError(error) {
+        /// <summary>
+        /// Formats an error message.
+        /// </summary>
+        /// <param name="error" type="Error">
+        /// The invoke error.
+        /// </param>
+        /// <returns type="String"></returns>
+        var htmlList = new Open.Core.Controls.HtmlPrimitive.HtmlList(Open.Core.HtmlListType.unordered, Open.Testing.CssSelectors.classes.logIndentedList);
+        htmlList.add(String.format('Message: \'{0}\'', error.message));
+        htmlList.add('Method: ' + Open.Core.Helper.get_string().toCamelCase(this.get_name()));
+        htmlList.add('Class: ' + this.get_classInfo().get_classType().get_fullName());
+        htmlList.add('Package: ' + Open.Core.Html.toHyperlink(this.get_classInfo().get_packageInfo().get_loader().get_scriptUrl(), null, Open.Core.LinkTarget.blank));
+        return String.format('<b>Exception</b> Failed while executing \'<b>{0}</b>\'.<br/>{1}', this.get_displayName(), htmlList.get_outerHtml());
     }
 }
 
@@ -1532,7 +1770,7 @@ Open.Testing.Models.ClassInfo = function Open_Testing_Models_ClassInfo(classType
     Open.Testing.Models.ClassInfo.initializeBase(this);
     this._classType$1 = classType;
     this._packageInfo$1 = packageInfo;
-    this._displayName$1 = Open.Core.Helper.get_string().removeEnd(Open.Testing.Models.MethodInfo.formatName(classType.get_name()), 'Test');
+    this._displayName$1 = Open.Testing.Models.ClassInfo._formatName$1(classType.get_name());
     this._getMethods$1();
 }
 Open.Testing.Models.ClassInfo.getSingleton = function Open_Testing_Models_ClassInfo$getSingleton(testClass, packageInfo) {
@@ -1556,6 +1794,16 @@ Open.Testing.Models.ClassInfo.getSingleton = function Open_Testing_Models_ClassI
     var def = new Open.Testing.Models.ClassInfo(testClass, packageInfo);
     Open.Testing.Models.ClassInfo._singletons$1[key] = def;
     return def;
+}
+Open.Testing.Models.ClassInfo._formatName$1 = function Open_Testing_Models_ClassInfo$_formatName$1(name) {
+    /// <param name="name" type="String">
+    /// </param>
+    /// <returns type="String"></returns>
+    name = Open.Testing.Models.MethodInfo.formatName(name);
+    if (!name.endsWith('UnitTest')) {
+        name = Open.Core.Helper.get_string().removeEnd(name, 'Test');
+    }
+    return name;
 }
 Open.Testing.Models.ClassInfo.prototype = {
     _classType$1: null,
@@ -1846,12 +2094,15 @@ Open.Testing.Models.PackageLoader.prototype = {
             return;
         }
         $.getScript(this._scriptUrl$3, ss.Delegate.create(this, function(data) {
+            if (this.get_isDisposed()) {
+                return;
+            }
             try {
                 this._isInitializing$3 = true;
                 eval(this._initMethod$3 + '();');
             }
             catch (e) {
-                Open.Core.Log.error(String.format('Failed to initialize the script-file at \'{0}\' with the entry method \'{1}()\'.<br/>Message: {2}', this._scriptUrl$3, this._initMethod$3, e.message));
+                Open.Core.Log.error(String.format('<b>Failed</b> to initialize the script-file at \'{0}\' with the entry method \'{1}()\'.<br/>Please ensure there aren\'t errors in any of the test-class constructors.<br/>Message: \'{2}\'', Open.Core.Html.toHyperlink(this._scriptUrl$3), this._initMethod$3, e.message));
                 this._error$3 = e;
             }
             finally {
@@ -1869,17 +2120,20 @@ Type.registerNamespace('Open.Testing.Views');
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Testing.Views.ControlWrapperView
 
-Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapperView(divHost, content, sizeMode, allViews) {
+Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapperView(divHost, control, htmlElement, displayMode, allViews) {
     /// <summary>
     /// Represents the container for a test-control.
     /// </summary>
     /// <param name="divHost" type="jQueryObject">
     /// The control host DIV.
     /// </param>
-    /// <param name="content" type="jQueryObject">
+    /// <param name="control" type="Open.Core.IView">
+    /// The logical IView control (null if not available).
+    /// </param>
+    /// <param name="htmlElement" type="jQueryObject">
     /// The control content (supplied by the test class. This is the control that is under test).
     /// </param>
-    /// <param name="sizeMode" type="Open.Testing.SizeMode">
+    /// <param name="displayMode" type="Open.Testing.ControlDisplayMode">
     /// The sizing strategy to use for the control.
     /// </param>
     /// <param name="allViews" type="ss.IEnumerable">
@@ -1889,9 +2143,11 @@ Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapp
     /// </field>
     /// <field name="_divRoot$3" type="jQueryObject">
     /// </field>
-    /// <field name="_content$3" type="jQueryObject">
+    /// <field name="_htmlElement$3" type="jQueryObject">
     /// </field>
-    /// <field name="_sizeMode$3" type="Open.Testing.SizeMode">
+    /// <field name="_control$3" type="Open.Core.IView">
+    /// </field>
+    /// <field name="_displayMode$3" type="Open.Testing.ControlDisplayMode">
     /// </field>
     /// <field name="_allViews$3" type="ss.IEnumerable">
     /// </field>
@@ -1901,10 +2157,10 @@ Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapp
     /// </field>
     /// <field name="_sizeDelay$3" type="Open.Core.DelayedAction">
     /// </field>
-    Open.Testing.Views.ControlWrapperView.initializeBase(this);
-    this.initialize(divHost);
-    this._content$3 = content;
-    this._sizeMode$3 = sizeMode;
+    Open.Testing.Views.ControlWrapperView.initializeBase(this, [ divHost ]);
+    this._control$3 = control;
+    this._htmlElement$3 = htmlElement;
+    this._displayMode$3 = displayMode;
     this._allViews$3 = allViews;
     this._index$3 = divHost.children().length;
     this._events$3 = this.get_common().get_events();
@@ -1912,15 +2168,16 @@ Open.Testing.Views.ControlWrapperView = function Open_Testing_Views_ControlWrapp
     this._divRoot$3 = Open.Core.Html.createDiv();
     this._divRoot$3.css(Open.Core.Css.position, Open.Core.Css.absolute);
     this._divRoot$3.appendTo(divHost);
-    content.css(Open.Core.Css.position, Open.Core.Css.absolute);
-    content.appendTo(this._divRoot$3);
+    htmlElement.css(Open.Core.Css.position, Open.Core.Css.absolute);
+    htmlElement.appendTo(this._divRoot$3);
     this._events$3.add_controlHostSizeChanged(ss.Delegate.create(this, this._onHostResized$3));
     this.updateLayout();
 }
 Open.Testing.Views.ControlWrapperView.prototype = {
     _divRoot$3: null,
-    _content$3: null,
-    _sizeMode$3: 0,
+    _htmlElement$3: null,
+    _control$3: null,
+    _displayMode$3: 0,
     _allViews$3: null,
     _index$3: 0,
     _events$3: null,
@@ -1944,28 +2201,36 @@ Open.Testing.Views.ControlWrapperView.prototype = {
         this._sizeDelay$3.start();
     },
     
-    get_sizeMode: function Open_Testing_Views_ControlWrapperView$get_sizeMode() {
+    get_displayMode: function Open_Testing_Views_ControlWrapperView$get_displayMode() {
         /// <summary>
         /// Gets or sets the items size mode.
         /// </summary>
-        /// <value type="Open.Testing.SizeMode"></value>
-        return this._sizeMode$3;
+        /// <value type="Open.Testing.ControlDisplayMode"></value>
+        return this._displayMode$3;
     },
-    set_sizeMode: function Open_Testing_Views_ControlWrapperView$set_sizeMode(value) {
+    set_displayMode: function Open_Testing_Views_ControlWrapperView$set_displayMode(value) {
         /// <summary>
         /// Gets or sets the items size mode.
         /// </summary>
-        /// <value type="Open.Testing.SizeMode"></value>
-        this._sizeMode$3 = value;
+        /// <value type="Open.Testing.ControlDisplayMode"></value>
+        this._displayMode$3 = value;
         return value;
     },
     
-    get_content: function Open_Testing_Views_ControlWrapperView$get_content() {
+    get_htmlElement: function Open_Testing_Views_ControlWrapperView$get_htmlElement() {
         /// <summary>
         /// Gets the HTML content.
         /// </summary>
         /// <value type="jQueryObject"></value>
-        return this._content$3;
+        return this._htmlElement$3;
+    },
+    
+    get_control: function Open_Testing_Views_ControlWrapperView$get_control() {
+        /// <summary>
+        /// Gets the logical control if available (otherwise null).
+        /// </summary>
+        /// <value type="Open.Core.IView"></value>
+        return this._control$3;
     },
     
     updateLayout: function Open_Testing_Views_ControlWrapperView$updateLayout() {
@@ -1977,62 +2242,73 @@ Open.Testing.Views.ControlWrapperView.prototype = {
     },
     
     _updateSize$3: function Open_Testing_Views_ControlWrapperView$_updateSize$3() {
-        switch (this._sizeMode$3) {
-            case Open.Testing.SizeMode.control:
+        switch (this._displayMode$3) {
+            case Open.Testing.ControlDisplayMode.none:
+            case Open.Testing.ControlDisplayMode.center:
                 break;
-            case Open.Testing.SizeMode.fill:
-                this._setSize$3(0, 0);
+            case Open.Testing.ControlDisplayMode.fill:
+                this._setSizeWithPadding$3(0, 0);
                 break;
-            case Open.Testing.SizeMode.fillWithMargin:
-                this._setSize$3(Open.Testing.Views.ControlWrapperView._fillMargin$3, Open.Testing.Views.ControlWrapperView._fillMargin$3);
+            case Open.Testing.ControlDisplayMode.fillWithMargin:
+                this._setSizeWithPadding$3(Open.Testing.Views.ControlWrapperView._fillMargin$3, Open.Testing.Views.ControlWrapperView._fillMargin$3);
                 break;
             default:
-                throw new Error(Open.Testing.SizeMode.toString(this._sizeMode$3));
+                throw new Error(Open.Testing.ControlDisplayMode.toString(this._displayMode$3));
         }
         Open.Core.Css.setOverflow(this.get_container(), Open.Core.CssOverflow.auto);
     },
     
-    _setSize$3: function Open_Testing_Views_ControlWrapperView$_setSize$3(xPadding, yPadding) {
+    _setSizeWithPadding$3: function Open_Testing_Views_ControlWrapperView$_setSizeWithPadding$3(xPadding, yPadding) {
         /// <param name="xPadding" type="Number" integer="true">
         /// </param>
         /// <param name="yPadding" type="Number" integer="true">
         /// </param>
         var width = (this.get_container().width() - (xPadding * 2));
         var height = (this.get_container().height() - (yPadding * 2));
-        Open.Core.Css.setSize(this._content$3, width, height);
+        Open.Core.Css.setSize(this._htmlElement$3, width, height);
     },
     
     _updatePosition$3: function Open_Testing_Views_ControlWrapperView$_updatePosition$3() {
+        if (this.get_displayMode() === Open.Testing.ControlDisplayMode.none) {
+            return;
+        }
         this._divRoot$3.css(Open.Core.Css.left, this._getLeft$3() + Open.Core.Css.px);
         var top = (this.get_container().children().length === 1) ? this._getTop$3() : this._getStackedTop$3();
+        if (this._displayMode$3 !== Open.Testing.ControlDisplayMode.fill && top < Open.Testing.Views.ControlWrapperView._fillMargin$3) {
+            top = Open.Testing.Views.ControlWrapperView._fillMargin$3;
+        }
         this._divRoot$3.css(Open.Core.Css.top, top + Open.Core.Css.px);
     },
     
     _getLeft$3: function Open_Testing_Views_ControlWrapperView$_getLeft$3() {
         /// <returns type="Number" integer="true"></returns>
-        switch (this._sizeMode$3) {
-            case Open.Testing.SizeMode.control:
-                return (this.get_container().width() / 2) - (this._content$3.width() / 2);
-            case Open.Testing.SizeMode.fill:
+        switch (this._displayMode$3) {
+            case Open.Testing.ControlDisplayMode.none:
+                return -1;
+            case Open.Testing.ControlDisplayMode.center:
+                return (this.get_container().width() / 2) - (this._htmlElement$3.width() / 2);
+            case Open.Testing.ControlDisplayMode.fill:
                 return 0;
-            case Open.Testing.SizeMode.fillWithMargin:
+            case Open.Testing.ControlDisplayMode.fillWithMargin:
                 return Open.Testing.Views.ControlWrapperView._fillMargin$3;
             default:
-                throw new Error(Open.Testing.SizeMode.toString(this._sizeMode$3));
+                throw new Error(Open.Testing.ControlDisplayMode.toString(this._displayMode$3));
         }
     },
     
     _getTop$3: function Open_Testing_Views_ControlWrapperView$_getTop$3() {
         /// <returns type="Number" integer="true"></returns>
-        switch (this._sizeMode$3) {
-            case Open.Testing.SizeMode.control:
-                return (this.get_container().height() / 2) - (this._content$3.height() / 2);
-            case Open.Testing.SizeMode.fill:
+        switch (this._displayMode$3) {
+            case Open.Testing.ControlDisplayMode.none:
+                return -1;
+            case Open.Testing.ControlDisplayMode.center:
+                return (this.get_container().height() / 2) - (this._htmlElement$3.height() / 2);
+            case Open.Testing.ControlDisplayMode.fill:
                 return 0;
-            case Open.Testing.SizeMode.fillWithMargin:
+            case Open.Testing.ControlDisplayMode.fillWithMargin:
                 return Open.Testing.Views.ControlWrapperView._fillMargin$3;
             default:
-                throw new Error(Open.Testing.SizeMode.toString(this._sizeMode$3));
+                throw new Error(Open.Testing.ControlDisplayMode.toString(this._displayMode$3));
         }
     },
     
@@ -2050,7 +2326,7 @@ Open.Testing.Views.ControlWrapperView.prototype = {
             if (wrapper === this) {
                 break;
             }
-            height += wrapper.get_content().height();
+            height += wrapper.get_htmlElement().height();
         }
         return height;
     }
@@ -2069,8 +2345,7 @@ Open.Testing.Views.ShellView = function Open_Testing_Views_ShellView(container) 
     /// </param>
     /// <field name="_sidebar$3" type="Open.Testing.Views.SidebarView">
     /// </field>
-    Open.Testing.Views.ShellView.initializeBase(this);
-    this.initialize(container);
+    Open.Testing.Views.ShellView.initializeBase(this, [ container ]);
     this._sidebar$3 = new Open.Testing.Views.SidebarView($(Open.Testing.CssSelectors.sidebar));
 }
 Open.Testing.Views.ShellView.prototype = {
@@ -2108,8 +2383,7 @@ Open.Testing.Views.SidebarView = function Open_Testing_Views_SidebarView(contain
     /// </field>
     /// <field name="_methodListHeightController$3" type="Open.Testing.Controllers._methodListHeightController">
     /// </field>
-    Open.Testing.Views.SidebarView.initializeBase(this);
-    this.initialize(container);
+    Open.Testing.Views.SidebarView.initializeBase(this, [ container ]);
     this._rootList$3 = new Open.Core.Lists.ListTreeView($(Open.Testing.CssSelectors.sidebarRootList));
     this._rootList$3.set_slideDuration(Open.Testing.Views.SidebarView.slideDuration);
     this._methodList$3 = new Open.Testing.Views.MethodListView($(Open.Testing.CssSelectors.methodList));
@@ -2198,6 +2472,8 @@ Open.Testing.Views.MethodListView = function Open_Testing_Views_MethodListView(c
     /// <param name="container" type="jQueryObject">
     /// The containing div.
     /// </param>
+    /// <field name="__runClick$3" type="EventHandler">
+    /// </field>
     /// <field name="propClassInfo" type="String" static="true">
     /// </field>
     /// <field name="propSelectedMethod" type="String" static="true">
@@ -2208,18 +2484,51 @@ Open.Testing.Views.MethodListView = function Open_Testing_Views_MethodListView(c
     /// </field>
     /// <field name="_events$3" type="Open.Testing.TestHarnessEvents">
     /// </field>
-    Open.Testing.Views.MethodListView.initializeBase(this);
-    this.initialize(container);
+    /// <field name="_btnRun$3" type="Open.Core.Controls.Buttons.SystemButton">
+    /// </field>
+    Open.Testing.Views.MethodListView.initializeBase(this, [ container ]);
     this._events$3 = this.get_common().get_events();
     this._listView$3 = new Open.Core.Lists.ListTreeView($(Open.Testing.CssSelectors.methodListContent));
     this._listView$3.set_slideDuration(Open.Testing.Views.SidebarView.slideDuration);
     this._rootNode$3 = new Open.Core.Lists.ListItem();
     this._listView$3.set_rootNode(this._rootNode$3);
+    this._btnRun$3 = new Open.Core.Controls.Buttons.SystemButton();
+    this._btnRun$3.set_fontSize('8pt');
+    this._btnRun$3.set_padding('3px 8px');
+    this._btnRun$3.insert(Open.Testing.CssSelectors.methodListRunButton, Open.Core.InsertMode.replace);
+    this._btnRun$3.add_click(ss.Delegate.create(this, function() {
+        this._fireRunClick$3();
+    }));
 }
 Open.Testing.Views.MethodListView.prototype = {
+    
+    add_runClick: function Open_Testing_Views_MethodListView$add_runClick(value) {
+        /// <summary>
+        /// Fires when the 'Run' button is clicked.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__runClick$3 = ss.Delegate.combine(this.__runClick$3, value);
+    },
+    remove_runClick: function Open_Testing_Views_MethodListView$remove_runClick(value) {
+        /// <summary>
+        /// Fires when the 'Run' button is clicked.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__runClick$3 = ss.Delegate.remove(this.__runClick$3, value);
+    },
+    
+    __runClick$3: null,
+    
+    _fireRunClick$3: function Open_Testing_Views_MethodListView$_fireRunClick$3() {
+        if (this.__runClick$3 != null) {
+            this.__runClick$3.invoke(this, new ss.EventArgs());
+        }
+    },
+    
     _listView$3: null,
     _rootNode$3: null,
     _events$3: null,
+    _btnRun$3: null,
     
     _onItemClick$3: function Open_Testing_Views_MethodListView$_onItemClick$3(sender, e) {
         /// <param name="sender" type="Object">
@@ -2322,6 +2631,7 @@ Open.Testing.Views.MethodListView.prototype = {
 Open.Testing.TestHarnessViewBase.registerClass('Open.Testing.TestHarnessViewBase', Open.Core.ViewBase);
 Open.Testing.TestHarnessControllerBase.registerClass('Open.Testing.TestHarnessControllerBase', Open.Core.ControllerBase);
 Open.Testing.CssSelectors.registerClass('Open.Testing.CssSelectors');
+Open.Testing.Classes.registerClass('Open.Testing.Classes');
 Open.Testing.Elements.registerClass('Open.Testing.Elements');
 Open.Testing.TestHarnessEvents.registerClass('Open.Testing.TestHarnessEvents', null, Open.Testing.Internal.ITestHarnessEvents);
 Open.Testing.MethodEventArgs.registerClass('Open.Testing.MethodEventArgs');
@@ -2329,8 +2639,11 @@ Open.Testing.ClassEventArgs.registerClass('Open.Testing.ClassEventArgs');
 Open.Testing.Common.registerClass('Open.Testing.Common');
 Open.Testing._methodHelper.registerClass('Open.Testing._methodHelper');
 Open.Testing.Application.registerClass('Open.Testing.Application');
+Open.Testing.Automation.ClassTestRunner.registerClass('Open.Testing.Automation.ClassTestRunner');
+Open.Testing.Automation._executedTest.registerClass('Open.Testing.Automation._executedTest');
 Open.Testing.Controllers.ClassController.registerClass('Open.Testing.Controllers.ClassController', Open.Testing.TestHarnessControllerBase);
-Open.Testing.Controllers.ControlHostController.registerClass('Open.Testing.Controllers.ControlHostController', Open.Testing.TestHarnessControllerBase);
+Open.Testing.Controllers.HostCanvasController.registerClass('Open.Testing.Controllers.HostCanvasController', Open.Testing.TestHarnessControllerBase);
+Open.Testing.Controllers.MethodListController.registerClass('Open.Testing.Controllers.MethodListController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers._methodListHeightController.registerClass('Open.Testing.Controllers._methodListHeightController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.PanelResizeController.registerClass('Open.Testing.Controllers.PanelResizeController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.SidebarController.registerClass('Open.Testing.Controllers.SidebarController', Open.Testing.TestHarnessControllerBase);
@@ -2347,6 +2660,7 @@ Open.Testing.Views.ControlWrapperView.registerClass('Open.Testing.Views.ControlW
 Open.Testing.Views.ShellView.registerClass('Open.Testing.Views.ShellView', Open.Testing.TestHarnessViewBase);
 Open.Testing.Views.SidebarView.registerClass('Open.Testing.Views.SidebarView', Open.Testing.TestHarnessViewBase);
 Open.Testing.Views.MethodListView.registerClass('Open.Testing.Views.MethodListView', Open.Testing.TestHarnessViewBase);
+Open.Testing.CssSelectors.classes = new Open.Testing.Classes();
 Open.Testing.CssSelectors.root = '#testHarness';
 Open.Testing.CssSelectors.sidebar = '#testHarnessSidebar';
 Open.Testing.CssSelectors.sidebarContent = '#testHarnessSidebar .th-content';
@@ -2356,6 +2670,7 @@ Open.Testing.CssSelectors.backMask = '#testHarnessSidebar img.th-backMask';
 Open.Testing.CssSelectors.methodList = '#testHarnessSidebar .th-testList';
 Open.Testing.CssSelectors.methodListTitlebar = '#testHarnessSidebar .th-testList-tb';
 Open.Testing.CssSelectors.methodListContent = '#testHarnessSidebar .th-testList-content';
+Open.Testing.CssSelectors.methodListRunButton = '#testHarnessSidebar .th-testList button.runTests';
 Open.Testing.CssSelectors.main = '#testHarness .th-main';
 Open.Testing.CssSelectors.mainContent = '#testHarness .th-main .th-content';
 Open.Testing.CssSelectors.controlHost = '#testHarness .th-main .th-content .th-controlHost';
@@ -2373,7 +2688,7 @@ Open.Testing.Application._shell = null;
 Open.Testing.Application._container = null;
 Open.Testing.Application._resizeController = null;
 Open.Testing.Application._sidebarController = null;
-Open.Testing.Application._controlHostController = null;
+Open.Testing.Application._hostCanvasController = null;
 Open.Testing.Controllers.PanelResizeController._sidebarMinWidth$3 = 200;
 Open.Testing.Controllers.PanelResizeController._sidebarMaxWidthMargin$3 = 80;
 Open.Testing.Controllers.PanelResizeController._outputLogMaxHeightMargin$3 = 80;

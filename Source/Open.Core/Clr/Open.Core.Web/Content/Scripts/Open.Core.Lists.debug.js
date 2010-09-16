@@ -81,8 +81,6 @@ Open.Core.Lists.ListCss = function Open_Core_Lists_ListCss() {
     /// <summary>
     /// CSS declarations for lists.
     /// </summary>
-    /// <field name="url" type="String" static="true">
-    /// </field>
     /// <field name="_isCssInserted" type="Boolean" static="true">
     /// </field>
     /// <field name="itemClasses" type="Open.Core.Lists.ListItemClasses" static="true">
@@ -97,7 +95,7 @@ Open.Core.Lists.ListCss.insertCss = function Open_Core_Lists_ListCss$insertCss()
     if (Open.Core.Lists.ListCss._isCssInserted) {
         return;
     }
-    Open.Core.Css.insertLink(Open.Core.Lists.ListCss.url);
+    Open.Core.Css.insertLink(Open.Core.Css.urls.coreLists);
     Open.Core.Lists.ListCss._isCssInserted = true;
 }
 
@@ -241,7 +239,7 @@ Open.Core.Lists.ListTreeBackController.prototype = {
     },
     
     _fadeBackMask$2: function Open_Core_Lists_ListTreeBackController$_fadeBackMask$2() {
-        var duration = Open.Core.Helper.get_number().toMsecs(this._listTree$2.get_slideDuration());
+        var duration = Open.Core.Helper.get_time().toMsecs(this._listTree$2.get_slideDuration());
         var isVisible = Open.Core.Css.isVisible(this._backMask$2);
         if (this.get__showBackMask$2()) {
             if (!isVisible) {
@@ -302,7 +300,9 @@ Open.Core.Lists.ListItem.prototype = {
     },
     set_canSelect: function Open_Core_Lists_ListItem$set_canSelect(value) {
         /// <value type="Boolean"></value>
-        this.set(Open.Core.Lists.ListItem.propCanSelect, value, true);
+        if (this.set(Open.Core.Lists.ListItem.propCanSelect, value, true)) {
+            this.set_isSelected(false);
+        }
         return value;
     },
     
@@ -327,6 +327,13 @@ Open.Core.Lists.ListItem.prototype = {
     toString: function Open_Core_Lists_ListItem$toString() {
         /// <returns type="String"></returns>
         return String.format('{0} {1}', Open.Core.Lists.ListItem.callBaseMethod(this, 'toString'), this.get_text());
+    },
+    
+    onIsSelectedChanged: function Open_Core_Lists_ListItem$onIsSelectedChanged() {
+        if (!this.get_canSelect() && this.get_isSelected()) {
+            this.set_isSelected(false);
+        }
+        Open.Core.Lists.ListItem.callBaseMethod(this, 'onIsSelectedChanged');
     }
 }
 
@@ -334,30 +341,27 @@ Open.Core.Lists.ListItem.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Lists._listTreePanel
 
-Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(parentList, rootDiv, node) {
+Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(parentList, node) {
     /// <summary>
     /// Renders a single list within a tree-of lists.
     /// </summary>
     /// <param name="parentList" type="Open.Core.Lists.ListTreeView">
     /// </param>
-    /// <param name="rootDiv" type="jQueryObject">
-    /// </param>
     /// <param name="node" type="Open.Core.ITreeNode">
     /// </param>
-    /// <field name="_rootDiv$2" type="jQueryObject">
-    /// </field>
-    /// <field name="_div$2" type="jQueryObject">
-    /// </field>
     /// <field name="_node$2" type="Open.Core.ITreeNode">
     /// </field>
     /// <field name="_parentList$2" type="Open.Core.Lists.ListTreeView">
     /// </field>
     /// <field name="_listView$2" type="Open.Core.Lists.ListView">
     /// </field>
-    Open.Core.Lists._listTreePanel.initializeBase(this);
+    Open.Core.Lists._listTreePanel.initializeBase(this, [ Open.Core.Html.createDiv() ]);
     this._parentList$2 = parentList;
-    this._rootDiv$2 = rootDiv;
     this._node$2 = node;
+    this._hide$2();
+    Open.Core.Css.absoluteFill(this.get_container());
+    this._listView$2 = new Open.Core.Lists.ListView(this.get_container());
+    this._listView$2.load(node.get_children());
     Open.Core.GlobalEvents.add_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
     node.add_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
     node.add_addedChild(ss.Delegate.create(this, this._onAddedChild$2));
@@ -365,28 +369,15 @@ Open.Core.Lists._listTreePanel = function Open_Core_Lists__listTreePanel(parentL
     if (node.get_parent() != null) {
         node.get_parent().add_removingChild(ss.Delegate.create(this, this._onParentRemovingChild$2));
     }
+    this.syncWidth();
 }
 Open.Core.Lists._listTreePanel.prototype = {
-    _rootDiv$2: null,
-    _div$2: null,
     _node$2: null,
     _parentList$2: null,
     _listView$2: null,
     
-    onInitialize: function Open_Core_Lists__listTreePanel$onInitialize(container) {
-        /// <param name="container" type="jQueryObject">
-        /// </param>
-        this._div$2 = Open.Core.Html.appendDiv(container);
-        this._div$2 = container.children(Open.Core.Html.div).last();
-        this._hide$2();
-        Open.Core.Css.absoluteFill(this._div$2);
-        this._listView$2 = new Open.Core.Lists.ListView(this._div$2);
-        this._listView$2.load(this._node$2.get_children());
-        this.syncWidth();
-    },
-    
     onDisposed: function Open_Core_Lists__listTreePanel$onDisposed() {
-        this._div$2.remove();
+        this.get_container().remove();
         Open.Core.GlobalEvents.remove_horizontalPanelResized(ss.Delegate.create(this, this._onHorizontalPanelResized$2));
         this._node$2.remove_childSelectionChanged(ss.Delegate.create(this, this._onChildSelectionChanged$2));
         this._node$2.remove_addedChild(ss.Delegate.create(this, this._onAddedChild$2));
@@ -454,7 +445,7 @@ Open.Core.Lists._listTreePanel.prototype = {
     
     get_isCenterStage: function Open_Core_Lists__listTreePanel$get_isCenterStage() {
         /// <value type="Boolean"></value>
-        return this._div$2.css(Open.Core.Css.left) === '0px';
+        return this.getCss(Open.Core.Css.left) === '0px';
     },
     
     get_listView: function Open_Core_Lists__listTreePanel$get_listView() {
@@ -462,14 +453,9 @@ Open.Core.Lists._listTreePanel.prototype = {
         return this._listView$2;
     },
     
-    get__width$2: function Open_Core_Lists__listTreePanel$get__width$2() {
-        /// <value type="Number" integer="true"></value>
-        return this._rootDiv$2.width();
-    },
-    
     get__slideDuration$2: function Open_Core_Lists__listTreePanel$get__slideDuration$2() {
         /// <value type="Number" integer="true"></value>
-        return Open.Core.Helper.get_number().toMsecs(this._parentList$2.get_slideDuration());
+        return Open.Core.Helper.get_time().toMsecs(this._parentList$2.get_slideDuration());
     },
     
     slideOff: function Open_Core_Lists__listTreePanel$slideOff(direction, onComplete) {
@@ -477,13 +463,10 @@ Open.Core.Lists._listTreePanel.prototype = {
         /// </param>
         /// <param name="onComplete" type="Action">
         /// </param>
-        if (!this.get_isInitialized()) {
-            return;
-        }
         this.centerStage();
         var properties = {};
-        properties[Open.Core.Css.left] = (direction === Open.Core.HorizontalDirection.left) ? 0 - this.get__width$2() : this.get__width$2();
-        this._div$2.animate(properties, this.get__slideDuration$2(), this._parentList$2.get_slideEasing(), ss.Delegate.create(this, function() {
+        properties[Open.Core.Css.left] = (direction === Open.Core.HorizontalDirection.left) ? 0 - this.get_width() : this.get_width();
+        this.get_container().animate(properties, this.get__slideDuration$2(), this._parentList$2.get_slideEasing(), ss.Delegate.create(this, function() {
             this._hide$2();
             Open.Core.Helper.invokeOrDefault(onComplete);
         }));
@@ -494,20 +477,17 @@ Open.Core.Lists._listTreePanel.prototype = {
         /// </param>
         /// <param name="onComplete" type="Action">
         /// </param>
-        if (!this.get_isInitialized()) {
-            return;
-        }
         this.setPosition(direction, true);
         var properties = {};
         properties[Open.Core.Css.left] = 0;
-        this._div$2.animate(properties, this.get__slideDuration$2(), this._parentList$2.get_slideEasing(), ss.Delegate.create(this, function() {
+        this.get_container().animate(properties, this.get__slideDuration$2(), this._parentList$2.get_slideEasing(), ss.Delegate.create(this, function() {
             Open.Core.Helper.invokeOrDefault(onComplete);
         }));
     },
     
     centerStage: function Open_Core_Lists__listTreePanel$centerStage() {
-        this._div$2.css(Open.Core.Css.left, '0px');
-        this._div$2.css(Open.Core.Css.display, Open.Core.Css.block);
+        this.get_container().css(Open.Core.Css.left, '0px');
+        this.get_container().css(Open.Core.Css.display, Open.Core.Css.block);
         this.syncWidth();
     },
     
@@ -516,18 +496,18 @@ Open.Core.Lists._listTreePanel.prototype = {
         /// </param>
         /// <param name="isVisible" type="Boolean">
         /// </param>
-        var startLeft = (direction === Open.Core.HorizontalDirection.right) ? 0 - this.get__width$2() : this.get__width$2();
-        this._div$2.css(Open.Core.Css.left, startLeft + Open.Core.Css.px);
-        this._div$2.css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
+        var startLeft = (direction === Open.Core.HorizontalDirection.right) ? 0 - this.get_width() : this.get_width();
+        this.get_container().css(Open.Core.Css.left, startLeft + Open.Core.Css.px);
+        this.get_container().css(Open.Core.Css.display, (isVisible) ? Open.Core.Css.block : Open.Core.Css.none);
         this.syncWidth();
     },
     
     syncWidth: function Open_Core_Lists__listTreePanel$syncWidth() {
-        this._div$2.width(this.get__width$2());
+        this.set_width(this._parentList$2.get_width());
     },
     
     _hide$2: function Open_Core_Lists__listTreePanel$_hide$2() {
-        this._div$2.css(Open.Core.Css.display, Open.Core.Css.none);
+        this.get_container().css(Open.Core.Css.display, Open.Core.Css.none);
     },
     
     _getSelectedChild$2: function Open_Core_Lists__listTreePanel$_getSelectedChild$2() {
@@ -564,7 +544,7 @@ Open.Core.Lists.ListTreeView = function Open_Core_Lists_ListTreeView(container) 
     /// </field>
     /// <field name="propSelectedParent" type="String" static="true">
     /// </field>
-    /// <field name="_div$2" type="jQueryObject">
+    /// <field name="_divInner$2" type="jQueryObject">
     /// </field>
     /// <field name="_slideDuration$2" type="Number">
     /// </field>
@@ -576,9 +556,11 @@ Open.Core.Lists.ListTreeView = function Open_Core_Lists_ListTreeView(container) 
     /// </field>
     this._slideEasing$2 = 'swing';
     this._panels$2 = [];
-    Open.Core.Lists.ListTreeView.initializeBase(this);
-    this.initialize(container);
+    Open.Core.Lists.ListTreeView.initializeBase(this, [ container ]);
     Open.Core.Lists.ListCss.insertCss();
+    this._divInner$2 = Open.Core.Html.appendDiv(container);
+    Open.Core.Css.absoluteFill(this._divInner$2);
+    Open.Core.Css.setOverflow(this._divInner$2, Open.Core.CssOverflow.hidden);
 }
 Open.Core.Lists.ListTreeView._getSlideDirection$2 = function Open_Core_Lists_ListTreeView$_getSlideDirection$2(previousNode, newNode) {
     /// <param name="previousNode" type="Open.Core.ITreeNode">
@@ -639,7 +621,7 @@ Open.Core.Lists.ListTreeView.prototype = {
         }
     },
     
-    _div$2: null,
+    _divInner$2: null,
     _slideDuration$2: 0.4,
     _previousNode$2: null,
     
@@ -706,7 +688,7 @@ Open.Core.Lists.ListTreeView.prototype = {
             }
             if (value != null) {
                 if (this._previousNode$2 == null) {
-                    this._getOrCreatePanel$2(value, true).centerStage();
+                    this._getOrCreatePanel$2(value).centerStage();
                 }
                 else {
                     this._slidePanels$2(this._previousNode$2, value);
@@ -773,14 +755,6 @@ Open.Core.Lists.ListTreeView.prototype = {
         return this._getPanel$2(this.get_selectedParent());
     },
     
-    onInitialize: function Open_Core_Lists_ListTreeView$onInitialize(container) {
-        /// <param name="container" type="jQueryObject">
-        /// </param>
-        this._div$2 = Open.Core.Html.appendDiv(container);
-        Open.Core.Css.absoluteFill(this._div$2);
-        Open.Core.Css.setOverflow(this._div$2, Open.Core.CssOverflow.hidden);
-    },
-    
     back: function Open_Core_Lists_ListTreeView$back() {
         /// <summary>
         /// Moves the selected node to the parent of the current node.
@@ -816,24 +790,18 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// </param>
         var direction = Open.Core.Lists.ListTreeView._getSlideDirection$2(previousNode, newNode);
         if (previousNode != null) {
-            var oldPanel = this._getOrCreatePanel$2(previousNode, true);
+            var oldPanel = this._getOrCreatePanel$2(previousNode);
             oldPanel.slideOff(direction, null);
         }
-        var panel = this._getOrCreatePanel$2(newNode, true);
+        var panel = this._getOrCreatePanel$2(newNode);
         panel.slideOn(direction, null);
     },
     
-    _getOrCreatePanel$2: function Open_Core_Lists_ListTreeView$_getOrCreatePanel$2(node, initialize) {
+    _getOrCreatePanel$2: function Open_Core_Lists_ListTreeView$_getOrCreatePanel$2(node) {
         /// <param name="node" type="Open.Core.ITreeNode">
         /// </param>
-        /// <param name="initialize" type="Boolean">
-        /// </param>
         /// <returns type="Open.Core.Lists._listTreePanel"></returns>
-        var panel = this._getPanel$2(node) || this._createPanel$2(node);
-        if (initialize && !panel.get_isInitialized()) {
-            panel.initialize(this._div$2);
-        }
-        return panel;
+        return this._getPanel$2(node) || this._createPanel$2(node);
     },
     
     _getPanel$2: function Open_Core_Lists_ListTreeView$_getPanel$2(node) {
@@ -857,17 +825,15 @@ Open.Core.Lists.ListTreeView.prototype = {
         /// <param name="node" type="Open.Core.ITreeNode">
         /// </param>
         /// <returns type="Open.Core.Lists._listTreePanel"></returns>
-        var panel = new Open.Core.Lists._listTreePanel(this, this._div$2, node);
+        var panel = new Open.Core.Lists._listTreePanel(this, node);
+        panel.get_container().appendTo(this._divInner$2);
         this._panels$2.add(panel);
         return panel;
     },
     
     _reset$2: function Open_Core_Lists_ListTreeView$_reset$2() {
-        var $enum1 = ss.IEnumerator.getEnumerator(this._panels$2);
-        while ($enum1.moveNext()) {
-            var panel = $enum1.get_current();
-            panel.dispose();
-        }
+        Open.Core.Helper.get_collection().disposeAndClear(this._panels$2);
+        this._divInner$2.empty();
     }
 }
 
@@ -920,19 +886,12 @@ Open.Core.Lists.ListView = function Open_Core_Lists_ListView(container) {
     /// </field>
     this._selectionMode$2 = Open.Core.Lists.ListSelectionMode.single;
     this._itemViews$2 = [];
-    Open.Core.Lists.ListView.initializeBase(this);
-    this.initialize(container);
+    Open.Core.Lists.ListView.initializeBase(this, [ container ]);
     Open.Core.Lists.ListCss.insertCss();
+    container.addClass(Open.Core.Lists.ListCss.classes.root);
 }
 Open.Core.Lists.ListView.prototype = {
     _itemFactory$2: null,
-    
-    onInitialize: function Open_Core_Lists_ListView$onInitialize(container) {
-        /// <param name="container" type="jQueryObject">
-        /// </param>
-        container.addClass(Open.Core.Lists.ListCss.classes.root);
-        Open.Core.Lists.ListView.callBaseMethod(this, 'onInitialize', [ container ]);
-    },
     
     _onItemClick$2: function Open_Core_Lists_ListView$_onItemClick$2(e, item) {
         /// <param name="e" type="jQueryEvent">
@@ -988,14 +947,6 @@ Open.Core.Lists.ListView.prototype = {
         /// </summary>
         /// <value type="Number" integer="true"></value>
         return this._itemViews$2.length;
-    },
-    
-    get_height: function Open_Core_Lists_ListView$get_height() {
-        /// <summary>
-        /// Gets the current height of the list.
-        /// </summary>
-        /// <value type="Number" integer="true"></value>
-        return this.get_container().height();
     },
     
     get_scrollHeight: function Open_Core_Lists_ListView$get_scrollHeight() {
@@ -1203,17 +1154,16 @@ Open.Core.Lists.ListItemView = function Open_Core_Lists_ListItemView(container, 
     /// </field>
     /// <field name="_isSelectedRef$2" type="Open.Core.PropertyRef">
     /// </field>
-    Open.Core.Lists.ListItemView.initializeBase(this);
+    Open.Core.Lists.ListItemView.initializeBase(this, [ container ]);
     this._model$2 = model;
-    this.initialize(container);
     this._isSelectedRef$2 = Open.Core.PropertyRef.getFromModel(model, Open.Core.TreeNode.propIsSelected);
+    this.initializeElement(container);
     if (this._isSelectedRef$2 != null) {
         this._isSelectedRef$2.add_changed(ss.Delegate.create(this, this._onIsSelectedChanged$2));
     }
     if (this.get__modelAsTreeNode$2() != null) {
         this.get__modelAsTreeNode$2().add_childrenChanged(ss.Delegate.create(this, this._onTreeNodeChildrenChanged$2));
     }
-    this.updateVisualState();
 }
 Open.Core.Lists.ListItemView._getChild$2 = function Open_Core_Lists_ListItemView$_getChild$2(parent, cssClass) {
     /// <param name="parent" type="jQueryObject">
@@ -1229,6 +1179,26 @@ Open.Core.Lists.ListItemView.prototype = {
     _imgRightIcon$2: null,
     _text$2: null,
     _isSelectedRef$2: null,
+    
+    initializeElement: function Open_Core_Lists_ListItemView$initializeElement(liElement) {
+        /// <summary>
+        /// Initializes the list-item.
+        /// </summary>
+        /// <param name="liElement" type="jQueryObject">
+        /// The containing <li></li> element.
+        /// </param>
+        liElement.addClass(Open.Core.Lists.ListCss.itemClasses.root);
+        var customHtml = this._getFactoryHtml$2();
+        var content = (customHtml == null) ? Open.Core.Lists.ListTemplates.defaultListItem(this.get_model()) : $(customHtml);
+        content.appendTo(liElement);
+        this._htmLabel$2 = Open.Core.Lists.ListItemView._getChild$2(content, Open.Core.Lists.ListCss.itemClasses.label);
+        this._imgRightIcon$2 = Open.Core.Lists.ListItemView._getChild$2(content, Open.Core.Lists.ListCss.itemClasses.iconRight);
+        this._imgRightIcon$2.load(ss.Delegate.create(this, function(eevent) {
+            this._updateRightIcon$2();
+        }));
+        this._setupBindings$2();
+        this.updateVisualState();
+    },
     
     onDisposed: function Open_Core_Lists_ListItemView$onDisposed() {
         if (this._isSelectedRef$2 != null) {
@@ -1335,26 +1305,6 @@ Open.Core.Lists.ListItemView.prototype = {
         return (item == null) ? true : item.get_canSelect();
     },
     
-    onInitialize: function Open_Core_Lists_ListItemView$onInitialize(container) {
-        /// <summary>
-        /// Initializes the list-item.
-        /// </summary>
-        /// <param name="container" type="jQueryObject">
-        /// The containing <li></li> element.
-        /// </param>
-        container.addClass(Open.Core.Lists.ListCss.itemClasses.root);
-        var customHtml = this._getFactoryHtml$2();
-        var content = (customHtml == null) ? Open.Core.Lists.ListTemplates.defaultListItem(this.get_model()) : $(customHtml);
-        content.appendTo(container);
-        this._htmLabel$2 = Open.Core.Lists.ListItemView._getChild$2(content, Open.Core.Lists.ListCss.itemClasses.label);
-        this._imgRightIcon$2 = Open.Core.Lists.ListItemView._getChild$2(content, Open.Core.Lists.ListCss.itemClasses.iconRight);
-        this._imgRightIcon$2.load(ss.Delegate.create(this, function(eevent) {
-            this._updateRightIcon$2();
-        }));
-        this._setupBindings$2();
-        this.updateVisualState();
-    },
-    
     updateVisualState: function Open_Core_Lists_ListItemView$updateVisualState() {
         /// <summary>
         /// Refrehses the visual state of the item.
@@ -1444,7 +1394,6 @@ Open.Core.Lists.ListView.registerClass('Open.Core.Lists.ListView', Open.Core.Vie
 Open.Core.Lists.ListItemView.registerClass('Open.Core.Lists.ListItemView', Open.Core.ViewBase, Open.Core.Lists.IListItemView);
 Open.Core.Lists._listItemFactory.registerClass('Open.Core.Lists._listItemFactory');
 Open.Core.Lists.ListHtml.childPointerIcon = '/Open.Core/Images/ListItem.ChildPointer.png';
-Open.Core.Lists.ListCss.url = '/Open.Core/Css/Core.Lists.css';
 Open.Core.Lists.ListCss._isCssInserted = false;
 Open.Core.Lists.ListCss.itemClasses = new Open.Core.Lists.ListItemClasses();
 Open.Core.Lists.ListCss.classes = new Open.Core.Lists.ListClasses();

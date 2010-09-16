@@ -17,7 +17,7 @@
     <TemplateFile>Properties\TestHarness.Script.Test.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\TestHarness.Script.Test.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\TestHarness.Web\Content\Scripts\</DeploymentPath>
+    <DeploymentPath>..\Clr.TestHarness.Web\Content\Scripts\</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +64,5 @@
       <Name>Open.Core %28Script\Open.Core\Open.Core%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>

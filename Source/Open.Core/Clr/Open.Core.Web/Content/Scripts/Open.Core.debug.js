@@ -7,6 +7,98 @@ function executeScript() {
 Type.registerNamespace('Open.Core');
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.LinkTarget
+
+Open.Core.LinkTarget = function() { 
+    /// <summary>
+    /// The target of an HTML link.
+    /// </summary>
+    /// <field name="blank" type="Number" integer="true" static="true">
+    /// Load in a new window.
+    /// </field>
+    /// <field name="self" type="Number" integer="true" static="true">
+    /// Load in the same frame as it was clicked.
+    /// </field>
+    /// <field name="parent" type="Number" integer="true" static="true">
+    /// Load in the parent frameset.
+    /// </field>
+    /// <field name="top" type="Number" integer="true" static="true">
+    /// Load in the full body of the window.
+    /// </field>
+};
+Open.Core.LinkTarget.prototype = {
+    blank: 0, 
+    self: 1, 
+    parent: 2, 
+    top: 2
+}
+Open.Core.LinkTarget.registerEnum('Open.Core.LinkTarget', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.HtmlListType
+
+Open.Core.HtmlListType = function() { 
+    /// <summary>
+    /// Flags representing the various types of HTML list.
+    /// </summary>
+    /// <field name="unordered" type="Number" integer="true" static="true">
+    /// An unordered list <ul></ul>.
+    /// </field>
+    /// <field name="ordered" type="Number" integer="true" static="true">
+    /// An ordered list <ol></ol>.
+    /// </field>
+};
+Open.Core.HtmlListType.prototype = {
+    unordered: 0, 
+    ordered: 1
+}
+Open.Core.HtmlListType.registerEnum('Open.Core.HtmlListType', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.IButton
+
+Open.Core.IButton = function() { 
+    /// <summary>
+    /// A clickable button.
+    /// </summary>
+};
+Open.Core.IButton.prototype = {
+    add_click : null,
+    remove_click : null,
+    add_isPressedChanged : null,
+    remove_isPressedChanged : null,
+    get_isEnabled : null,
+    set_isEnabled : null,
+    get_canToggle : null,
+    set_canToggle : null,
+    get_mouseState : null,
+    get_isPressed : null,
+    get_isMouseOver : null,
+    get_isMouseDown : null,
+    invokeClick : null
+}
+Open.Core.IButton.registerInterface('Open.Core.IButton');
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.INotifyDisposed
+
+Open.Core.INotifyDisposed = function() { 
+    /// <summary>
+    /// Provides notification of when an object is disposed.
+    /// </summary>
+};
+Open.Core.INotifyDisposed.prototype = {
+    add_disposed : null,
+    remove_disposed : null,
+    get_isDisposed : null
+}
+Open.Core.INotifyDisposed.registerInterface('Open.Core.INotifyDisposed');
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Key
 
 Open.Core.Key = function() { 
@@ -86,32 +178,42 @@ Open.Core.SizeDimension.registerEnum('Open.Core.SizeDimension', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.LinkTarget
+// Open.Core.ButtonMouseState
 
-Open.Core.LinkTarget = function() { 
+Open.Core.ButtonMouseState = function() { 
     /// <summary>
-    /// The target of an HTML link.
+    /// The various kinds of mouse-related states a button can be in.
     /// </summary>
-    /// <field name="blank" type="Number" integer="true" static="true">
-    /// Load in a new window.
+    /// <field name="normal" type="Number" integer="true" static="true">
     /// </field>
-    /// <field name="self" type="Number" integer="true" static="true">
-    /// Load in the same frame as it was clicked.
+    /// <field name="mouseOver" type="Number" integer="true" static="true">
     /// </field>
-    /// <field name="parent" type="Number" integer="true" static="true">
-    /// Load in the parent frameset.
-    /// </field>
-    /// <field name="top" type="Number" integer="true" static="true">
-    /// Load in the full body of the window.
+    /// <field name="pressed" type="Number" integer="true" static="true">
     /// </field>
 };
-Open.Core.LinkTarget.prototype = {
-    blank: 0, 
-    self: 1, 
-    parent: 2, 
-    top: 2
+Open.Core.ButtonMouseState.prototype = {
+    normal: 0, 
+    mouseOver: 1, 
+    pressed: 2
 }
-Open.Core.LinkTarget.registerEnum('Open.Core.LinkTarget', false);
+Open.Core.ButtonMouseState.registerEnum('Open.Core.ButtonMouseState', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.InsertMode
+
+Open.Core.InsertMode = function() { 
+    /// <summary>
+    /// Flags indicating the various strategies for inserting content.
+    /// </summary>
+    /// <field name="replace" type="Number" integer="true" static="true">
+    /// The target element is replaced with the inserted content.
+    /// </field>
+};
+Open.Core.InsertMode.prototype = {
+    replace: 0
+}
+Open.Core.InsertMode.registerEnum('Open.Core.InsertMode', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -157,6 +259,25 @@ Open.Core.LogSeverity.registerEnum('Open.Core.LogSeverity', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.LogDivider
+
+Open.Core.LogDivider = function() { 
+    /// <summary>
+    /// Flags representing the type of visual dividers that can be inserted into the log.
+    /// </summary>
+    /// <field name="lineBreak" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="section" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.LogDivider.prototype = {
+    lineBreak: 0, 
+    section: 1
+}
+Open.Core.LogDivider.registerEnum('Open.Core.LogDivider', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.ILog
 
 Open.Core.ILog = function() { 
@@ -165,10 +286,18 @@ Open.Core.ILog = function() {
     /// </summary>
 };
 Open.Core.ILog.prototype = {
+    get_view : null,
+    set_view : null,
+    title : null,
+    info : null,
+    debug : null,
+    warning : null,
+    error : null,
+    success : null,
     write : null,
     lineBreak : null,
-    clear : null,
-    registerView : null
+    newSection : null,
+    clear : null
 }
 Open.Core.ILog.registerInterface('Open.Core.ILog');
 
@@ -183,7 +312,7 @@ Open.Core.ILogView = function() {
 };
 Open.Core.ILogView.prototype = {
     insert : null,
-    lineBreak : null,
+    divider : null,
     clear : null
 }
 Open.Core.ILogView.registerInterface('Open.Core.ILogView');
@@ -282,15 +411,38 @@ Open.Core.IViewFactory.registerInterface('Open.Core.IViewFactory');
 
 Open.Core.IView = function() { 
     /// <summary>
-    /// The logical controller for a view (visual UI) contained with an HTML element.
+    /// The logical controller for a view (visual UI control) contained with an HTML element.
     /// </summary>
 };
 Open.Core.IView.prototype = {
-    get_isDisposed : null,
-    get_isInitialized : null,
-    initialize : null,
+    add_isEnabledChanged : null,
+    remove_isEnabledChanged : null,
+    add_isVisibleChanged : null,
+    remove_isVisibleChanged : null,
+    add_sizeChanged : null,
+    remove_sizeChanged : null,
     get_container : null,
-    dispose : null
+    get_outerHtml : null,
+    get_innerHtml : null,
+    dispose : null,
+    get_isEnabled : null,
+    set_isEnabled : null,
+    get_isVisible : null,
+    set_isVisible : null,
+    get_background : null,
+    set_background : null,
+    get_opacity : null,
+    set_opacity : null,
+    get_width : null,
+    set_width : null,
+    get_height : null,
+    set_height : null,
+    setSize : null,
+    getCss : null,
+    setCss : null,
+    getAttribute : null,
+    setAttribute : null,
+    insert : null
 }
 Open.Core.IView.registerInterface('Open.Core.IView');
 
@@ -338,9 +490,11 @@ Open.Core.ModelBase = function Open_Core_ModelBase() {
     /// <summary>
     /// Base class for data models.
     /// </summary>
-    /// <field name="_isDisposed" type="Boolean">
-    /// </field>
     /// <field name="__propertyChanged" type="Open.Core.PropertyChangedHandler">
+    /// </field>
+    /// <field name="__disposed" type="EventHandler">
+    /// </field>
+    /// <field name="_isDisposed" type="Boolean">
     /// </field>
     /// <field name="_propertyBag" type="Object">
     /// </field>
@@ -348,7 +502,6 @@ Open.Core.ModelBase = function Open_Core_ModelBase() {
     /// </field>
 }
 Open.Core.ModelBase.prototype = {
-    _isDisposed: false,
     
     add_propertyChanged: function Open_Core_ModelBase$add_propertyChanged(value) {
         /// <param name="value" type="Function" />
@@ -360,6 +513,25 @@ Open.Core.ModelBase.prototype = {
     },
     
     __propertyChanged: null,
+    
+    add_disposed: function Open_Core_ModelBase$add_disposed(value) {
+        /// <param name="value" type="Function" />
+        this.__disposed = ss.Delegate.combine(this.__disposed, value);
+    },
+    remove_disposed: function Open_Core_ModelBase$remove_disposed(value) {
+        /// <param name="value" type="Function" />
+        this.__disposed = ss.Delegate.remove(this.__disposed, value);
+    },
+    
+    __disposed: null,
+    
+    _fireDisposed: function Open_Core_ModelBase$_fireDisposed() {
+        if (this.__disposed != null) {
+            this.__disposed.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    _isDisposed: false,
     _propertyBag: null,
     _propertRefs: null,
     
@@ -385,13 +557,8 @@ Open.Core.ModelBase.prototype = {
         if (this._isDisposed) {
             return;
         }
-        if (this._propertRefs != null) {
-            var $enum1 = ss.IEnumerator.getEnumerator(this.get__propertyRefs());
-            while ($enum1.moveNext()) {
-                var propertyRef = $enum1.get_current();
-                propertyRef.dispose();
-            }
-        }
+        Open.Core.Helper.get_collection().disposeAndClear(this.get__propertyRefs());
+        this._fireDisposed();
         this.onDisposed();
         this._isDisposed = true;
     },
@@ -677,8 +844,9 @@ Open.Core.Should.equal = function Open_Core_Should$equal(subject, value) {
     /// <param name="value" type="Object">
     /// The value to compare to.
     /// </param>
-    if (subject !== value) {
-        Open.Core.Should._throwError('The two values are not equal.');
+    var isSame = subject == value;
+    if (!isSame) {
+        Open.Core.Should._throwError(String.format('The two values \'{0}\' and \'{1}\' are not equal.', Open.Core.Should._format(subject), Open.Core.Should._format(value)));
     }
 }
 Open.Core.Should.notEqual = function Open_Core_Should$notEqual(subject, value) {
@@ -692,7 +860,7 @@ Open.Core.Should.notEqual = function Open_Core_Should$notEqual(subject, value) {
     /// The value to compare to.
     /// </param>
     if (subject === value) {
-        Open.Core.Should._throwError('The two values should not be equal.');
+        Open.Core.Should._throwError(String.format('The two values \'{0}\' and \'{1}\' should not be equal.', Open.Core.Should._format(subject), Open.Core.Should._format(value)));
     }
 }
 Open.Core.Should.notBeNull = function Open_Core_Should$notBeNull(subject) {
@@ -714,7 +882,7 @@ Open.Core.Should.beNull = function Open_Core_Should$beNull(subject) {
     /// The value being examined.
     /// </param>
     if (subject != null) {
-        Open.Core.Should._throwError('Value should be null.');
+        Open.Core.Should._throwError(String.format('The value \'{0}\' should actually be null.', Open.Core.Should._format(subject)));
     }
 }
 Open.Core.Should.beTrue = function Open_Core_Should$beTrue(value) {
@@ -743,6 +911,12 @@ Open.Core.Should._throwError = function Open_Core_Should$_throwError(message) {
     /// <param name="message" type="String">
     /// </param>
     throw new Error(String.format('AssertionException: ' + message));
+}
+Open.Core.Should._format = function Open_Core_Should$_format(value) {
+    /// <param name="value" type="Object">
+    /// </param>
+    /// <returns type="String"></returns>
+    return Open.Core.Helper.get_string().formatToString(value);
 }
 
 
@@ -896,6 +1070,7 @@ Open.Core.TreeNode.prototype = {
     __selectionChanged$1: null,
     
     _fireSelectionChanged$1: function Open_Core_TreeNode$_fireSelectionChanged$1() {
+        this.onIsSelectedChanged();
         if (this.__selectionChanged$1 != null) {
             this.__selectionChanged$1.invoke(this, new ss.EventArgs());
         }
@@ -1099,6 +1274,12 @@ Open.Core.TreeNode.prototype = {
         return String.format('[{0}({1})]', Type.getInstanceType(this).get_name(), this.get_childCount());
     },
     
+    onIsSelectedChanged: function Open_Core_TreeNode$onIsSelectedChanged() {
+        /// <summary>
+        /// Invoked after the 'IsSelected' property changes.
+        /// </summary>
+    },
+    
     toJson: function Open_Core_TreeNode$toJson() {
         /// <returns type="String"></returns>
         return Open.Core.Helper.get_json().serialize(this._toDictionary$1());
@@ -1225,50 +1406,299 @@ Open.Core.TreeNode.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Core.ViewBase
 
-Open.Core.ViewBase = function Open_Core_ViewBase() {
+Open.Core.ViewBase = function Open_Core_ViewBase(container) {
     /// <summary>
     /// Base for classes that represent, manage and construct views ("UI").
     /// </summary>
-    /// <field name="_isInitialized$1" type="Boolean">
+    /// <param name="container" type="jQueryObject">
+    /// The root HTML element of the control (if null a <DIV></DIV> is generated).
+    /// </param>
+    /// <field name="__isEnabledChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="__isVisibleChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="__sizeChanged$1" type="EventHandler">
+    /// </field>
+    /// <field name="propBackground" type="String" static="true">
+    /// </field>
+    /// <field name="propIsVisible" type="String" static="true">
+    /// </field>
+    /// <field name="propOpacity" type="String" static="true">
+    /// </field>
+    /// <field name="propWidth" type="String" static="true">
+    /// </field>
+    /// <field name="propHeight" type="String" static="true">
+    /// </field>
+    /// <field name="propIsEnabled" type="String" static="true">
     /// </field>
     /// <field name="_container$1" type="jQueryObject">
     /// </field>
     Open.Core.ViewBase.initializeBase(this);
+    if (container == null) {
+        container = Open.Core.Html.createDiv();
+    }
+    this._container$1 = container;
 }
 Open.Core.ViewBase.prototype = {
-    _isInitialized$1: false,
-    _container$1: null,
     
-    get_isInitialized: function Open_Core_ViewBase$get_isInitialized() {
-        /// <value type="Boolean"></value>
-        return this._isInitialized$1;
+    add_isEnabledChanged: function Open_Core_ViewBase$add_isEnabledChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__isEnabledChanged$1 = ss.Delegate.combine(this.__isEnabledChanged$1, value);
+    },
+    remove_isEnabledChanged: function Open_Core_ViewBase$remove_isEnabledChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__isEnabledChanged$1 = ss.Delegate.remove(this.__isEnabledChanged$1, value);
     },
     
+    __isEnabledChanged$1: null,
+    
+    fireIsEnabledChanged: function Open_Core_ViewBase$fireIsEnabledChanged() {
+        this.onIsEnabledChanged();
+        if (this.__isEnabledChanged$1 != null) {
+            this.__isEnabledChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    add_isVisibleChanged: function Open_Core_ViewBase$add_isVisibleChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__isVisibleChanged$1 = ss.Delegate.combine(this.__isVisibleChanged$1, value);
+    },
+    remove_isVisibleChanged: function Open_Core_ViewBase$remove_isVisibleChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__isVisibleChanged$1 = ss.Delegate.remove(this.__isVisibleChanged$1, value);
+    },
+    
+    __isVisibleChanged$1: null,
+    
+    fireIsVisibleChanged: function Open_Core_ViewBase$fireIsVisibleChanged() {
+        this.onIsVisibleChanged();
+        if (this.__isVisibleChanged$1 != null) {
+            this.__isVisibleChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    add_sizeChanged: function Open_Core_ViewBase$add_sizeChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__sizeChanged$1 = ss.Delegate.combine(this.__sizeChanged$1, value);
+    },
+    remove_sizeChanged: function Open_Core_ViewBase$remove_sizeChanged(value) {
+        /// <param name="value" type="Function" />
+        this.__sizeChanged$1 = ss.Delegate.remove(this.__sizeChanged$1, value);
+    },
+    
+    __sizeChanged$1: null,
+    
+    fireSizeChanged: function Open_Core_ViewBase$fireSizeChanged() {
+        this.onSizeChanged();
+        if (this.__sizeChanged$1 != null) {
+            this.__sizeChanged$1.invoke(this, new ss.EventArgs());
+        }
+    },
+    
+    _container$1: null,
+    
     get_container: function Open_Core_ViewBase$get_container() {
-        /// <summary>
-        /// Gets the element that the view is contained within.
-        /// </summary>
         /// <value type="jQueryObject"></value>
         return this._container$1;
     },
     
-    initialize: function Open_Core_ViewBase$initialize(container) {
-        /// <param name="container" type="jQueryObject">
-        /// </param>
-        if (this.get_isInitialized()) {
-            throw new Error('View is already initialized.');
-        }
-        this._container$1 = container;
-        this.onInitialize(this._container$1);
-        this._isInitialized$1 = true;
+    get_outerHtml: function Open_Core_ViewBase$get_outerHtml() {
+        /// <value type="String"></value>
+        return Open.Core.Html.toHtml(this.get_container());
     },
     
-    onInitialize: function Open_Core_ViewBase$onInitialize(container) {
-        /// <summary>
-        /// Deriving implementation of Initialize.
-        /// </summary>
-        /// <param name="container" type="jQueryObject">
+    get_innerHtml: function Open_Core_ViewBase$get_innerHtml() {
+        /// <value type="String"></value>
+        return this.get_container().html();
+    },
+    
+    get_isEnabled: function Open_Core_ViewBase$get_isEnabled() {
+        /// <value type="Boolean"></value>
+        return this.get(Open.Core.ViewBase.propIsEnabled, true);
+    },
+    set_isEnabled: function Open_Core_ViewBase$set_isEnabled(value) {
+        /// <value type="Boolean"></value>
+        if (this.set(Open.Core.ViewBase.propIsEnabled, value, true)) {
+            this.fireIsEnabledChanged();
+        }
+        return value;
+    },
+    
+    get_isVisible: function Open_Core_ViewBase$get_isVisible() {
+        /// <value type="Boolean"></value>
+        return (this.get_container() == null) ? false : Open.Core.Css.isVisible(this.get_container());
+    },
+    set_isVisible: function Open_Core_ViewBase$set_isVisible(value) {
+        /// <value type="Boolean"></value>
+        if (value === this.get_isVisible()) {
+            return;
+        }
+        this.setCss(Open.Core.Css.display, (value) ? Open.Core.Css.block : Open.Core.Css.none);
+        this.fireIsVisibleChanged();
+        this.firePropertyChanged(Open.Core.ViewBase.propIsVisible);
+        return value;
+    },
+    
+    get_background: function Open_Core_ViewBase$get_background() {
+        /// <value type="String"></value>
+        return this.getCss(Open.Core.Css.background);
+    },
+    set_background: function Open_Core_ViewBase$set_background(value) {
+        /// <value type="String"></value>
+        this.setCss(Open.Core.Css.background, value);
+        this.firePropertyChanged(Open.Core.ViewBase.propBackground);
+        return value;
+    },
+    
+    get_opacity: function Open_Core_ViewBase$get_opacity() {
+        /// <value type="Number"></value>
+        return parseFloat(this.getCss(Open.Core.Css.opacity));
+    },
+    set_opacity: function Open_Core_ViewBase$set_opacity(value) {
+        /// <value type="Number"></value>
+        value = Open.Core.Helper.get_numberDouble().withinBounds(value, 0, 1);
+        if (value === this.get_opacity()) {
+            return;
+        }
+        Open.Core.Css.setOpacity(this.get_container(), value);
+        this.firePropertyChanged(Open.Core.ViewBase.propOpacity);
+        return value;
+    },
+    
+    get_width: function Open_Core_ViewBase$get_width() {
+        /// <value type="Number" integer="true"></value>
+        return (this.get_container() == null) ? 0 : this.get_container().width();
+    },
+    set_width: function Open_Core_ViewBase$set_width(value) {
+        /// <value type="Number" integer="true"></value>
+        if (value === this.get_width()) {
+            return;
+        }
+        this._setSizeInternal$1(value, Open.Core.SizeDimension.width, true);
+        this.firePropertyChanged(Open.Core.ViewBase.propWidth);
+        return value;
+    },
+    
+    get_height: function Open_Core_ViewBase$get_height() {
+        /// <value type="Number" integer="true"></value>
+        return (this.get_container() == null) ? 0 : this.get_container().height();
+    },
+    set_height: function Open_Core_ViewBase$set_height(value) {
+        /// <value type="Number" integer="true"></value>
+        if (value === this.get_height()) {
+            return;
+        }
+        this._setSizeInternal$1(value, Open.Core.SizeDimension.height, true);
+        this.firePropertyChanged(Open.Core.ViewBase.propHeight);
+        return value;
+    },
+    
+    setSize: function Open_Core_ViewBase$setSize(width, height) {
+        /// <param name="width" type="Number" integer="true">
         /// </param>
+        /// <param name="height" type="Number" integer="true">
+        /// </param>
+        if (width === this.get_width() && height === this.get_height()) {
+            return;
+        }
+        this._setSizeInternal$1(width, Open.Core.SizeDimension.width, false);
+        this._setSizeInternal$1(height, Open.Core.SizeDimension.height, false);
+        this.fireSizeChanged();
+    },
+    
+    _setSizeInternal$1: function Open_Core_ViewBase$_setSizeInternal$1(value, dimension, withEvent) {
+        /// <param name="value" type="Number" integer="true">
+        /// </param>
+        /// <param name="dimension" type="Open.Core.SizeDimension">
+        /// </param>
+        /// <param name="withEvent" type="Boolean">
+        /// </param>
+        if (value < 0) {
+            value = 0;
+        }
+        this.setCss((dimension === Open.Core.SizeDimension.width) ? Open.Core.Css.width : Open.Core.Css.height, value + Open.Core.Css.px);
+        if (withEvent) {
+            this.fireSizeChanged();
+        }
+    },
+    
+    beforeInsertReplace: function Open_Core_ViewBase$beforeInsertReplace(replacedElement) {
+        /// <summary>
+        /// Invoked immediately before an Insert operation of mode 'Replace' is executed.
+        /// </summary>
+        /// <param name="replacedElement" type="jQueryObject">
+        /// The element being replaced with this control.
+        /// </param>
+    },
+    
+    insert: function Open_Core_ViewBase$insert(cssSeletor, mode) {
+        /// <param name="cssSeletor" type="String">
+        /// </param>
+        /// <param name="mode" type="Open.Core.InsertMode">
+        /// </param>
+        switch (mode) {
+            case Open.Core.InsertMode.replace:
+                var replaceElement = $(cssSeletor);
+                if (replaceElement == null) {
+                    throw this._getInsertException$1(cssSeletor, 'No such element exists');
+                }
+                this.beforeInsertReplace(replaceElement);
+                Open.Core.Css.copyClasses(replaceElement, this.get_container());
+                this.get_container().replaceAll(cssSeletor);
+                break;
+            default:
+                throw this._getInsertException$1(cssSeletor, String.format('The insert mode \'{0}\' is not supported.', Open.Core.InsertMode.toString(mode)));
+        }
+    },
+    
+    _getInsertException$1: function Open_Core_ViewBase$_getInsertException$1(cssSeletor, message) {
+        /// <param name="cssSeletor" type="String">
+        /// </param>
+        /// <param name="message" type="String">
+        /// </param>
+        /// <returns type="Error"></returns>
+        return new Error(String.format('Failed to insert [{0}] at \'{1}\'. {2}', Type.getInstanceType(this).get_name(), cssSeletor, message));
+    },
+    
+    getCss: function Open_Core_ViewBase$getCss(attribute) {
+        /// <param name="attribute" type="String">
+        /// </param>
+        /// <returns type="String"></returns>
+        var value = this.get_container().css(attribute);
+        return (String.isNullOrEmpty(value)) ? null : value;
+    },
+    
+    setCss: function Open_Core_ViewBase$setCss(attribute, value) {
+        /// <param name="attribute" type="String">
+        /// </param>
+        /// <param name="value" type="String">
+        /// </param>
+        this.get_container().css(attribute, value);
+    },
+    
+    getAttribute: function Open_Core_ViewBase$getAttribute(attribute) {
+        /// <param name="attribute" type="String">
+        /// </param>
+        /// <returns type="String"></returns>
+        var value = this.get_container().attr(attribute);
+        return (String.isNullOrEmpty(value)) ? null : value;
+    },
+    
+    setAttribute: function Open_Core_ViewBase$setAttribute(attribute, value) {
+        /// <param name="attribute" type="String">
+        /// </param>
+        /// <param name="value" type="String">
+        /// </param>
+        this.get_container().attr(attribute, value);
+    },
+    
+    onIsEnabledChanged: function Open_Core_ViewBase$onIsEnabledChanged() {
+    },
+    
+    onIsVisibleChanged: function Open_Core_ViewBase$onIsVisibleChanged() {
+    },
+    
+    onSizeChanged: function Open_Core_ViewBase$onSizeChanged() {
     }
 }
 
@@ -1510,12 +1940,42 @@ Open.Core.Log = function Open_Core_Log() {
     /// <field name="_writer" type="Open.Core.LogWriter" static="true">
     /// </field>
 }
-Open.Core.Log.get__writer = function Open_Core_Log$get__writer() {
+Open.Core.Log.get_isActive = function Open_Core_Log$get_isActive() {
+    /// <summary>
+    /// Gets or sets whether the log is active.  When False nothing is written to the log.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Core.Log._writer.get_isActive();
+}
+Open.Core.Log.set_isActive = function Open_Core_Log$set_isActive(value) {
+    /// <summary>
+    /// Gets or sets whether the log is active.  When False nothing is written to the log.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    Open.Core.Log._writer.set_isActive(value);
+    return value;
+}
+Open.Core.Log.get_writer = function Open_Core_Log$get_writer() {
     /// <summary>
     /// Gets the specific log-writer instance that the static methods write to.
     /// </summary>
     /// <value type="Open.Core.LogWriter"></value>
     return Open.Core.Log._writer || (Open.Core.Log._writer = new Open.Core.LogWriter());
+}
+Open.Core.Log.get_view = function Open_Core_Log$get_view() {
+    /// <summary>
+    /// Gets or sets the view-control to write to.
+    /// </summary>
+    /// <value type="Open.Core.ILogView"></value>
+    return Open.Core.Log.get_writer().get_view();
+}
+Open.Core.Log.set_view = function Open_Core_Log$set_view(value) {
+    /// <summary>
+    /// Gets or sets the view-control to write to.
+    /// </summary>
+    /// <value type="Open.Core.ILogView"></value>
+    Open.Core.Log.get_writer().set_view(value);
+    return value;
 }
 Open.Core.Log.title = function Open_Core_Log$title(message) {
     /// <summary>
@@ -1524,7 +1984,7 @@ Open.Core.Log.title = function Open_Core_Log$title(message) {
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
-    Open.Core.Log.write(Open.Core.Html.toBold(message), Open.Core.LogSeverity.info);
+    Open.Core.Log.get_writer().title(message);
 }
 Open.Core.Log.info = function Open_Core_Log$info(message) {
     /// <summary>
@@ -1533,7 +1993,7 @@ Open.Core.Log.info = function Open_Core_Log$info(message) {
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
-    Open.Core.Log.write(message, Open.Core.LogSeverity.info);
+    Open.Core.Log.get_writer().info(message);
 }
 Open.Core.Log.debug = function Open_Core_Log$debug(message) {
     /// <summary>
@@ -1542,7 +2002,7 @@ Open.Core.Log.debug = function Open_Core_Log$debug(message) {
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
-    Open.Core.Log.write(message, Open.Core.LogSeverity.debug);
+    Open.Core.Log.get_writer().debug(message);
 }
 Open.Core.Log.warning = function Open_Core_Log$warning(message) {
     /// <summary>
@@ -1551,7 +2011,7 @@ Open.Core.Log.warning = function Open_Core_Log$warning(message) {
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
-    Open.Core.Log.write(message, Open.Core.LogSeverity.warning);
+    Open.Core.Log.get_writer().warning(message);
 }
 Open.Core.Log.error = function Open_Core_Log$error(message) {
     /// <summary>
@@ -1560,7 +2020,7 @@ Open.Core.Log.error = function Open_Core_Log$error(message) {
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
-    Open.Core.Log.write(message, Open.Core.LogSeverity.error);
+    Open.Core.Log.get_writer().error(message);
 }
 Open.Core.Log.success = function Open_Core_Log$success(message) {
     /// <summary>
@@ -1569,7 +2029,7 @@ Open.Core.Log.success = function Open_Core_Log$success(message) {
     /// <param name="message" type="String">
     /// The messge to write (HTML).
     /// </param>
-    Open.Core.Log.write(message, Open.Core.LogSeverity.success);
+    Open.Core.Log.get_writer().success(message);
 }
 Open.Core.Log.write = function Open_Core_Log$write(message, severity) {
     /// <summary>
@@ -1581,28 +2041,25 @@ Open.Core.Log.write = function Open_Core_Log$write(message, severity) {
     /// <param name="severity" type="Open.Core.LogSeverity">
     /// The severity of the message.
     /// </param>
-    Open.Core.Log.get__writer().write(message, severity);
-}
-Open.Core.Log.clear = function Open_Core_Log$clear() {
-    /// <summary>
-    /// Clears the log.
-    /// </summary>
-    Open.Core.Log.get__writer().clear();
+    Open.Core.Log.get_writer().write(message, severity);
 }
 Open.Core.Log.lineBreak = function Open_Core_Log$lineBreak() {
     /// <summary>
     /// Inserts a line break to the log.
     /// </summary>
-    Open.Core.Log.get__writer().lineBreak();
+    Open.Core.Log.get_writer().lineBreak();
 }
-Open.Core.Log.registerView = function Open_Core_Log$registerView(view) {
+Open.Core.Log.newSection = function Open_Core_Log$newSection() {
     /// <summary>
-    /// Registers a log viewer to emit output to (multiple views can be associated with the log).
+    /// Inserts a new section divider.
     /// </summary>
-    /// <param name="view" type="Open.Core.ILogView">
-    /// The log view to emit to.
-    /// </param>
-    Open.Core.Log.get__writer().registerView(view);
+    Open.Core.Log.get_writer().newSection();
+}
+Open.Core.Log.clear = function Open_Core_Log$clear() {
+    /// <summary>
+    /// Clears the log.
+    /// </summary>
+    Open.Core.Log.get_writer().clear();
 }
 
 
@@ -1613,27 +2070,123 @@ Open.Core.LogWriter = function Open_Core_LogWriter() {
     /// <summary>
     /// An output log.
     /// </summary>
-    /// <field name="_views$1" type="Array">
+    /// <field name="_isActive$1" type="Boolean">
     /// </field>
-    this._views$1 = [];
+    /// <field name="_canInsertSection$1" type="Boolean">
+    /// </field>
+    /// <field name="_view$1" type="Open.Core.ILogView">
+    /// </field>
     Open.Core.LogWriter.initializeBase(this);
     Open.Core.Css.insertLink(Open.Core.LogCss.url);
 }
 Open.Core.LogWriter.prototype = {
+    _isActive$1: true,
+    _canInsertSection$1: true,
+    _view$1: null,
     
     onDisposed: function Open_Core_LogWriter$onDisposed() {
         /// <summary>
         /// Destructor.
         /// </summary>
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
-        while ($enum1.moveNext()) {
-            var view = $enum1.get_current();
-            var disposable = Type.safeCast(view, ss.IDisposable);
-            if (disposable != null) {
-                disposable.dispose();
-            }
-        }
+        Open.Core.Helper.dispose(this.get_view());
         Open.Core.LogWriter.callBaseMethod(this, 'onDisposed');
+    },
+    
+    get_view: function Open_Core_LogWriter$get_view() {
+        /// <summary>
+        /// Gets or sets the view-control to write to.
+        /// </summary>
+        /// <value type="Open.Core.ILogView"></value>
+        return this._view$1;
+    },
+    set_view: function Open_Core_LogWriter$set_view(value) {
+        /// <summary>
+        /// Gets or sets the view-control to write to.
+        /// </summary>
+        /// <value type="Open.Core.ILogView"></value>
+        this._view$1 = value;
+        return value;
+    },
+    
+    get_isActive: function Open_Core_LogWriter$get_isActive() {
+        /// <summary>
+        /// Gets or sets whether the log is active.  When False nothing is written to the log.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        return this._isActive$1;
+    },
+    set_isActive: function Open_Core_LogWriter$set_isActive(value) {
+        /// <summary>
+        /// Gets or sets whether the log is active.  When False nothing is written to the log.
+        /// </summary>
+        /// <value type="Boolean"></value>
+        this._isActive$1 = value;
+        return value;
+    },
+    
+    get__canWrite$1: function Open_Core_LogWriter$get__canWrite$1() {
+        /// <value type="Boolean"></value>
+        return this.get_isActive() && this.get_view() != null;
+    },
+    
+    title: function Open_Core_LogWriter$title(message) {
+        /// <summary>
+        /// Writes a informational message to the log (as a bold title).
+        /// </summary>
+        /// <param name="message" type="String">
+        /// The messge to write (HTML).
+        /// </param>
+        this.write(Open.Core.Html.toBold(message), Open.Core.LogSeverity.info);
+    },
+    
+    info: function Open_Core_LogWriter$info(message) {
+        /// <summary>
+        /// Writes a informational message to the log.
+        /// </summary>
+        /// <param name="message" type="String">
+        /// The messge to write (HTML).
+        /// </param>
+        this.write(message, Open.Core.LogSeverity.info);
+    },
+    
+    debug: function Open_Core_LogWriter$debug(message) {
+        /// <summary>
+        /// Writes a debug message to the log.
+        /// </summary>
+        /// <param name="message" type="String">
+        /// The messge to write (HTML).
+        /// </param>
+        this.write(message, Open.Core.LogSeverity.debug);
+    },
+    
+    warning: function Open_Core_LogWriter$warning(message) {
+        /// <summary>
+        /// Writes a warning to the log.
+        /// </summary>
+        /// <param name="message" type="String">
+        /// The messge to write (HTML).
+        /// </param>
+        this.write(message, Open.Core.LogSeverity.warning);
+    },
+    
+    error: function Open_Core_LogWriter$error(message) {
+        /// <summary>
+        /// Writes an error message to the log.
+        /// </summary>
+        /// <param name="message" type="String">
+        /// The messge to write (HTML).
+        /// </param>
+        this.write(message, Open.Core.LogSeverity.error);
+    },
+    
+    success: function Open_Core_LogWriter$success(message) {
+        /// <summary>
+        /// Writes a success message to the log.
+        /// </summary>
+        /// <param name="message" type="String">
+        /// The messge to write (HTML).
+        /// </param>
+        this.write(message, Open.Core.LogSeverity.success);
     },
     
     write: function Open_Core_LogWriter$write(message, severity) {
@@ -1641,36 +2194,43 @@ Open.Core.LogWriter.prototype = {
         /// </param>
         /// <param name="severity" type="Open.Core.LogSeverity">
         /// </param>
+        if (!this.get__canWrite$1()) {
+            return;
+        }
         var css = Open.Core.LogCss.severityClass(severity);
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
-        while ($enum1.moveNext()) {
-            var view = $enum1.get_current();
-            view.insert(message, css);
-        }
-    },
-    
-    lineBreak: function Open_Core_LogWriter$lineBreak() {
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
-        while ($enum1.moveNext()) {
-            var view = $enum1.get_current();
-            view.lineBreak();
-        }
+        this.get_view().insert(message, css);
+        this._canInsertSection$1 = true;
     },
     
     clear: function Open_Core_LogWriter$clear() {
-        var $enum1 = ss.IEnumerator.getEnumerator(this._views$1);
-        while ($enum1.moveNext()) {
-            var view = $enum1.get_current();
-            view.clear();
+        if (!this.get__canWrite$1()) {
+            return;
         }
+        this.get_view().clear();
     },
     
-    registerView: function Open_Core_LogWriter$registerView(view) {
-        /// <param name="view" type="Open.Core.ILogView">
-        /// </param>
-        if (view != null) {
-            this._views$1.add(view);
+    lineBreak: function Open_Core_LogWriter$lineBreak() {
+        /// <summary>
+        /// Inserts a line break to the log.
+        /// </summary>
+        if (!this.get__canWrite$1()) {
+            return;
         }
+        this.get_view().divider(Open.Core.LogDivider.lineBreak);
+    },
+    
+    newSection: function Open_Core_LogWriter$newSection() {
+        /// <summary>
+        /// Inserts a new section divider.
+        /// </summary>
+        if (!this.get__canWrite$1()) {
+            return;
+        }
+        if (!this._canInsertSection$1) {
+            return;
+        }
+        this.get_view().divider(Open.Core.LogDivider.section);
+        this._canInsertSection$1 = false;
     }
 }
 
@@ -1687,6 +2247,8 @@ Open.Core.LogCss = function Open_Core_LogCss() {
     /// <field name="_rootClass" type="String" static="true">
     /// </field>
     /// <field name="listItemClass" type="String" static="true">
+    /// </field>
+    /// <field name="sectionBreak" type="String" static="true">
     /// </field>
     /// <field name="lineBreakClass" type="String" static="true">
     /// </field>
@@ -2127,7 +2689,7 @@ Open.Core.DelayedAction.prototype = {
         if (Open.Core.DelayedAction.get_isAsyncronous()) {
             this._timerId = window.setTimeout(ss.Delegate.create(this, function() {
                 this._invokeAction();
-            }), Open.Core.Helper.get_number().toMsecs(this.get_delay()));
+            }), Open.Core.Helper.get_time().toMsecs(this.get_delay()));
         }
         else {
             this._invokeAction();
@@ -2181,11 +2743,23 @@ Open.Core.Html = function Open_Core_Html() {
     /// </field>
     /// <field name="img" type="String" static="true">
     /// </field>
+    /// <field name="button" type="String" static="true">
+    /// </field>
     /// <field name="id" type="String" static="true">
     /// </field>
     /// <field name="href" type="String" static="true">
     /// </field>
     /// <field name="src" type="String" static="true">
+    /// </field>
+    /// <field name="type" type="String" static="true">
+    /// </field>
+    /// <field name="value" type="String" static="true">
+    /// </field>
+    /// <field name="disabled" type="String" static="true">
+    /// </field>
+    /// <field name="classAttr" type="String" static="true">
+    /// </field>
+    /// <field name="submit" type="String" static="true">
     /// </field>
     /// <field name="scrollTop" type="String" static="true">
     /// </field>
@@ -2286,7 +2860,7 @@ Open.Core.Html.getOrCreateId = function Open_Core_Html$getOrCreateId(element) {
 }
 Open.Core.Html.toHyperlink = function Open_Core_Html$toHyperlink(url, text, target) {
     /// <summary>
-    /// Formats the an hyperlink.
+    /// Formats the URL as a hyperlink.
     /// </summary>
     /// <param name="url" type="String">
     /// The url to link to.
@@ -2300,6 +2874,9 @@ Open.Core.Html.toHyperlink = function Open_Core_Html$toHyperlink(url, text, targ
     /// <returns type="String"></returns>
     if (text == null) {
         text = url;
+    }
+    if (ss.isUndefined(target)) {
+        target = Open.Core.LinkTarget.blank;
     }
     return String.format('<a href=\'{0}\' target=\'_{2}\'>{1}</a>', url, text, Open.Core.LinkTarget.toString(target));
 }
@@ -2343,6 +2920,38 @@ Open.Core.Html.height = function Open_Core_Html$height(cssSelector) {
     /// <returns type="Number" integer="true"></returns>
     return $(cssSelector).height();
 }
+Open.Core.Html.replaceWith = function Open_Core_Html$replaceWith(replaceSeletor, withReplacement, copyCssClasses) {
+    /// <summary>
+    /// Replaces an element with the given object.
+    /// </summary>
+    /// <param name="replaceSeletor" type="String">
+    /// The CSS selector the element(s) to replace.
+    /// </param>
+    /// <param name="withReplacement" type="jQueryObject">
+    /// The element to insert.
+    /// </param>
+    /// <param name="copyCssClasses" type="Boolean">
+    /// Flag indicating if CSS classes should be copied from the old element to the new one.
+    /// </param>
+    if (copyCssClasses) {
+        var replaceElement = $(replaceSeletor);
+        Open.Core.Css.copyClasses(replaceElement, withReplacement);
+    }
+    withReplacement.replaceAll(replaceSeletor);
+}
+Open.Core.Html.toHtml = function Open_Core_Html$toHtml(element) {
+    /// <summary>
+    /// Retreives the OuterHtml of the given element.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to retrieve the HTML for.
+    /// </param>
+    /// <returns type="String"></returns>
+    if (element == null) {
+        return null;
+    }
+    return Open.Core.Html.createDiv().append(element.clone()).html();
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2374,6 +2983,10 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="overflow" type="String" static="true">
     /// </field>
+    /// <field name="opacity" type="String" static="true">
+    /// </field>
+    /// <field name="fontSize" type="String" static="true">
+    /// </field>
     /// <field name="block" type="String" static="true">
     /// </field>
     /// <field name="none" type="String" static="true">
@@ -2385,6 +2998,8 @@ Open.Core.Css = function Open_Core_Css() {
     /// <field name="px" type="String" static="true">
     /// </field>
     /// <field name="classes" type="Open.Core.CoreCssClasses" static="true">
+    /// </field>
+    /// <field name="urls" type="Open.Core.CoreCssUrls" static="true">
     /// </field>
 }
 Open.Core.Css.isVisible = function Open_Core_Css$isVisible(element) {
@@ -2456,6 +3071,41 @@ Open.Core.Css.addOrRemoveClass = function Open_Core_Css$addOrRemoveClass(element
     }
     else {
         element.removeClass(cssClass);
+    }
+}
+Open.Core.Css.copyClasses = function Open_Core_Css$copyClasses(source, target) {
+    /// <summary>
+    /// Copies the CSS classes from one element to another.
+    /// </summary>
+    /// <param name="source" type="jQueryObject">
+    /// The source element to copy from.
+    /// </param>
+    /// <param name="target" type="jQueryObject">
+    /// The target element to copy to.
+    /// </param>
+    var classes = source.attr(Open.Core.Html.classAttr);
+    if (String.isNullOrEmpty(classes)) {
+        return;
+    }
+    Open.Core.Css.addClasses(target, classes);
+}
+Open.Core.Css.addClasses = function Open_Core_Css$addClasses(target, classValue) {
+    /// <summary>
+    /// Adds a single class, or multiple classs from a space seperated list.
+    /// </summary>
+    /// <param name="target" type="jQueryObject">
+    /// The target element to add to.
+    /// </param>
+    /// <param name="classValue" type="String">
+    /// The class attribute value to apply.
+    /// </param>
+    if (String.isNullOrEmpty(classValue)) {
+        return;
+    }
+    var $enum1 = ss.IEnumerator.getEnumerator(classValue.split(' '));
+    while ($enum1.moveNext()) {
+        var className = $enum1.get_current();
+        target.addClass(className);
     }
 }
 Open.Core.Css.insertLink = function Open_Core_Css$insertLink(url) {
@@ -2571,6 +3221,19 @@ Open.Core.Css.setSize = function Open_Core_Css$setSize(element, width, height) {
     element.css(Open.Core.Css.width, width + Open.Core.Css.px);
     element.css(Open.Core.Css.height, height + Open.Core.Css.px);
 }
+Open.Core.Css.setOpacity = function Open_Core_Css$setOpacity(element, percent) {
+    /// <summary>
+    /// Applies opacity.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
+    /// The element to effect.
+    /// </param>
+    /// <param name="percent" type="Number">
+    /// The opacity percentage (0..1).
+    /// </param>
+    percent = Open.Core.Helper.get_numberDouble().withinBounds(percent, 0, 1);
+    element.css(Open.Core.Css.opacity, percent.toString());
+}
 Open.Core.Css.center = function Open_Core_Css$center(element, within) {
     /// <summary>
     /// Sets the left and top position of an element so it is centered within another element.
@@ -2624,6 +3287,27 @@ Open.Core.CoreCssClasses = function Open_Core_CoreCssClasses() {
 Open.Core.CoreCssClasses.prototype = {
     titleFont: 'titleFont',
     absoluteFill: 'absoluteFill'
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.CoreCssUrls
+
+Open.Core.CoreCssUrls = function Open_Core_CoreCssUrls() {
+    /// <field name="core" type="String">
+    /// </field>
+    /// <field name="coreLists" type="String">
+    /// </field>
+    /// <field name="coreControls" type="String">
+    /// </field>
+    /// <field name="jitHyperTree" type="String">
+    /// </field>
+}
+Open.Core.CoreCssUrls.prototype = {
+    core: '/Open.Core/Css/Core.css',
+    coreLists: '/Open.Core/Css/Core.Lists.css',
+    coreControls: '/Open.Core/Css/Core.Controls.css',
+    jitHyperTree: '/Open.Core/Css/Jit.Hypertree.css'
 }
 
 
@@ -2818,7 +3502,7 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_stringHelper" type="Open.Core.Helpers.StringHelper" static="true">
     /// </field>
-    /// <field name="_numberHelper" type="Open.Core.Helpers.NumberHelper" static="true">
+    /// <field name="_timeHelper" type="Open.Core.Helpers.TimeHelper" static="true">
     /// </field>
     /// <field name="_scrollHelper" type="Open.Core.Helpers.ScrollHelper" static="true">
     /// </field>
@@ -2827,6 +3511,10 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// <field name="_treeHelper" type="Open.Core.Helpers.TreeHelper" static="true">
     /// </field>
     /// <field name="_eventHelper" type="Open.Core.Helpers.EventHelper" static="true">
+    /// </field>
+    /// <field name="_doubleHelper" type="Open.Core.Helpers.DoubleHelper" static="true">
+    /// </field>
+    /// <field name="_urlHelper" type="Open.Core.Helpers.UrlHelper" static="true">
     /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
@@ -2873,12 +3561,12 @@ Open.Core.Helper.get_string = function Open_Core_Helper$get_string() {
     /// <value type="Open.Core.Helpers.StringHelper"></value>
     return Open.Core.Helper._stringHelper || (Open.Core.Helper._stringHelper = new Open.Core.Helpers.StringHelper());
 }
-Open.Core.Helper.get_number = function Open_Core_Helper$get_number() {
+Open.Core.Helper.get_time = function Open_Core_Helper$get_time() {
     /// <summary>
     /// Gets the helper for working with numbers.
     /// </summary>
-    /// <value type="Open.Core.Helpers.NumberHelper"></value>
-    return Open.Core.Helper._numberHelper || (Open.Core.Helper._numberHelper = new Open.Core.Helpers.NumberHelper());
+    /// <value type="Open.Core.Helpers.TimeHelper"></value>
+    return Open.Core.Helper._timeHelper || (Open.Core.Helper._timeHelper = new Open.Core.Helpers.TimeHelper());
 }
 Open.Core.Helper.get_scroll = function Open_Core_Helper$get_scroll() {
     /// <summary>
@@ -2908,6 +3596,20 @@ Open.Core.Helper.get_event = function Open_Core_Helper$get_event() {
     /// <value type="Open.Core.Helpers.EventHelper"></value>
     return Open.Core.Helper._eventHelper || (Open.Core.Helper._eventHelper = new Open.Core.Helpers.EventHelper());
 }
+Open.Core.Helper.get_numberDouble = function Open_Core_Helper$get_numberDouble() {
+    /// <summary>
+    /// Gets the helper for working with doubles.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.DoubleHelper"></value>
+    return Open.Core.Helper._doubleHelper || (Open.Core.Helper._doubleHelper = new Open.Core.Helpers.DoubleHelper());
+}
+Open.Core.Helper.get_url = function Open_Core_Helper$get_url() {
+    /// <summary>
+    /// Gets the helper for working with URLs.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.UrlHelper"></value>
+    return Open.Core.Helper._urlHelper || (Open.Core.Helper._urlHelper = new Open.Core.Helpers.UrlHelper());
+}
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
     /// Invokes the given action if it's not Null/Undefined.
@@ -2927,6 +3629,21 @@ Open.Core.Helper.createId = function Open_Core_Helper$createId() {
     Open.Core.Helper._idCounter++;
     return String.format('gid{0}', Open.Core.Helper._idCounter);
 }
+Open.Core.Helper.dispose = function Open_Core_Helper$dispose(obj) {
+    /// <summary>
+    /// Disposes of the object (if it's not null and is an IDisposable).
+    /// </summary>
+    /// <param name="obj" type="Object">
+    /// The object to dispose of.
+    /// </param>
+    if (ss.isNullOrUndefined(obj)) {
+        return;
+    }
+    var disposable = Type.safeCast(obj, ss.IDisposable);
+    if (disposable != null) {
+        disposable.dispose();
+    }
+}
 
 
 Type.registerNamespace('Open.Testing.Internal');
@@ -2945,7 +3662,10 @@ Open.Testing.Internal.ITestHarnessEvents.prototype = {
     fireControlAdded : null,
     add_clearControls : null,
     remove_clearControls : null,
-    fireClearControls : null
+    fireClearControls : null,
+    add_updateLayout : null,
+    remove_updateLayout : null,
+    fireUpdateLayout : null
 }
 Open.Testing.Internal.ITestHarnessEvents.registerInterface('Open.Testing.Internal.ITestHarnessEvents');
 
@@ -2966,28 +3686,34 @@ Open.Testing.Internal.TestClassEventArgs.prototype = {
 // Open.Testing.Internal.TestControlEventArgs
 
 Open.Testing.Internal.TestControlEventArgs = function Open_Testing_Internal_TestControlEventArgs() {
-    /// <field name="sizeMode" type="Open.Testing.SizeMode">
+    /// <field name="controlDisplayMode" type="Open.Testing.ControlDisplayMode">
     /// </field>
-    /// <field name="content" type="jQueryObject">
+    /// <field name="htmlElement" type="jQueryObject">
+    /// </field>
+    /// <field name="control" type="Open.Core.IView">
     /// </field>
 }
 Open.Testing.Internal.TestControlEventArgs.prototype = {
-    sizeMode: 0,
-    content: null
+    controlDisplayMode: 0,
+    htmlElement: null,
+    control: null
 }
 
 
 Type.registerNamespace('Open.Testing');
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Testing.SizeMode
+// Open.Testing.ControlDisplayMode
 
-Open.Testing.SizeMode = function() { 
+Open.Testing.ControlDisplayMode = function() { 
     /// <summary>
     /// Flags representing the various different sizing strategies for a hosted control.
     /// </summary>
-    /// <field name="control" type="Number" integer="true" static="true">
-    /// The size is determined by the control.
+    /// <field name="none" type="Number" integer="true" static="true">
+    /// No sizing or positioning is applied to the control.
+    /// </field>
+    /// <field name="center" type="Number" integer="true" static="true">
+    /// The size is determined by the control, which is centered within the canvas.
     /// </field>
     /// <field name="fill" type="Number" integer="true" static="true">
     /// The control is sized to fill the host container.
@@ -2996,12 +3722,13 @@ Open.Testing.SizeMode = function() {
     /// The control is sized to fill the host container but is surrounded by some whitespace.
     /// </field>
 };
-Open.Testing.SizeMode.prototype = {
-    control: 0, 
-    fill: 1, 
-    fillWithMargin: 2
+Open.Testing.ControlDisplayMode.prototype = {
+    none: 0, 
+    center: 1, 
+    fill: 2, 
+    fillWithMargin: 3
 }
-Open.Testing.SizeMode.registerEnum('Open.Testing.SizeMode', false);
+Open.Testing.ControlDisplayMode.registerEnum('Open.Testing.ControlDisplayMode', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3014,10 +3741,27 @@ Open.Testing.TestHarness = function Open_Testing_TestHarness() {
     /// </summary>
     /// <field name="_events" type="Open.Testing.Internal.ITestHarnessEvents" static="true">
     /// </field>
+    /// <field name="_displayMode" type="Open.Testing.ControlDisplayMode" static="true">
+    /// </field>
 }
 Open.Testing.TestHarness.get__events = function Open_Testing_TestHarness$get__events() {
     /// <value type="Open.Testing.Internal.ITestHarnessEvents"></value>
     return Open.Testing.TestHarness._events || (Open.Testing.TestHarness._events = Type.safeCast(Open.Core.DiContainer.get_defaultContainer().getSingleton(Open.Testing.Internal.ITestHarnessEvents), Open.Testing.Internal.ITestHarnessEvents));
+}
+Open.Testing.TestHarness.get_displayMode = function Open_Testing_TestHarness$get_displayMode() {
+    /// <summary>
+    /// Gets or sets the size strategy for displaying added controls/HTML.
+    /// </summary>
+    /// <value type="Open.Testing.ControlDisplayMode"></value>
+    return Open.Testing.TestHarness._displayMode;
+}
+Open.Testing.TestHarness.set_displayMode = function Open_Testing_TestHarness$set_displayMode(value) {
+    /// <summary>
+    /// Gets or sets the size strategy for displaying added controls/HTML.
+    /// </summary>
+    /// <value type="Open.Testing.ControlDisplayMode"></value>
+    Open.Testing.TestHarness._displayMode = value;
+    return value;
 }
 Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$registerClass(testClass) {
     /// <summary>
@@ -3036,28 +3780,53 @@ Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$regis
     e.testClass = testClass;
     Open.Testing.TestHarness.get__events().fireTestClassRegistered(e);
 }
-Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addControl(content, sizeMode) {
+Open.Testing.TestHarness.addControl = function Open_Testing_TestHarness$addControl(control) {
     /// <summary>
-    /// Adds a control to the host canvas.
+    /// Adds a visual control to the host canvas.
     /// </summary>
-    /// <param name="content" type="jQueryObject">
+    /// <param name="control" type="Open.Core.IView">
+    /// The control to add.
+    /// </param>
+    if (control == null) {
+        throw new Error('A visual control was not specified.');
+    }
+    Open.Testing.TestHarness._fireControlAdded(control, control.get_container());
+}
+Open.Testing.TestHarness.addHtml = function Open_Testing_TestHarness$addHtml(element) {
+    /// <summary>
+    /// Adds an HTML element to the host canvas.
+    /// </summary>
+    /// <param name="element" type="jQueryObject">
     /// The HTML content of the control.
     /// </param>
-    /// <param name="sizeMode" type="Open.Testing.SizeMode">
-    /// The strategy used to size the control.
-    /// </param>
-    /// <returns type="jQueryObject"></returns>
-    var e = new Open.Testing.Internal.TestControlEventArgs();
-    e.sizeMode = sizeMode;
-    e.content = content;
-    Open.Testing.TestHarness.get__events().fireControlAdded(e);
-    return e.content;
+    if (element == null) {
+        throw new Error('An HTML element was not specified.');
+    }
+    Open.Testing.TestHarness._fireControlAdded(null, element);
 }
-Open.Testing.TestHarness.clearControls = function Open_Testing_TestHarness$clearControls() {
+Open.Testing.TestHarness.reset = function Open_Testing_TestHarness$reset() {
     /// <summary>
-    /// Clears all added controls from the host canvas.
+    /// Clears the controls from the host canvas and resets to orginal state.
     /// </summary>
+    Open.Testing.TestHarness._displayMode = Open.Testing.ControlDisplayMode.center;
     Open.Testing.TestHarness.get__events().fireClearControls();
+}
+Open.Testing.TestHarness.updateLayout = function Open_Testing_TestHarness$updateLayout() {
+    /// <summary>
+    /// Forces the display canvas to run it's layout routine.
+    /// </summary>
+    Open.Testing.TestHarness.get__events().fireUpdateLayout();
+}
+Open.Testing.TestHarness._fireControlAdded = function Open_Testing_TestHarness$_fireControlAdded(control, element) {
+    /// <param name="control" type="Open.Core.IView">
+    /// </param>
+    /// <param name="element" type="jQueryObject">
+    /// </param>
+    var e = new Open.Testing.Internal.TestControlEventArgs();
+    e.control = control;
+    e.htmlElement = element;
+    e.controlDisplayMode = Open.Testing.TestHarness.get_displayMode();
+    Open.Testing.TestHarness.get__events().fireControlAdded(e);
 }
 
 
@@ -3157,6 +3926,31 @@ Open.Core.Helpers.CollectionHelper.prototype = {
         return null;
     },
     
+    total: function Open_Core_Helpers_CollectionHelper$total(collection, predicate) {
+        /// <summary>
+        /// Gets the total number of items that match the given predicate.
+        /// </summary>
+        /// <param name="collection" type="ss.IEnumerable">
+        /// The collection to examine.
+        /// </param>
+        /// <param name="predicate" type="Open.Core.FuncBool">
+        /// The predicate to match.
+        /// </param>
+        /// <returns type="Number" integer="true"></returns>
+        if (collection == null) {
+            return 0;
+        }
+        var count = 0;
+        var $enum1 = ss.IEnumerator.getEnumerator(collection);
+        while ($enum1.moveNext()) {
+            var item = $enum1.get_current();
+            if (predicate.invoke(item)) {
+                count++;
+            }
+        }
+        return count;
+    },
+    
     disposeAndClear: function Open_Core_Helpers_CollectionHelper$disposeAndClear(collection) {
         /// <summary>
         /// Clears the collection, disposing of all disposable children.
@@ -3176,6 +3970,41 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             }
         }
         collection.clear();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.DoubleHelper
+
+Open.Core.Helpers.DoubleHelper = function Open_Core_Helpers_DoubleHelper() {
+    /// <summary>
+    /// Utility methods for working with doubles.
+    /// </summary>
+}
+Open.Core.Helpers.DoubleHelper.prototype = {
+    
+    withinBounds: function Open_Core_Helpers_DoubleHelper$withinBounds(value, min, max) {
+        /// <summary>
+        /// Ensures a value is within the given bounds.
+        /// </summary>
+        /// <param name="value" type="Number">
+        /// The number to examine.
+        /// </param>
+        /// <param name="min" type="Number">
+        /// The minimum value.
+        /// </param>
+        /// <param name="max" type="Number">
+        /// The maximum value.
+        /// </param>
+        /// <returns type="Number"></returns>
+        if (value < min) {
+            value = min;
+        }
+        if (value > max) {
+            value = max;
+        }
+        return value;
     }
 }
 
@@ -3360,7 +4189,7 @@ Open.Core.Helpers.ScrollHelper.prototype = {
         /// </param>
         var props = {};
         props[Open.Core.Html.scrollTop] = container.attr(Open.Core.Html.scrollHeight);
-        container.animate(props, Open.Core.Helper.get_number().toMsecs(duration), easing, ss.Delegate.create(this, function() {
+        container.animate(props, Open.Core.Helper.get_time().toMsecs(duration), easing, ss.Delegate.create(this, function() {
             Open.Core.Helper.invokeOrDefault(onComplete);
         }));
     }
@@ -3402,16 +4231,16 @@ Open.Core.Helpers.JsonHelper.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.Helpers.NumberHelper
+// Open.Core.Helpers.TimeHelper
 
-Open.Core.Helpers.NumberHelper = function Open_Core_Helpers_NumberHelper() {
+Open.Core.Helpers.TimeHelper = function Open_Core_Helpers_TimeHelper() {
     /// <summary>
-    /// Utility methods for working with numbers.
+    /// Utility methods for working with time.
     /// </summary>
 }
-Open.Core.Helpers.NumberHelper.prototype = {
+Open.Core.Helpers.TimeHelper.prototype = {
     
-    toMsecs: function Open_Core_Helpers_NumberHelper$toMsecs(secs) {
+    toMsecs: function Open_Core_Helpers_TimeHelper$toMsecs(secs) {
         /// <summary>
         /// Converts seconds to milliseconds.
         /// </summary>
@@ -3631,6 +4460,26 @@ Open.Core.Helpers.StringHelper.prototype = {
         return value.substr(0, 1).toUpperCase() + value.substring(1, value.length);
     },
     
+    removeStart: function Open_Core_Helpers_StringHelper$removeStart(text, remove) {
+        /// <summary>
+        /// Removes the specified text from the start of a string if it's present (not case sensitive).
+        /// </summary>
+        /// <param name="text" type="String">
+        /// The string to effect.
+        /// </param>
+        /// <param name="remove" type="String">
+        /// The text to remove.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (String.isNullOrEmpty(text) || String.isNullOrEmpty(remove)) {
+            return text;
+        }
+        if (!text.toLowerCase().startsWith(remove.toLowerCase())) {
+            return text;
+        }
+        return text.substr(remove.length, text.length - remove.length);
+    },
+    
     removeEnd: function Open_Core_Helpers_StringHelper$removeEnd(text, remove) {
         /// <summary>
         /// Removes the specified text from the end of a string if it's present (not case sensitive).
@@ -3664,6 +4513,62 @@ Open.Core.Helpers.StringHelper.prototype = {
         }
         var parts = url.split('/');
         return (parts.length === 0) ? url : parts[parts.length - 1];
+    },
+    
+    formatToString: function Open_Core_Helpers_StringHelper$formatToString(value, toString) {
+        /// <summary>
+        /// Converts the given object to a string, formatting appropirate null/undefined/empty-string
+        /// versions if the variable is in any of those states.
+        /// </summary>
+        /// <param name="value" type="Object">
+        /// The value to convert.
+        /// </param>
+        /// <param name="toString" type="Open.Core.ToString">
+        /// Function that performs the conversion to a string.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (ss.isUndefined(value)) {
+            return '<undefined>'.htmlEncode();
+        }
+        if (value == null || ss.isNull(value)) {
+            return '<null>'.htmlEncode();
+        }
+        var text = (toString == null) ? value.toString() : toString.invoke(value);
+        if (String.isNullOrEmpty(text)) {
+            text = '<empty-string>';
+        }
+        return text.htmlEncode();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.UrlHelper
+
+Open.Core.Helpers.UrlHelper = function Open_Core_Helpers_UrlHelper() {
+    /// <summary>
+    /// Utility methods for working with URL's.
+    /// </summary>
+}
+Open.Core.Helpers.UrlHelper.prototype = {
+    
+    prependDomain: function Open_Core_Helpers_UrlHelper$prependDomain(urlPath) {
+        /// <summary>
+        /// Prepends the server name to the given url.
+        /// </summary>
+        /// <param name="urlPath" type="String">
+        /// The URL path to prepend.
+        /// </param>
+        /// <returns type="String"></returns>
+        if (ss.isNullOrUndefined(urlPath) || String.isNullOrEmpty(urlPath)) {
+            return urlPath;
+        }
+        if (urlPath.startsWith('http')) {
+            return urlPath;
+        }
+        urlPath = Open.Core.Helper.get_string().removeStart(urlPath, '/');
+        var url = window.location;
+        return String.format('{0}//{1}/{2}', url.protocol, url.host, urlPath);
     }
 }
 
@@ -4477,7 +5382,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
 }
 
 
-Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable);
+Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel, Open.Core.INotifyPropertyChanged, ss.IDisposable, Open.Core.INotifyDisposed);
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
 Open.Core.DiContainer.registerClass('Open.Core.DiContainer', null, ss.IDisposable);
 Open.Core._diInstanceWrapper.registerClass('Open.Core._diInstanceWrapper', null, ss.IDisposable);
@@ -4499,6 +5404,7 @@ Open.Core.Url.registerClass('Open.Core.Url');
 Open.Core.Html.registerClass('Open.Core.Html');
 Open.Core.Css.registerClass('Open.Core.Css');
 Open.Core.CoreCssClasses.registerClass('Open.Core.CoreCssClasses');
+Open.Core.CoreCssUrls.registerClass('Open.Core.CoreCssUrls');
 Open.Core.DomEvents.registerClass('Open.Core.DomEvents');
 Open.Core.Cookie.registerClass('Open.Core.Cookie');
 Open.Core.Size.registerClass('Open.Core.Size');
@@ -4507,15 +5413,17 @@ Open.Testing.Internal.TestClassEventArgs.registerClass('Open.Testing.Internal.Te
 Open.Testing.Internal.TestControlEventArgs.registerClass('Open.Testing.Internal.TestControlEventArgs');
 Open.Testing.TestHarness.registerClass('Open.Testing.TestHarness');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
+Open.Core.Helpers.DoubleHelper.registerClass('Open.Core.Helpers.DoubleHelper');
 Open.Core.Helpers.EventHelper.registerClass('Open.Core.Helpers.EventHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
 Open.Core.Helpers.JQueryHelper.registerClass('Open.Core.Helpers.JQueryHelper');
 Open.Core.Helpers.ScrollHelper.registerClass('Open.Core.Helpers.ScrollHelper');
 Open.Core.Helpers.JsonHelper.registerClass('Open.Core.Helpers.JsonHelper');
-Open.Core.Helpers.NumberHelper.registerClass('Open.Core.Helpers.NumberHelper');
+Open.Core.Helpers.TimeHelper.registerClass('Open.Core.Helpers.TimeHelper');
 Open.Core.Helpers.ReflectionHelper.registerClass('Open.Core.Helpers.ReflectionHelper');
 Open.Core.Helpers.JitScriptLoader.registerClass('Open.Core.Helpers.JitScriptLoader');
 Open.Core.Helpers.StringHelper.registerClass('Open.Core.Helpers.StringHelper');
+Open.Core.Helpers.UrlHelper.registerClass('Open.Core.Helpers.UrlHelper');
 Open.Core.Helpers.ResourceLoader.registerClass('Open.Core.Helpers.ResourceLoader');
 Open.Core.Helpers.ScriptLoader.registerClass('Open.Core.Helpers.ScriptLoader', Open.Core.Helpers.ResourceLoader);
 Open.Core.Helpers.ScriptLoadHelper.registerClass('Open.Core.Helpers.ScriptLoadHelper', Open.Core.ModelBase);
@@ -4555,6 +5463,12 @@ Open.Core.Keyboard._isAltPressed = false;
 Open.Core.TreeNode.nullIndex = -1;
 Open.Core.TreeNode.propIsSelected = 'IsSelected';
 Open.Core.TreeNode.propChildren = 'Children';
+Open.Core.ViewBase.propBackground = 'Background';
+Open.Core.ViewBase.propIsVisible = 'IsVisible';
+Open.Core.ViewBase.propOpacity = 'Opacity';
+Open.Core.ViewBase.propWidth = 'Width';
+Open.Core.ViewBase.propHeight = 'Height';
+Open.Core.ViewBase.propIsEnabled = 'IsEnabled';
 Open.Core.GlobalEvents.__windowResize = null;
 Open.Core.GlobalEvents.__windowResizeComplete = null;
 Open.Core.GlobalEvents.__panelResized = null;
@@ -4583,6 +5497,7 @@ Open.Core.Log._writer = null;
 Open.Core.LogCss.url = '/Open.Core/Css/Core.Controls.css';
 Open.Core.LogCss._rootClass = 'c-log';
 Open.Core.LogCss.listItemClass = 'c-log-listItem';
+Open.Core.LogCss.sectionBreak = 'c-log-sectionBreak';
 Open.Core.LogCss.lineBreakClass = 'c-log-lineBreak';
 Open.Core.LogCss.counterClass = 'c-log-counter';
 Open.Core.LogCss.messageClass = 'c-log-message';
@@ -4596,9 +5511,15 @@ Open.Core.Html.head = 'head';
 Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
 Open.Core.Html.img = 'img';
+Open.Core.Html.button = 'button';
 Open.Core.Html.id = 'id';
 Open.Core.Html.href = 'href';
 Open.Core.Html.src = 'src';
+Open.Core.Html.type = 'type';
+Open.Core.Html.value = 'value';
+Open.Core.Html.disabled = 'disabled';
+Open.Core.Html.classAttr = 'class';
+Open.Core.Html.submit = 'submit';
 Open.Core.Html.scrollTop = 'scrollTop';
 Open.Core.Html.scrollHeight = 'scrollHeight';
 Open.Core.Html.click = 'click';
@@ -4613,12 +5534,15 @@ Open.Core.Css.display = 'display';
 Open.Core.Css.position = 'position';
 Open.Core.Css.padding = 'padding';
 Open.Core.Css.overflow = 'overflow';
+Open.Core.Css.opacity = 'opacity';
+Open.Core.Css.fontSize = 'font-size';
 Open.Core.Css.block = 'block';
 Open.Core.Css.none = 'none';
 Open.Core.Css.relative = 'relative';
 Open.Core.Css.absolute = 'absolute';
 Open.Core.Css.px = 'px';
 Open.Core.Css.classes = new Open.Core.CoreCssClasses();
+Open.Core.Css.urls = new Open.Core.CoreCssUrls();
 Open.Core.DomEvents.resize = 'resize';
 Open.Core.Helper._delegateHelper = null;
 Open.Core.Helper._jsonHelper = null;
@@ -4626,13 +5550,16 @@ Open.Core.Helper._reflectionHelper = null;
 Open.Core.Helper._scriptLoadHelper = null;
 Open.Core.Helper._collectionHelper = null;
 Open.Core.Helper._stringHelper = null;
-Open.Core.Helper._numberHelper = null;
+Open.Core.Helper._timeHelper = null;
 Open.Core.Helper._scrollHelper = null;
 Open.Core.Helper._jQueryHelper = null;
 Open.Core.Helper._treeHelper = null;
 Open.Core.Helper._eventHelper = null;
+Open.Core.Helper._doubleHelper = null;
+Open.Core.Helper._urlHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Testing.TestHarness._events = null;
+Open.Testing.TestHarness._displayMode = Open.Testing.ControlDisplayMode.center;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
 Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';
