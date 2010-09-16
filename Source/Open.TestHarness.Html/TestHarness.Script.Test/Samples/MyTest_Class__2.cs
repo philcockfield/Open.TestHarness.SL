@@ -7,7 +7,7 @@ namespace Test.Samples
     {
         public MyTest_Class__2()
         {
-            throw new Exception("Constructor error!");
+//            throw new Exception("Constructor error!");
         }
 
         public void Test1()

@@ -47,9 +47,11 @@ namespace Open.Testing.Web.Controllers {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass {
             public readonly string Index = "Index";
+            public readonly string Head = "Head";
+            public readonly string GoogleAnalytics = "GoogleAnalytics";
             public readonly string Log = "Log";
             public readonly string Sidebar = "Sidebar";
-            public readonly string TestList = "TestList";
+            public readonly string MethodList = "MethodList";
             public readonly string Main = "Main";
         }
 
@@ -59,20 +61,32 @@ namespace Open.Testing.Web.Controllers {
         public ViewNames Views { get { return s_views; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ViewNames {
+            public readonly string GoogleAnalytics = "~/Views/TestHarness/GoogleAnalytics.ascx";
+            public readonly string Head = "~/Views/TestHarness/Head.ascx";
             public readonly string Index = "~/Views/TestHarness/Index.aspx";
             public readonly string Log = "~/Views/TestHarness/Log.ascx";
             public readonly string Main = "~/Views/TestHarness/Main.ascx";
+            public readonly string MethodList = "~/Views/TestHarness/MethodList.ascx";
             public readonly string Sidebar = "~/Views/TestHarness/Sidebar.ascx";
-            public readonly string TestList = "~/Views/TestHarness/TestList.ascx";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public class T4MVC_TestHarnessController: TestHarnessController {
+    public class T4MVC_TestHarnessController: Open.Testing.Web.Controllers.TestHarnessController {
         public T4MVC_TestHarnessController() : base(Dummy.Instance) { }
 
         public override System.Web.Mvc.ActionResult Index() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Index);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Head() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Head);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult GoogleAnalytics() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.GoogleAnalytics);
             return callInfo;
         }
 
@@ -86,8 +100,8 @@ namespace Open.Testing.Web.Controllers {
             return callInfo;
         }
 
-        public override System.Web.Mvc.ActionResult TestList() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.TestList);
+        public override System.Web.Mvc.ActionResult MethodList() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.MethodList);
             return callInfo;
         }
 

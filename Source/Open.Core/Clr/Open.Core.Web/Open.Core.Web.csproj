@@ -41,7 +41,13 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,8 +62,11 @@
     <Compile Include="Code\Config\ServerProxyConfig.cs" />
     <Compile Include="Code\Config\WebConfig.cs" />
     <Compile Include="Code\Declarations\ContentTypes.cs" />
+    <Compile Include="Code\Declarations\Css.cs" />
+    <Compile Include="Code\Declarations\Script.cs" />
     <Compile Include="Code\Extensions\AreaExtensions.cs" />
     <Compile Include="AreaRegistration.cs" />
+    <Compile Include="Code\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Code\Extensions\ServerExtensions.cs" />
     <Compile Include="Code\Identity\Models\AuthenticationException.cs" />
     <Compile Include="Code\Identity\Models\UserName.cs" />
@@ -65,7 +74,11 @@
     <Compile Include="Code\Identity\OpenIdAuthentication.cs" />
     <Compile Include="Code\Server\ServerProxy.cs" />
     <Compile Include="Code\Declarations\WebConstants.cs" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.2.min.js" />
     <Compile Include="Controllers\ControlsController.cs" />
+    <Compile Include="Controllers\CoreController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\JitController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>
@@ -89,9 +102,7 @@
     <EmbeddedResource Include="Views\Controls\Log.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Scripts\CoreJQuery.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Scripts\CoreJQuery.aspx" />
     <EmbeddedResource Include="Views\Jit\HyperTree.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </EmbeddedResource>
@@ -126,10 +137,18 @@
     <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.debug.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.js" />
     <EmbeddedResource Include="Content\Images\Log.SectionDivider.Rip.png" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery-ui-1.8.4.custom.min.js" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Core\TestHarness.aspx" />
+    <EmbeddedResource Include="Views\Core\RenderUrl.ascx" />
+    <Content Include="Views\Web.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

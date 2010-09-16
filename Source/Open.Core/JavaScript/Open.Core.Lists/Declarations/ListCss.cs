@@ -4,7 +4,6 @@ namespace Open.Core.Lists
     public static class ListCss
     {
         #region Head
-        public const string Url = "/Open.Core/Css/Core.Lists.css";
         private static bool isCssInserted;
         #endregion
 
@@ -18,7 +17,7 @@ namespace Open.Core.Lists
         public static void InsertCss()
         {
             if (isCssInserted) return;
-            Css.InsertLink(Url);
+            Css.InsertLink(Css.Urls.CoreLists);
             isCssInserted = true;
         }
         #endregion

@@ -12,8 +12,6 @@ body
     font-size:10pt;
 }
 
-div { -moz-user-select: none; }
-
 /* ----------- Common ----------- */
 .absoluteFill
 {
@@ -35,6 +33,13 @@ div { -moz-user-select: none; }
 }
 
 img.preload { display:none; }
+
+.noSelect  
+{
+    -moz-user-select: none; 
+    -webkit-user-select: none;
+    cursor:default;
+}
 
 /* ----------- Vertical Alignment ----------- */
 div.table { position:absolute; display:table; }

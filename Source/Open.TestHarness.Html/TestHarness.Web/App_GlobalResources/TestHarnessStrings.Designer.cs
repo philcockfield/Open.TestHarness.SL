@@ -70,20 +70,20 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tests.
+        /// </summary>
+        internal static string MethodList_Title {
+            get {
+                return ResourceManager.GetString("MethodList_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output.
         /// </summary>
         internal static string Output_Title {
             get {
                 return ResourceManager.GetString("Output_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tests.
-        /// </summary>
-        internal static string TestList_Title {
-            get {
-                return ResourceManager.GetString("TestList_Title", resourceCulture);
             }
         }
     }

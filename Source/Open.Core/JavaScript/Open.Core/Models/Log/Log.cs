@@ -18,6 +18,13 @@ namespace Open.Core
 
         /// <summary>Gets the specific log-writer instance that the static methods write to.</summary>
         public static LogWriter Writer { get { return writer ?? (writer = new LogWriter()); } }
+
+        /// <summary>Gets or sets the view-control to write to.</summary>
+        public static ILogView View
+        {
+            get { return Writer.View; }
+            set { Writer.View = value; }
+        }
         #endregion
 
         #region Methods : Write
@@ -65,10 +72,6 @@ namespace Open.Core
         #region Methods
         /// <summary>Clears the log.</summary>
         public static void Clear() { Writer.Clear(); }
-
-        /// <summary>Registers a log viewer to emit output to (multiple views can be associated with the log).</summary>
-        /// <param name="view">The log view to emit to.</param>
-        public static void RegisterView(ILogView view) { Writer.RegisterView(view); }
         #endregion
     }
 }

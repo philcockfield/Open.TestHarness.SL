@@ -21,6 +21,9 @@ namespace Open.Core
     /// <summary>An output log.</summary>
     public interface ILog
     {
+        /// <summary>Gets or sets the view-control to write to.</summary>
+        ILogView View { get; set; }
+
         /// <summary>Writes a informational message to the log (as a bold title).</summary>
         /// <param name="message">The messge to write (HTML).</param>
         void Title(string message);
@@ -58,9 +61,5 @@ namespace Open.Core
 
         /// <summary>Clears the log.</summary>
         void Clear();
-
-        /// <summary>Registers a log viewer to emit output to (multiple views can be associated with the log).</summary>
-        /// <param name="view">The log view to emit to.</param>
-        void RegisterView(ILogView view);
     }
 }

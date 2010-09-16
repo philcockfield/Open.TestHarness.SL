@@ -34,9 +34,8 @@ namespace Open.Core.Web
 
             // Map the area.
             context.MapRoute(
-                AreaName,
-                string.Format("{0}/{{controller}}/{{action}}", AreaName),
-                new { controller = "Foo", action = "index" });
+                            AreaName,
+                            string.Format("{0}/{{controller}}/{{action}}", AreaName));
 
             // Finish up.
             base.RegisterAreaEmbeddedResources();

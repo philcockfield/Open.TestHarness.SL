@@ -63,4 +63,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

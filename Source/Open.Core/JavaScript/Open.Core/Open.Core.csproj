@@ -96,6 +96,7 @@
     <Compile Include="Util\Helpers\ReflectionHelper.cs" />
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
     <Compile Include="Util\Helpers\StringHelper.cs" />
+    <Compile Include="Util\Helpers\UrlHelper.cs" />
     <Compile Include="Util\Loaders\ResourceLoader.cs" />
     <Compile Include="Util\Loaders\ScriptLoader.cs" />
     <Compile Include="Util\Helpers\Scripts\ScriptLoadHelper.cs" />

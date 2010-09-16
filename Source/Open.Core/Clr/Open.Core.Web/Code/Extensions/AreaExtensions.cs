@@ -10,22 +10,22 @@ namespace Open.Core.Web
         #region Methods : HtmlHelper
         public static void InsertCoreScripts(this HtmlHelper helper)
         {
-            RenderAction(helper, ScriptsController.Name, ScriptsController.ActionCoreScripts);
+            helper.RenderAction(ScriptsController.Name, ScriptsController.ActionCoreScripts);
         }
 
         public static void InsertCoreJQuery(this HtmlHelper helper)
         {
-            RenderAction(helper, ScriptsController.Name, ScriptsController.ActionCoreJQuery);
+            helper.RenderAction(ScriptsController.Name, ScriptsController.ActionCoreJQuery);
         }
 
         public static void InsertHyperTree(this HtmlHelper helper)
         {
-            RenderAction(helper, JitController.Name, JitController.ActionHyperTree);
+            helper.RenderAction(JitController.Name, JitController.ActionHyperTree);
         }
 
         public static void InsertLog(this HtmlHelper helper)
         {
-            RenderAction(helper, ControlsController.Name, ControlsController.ActionLog);
+            helper.RenderAction(ControlsController.Name, ControlsController.ActionLog);
         }
         #endregion
 
@@ -47,13 +47,6 @@ namespace Open.Core.Web
                                 url,
                                 defaults,
                                 new string[] { WebConstants.MvcContribPortableAreas });
-        }
-        #endregion
-
-        #region Internal
-        private static void RenderAction(HtmlHelper helper, string controller, string action)
-        {
-            helper.RenderAction(action, controller, new { Area = AreaRegistration.Name });
         }
         #endregion
     }

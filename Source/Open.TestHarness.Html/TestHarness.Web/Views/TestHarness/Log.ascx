@@ -1,8 +1,10 @@
 ﻿<%@ Import Namespace="Open.Core.Web" %>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
 
+<!-- Log -->
 <div id="testHarnessLog" class="panelBorder panelBorderTop">
-    <div class="th-log-tb tb-height th-toolbar panelBorder panelBorderBottom">
+    <!-- Log Title/Toolbar-->
+    <div class="th-log-tb tb-height th-toolbar panelBorder panelBorderBottom noSelect">
         <p class="toolbarReflection"></p>
         <div class="table tb-height">
             <div class="vAlignedCell">
@@ -10,6 +12,7 @@
             </div>
         </div>
     </div>
+    <!-- Log Content -->
     <% Html.InsertLog(); %>
     <p class="dropShadow"></p>
 </div>

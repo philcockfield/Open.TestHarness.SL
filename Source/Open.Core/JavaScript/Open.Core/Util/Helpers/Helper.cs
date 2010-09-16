@@ -19,6 +19,7 @@ namespace Open.Core
         private static TreeHelper TreeHelper;
         private static EventHelper EventHelper;
         private static DoubleHelper DoubleHelper;
+        private static UrlHelper UrlHelper;
 
         private static int idCounter;
         #endregion
@@ -59,6 +60,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with doubles.</summary>
         public static DoubleHelper NumberDouble { get { return DoubleHelper ?? (DoubleHelper = new DoubleHelper()); } }
+
+        /// <summary>Gets the helper for working with URLs.</summary>
+        public static UrlHelper Url { get { return UrlHelper ?? (UrlHelper = new UrlHelper()); } }
         #endregion
 
         #region Methods
@@ -74,6 +78,16 @@ namespace Open.Core
         {
             idCounter++;
             return string.Format("gid{0}", idCounter);
+        }
+
+
+        /// <summary>Disposes of the object (if it's not null and is an IDisposable).</summary>
+        /// <param name="obj">The object to dispose of.</param>
+        public static void Dispose(object obj)
+        {
+            if (Script.IsNullOrUndefined(obj)) return;
+            IDisposable disposable = obj as IDisposable;
+            if (disposable != null) disposable.Dispose();
         }
         #endregion
     }

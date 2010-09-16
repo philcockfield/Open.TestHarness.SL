@@ -7,7 +7,9 @@ namespace Open.Testing.Web.Controllers
         #region Head
         private const string KeyOutputTitle = "Output_Title";
         private const string KeyAppTitle = "App_Title";
-        private const string KeyTestListTitle = "TestList_Title";
+        private const string KeyMethodListTitle = "MethodList_Title";
+
+        private const string GoogleAnalyticsKey = "UA-12876655-1";
         #endregion
 
         #region Methods : Actions
@@ -18,7 +20,22 @@ namespace Open.Testing.Web.Controllers
             return View(ViewModel);
         }
 
+        /// <summary>The HEAD content.</summary>
+        public virtual ActionResult Head() { return View(ViewModel); }
+        #endregion
+
+        #region Methods : Child Actions
+        /// <summary>The Google Analytics script.</summary>
+        [ChildActionOnly]
+        public virtual ActionResult GoogleAnalytics()
+        {
+            ViewModel.GoogleAnalyticsKey = GoogleAnalyticsKey;
+            ViewModel.IsLocal = Request.IsLocal;
+            return View(ViewModel);
+        }
+
         /// <summary>The Output Log.</summary>
+        [ChildActionOnly]
         public virtual ActionResult Log()
         {
             ViewModel.OutputTitle = GetResource(KeyOutputTitle);
@@ -26,23 +43,21 @@ namespace Open.Testing.Web.Controllers
         }
 
         /// <summary>The Sidebar index.</summary>
-        public virtual ActionResult Sidebar()
-        {
-            return View(ViewModel);
-        }
+        [ChildActionOnly]
+        public virtual ActionResult Sidebar() { return View(ViewModel); }
 
         /// <summary>The panel that contains the list of tests within the Sidebar.</summary>
-        public virtual ActionResult TestList()
+        [ChildActionOnly]
+        public virtual ActionResult MethodList()
         {
-            ViewModel.TestListTitle = GetResource(KeyTestListTitle);
+            ViewModel.MethodListTitle = GetResource(KeyMethodListTitle);
             return View(ViewModel);
         }
 
         /// <summary>The Main content panel.</summary>
-        public virtual ActionResult Main()
-        {
-            return View(ViewModel);
-        }
+        [ChildActionOnly]
+        public virtual ActionResult Main() { return View(ViewModel); }
         #endregion
+
     }
 }

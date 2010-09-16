@@ -45,6 +45,9 @@ namespace Open.Core
 
         // Classes.
         public static readonly CoreCssClasses Classes = new CoreCssClasses();
+
+        // Urls.
+        public static readonly CoreCssUrls Urls = new CoreCssUrls();
         #endregion
 
         #region Methods
@@ -247,5 +250,13 @@ namespace Open.Core
     {
         public readonly string TitleFont = "titleFont";
         public readonly string AbsoluteFill = "absoluteFill";
+    }
+
+    public class CoreCssUrls
+    {
+        public readonly string Core = "/Open.Core/Css/Core.css";
+        public readonly string CoreLists = "/Open.Core/Css/Core.Lists.css";
+        public readonly string CoreControls = "/Open.Core/Css/Core.Controls.css";
+        public readonly string JitHyperTree = "/Open.Core/Css/Jit.Hypertree.css";
     }
 }

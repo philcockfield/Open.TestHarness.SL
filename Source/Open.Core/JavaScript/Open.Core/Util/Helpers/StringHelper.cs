@@ -24,6 +24,16 @@ namespace Open.Core.Helpers
             return value.Substr(0, 1).ToUpperCase() + value.Substring(1, value.Length);
         }
 
+        /// <summary>Removes the specified text from the start of a string if it's present (not case sensitive).</summary>
+        /// <param name="text">The string to effect.</param>
+        /// <param name="remove">The text to remove.</param>
+        public string RemoveStart(string text, string remove)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(remove)) return text;
+            if (!text.ToLowerCase().StartsWith(remove.ToLowerCase())) return text;
+            return text.Substr(remove.Length, text.Length - remove.Length);
+        }
+
         /// <summary>Removes the specified text from the end of a string if it's present (not case sensitive).</summary>
         /// <param name="text">The string to effect.</param>
         /// <param name="remove">The text to remove.</param>
@@ -36,7 +46,6 @@ namespace Open.Core.Helpers
 
         /// <summary>Removes the preceeding path of a URL returning just the end segment.</summary>
         /// <param name="url">The URL to process.</param>
-        /// <returns></returns>
         public string StripPath(string url)
         {
             if (string.IsNullOrEmpty(url)) return url;

@@ -1,4 +1,5 @@
 using System;
+using System.Html;
 using jQueryApi;
 using Open.Core;
 using Open.Testing;
@@ -52,6 +53,30 @@ namespace Test.Samples
         public void Contains_Error()
         {
             throw new Exception("My error.");
+        }
+
+        public void RemoveStart()
+        {
+            //Log.Info(Helper.String.RemoveStart("_one", ""));
+            //Log.Info(Helper.String.RemoveStart("", "Foo"));
+            //Log.Info(Helper.String.RemoveStart("_one", "_O"));
+            //Log.Info(Helper.String.RemoveStart("_one", "fo"));
+
+            Log.Info(Helper.Url.PrependDomain("/MyPath"));
+            Log.Info(Helper.Url.PrependDomain("MyPath"));
+        }
+
+        public void Write_Url()
+        {
+            //TEMP 
+            Log.Info("Hash: " + Window.Location.Hash);
+            Log.Info("Hostname: " + Window.Location.Hostname);
+            Log.Info("HostnameAndPort: " + Window.Location.HostnameAndPort);
+            Log.Info("Href: " + Window.Location.Href);
+            Log.Info("Pathname: " + Window.Location.Pathname);
+            Log.Info("Port: " + Window.Location.Port);
+            Log.Info("Protocol: " + Window.Location.Protocol);
+            Log.Info("Search: " + Window.Location.Search);
         }
 
         private void PrivateMethod() { }

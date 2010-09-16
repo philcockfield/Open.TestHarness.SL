@@ -29,6 +29,8 @@ namespace Open.Testing
         #endregion
 
         #region Methods
+        /// <summary>Application entry point.</summary>
+        /// <param name="args">Init parameters.</param>
         public static void Main(Dictionary args)
         {
             // Setup the DI container.
@@ -36,8 +38,7 @@ namespace Open.Testing
             Container.RegisterSingleton(typeof(Common), new Common());
 
             // Setup the output log.
-            LogView logView = new LogView(jQuery.Select(CssSelectors.Log).First());
-            Log.RegisterView(logView);
+            Log.View = new LogView(jQuery.Select(CssSelectors.Log).First());
 
             // Create views.
             shell = new ShellView(jQuery.Select(CssSelectors.Root));
@@ -51,24 +52,14 @@ namespace Open.Testing
             // =================================
 
             //TEMP : Insert sample packages.
-            AddTestHarnessPackage();
-            AddCorePackage();
+            AddPackage("/Content/Scripts/TestHarness.Test.debug.js", "Test.Application.main");
+            AddPackage("/Content/Scripts/Open.Core.Test.debug.js", "Open.Core.Test.Application.main");
+            AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
+            AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
         }
 
-        private static void AddTestHarnessPackage()
+        private static void AddPackage(string scriptUrl, string initMethod)
         {
-            const string scriptUrl = "/Content/Scripts/TestHarness.Test.debug.js";
-            const string initMethod = "Test.Application.main";
-
-            PackageInfo testHarnessPackage = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
-            sidebarController.AddPackage(testHarnessPackage);
-        }
-
-        private static void AddCorePackage()
-        {
-            const string scriptUrl = "/Content/Scripts/Open.Core.Test.debug.js";
-            const string initMethod = "Open.Core.Test.Application.main";
-
             PackageInfo testHarnessPackage = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
             sidebarController.AddPackage(testHarnessPackage);
         }

@@ -68,13 +68,13 @@
     <Compile Include="Application.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Open.Core.Controls\Open.Core.Controls.csproj">
+      <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
+      <Name>Open.Core.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Open.Core.Lists\Open.Core.Lists.csproj">
       <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>
       <Name>Open.Core.Lists</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Open.Core.Views\Open.Core.Controls.csproj">
-      <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
-      <Name>Open.Core.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Open.Core\Open.Core.csproj">
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>

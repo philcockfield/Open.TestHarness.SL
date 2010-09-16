@@ -6,7 +6,6 @@ namespace Open.Core
     public interface IViewFactory
     {
         /// <summary>Creates a view within the given element.</summary>
-        /// <param name="container">The element to construct the view within.</param>
-        IView CreateView(jQueryObject container);
+        IView CreateView();
     }
 }

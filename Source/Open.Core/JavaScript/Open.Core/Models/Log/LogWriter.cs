@@ -7,9 +7,9 @@ namespace Open.Core
     public class LogWriter : ModelBase, ILog
     {
         #region Head
-        private readonly ArrayList views = new ArrayList();
         private bool isActive = true;
         private bool canInsertSection = true;
+        private ILogView view;
 
         /// <summary>Constructor.</summary>
         public LogWriter()
@@ -21,16 +21,19 @@ namespace Open.Core
         /// <summary>Destructor.</summary>
         protected override void OnDisposed()
         {
-            foreach (ILogView view in views)
-            {
-                IDisposable disposable = view as IDisposable;
-                if (disposable != null) disposable.Dispose();
-            }
+            Helper.Dispose(View);
             base.OnDisposed();
         }
         #endregion
 
         #region Properties
+        /// <summary>Gets or sets the view-control to write to.</summary>
+        public ILogView View
+        {
+            get { return view; }
+            set { view = value; }
+        }
+
         /// <summary>Gets or sets whether the log is active.  When False nothing is written to the log.</summary>
         /// <remarks>Use this for pausing output to the log.</remarks>
         public bool IsActive
@@ -38,6 +41,8 @@ namespace Open.Core
             get { return isActive; }
             set { isActive = value; }
         }
+
+        private bool CanWrite { get { return IsActive && View != null; } }
         #endregion
 
         #region Methods : ILog (Write Severity Message)
@@ -69,24 +74,17 @@ namespace Open.Core
         #region Methods : ILog
         public void Write(string message, LogSeverity severity)
         {
-            if (!IsActive) return;
+            if (!CanWrite) return;
             string css = LogCss.SeverityClass(severity);
-            foreach (ILogView view in views)
-            {
-                view.Insert(message, css);
-            }
+
+            View.Insert(message, css);
             canInsertSection = true;
         }
 
         public void Clear()
         {
-            if (!IsActive) return;
-            foreach (ILogView view in views) { view.Clear(); }
-        }
-
-        public void RegisterView(ILogView view)
-        {
-            if (view != null) views.Add(view);
+            if (!CanWrite) return;
+            View.Clear();
         }
         #endregion
 
@@ -94,17 +92,16 @@ namespace Open.Core
         /// <summary>Inserts a line break to the log.</summary>
         public void LineBreak()
         {
-            if (!IsActive) return;
-            foreach (ILogView view in views) { view.Divider(LogDivider.LineBreak); }
-        }
+            if (!CanWrite) return;
+            View.Divider(LogDivider.LineBreak);        }
 
         /// <summary>Inserts a new section divider.</summary>
         public void NewSection()
         {
-            if (!IsActive) return;
+            if (!CanWrite) return;
             if (!canInsertSection) return;
 
-            foreach (ILogView view in views) { view.Divider(LogDivider.Section); }
+            View.Divider(LogDivider.Section);
             canInsertSection = false;
         }
         #endregion
