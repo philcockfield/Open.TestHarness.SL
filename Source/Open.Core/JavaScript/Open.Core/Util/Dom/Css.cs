@@ -4,17 +4,6 @@ using jQueryApi;
 
 namespace Open.Core
 {
-    #region Enumerations
-    public enum CssOverflow
-    {
-        Visible = 0,
-        Hidden = 1,
-        Scroll = 2,
-        Auto = 3,
-        Inherit = 4
-    }
-    #endregion
-
     /// <summary>CSS utility.</summary>
     public static class Css
     {
@@ -27,12 +16,15 @@ namespace Open.Core
         public const string Width = "width";
         public const string Height = "height";
         public const string Background = "background";
+        public const string Color = "color";
         public const string Display = "display";
         public const string Position = "position";
         public const string Padding = "padding";
+        public const string Margin = "margin";
         public const string Overflow = "overflow";
         public const string Opacity = "opacity";
         public const string FontSize = "font-size";
+        public const string TextAlign = "text-align";
 
         // Values.
         public const string Block = "block";

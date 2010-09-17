@@ -51,6 +51,7 @@
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\DiContainer.cs" />
+    <Compile Include="Declarations\Enums\CssEnums.cs" />
     <Compile Include="Declarations\Enums\HtmlEnums.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
@@ -80,12 +81,14 @@
     <Compile Include="Util\ComponentModel\PropertyDef.cs" />
     <Compile Include="Util\ComponentModel\PropertyRef.cs" />
     <Compile Include="Util\DelayedAction.cs" />
+    <Compile Include="Util\Dom\Color.cs" />
     <Compile Include="Util\Dom\Url.cs" />
     <Compile Include="Util\Dom\Html.cs" />
     <Compile Include="Declarations\Interfaces\IView.cs" />
     <Compile Include="Util\Dom\Css.cs" />
     <Compile Include="Declarations\Events\DomEvents.cs" />
     <Compile Include="Util\Helpers\CollectionHelper.cs" />
+    <Compile Include="Util\Helpers\ExceptionHelper.cs" />
     <Compile Include="Util\Helpers\DoubleHelper.cs" />
     <Compile Include="Util\Helpers\EventHelper.cs" />
     <Compile Include="Util\Helpers\TreeHelper.cs" />

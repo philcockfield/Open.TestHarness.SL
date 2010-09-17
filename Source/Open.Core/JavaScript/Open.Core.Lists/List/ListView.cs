@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core.Lists
@@ -13,22 +14,31 @@ namespace Open.Core.Lists
         /// <summary>Only one item at a time can be selected.</summary>
         Single = 1,
     }
-
+    
+    /// <summary>Factory method for creating list item view.</summary>
+    /// <param name="model">The model for the list item.</param>
+    /// <returns>The list-item visual control.</returns>
+    public delegate IView CreateListItem(object model);
+    
 
     /// <summary>Renders a simple list.</summary>
     public class ListView : ViewBase
     {
         #region Head
-        private ListItemFactory itemFactory;
         private ListSelectionMode selectionMode = ListSelectionMode.Single;
         private readonly ArrayList itemViews = new ArrayList();
+        private CreateListItem itemFactory;
+
+        /// <summary>Constructor.</summary>
+        [AlternateSignature]
+        public extern ListView();
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
         public ListView(jQueryObject container) : base(container)
         {
             ListCss.InsertCss();
-            container.AddClass(ListCss.Classes.Root);
+            Container.AddClass(ListCss.Classes.Root);
         }
         #endregion
 
@@ -51,9 +61,10 @@ namespace Open.Core.Lists
 
         #region Properties
         /// <summary>Gets or sets the factory that creates each item in the list.</summary>
-        private ListItemFactory ItemFactory
+        public CreateListItem ItemFactory
         {
-            get { return itemFactory ?? (itemFactory = new ListItemFactory()); }
+            get { return itemFactory; }
+            set { itemFactory = value; }
         }
 
         /// <summary>Gets or sets whether items within the list are selecable.</summary>
@@ -118,8 +129,12 @@ namespace Open.Core.Lists
             // Setup initial conditions.
             jQueryObject insertBefore = InsertBefore(index);
 
+            // Construct the list-item control.
+            IView view = CreateItem(model);
+            IListItemView listItemView = view as IListItemView;
+
             // Insert the containing DIV.
-            jQueryObject div = Html.CreateDiv();
+            jQueryObject div = view.Container;
             if (insertBefore == null)
             {
                 div.AppendTo(Container);
@@ -128,10 +143,6 @@ namespace Open.Core.Lists
             {
                 div.InsertBefore(insertBefore);
             }
-
-            // Construct the view.
-            IView view = ItemFactory.CreateView(div, model);
-            IListItemView listItemView = view as IListItemView;
 
             // Store values.
             itemViews.Add(view);
@@ -165,6 +176,7 @@ namespace Open.Core.Lists
             if (observableView != null) observableView.PropertyChanged -= OnViewPropertyChanged;
 
             // Destroy.
+            view.Container.Remove();
             view.Dispose();
 
             // Finish up.
@@ -182,6 +194,19 @@ namespace Open.Core.Lists
         #endregion
 
         #region Internal
+        private IView CreateItem(object model)
+        {
+            // Defer to the externally set ItemFactory if there is one.
+            if (ItemFactory != null) return ItemFactory(model);
+
+            // No item factory, check if the model can create views itself.
+            IViewFactory viewFactory = model as IViewFactory;
+            if (viewFactory != null) return viewFactory.CreateView();
+
+            // Create the default list-item control.
+            return new ListItemView(model);
+        }
+
         private jQueryObject InsertBefore(int insertAt)
         {
             // Prepare the index.
@@ -214,9 +239,9 @@ namespace Open.Core.Lists
         private IEnumerable GetListItemViews()
         {
             return Helper.Collection.Filter(itemViews, delegate(object o)
-                                                       {
-                                                           return (o as IListItemView) != null;
-                                                       });
+                                                           {
+                                                               return (o as IListItemView) != null;
+                                                           });
         }
 
         private IListItemView GetView(object model)

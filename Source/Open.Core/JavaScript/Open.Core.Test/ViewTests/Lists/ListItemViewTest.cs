@@ -14,7 +14,7 @@ namespace Open.Core.Test.ViewTests.Lists
         public void ClassInitialize()
         {
             model = new SampleListItem("My Item");
-            view = new ListItemView(Html.CreateDiv(), model);
+            view = new ListItemView(model);
 
             view.Width = 300;
 

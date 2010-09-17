@@ -22,11 +22,13 @@ namespace Open.Core.Test
 
             // View Tests
             TestHarness.RegisterClass(typeof(ViewBaseTest));
-            TestHarness.RegisterClass(typeof(ListTreeTest));
+            TestHarness.RegisterClass(typeof(ListTreeViewTest));
+            TestHarness.RegisterClass(typeof(ListViewTest));
             TestHarness.RegisterClass(typeof(ListItemViewTest));
             TestHarness.RegisterClass(typeof(LogTest));
-            TestHarness.RegisterClass(typeof(SystemButtonTest));
             TestHarness.RegisterClass(typeof(HtmlListTest));
+            TestHarness.RegisterClass(typeof(SystemButtonTest));
+            TestHarness.RegisterClass(typeof(LinkButtonTest));
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
 
         public void Change_Html()
         {
-            button.Html = button.Html == SystemButton.Untitled ? "My <b>Button</b>" : SystemButton.Untitled;
+            button.HtmlContent = button.HtmlContent == SystemButton.Untitled ? "My <b>Button</b>" : SystemButton.Untitled;
         }
 
         public void Change_Padding()

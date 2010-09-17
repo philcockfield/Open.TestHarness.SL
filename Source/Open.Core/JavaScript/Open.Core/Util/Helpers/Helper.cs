@@ -20,6 +20,7 @@ namespace Open.Core
         private static EventHelper EventHelper;
         private static DoubleHelper DoubleHelper;
         private static UrlHelper UrlHelper;
+        private static ExceptionHelper ExceptionHelper;
 
         private static int idCounter;
         #endregion
@@ -63,6 +64,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with URLs.</summary>
         public static UrlHelper Url { get { return UrlHelper ?? (UrlHelper = new UrlHelper()); } }
+
+        /// <summary>Gets the helper for working with Exceptions.</summary>
+        public static ExceptionHelper Exception { get { return ExceptionHelper ?? (ExceptionHelper = new ExceptionHelper()); } }
         #endregion
 
         #region Methods

@@ -61,7 +61,6 @@
     <Compile Include="ListTemplates.cs" />
     <Compile Include="List\ListView.cs" />
     <Compile Include="List\ListItemView.cs" />
-    <Compile Include="List\ListItemFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

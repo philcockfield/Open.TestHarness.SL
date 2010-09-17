@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buttons\ButtonBase.cs" />
+    <Compile Include="Buttons\LinkButton.cs" />
     <Compile Include="Buttons\SystemButton.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />
     <Compile Include="Output\LogView.cs" />

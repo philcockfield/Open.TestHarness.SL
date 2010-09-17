@@ -6,7 +6,7 @@ using Open.Testing;
 
 namespace Open.Core.Test.ViewTests.Lists
 {
-    public class ListTreeTest
+    public class ListTreeViewTest
     {
         #region Head
         private ListTreeView listTree;

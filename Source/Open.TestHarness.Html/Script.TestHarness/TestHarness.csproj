@@ -50,11 +50,13 @@
     <Compile Include="Code\Base Classes\TestHarnessControllerBase.cs" />
     <Compile Include="Code\Constants\CssSelectors.cs" />
     <Compile Include="Code\Constants\Elements.cs" />
+    <Compile Include="Code\Constants\StringLibrary.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\HostCanvasController.cs" />
     <Compile Include="Controllers\MethodListController.cs" />
     <Compile Include="Controllers\MethodListHeightController.cs" />
     <Compile Include="Code\Events\TestHarnessEvents.cs" />
+    <Compile Include="Models\ListItemNodes\CustomListItem.cs" />
     <Compile Include="Models\ListItemNodes\MethodListItem.cs" />
     <Compile Include="Models\ListItemNodes\ClassListItem.cs" />
     <Compile Include="Models\MethodInfo.cs" />
@@ -67,6 +69,8 @@
     <Compile Include="Controllers\PackageLoader.cs" />
     <Compile Include="Code\Util\Common.cs" />
     <Compile Include="Code\Util\MethodHelper.cs" />
+    <Compile Include="Views\AddPackageListItemView.cs" />
+    <Compile Include="Views\AddPackageView.cs" />
     <Compile Include="Views\ControlWrapperView.cs" />
     <Compile Include="Views\ShellView.cs" />
     <Compile Include="Views\SideBarView.cs" />

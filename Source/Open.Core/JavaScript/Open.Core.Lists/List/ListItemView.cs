@@ -14,9 +14,8 @@ namespace Open.Core.Lists
         private readonly PropertyRef isSelectedRef;
 
         /// <summary>Constructor.</summary>
-        /// <param name="container">The containing element.</param>
         /// <param name="model">The data model for the list item.</param>
-        public ListItemView(jQueryObject container, object model) : base(container)
+        public ListItemView(object model) 
         {
             // Setup initial conditions.
             this.model = model;
@@ -24,8 +23,8 @@ namespace Open.Core.Lists
             // Retreive property refs.
             isSelectedRef = PropertyRef.GetFromModel(model, TreeNode.PropIsSelected);
 
-            // Initialize the LI element.
-            InitializeElement(container);
+            // Initialize the element.
+            InitializeElement(Container);
 
             // Wire up events.
             if (isSelectedRef != null) isSelectedRef.Changed += OnIsSelectedChanged;

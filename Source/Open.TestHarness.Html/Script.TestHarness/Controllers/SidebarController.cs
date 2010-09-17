@@ -14,18 +14,21 @@ namespace Open.Testing.Controllers
         private readonly ArrayList packageControllers = new ArrayList();
         private readonly SidebarView view;
         private readonly MethodListController methodListController;
+        private readonly ListItem listRoot;
 
         /// <summary>Constructor.</summary>
         public SidebarController()
         {
             // Setup initial conditions.
+            listRoot = new ListItem();
             view = Common.Shell.Sidebar;
+            view.RootList.RootNode = listRoot;
 
             // Create child controllers.
             methodListController = new MethodListController();
 
-            // Wire up events.
-            TEMP();
+            // Insert the 'Add Package' list-item.
+            listRoot.AddChild(new CustomListItem(CustomListItemType.AddPackage));
         }
 
         protected override void OnDisposed()
@@ -37,27 +40,6 @@ namespace Open.Testing.Controllers
                 controller.Dispose();
             }
             base.OnDisposed();
-        }
-
-        private void TEMP( ) //TEMP - Add sample nodes to SidePanel.
-        {
-            MyNode rootNode = new MyNode("Root");
-            view.RootList.RootNode = rootNode;
-
-            rootNode.AddChild(new MyNode("Recent"));
-
-            MyNode child1 = rootNode.ChildAt(0) as MyNode;
-            MyNode child2 = ((MyNode)rootNode.ChildAt(1));
-            MyNode child3 = ((MyNode)rootNode.ChildAt(2));
-
-            child1.AddChild(new MyNode("Recent Child 1"));
-            child1.AddChild(new MyNode("Recent Child 2"));
-            child1.AddChild(new MyNode("Recent Child 3"));
-
-            MyNode recent1 = child1.ChildAt(0) as MyNode;
-            recent1.AddChild(new MyNode("Recent Grandchild 1"));
-            recent1.AddChild(new MyNode("Recent Grandchild 2"));
-            recent1.AddChild(new MyNode("Recent Grandchild 3"));
         }
         #endregion
 
@@ -71,7 +53,7 @@ namespace Open.Testing.Controllers
 
             // Create the list-item node and insert it within the tree.
             PackageListItem node = new PackageListItem(testPackage);
-            view.RootList.RootNode.AddChild(node);
+            listRoot.InsertChild(listRoot.ChildCount == 0 ? 0 : listRoot.ChildCount - 1, node); // Insert before last node.
 
             // Create the controller.
             PackageController controller = new PackageController(node);
@@ -111,12 +93,4 @@ namespace Open.Testing.Controllers
         }
         #endregion
     }
-
-    public class MyNode : ListItem //TEMP - MyNode structure
-    {
-        public MyNode(string text) { Text = text; }
-
-        public override string ToString() { return base.ToString(); }
-    }
-
 }

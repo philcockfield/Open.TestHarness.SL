@@ -6,6 +6,13 @@ using Open.Testing;
 
 namespace Test.Samples
 {
+    public enum MySampleEnum
+    {
+        One = 0,
+        Two = 1,
+        Three = 2
+    }
+
     public class MyTestClass1
     {
         #region Head
@@ -52,7 +59,7 @@ namespace Test.Samples
 
         public void Contains_Error()
         {
-            throw new Exception("My error.");
+            throw Helper.Exception.NotSupported(MySampleEnum.Two.ToString());
         }
 
         public void RemoveStart()

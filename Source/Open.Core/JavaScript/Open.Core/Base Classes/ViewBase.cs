@@ -48,7 +48,7 @@ namespace Open.Core
         /// <param name="container">The root HTML element of the control (if null a <DIV></DIV> is generated).</param>
         protected ViewBase(jQueryObject container)
         {
-            if (container == null) container = Html.CreateDiv();
+            if (Script.IsNullOrUndefined(container)) container = Html.CreateDiv();
             this.container = container;
         }
         #endregion

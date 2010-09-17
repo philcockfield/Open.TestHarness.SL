@@ -1,6 +1,5 @@
 using System;
 using jQueryApi;
-using HtmlUtil = Open.Core.Html;
 
 namespace Open.Core.Controls.Buttons
 {
@@ -11,7 +10,7 @@ namespace Open.Core.Controls.Buttons
         public const string Untitled = "Untitled";
         public const string DefaultPadding = "5px 30px";
 
-        public const string PropHtml = "Html";
+        public const string PropHtmlContent = "HtmlContent";
         public const string PropType = "Type";
         public const string PropValue = "Value";
         public const string PropPadding = "Padding";
@@ -37,8 +36,8 @@ namespace Open.Core.Controls.Buttons
 
         private static jQueryObject InitHtml()
         {
-            jQueryObject htmButton = HtmlUtil.CreateElement(HtmlUtil.Button);
-            htmButton.Attribute(HtmlUtil.Type, HtmlUtil.Submit);
+            jQueryObject htmButton = Html.CreateElement(Html.Button);
+            htmButton.Attribute(Html.Type, Html.Submit);
             return htmButton;
         }
         #endregion
@@ -53,9 +52,9 @@ namespace Open.Core.Controls.Buttons
         protected override void OnIsEnabledChanged()
         {
             if (IsEnabled) {
-                Container.RemoveAttr(HtmlUtil.Disabled);
+                Container.RemoveAttr(Html.Disabled);
             } else {
-                Container.Attribute(HtmlUtil.Disabled, true.ToString());
+                Container.Attribute(Html.Disabled, true.ToString());
             }
             base.OnIsEnabledChanged();
         }
@@ -63,17 +62,17 @@ namespace Open.Core.Controls.Buttons
 
         #region Properties
         /// <summary>Gets or sets the HTML content of the button.</summary>
-        public string Html
+        public string HtmlContent
         {
-            get { return (string)Get(PropHtml, Untitled); }
-            set { if (Set(PropHtml, value, Untitled)) SyncHtml(); }
+            get { return (string)Get(PropHtmlContent, Untitled); }
+            set { if (Set(PropHtmlContent, value, Untitled)) SyncHtml(); }
         }
 
         /// <summary>Gets or sets the button type (HTML attribute).</summary>
         public string Type
         {
-            get { return (string) Get(PropType, HtmlUtil.Submit); }
-            set { if (Set(PropType, value, HtmlUtil.Submit)) SyncType(); }
+            get { return (string)Get(PropType, Html.Submit); }
+            set { if (Set(PropType, value, Html.Submit)) SyncType(); }
         }
 
         /// <summary>Gets or sets the underlying value of a button.</summary>
@@ -99,15 +98,15 @@ namespace Open.Core.Controls.Buttons
         #region Internal
         protected override void BeforeInsertReplace(jQueryObject e)
         {
-            Value = e.GetAttribute(HtmlUtil.Value);
-            Type = e.GetAttribute(HtmlUtil.Type);
-            Html = e.GetHtml();
+            Value = e.GetAttribute(Html.Value);
+            Type = e.GetAttribute(Html.Type);
+            HtmlContent = e.GetHtml();
             base.BeforeInsertReplace(e);
         }
 
-        private void SyncHtml() { htmButton.Html(Html); FireSizeChanged(); }
-        private void SyncType() { htmButton.Attribute(HtmlUtil.Type, Type); }
-        private void SyncValue() { htmButton.Attribute(HtmlUtil.Value, Value); }
+        private void SyncHtml() { htmButton.Html(HtmlContent); FireSizeChanged(); }
+        private void SyncType() { htmButton.Attribute(Html.Type, Type); }
+        private void SyncValue() { htmButton.Attribute(Html.Value, Value); }
         private void SyncPadding() { htmButton.CSS(Css.Padding, Padding); FireSizeChanged();  }
         private void SyncFontSize() { htmButton.CSS(Css.FontSize, FontSize); FireSizeChanged(); }
         #endregion

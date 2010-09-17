@@ -15,6 +15,7 @@ namespace Open.Core
         public const string Span = "span";
         public const string Img = "img";
         public const string Button = "button";
+        public const string Anchor = "a";
 
         // Attributes.
         public const string Id = "id";

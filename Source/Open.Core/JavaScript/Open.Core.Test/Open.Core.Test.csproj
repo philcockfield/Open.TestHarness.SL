@@ -55,13 +55,15 @@
     <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
     <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
     <Compile Include="UnitTests\ViewBaseUnitTest.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\LinkButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\LogButtons.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\SystemButtonTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
-    <Compile Include="ViewTests\Lists\ListTreeTest.cs" />
+    <Compile Include="ViewTests\Lists\ListTreeViewTest.cs" />
+    <Compile Include="ViewTests\Lists\ListViewTest.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />
     <Compile Include="Properties\AssemblyInfo.cs" />
