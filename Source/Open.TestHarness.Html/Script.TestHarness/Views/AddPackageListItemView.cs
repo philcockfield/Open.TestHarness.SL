@@ -29,6 +29,7 @@ namespace Open.Testing.Views
         private void OnClick(object sender, EventArgs e)
         {
             AddPackageView view = new AddPackageView();
+            TestHarness.Reset();
             TestHarness.DisplayMode = ControlDisplayMode.FillWithMargin;
             TestHarness.AddControl(view);
         }

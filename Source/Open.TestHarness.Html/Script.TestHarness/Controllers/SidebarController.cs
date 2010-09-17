@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using jQueryApi;
 using Open.Core;
@@ -29,10 +30,14 @@ namespace Open.Testing.Controllers
 
             // Insert the 'Add Package' list-item.
             listRoot.AddChild(new CustomListItem(CustomListItemType.AddPackage));
+
+            // Wire up events.
+            listRoot.ChildSelectionChanged += OnChildSelectionChanged;
         }
 
         protected override void OnDisposed()
         {
+            listRoot.ChildSelectionChanged -= OnChildSelectionChanged;
             view.Dispose();
             methodListController.Dispose();
             foreach (PackageController controller in packageControllers)
@@ -40,6 +45,14 @@ namespace Open.Testing.Controllers
                 controller.Dispose();
             }
             base.OnDisposed();
+        }
+        #endregion
+
+        #region Event Handlers
+        private static void OnChildSelectionChanged(object sender, EventArgs e)
+        {
+            // An item in the root sidebar list has been selected.
+            TestHarness.Reset();
         }
         #endregion
 

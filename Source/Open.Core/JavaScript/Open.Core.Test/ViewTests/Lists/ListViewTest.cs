@@ -18,6 +18,8 @@ namespace Open.Core.Test.ViewTests.Lists
 
             view.SetSize(300, 350);
             view.Background = Color.Black(0.05);
+
+            Add_5_Items();
         }
         #endregion
 

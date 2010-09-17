@@ -68,6 +68,9 @@ namespace Open.Testing.Controllers
         /// <summary>Initializes the current class.</summary>
         public void Reset()
         {
+            // Setup initial conditions.
+            TestHarness.Reset();
+
             // Invoke the class-setup method.
             if (classInfo.ClassInitialize != null) classInfo.ClassInitialize.Invoke();
             Log.NewSection();
