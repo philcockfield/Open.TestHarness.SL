@@ -19,25 +19,25 @@ namespace Open.Core.Test.ViewTests.Lists
             view.SetSize(300, 350);
             view.Background = Color.Black(0.05);
 
-            Add_5_Items();
+            Load_5_Items();
         }
         #endregion
 
         #region Methods
-        public void Add_5_Items() { AddItems(5); }
-        public void Add_10_Items() { AddItems(10); }
-        public void Add_100_Items() { AddItems(100); }
+        public void Load_5_Items() { AddItems(5); }
+        public void Load_10_Items() { AddItems(10); }
+        public void Load_100_Items() { AddItems(100); }
 
         public void Custom_ItemFactory()
         {
             view.ItemFactory = ItemFactory;
-            Add_5_Items();
+            Load_5_Items();
         }
 
         public void Custom_ItemFactory__Null()
         {
             view.ItemFactory = null;
-            Add_5_Items();
+            Load_5_Items();
         }
 
         public void Clear()
