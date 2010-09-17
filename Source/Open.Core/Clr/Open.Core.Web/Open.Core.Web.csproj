@@ -66,6 +66,7 @@
     <Compile Include="Code\Declarations\Script.cs" />
     <Compile Include="Code\Extensions\AreaExtensions.cs" />
     <Compile Include="AreaRegistration.cs" />
+    <Compile Include="Code\Extensions\EnumExtensions.cs" />
     <Compile Include="Code\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Code\Extensions\ServerExtensions.cs" />
     <Compile Include="Code\Identity\Models\AuthenticationException.cs" />

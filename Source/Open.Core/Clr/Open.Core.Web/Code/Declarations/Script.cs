@@ -20,6 +20,13 @@ namespace Open.Core.Web
     {
         #region Head
         public const string TextJavascript = "text/javascript";
+        private const string DefaultOpenCorePath = "/Open.Core/Scripts/";
+
+        /// <summary>Constructor.</summary>
+        public Script()
+        {
+            OpenCorePath = DefaultOpenCorePath;
+        }
         #endregion
 
         #region Properties
@@ -29,6 +36,9 @@ namespace Open.Core.Web
         {
             get { return ToScriptLink(GetPath(scriptFile)); }
         }
+
+        /// <summary>Gets or sets the base path used for script files.</summary>
+        public string OpenCorePath { get; set; }
         #endregion
 
         #region Methods
@@ -71,30 +81,39 @@ namespace Open.Core.Web
         #endregion
 
         #region Internal
-        private static string GetPath(ScriptFile scriptFile)
+        private string GetPath(ScriptFile scriptFile)
         {
             string path;
             switch (scriptFile)
             {
-                //case ScriptFile.JQuery: path = "http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"; break;
-                //case ScriptFile.JQueryUi: path = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"; break;
+                case ScriptFile.JQuery: path = "JQuery/jquery-1.4.2.min.js"; break;
+                case ScriptFile.JQueryUi: path = "JQuery/jquery-ui-1.8.4.custom.min.js"; break;
 
-                case ScriptFile.JQuery: path = "/Open.Core/Scripts/JQuery/jquery-1.4.2.min.js"; break;
-                case ScriptFile.JQueryUi: path = "/Open.Core/Scripts/JQuery/jquery-ui-1.8.4.custom.min.js"; break;
+                case ScriptFile.JQueryCookie: path = "JQuery/jquery.cookie.js"; break;
 
-                case ScriptFile.JQueryCookie: path = "/Open.Core/Scripts/JQuery/jquery.cookie.js"; break;
+                case ScriptFile.MsCoreLib: path = "mscorlib.js"; break;
 
-                case ScriptFile.MsCoreLib: path = "/Open.Core/Scripts/mscorlib.js"; break;
+                case ScriptFile.Core: path = "Open.Core.debug.js"; break;
+                case ScriptFile.CoreControls: path = "Open.Core.Controls.debug.js"; break;
+                case ScriptFile.CoreLists: path = "Open.Core.Lists.debug.js"; break;
 
-                case ScriptFile.Core: path = "/Open.Core/Scripts/Open.Core.debug.js"; break;
-                case ScriptFile.CoreControls: path = "/Open.Core/Scripts/Open.Core.Controls.debug.js"; break;
-                case ScriptFile.CoreLists: path = "/Open.Core/Scripts/Open.Core.Lists.debug.js"; break;
-
-                case ScriptFile.LibraryJit: path = "/Open.Core/Scripts/Open.Library.Jit.debug.js"; break;
+                case ScriptFile.LibraryJit: path = "Open.Library.Jit.debug.js"; break;
 
                 default: throw new NotSupportedException(scriptFile.ToString());
             }
-            return path.PrependDomain();
+
+            return string.Format(
+                                "{0}/{1}",
+                                GetBasePath(scriptFile).RemoveEnd("/"), 
+                                path).PrependDomain();
+        }
+
+        private string GetBasePath(ScriptFile scriptFile)
+        {
+            if (scriptFile.IsJQuery()) return DefaultOpenCorePath;
+            return OpenCorePath.IsNullOrEmpty(true) 
+                                            ? DefaultOpenCorePath 
+                                            : OpenCorePath;
         }
         #endregion
     }

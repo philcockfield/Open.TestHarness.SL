@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Open.Core.Web;
 
 namespace Open.Testing.Web.Controllers
 {
@@ -25,7 +26,11 @@ namespace Open.Testing.Web.Controllers
         }
 
         /// <summary>The HEAD content.</summary>
-        public virtual ActionResult Head() { return View(ViewModel); }
+        public virtual ActionResult Head()
+        {
+            WebConstants.Script.OpenCorePath = "/Content/Scripts/";
+            return View(ViewModel);
+        }
 
         /// <summary>The BODY content.</summary>
         public virtual ActionResult Body() { return View(ViewModel); }
