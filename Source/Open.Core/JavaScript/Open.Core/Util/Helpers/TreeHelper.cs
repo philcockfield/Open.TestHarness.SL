@@ -54,5 +54,29 @@ namespace Open.Core.Helpers
             }
             return total;
         }
+
+        /// <summary>Gets the first descendent node that matches the given predicate.</summary>
+        /// <param name="parent">The parent to look within.</param>
+        /// <param name="predicate">The predicate used to match.</param>
+        /// <returns></returns>
+        public ITreeNode FirstDescendent(ITreeNode parent, FuncBool predicate)
+        {
+            // Setup initial conditions.
+            if (parent == null || predicate == null) return null;
+
+            // Look for item in direct children.
+            object item = Helper.Collection.First(parent.Children, predicate);
+            if (item != null) return item as ITreeNode;
+
+            // Not found - recursively call back for each child.
+            foreach (ITreeNode child in parent.Children)
+            {
+                ITreeNode descendent = FirstDescendent(child, predicate);
+                if (descendent != null) return descendent;
+            }
+
+            // Finish up (not found).
+            return null;
+        }
     }
 }

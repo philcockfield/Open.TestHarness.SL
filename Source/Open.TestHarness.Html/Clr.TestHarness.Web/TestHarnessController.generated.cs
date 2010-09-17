@@ -46,8 +46,10 @@ namespace Open.Testing.Web.Controllers {
         public ActionNamesClass ActionNames { get { return s_actions; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass {
+            public readonly string Bootstrap = "Bootstrap";
             public readonly string Index = "Index";
             public readonly string Head = "Head";
+            public readonly string Body = "Body";
             public readonly string GoogleAnalytics = "GoogleAnalytics";
             public readonly string Log = "Log";
             public readonly string Sidebar = "Sidebar";
@@ -61,6 +63,8 @@ namespace Open.Testing.Web.Controllers {
         public ViewNames Views { get { return s_views; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ViewNames {
+            public readonly string Body = "~/Views/TestHarness/Body.ascx";
+            public readonly string Bootstrap = "~/Views/TestHarness/Bootstrap.aspx";
             public readonly string GoogleAnalytics = "~/Views/TestHarness/GoogleAnalytics.ascx";
             public readonly string Head = "~/Views/TestHarness/Head.ascx";
             public readonly string Index = "~/Views/TestHarness/Index.aspx";
@@ -75,6 +79,11 @@ namespace Open.Testing.Web.Controllers {
     public class T4MVC_TestHarnessController: Open.Testing.Web.Controllers.TestHarnessController {
         public T4MVC_TestHarnessController() : base(Dummy.Instance) { }
 
+        public override System.Web.Mvc.ActionResult Bootstrap() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Bootstrap);
+            return callInfo;
+        }
+
         public override System.Web.Mvc.ActionResult Index() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Index);
             return callInfo;
@@ -82,6 +91,11 @@ namespace Open.Testing.Web.Controllers {
 
         public override System.Web.Mvc.ActionResult Head() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Head);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Body() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Body);
             return callInfo;
         }
 

@@ -10,6 +10,7 @@ namespace Open.Core
         #region Constants
         // Elements.
         public const string Head = "head";
+        public const string Body = "body";
         public const string Div = "div";
         public const string Span = "span";
         public const string Img = "img";

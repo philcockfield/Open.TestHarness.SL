@@ -13,5 +13,15 @@ namespace Open.Core.Test.UnitTests
                                         Log.Info("Callback - " + Helper.ScriptLoader.IsLoaded(ScriptLibrary.Controls));
                                     });
         }
+
+        public void Add_Delimited_Urls()
+        {
+            ScriptLoader loader = new ScriptLoader();
+            loader.AddUrl("one.js; two.js", ";");
+            foreach (string url in loader)
+            {
+                Log.Info("> URL: " + url);
+            }
+        }
     }
 }

@@ -45,38 +45,42 @@
     <file relUrl="Scripts/JQuery/jquery.validate-vsdoc.js" publishTime="08/04/2010 14:34:30" />
   </publishProfile>
   <publishProfile publishUrl="ftp://TestHarness.org/httpdocs" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="TestHarness.org" publishMethod="FTP" replaceMatchingFiles="True" userName="thadmin" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAt/VM7Z44o0KCZBPlGxQ9nQAAAAACAAAAAAADZgAAwAAAABAAAACQ49IprumnrrT9cYj8bfVlAAAAAASAAACgAAAAEAAAANih204NNSmMN41v9yoPBp4YAAAA/aG6/cAOgWzF2dXsMdpIlNXAc38KVyNUFAAAAJSauFbyRptxMZ9Pet2vZ7nD5CUf" SelectedForPublish="True">
-    <file relUrl="bin/Open.Core.Clr.pdb" publishTime="09/15/2010 13:36:05" />
-    <file relUrl="Content/Scripts/Open.Core.Controls.js" publishTime="09/15/2010 16:05:44" />
-    <file relUrl="Content/Scripts/Open.Core.Lists.js" publishTime="09/15/2010 16:05:44" />
-    <file relUrl="bin/Open.Core.Web.Clr.dll" publishTime="09/15/2010 16:06:12" />
+    <file relUrl="Views/TestHarness/Body.ascx" publishTime="09/16/2010 09:38:31" />
+    <file relUrl="bin/Open.Core.Clr.pdb" publishTime="09/16/2010 08:09:07" />
+    <file relUrl="Content/Scripts/Open.Core.Controls.js" publishTime="09/16/2010 14:39:13" />
+    <file relUrl="Content/Scripts/Open.Core.Lists.js" publishTime="09/16/2010 14:39:12" />
+    <file relUrl="bin/Open.Core.Web.Clr.dll" publishTime="09/16/2010 14:39:16" />
+    <file relUrl="Views/TestHarness/Bootstrap.aspx" publishTime="09/16/2010 10:23:29" />
     <file relUrl="Global.asax" publishTime="08/04/2010 14:34:30" />
     <file relUrl="App_GlobalResources/TestHarnessStrings.resx" publishTime="09/13/2010 09:41:56" />
-    <file relUrl="Content/Scripts/Open.TestHarness.debug.js" publishTime="09/15/2010 16:05:47" />
+    <file relUrl="Content/Scripts/Open.TestHarness.debug.js" publishTime="09/16/2010 14:39:16" />
     <file relUrl="bin/MvcContrib.xml" publishTime="08/06/2010 14:49:24" />
-    <file relUrl="Content/Scripts/TestHarness.Test.debug.js" publishTime="09/15/2010 16:05:45" />
-    <file relUrl="Content/Scripts/Open.Core.debug.js" publishTime="09/15/2010 16:05:43" />
+    <file relUrl="Content/Scripts/TestHarness.Test.debug.js" publishTime="09/16/2010 14:39:14" />
+    <file relUrl="Content/Scripts/Open.Core.debug.js" publishTime="09/16/2010 14:39:11" />
     <file relUrl="Content/Css/Open.TestHarness.IE.css" publishTime="09/02/2010 20:40:27" />
     <file relUrl="Views/TestHarness/Log.ascx" publishTime="09/13/2010 09:46:18" />
-    <file relUrl="bin/Open.TestHarness.Web.dll" publishTime="09/15/2010 16:06:13" />
-    <file relUrl="Content/Scripts/Open.Core.Test.js" publishTime="09/15/2010 16:05:46" />
+    <file relUrl="bin/Open.TestHarness.Web.dll" publishTime="09/16/2010 14:39:17" />
+    <file relUrl="Content/Scripts/Open.Core.Test.js" publishTime="09/16/2010 14:39:15" />
     <file relUrl="bin/Microsoft.Http.dll" publishTime="12/10/2009 08:38:22" />
-    <file relUrl="Content/Scripts/TestHarness.Test.js" publishTime="09/15/2010 16:05:45" />
-    <file relUrl="bin/Open.Core.Clr.dll" publishTime="09/15/2010 13:36:05" />
-    <file relUrl="Views/TestHarness/Index.aspx" publishTime="09/15/2010 09:55:49" />
+    <file relUrl="Content/Scripts/TestHarness.Test.js" publishTime="09/16/2010 14:39:14" />
+    <file relUrl="bin/Open.Core.Clr.dll" publishTime="09/16/2010 08:09:07" />
+    <file relUrl="Views/TestHarness/Index.aspx" publishTime="09/16/2010 09:39:21" />
     <file relUrl="Views/TestHarness/GoogleAnalytics.ascx" publishTime="09/15/2010 09:59:56" />
     <file relUrl="Content/Images/Sidebar.BackMask.png" publishTime="09/02/2010 21:07:46" />
-    <file relUrl="bin/Open.TestHarness.Web.pdb" publishTime="09/15/2010 16:06:13" />
+    <file relUrl="Content/Scripts/Open.TestHarness.Bootstrap.debug.js" publishTime="09/16/2010 14:39:13" />
+    <file relUrl="bin/Open.TestHarness.Web.pdb" publishTime="09/16/2010 14:39:17" />
     <file relUrl="bin/Microsoft.Http.pdb" publishTime="12/10/2009 08:34:40" />
+    <file relUrl="Content/Scripts/Open.TestHarness.Bootstrap.js" publishTime="09/16/2010 14:39:13" />
     <file relUrl="bin/System.Web.Mvc.xml" publishTime="07/14/2010 14:07:52" />
-    <file relUrl="Content/Scripts/Open.Core.Controls.debug.js" publishTime="09/15/2010 16:05:44" />
+    <file relUrl="Content/Scripts/Open.Core.Controls.debug.js" publishTime="09/16/2010 14:39:13" />
     <file relUrl="bin/System.Web.Mvc.dll" publishTime="07/19/2010 11:38:36" />
     <file relUrl="bin/Open.Core.Contracts.Clr.pdb" publishTime="09/15/2010 13:36:02" />
-    <file relUrl="bin/Open.Core.Web.Clr.pdb" publishTime="09/15/2010 16:06:12" />
+    <file relUrl="bin/Open.Core.Web.Clr.pdb" publishTime="09/16/2010 14:39:16" />
     <file relUrl="Views/TestHarness/Main.ascx" publishTime="09/13/2010 09:44:25" />
-    <file relUrl="Content/Scripts/Open.Core.Test.debug.js" publishTime="09/15/2010 16:05:46" />
+    <file relUrl="Content/Scripts/Open.Core.Test.debug.js" publishTime="09/16/2010 14:39:14" />
     <file relUrl="Content/Scripts/mscorlib.js" publishTime="06/17/2010 02:08:44" />
-    <file relUrl="Content/Scripts/Open.Core.Lists.debug.js" publishTime="09/15/2010 16:05:44" />
-    <file relUrl="Content/Scripts/Open.Core.js" publishTime="09/15/2010 16:05:43" />
+    <file relUrl="Content/Scripts/Open.Core.Lists.debug.js" publishTime="09/16/2010 14:39:12" />
+    <file relUrl="Content/Scripts/Open.Core.js" publishTime="09/16/2010 14:39:11" />
     <file relUrl="Views/TestHarness/MethodList.ascx" publishTime="09/13/2010 09:42:37" />
     <file relUrl="Views/TestHarness/Head.ascx" publishTime="09/13/2010 15:46:25" />
     <file relUrl="bin/Open.Core.Contracts.Clr.dll" publishTime="09/15/2010 13:36:02" />
@@ -88,7 +92,7 @@
     <file relUrl="Content/Scripts/mscorlib.debug.js" publishTime="06/17/2010 02:08:42" />
     <file relUrl="bin/Views/Web.config" publishTime="09/13/2010 12:21:11" />
     <file relUrl="Views/Web.config" publishTime="08/18/2010 14:05:04" />
-    <file relUrl="Content/Scripts/Open.TestHarness.js" publishTime="09/15/2010 16:05:48" />
+    <file relUrl="Content/Scripts/Open.TestHarness.js" publishTime="09/16/2010 14:39:16" />
   </publishProfile>
   <publishProfile publishUrl="ftp://TestHarness.org/subdomains/temp/httpdocs" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="temp.TestHarness.org" publishMethod="FTP" replaceMatchingFiles="True" userName="thadmin" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAt/VM7Z44o0KCZBPlGxQ9nQAAAAACAAAAAAADZgAAwAAAABAAAADxwO3qyURRzI/kEBd31Gw2AAAAAASAAACgAAAAEAAAAKD4qs/pxyrBbHsvHvslqgUYAAAASqd3TwcQmMtBeTE8B8nXTuDinrm/PnB1FAAAANdouiWgm57ZJHWqfdGFR3XMTAHc" SelectedForPublish="False">
     <file relUrl="bin/Open.Core.Clr.pdb" publishTime="08/17/2010 11:22:29" />

@@ -56,13 +56,24 @@ namespace Open.Core.Controls
         #endregion
 
         #region Methods : ILogView
-        public void Insert(string message, string cssClass)
+        public void Insert(object message, string cssClass)
         {
             // Setup initial conditions.
             counter++;
-            if (message == null) message = "<null>".HtmlEncode();
-            if (message == string.Empty) message = "<empty-string>".HtmlEncode();
-            if (string.IsNullOrEmpty(message.Trim())) message = "<whitespace>".HtmlEncode();
+            string text = string.Empty;
+
+            // Check for null.
+            if (message == null)
+            {
+                text = "<null>".HtmlEncode();
+            }
+            else
+            {
+                text = message.ToString();
+                if (text == string.Empty) text = "<empty-string>".HtmlEncode();
+                if (string.IsNullOrEmpty(text.Trim())) text = "<whitespace>".HtmlEncode();
+            }
+
 
             // Create the row.
             divRow = CreateRowDiv(cssClass);
@@ -75,7 +86,7 @@ namespace Open.Core.Controls
             // Prepare the 'message'.
             jQueryObject divMessage = Html.CreateDiv();
             divMessage.AddClass(LogCss.MessageClass);
-            divMessage.Append(message);
+            divMessage.Append(text);
 
             // Perform inserts.
             spanCounter.AppendTo(divRow);

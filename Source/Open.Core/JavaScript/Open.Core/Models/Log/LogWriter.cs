@@ -52,31 +52,30 @@ namespace Open.Core
 
         /// <summary>Writes a informational message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public void Info(string message) { Write(message, LogSeverity.Info); }
+        public void Info(object message) { Write(message, LogSeverity.Info); }
 
         /// <summary>Writes a debug message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public void Debug(string message) { Write(message, LogSeverity.Debug); }
+        public void Debug(object message) { Write(message, LogSeverity.Debug); }
 
         /// <summary>Writes a warning to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public void Warning(string message) { Write(message, LogSeverity.Warning); }
+        public void Warning(object message) { Write(message, LogSeverity.Warning); }
 
         /// <summary>Writes an error message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public void Error(string message) { Write(message, LogSeverity.Error); }
+        public void Error(object message) { Write(message, LogSeverity.Error); }
 
         /// <summary>Writes a success message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public void Success(string message) { Write(message, LogSeverity.Success); }
+        public void Success(object message) { Write(message, LogSeverity.Success); }
         #endregion
 
         #region Methods : ILog
-        public void Write(string message, LogSeverity severity)
+        public void Write(object message, LogSeverity severity)
         {
             if (!CanWrite) return;
             string css = LogCss.SeverityClass(severity);
-
             View.Insert(message, css);
             canInsertSection = true;
         }

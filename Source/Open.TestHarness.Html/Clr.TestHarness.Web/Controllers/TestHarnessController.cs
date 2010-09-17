@@ -13,11 +13,9 @@ namespace Open.Testing.Web.Controllers
         #endregion
 
         #region Methods : Actions
-        public virtual ActionResult Bootstrap()
-        {
-            return View();
-        }
-
+        /// <summary>Page containing the bootstrapper script.</summary>
+        /// <returns></returns>
+        public virtual ActionResult Bootstrap() { return View(ViewModel); }
 
         /// <summary>The root of the TestHarness.</summary>
         public virtual ActionResult Index()
@@ -28,6 +26,9 @@ namespace Open.Testing.Web.Controllers
 
         /// <summary>The HEAD content.</summary>
         public virtual ActionResult Head() { return View(ViewModel); }
+
+        /// <summary>The BODY content.</summary>
+        public virtual ActionResult Body() { return View(ViewModel); }
         #endregion
 
         #region Methods : Child Actions
@@ -64,6 +65,5 @@ namespace Open.Testing.Web.Controllers
         [ChildActionOnly]
         public virtual ActionResult Main() { return View(ViewModel); }
         #endregion
-
     }
 }

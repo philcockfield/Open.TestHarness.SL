@@ -258,5 +258,6 @@ namespace Open.Core
         public readonly string CoreLists = "/Open.Core/Css/Core.Lists.css";
         public readonly string CoreControls = "/Open.Core/Css/Core.Controls.css";
         public readonly string JitHyperTree = "/Open.Core/Css/Jit.Hypertree.css";
+        public readonly string JQueryUi = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css";
     }
 }

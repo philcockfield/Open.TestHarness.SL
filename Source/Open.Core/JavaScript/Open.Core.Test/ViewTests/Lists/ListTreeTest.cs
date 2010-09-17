@@ -41,6 +41,28 @@ namespace Open.Core.Test.ViewTests.Lists
         public void RootNode__Null() { listTree.RootNode = null; }
         public void Back() { listTree.Back(); }
         public void Home() { listTree.Home(); }
+
+        public void GetDescendent()
+        {
+            if (listTree.RootNode == null) AddNodes();
+            ITreeNode node = Helper.Tree.FirstDescendent(listTree.RootNode, delegate(object o)
+                                                        {
+                                                            SampleListItem n = (SampleListItem) o;
+                                                            return n.Text == "Great Grandchild 2";
+                                                        });
+            Log.Info(node);
+        }
+
+        public void GetDescendent_NotFound()
+        {
+            if (listTree.RootNode == null) AddNodes();
+            ITreeNode node = Helper.Tree.FirstDescendent(listTree.RootNode, delegate(object o)
+                                                    {
+                                                        SampleListItem n = (SampleListItem)o;
+                                                        return n.Text == "Foo";
+                                                    });
+            Log.Info(node);
+        }
         #endregion
 
         #region Internal
@@ -54,9 +76,13 @@ namespace Open.Core.Test.ViewTests.Lists
             rootNode.AddChild(new SampleListItem("Child 3"));
 
             SampleListItem recent1 = rootNode.ChildAt(0) as SampleListItem;
-            recent1.AddChild(new SampleListItem("Recent Grandchild 1"));
-            recent1.AddChild(new SampleListItem("Recent Grandchild 2"));
-            recent1.AddChild(new SampleListItem("Recent Grandchild 3"));
+            recent1.AddChild(new SampleListItem("Grandchild 1"));
+            recent1.AddChild(new SampleListItem("Grandchild 2"));
+            recent1.AddChild(new SampleListItem("Grandchild 3"));
+
+            SampleListItem recent2 = recent1.ChildAt(0) as SampleListItem;
+            recent2.AddChild(new SampleListItem("Great Grandchild 1"));
+            recent2.AddChild(new SampleListItem("Great Grandchild 2"));
         }
         #endregion
     }

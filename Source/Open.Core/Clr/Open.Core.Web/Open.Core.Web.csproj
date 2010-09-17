@@ -106,9 +106,7 @@
     <EmbeddedResource Include="Views\Jit\HyperTree.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Scripts\CoreScripts.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Scripts\CoreScripts.aspx" />
     <EmbeddedResource Include="Content\Scripts\Jit\excanvas.js" />
     <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.debug.js" />
     <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.Initialize.js" />

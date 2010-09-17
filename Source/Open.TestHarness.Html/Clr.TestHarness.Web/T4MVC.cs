@@ -246,6 +246,10 @@ namespace Links {
                           
             public static readonly string Open_Core_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.min.js") ? Url("Open.Core.Test.min.js") : Url("Open.Core.Test.js");
                           
+            public static readonly string Open_TestHarness_Bootstrap_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.Bootstrap.debug.min.js") ? Url("Open.TestHarness.Bootstrap.debug.min.js") : Url("Open.TestHarness.Bootstrap.debug.js");
+                          
+            public static readonly string Open_TestHarness_Bootstrap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.Bootstrap.min.js") ? Url("Open.TestHarness.Bootstrap.min.js") : Url("Open.TestHarness.Bootstrap.js");
+                          
             public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
                           
             public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");

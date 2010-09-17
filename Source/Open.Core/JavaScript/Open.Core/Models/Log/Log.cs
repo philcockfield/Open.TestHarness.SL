@@ -34,28 +34,28 @@ namespace Open.Core
 
         /// <summary>Writes a informational message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Info(string message) { Writer.Info(message); }
+        public static void Info(object message) { Writer.Info(message); }
 
         /// <summary>Writes a debug message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Debug(string message) { Writer.Debug(message); }
+        public static void Debug(object message) { Writer.Debug(message); }
 
         /// <summary>Writes a warning to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Warning(string message) { Writer.Warning(message); }
+        public static void Warning(object message) { Writer.Warning(message); }
 
         /// <summary>Writes an error message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Error(string message) { Writer.Error(message); }
+        public static void Error(object message) { Writer.Error(message); }
 
         /// <summary>Writes a success message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Success(string message) { Writer.Success(message); }
+        public static void Success(object message) { Writer.Success(message); }
 
         /// <summary>Writes a message to the log.</summary>
         /// <param name="message">The message to write (HTML).</param>
         /// <param name="severity">The severity of the message.</param>
-        public static void Write(string message, LogSeverity severity)
+        public static void Write(object message, LogSeverity severity)
         {
             Writer.Write(message, severity);
         }
