@@ -1,0 +1,5 @@
+C:\Program Files (x86)\Microsoft WCF REST\WCF REST Starter Kit Preview 2\Assemblies
+
+Links:
+http://www.asp.net/downloads/starter-kits/wcf-rest
+http://aspnet.codeplex.com/releases/view/24644
