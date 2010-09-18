@@ -1,5 +1,4 @@
 ﻿using System;
-using jQueryApi;
 
 namespace Open.Core.UI
 {
@@ -7,8 +6,8 @@ namespace Open.Core.UI
     public class HorizontalPanelResizer : PanelResizerBase
     {
         #region Head
-        private double minWidth;
-        private double maxWidthMargin;
+        private int minWidth;
+        private int maxWidthMargin;
 
         /// <summary>Constructor.</summary>
         /// <param name="cssSelector">The CSS selector used to retrieve the panel being resized.</param>
@@ -20,7 +19,7 @@ namespace Open.Core.UI
 
         #region Properties
         /// <summary>Gets or sets the minimum width the panel can be.</summary>
-        public double MinWidth
+        public int MinWidth
         {
             get { return minWidth; }
             set
@@ -31,21 +30,22 @@ namespace Open.Core.UI
             }
         }
 
+        /// <summary>Gets the maximum width the panel can be.</summary>
+        public int MaxWidth
+        {
+            get { return HasRootContainer ? RootContainerWidth - MaxWidthMargin : -1; }
+        }
+
         /// <summary>Gets or sets the margin buffer used to calculate the max-width of the panel relative to the root container.</summary>
-        public double MaxWidthMargin
+        public int MaxWidthMargin
         {
             get { return maxWidthMargin; }
             set { maxWidthMargin = value; }
         }
 
-        private double RootContainerWidth
+        private int RootContainerWidth
         {
             get { return HasRootContainer ? GetRootContainer().GetWidth() : -1; }
-        }
-
-        private double MaxWidth
-        {
-            get { return HasRootContainer ? RootContainerWidth - MaxWidthMargin : -1; }
         }
         #endregion
 
@@ -73,8 +73,8 @@ namespace Open.Core.UI
             }
         }
 
-        protected override double GetCurrentSize() { return Panel.GetWidth(); }
-        protected override void SetCurrentSize(double size)
+        protected override int GetCurrentSize() { return Panel.GetWidth(); }
+        protected override void SetCurrentSize(int size)
         {
             Panel.CSS(Css.Width, size + Css.Px);
         }

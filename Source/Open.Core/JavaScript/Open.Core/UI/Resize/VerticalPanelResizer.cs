@@ -1,5 +1,4 @@
 using System;
-using jQueryApi;
 
 namespace Open.Core.UI
 {
@@ -7,8 +6,8 @@ namespace Open.Core.UI
     public class VerticalPanelResizer : PanelResizerBase
     {
         #region Head
-        private double minHeight;
-        private double maxHeightMargin;
+        private int minHeight;
+        private int maxHeightMargin;
 
         /// <summary>Constructor.</summary>
         /// <param name="cssSelector">The CSS selector used to retrieve the panel being resized.</param>
@@ -20,7 +19,7 @@ namespace Open.Core.UI
 
         #region Properties
         /// <summary>Gets or sets the minimum height the panel can be.</summary>
-        public double MinHeight
+        public int MinHeight
         {
             get { return minHeight; }
             set
@@ -31,21 +30,22 @@ namespace Open.Core.UI
             }
         }
 
+        /// <summary>Gets the maximum height the panel can be.</summary>
+        public int MaxHeight
+        {
+            get { return HasRootContainer ? RootContainerHeight - MaxHeightMargin : -1; }
+        }
+
         /// <summary>Gets or sets the margin buffer used to calculate the max-height of the panel relative to the root container.</summary>
-        public double MaxHeightMargin
+        public int MaxHeightMargin
         {
             get { return maxHeightMargin; }
             set { maxHeightMargin = value; }
         }
 
-        private double RootContainerHeight
+        private int RootContainerHeight
         {
             get { return HasRootContainer ? GetRootContainer().GetHeight() : -1; }
-        }
-
-        private double MaxHeight
-        {
-            get { return HasRootContainer ? RootContainerHeight - MaxHeightMargin : -1; }
         }
         #endregion
 
@@ -74,8 +74,8 @@ namespace Open.Core.UI
             }
         }
 
-        protected override double GetCurrentSize() { return Panel.GetHeight(); }
-        protected override void SetCurrentSize(double size)
+        protected override int GetCurrentSize() { return Panel.GetHeight(); }
+        protected override void SetCurrentSize(int size)
         {
             Panel.CSS(Css.Height, size + Css.Px);
         }

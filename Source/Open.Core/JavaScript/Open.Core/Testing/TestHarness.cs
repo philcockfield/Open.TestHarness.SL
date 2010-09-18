@@ -31,6 +31,7 @@ namespace Open.Testing
         #region Head
         private static ITestHarnessEvents events;
         private static ControlDisplayMode displayMode = ControlDisplayMode.Center;
+        private static bool canScroll = true;
         #endregion
 
         #region Properties
@@ -44,6 +45,17 @@ namespace Open.Testing
         {
             get { return displayMode; }
             set { displayMode = value; }
+        }
+
+        /// <summary>Gets or sets whether the control host canvas can scroll.</summary>
+        public static bool CanScroll
+        {
+            get { return canScroll; }
+            set
+            {
+                canScroll = value;
+                Events.FireUpdateLayout();
+            }
         }
         #endregion
 
@@ -74,7 +86,7 @@ namespace Open.Testing
         /// <summary>Adds an HTML element to the host canvas.</summary>
         /// <param name="element">The HTML content of the control.</param>
         /// <returns>A DIV element to contain the control.</returns>
-        public static void  AddHtml(jQueryObject element)
+        public static void AddHtml(jQueryObject element)
         {
             if (element == null) throw new Exception("An HTML element was not specified.");
             FireControlAdded(null, element);
@@ -85,6 +97,7 @@ namespace Open.Testing
         {
             displayMode = ControlDisplayMode.Center;
             Events.FireClearControls();
+            CanScroll = true;
         }
 
         /// <summary>Forces the display canvas to run it's layout routine.</summary>

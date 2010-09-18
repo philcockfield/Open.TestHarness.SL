@@ -127,7 +127,7 @@ namespace Open.Testing.Views
             }
 
             // Finish up.
-            Css.SetOverflow(Container, CssOverflow.Auto); // Reset the scroll behavior.
+            Css.SetOverflow(Container, TestHarness.CanScroll ? CssOverflow.Auto : CssOverflow.Hidden); // Reset the scroll behavior.
         }
 
         private void SetSizeWithPadding(int xPadding, int yPadding)

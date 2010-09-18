@@ -5,7 +5,7 @@ using Open.Core.Controls.Buttons;
 namespace Open.Testing.Views
 {
     /// <summary>List item view for adding a new test-package.</summary>
-    public class AddPackageListItemView : ViewBase
+    public class AddPackageListItemView : TestHarnessViewBase
     {
         #region Head
         private readonly LinkButton addButton;
@@ -21,14 +21,7 @@ namespace Open.Testing.Views
             Container.Append(addButton.Container);
 
             // Wire up events.
-            addButton.Click += OnClick;
-        }
-        #endregion
-
-        #region Event Handlers
-        private void OnClick(object sender, EventArgs e)
-        {
-            AddPackageView.AddToTestHarness();
+            addButton.Click += delegate { Common.Events.FireAddPackageClick(); };
         }
         #endregion
     }

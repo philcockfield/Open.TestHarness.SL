@@ -94,6 +94,14 @@ namespace Open.Core.UI
             OnInitialize();
             IsInitialized = true;
         }
+
+        /// <summary>Persists the current size to storage.</summary>
+        public void Save()
+        {
+            if (!IsSaving) return;
+            cookie.Set(cookieKey, GetCurrentSize());
+            cookie.Save();
+        }
         #endregion
 
         #region Methods : Protected
@@ -113,7 +121,7 @@ namespace Open.Core.UI
             Script.Eval(script);
         }
 
-        protected void ShrinkIfOverflowing(double currentValue, double minValue, double maxValue, string cssAttribute)
+        protected void ShrinkIfOverflowing(int currentValue, int minValue, int maxValue, string cssAttribute)
         {
             // Determine if the panel is overflowing it's available space.
             if (currentValue <= maxValue) return;
@@ -125,11 +133,11 @@ namespace Open.Core.UI
         }
 
         /// <summary>Gets the current size (on the appropriate X:Y plane given the deriving class).</summary>
-        protected abstract double GetCurrentSize();
+        protected abstract int GetCurrentSize();
 
         /// <summary>Sets the current size (on the appropriate X:Y plane given the deriving class).</summary>
         /// <param name="size">The size value to set.</param>
-        protected abstract void SetCurrentSize(double size);
+        protected abstract void SetCurrentSize(int size);
         #endregion
 
         #region Internal
@@ -148,16 +156,9 @@ namespace Open.Core.UI
             else if (eventName == EventStop)
             {
                 OnStopped();
-                SaveSize();
+                Save();
                 FireResizeStopped();
             }
-        }
-
-        private void SaveSize()
-        {
-            if (!IsSaving) return;
-            cookie.Set(cookieKey, GetCurrentSize());
-            cookie.Save();
         }
 
         private void LoadSize()
@@ -165,7 +166,7 @@ namespace Open.Core.UI
             if (!IsSaving) return;
             object size = cookie.Get(cookieKey);
             if (Script.IsNullOrUndefined(size)) return;
-            SetCurrentSize((double)size);
+            SetCurrentSize((int)size);
             FireResized();
         }
         #endregion

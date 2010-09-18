@@ -51,8 +51,11 @@
     <Compile Include="Code\Constants\CssSelectors.cs" />
     <Compile Include="Code\Constants\Elements.cs" />
     <Compile Include="Code\Constants\StringLibrary.cs" />
+    <Compile Include="Controllers\AddPackageController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
-    <Compile Include="Controllers\HostCanvasController.cs" />
+    <Compile Include="Controllers\ControlHostController.cs" />
+    <Compile Include="Code\Interfaces\IPanelResizeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MethodListController.cs" />
     <Compile Include="Controllers\MethodListHeightController.cs" />
     <Compile Include="Code\Events\TestHarnessEvents.cs" />
@@ -71,7 +74,9 @@
     <Compile Include="Code\Util\MethodHelper.cs" />
     <Compile Include="Views\AddPackageListItemView.cs" />
     <Compile Include="Views\AddPackageView.cs" />
+    <Compile Include="Views\ControlHostView.cs" />
     <Compile Include="Views\ControlWrapperView.cs" />
+    <Compile Include="Views\LogContainerView.cs" />
     <Compile Include="Views\ShellView.cs" />
     <Compile Include="Views\SideBarView.cs" />
     <Compile Include="Views\MethodListView.cs" />

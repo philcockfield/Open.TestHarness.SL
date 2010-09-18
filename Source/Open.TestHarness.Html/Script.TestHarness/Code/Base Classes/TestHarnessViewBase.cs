@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using jQueryApi;
 using Open.Core;
 
@@ -9,6 +10,8 @@ namespace Open.Testing
         #region Head
         private Common common;
 
+        [AlternateSignature]
+        protected extern TestHarnessViewBase();
         protected TestHarnessViewBase(jQueryObject container) : base(container)
         {
         }

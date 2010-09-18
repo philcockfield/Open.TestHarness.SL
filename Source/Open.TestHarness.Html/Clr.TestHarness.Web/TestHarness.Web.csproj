@@ -83,7 +83,6 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
-    <Content Include="Content\Images\AddPackage.FieldConnector.png" />
     <Content Include="Content\Images\Icons\Icon.Assembly.Small.png" />
     <Content Include="Content\Images\Icons\Icon.Class.Small.png" />
     <Content Include="Content\Images\Icons\Icon.JavaScript.png" />

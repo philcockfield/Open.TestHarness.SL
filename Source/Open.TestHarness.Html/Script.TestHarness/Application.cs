@@ -18,9 +18,10 @@ namespace Open.Testing
 
         // Controllers.
         private static DiContainer container;
-        private static PanelResizeController resizeController;
         private static SidebarController sidebarController;
-        private static HostCanvasController hostCanvasController;
+        private static ControlHostController controlHostController;
+        private static LogController logController;
+        private static AddPackageController addPackageController;
         #endregion
 
         #region Properties
@@ -37,25 +38,24 @@ namespace Open.Testing
             Container.RegisterSingleton(typeof(ITestHarnessEvents), new TestHarnessEvents());
             Container.RegisterSingleton(typeof(Common), new Common());
 
-            // Setup the output log.
-            Log.View = new LogView(jQuery.Select(CssSelectors.Log).First());
-
             // Create views.
             shell = new ShellView(jQuery.Select(CssSelectors.Root));
             Container.RegisterSingleton(typeof(ShellView), shell);
 
             // Create controllers.
-            resizeController = new PanelResizeController();
+            Container.RegisterSingleton(typeof(IPanelResizeController), new PanelResizeController());
             sidebarController = new SidebarController();
-            hostCanvasController = new HostCanvasController();
+            controlHostController = new ControlHostController();
+            logController = new LogController();
+            addPackageController = new AddPackageController();
 
             // =================================
 
             //TEMP : Insert sample packages.
             AddPackage("/Content/Scripts/TestHarness.Test.debug.js", "Test.Application.main");
             AddPackage("/Content/Scripts/Open.Core.Test.debug.js", "Open.Core.Test.Application.main");
-            AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
-            AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
+            //AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
+            //AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
         }
 
         private static void AddPackage(string scriptUrl, string initMethod)

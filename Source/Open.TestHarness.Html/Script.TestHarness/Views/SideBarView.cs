@@ -20,8 +20,7 @@ namespace Open.Testing.Views
         private readonly MethodListHeightController methodListHeightController;
 
         /// <summary>Constructor.</summary>
-        /// <param name="container">The containing DIV.</param>
-        public SidebarView(jQueryObject container) : base(container)
+        public SidebarView(): base(jQuery.Select(CssSelectors.Sidebar))
         {
             // Create the list-tree.
             rootList = new ListTreeView(jQuery.Select(CssSelectors.SidebarRootList));

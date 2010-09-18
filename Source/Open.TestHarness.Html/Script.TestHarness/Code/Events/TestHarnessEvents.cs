@@ -32,11 +32,18 @@ namespace Open.Testing
 
         #region Methods : Display
         /// <summary>Fires when the width of the control-host changes.</summary>
-        public event EventHandler ControlHostSizeChanged;
+        internal event EventHandler ControlHostSizeChanged;
         internal void FireControlHostSizeChanged() { if (ControlHostSizeChanged != null) ControlHostSizeChanged(this, new EventArgs()); }
+
+        /// <summary>Fires when the log-height is to be changed.</summary>
+        internal event ChangeHeightEventHandler ChangeLogHeight;
+        internal void FireChangeLogHeight(int height) { if (ChangeLogHeight != null) ChangeLogHeight(this, new ChangeHeightEventArgs(height)); }
+
+        /// <summary>Fires when the 'Add Package' option is clicked.</summary>
+        internal event EventHandler AddPackageClick;
+        internal void FireAddPackageClick() { if (AddPackageClick != null) AddPackageClick(this, new EventArgs()); }
         #endregion
     }
-
 
     public delegate void MethodEventHandler(object sender, MethodEventArgs e);
     public class MethodEventArgs
@@ -51,5 +58,13 @@ namespace Open.Testing
         public ClassEventArgs(ClassInfo classInfo) { ClassInfo = classInfo; }
         public ClassInfo ClassInfo;
     }
+
+    internal  delegate void ChangeHeightEventHandler(object sender, ChangeHeightEventArgs e);
+    internal class ChangeHeightEventArgs
+    {
+        public ChangeHeightEventArgs(int height) { Height = height; }
+        public int Height;
+    }
+
 
 }

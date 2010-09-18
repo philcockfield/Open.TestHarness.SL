@@ -30,7 +30,10 @@ namespace Open.Testing
         // Log.
         public static readonly string LogContainer = "#testHarnessLog";
         public static readonly string LogTitlebar = "#testHarnessLog .th-log-tb";
-        public static readonly string Log = "#testHarnessLog .c-log";
+        public static readonly string LogControl = "#testHarnessLog .c-log";
+
+        // Add Package.
+        public static readonly string AddPackageInnerSlide = "#testHarness div.th_addPackage div.innerSlide";
     }
 
     public class Classes
