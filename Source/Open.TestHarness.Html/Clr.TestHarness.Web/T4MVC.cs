@@ -218,6 +218,18 @@ namespace Links {
             private const string URLPATH = "~/Content/Images";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string AddPackage_FieldConnector_png = Url("AddPackage.FieldConnector.png");
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class Icons {
+                private const string URLPATH = "~/Content/Images/Icons";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string Icon_Assembly_Small_png = Url("Icon.Assembly.Small.png");
+                public static readonly string Icon_Class_Small_png = Url("Icon.Class.Small.png");
+                public static readonly string Icon_JavaScript_png = Url("Icon.JavaScript.png");
+                public static readonly string Icon_Method_Small_png = Url("Icon.Method.Small.png");
+            }
+        
             public static readonly string Sidebar_BackMask_png = Url("Sidebar.BackMask.png");
         }
     

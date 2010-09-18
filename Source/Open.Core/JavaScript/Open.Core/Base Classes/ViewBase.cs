@@ -202,6 +202,18 @@ namespace Open.Core
         protected virtual void OnIsEnabledChanged() { }
         protected virtual void OnIsVisibleChanged() { }
         protected virtual void OnSizeChanged() { }
+
+        /// <summary>Inserts the HTML from the specified URL.</summary>
+        /// <param name="url">The URL of the HTML content to retrieve.</param>
+        /// <param name="onComplete">Action to invoke upon completion.</param>
+        protected void RetrieveHtml(string url, Action onComplete)
+        {
+            jQuery.Get(Helper.Url.PrependDomain(url), delegate(object data)
+                                                          {
+                                                              Container.Html(data.ToString());
+                                                              Helper.InvokeOrDefault(onComplete);
+                                                          });
+        }
         #endregion
     }
 }

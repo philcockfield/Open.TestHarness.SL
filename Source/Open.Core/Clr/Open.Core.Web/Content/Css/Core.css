@@ -57,6 +57,19 @@ div.table { position:absolute; display:table; }
     font-family: 'Lucida Grande', 'Segoe UI', Tahoma, Helvetica, Arial, Verdana;
 }
 
+/* ----------- Widgets ----------- */
+input.textBox
+{
+    border: 1px solid #CCC;
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    font-family: Arial;
+    font-size: 16px;
+    padding: 10px;
+}
+
 
 /* ----------- Borders ----------- */
 .panelBorder

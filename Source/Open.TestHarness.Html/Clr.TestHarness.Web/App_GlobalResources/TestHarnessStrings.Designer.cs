@@ -61,6 +61,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the entry-point method (with namespace):.
+        /// </summary>
+        internal static string Add_Package_Label_InitMethod {
+            get {
+                return ResourceManager.GetString("Add_Package_Label_InitMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the URL of the JavaScript file to load:.
+        /// </summary>
+        internal static string Add_Package_Label_ScriptUrl {
+            get {
+                return ResourceManager.GetString("Add_Package_Label_ScriptUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add package.
+        /// </summary>
+        internal static string Add_Package_Title {
+            get {
+                return ResourceManager.GetString("Add_Package_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TestHarness.
         /// </summary>
         internal static string App_Title {

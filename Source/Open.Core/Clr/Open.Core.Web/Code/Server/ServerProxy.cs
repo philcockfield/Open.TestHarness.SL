@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using System.Net;
 using System.Web;
 using Microsoft.Http;
+using Microsoft.Http.Headers;
 using Open.Core.Common;
 
 namespace Open.Core.Web

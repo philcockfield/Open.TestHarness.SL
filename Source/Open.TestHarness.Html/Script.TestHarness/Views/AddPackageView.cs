@@ -1,4 +1,5 @@
 using System;
+using jQueryApi;
 using Open.Core;
 
 namespace Open.Testing.Views
@@ -7,14 +8,27 @@ namespace Open.Testing.Views
     public class AddPackageView : ViewBase
     {
         #region Head
+        private const string contentUrl = "/TestHarness/AddPackage/";
 
         /// <summary>Constructor.</summary>
         public AddPackageView()
         {
-            Container.Append("TBD: Add package - Textbox for JS file and Init entry-point method."); //TEMP 
-            SetCss(Css.Color, Color.Black(0.1));
-            SetCss(Css.FontSize, "60pt");
-            Css.AddClasses(Container, "titleFont");
+            RetrieveHtml(contentUrl, delegate
+                                         {
+                                             
+                                         });
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>Inserts an instance of the view into the TestHarness' main canvas.</summary>
+        public static AddPackageView AddToTestHarness()
+        {
+            AddPackageView view = new AddPackageView();
+            TestHarness.Reset();
+            TestHarness.DisplayMode = ControlDisplayMode.Fill;
+            TestHarness.AddControl(view);
+            return view;
         }
         #endregion
     }

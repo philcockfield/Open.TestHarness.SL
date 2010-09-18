@@ -25,6 +25,14 @@
     font-family: "myriad-pro-1","myriad-pro-2", "Segoe UI"; 
 }
 
+#testHarness .th_fieldLabel
+{ 
+    font-family: "myriad-pro-1","myriad-pro-2", "Segoe UI"; 
+    font-size:12pt;
+    font-weight:300;
+    opacity:0.6;
+}
+
 
 /*-------------- Toolbars --------------*/
 .th-toolbar
@@ -146,3 +154,68 @@
     margin-top:4px;
     line-height:20px;
 }
+
+
+/*-------------- Add Package --------------*/
+#testHarness div.th_addPackage
+{
+    background: -webkit-gradient(linear, left top, left bottom, from(#eaeaea), to(#ffffff));
+    background: -moz-linear-gradient(top, #eaeaea, #ffffff);
+}
+#testHarness div.th_addPackage div.innerContent
+{
+    margin:0px 50px 50px 50px;
+}
+#testHarness .th_addPackage div.titleFont  
+{
+    font-size:80pt; 
+    color:rgba(0,0,0,0.1);
+}
+#testHarness .th_addPackage .field_set
+{
+    position:relative;
+    margin-top:15px;
+    margin-left:30px;
+}
+#testHarness .th_addPackage .field_set input
+{
+    position:absolute;
+    top:25px;
+    width:100%;
+    padding-left:36px;
+}
+#testHarness .th_addPackage p.th_fieldLabel { position:absolute; left:5px; }
+#testHarness .th_addPackage img.fieldConnector { position:absolute; left:18px; top:66px;  }
+
+
+/* AddPackage.ScriptUrl */
+#testHarness .th_addPackage div.field_set_scriptUrl
+{
+    position:absolute;
+    width:490px;
+}
+#testHarness .th_addPackage img.iconJavaScript
+{
+    position:absolute;
+    top:32px;
+    left:7px;    
+}
+
+/* AddPackage.InitMethod */
+#testHarness .th_addPackage div.field_set_initMethod
+{
+    position:absolute;
+    top:115px;
+    left:66px;    
+    width:432px;
+}
+#testHarness .th_addPackage img.iconMethod
+{
+    position:absolute;
+    top:40px;
+    left:7px;    
+}
+
+#testHarness .th_addPackage div.field_set_initMethod input { padding-left:28px; }
+
+

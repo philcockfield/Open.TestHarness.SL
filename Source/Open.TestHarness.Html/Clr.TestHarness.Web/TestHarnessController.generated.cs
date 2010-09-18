@@ -55,6 +55,7 @@ namespace Open.Testing.Web.Controllers {
             public readonly string Sidebar = "Sidebar";
             public readonly string MethodList = "MethodList";
             public readonly string Main = "Main";
+            public readonly string AddPackage = "AddPackage";
         }
 
 
@@ -63,6 +64,7 @@ namespace Open.Testing.Web.Controllers {
         public ViewNames Views { get { return s_views; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ViewNames {
+            public readonly string AddPackage = "~/Views/TestHarness/AddPackage.ascx";
             public readonly string Body = "~/Views/TestHarness/Body.ascx";
             public readonly string Bootstrap = "~/Views/TestHarness/Bootstrap.aspx";
             public readonly string GoogleAnalytics = "~/Views/TestHarness/GoogleAnalytics.ascx";
@@ -121,6 +123,11 @@ namespace Open.Testing.Web.Controllers {
 
         public override System.Web.Mvc.ActionResult Main() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Main);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult AddPackage() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.AddPackage);
             return callInfo;
         }
 

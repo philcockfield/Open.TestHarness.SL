@@ -9,6 +9,9 @@ namespace Open.Testing.Web.Controllers
         private const string KeyOutputTitle = "Output_Title";
         private const string KeyAppTitle = "App_Title";
         private const string KeyMethodListTitle = "MethodList_Title";
+        private const string KeyAddPackageTitle = "Add_Package_Title";
+        private const string KeyAddPackageLabelScriptUrl = "Add_Package_Label_ScriptUrl";
+        private const string KeyAddPackageLabelInitMethod = "Add_Package_Label_InitMethod";
 
         private const string GoogleAnalyticsKey = "UA-12876655-1";
         #endregion
@@ -69,6 +72,18 @@ namespace Open.Testing.Web.Controllers
         /// <summary>The Main content panel.</summary>
         [ChildActionOnly]
         public virtual ActionResult Main() { return View(ViewModel); }
+        #endregion
+
+        #region Methods : Component Screens
+        /// <summary>The 'Add Package' screen .</summary>
+        public virtual ActionResult AddPackage()
+        {
+            ViewModel.Title = GetResource(KeyAddPackageTitle);
+            ViewModel.ScriptUrlLabel = GetResource(KeyAddPackageLabelScriptUrl);
+            ViewModel.InitMethodLabel = GetResource(KeyAddPackageLabelInitMethod);
+
+            return View(ViewModel);
+        }
         #endregion
     }
 }
