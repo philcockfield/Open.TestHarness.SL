@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Open.Core.Web
+﻿namespace Open.Core.Web
 {
     public static class EnumExtensions
     {
@@ -11,14 +6,7 @@ namespace Open.Core.Web
         /// <param name="scriptFile">Flag to examine.</param>
         public static bool IsJQuery(this ScriptFile scriptFile)
         {
-            switch (scriptFile)
-            {
-                case ScriptFile.JQuery:
-                case ScriptFile.JQueryUi:
-                case ScriptFile.JQueryCookie:
-                    return true;
-            }
-            return false;
+            return scriptFile.ToString().StartsWith("JQuery");
         }
     }
 }

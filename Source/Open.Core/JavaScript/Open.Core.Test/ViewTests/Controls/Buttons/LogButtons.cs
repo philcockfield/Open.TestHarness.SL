@@ -8,7 +8,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         {
             Log.Info("IsEnabled: " + button.IsEnabled);
             Log.Info("CanToggle: " + button.CanToggle);
-            Log.Info("MouseState: " + button.MouseState.ToString());
+            Log.Info("MouseState: " + button.State.ToString());
             Log.Info("IsPressed: " + button.IsPressed);
             Log.Info("IsMouseOver: " + button.IsMouseOver);
             Log.Info("IsMouseDown: " + button.IsMouseDown);

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core.Controls.Buttons
@@ -8,122 +9,94 @@ namespace Open.Core.Controls.Buttons
     {
         #region Events
         public event EventHandler Click;
-        private void FireClick(){if (Click != null) Click(this, new EventArgs());}
+        private void FireClick() { if (Click != null) Click(this, new EventArgs()); }
 
         public event EventHandler IsPressedChanged;
-        private void FireIsPressedChanged(){if (IsPressedChanged != null) IsPressedChanged(this, new EventArgs());}
+        private void FireIsPressedChanged() { if (IsPressedChanged != null) IsPressedChanged(this, new EventArgs()); }
         #endregion
 
         #region Head
         public const string PropCanToggle = "CanToggle";
-        public const string PropMouseState = "MouseState";
+        public const string PropState = "State";
         public const string PropIsPressed = "IsPressed";
         public const string PropIsMouseOver = "IsMouseOver";
         public const string PropIsMouseDown = "IsMouseDown";
 
+        private readonly ButtonEventManager eventManager;
+
         /// <summary>Constructor.</summary>
-        /// <param name="html">The HTML of the button.</param>
-        protected ButtonBase(jQueryObject html) : base(html)
+        [AlternateSignature]
+        protected extern ButtonBase();
+
+        /// <summary>Constructor.</summary>
+        /// <param name="element">The HTML of the button.</param>
+        protected ButtonBase(jQueryObject element) : base(element)
         {
+            // Setup initial conditions.
+            eventManager = new ButtonEventManager(this, delegate { InvokeClick(true); });
+
             // Wire up events.
-            html.MouseOver(OnMouseOver);
-            html.MouseOut(OnMouseOut);
-            html.MouseDown(OnMouseDown);
-            html.MouseUp(OnMouseUp);
+            eventManager.PropertyChanged += OnEventManagerPropertyChanged;
+        }
+
+        /// <summary>Finalize.</summary>
+        protected override void OnDisposed()
+        {
+            eventManager.Dispose();
+            base.OnDisposed();
         }
         #endregion
 
         #region Event Handlers
-        private void OnMouseOver(jQueryEvent e)
+        private void OnEventManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            IsMouseOver = true;
-            UpdateMouseState();
-        }
-
-        private void OnMouseOut(jQueryEvent e)
-        {
-            IsMouseOver = false;
-            UpdateMouseState();
-        }
-
-        private void OnMouseDown(jQueryEvent e)
-        {
-            IsMouseDown = true;
-            UpdateMouseState();
-        }
-
-        private void OnMouseUp(jQueryEvent e)
-        {
-            bool wasMouseDown = IsMouseDown;
-            IsMouseDown = false;
-            UpdateMouseState();
-            if (IsEnabled && IsMouseOver && wasMouseDown)
-            {
-                InvokeClick(true);
-            }
+            FirePropertyChanged(e.Property.Name);
+            if (e.Property.Name == PropIsPressed) FireIsPressedChanged();
         }
         #endregion
 
         #region Properties : IButton
         public bool CanToggle
         {
-            get { return (bool) Get(PropCanToggle, false); }
-            set { Set(PropCanToggle, value, false); }
+            get { return eventManager.CanToggle; }
+            set { eventManager.CanToggle = value; }
         }
 
-        public ButtonMouseState MouseState
-        {
-            get { return (ButtonMouseState)Get(PropMouseState, ButtonMouseState.Normal); }
-            private set { Set(PropMouseState, value, ButtonMouseState.Normal); }
-        }
-
-        public bool IsPressed
-        {
-            get { return (bool) Get(PropIsPressed, false); }
-            private set { if (Set(PropIsPressed, value, false)) FireIsPressedChanged(); }
-        }
-
-        public bool IsMouseOver
-        {
-            get { return (bool) Get(PropIsMouseOver, false); }
-            private set { Set(PropIsMouseOver, value, false); }
-        }
-
-        public bool IsMouseDown
-        {
-            get { return (bool) Get(PropIsMouseDown, false); }
-            private set { Set(PropIsMouseDown, value, false); }
-        }
+        public ButtonState State { get { return eventManager.State; } }
+        public bool IsPressed { get { return eventManager.IsPressed; } }
+        public bool IsMouseOver { get { return eventManager.IsMouseOver; } }
+        public bool IsMouseDown { get { return eventManager.IsMouseDown; } }
         #endregion
 
-        #region Methods
+        #region Methods : IButton
         public void InvokeClick(bool force)
         {
             if (!IsEnabled && !force) return;
-            if (CanToggle) IsPressed = !IsPressed;
+            if (CanToggle) eventManager.IsPressed = !eventManager.IsPressed;
             FireClick();
         }
         #endregion
 
-        #region Internal
-        private void UpdateMouseState()
+        #region Methods
+        /// <summary>Sets the content to use for the given state.</summary>
+        /// <param name="state">The button state the content applies to.</param>
+        /// <param name="html">The HTML element to use.</param>
+        [AlternateSignature]
+        protected virtual extern void StateContent(ButtonState state, jQueryObject html);
+
+        /// <summary>Sets the content to use for the given state.</summary>
+        /// <param name="state">The button state the content applies to.</param>
+        /// <param name="cssClasses">The CSS class(es) to apply (space delimited).</param>
+        [AlternateSignature]
+        protected virtual extern void StateContent(ButtonState state, string cssClasses);
+
+        /// <summary>Sets the content to use for the given state.</summary>
+        /// <param name="state">The button state the content applies to.</param>
+        /// <param name="html">The HTML element to use.</param>
+        /// <param name="cssClasses">The CSS class(es) to apply (space delimited).</param>
+        protected virtual void StateContent(ButtonState state, jQueryObject html, string cssClasses)
         {
-            if (!IsEnabled)
-            {
-                MouseState = ButtonMouseState.Normal;
-            }
-            else if (IsMouseOver && IsMouseDown)
-            {
-                MouseState = ButtonMouseState.Pressed;
-            }
-            else if (IsMouseOver)
-            {
-                MouseState = ButtonMouseState.MouseOver;
-            }
-            else
-            {
-                MouseState = ButtonMouseState.Normal;
-            }
+            // TODO - StateContent
         }
         #endregion
     }

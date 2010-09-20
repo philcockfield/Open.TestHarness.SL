@@ -1,6 +1,5 @@
 using System.Collections;
 using Open.Core.Test.UnitTests;
-using Open.Core.Test.ViewTests;
 using Open.Core.Test.ViewTests.Controls;
 using Open.Core.Test.ViewTests.Controls.Buttons;
 using Open.Core.Test.ViewTests.Controls.HtmlPrimitive;
@@ -21,12 +20,14 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(ViewBaseUnitTest));
 
             // View Tests
+            TestHarness.RegisterClass(typeof(TemplateTest));
             TestHarness.RegisterClass(typeof(ViewBaseTest));
             TestHarness.RegisterClass(typeof(ListTreeViewTest));
             TestHarness.RegisterClass(typeof(ListViewTest));
             TestHarness.RegisterClass(typeof(ListItemViewTest));
             TestHarness.RegisterClass(typeof(LogTest));
             TestHarness.RegisterClass(typeof(HtmlListTest));
+            TestHarness.RegisterClass(typeof(ButtonBaseTest));
             TestHarness.RegisterClass(typeof(SystemButtonTest));
             TestHarness.RegisterClass(typeof(LinkButtonTest));
         }

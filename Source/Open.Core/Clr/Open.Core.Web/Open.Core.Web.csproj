@@ -77,6 +77,8 @@
     <Compile Include="Code\Server\ServerProxy.cs" />
     <Compile Include="Code\Declarations\WebConstants.cs" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.2.min.js" />
+    <Content Include="Content\Scripts\JQuery\Readme.txt" />
+    <Compile Include="Controllers\ButtonsController.cs" />
     <Compile Include="Controllers\ControlsController.cs" />
     <Compile Include="Controllers\CoreController.cs">
       <SubType>Code</SubType>
@@ -138,6 +140,8 @@
     <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.js" />
     <EmbeddedResource Include="Content\Images\Log.SectionDivider.Rip.png" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-ui-1.8.4.custom.min.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmpl.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmplPlus.js" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -146,9 +150,13 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\Core\TestHarness.aspx" />
     <EmbeddedResource Include="Views\Core\RenderUrl.ascx" />
+    <EmbeddedResource Include="Views\Buttons\Template.ascx" />
     <Content Include="Views\Web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\Declarations\Enumerations.Controls.shared.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -99,7 +99,7 @@ namespace Open.Core
         /// <summary>Formats the URL as a hyperlink, opening it in a new window (Target = _blank).</summary>
         /// <param name="url">The url to link to.</param>
         [AlternateSignature]
-        public static extern jQueryObject ToHyperlink(string url);
+        public static extern string ToHyperlink(string url);
 
         /// <summary>Formats the URL as a hyperlink.</summary>
         /// <param name="url">The url to link to.</param>

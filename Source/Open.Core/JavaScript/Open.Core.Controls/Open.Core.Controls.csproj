@@ -48,7 +48,13 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Clr\Open.Core.Web\Code\Declarations\Enumerations.Controls.shared.cs">
+      <Link>Declarations\Enumerations.Controls.shared.cs</Link>
+    </Compile>
     <Compile Include="Buttons\ButtonBase.cs" />
+    <Compile Include="Buttons\Internal\ButtonEventManager.cs" />
+    <Compile Include="Buttons\Internal\ButtonTemplates.cs" />
+    <Compile Include="Buttons\Internal\StateContent.cs" />
     <Compile Include="Buttons\LinkButton.cs" />
     <Compile Include="Buttons\SystemButton.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />

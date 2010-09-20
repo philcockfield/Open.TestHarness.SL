@@ -55,6 +55,7 @@
     <Compile Include="Declarations\Enums\HtmlEnums.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
+    <Compile Include="Templating\Template.cs" />
     <Compile Include="Testing\ITestHarnessEvents.cs" />
     <Compile Include="Testing\Should.cs" />
     <Compile Include="Testing\TestHarness.cs">
@@ -88,6 +89,7 @@
     <Compile Include="Util\Dom\Css.cs" />
     <Compile Include="Declarations\Events\DomEvents.cs" />
     <Compile Include="Util\Helpers\CollectionHelper.cs" />
+    <Compile Include="Util\Helpers\TemplateHelper.cs" />
     <Compile Include="Util\Helpers\ExceptionHelper.cs" />
     <Compile Include="Util\Helpers\DoubleHelper.cs" />
     <Compile Include="Util\Helpers\EventHelper.cs" />

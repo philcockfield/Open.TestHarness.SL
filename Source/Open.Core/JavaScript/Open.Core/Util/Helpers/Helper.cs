@@ -21,6 +21,7 @@ namespace Open.Core
         private static DoubleHelper DoubleHelper;
         private static UrlHelper UrlHelper;
         private static ExceptionHelper ExceptionHelper;
+        private static TemplateHelper TemplateHelper;
 
         private static int idCounter;
         #endregion
@@ -67,6 +68,9 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with Exceptions.</summary>
         public static ExceptionHelper Exception { get { return ExceptionHelper ?? (ExceptionHelper = new ExceptionHelper()); } }
+
+        /// <summary>Gets the helper for working with Templates.</summary>
+        public static TemplateHelper Template { get { return TemplateHelper ?? (TemplateHelper = new TemplateHelper()); } }
         #endregion
 
         #region Methods

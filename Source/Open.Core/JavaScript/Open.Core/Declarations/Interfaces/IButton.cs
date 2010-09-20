@@ -23,7 +23,7 @@ namespace Open.Core
 
         #region Properties : Button Mouse State
         /// <summary>Gets the current mouse state of the button (has bool analogs, see IsPressed etc).</summary>
-        ButtonMouseState MouseState { get; }
+        ButtonState State { get; }
 
         /// <summary>
         ///     Gets or sets whether the button is currently pressed 

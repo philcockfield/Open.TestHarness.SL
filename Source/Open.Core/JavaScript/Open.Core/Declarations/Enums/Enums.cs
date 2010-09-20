@@ -22,7 +22,7 @@ namespace Open.Core
     }
 
     /// <summary>The various kinds of mouse-related states a button can be in.</summary>
-    public enum ButtonMouseState
+    public enum ButtonState
     {
         Normal = 0,
         MouseOver = 1,
