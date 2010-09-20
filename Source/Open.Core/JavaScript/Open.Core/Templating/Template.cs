@@ -55,6 +55,15 @@ namespace Open.Core
         {
             Script.Literal("$.tmpl( {0}, {1} ).appendTo( {2} )", id, data, target);
         }
+
+        /// <summary>Renders the template to HTML using the specified data.</summary>
+        /// <param name="data">The source data for the template to read from.</param>
+        public string ToHtml(object data)
+        {
+            jQueryObject div = Html.CreateDiv();
+            AppendTo(div, data);
+            return div.GetHtml();
+        }
         #endregion
     }
 }

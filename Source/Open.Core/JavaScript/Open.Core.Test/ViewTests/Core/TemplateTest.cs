@@ -49,11 +49,34 @@ namespace Open.Core.Test.ViewTests.Core
             Helper.Template.Get(Url, SelectorSample1, delegate(Template template)
                     {
                         Log.Info("Template: " + template.ToString());
+                        
                         Dictionary data= new Dictionary();
                         data["firstName"] = "Phil";
+
+                        view.Container.Empty();
                         template.AppendTo(view.Container, data);
+
                         Log.Info("Rendered");
                     });
+        }
+
+        public void ToHtml()
+        {
+            Log.Info("Rendering...");
+            Helper.Template.Get(Url, SelectorSample1, delegate(Template template)
+                    {
+                        Log.Info("Template: " + template.ToString());
+
+                        Dictionary data = new Dictionary();
+                        data["firstName"] = "Doug";
+                        string html = template.ToHtml(data);
+
+                        Log.Info("ToHtml: " + html.HtmlEncode());
+                        Log.Info(html);
+                        view.Container.Empty();
+                        view.Container.Append(html);
+                    });
+            
         }
         #endregion
     }
