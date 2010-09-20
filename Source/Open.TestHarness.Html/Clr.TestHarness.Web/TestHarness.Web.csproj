@@ -69,6 +69,7 @@
     <Compile Include="Code\Declarations\TestHarnessScript.cs" />
     <Compile Include="Code\Declarations\TestHarnessCss.cs" />
     <Compile Include="Code\Declarations\TestHarnessConstants.cs" />
+    <Compile Include="Controllers\SamplesController.cs" />
     <Compile Include="Controllers\TestHarnessController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -109,6 +110,7 @@
   <ItemGroup>
     <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
+    <Content Include="Views\Samples\Templates.aspx" />
     <Content Include="Views\TestHarness\AddPackage.ascx" />
     <Content Include="Views\TestHarness\Body.ascx" />
     <Content Include="Views\TestHarness\Bootstrap.aspx" />

@@ -85,8 +85,8 @@ namespace Open.Testing.Controllers
             if (method == null) return false;
 
             // Invoke the method.
-            method.Invoke();
             Log.NewSection();
+            method.Invoke();
 
             // Finish up.
             return true;
