@@ -110,6 +110,7 @@
   <ItemGroup>
     <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
+    <Content Include="Views\Samples\JQuery.aspx" />
     <Content Include="Views\Samples\Templates.aspx" />
     <Content Include="Views\TestHarness\AddPackage.ascx" />
     <Content Include="Views\TestHarness\Body.ascx" />

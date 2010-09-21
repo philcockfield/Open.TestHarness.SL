@@ -27,15 +27,13 @@ namespace Open.Core.Helpers
             if (callback == null) return;
 
             // Check cache for pre-existing template.
-            string lowercaseUrl = url.ToLowerCase();
-            TemplateItem cached = Helper.Collection.First(templates, delegate(object o)
-                                                {
-                                                    TemplateItem item = (TemplateItem) o;
-                                                    return item.Template.Selector == selector && item.Url == lowercaseUrl;
-                                                }) as TemplateItem;
-            if (cached != null)
+            Template template = Helper.Collection.First(templates, delegate(object o)
+                                                                       {
+                                                                           return ((Template) o).Selector == selector;
+                                                                       }) as Template;
+            if (template != null)
             {
-                callback(cached.Template);
+                callback(template);
                 return;
             }
 
@@ -43,13 +41,11 @@ namespace Open.Core.Helpers
             Download(url, delegate
                                 {
                                     // Add to cache.
-                                    TemplateItem item = new TemplateItem();
-                                    item.Url = url.ToLowerCase();
-                                    item.Template = new Template(selector);
-                                    templates.Add(item);
+                                    template = new Template(selector);
+                                    templates.Add(template);
 
                                     // Finish up.
-                                    callback(item.Template);
+                                    callback(template);
                                 });
         }
 
@@ -81,11 +77,5 @@ namespace Open.Core.Helpers
                                 });
         }
         #endregion
-    }
-
-    internal class TemplateItem
-    {
-        public string Url;
-        public Template Template;
     }
 }
