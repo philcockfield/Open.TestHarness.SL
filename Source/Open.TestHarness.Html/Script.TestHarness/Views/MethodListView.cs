@@ -40,14 +40,16 @@ namespace Open.Testing.Views
             rootNode = new ListItem();
             listView.RootNode = rootNode;
 
-            // Construct buttons.
-            btnRun = new SystemButton();
-            btnRun.FontSize = "8pt"; // TODO - Style button, don't use system button.
-            btnRun.Padding = "3px 8px";
-            btnRun.Insert(CssSelectors.MethodListRunButton, InsertMode.Replace);
+            // TEMP - Removed THROWS ERROR IN IE :: Debug
 
-            // Wire up events.
-            btnRun.Click += delegate { FireRunClick(); };
+            // Construct buttons.
+            //btnRun = new SystemButton();
+            //btnRun.FontSize = "8pt"; // TODO - Style button, don't use system button.
+            //btnRun.Padding = "3px 8px";
+            //btnRun.Insert(CssSelectors.MethodListRunButton, InsertMode.Replace);
+
+            //// Wire up events.
+            //btnRun.Click += delegate { FireRunClick(); };
         }
        #endregion
 

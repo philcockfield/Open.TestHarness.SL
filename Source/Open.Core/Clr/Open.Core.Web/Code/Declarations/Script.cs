@@ -10,6 +10,7 @@ namespace Open.Core.Web
         JQueryCookie,
         JQueryTemplate,
         JQueryTemplatePlus,
+        JQueryJson,
         MsCoreLib,
         Core,
         CoreControls,
@@ -93,6 +94,7 @@ namespace Open.Core.Web
                 case ScriptFile.JQueryCookie: path = "JQuery/jquery.cookie.js"; break;
                 case ScriptFile.JQueryTemplate: path = "JQuery/jquery.tmpl.js"; break;
                 case ScriptFile.JQueryTemplatePlus: path = "JQuery/jquery.tmplPlus.js"; break;
+                case ScriptFile.JQueryJson: path = "JQuery/jquery.json-2.2.min.js"; break;
 
                 case ScriptFile.MsCoreLib: path = "mscorlib.js"; break;
 

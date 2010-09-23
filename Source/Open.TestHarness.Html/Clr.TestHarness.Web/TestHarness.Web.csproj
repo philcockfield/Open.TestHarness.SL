@@ -83,6 +83,7 @@
     <Compile Include="TestHarnessController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Content Include="__TEMP.aspx" />
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Images\Icons\Icon.Assembly.Small.png" />
     <Content Include="Content\Images\Icons\Icon.Class.Small.png" />
@@ -110,6 +111,7 @@
   <ItemGroup>
     <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
+    <Content Include="Views\TestHarness\Debug.aspx" />
     <Content Include="Views\Samples\JQuery.aspx" />
     <Content Include="Views\Samples\Templates.aspx" />
     <Content Include="Views\TestHarness\AddPackage.ascx" />

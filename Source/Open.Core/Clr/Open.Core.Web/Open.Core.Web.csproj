@@ -77,6 +77,7 @@
     <Compile Include="Code\Server\ServerProxy.cs" />
     <Compile Include="Code\Declarations\WebConstants.cs" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.2.min.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.json-2.2.min.js" />
     <Content Include="Content\Scripts\JQuery\Readme.txt" />
     <Compile Include="Controllers\ButtonsController.cs" />
     <Compile Include="Controllers\ControlsController.cs" />

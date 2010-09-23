@@ -10,14 +10,14 @@ namespace Open.Core.Helpers
         /// <param name="value">The object to serialize.</param>
         public string Serialize(object value)
         {
-            return Script.Literal("JSON.stringify( {0} )", value) as string;
+            return Script.Literal("$.toJSON( {0} )", value) as string;
         }
 
         /// <summary>Parses the given JSON into an object.</summary>
         /// <param name="json">The JSON to parse.</param>
         public Dictionary Parse(string json)
         {
-            return Script.Literal("JSON.parse( json )") as Dictionary;
+            return Script.Literal("jQuery.parseJSON( {0} )", json) as Dictionary;
         }
     }
 }

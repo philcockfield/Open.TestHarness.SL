@@ -1,4 +1,5 @@
-﻿using jQueryApi;
+﻿using System;
+using jQueryApi;
 
 namespace Open.Testing.Views
 {

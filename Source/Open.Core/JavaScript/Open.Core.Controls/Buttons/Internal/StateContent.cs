@@ -9,10 +9,10 @@ namespace Open.Core.Controls.Buttons
     {
         #region Head
         private readonly ButtonState state;
-        private readonly jQueryObject html;
+        private readonly Template html;
         private readonly string cssClasses;
 
-        public StateContent(ButtonState state, jQueryObject html, string cssClasses)
+        public StateContent(ButtonState state, Template html, string cssClasses)
         {
             this.state = state;
             this.html = html;
@@ -21,8 +21,13 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Properties
+        /// <summary>Gets the state the content refers to.</summary>
         public ButtonState State { get { return state; } }
-        public jQueryObject Html{get { return html; }}
+
+        /// <summary>Gets the template that produces the HTML for the state..</summary>
+        public Template Html { get { return html; } }
+
+        /// <summary>Gets the CSS class (or classes, sepearted by spaces) to apply to the state.</summary>
         public string CssClasses{get { return cssClasses; }}
         #endregion
     }
