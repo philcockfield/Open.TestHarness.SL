@@ -7,13 +7,29 @@ function executeScript() {
 Type.registerNamespace('Open.Core.Controls.Buttons');
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Controls.Buttons.ButtonTemplate
+
+Open.Core.Controls.Buttons.ButtonTemplate = function() { 
+    /// <summary>
+    /// Flags representing the various kinds of button that there are templates for.
+    /// </summary>
+    /// <field name="dominantButton" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.Controls.Buttons.ButtonTemplate.prototype = {
+    dominantButton: 0
+}
+Open.Core.Controls.Buttons.ButtonTemplate.registerEnum('Open.Core.Controls.Buttons.ButtonTemplate', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Controls.Buttons.ButtonBase
 
-Open.Core.Controls.Buttons.ButtonBase = function Open_Core_Controls_Buttons_ButtonBase(html) {
+Open.Core.Controls.Buttons.ButtonBase = function Open_Core_Controls_Buttons_ButtonBase(element) {
     /// <summary>
     /// Base class for buttons.
     /// </summary>
-    /// <param name="html" type="jQueryObject">
+    /// <param name="element" type="jQueryObject">
     /// The HTML of the button.
     /// </param>
     /// <field name="__click$2" type="EventHandler">
@@ -22,7 +38,7 @@ Open.Core.Controls.Buttons.ButtonBase = function Open_Core_Controls_Buttons_Butt
     /// </field>
     /// <field name="propCanToggle" type="String" static="true">
     /// </field>
-    /// <field name="propMouseState" type="String" static="true">
+    /// <field name="propState" type="String" static="true">
     /// </field>
     /// <field name="propIsPressed" type="String" static="true">
     /// </field>
@@ -30,11 +46,13 @@ Open.Core.Controls.Buttons.ButtonBase = function Open_Core_Controls_Buttons_Butt
     /// </field>
     /// <field name="propIsMouseDown" type="String" static="true">
     /// </field>
-    Open.Core.Controls.Buttons.ButtonBase.initializeBase(this, [ html ]);
-    html.mouseover(ss.Delegate.create(this, this._onMouseOver$2));
-    html.mouseout(ss.Delegate.create(this, this._onMouseOut$2));
-    html.mousedown(ss.Delegate.create(this, this._onMouseDown$2));
-    html.mouseup(ss.Delegate.create(this, this._onMouseUp$2));
+    /// <field name="_eventManager$2" type="Open.Core.Controls.Buttons._buttonEventManager">
+    /// </field>
+    Open.Core.Controls.Buttons.ButtonBase.initializeBase(this, [ element ]);
+    this._eventManager$2 = new Open.Core.Controls.Buttons._buttonEventManager(this, ss.Delegate.create(this, function() {
+        this.invokeClick(true);
+    }));
+    this._eventManager$2.add_propertyChanged(ss.Delegate.create(this, this._onEventManagerPropertyChanged$2));
 }
 Open.Core.Controls.Buttons.ButtonBase.prototype = {
     
@@ -72,88 +90,55 @@ Open.Core.Controls.Buttons.ButtonBase.prototype = {
         }
     },
     
-    _onMouseOver$2: function Open_Core_Controls_Buttons_ButtonBase$_onMouseOver$2(e) {
-        /// <param name="e" type="jQueryEvent">
-        /// </param>
-        this.set_isMouseOver(true);
-        this._updateMouseState$2();
+    _eventManager$2: null,
+    
+    onDisposed: function Open_Core_Controls_Buttons_ButtonBase$onDisposed() {
+        /// <summary>
+        /// Finalize.
+        /// </summary>
+        this._eventManager$2.dispose();
+        Open.Core.Controls.Buttons.ButtonBase.callBaseMethod(this, 'onDisposed');
     },
     
-    _onMouseOut$2: function Open_Core_Controls_Buttons_ButtonBase$_onMouseOut$2(e) {
-        /// <param name="e" type="jQueryEvent">
+    _onEventManagerPropertyChanged$2: function Open_Core_Controls_Buttons_ButtonBase$_onEventManagerPropertyChanged$2(sender, e) {
+        /// <param name="sender" type="Object">
         /// </param>
-        this.set_isMouseOver(false);
-        this._updateMouseState$2();
-    },
-    
-    _onMouseDown$2: function Open_Core_Controls_Buttons_ButtonBase$_onMouseDown$2(e) {
-        /// <param name="e" type="jQueryEvent">
+        /// <param name="e" type="Open.Core.PropertyChangedEventArgs">
         /// </param>
-        this.set_isMouseDown(true);
-        this._updateMouseState$2();
-    },
-    
-    _onMouseUp$2: function Open_Core_Controls_Buttons_ButtonBase$_onMouseUp$2(e) {
-        /// <param name="e" type="jQueryEvent">
-        /// </param>
-        var wasMouseDown = this.get_isMouseDown();
-        this.set_isMouseDown(false);
-        this._updateMouseState$2();
-        if (this.get_isEnabled() && this.get_isMouseOver() && wasMouseDown) {
-            this.invokeClick(true);
+        this.firePropertyChanged(e.get_property().get_name());
+        if (e.get_property().get_name() === Open.Core.Controls.Buttons.ButtonBase.propIsPressed) {
+            this._fireIsPressedChanged$2();
         }
     },
     
     get_canToggle: function Open_Core_Controls_Buttons_ButtonBase$get_canToggle() {
         /// <value type="Boolean"></value>
-        return this.get(Open.Core.Controls.Buttons.ButtonBase.propCanToggle, false);
+        return this._eventManager$2.get_canToggle();
     },
     set_canToggle: function Open_Core_Controls_Buttons_ButtonBase$set_canToggle(value) {
         /// <value type="Boolean"></value>
-        this.set(Open.Core.Controls.Buttons.ButtonBase.propCanToggle, value, false);
+        this._eventManager$2.set_canToggle(value);
         return value;
     },
     
-    get_mouseState: function Open_Core_Controls_Buttons_ButtonBase$get_mouseState() {
-        /// <value type="Open.Core.ButtonMouseState"></value>
-        return this.get(Open.Core.Controls.Buttons.ButtonBase.propMouseState, Open.Core.ButtonMouseState.normal);
-    },
-    set_mouseState: function Open_Core_Controls_Buttons_ButtonBase$set_mouseState(value) {
-        /// <value type="Open.Core.ButtonMouseState"></value>
-        this.set(Open.Core.Controls.Buttons.ButtonBase.propMouseState, value, Open.Core.ButtonMouseState.normal);
-        return value;
+    get_state: function Open_Core_Controls_Buttons_ButtonBase$get_state() {
+        /// <value type="Open.Core.ButtonState"></value>
+        return this._eventManager$2.get_state();
     },
     
     get_isPressed: function Open_Core_Controls_Buttons_ButtonBase$get_isPressed() {
         /// <value type="Boolean"></value>
-        return this.get(Open.Core.Controls.Buttons.ButtonBase.propIsPressed, false);
-    },
-    set_isPressed: function Open_Core_Controls_Buttons_ButtonBase$set_isPressed(value) {
-        /// <value type="Boolean"></value>
-        if (this.set(Open.Core.Controls.Buttons.ButtonBase.propIsPressed, value, false)) {
-            this._fireIsPressedChanged$2();
-        }
-        return value;
+        return this._eventManager$2.get_isPressed();
     },
     
     get_isMouseOver: function Open_Core_Controls_Buttons_ButtonBase$get_isMouseOver() {
         /// <value type="Boolean"></value>
-        return this.get(Open.Core.Controls.Buttons.ButtonBase.propIsMouseOver, false);
-    },
-    set_isMouseOver: function Open_Core_Controls_Buttons_ButtonBase$set_isMouseOver(value) {
-        /// <value type="Boolean"></value>
-        this.set(Open.Core.Controls.Buttons.ButtonBase.propIsMouseOver, value, false);
-        return value;
+        return this._eventManager$2.get_isMouseOver();
     },
     
     get_isMouseDown: function Open_Core_Controls_Buttons_ButtonBase$get_isMouseDown() {
         /// <value type="Boolean"></value>
-        return this.get(Open.Core.Controls.Buttons.ButtonBase.propIsMouseDown, false);
-    },
-    set_isMouseDown: function Open_Core_Controls_Buttons_ButtonBase$set_isMouseDown(value) {
-        /// <value type="Boolean"></value>
-        this.set(Open.Core.Controls.Buttons.ButtonBase.propIsMouseDown, value, false);
-        return value;
+        return this._eventManager$2.get_isMouseDown();
     },
     
     invokeClick: function Open_Core_Controls_Buttons_ButtonBase$invokeClick(force) {
@@ -163,25 +148,233 @@ Open.Core.Controls.Buttons.ButtonBase.prototype = {
             return;
         }
         if (this.get_canToggle()) {
-            this.set_isPressed(!this.get_isPressed());
+            this._eventManager$2.set_isPressed(!this._eventManager$2.get_isPressed());
         }
         this._fireClick$2();
     },
     
-    _updateMouseState$2: function Open_Core_Controls_Buttons_ButtonBase$_updateMouseState$2() {
-        if (!this.get_isEnabled()) {
-            this.set_mouseState(Open.Core.ButtonMouseState.normal);
+    stateContent: function Open_Core_Controls_Buttons_ButtonBase$stateContent(state, html, cssClasses) {
+        /// <summary>
+        /// Sets the content to use for the given state.
+        /// </summary>
+        /// <param name="state" type="Open.Core.ButtonState">
+        /// The button state the content applies to.
+        /// </param>
+        /// <param name="html" type="jQueryObject">
+        /// The HTML element to use.
+        /// </param>
+        /// <param name="cssClasses" type="String">
+        /// The CSS class(es) to apply (space delimited).
+        /// </param>
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Controls.Buttons._buttonEventManager
+
+Open.Core.Controls.Buttons._buttonEventManager = function Open_Core_Controls_Buttons__buttonEventManager(control, invokeClick) {
+    /// <summary>
+    /// Manages the events for a button.
+    /// </summary>
+    /// <param name="control" type="Open.Core.IView">
+    /// The clickable button element.
+    /// </param>
+    /// <param name="invokeClick" type="Action">
+    /// Action that invokes the click.
+    /// </param>
+    /// <field name="_control$1" type="Open.Core.IView">
+    /// </field>
+    /// <field name="_invokeClick$1" type="Action">
+    /// </field>
+    Open.Core.Controls.Buttons._buttonEventManager.initializeBase(this);
+    this._control$1 = control;
+    this._invokeClick$1 = invokeClick;
+    var element = control.get_container();
+    element.mouseover(ss.Delegate.create(this, this._onMouseOver$1));
+    element.mouseout(ss.Delegate.create(this, this._onMouseOut$1));
+    element.mousedown(ss.Delegate.create(this, this._onMouseDown$1));
+    element.mouseup(ss.Delegate.create(this, this._onMouseUp$1));
+}
+Open.Core.Controls.Buttons._buttonEventManager.prototype = {
+    _control$1: null,
+    _invokeClick$1: null,
+    
+    _onMouseOver$1: function Open_Core_Controls_Buttons__buttonEventManager$_onMouseOver$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        this.set_isMouseOver(true);
+        this._updateMouseState$1();
+    },
+    
+    _onMouseOut$1: function Open_Core_Controls_Buttons__buttonEventManager$_onMouseOut$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        this.set_isMouseOver(false);
+        this._updateMouseState$1();
+    },
+    
+    _onMouseDown$1: function Open_Core_Controls_Buttons__buttonEventManager$_onMouseDown$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        this.set_isMouseDown(true);
+        this._updateMouseState$1();
+    },
+    
+    _onMouseUp$1: function Open_Core_Controls_Buttons__buttonEventManager$_onMouseUp$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        var wasMouseDown = this.get_isMouseDown();
+        this.set_isMouseDown(false);
+        this._updateMouseState$1();
+        if (this._control$1.get_isEnabled() && this.get_isMouseOver() && wasMouseDown) {
+            Open.Core.Helper.invokeOrDefault(this._invokeClick$1);
+        }
+    },
+    
+    get_canToggle: function Open_Core_Controls_Buttons__buttonEventManager$get_canToggle() {
+        /// <value type="Boolean"></value>
+        return this.get(Open.Core.Controls.Buttons.ButtonBase.propCanToggle, false);
+    },
+    set_canToggle: function Open_Core_Controls_Buttons__buttonEventManager$set_canToggle(value) {
+        /// <value type="Boolean"></value>
+        this.set(Open.Core.Controls.Buttons.ButtonBase.propCanToggle, value, false);
+        return value;
+    },
+    
+    get_state: function Open_Core_Controls_Buttons__buttonEventManager$get_state() {
+        /// <value type="Open.Core.ButtonState"></value>
+        return this.get(Open.Core.Controls.Buttons.ButtonBase.propState, Open.Core.ButtonState.normal);
+    },
+    set_state: function Open_Core_Controls_Buttons__buttonEventManager$set_state(value) {
+        /// <value type="Open.Core.ButtonState"></value>
+        this.set(Open.Core.Controls.Buttons.ButtonBase.propState, value, Open.Core.ButtonState.normal);
+        return value;
+    },
+    
+    get_isPressed: function Open_Core_Controls_Buttons__buttonEventManager$get_isPressed() {
+        /// <value type="Boolean"></value>
+        return this.get(Open.Core.Controls.Buttons.ButtonBase.propIsPressed, false);
+    },
+    set_isPressed: function Open_Core_Controls_Buttons__buttonEventManager$set_isPressed(value) {
+        /// <value type="Boolean"></value>
+        this.set(Open.Core.Controls.Buttons.ButtonBase.propIsPressed, value, false);
+        return value;
+    },
+    
+    get_isMouseOver: function Open_Core_Controls_Buttons__buttonEventManager$get_isMouseOver() {
+        /// <value type="Boolean"></value>
+        return this.get(Open.Core.Controls.Buttons.ButtonBase.propIsMouseOver, false);
+    },
+    set_isMouseOver: function Open_Core_Controls_Buttons__buttonEventManager$set_isMouseOver(value) {
+        /// <value type="Boolean"></value>
+        this.set(Open.Core.Controls.Buttons.ButtonBase.propIsMouseOver, value, false);
+        return value;
+    },
+    
+    get_isMouseDown: function Open_Core_Controls_Buttons__buttonEventManager$get_isMouseDown() {
+        /// <value type="Boolean"></value>
+        return this.get(Open.Core.Controls.Buttons.ButtonBase.propIsMouseDown, false);
+    },
+    set_isMouseDown: function Open_Core_Controls_Buttons__buttonEventManager$set_isMouseDown(value) {
+        /// <value type="Boolean"></value>
+        this.set(Open.Core.Controls.Buttons.ButtonBase.propIsMouseDown, value, false);
+        return value;
+    },
+    
+    _updateMouseState$1: function Open_Core_Controls_Buttons__buttonEventManager$_updateMouseState$1() {
+        if (!this._control$1.get_isEnabled()) {
+            this.set_state(Open.Core.ButtonState.normal);
         }
         else if (this.get_isMouseOver() && this.get_isMouseDown()) {
-            this.set_mouseState(Open.Core.ButtonMouseState.pressed);
+            this.set_state(Open.Core.ButtonState.pressed);
         }
         else if (this.get_isMouseOver()) {
-            this.set_mouseState(Open.Core.ButtonMouseState.mouseOver);
+            this.set_state(Open.Core.ButtonState.mouseOver);
         }
         else {
-            this.set_mouseState(Open.Core.ButtonMouseState.normal);
+            this.set_state(Open.Core.ButtonState.normal);
         }
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Controls.Buttons._buttonTemplates
+
+Open.Core.Controls.Buttons._buttonTemplates = function Open_Core_Controls_Buttons__buttonTemplates() {
+    Open.Core.Controls.Buttons._buttonTemplates.initializeBase(this);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Controls.Buttons._stateContent
+
+Open.Core.Controls.Buttons._stateContent = function Open_Core_Controls_Buttons__stateContent(state, html, cssClasses) {
+    /// <summary>
+    /// Represents display content for a single state.
+    /// </summary>
+    /// <param name="state" type="Open.Core.ButtonState">
+    /// </param>
+    /// <param name="html" type="jQueryObject">
+    /// </param>
+    /// <param name="cssClasses" type="String">
+    /// </param>
+    /// <field name="_state" type="Open.Core.ButtonState">
+    /// </field>
+    /// <field name="_html" type="jQueryObject">
+    /// </field>
+    /// <field name="_cssClasses" type="String">
+    /// </field>
+    this._state = state;
+    this._html = html;
+    this._cssClasses = cssClasses;
+}
+Open.Core.Controls.Buttons._stateContent.prototype = {
+    _state: 0,
+    _html: null,
+    _cssClasses: null,
+    
+    get_state: function Open_Core_Controls_Buttons__stateContent$get_state() {
+        /// <value type="Open.Core.ButtonState"></value>
+        return this._state;
+    },
+    
+    get_html: function Open_Core_Controls_Buttons__stateContent$get_html() {
+        /// <value type="jQueryObject"></value>
+        return this._html;
+    },
+    
+    get_cssClasses: function Open_Core_Controls_Buttons__stateContent$get_cssClasses() {
+        /// <value type="String"></value>
+        return this._cssClasses;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Controls.Buttons.LinkButton
+
+Open.Core.Controls.Buttons.LinkButton = function Open_Core_Controls_Buttons_LinkButton(htmlContent) {
+    /// <summary>
+    /// A simple hyperlink that acts like a button.
+    /// </summary>
+    /// <param name="htmlContent" type="String">
+    /// The HTML content of the button.
+    /// </param>
+    Open.Core.Controls.Buttons.LinkButton.initializeBase(this, [ Open.Core.Controls.Buttons.LinkButton._initHtml$3(htmlContent) ]);
+    this.get_container().click(ss.Delegate.create(this, function(e) {
+        e.preventDefault();
+    }));
+}
+Open.Core.Controls.Buttons.LinkButton._initHtml$3 = function Open_Core_Controls_Buttons_LinkButton$_initHtml$3(htmlContent) {
+    /// <param name="htmlContent" type="String">
+    /// </param>
+    /// <returns type="jQueryObject"></returns>
+    var htmLink = Open.Core.Html.createElement(Open.Core.Html.anchor);
+    htmLink.append(htmlContent);
+    htmLink.attr(Open.Core.Html.href, '#');
+    return htmLink;
 }
 
 
@@ -196,7 +389,7 @@ Open.Core.Controls.Buttons.SystemButton = function Open_Core_Controls_Buttons_Sy
     /// </field>
     /// <field name="defaultPadding" type="String" static="true">
     /// </field>
-    /// <field name="propHtml" type="String" static="true">
+    /// <field name="propHtmlContent" type="String" static="true">
     /// </field>
     /// <field name="propType" type="String" static="true">
     /// </field>
@@ -247,19 +440,19 @@ Open.Core.Controls.Buttons.SystemButton.prototype = {
         Open.Core.Controls.Buttons.SystemButton.callBaseMethod(this, 'onIsEnabledChanged');
     },
     
-    get_html: function Open_Core_Controls_Buttons_SystemButton$get_html() {
+    get_htmlContent: function Open_Core_Controls_Buttons_SystemButton$get_htmlContent() {
         /// <summary>
         /// Gets or sets the HTML content of the button.
         /// </summary>
         /// <value type="String"></value>
-        return this.get(Open.Core.Controls.Buttons.SystemButton.propHtml, Open.Core.Controls.Buttons.SystemButton.untitled);
+        return this.get(Open.Core.Controls.Buttons.SystemButton.propHtmlContent, Open.Core.Controls.Buttons.SystemButton.untitled);
     },
-    set_html: function Open_Core_Controls_Buttons_SystemButton$set_html(value) {
+    set_htmlContent: function Open_Core_Controls_Buttons_SystemButton$set_htmlContent(value) {
         /// <summary>
         /// Gets or sets the HTML content of the button.
         /// </summary>
         /// <value type="String"></value>
-        if (this.set(Open.Core.Controls.Buttons.SystemButton.propHtml, value, Open.Core.Controls.Buttons.SystemButton.untitled)) {
+        if (this.set(Open.Core.Controls.Buttons.SystemButton.propHtmlContent, value, Open.Core.Controls.Buttons.SystemButton.untitled)) {
             this._syncHtml$3();
         }
         return value;
@@ -330,12 +523,12 @@ Open.Core.Controls.Buttons.SystemButton.prototype = {
         /// </param>
         this.set_value(e.attr(Open.Core.Html.value));
         this.set_type(e.attr(Open.Core.Html.type));
-        this.set_html(e.html());
+        this.set_htmlContent(e.html());
         Open.Core.Controls.Buttons.SystemButton.callBaseMethod(this, 'beforeInsertReplace', [ e ]);
     },
     
     _syncHtml$3: function Open_Core_Controls_Buttons_SystemButton$_syncHtml$3() {
-        this._htmButton$3.html(this.get_html());
+        this._htmButton$3.html(this.get_htmlContent());
         this.fireSizeChanged();
     },
     
@@ -558,19 +751,23 @@ Open.Core.Controls.LogView.prototype = {
     },
     
     insert: function Open_Core_Controls_LogView$insert(message, cssClass) {
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// </param>
         /// <param name="cssClass" type="String">
         /// </param>
         this._counter$2++;
+        var text = String.Empty;
         if (message == null) {
-            message = '<null>'.htmlEncode();
+            text = '<null>'.htmlEncode();
         }
-        if (message === String.Empty) {
-            message = '<empty-string>'.htmlEncode();
-        }
-        if (String.isNullOrEmpty(message.trim())) {
-            message = '<whitespace>'.htmlEncode();
+        else {
+            text = message.toString();
+            if (text === String.Empty) {
+                text = '<empty-string>'.htmlEncode();
+            }
+            if (String.isNullOrEmpty(text.trim())) {
+                text = '<whitespace>'.htmlEncode();
+            }
         }
         this._divRow$2 = this._createRowDiv$2(cssClass);
         var spanCounter = Open.Core.Html.createSpan();
@@ -578,7 +775,7 @@ Open.Core.Controls.LogView.prototype = {
         spanCounter.append(this._counter$2.toString());
         var divMessage = Open.Core.Html.createDiv();
         divMessage.addClass(Open.Core.LogCss.messageClass);
-        divMessage.append(message);
+        divMessage.append(text);
         spanCounter.appendTo(this._divRow$2);
         divMessage.appendTo(this._divRow$2);
         this._insertRow$2(this._divRow$2);
@@ -648,17 +845,21 @@ Open.Core.Controls.LogView.prototype = {
 
 
 Open.Core.Controls.Buttons.ButtonBase.registerClass('Open.Core.Controls.Buttons.ButtonBase', Open.Core.ViewBase, Open.Core.IButton);
+Open.Core.Controls.Buttons._buttonEventManager.registerClass('Open.Core.Controls.Buttons._buttonEventManager', Open.Core.ModelBase);
+Open.Core.Controls.Buttons._buttonTemplates.registerClass('Open.Core.Controls.Buttons._buttonTemplates', Open.Core.ControllerBase);
+Open.Core.Controls.Buttons._stateContent.registerClass('Open.Core.Controls.Buttons._stateContent');
+Open.Core.Controls.Buttons.LinkButton.registerClass('Open.Core.Controls.Buttons.LinkButton', Open.Core.Controls.Buttons.ButtonBase);
 Open.Core.Controls.Buttons.SystemButton.registerClass('Open.Core.Controls.Buttons.SystemButton', Open.Core.Controls.Buttons.ButtonBase);
 Open.Core.Controls.HtmlPrimitive.HtmlList.registerClass('Open.Core.Controls.HtmlPrimitive.HtmlList', Open.Core.ViewBase);
 Open.Core.Controls.LogView.registerClass('Open.Core.Controls.LogView', Open.Core.ViewBase, Open.Core.ILogView);
 Open.Core.Controls.Buttons.ButtonBase.propCanToggle = 'CanToggle';
-Open.Core.Controls.Buttons.ButtonBase.propMouseState = 'MouseState';
+Open.Core.Controls.Buttons.ButtonBase.propState = 'State';
 Open.Core.Controls.Buttons.ButtonBase.propIsPressed = 'IsPressed';
 Open.Core.Controls.Buttons.ButtonBase.propIsMouseOver = 'IsMouseOver';
 Open.Core.Controls.Buttons.ButtonBase.propIsMouseDown = 'IsMouseDown';
 Open.Core.Controls.Buttons.SystemButton.untitled = 'Untitled';
 Open.Core.Controls.Buttons.SystemButton.defaultPadding = '5px 30px';
-Open.Core.Controls.Buttons.SystemButton.propHtml = 'Html';
+Open.Core.Controls.Buttons.SystemButton.propHtmlContent = 'HtmlContent';
 Open.Core.Controls.Buttons.SystemButton.propType = 'Type';
 Open.Core.Controls.Buttons.SystemButton.propValue = 'Value';
 Open.Core.Controls.Buttons.SystemButton.propPadding = 'Padding';

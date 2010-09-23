@@ -7,6 +7,53 @@ function executeScript() {
 Type.registerNamespace('Open.Core');
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.CssOverflow
+
+Open.Core.CssOverflow = function() { 
+    /// <field name="visible" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="hidden" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="scroll" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="auto" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="inherit" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.CssOverflow.prototype = {
+    visible: 0, 
+    hidden: 1, 
+    scroll: 2, 
+    auto: 3, 
+    inherit: 4
+}
+Open.Core.CssOverflow.registerEnum('Open.Core.CssOverflow', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.CssTextAlign
+
+Open.Core.CssTextAlign = function() { 
+    /// <field name="left" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="right" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="center" type="Number" integer="true" static="true">
+    /// </field>
+    /// <field name="justify" type="Number" integer="true" static="true">
+    /// </field>
+};
+Open.Core.CssTextAlign.prototype = {
+    left: 0, 
+    right: 1, 
+    center: 2, 
+    justify: 3
+}
+Open.Core.CssTextAlign.registerEnum('Open.Core.CssTextAlign', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.LinkTarget
 
 Open.Core.LinkTarget = function() { 
@@ -73,7 +120,7 @@ Open.Core.IButton.prototype = {
     set_isEnabled : null,
     get_canToggle : null,
     set_canToggle : null,
-    get_mouseState : null,
+    get_state : null,
     get_isPressed : null,
     get_isMouseOver : null,
     get_isMouseDown : null,
@@ -178,9 +225,9 @@ Open.Core.SizeDimension.registerEnum('Open.Core.SizeDimension', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Open.Core.ButtonMouseState
+// Open.Core.ButtonState
 
-Open.Core.ButtonMouseState = function() { 
+Open.Core.ButtonState = function() { 
     /// <summary>
     /// The various kinds of mouse-related states a button can be in.
     /// </summary>
@@ -191,12 +238,12 @@ Open.Core.ButtonMouseState = function() {
     /// <field name="pressed" type="Number" integer="true" static="true">
     /// </field>
 };
-Open.Core.ButtonMouseState.prototype = {
+Open.Core.ButtonState.prototype = {
     normal: 0, 
     mouseOver: 1, 
     pressed: 2
 }
-Open.Core.ButtonMouseState.registerEnum('Open.Core.ButtonMouseState', false);
+Open.Core.ButtonState.registerEnum('Open.Core.ButtonState', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -445,31 +492,6 @@ Open.Core.IView.prototype = {
     insert : null
 }
 Open.Core.IView.registerInterface('Open.Core.IView');
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Core.CssOverflow
-
-Open.Core.CssOverflow = function() { 
-    /// <field name="visible" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="hidden" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="scroll" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="auto" type="Number" integer="true" static="true">
-    /// </field>
-    /// <field name="inherit" type="Number" integer="true" static="true">
-    /// </field>
-};
-Open.Core.CssOverflow.prototype = {
-    visible: 0, 
-    hidden: 1, 
-    scroll: 2, 
-    auto: 3, 
-    inherit: 4
-}
-Open.Core.CssOverflow.registerEnum('Open.Core.CssOverflow', false);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -822,6 +844,78 @@ Open.Core._diInstanceWrapper.prototype = {
     get_instance: function Open_Core__diInstanceWrapper$get_instance() {
         /// <value type="Object"></value>
         return this._instance;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Template
+
+Open.Core.Template = function Open_Core_Template(selector) {
+    /// <summary>
+    /// A compiled jQuery template.
+    /// </summary>
+    /// <param name="selector" type="String">
+    /// The CSS selector for the script block containing the template HTML.
+    /// </param>
+    /// <field name="_id" type="String">
+    /// </field>
+    /// <field name="_selector" type="String">
+    /// </field>
+    this._id = Open.Core.Helper.createId();
+    this._selector = selector;
+    $.template(this._id, this.get_templateHtml());
+}
+Open.Core.Template.prototype = {
+    _id: null,
+    _selector: null,
+    
+    get_selector: function Open_Core_Template$get_selector() {
+        /// <summary>
+        /// Gets the CSS selector for the script block containing the template HTML.
+        /// </summary>
+        /// <value type="String"></value>
+        return this._selector;
+    },
+    
+    get_templateHtml: function Open_Core_Template$get_templateHtml() {
+        /// <summary>
+        /// Gets the source template HTML.
+        /// </summary>
+        /// <value type="String"></value>
+        var template = $(this._selector);
+        return (template.length === 0) ? null : template.html();
+    },
+    
+    toString: function Open_Core_Template$toString() {
+        /// <returns type="String"></returns>
+        return Open.Core.Helper.get_string().formatToString(this.get_templateHtml());
+    },
+    
+    appendTo: function Open_Core_Template$appendTo(target, data) {
+        /// <summary>
+        /// Processes the template with the specified data and appends the result to the given target.
+        /// </summary>
+        /// <param name="target" type="jQueryObject">
+        /// The target to append HTML to.
+        /// </param>
+        /// <param name="data" type="Object">
+        /// The source data for the template to read from.
+        /// </param>
+        $.tmpl( this._id, data ).appendTo( target );
+    },
+    
+    toHtml: function Open_Core_Template$toHtml(data) {
+        /// <summary>
+        /// Renders the template to HTML using the specified data.
+        /// </summary>
+        /// <param name="data" type="Object">
+        /// The source data for the template to read from.
+        /// </param>
+        /// <returns type="String"></returns>
+        var div = Open.Core.Html.createDiv();
+        this.appendTo(div, data);
+        return div.html();
     }
 }
 
@@ -1434,7 +1528,7 @@ Open.Core.ViewBase = function Open_Core_ViewBase(container) {
     /// <field name="_container$1" type="jQueryObject">
     /// </field>
     Open.Core.ViewBase.initializeBase(this);
-    if (container == null) {
+    if (ss.isNullOrUndefined(container)) {
         container = Open.Core.Html.createDiv();
     }
     this._container$1 = container;
@@ -1699,6 +1793,22 @@ Open.Core.ViewBase.prototype = {
     },
     
     onSizeChanged: function Open_Core_ViewBase$onSizeChanged() {
+    },
+    
+    retrieveHtml: function Open_Core_ViewBase$retrieveHtml(url, onComplete) {
+        /// <summary>
+        /// Inserts the HTML from the specified URL.
+        /// </summary>
+        /// <param name="url" type="String">
+        /// The URL of the HTML content to retrieve.
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// Action to invoke upon completion.
+        /// </param>
+        $.get(Open.Core.Helper.get_url().prependDomain(url), ss.Delegate.create(this, function(data) {
+            this.get_container().html(data.toString());
+            Open.Core.Helper.invokeOrDefault(onComplete);
+        }));
     }
 }
 
@@ -1990,7 +2100,7 @@ Open.Core.Log.info = function Open_Core_Log$info(message) {
     /// <summary>
     /// Writes a informational message to the log.
     /// </summary>
-    /// <param name="message" type="String">
+    /// <param name="message" type="Object">
     /// The messge to write (HTML).
     /// </param>
     Open.Core.Log.get_writer().info(message);
@@ -1999,7 +2109,7 @@ Open.Core.Log.debug = function Open_Core_Log$debug(message) {
     /// <summary>
     /// Writes a debug message to the log.
     /// </summary>
-    /// <param name="message" type="String">
+    /// <param name="message" type="Object">
     /// The messge to write (HTML).
     /// </param>
     Open.Core.Log.get_writer().debug(message);
@@ -2008,7 +2118,7 @@ Open.Core.Log.warning = function Open_Core_Log$warning(message) {
     /// <summary>
     /// Writes a warning to the log.
     /// </summary>
-    /// <param name="message" type="String">
+    /// <param name="message" type="Object">
     /// The messge to write (HTML).
     /// </param>
     Open.Core.Log.get_writer().warning(message);
@@ -2017,7 +2127,7 @@ Open.Core.Log.error = function Open_Core_Log$error(message) {
     /// <summary>
     /// Writes an error message to the log.
     /// </summary>
-    /// <param name="message" type="String">
+    /// <param name="message" type="Object">
     /// The messge to write (HTML).
     /// </param>
     Open.Core.Log.get_writer().error(message);
@@ -2026,7 +2136,7 @@ Open.Core.Log.success = function Open_Core_Log$success(message) {
     /// <summary>
     /// Writes a success message to the log.
     /// </summary>
-    /// <param name="message" type="String">
+    /// <param name="message" type="Object">
     /// The messge to write (HTML).
     /// </param>
     Open.Core.Log.get_writer().success(message);
@@ -2035,7 +2145,7 @@ Open.Core.Log.write = function Open_Core_Log$write(message, severity) {
     /// <summary>
     /// Writes a message to the log.
     /// </summary>
-    /// <param name="message" type="String">
+    /// <param name="message" type="Object">
     /// The message to write (HTML).
     /// </param>
     /// <param name="severity" type="Open.Core.LogSeverity">
@@ -2143,7 +2253,7 @@ Open.Core.LogWriter.prototype = {
         /// <summary>
         /// Writes a informational message to the log.
         /// </summary>
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// The messge to write (HTML).
         /// </param>
         this.write(message, Open.Core.LogSeverity.info);
@@ -2153,7 +2263,7 @@ Open.Core.LogWriter.prototype = {
         /// <summary>
         /// Writes a debug message to the log.
         /// </summary>
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// The messge to write (HTML).
         /// </param>
         this.write(message, Open.Core.LogSeverity.debug);
@@ -2163,7 +2273,7 @@ Open.Core.LogWriter.prototype = {
         /// <summary>
         /// Writes a warning to the log.
         /// </summary>
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// The messge to write (HTML).
         /// </param>
         this.write(message, Open.Core.LogSeverity.warning);
@@ -2173,7 +2283,7 @@ Open.Core.LogWriter.prototype = {
         /// <summary>
         /// Writes an error message to the log.
         /// </summary>
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// The messge to write (HTML).
         /// </param>
         this.write(message, Open.Core.LogSeverity.error);
@@ -2183,14 +2293,14 @@ Open.Core.LogWriter.prototype = {
         /// <summary>
         /// Writes a success message to the log.
         /// </summary>
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// The messge to write (HTML).
         /// </param>
         this.write(message, Open.Core.LogSeverity.success);
     },
     
     write: function Open_Core_LogWriter$write(message, severity) {
-        /// <param name="message" type="String">
+        /// <param name="message" type="Object">
         /// </param>
         /// <param name="severity" type="Open.Core.LogSeverity">
         /// </param>
@@ -2717,6 +2827,38 @@ Open.Core.DelayedAction.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Color
+
+Open.Core.Color = function Open_Core_Color() {
+    /// <summary>
+    /// Class for working with colors.
+    /// </summary>
+    /// <field name="hotPink" type="String" static="true">
+    /// </field>
+}
+Open.Core.Color.black = function Open_Core_Color$black(opacity) {
+    /// <summary>
+    /// Gets an RGBA value of black at the given opacity.
+    /// </summary>
+    /// <param name="opacity" type="Number">
+    /// The opacity percentage (0..1).
+    /// </param>
+    /// <returns type="String"></returns>
+    return String.format('rgba(0,0,0,{0})', Open.Core.Helper.get_numberDouble().withinBounds(opacity, 0, 1));
+}
+Open.Core.Color.white = function Open_Core_Color$white(opacity) {
+    /// <summary>
+    /// Gets an RGBA value of white at the given opacity.
+    /// </summary>
+    /// <param name="opacity" type="Number">
+    /// The opacity percentage (0..1).
+    /// </param>
+    /// <returns type="String"></returns>
+    return String.format('rgba(255,255,255,{0})', Open.Core.Helper.get_numberDouble().withinBounds(opacity, 0, 1));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Open.Core.Url
 
 Open.Core.Url = function Open_Core_Url() {
@@ -2737,6 +2879,8 @@ Open.Core.Html = function Open_Core_Html() {
     /// </summary>
     /// <field name="head" type="String" static="true">
     /// </field>
+    /// <field name="body" type="String" static="true">
+    /// </field>
     /// <field name="div" type="String" static="true">
     /// </field>
     /// <field name="span" type="String" static="true">
@@ -2744,6 +2888,8 @@ Open.Core.Html = function Open_Core_Html() {
     /// <field name="img" type="String" static="true">
     /// </field>
     /// <field name="button" type="String" static="true">
+    /// </field>
+    /// <field name="anchor" type="String" static="true">
     /// </field>
     /// <field name="id" type="String" static="true">
     /// </field>
@@ -2975,17 +3121,23 @@ Open.Core.Css = function Open_Core_Css() {
     /// </field>
     /// <field name="background" type="String" static="true">
     /// </field>
+    /// <field name="color" type="String" static="true">
+    /// </field>
     /// <field name="display" type="String" static="true">
     /// </field>
     /// <field name="position" type="String" static="true">
     /// </field>
     /// <field name="padding" type="String" static="true">
     /// </field>
+    /// <field name="margin" type="String" static="true">
+    /// </field>
     /// <field name="overflow" type="String" static="true">
     /// </field>
     /// <field name="opacity" type="String" static="true">
     /// </field>
     /// <field name="fontSize" type="String" static="true">
+    /// </field>
+    /// <field name="textAlign" type="String" static="true">
     /// </field>
     /// <field name="block" type="String" static="true">
     /// </field>
@@ -3302,12 +3454,15 @@ Open.Core.CoreCssUrls = function Open_Core_CoreCssUrls() {
     /// </field>
     /// <field name="jitHyperTree" type="String">
     /// </field>
+    /// <field name="jQueryUi" type="String">
+    /// </field>
 }
 Open.Core.CoreCssUrls.prototype = {
     core: '/Open.Core/Css/Core.css',
     coreLists: '/Open.Core/Css/Core.Lists.css',
     coreControls: '/Open.Core/Css/Core.Controls.css',
-    jitHyperTree: '/Open.Core/Css/Jit.Hypertree.css'
+    jitHyperTree: '/Open.Core/Css/Jit.Hypertree.css',
+    jQueryUi: 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css'
 }
 
 
@@ -3516,6 +3671,10 @@ Open.Core.Helper = function Open_Core_Helper() {
     /// </field>
     /// <field name="_urlHelper" type="Open.Core.Helpers.UrlHelper" static="true">
     /// </field>
+    /// <field name="_exceptionHelper" type="Open.Core.Helpers.ExceptionHelper" static="true">
+    /// </field>
+    /// <field name="_templateHelper" type="Open.Core.Helpers.TemplateHelper" static="true">
+    /// </field>
     /// <field name="_idCounter" type="Number" integer="true" static="true">
     /// </field>
 }
@@ -3609,6 +3768,20 @@ Open.Core.Helper.get_url = function Open_Core_Helper$get_url() {
     /// </summary>
     /// <value type="Open.Core.Helpers.UrlHelper"></value>
     return Open.Core.Helper._urlHelper || (Open.Core.Helper._urlHelper = new Open.Core.Helpers.UrlHelper());
+}
+Open.Core.Helper.get_exception = function Open_Core_Helper$get_exception() {
+    /// <summary>
+    /// Gets the helper for working with Exceptions.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.ExceptionHelper"></value>
+    return Open.Core.Helper._exceptionHelper || (Open.Core.Helper._exceptionHelper = new Open.Core.Helpers.ExceptionHelper());
+}
+Open.Core.Helper.get_template = function Open_Core_Helper$get_template() {
+    /// <summary>
+    /// Gets the helper for working with Templates.
+    /// </summary>
+    /// <value type="Open.Core.Helpers.TemplateHelper"></value>
+    return Open.Core.Helper._templateHelper || (Open.Core.Helper._templateHelper = new Open.Core.Helpers.TemplateHelper());
 }
 Open.Core.Helper.invokeOrDefault = function Open_Core_Helper$invokeOrDefault(action) {
     /// <summary>
@@ -3743,6 +3916,8 @@ Open.Testing.TestHarness = function Open_Testing_TestHarness() {
     /// </field>
     /// <field name="_displayMode" type="Open.Testing.ControlDisplayMode" static="true">
     /// </field>
+    /// <field name="_canScroll" type="Boolean" static="true">
+    /// </field>
 }
 Open.Testing.TestHarness.get__events = function Open_Testing_TestHarness$get__events() {
     /// <value type="Open.Testing.Internal.ITestHarnessEvents"></value>
@@ -3761,6 +3936,22 @@ Open.Testing.TestHarness.set_displayMode = function Open_Testing_TestHarness$set
     /// </summary>
     /// <value type="Open.Testing.ControlDisplayMode"></value>
     Open.Testing.TestHarness._displayMode = value;
+    return value;
+}
+Open.Testing.TestHarness.get_canScroll = function Open_Testing_TestHarness$get_canScroll() {
+    /// <summary>
+    /// Gets or sets whether the control host canvas can scroll.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    return Open.Testing.TestHarness._canScroll;
+}
+Open.Testing.TestHarness.set_canScroll = function Open_Testing_TestHarness$set_canScroll(value) {
+    /// <summary>
+    /// Gets or sets whether the control host canvas can scroll.
+    /// </summary>
+    /// <value type="Boolean"></value>
+    Open.Testing.TestHarness._canScroll = value;
+    Open.Testing.TestHarness.get__events().fireUpdateLayout();
     return value;
 }
 Open.Testing.TestHarness.registerClass = function Open_Testing_TestHarness$registerClass(testClass) {
@@ -3810,6 +4001,7 @@ Open.Testing.TestHarness.reset = function Open_Testing_TestHarness$reset() {
     /// </summary>
     Open.Testing.TestHarness._displayMode = Open.Testing.ControlDisplayMode.center;
     Open.Testing.TestHarness.get__events().fireClearControls();
+    Open.Testing.TestHarness.set_canScroll(true);
 }
 Open.Testing.TestHarness.updateLayout = function Open_Testing_TestHarness$updateLayout() {
     /// <summary>
@@ -3839,16 +4031,32 @@ Open.Core.Helpers.ScriptLibrary = function() {
     /// <summary>
     /// The various Core script libraries.
     /// </summary>
+    /// <field name="core" type="Number" integer="true" static="true">
+    /// The root Core library.
+    /// </field>
     /// <field name="controls" type="Number" integer="true" static="true">
     /// The general set of UI controls.
     /// </field>
     /// <field name="lists" type="Number" integer="true" static="true">
     /// The List controls.
     /// </field>
+    /// <field name="jQuery" type="Number" integer="true" static="true">
+    /// Core jQuery library
+    /// </field>
+    /// <field name="jQueryUi" type="Number" integer="true" static="true">
+    /// The jQuery UI library.
+    /// </field>
+    /// <field name="jQueryCookie" type="Number" integer="true" static="true">
+    /// The jQuery Cookie plugin.
+    /// </field>
 };
 Open.Core.Helpers.ScriptLibrary.prototype = {
-    controls: 0, 
-    lists: 1
+    core: 0, 
+    controls: 1, 
+    lists: 2, 
+    jQuery: 3, 
+    jQueryUi: 4, 
+    jQueryCookie: 5
 }
 Open.Core.Helpers.ScriptLibrary.registerEnum('Open.Core.Helpers.ScriptLibrary', false);
 
@@ -3970,6 +4178,109 @@ Open.Core.Helpers.CollectionHelper.prototype = {
             }
         }
         collection.clear();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.TemplateHelper
+
+Open.Core.Helpers.TemplateHelper = function Open_Core_Helpers_TemplateHelper() {
+    /// <summary>
+    /// Utility methods for working with jQuery Templates.
+    /// </summary>
+    /// <field name="_downloadedUrls" type="Array">
+    /// </field>
+    /// <field name="_templates" type="Array">
+    /// </field>
+    this._downloadedUrls = [];
+    this._templates = [];
+}
+Open.Core.Helpers.TemplateHelper.prototype = {
+    
+    get: function Open_Core_Helpers_TemplateHelper$get(url, selector, callback) {
+        /// <summary>
+        /// Retrieves a Template instance (only downloading it if required).
+        /// </summary>
+        /// <param name="url" type="String">
+        /// The URL that contains the template.
+        /// </param>
+        /// <param name="selector" type="String">
+        /// The CSS selector for the script block containing the template HTML.
+        /// </param>
+        /// <param name="callback" type="Open.Core.Helpers.TemplateCallback">
+        /// Callback to return the template in.
+        /// </param>
+        if (callback == null) {
+            return;
+        }
+        var template = Type.safeCast(Open.Core.Helper.get_collection().first(this._templates, ss.Delegate.create(this, function(o) {
+            return (o).get_selector() === selector;
+        })), Open.Core.Template);
+        if (template != null) {
+            callback.invoke(template);
+            return;
+        }
+        this.download(url, ss.Delegate.create(this, function() {
+            template = new Open.Core.Template(selector);
+            this._templates.add(template);
+            callback.invoke(template);
+        }));
+    },
+    
+    isDownloaded: function Open_Core_Helpers_TemplateHelper$isDownloaded(url) {
+        /// <summary>
+        /// Determines whether the specified URL has been downloaded.
+        /// </summary>
+        /// <param name="url" type="String">
+        /// The URL of the template(s) to check.
+        /// </param>
+        /// <returns type="Boolean"></returns>
+        return this._downloadedUrls.contains(url.toLowerCase());
+    },
+    
+    download: function Open_Core_Helpers_TemplateHelper$download(url, onComplete) {
+        /// <summary>
+        /// Downloads the template(s) at the specified URL and appends them to the body.
+        /// </summary>
+        /// <param name="url" type="String">
+        /// The URL of the template(s) to download.
+        /// </param>
+        /// <param name="onComplete" type="Action">
+        /// Callback to invoke upon completion
+        /// </param>
+        if (this.isDownloaded(url)) {
+            Open.Core.Helper.invokeOrDefault(onComplete);
+            return;
+        }
+        this._downloadedUrls.add(url.toLowerCase());
+        $.get(url, ss.Delegate.create(this, function(data) {
+            $(Open.Core.Html.body).append(data.toString());
+            Open.Core.Helper.invokeOrDefault(onComplete);
+        }));
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.ExceptionHelper
+
+Open.Core.Helpers.ExceptionHelper = function Open_Core_Helpers_ExceptionHelper() {
+    /// <summary>
+    /// Utility methods for working with Exceptions.
+    /// </summary>
+}
+Open.Core.Helpers.ExceptionHelper.prototype = {
+    
+    notSupported: function Open_Core_Helpers_ExceptionHelper$notSupported(value) {
+        /// <summary>
+        /// Produces an exception for a value that is not supported.
+        /// </summary>
+        /// <param name="value" type="Object">
+        /// The value that is not supported.
+        /// </param>
+        /// <returns type="Error"></returns>
+        return new Error(String.format('Not supported [{0}].', Open.Core.Helper.get_string().formatToString(value)));
     }
 }
 
@@ -4131,6 +4442,35 @@ Open.Core.Helpers.TreeHelper.prototype = {
             }
         }
         return total;
+    },
+    
+    firstDescendent: function Open_Core_Helpers_TreeHelper$firstDescendent(parent, predicate) {
+        /// <summary>
+        /// Gets the first descendent node that matches the given predicate.
+        /// </summary>
+        /// <param name="parent" type="Open.Core.ITreeNode">
+        /// The parent to look within.
+        /// </param>
+        /// <param name="predicate" type="Open.Core.FuncBool">
+        /// The predicate used to match.
+        /// </param>
+        /// <returns type="Open.Core.ITreeNode"></returns>
+        if (parent == null || predicate == null) {
+            return null;
+        }
+        var item = Open.Core.Helper.get_collection().first(parent.get_children(), predicate);
+        if (item != null) {
+            return Type.safeCast(item, Open.Core.ITreeNode);
+        }
+        var $enum1 = ss.IEnumerator.getEnumerator(parent.get_children());
+        while ($enum1.moveNext()) {
+            var child = $enum1.get_current();
+            var descendent = this.firstDescendent(child, predicate);
+            if (descendent != null) {
+                return descendent;
+            }
+        }
+        return null;
     }
 }
 
@@ -4214,7 +4554,7 @@ Open.Core.Helpers.JsonHelper.prototype = {
         /// The object to serialize.
         /// </param>
         /// <returns type="String"></returns>
-        return Type.safeCast(JSON.stringify( value ), String);
+        return Type.safeCast($.toJSON( value ), String);
     },
     
     parse: function Open_Core_Helpers_JsonHelper$parse(json) {
@@ -4225,7 +4565,7 @@ Open.Core.Helpers.JsonHelper.prototype = {
         /// The JSON to parse.
         /// </param>
         /// <returns type="Object"></returns>
-        return Type.safeCast(JSON.parse( json ), Object);
+        return Type.safeCast(jQuery.parseJSON( json ), Object);
     }
 }
 
@@ -4584,12 +4924,12 @@ Open.Core.Helpers.ResourceLoader = function Open_Core_Helpers_ResourceLoader() {
     /// </field>
     /// <field name="_loadedCallbackTotal" type="Number" integer="true">
     /// </field>
-    /// <field name="_urls" type="Array">
+    /// <field name="_listUrls" type="Array">
     /// </field>
-    /// <field name="_loaders" type="Array">
+    /// <field name="_listLoaders" type="Array">
     /// </field>
-    this._urls = [];
-    this._loaders = [];
+    this._listUrls = [];
+    this._listLoaders = [];
 }
 Open.Core.Helpers.ResourceLoader.prototype = {
     
@@ -4614,10 +4954,10 @@ Open.Core.Helpers.ResourceLoader.prototype = {
     
     get_isLoaded: function Open_Core_Helpers_ResourceLoader$get_isLoaded() {
         /// <value type="Boolean"></value>
-        if (this._loadedCallbackTotal < this._urls.length) {
+        if (this._loadedCallbackTotal < this._listUrls.length) {
             return false;
         }
-        var $enum1 = ss.IEnumerator.getEnumerator(this._loaders);
+        var $enum1 = ss.IEnumerator.getEnumerator(this._listLoaders);
         while ($enum1.moveNext()) {
             var loader = $enum1.get_current();
             if (!loader.get_isLoaded()) {
@@ -4627,20 +4967,57 @@ Open.Core.Helpers.ResourceLoader.prototype = {
         return true;
     },
     
-    addUrl: function Open_Core_Helpers_ResourceLoader$addUrl(url) {
-        /// <param name="url" type="String">
+    getEnumerator: function Open_Core_Helpers_ResourceLoader$getEnumerator() {
+        /// <summary>
+        /// Retrieves the enumerator for the collection of URL's.
+        /// </summary>
+        /// <returns type="ss.IEnumerator"></returns>
+        return this._listUrls.getEnumerator();
+    },
+    
+    addUrl: function Open_Core_Helpers_ResourceLoader$addUrl(urls, delimiter) {
+        /// <summary>
+        /// Splits a set of URL's from a string and adds each one to the list to download.
+        /// </summary>
+        /// <param name="urls" type="String">
+        /// The string of delimited URLs.
         /// </param>
-        this._urls.add(url);
+        /// <param name="delimiter" type="String">
+        /// The delimiter.
+        /// </param>
+        if (String.isNullOrEmpty(urls)) {
+            return;
+        }
+        if (ss.isNullOrUndefined(delimiter)) {
+            this._listUrls.add(urls);
+        }
+        else {
+            var $enum1 = ss.IEnumerator.getEnumerator(urls.split(delimiter));
+            while ($enum1.moveNext()) {
+                var item = $enum1.get_current();
+                var url = item.trim();
+                if (!String.isNullOrEmpty(url)) {
+                    this._listUrls.add(url);
+                }
+            }
+        }
     },
     
     addLoader: function Open_Core_Helpers_ResourceLoader$addLoader(loader) {
+        /// <summary>
+        /// Add a new loader.
+        /// </summary>
         /// <param name="loader" type="Open.Core.Helpers.ResourceLoader">
+        /// The loader to add.
         /// </param>
-        this._loaders.add(loader);
+        this._listLoaders.add(loader);
     },
     
     start: function Open_Core_Helpers_ResourceLoader$start() {
-        var $enum1 = ss.IEnumerator.getEnumerator(this._urls);
+        /// <summary>
+        /// Start the download process.
+        /// </summary>
+        var $enum1 = ss.IEnumerator.getEnumerator(this._listUrls);
         while ($enum1.moveNext()) {
             var url = $enum1.get_current();
             this.loadResource(url, ss.Delegate.create(this, function() {
@@ -4648,7 +5025,7 @@ Open.Core.Helpers.ResourceLoader.prototype = {
                 this._onDownloaded();
             }));
         }
-        var $enum2 = ss.IEnumerator.getEnumerator(this._loaders);
+        var $enum2 = ss.IEnumerator.getEnumerator(this._listLoaders);
         while ($enum2.moveNext()) {
             var loader = $enum2.get_current();
             if (loader.get_isLoaded()) {
@@ -4711,26 +5088,16 @@ Open.Core.Helpers.ScriptLoadHelper = function Open_Core_Helpers_ScriptLoadHelper
     /// </field>
     /// <field name="_loadedLibraries$1" type="Array">
     /// </field>
+    /// <field name="_scripts$1" type="Open.Core.Helpers.ScriptNames">
+    /// </field>
     this._loadedLibraries$1 = [];
     Open.Core.Helpers.ScriptLoadHelper.initializeBase(this);
-}
-Open.Core.Helpers.ScriptLoadHelper._toLibraryName$1 = function Open_Core_Helpers_ScriptLoadHelper$_toLibraryName$1(library) {
-    /// <param name="library" type="Open.Core.Helpers.ScriptLibrary">
-    /// </param>
-    /// <returns type="String"></returns>
-    switch (library) {
-        case Open.Core.Helpers.ScriptLibrary.controls:
-            return 'Open.Core.Controls';
-        case Open.Core.Helpers.ScriptLibrary.lists:
-            return 'Open.Core.Lists';
-        default:
-            throw new Error(String.format('{0} not supported.', Open.Core.Helpers.ScriptLibrary.toString(library)));
-    }
 }
 Open.Core.Helpers.ScriptLoadHelper.prototype = {
     _rootScriptFolder$1: '/Open.Core/Scripts/',
     _useDebug$1: false,
     _jit$1: null,
+    _scripts$1: null,
     
     get_useDebug: function Open_Core_Helpers_ScriptLoadHelper$get_useDebug() {
         /// <summary>
@@ -4772,6 +5139,14 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         return this._jit$1 || (this._jit$1 = new Open.Core.Helpers.JitScriptLoader());
     },
     
+    get_scripts: function Open_Core_Helpers_ScriptLoadHelper$get_scripts() {
+        /// <summary>
+        /// An index of script names.
+        /// </summary>
+        /// <value type="Open.Core.Helpers.ScriptNames"></value>
+        return this._scripts$1 || (this._scripts$1 = new Open.Core.Helpers.ScriptNames());
+    },
+    
     isLoaded: function Open_Core_Helpers_ScriptLoadHelper$isLoaded(library) {
         /// <summary>
         /// Determines whether the specified library has been loaded.
@@ -4802,19 +5177,25 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
             this._loadedLibraries$1.add(library);
             Open.Core.Helper.invokeOrDefault(callback);
         }));
-        loader.addUrl(Open.Core.Helper.get_scriptLoader()._url(String.Empty, Open.Core.Helpers.ScriptLoadHelper._toLibraryName$1(library), true));
+        loader.addUrl(this.get_scripts().url(library));
         loader.start();
     },
     
-    _url: function Open_Core_Helpers_ScriptLoadHelper$_url(path, fileName, hasDebug) {
+    _url: function Open_Core_Helpers_ScriptLoadHelper$_url(path, fileName, debugVersion) {
+        /// <summary>
+        /// Retrieves the URL of a script.
+        /// </summary>
         /// <param name="path" type="String">
+        /// Sub path to the URL (null if in root Scripts folder).
         /// </param>
         /// <param name="fileName" type="String">
+        /// The script file name.
         /// </param>
-        /// <param name="hasDebug" type="Boolean">
+        /// <param name="debugVersion" type="Boolean">
+        /// Flag indicating if the Debug version should be used.
         /// </param>
         /// <returns type="String"></returns>
-        return String.format(this.get_rootScriptFolder() + path + this._fileName(fileName, hasDebug));
+        return String.format(this.get_rootScriptFolder() + path + this._fileName(fileName, debugVersion));
     },
     
     _fileName: function Open_Core_Helpers_ScriptLoadHelper$_fileName(name, hasDebug) {
@@ -4825,6 +5206,79 @@ Open.Core.Helpers.ScriptLoadHelper.prototype = {
         /// <returns type="String"></returns>
         var debug = (hasDebug && this.get_useDebug()) ? '.debug' : null;
         return String.format('{0}{1}.js', name, debug);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Core.Helpers.ScriptNames
+
+Open.Core.Helpers.ScriptNames = function Open_Core_Helpers_ScriptNames() {
+    /// <summary>
+    /// Index of script names.
+    /// </summary>
+    /// <field name="core" type="String" static="true">
+    /// </field>
+    /// <field name="coreControls" type="String" static="true">
+    /// </field>
+    /// <field name="coreLists" type="String" static="true">
+    /// </field>
+    /// <field name="libraryJit" type="String" static="true">
+    /// </field>
+    /// <field name="jQuery" type="String" static="true">
+    /// </field>
+    /// <field name="jQueryUi" type="String" static="true">
+    /// </field>
+    /// <field name="jQueryCookie" type="String" static="true">
+    /// </field>
+}
+Open.Core.Helpers.ScriptNames.prototype = {
+    
+    toName: function Open_Core_Helpers_ScriptNames$toName(library) {
+        /// <summary>
+        /// Retrives the of the file corresponding to the given library.
+        /// </summary>
+        /// <param name="library" type="Open.Core.Helpers.ScriptLibrary">
+        /// Flag for the library to retreive.
+        /// </param>
+        /// <returns type="String"></returns>
+        switch (library) {
+            case Open.Core.Helpers.ScriptLibrary.core:
+                return Open.Core.Helpers.ScriptNames.core;
+            case Open.Core.Helpers.ScriptLibrary.controls:
+                return Open.Core.Helpers.ScriptNames.coreControls;
+            case Open.Core.Helpers.ScriptLibrary.lists:
+                return Open.Core.Helpers.ScriptNames.coreLists;
+            case Open.Core.Helpers.ScriptLibrary.jQuery:
+                return Open.Core.Helpers.ScriptNames.jQuery;
+            case Open.Core.Helpers.ScriptLibrary.jQueryUi:
+                return Open.Core.Helpers.ScriptNames.jQueryUi;
+            case Open.Core.Helpers.ScriptLibrary.jQueryCookie:
+                return Open.Core.Helpers.ScriptNames.jQueryCookie;
+            default:
+                throw new Error(String.format('{0} not supported.', Open.Core.Helpers.ScriptLibrary.toString(library)));
+        }
+    },
+    
+    url: function Open_Core_Helpers_ScriptNames$url(library) {
+        /// <summary>
+        /// Get the URL for the given library.
+        /// </summary>
+        /// <param name="library" type="Open.Core.Helpers.ScriptLibrary">
+        /// Flag for the library to retreive.
+        /// </param>
+        /// <returns type="String"></returns>
+        var useDebug = Open.Core.Helper.get_scriptLoader().get_useDebug();
+        var path = String.Empty;
+        switch (library) {
+            case Open.Core.Helpers.ScriptLibrary.jQuery:
+            case Open.Core.Helpers.ScriptLibrary.jQueryUi:
+            case Open.Core.Helpers.ScriptLibrary.jQueryCookie:
+                path = 'JQuery/';
+                useDebug = false;
+                break;
+        }
+        return Open.Core.Helper.get_scriptLoader()._url(path, this.toName(library), useDebug);
     }
 }
 
@@ -4882,9 +5336,9 @@ Open.Core.UI.HorizontalPanelResizer = function Open_Core_UI_HorizontalPanelResiz
     /// <param name="cookieKey" type="String">
     /// The unique key to store the panel size within (null if saving not required).
     /// </param>
-    /// <field name="_minWidth$1" type="Number">
+    /// <field name="_minWidth$1" type="Number" integer="true">
     /// </field>
-    /// <field name="_maxWidthMargin$1" type="Number">
+    /// <field name="_maxWidthMargin$1" type="Number" integer="true">
     /// </field>
     Open.Core.UI.HorizontalPanelResizer.initializeBase(this, [ cssSelector, cookieKey ]);
 }
@@ -4896,14 +5350,14 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         /// <summary>
         /// Gets or sets the minimum width the panel can be.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return this._minWidth$1;
     },
     set_minWidth: function Open_Core_UI_HorizontalPanelResizer$set_minWidth(value) {
         /// <summary>
         /// Gets or sets the minimum width the panel can be.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         if (value === this._minWidth$1) {
             return;
         }
@@ -4912,30 +5366,33 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         return value;
     },
     
+    get_maxWidth: function Open_Core_UI_HorizontalPanelResizer$get_maxWidth() {
+        /// <summary>
+        /// Gets the maximum width the panel can be.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return (this.get_hasRootContainer()) ? this.get__rootContainerWidth$1() - this.get_maxWidthMargin() : -1;
+    },
+    
     get_maxWidthMargin: function Open_Core_UI_HorizontalPanelResizer$get_maxWidthMargin() {
         /// <summary>
         /// Gets or sets the margin buffer used to calculate the max-width of the panel relative to the root container.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return this._maxWidthMargin$1;
     },
     set_maxWidthMargin: function Open_Core_UI_HorizontalPanelResizer$set_maxWidthMargin(value) {
         /// <summary>
         /// Gets or sets the margin buffer used to calculate the max-width of the panel relative to the root container.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         this._maxWidthMargin$1 = value;
         return value;
     },
     
     get__rootContainerWidth$1: function Open_Core_UI_HorizontalPanelResizer$get__rootContainerWidth$1() {
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return (this.get_hasRootContainer()) ? this.getRootContainer().width() : -1;
-    },
-    
-    get__maxWidth$1: function Open_Core_UI_HorizontalPanelResizer$get__maxWidth$1() {
-        /// <value type="Number"></value>
-        return (this.get_hasRootContainer()) ? this.get__rootContainerWidth$1() - this.get_maxWidthMargin() : -1;
     },
     
     getHandles: function Open_Core_UI_HorizontalPanelResizer$getHandles() {
@@ -4957,17 +5414,17 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
         }
         this._setMinMaxWidth$1();
         if (this.get_hasRootContainer()) {
-            this.shrinkIfOverflowing(this.getCurrentSize(), this.get_minWidth(), this.get__maxWidth$1(), Open.Core.Css.width);
+            this.shrinkIfOverflowing(this.getCurrentSize(), this.get_minWidth(), this.get_maxWidth(), Open.Core.Css.width);
         }
     },
     
     getCurrentSize: function Open_Core_UI_HorizontalPanelResizer$getCurrentSize() {
-        /// <returns type="Number"></returns>
+        /// <returns type="Number" integer="true"></returns>
         return this.get_panel().width();
     },
     
     setCurrentSize: function Open_Core_UI_HorizontalPanelResizer$setCurrentSize(size) {
-        /// <param name="size" type="Number">
+        /// <param name="size" type="Number" integer="true">
         /// </param>
         this.get_panel().css(Open.Core.Css.width, size + Open.Core.Css.px);
     },
@@ -4987,7 +5444,7 @@ Open.Core.UI.HorizontalPanelResizer.prototype = {
     },
     
     _setMaxWidth$1: function Open_Core_UI_HorizontalPanelResizer$_setMaxWidth$1() {
-        var width = (this.get_hasRootContainer()) ? this.get__maxWidth$1().toString() : String.Empty;
+        var width = (this.get_hasRootContainer()) ? this.get_maxWidth().toString() : String.Empty;
         this.setResizeOption('maxWidth', width);
     }
 }
@@ -5166,6 +5623,17 @@ Open.Core.UI.PanelResizerBase.prototype = {
         this.isInitialized = true;
     },
     
+    save: function Open_Core_UI_PanelResizerBase$save() {
+        /// <summary>
+        /// Persists the current size to storage.
+        /// </summary>
+        if (!this.get_isSaving()) {
+            return;
+        }
+        Open.Core.UI.PanelResizerBase._cookie.set(this._cookieKey, this.getCurrentSize());
+        Open.Core.UI.PanelResizerBase._cookie.save();
+    },
+    
     onInitialize: function Open_Core_UI_PanelResizerBase$onInitialize() {
     },
     
@@ -5199,11 +5667,11 @@ Open.Core.UI.PanelResizerBase.prototype = {
     },
     
     shrinkIfOverflowing: function Open_Core_UI_PanelResizerBase$shrinkIfOverflowing(currentValue, minValue, maxValue, cssAttribute) {
-        /// <param name="currentValue" type="Number">
+        /// <param name="currentValue" type="Number" integer="true">
         /// </param>
-        /// <param name="minValue" type="Number">
+        /// <param name="minValue" type="Number" integer="true">
         /// </param>
-        /// <param name="maxValue" type="Number">
+        /// <param name="maxValue" type="Number" integer="true">
         /// </param>
         /// <param name="cssAttribute" type="String">
         /// </param>
@@ -5230,17 +5698,9 @@ Open.Core.UI.PanelResizerBase.prototype = {
         }
         else if (eventName === Open.Core.UI.PanelResizerBase._eventStop) {
             this.onStopped();
-            this._saveSize();
+            this.save();
             this._fireResizeStopped();
         }
-    },
-    
-    _saveSize: function Open_Core_UI_PanelResizerBase$_saveSize() {
-        if (!this.get_isSaving()) {
-            return;
-        }
-        Open.Core.UI.PanelResizerBase._cookie.set(this._cookieKey, this.getCurrentSize());
-        Open.Core.UI.PanelResizerBase._cookie.save();
     },
     
     _loadSize: function Open_Core_UI_PanelResizerBase$_loadSize() {
@@ -5270,9 +5730,9 @@ Open.Core.UI.VerticalPanelResizer = function Open_Core_UI_VerticalPanelResizer(c
     /// <param name="cookieKey" type="String">
     /// The unique key to store the panel size within (null if saving not required).
     /// </param>
-    /// <field name="_minHeight$1" type="Number">
+    /// <field name="_minHeight$1" type="Number" integer="true">
     /// </field>
-    /// <field name="_maxHeightMargin$1" type="Number">
+    /// <field name="_maxHeightMargin$1" type="Number" integer="true">
     /// </field>
     Open.Core.UI.VerticalPanelResizer.initializeBase(this, [ cssSelector, cookieKey ]);
 }
@@ -5284,14 +5744,14 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         /// <summary>
         /// Gets or sets the minimum height the panel can be.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return this._minHeight$1;
     },
     set_minHeight: function Open_Core_UI_VerticalPanelResizer$set_minHeight(value) {
         /// <summary>
         /// Gets or sets the minimum height the panel can be.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         if (value === this._minHeight$1) {
             return;
         }
@@ -5300,30 +5760,33 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         return value;
     },
     
+    get_maxHeight: function Open_Core_UI_VerticalPanelResizer$get_maxHeight() {
+        /// <summary>
+        /// Gets the maximum height the panel can be.
+        /// </summary>
+        /// <value type="Number" integer="true"></value>
+        return (this.get_hasRootContainer()) ? this.get__rootContainerHeight$1() - this.get_maxHeightMargin() : -1;
+    },
+    
     get_maxHeightMargin: function Open_Core_UI_VerticalPanelResizer$get_maxHeightMargin() {
         /// <summary>
         /// Gets or sets the margin buffer used to calculate the max-height of the panel relative to the root container.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return this._maxHeightMargin$1;
     },
     set_maxHeightMargin: function Open_Core_UI_VerticalPanelResizer$set_maxHeightMargin(value) {
         /// <summary>
         /// Gets or sets the margin buffer used to calculate the max-height of the panel relative to the root container.
         /// </summary>
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         this._maxHeightMargin$1 = value;
         return value;
     },
     
     get__rootContainerHeight$1: function Open_Core_UI_VerticalPanelResizer$get__rootContainerHeight$1() {
-        /// <value type="Number"></value>
+        /// <value type="Number" integer="true"></value>
         return (this.get_hasRootContainer()) ? this.getRootContainer().height() : -1;
-    },
-    
-    get__maxHeight$1: function Open_Core_UI_VerticalPanelResizer$get__maxHeight$1() {
-        /// <value type="Number"></value>
-        return (this.get_hasRootContainer()) ? this.get__rootContainerHeight$1() - this.get_maxHeightMargin() : -1;
     },
     
     getHandles: function Open_Core_UI_VerticalPanelResizer$getHandles() {
@@ -5346,17 +5809,17 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
         }
         this._setMinMaxHeight$1();
         if (this.get_hasRootContainer()) {
-            this.shrinkIfOverflowing(this.getCurrentSize(), this.get_minHeight(), this.get__maxHeight$1(), Open.Core.Css.height);
+            this.shrinkIfOverflowing(this.getCurrentSize(), this.get_minHeight(), this.get_maxHeight(), Open.Core.Css.height);
         }
     },
     
     getCurrentSize: function Open_Core_UI_VerticalPanelResizer$getCurrentSize() {
-        /// <returns type="Number"></returns>
+        /// <returns type="Number" integer="true"></returns>
         return this.get_panel().height();
     },
     
     setCurrentSize: function Open_Core_UI_VerticalPanelResizer$setCurrentSize(size) {
-        /// <param name="size" type="Number">
+        /// <param name="size" type="Number" integer="true">
         /// </param>
         this.get_panel().css(Open.Core.Css.height, size + Open.Core.Css.px);
     },
@@ -5376,7 +5839,7 @@ Open.Core.UI.VerticalPanelResizer.prototype = {
     },
     
     _setMaxHeight$1: function Open_Core_UI_VerticalPanelResizer$_setMaxHeight$1() {
-        var height = (this.get_hasRootContainer()) ? this.get__maxHeight$1().toString() : String.Empty;
+        var height = (this.get_hasRootContainer()) ? this.get_maxHeight().toString() : String.Empty;
         this.setResizeOption('maxHeight', height);
     }
 }
@@ -5386,6 +5849,7 @@ Open.Core.ModelBase.registerClass('Open.Core.ModelBase', null, Open.Core.IModel,
 Open.Core.ControllerBase.registerClass('Open.Core.ControllerBase', Open.Core.ModelBase);
 Open.Core.DiContainer.registerClass('Open.Core.DiContainer', null, ss.IDisposable);
 Open.Core._diInstanceWrapper.registerClass('Open.Core._diInstanceWrapper', null, ss.IDisposable);
+Open.Core.Template.registerClass('Open.Core.Template');
 Open.Core.Should.registerClass('Open.Core.Should');
 Open.Core.Keyboard.registerClass('Open.Core.Keyboard');
 Open.Core.TreeNode.registerClass('Open.Core.TreeNode', Open.Core.ModelBase, Open.Core.ITreeNode, ss.IDisposable);
@@ -5400,6 +5864,7 @@ Open.Core.PropertyBinding.registerClass('Open.Core.PropertyBinding', null, ss.ID
 Open.Core.PropertyDef.registerClass('Open.Core.PropertyDef');
 Open.Core.PropertyRef.registerClass('Open.Core.PropertyRef', Open.Core.PropertyDef);
 Open.Core.DelayedAction.registerClass('Open.Core.DelayedAction', null, ss.IDisposable);
+Open.Core.Color.registerClass('Open.Core.Color');
 Open.Core.Url.registerClass('Open.Core.Url');
 Open.Core.Html.registerClass('Open.Core.Html');
 Open.Core.Css.registerClass('Open.Core.Css');
@@ -5413,6 +5878,8 @@ Open.Testing.Internal.TestClassEventArgs.registerClass('Open.Testing.Internal.Te
 Open.Testing.Internal.TestControlEventArgs.registerClass('Open.Testing.Internal.TestControlEventArgs');
 Open.Testing.TestHarness.registerClass('Open.Testing.TestHarness');
 Open.Core.Helpers.CollectionHelper.registerClass('Open.Core.Helpers.CollectionHelper');
+Open.Core.Helpers.TemplateHelper.registerClass('Open.Core.Helpers.TemplateHelper');
+Open.Core.Helpers.ExceptionHelper.registerClass('Open.Core.Helpers.ExceptionHelper');
 Open.Core.Helpers.DoubleHelper.registerClass('Open.Core.Helpers.DoubleHelper');
 Open.Core.Helpers.EventHelper.registerClass('Open.Core.Helpers.EventHelper');
 Open.Core.Helpers.TreeHelper.registerClass('Open.Core.Helpers.TreeHelper');
@@ -5424,9 +5891,10 @@ Open.Core.Helpers.ReflectionHelper.registerClass('Open.Core.Helpers.ReflectionHe
 Open.Core.Helpers.JitScriptLoader.registerClass('Open.Core.Helpers.JitScriptLoader');
 Open.Core.Helpers.StringHelper.registerClass('Open.Core.Helpers.StringHelper');
 Open.Core.Helpers.UrlHelper.registerClass('Open.Core.Helpers.UrlHelper');
-Open.Core.Helpers.ResourceLoader.registerClass('Open.Core.Helpers.ResourceLoader');
+Open.Core.Helpers.ResourceLoader.registerClass('Open.Core.Helpers.ResourceLoader', null, ss.IEnumerable);
 Open.Core.Helpers.ScriptLoader.registerClass('Open.Core.Helpers.ScriptLoader', Open.Core.Helpers.ResourceLoader);
 Open.Core.Helpers.ScriptLoadHelper.registerClass('Open.Core.Helpers.ScriptLoadHelper', Open.Core.ModelBase);
+Open.Core.Helpers.ScriptNames.registerClass('Open.Core.Helpers.ScriptNames');
 Open.Core.Helpers.DelegateHelper.registerClass('Open.Core.Helpers.DelegateHelper');
 Open.Core.UI.PanelResizerBase.registerClass('Open.Core.UI.PanelResizerBase');
 Open.Core.UI.HorizontalPanelResizer.registerClass('Open.Core.UI.HorizontalPanelResizer', Open.Core.UI.PanelResizerBase);
@@ -5506,12 +5974,15 @@ Open.Core.LogCss.listItem = '.' + Open.Core.LogCss.listItemClass;
 Open.Core.PropertyDef._singletons = null;
 Open.Core.DelayedAction._nullTimerId = -1;
 Open.Core.DelayedAction._isAsyncronous = true;
+Open.Core.Color.hotPink = '#ff00f0';
 Open.Core.Url.escAnd = '%26';
 Open.Core.Html.head = 'head';
+Open.Core.Html.body = 'body';
 Open.Core.Html.div = 'div';
 Open.Core.Html.span = 'span';
 Open.Core.Html.img = 'img';
 Open.Core.Html.button = 'button';
+Open.Core.Html.anchor = 'a';
 Open.Core.Html.id = 'id';
 Open.Core.Html.href = 'href';
 Open.Core.Html.src = 'src';
@@ -5530,12 +6001,15 @@ Open.Core.Css.bottom = 'bottom';
 Open.Core.Css.width = 'width';
 Open.Core.Css.height = 'height';
 Open.Core.Css.background = 'background';
+Open.Core.Css.color = 'color';
 Open.Core.Css.display = 'display';
 Open.Core.Css.position = 'position';
 Open.Core.Css.padding = 'padding';
+Open.Core.Css.margin = 'margin';
 Open.Core.Css.overflow = 'overflow';
 Open.Core.Css.opacity = 'opacity';
 Open.Core.Css.fontSize = 'font-size';
+Open.Core.Css.textAlign = 'text-align';
 Open.Core.Css.block = 'block';
 Open.Core.Css.none = 'none';
 Open.Core.Css.relative = 'relative';
@@ -5557,12 +6031,22 @@ Open.Core.Helper._treeHelper = null;
 Open.Core.Helper._eventHelper = null;
 Open.Core.Helper._doubleHelper = null;
 Open.Core.Helper._urlHelper = null;
+Open.Core.Helper._exceptionHelper = null;
+Open.Core.Helper._templateHelper = null;
 Open.Core.Helper._idCounter = 0;
 Open.Testing.TestHarness._events = null;
 Open.Testing.TestHarness._displayMode = Open.Testing.ControlDisplayMode.center;
+Open.Testing.TestHarness._canScroll = true;
 Open.Core.Helpers.JitScriptLoader._jitFolder = 'Jit/';
 Open.Core.Helpers.ScriptLoadHelper.propIsListsLoaded = 'IsListsLoaded';
 Open.Core.Helpers.ScriptLoadHelper.propIsViewsLoaded = 'IsViewsLoaded';
+Open.Core.Helpers.ScriptNames.core = 'Open.Core';
+Open.Core.Helpers.ScriptNames.coreControls = 'Open.Core.Controls';
+Open.Core.Helpers.ScriptNames.coreLists = 'Open.Core.Lists';
+Open.Core.Helpers.ScriptNames.libraryJit = 'Open.Library.Jit';
+Open.Core.Helpers.ScriptNames.jQuery = 'jquery-1.4.2.min';
+Open.Core.Helpers.ScriptNames.jQueryUi = 'jquery-ui-1.8.4.custom.min';
+Open.Core.Helpers.ScriptNames.jQueryCookie = 'jquery.cookie';
 Open.Core.UI.PanelResizerBase._eventStart = 'start';
 Open.Core.UI.PanelResizerBase._eventStop = 'eventStop';
 Open.Core.UI.PanelResizerBase._eventResize = 'eventResize';
