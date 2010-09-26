@@ -7,24 +7,35 @@ namespace Open.Core.Controls.Buttons
     internal class ButtonEventManager : ModelBase
     {
         #region Head
-        private readonly IView control;
-        private readonly Action invokeClick;
+        public const string PropState = "State";
+        public const string PropIsMouseOver = "IsMouseOver";
+        public const string PropIsMouseDown = "IsMouseDown";
+
+        private readonly ButtonView control;
+        private bool ignoreIsPressedChanged;
 
         /// <summary>Constructor.</summary>
         /// <param name="control">The clickable button element.</param>
-        /// <param name="invokeClick">Action that invokes the click.</param>
-        public ButtonEventManager(IView control, Action invokeClick)
+        public ButtonEventManager(ButtonView control)
         {
             // Setup initial conditions.
             this.control = control;
-            this.invokeClick = invokeClick;
 
             // Wire up events.
+            Model.IsPressedChanged += OnModelIsPressedChanged;
+
+            // -- Mouse events.
             jQueryObject element = control.Container;
             element.MouseOver(OnMouseOver);
             element.MouseOut(OnMouseOut);
             element.MouseDown(OnMouseDown);
             element.MouseUp(OnMouseUp);
+        }
+
+        protected override void OnDisposed()
+        {
+            Model.IsPressedChanged -= OnModelIsPressedChanged;
+            base.OnDisposed();
         }
         #endregion
 
@@ -52,53 +63,56 @@ namespace Open.Core.Controls.Buttons
             bool wasMouseDown = IsMouseDown;
             IsMouseDown = false;
             UpdateMouseState();
-            if (control.IsEnabled && IsMouseOver && wasMouseDown)
-            {
-                Helper.InvokeOrDefault(invokeClick);
-            }
+            if (IsEnabled && IsMouseOver && wasMouseDown) InvokeClick();
+        }
+
+        private void OnModelIsPressedChanged(object sender, EventArgs e)
+        {
+            if (ignoreIsPressedChanged) return;
+            UpdateMouseState();
         }
         #endregion
 
-        #region Properties : IButton
-        public bool CanToggle
-        {
-            get { return (bool)Get(ButtonBase.PropCanToggle, false); }
-            set { Set(ButtonBase.PropCanToggle, value, false); }
-        }
-
+        #region Properties : IButtonView
         public ButtonState State
         {
-            get { return (ButtonState)Get(ButtonBase.PropState, ButtonState.Normal); }
-            private set { Set(ButtonBase.PropState, value, ButtonState.Normal); }
-        }
-
-        public bool IsPressed
-        {
-            get { return (bool)Get(ButtonBase.PropIsPressed, false); }
-            internal set { Set(ButtonBase.PropIsPressed, value, false); }
+            get { return (ButtonState)Get(PropState, ButtonState.Normal); }
+            private set { Set(PropState, value, ButtonState.Normal); }
         }
 
         public bool IsMouseOver
         {
-            get { return (bool)Get(ButtonBase.PropIsMouseOver, false); }
-            private set { Set(ButtonBase.PropIsMouseOver, value, false); }
+            get { return (bool)Get(PropIsMouseOver, false); }
+            private set { Set(PropIsMouseOver, value, false); }
         }
 
         public bool IsMouseDown
         {
-            get { return (bool)Get(ButtonBase.PropIsMouseDown, false); }
-            private set { Set(ButtonBase.PropIsMouseDown, value, false); }
+            get { return (bool)Get(PropIsMouseDown, false); }
+            private set { Set(PropIsMouseDown, value, false); }
         }
         #endregion
 
+        #region Properties : Internal
+        private IButton Model { get { return control.Model; } }
+        private bool IsEnabled { get { return control.IsEnabled && Model.IsEnabled; } }
+        #endregion
+
         #region Internal
+        private void InvokeClick()
+        {
+            ignoreIsPressedChanged = true;
+            Model.InvokeClick(true);
+            ignoreIsPressedChanged = false;
+        }
+
         private void UpdateMouseState()
         {
-            if (!control.IsEnabled)
+            if (!IsEnabled)
             {
                 State = ButtonState.Normal;
             }
-            else if (IsMouseOver && IsMouseDown)
+            else if ((IsMouseOver && IsMouseDown) || Model.IsPressed)
             {
                 State = ButtonState.Pressed;
             }

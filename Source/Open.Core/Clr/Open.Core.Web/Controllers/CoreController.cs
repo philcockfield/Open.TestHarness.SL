@@ -5,7 +5,7 @@ using Microsoft.Http;
 namespace Open.Core.Web.Controllers
 {
     /// <summary>Controller for common re-usable actions.</summary>
-    public class CoreController : ControllerBase
+    public partial class CoreController : ControllerBase
     {
         #region Head
         public const string Name = "Core";

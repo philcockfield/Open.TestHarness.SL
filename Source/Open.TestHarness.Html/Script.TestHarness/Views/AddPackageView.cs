@@ -62,7 +62,7 @@ namespace Open.Testing.Views
                 EffectEasing.Swing,
                 delegate
                     {
-                        Helper.InvokeOrDefault(onComplete);
+                        Helper.Invoke(onComplete);
                     });
         }
         #endregion

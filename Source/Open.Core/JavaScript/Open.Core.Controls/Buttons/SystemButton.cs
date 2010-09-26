@@ -4,7 +4,7 @@ using jQueryApi;
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>A simple button that renders with like the native Browser/OS.</summary>
-    public class SystemButton : ButtonBase
+    public class SystemButton : ButtonView
     {
         #region Head
         public const string Untitled = "Untitled";

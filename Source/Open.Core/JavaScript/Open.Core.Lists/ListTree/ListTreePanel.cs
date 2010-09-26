@@ -111,7 +111,7 @@ namespace Open.Core.Lists
                             {
                                 // On complete.
                                 Hide();
-                                Helper.InvokeOrDefault(onComplete);
+                                Helper.Invoke(onComplete);
                             });
         }
 
@@ -132,7 +132,7 @@ namespace Open.Core.Lists
                         delegate
                             {
                                 // On complete.
-                                Helper.InvokeOrDefault(onComplete);
+                                Helper.Invoke(onComplete);
                             });
         }
 

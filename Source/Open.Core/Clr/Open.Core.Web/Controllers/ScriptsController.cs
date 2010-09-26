@@ -3,7 +3,7 @@
 namespace Open.Core.Web.Controllers
 {
     /// <summary>Controller for working with JavaScript files.</summary>
-    public class ScriptsController : ControllerBase
+    public partial class ScriptsController : ControllerBase
     {
         #region Head
         public const string Name = "Scripts";

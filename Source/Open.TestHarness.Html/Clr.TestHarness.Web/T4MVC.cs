@@ -22,6 +22,7 @@ using T4MVC;
 
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static class MVC {
+    public static Open.TestHarness.Web.Controllers.SamplesController Samples = new Open.TestHarness.Web.Controllers.T4MVC_SamplesController();
     public static Open.Testing.Web.Controllers.TestHarnessController TestHarness = new Open.Testing.Web.Controllers.T4MVC_TestHarnessController();
 }
 
@@ -218,7 +219,6 @@ namespace Links {
             private const string URLPATH = "~/Content/Images";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string AddPackage_FieldConnector_png = Url("AddPackage.FieldConnector.png");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Icons {
                 private const string URLPATH = "~/Content/Images/Icons";
@@ -254,21 +254,9 @@ namespace Links {
                           
             public static readonly string Open_Core_Lists_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Lists.min.js") ? Url("Open.Core.Lists.min.js") : Url("Open.Core.Lists.js");
                           
-            public static readonly string Open_Core_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.debug.min.js") ? Url("Open.Core.Test.debug.min.js") : Url("Open.Core.Test.debug.js");
-                          
-            public static readonly string Open_Core_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.min.js") ? Url("Open.Core.Test.min.js") : Url("Open.Core.Test.js");
-                          
-            public static readonly string Open_TestHarness_Bootstrap_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.Bootstrap.debug.min.js") ? Url("Open.TestHarness.Bootstrap.debug.min.js") : Url("Open.TestHarness.Bootstrap.debug.js");
-                          
-            public static readonly string Open_TestHarness_Bootstrap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.Bootstrap.min.js") ? Url("Open.TestHarness.Bootstrap.min.js") : Url("Open.TestHarness.Bootstrap.js");
-                          
             public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
                           
             public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");
-                          
-            public static readonly string TestHarness_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Test.debug.min.js") ? Url("TestHarness.Test.debug.min.js") : Url("TestHarness.Test.debug.js");
-                          
-            public static readonly string TestHarness_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Test.min.js") ? Url("TestHarness.Test.min.js") : Url("TestHarness.Test.js");
                           
         }
     

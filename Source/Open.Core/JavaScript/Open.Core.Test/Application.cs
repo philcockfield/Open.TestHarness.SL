@@ -28,7 +28,6 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(LogTest));
             TestHarness.RegisterClass(typeof(HtmlListTest));
             TestHarness.RegisterClass(typeof(ButtonBaseTest));
-            TestHarness.RegisterClass(typeof(SystemButtonTest));
             TestHarness.RegisterClass(typeof(LinkButtonTest));
         }
     }

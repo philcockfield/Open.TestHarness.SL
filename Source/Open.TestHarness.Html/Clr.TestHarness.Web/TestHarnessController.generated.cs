@@ -48,6 +48,7 @@ namespace Open.Testing.Web.Controllers {
         public class ActionNamesClass {
             public readonly string Bootstrap = "Bootstrap";
             public readonly string Index = "Index";
+            public readonly string Embed = "Embed";
             public readonly string Head = "Head";
             public readonly string Body = "Body";
             public readonly string GoogleAnalytics = "GoogleAnalytics";
@@ -67,12 +68,13 @@ namespace Open.Testing.Web.Controllers {
             public readonly string AddPackage = "~/Views/TestHarness/AddPackage.ascx";
             public readonly string Body = "~/Views/TestHarness/Body.ascx";
             public readonly string Bootstrap = "~/Views/TestHarness/Bootstrap.aspx";
+            public readonly string Embed = "~/Views/TestHarness/Embed.aspx";
             public readonly string GoogleAnalytics = "~/Views/TestHarness/GoogleAnalytics.ascx";
             public readonly string Head = "~/Views/TestHarness/Head.ascx";
-            public readonly string Index = "~/Views/TestHarness/Index.aspx";
             public readonly string Log = "~/Views/TestHarness/Log.ascx";
             public readonly string Main = "~/Views/TestHarness/Main.ascx";
             public readonly string MethodList = "~/Views/TestHarness/MethodList.ascx";
+            public readonly string Page = "~/Views/TestHarness/Page.aspx";
             public readonly string Sidebar = "~/Views/TestHarness/Sidebar.ascx";
         }
     }
@@ -88,6 +90,11 @@ namespace Open.Testing.Web.Controllers {
 
         public override System.Web.Mvc.ActionResult Index() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Index);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Embed() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Embed);
             return callInfo;
         }
 

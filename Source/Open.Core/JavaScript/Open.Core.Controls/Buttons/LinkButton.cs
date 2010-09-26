@@ -4,12 +4,12 @@ using jQueryApi;
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>A simple hyperlink that acts like a button.</summary>
-    public class LinkButton : ButtonBase
+    public class LinkButton : ButtonView
     {
         #region Head
         /// <summary>Constructor.</summary>
         /// <param name="htmlContent">The HTML content of the button.</param>
-        public LinkButton(string htmlContent): base(InitHtml(htmlContent))
+        public LinkButton(string htmlContent): base(null, InitHtml(htmlContent))
         {
             // Suppress the browser treating the ANCHOR like a link.
             Container.Click(delegate(jQueryEvent e) { e.PreventDefault(); });

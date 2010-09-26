@@ -19,13 +19,13 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace Open.Core.Web.Controllers {
-    public partial class CoreController {
+namespace Open.TestHarness.Web.Controllers {
+    public partial class SamplesController {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public CoreController() { }
+        public SamplesController() { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected CoreController(Dummy d) { }
+        protected SamplesController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result) {
@@ -33,26 +33,23 @@ namespace Open.Core.Web.Controllers {
             return RedirectToRoute(callInfo.RouteValueDictionary);
         }
 
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public System.Web.Mvc.ActionResult RenderUrl() {
-            return new T4MVC_ActionResult(Area, Name, ActionNames.RenderUrl);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public CoreController Actions { get { return MVC.Core; } }
+        public SamplesController Actions { get { return MVC.Samples; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "Core";
+        public readonly string Name = "Samples";
 
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionNamesClass ActionNames { get { return s_actions; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass {
-            public readonly string TestHarness = "TestHarness";
-            public readonly string RenderUrl = "RenderUrl";
+            public readonly string Templates = "Templates";
+            public readonly string ButtonTemplate = "ButtonTemplate";
+            public readonly string JQuery = "JQuery";
+            public readonly string Embed = "Embed";
         }
 
 
@@ -61,23 +58,34 @@ namespace Open.Core.Web.Controllers {
         public ViewNames Views { get { return s_views; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ViewNames {
-            public readonly string RenderUrl = "~/Views/Core/RenderUrl.ascx";
-            public readonly string TestHarness = "~/Views/Core/TestHarness.aspx";
+            public readonly string ButtonTemplate = "~/Views/Samples/ButtonTemplate.ascx";
+            public readonly string Embed = "~/Views/Samples/Embed.aspx";
+            public readonly string JQuery = "~/Views/Samples/JQuery.aspx";
+            public readonly string Templates = "~/Views/Samples/Templates.aspx";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public class T4MVC_CoreController: Open.Core.Web.Controllers.CoreController {
-        public T4MVC_CoreController() : base(Dummy.Instance) { }
+    public class T4MVC_SamplesController: Open.TestHarness.Web.Controllers.SamplesController {
+        public T4MVC_SamplesController() : base(Dummy.Instance) { }
 
-        public override System.Web.Mvc.ActionResult TestHarness() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.TestHarness);
+        public override System.Web.Mvc.ActionResult Templates() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Templates);
             return callInfo;
         }
 
-        public override System.Web.Mvc.ActionResult RenderUrl(string url) {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.RenderUrl);
-            callInfo.RouteValueDictionary.Add("url", url);
+        public override System.Web.Mvc.ActionResult ButtonTemplate() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.ButtonTemplate);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult JQuery() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.JQuery);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Embed() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Embed);
             return callInfo;
         }
 

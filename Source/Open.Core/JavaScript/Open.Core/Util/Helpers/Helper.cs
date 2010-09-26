@@ -76,7 +76,7 @@ namespace Open.Core
         #region Methods
         /// <summary>Invokes the given action if it's not Null/Undefined.</summary>
         /// <param name="action">The action to invoke.</param>
-        public static void InvokeOrDefault(Action action)
+        public static void Invoke(Action action)
         {
             if (!Script.IsNullOrUndefined(action)) action();
         }

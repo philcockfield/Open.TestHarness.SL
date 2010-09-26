@@ -74,7 +74,7 @@ namespace Open.Core.Helpers
             // Setup initial conditions.
             if (IsLoaded(library))
             {
-                Helper.InvokeOrDefault(callback);
+                Helper.Invoke(callback);
                 return;
             }
 
@@ -83,7 +83,7 @@ namespace Open.Core.Helpers
             loader.LoadComplete += delegate
                                        {
                                            loadedLibraries.Add(library);
-                                           Helper.InvokeOrDefault(callback);
+                                           Helper.Invoke(callback);
                                        };
             loader.AddUrl(Scripts.Url(library));
             loader.Start();

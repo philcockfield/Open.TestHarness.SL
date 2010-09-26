@@ -5,38 +5,49 @@ using jQueryApi;
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>Base class for buttons.</summary>
-    public abstract class ButtonBase : ViewBase, IButton
+    public abstract class ButtonView : ViewBase, IButtonView
     {
         #region Events
-        public event EventHandler Click;
-        private void FireClick() { if (Click != null) Click(this, new EventArgs()); }
 
-        public event EventHandler IsPressedChanged;
-        private void FireIsPressedChanged() { if (IsPressedChanged != null) IsPressedChanged(this, new EventArgs()); }
+        //TEMP 
+        //public event EventHandler Click;
+        //private void FireClick() { if (Click != null) Click(this, new EventArgs()); }
+
+        //public event EventHandler IsPressedChanged;
+        //private void FireIsPressedChanged() { if (IsPressedChanged != null) IsPressedChanged(this, new EventArgs()); }
         #endregion
 
         #region Head
-        public const string PropCanToggle = "CanToggle";
-        public const string PropState = "State";
-        public const string PropIsPressed = "IsPressed";
-        public const string PropIsMouseOver = "IsMouseOver";
-        public const string PropIsMouseDown = "IsMouseDown";
-
+        public const string PropModel = "Model";
         private readonly ButtonEventManager eventManager;
+        private readonly IButton model;
 
         /// <summary>Constructor.</summary>
         [AlternateSignature]
-        protected extern ButtonBase();
+        protected extern ButtonView();
 
         /// <summary>Constructor.</summary>
-        /// <param name="element">The HTML of the button.</param>
-        protected ButtonBase(jQueryObject element) : base(element)
+        /// <param name="model">The logical model of the button</param>
+        [AlternateSignature]
+        protected extern ButtonView(IButton model);
+
+        /// <summary>Constructor.</summary>
+        /// <param name="model">The logical model of the button</param>
+        /// <param name="container">The HTML container of the button.</param>
+        protected ButtonView(IButton model, jQueryObject container) : base(InitContainer(container))
         {
             // Setup initial conditions.
-            eventManager = new ButtonEventManager(this, delegate { InvokeClick(true); });
+            if (Script.IsNullOrUndefined(model)) this.model = new ButtonModel();
+            eventManager = new ButtonEventManager(this);
 
             // Wire up events.
             eventManager.PropertyChanged += OnEventManagerPropertyChanged;
+        }
+
+        private static jQueryObject InitContainer(jQueryObject container)
+        {
+            if (Script.IsNullOrUndefined(container)) container = Html.CreateSpan();
+            return container;
         }
 
         /// <summary>Finalize.</summary>
@@ -51,30 +62,14 @@ namespace Open.Core.Controls.Buttons
         private void OnEventManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             FirePropertyChanged(e.Property.Name);
-            if (e.Property.Name == PropIsPressed) FireIsPressedChanged();
         }
         #endregion
 
-        #region Properties : IButton
-        public bool CanToggle
-        {
-            get { return eventManager.CanToggle; }
-            set { eventManager.CanToggle = value; }
-        }
-
+        #region Properties : IButtonView
+        public IButton Model { get { return model; } }
         public ButtonState State { get { return eventManager.State; } }
-        public bool IsPressed { get { return eventManager.IsPressed; } }
         public bool IsMouseOver { get { return eventManager.IsMouseOver; } }
         public bool IsMouseDown { get { return eventManager.IsMouseDown; } }
-        #endregion
-
-        #region Methods : IButton
-        public void InvokeClick(bool force)
-        {
-            if (!IsEnabled && !force) return;
-            if (CanToggle) eventManager.IsPressed = !eventManager.IsPressed;
-            FireClick();
-        }
         #endregion
 
         #region Methods

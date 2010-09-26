@@ -101,7 +101,7 @@ namespace Open.Library.Jit
 
                                 // Finish up.
                                 isInitialized = true;
-                                Helper.InvokeOrDefault(callback);
+                                Helper.Invoke(callback);
                             });
         }
 

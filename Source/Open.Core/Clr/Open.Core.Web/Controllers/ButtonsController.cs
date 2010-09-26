@@ -8,7 +8,7 @@ using Open.Core.Controls.Buttons;
 namespace Open.Core.Web.Controllers
 {
     /// <summary>Provides HTML templates for client-side scripted buttons.</summary>
-    public class ButtonsController : ControllerBase
+    public partial class ButtonsController : ControllerBase
     {
         #region Head
         public const string Name = "Buttons";
@@ -18,7 +18,7 @@ namespace Open.Core.Web.Controllers
         #region Methods
         public virtual ActionResult Template(ButtonTemplate? type)
         {
-            return View();
+            return View(type == null ? null : "Template" + type.Value);
         }
         #endregion
     }

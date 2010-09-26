@@ -1,0 +1,235 @@
+﻿/*-------------- Panels --------------*/
+#testHarness
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+}
+
+#testHarness p.dropShadow
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+}
+
+#testHarnessSidebar p.title { cursor:default; }
+
+
+/*-------------- Fonts --------------*/
+#testHarness .titleFont 
+{ 
+    font-family: "myriad-pro-1","myriad-pro-2", "Segoe UI"; 
+}
+
+#testHarness .th_fieldLabel
+{ 
+    font-family: "myriad-pro-1","myriad-pro-2", "Segoe UI"; 
+    font-size:12pt;
+    font-weight:300;
+    opacity:0.6;
+}
+
+
+/*-------------- Toolbars --------------*/
+.th-toolbar
+{
+    background:#e4e4e4;
+    position:absolute;
+    left:0px;
+    top:0px;
+    right:0px;
+    height:34px;
+    border-color:#989898; 
+}
+
+
+/*-------------- Sidebar --------------*/
+#testHarnessSidebar
+{
+    background:#e0e5eb;
+    position:absolute;
+    left:0px;
+    top:0px;
+    bottom:0px;
+    width:250px;
+}
+#testHarnessSidebar .th-content { top:35px; overflow:hidden; }
+#testHarnessSidebar .th-sidebarRootList {  }
+#testHarnessSidebar img.th-backMask
+{
+    position:absolute;
+    display:none;
+}
+.c-listItem-label   /* Override: Open.Core.Lists */
+{
+    font-weight:300;
+    font-size:16pt;
+}
+
+
+/*-------------- Test List --------------*/
+#testHarnessSidebar .th-testList
+{
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    height:0px;
+    display:none;
+}
+#testHarnessSidebar .th-testList-tb { background:#d5d9df; }
+#testHarnessSidebar .th-testList .tb-height { height:34px; }
+#testHarnessSidebar p.title { position:relative; margin:0px 8px; }
+#testHarnessSidebar p.dropShadow { top:35px; }
+#testHarnessSidebar .th-testList-content { top:35px; }
+
+#testHarnessSidebar .th-testList button.runTests
+{
+    position:absolute;
+    right:5px;
+    top:5px;
+}
+
+
+/*-------------- Main --------------*/
+#testHarness .th-main
+{
+    position:absolute;
+    left:251px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+}
+#testHarness .th-main .th-main-tb
+{
+    background:#f1f1f1;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e4e4e4));
+    background: -moz-linear-gradient(top, #f4f4f4, #e4e4e4);
+}
+
+#testHarness .th-main .th-content
+{
+    top:35px;
+    overflow:hidden;
+}
+#testHarness .th-main .th-content .th-controlHost { overflow:auto; }
+
+
+/*-------------- Output Log --------------*/
+#testHarnessLog
+{
+    background:#f9fafb;
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    height:180px;
+}
+
+#testHarnessLog .c-log
+{
+    background:#f9fafb;
+    top:33px;
+}
+
+#testHarnessLog .th-log-tb { }
+#testHarnessLog .tb-height { height:32px; }
+#testHarnessLog .th-log-tb div.table { left:8px; height:32px; }
+#testHarnessLog p.dropShadow { top:33px; }
+#testHarnessLog .th-log-tb p.title
+{
+    font-size:16pt;
+    font-weight:300;
+    color:#828282;
+}
+
+#testHarnessLog ul.indentedList
+{
+    position:relative;
+    margin-left:35px;
+    margin-top:4px;
+    line-height:20px;
+}
+
+
+/*-------------- Add Package --------------*/
+#testHarness div.th_addPackage
+{
+    background: -webkit-gradient(linear, left top, left bottom, from(#eaeaea), to(#ffffff));
+    background: -moz-linear-gradient(top, #eaeaea, #ffffff);
+    width:100%;
+    height:100%;
+}
+#testHarness div.th_addPackage div.innerSlide
+{
+    position:absolute;
+    left:-630px;
+    width:100%;
+    height:100%;
+}
+#testHarness div.th_addPackage div.innerMargin { position:relative; margin:0px 50px 50px 50px; }
+#testHarness .th_addPackage div.titleFont  
+{
+    font-size:80pt; 
+    color:rgba(0,0,0,0.1);
+}
+#testHarness .th_addPackage .field_set
+{
+    position:relative;
+    margin-top:13px;
+    margin-left:30px;
+}
+#testHarness .th_addPackage .field_set input
+{
+    position:absolute;
+    top:25px;
+    width:100%;
+    padding-left:38px;
+}
+#testHarness .th_addPackage p.th_fieldLabel { position:absolute; left:5px; }
+#testHarness .th_addPackage div.fieldConnector  
+{
+    position:absolute; 
+    left:18px; 
+    top:66px;
+    width:48px;
+    height:70px;
+    border-left:solid 1px;
+    border-bottom:solid 1px;
+    border-color:#cccccc;
+    border-bottom-left-radius: 5px 5px;
+}
+
+
+/* AddPackage.ScriptUrl */
+#testHarness .th_addPackage div.field_set_scriptUrl
+{
+    position:absolute;
+    width:490px;
+}
+#testHarness .th_addPackage img.iconJavaScript
+{
+    position:absolute;
+    top:32px;
+    left:7px;    
+}
+
+/* AddPackage.InitMethod */
+#testHarness .th_addPackage div.field_set_initMethod
+{
+    position:absolute;
+    top:90px;
+    left:66px;    
+    width:432px;
+}
+#testHarness .th_addPackage img.iconMethod
+{
+    position:absolute;
+    top:40px;
+    left:7px;    
+}
+#testHarness .th_addPackage div.field_set_initMethod input { padding-left:28px; }

@@ -211,7 +211,7 @@ namespace Open.Core
             jQuery.Get(Helper.Url.PrependDomain(url), delegate(object data)
                                                           {
                                                               Container.Html(data.ToString());
-                                                              Helper.InvokeOrDefault(onComplete);
+                                                              Helper.Invoke(onComplete);
                                                           });
         }
         #endregion

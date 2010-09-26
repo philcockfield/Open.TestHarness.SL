@@ -21,8 +21,13 @@ namespace Open.Testing.Views
             Container.Append(addButton.Container);
 
             // Wire up events.
-            addButton.Click += delegate { Common.Events.FireAddPackageClick(); };
+            AddButton.Click += delegate { Common.Events.FireAddPackageClick(); };
         }
+        #endregion
+
+        #region Properties
+        /// <summary>Gets the button which causes the 'Add Package' screen to be shown.</summary>
+        public IButton AddButton { get { return addButton.Model; } }
         #endregion
     }
 }

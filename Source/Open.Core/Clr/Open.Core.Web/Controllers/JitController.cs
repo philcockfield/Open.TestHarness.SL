@@ -3,7 +3,7 @@
 namespace Open.Core.Web.Controllers
 {
     /// <summary>Controls the insertion of JIT visualization controls.</summary>
-    public class JitController : ControllerBase
+    public partial class JitController : ControllerBase
     {
         #region Head
         public const string Name = "Jit";

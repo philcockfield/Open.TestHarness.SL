@@ -27,9 +27,11 @@ namespace Open.Core.Helpers
             if (callback == null) return;
 
             // Check cache for pre-existing template.
+            string lowerUrl = url.ToLowerCase();
             Template template = Helper.Collection.First(templates, delegate(object o)
                                                                        {
-                                                                           return ((Template) o).Selector == selector;
+                                                                           Template item = (Template) o;
+                                                                           return item.Selector == selector;
                                                                        }) as Template;
             if (template != null)
             {
@@ -37,7 +39,7 @@ namespace Open.Core.Helpers
                 return;
             }
 
-            // NB: Download is only invoked once.
+            // NB: Actual download is only invoked once (logic handled within the 'Download' method).
             Download(url, delegate
                                 {
                                     // Add to cache.
@@ -61,7 +63,7 @@ namespace Open.Core.Helpers
             // Setup initial conditions.
             if (IsDownloaded(url))
             {
-                Helper.InvokeOrDefault(onComplete);
+                Helper.Invoke(onComplete);
                 return;
             }
 
@@ -73,7 +75,7 @@ namespace Open.Core.Helpers
                                     jQuery.Select(Html.Body).Append(data.ToString());
 
                                     // Finish up.
-                                    Helper.InvokeOrDefault(onComplete);
+                                    Helper.Invoke(onComplete);
                                 });
         }
         #endregion

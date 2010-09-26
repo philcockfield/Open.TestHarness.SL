@@ -28,13 +28,13 @@ namespace Open.Core.Helpers
             // Setup initial conditions.
             if (IsBaseLoaded)
             {
-                Helper.InvokeOrDefault(callback);
+                Helper.Invoke(callback);
                 return;
             }
 
             // Download scripts.
             ScriptLoader loader = GetBaseLoader();
-            loader.LoadComplete += delegate { Helper.InvokeOrDefault(callback); };
+            loader.LoadComplete += delegate { Helper.Invoke(callback); };
             loader.Start();
         }
         private ScriptLoader GetBaseLoader()
@@ -54,7 +54,7 @@ namespace Open.Core.Helpers
             // Setup initial conditions.
             if (IsHypertreeLoaded)
             {
-                Helper.InvokeOrDefault(callback);
+                Helper.Invoke(callback);
                 return;
             }
 
@@ -63,7 +63,7 @@ namespace Open.Core.Helpers
             loader.LoadComplete += delegate
                                                     {
                                                         isHypertreeLoaded = true;
-                                                        Helper.InvokeOrDefault(callback);
+                                                        Helper.Invoke(callback);
                                                     };
             loader.AddLoader(GetBaseLoader());
             loader.AddUrl(Helper.ScriptLoader.Url(JitFolder, "HyperTree", true));

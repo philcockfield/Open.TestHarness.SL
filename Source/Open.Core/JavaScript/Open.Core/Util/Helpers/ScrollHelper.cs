@@ -25,7 +25,7 @@ namespace Open.Core.Helpers
                                 easing, 
                                 delegate
                                     {
-                                        Helper.InvokeOrDefault(onComplete);
+                                        Helper.Invoke(onComplete);
                                     });
         }
     }

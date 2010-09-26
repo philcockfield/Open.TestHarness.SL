@@ -42,11 +42,11 @@ namespace Open.Core.Web
         /// <summary>Gets or sets whether the local-host URL should be used.</summary>
         public bool UseLocalHost
         {
-            get 
-            { 
-                return useLocalHost != null 
-                                ? useLocalHost.Value 
-                                : (useLocalHost = HttpContext.Current.Request.IsLocal).Value; 
+            get
+            {
+                return useLocalHost != null
+                                ? useLocalHost.Value
+                                : (useLocalHost = HttpContext.Current.Request.IsLocal).Value;
             }
         }
         #endregion
@@ -54,7 +54,7 @@ namespace Open.Core.Web
         #region Methods
         /// <summary>Issues a Get request to the target server to retreive data.</summary>
         /// <param name="urlPath">The part of the path after the base Url (see the 'Url' property).</param>
-        public string Get(string urlPath)
+        public HttpResult Get(string urlPath)
         {
             // Setup initial conditions.
             if (urlPath.IsNullOrEmpty(true)) return null;
@@ -69,7 +69,7 @@ namespace Open.Core.Web
                     StreamReader reader = new StreamReader(response.Content.ReadAsStream());
                     var text = reader.ReadToEnd();
                     reader.Dispose();
-                    return text;
+                    return new HttpResult(response.Content.ContentType, text);
                 }
             }
         }

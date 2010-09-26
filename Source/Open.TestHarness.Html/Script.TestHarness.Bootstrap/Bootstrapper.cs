@@ -87,7 +87,7 @@ namespace Open.Testing.Bootstrap
             loader.AddUrl(Url(UrlTestHarnessScript));
 
             // Start the load operation.
-            loader.LoadComplete += delegate { Helper.InvokeOrDefault(onComplete); };
+            loader.LoadComplete += delegate { Helper.Invoke(onComplete); };
             loader.Start();
         }
 
@@ -96,7 +96,7 @@ namespace Open.Testing.Bootstrap
             jQuery.Get(Url(UrlBody), delegate(object data)
                                     {
                                         jQuery.Select(Html.Body).Html(data.ToString());
-                                        Helper.InvokeOrDefault(onComplete);
+                                        Helper.Invoke(onComplete);
                                     });
         }
 

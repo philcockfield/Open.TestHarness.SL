@@ -23,7 +23,6 @@ namespace Open.Testing.Views
         private readonly ListTreeView listView;
         private readonly ListItem rootNode;
         private readonly TestHarnessEvents events;
-        private readonly SystemButton btnRun;
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing div.</param>

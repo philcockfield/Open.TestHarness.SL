@@ -65,7 +65,7 @@ namespace Open.Testing.Controllers
                 EffectEasing.Swing,
                 delegate
                             {
-                                Helper.InvokeOrDefault(onComplete);
+                                Helper.Invoke(onComplete);
                             });
         }
 

@@ -3,7 +3,7 @@
 namespace Open.Core.Web.Controllers
 {
     /// <summary>Provides HTML for the 'Open.Core.Controls' script library.</summary>
-    public class ControlsController : ControllerBase
+    public partial class ControlsController : ControllerBase
     {
         #region Head
         public const string Name = "Controls";

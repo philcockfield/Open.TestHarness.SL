@@ -73,7 +73,7 @@ namespace Open.Testing.Models
             // Setup initial conditions.);
             if (IsLoaded)
             {
-                Helper.InvokeOrDefault(onComplete);
+                Helper.Invoke(onComplete);
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace Open.Testing.Models
 
                                                 // Finish up.
                                                 isLoaded = Succeeded;
-                                                Helper.InvokeOrDefault(onComplete);
+                                                Helper.Invoke(onComplete);
                                             });
         }
         #endregion

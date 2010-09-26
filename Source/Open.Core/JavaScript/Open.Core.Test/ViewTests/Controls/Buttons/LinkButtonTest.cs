@@ -15,9 +15,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             link = new LinkButton("My Link Button");
             link.Width = 120;
             TestHarness.AddControl(link);
-
-            link.Click += delegate { Log.Info("!! Click"); };
-
+            link.Model.Click += delegate { Log.Info("!! Click"); };
         }
         #endregion
     }

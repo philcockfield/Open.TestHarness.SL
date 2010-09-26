@@ -18,15 +18,21 @@ namespace Open.Testing.Web.Controllers
 
         #region Methods : Actions
         /// <summary>Page containing the bootstrapper script.</summary>
-        /// <returns></returns>
         public virtual ActionResult Bootstrap() { return View(ViewModel); }
 
-        /// <summary>The root of the TestHarness.</summary>
+        /// <summary>The TestHarness page.</summary>
         public virtual ActionResult Index()
         {
             ViewModel.AppTitle = GetResource(KeyAppTitle);
-            return View(ViewModel);
+            return View(MVC.TestHarness.Views.Page, ViewModel);
         }
+
+        /// <summary>The root of the TestHarness with all CSS and script links (but not in a page structure).</summary>
+        public virtual ActionResult Embed()
+        {
+            return View(MVC.TestHarness.Views.Embed, ViewModel);
+        }
+
 
         /// <summary>The HEAD content.</summary>
         public virtual ActionResult Head()

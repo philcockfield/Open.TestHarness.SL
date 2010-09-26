@@ -105,7 +105,7 @@ namespace Open.Testing.Controllers
                     delegate
                             {
                                 if (!isShowing) Css.SetVisible(methodList.Container, false);
-                                Helper.InvokeOrDefault(onComplete);
+                                Helper.Invoke(onComplete);
                             });
         }
 

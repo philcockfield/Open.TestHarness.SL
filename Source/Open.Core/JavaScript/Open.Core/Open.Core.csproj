@@ -53,6 +53,7 @@
     <Compile Include="Composite\DiContainer.cs" />
     <Compile Include="Declarations\Enums\CssEnums.cs" />
     <Compile Include="Declarations\Enums\HtmlEnums.cs" />
+    <Compile Include="Declarations\Interfaces\IButtonView.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Templating\Template.cs" />

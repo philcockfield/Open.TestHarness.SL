@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core
@@ -19,6 +20,7 @@ namespace Open.Core
 
         /// <summary>Constructor.</summary>
         /// <param name="selector">The CSS selector for the script block containing the template HTML.</param>
+        /// <param name="url">Optional.  The URL that the tempate was retrieved from.</param>
         public Template(string selector)
         {
             // Setup initial conditions.
