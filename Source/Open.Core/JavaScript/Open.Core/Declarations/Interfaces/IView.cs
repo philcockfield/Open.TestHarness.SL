@@ -35,6 +35,9 @@ namespace Open.Core
         /// <summary>Gets or sets whether the control is enabled.</summary>
         bool IsEnabled { get; set; }
 
+        /// <summary>Gets or sets whether the control is currently focused.</summary>
+        bool IsFocused { get; }
+
         /// <summary>Gets or sets whether the control is visible.</summary>
         bool IsVisible { get; set; }
         #endregion

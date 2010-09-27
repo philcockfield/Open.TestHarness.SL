@@ -31,6 +31,7 @@ namespace Open.Core
         public const string None = "none";
         public const string Relative = "relative";
         public const string Absolute = "absolute";
+        public const string Transparent = "transparent";
 
         // Units.
         public const string Px = "px";
@@ -82,7 +83,7 @@ namespace Open.Core
         /// <param name="element">The element to add or remove from.</param>
         /// <param name="cssClass">The CSS class name.</param>
         /// <param name="add">Flag indicating whether the class should be added (true) or removed (false).</param>
-        public static void AddOrRemoveClass(jQueryObject element, string cssClass, bool add)
+        public static jQueryObject AddOrRemoveClass(jQueryObject element, string cssClass, bool add)
         {
             if (add)
             {
@@ -92,6 +93,7 @@ namespace Open.Core
             {
                 element.RemoveClass(cssClass);
             }
+            return element;
         }
 
         /// <summary>Copies the CSS classes from one element to another.</summary>
@@ -107,13 +109,14 @@ namespace Open.Core
         /// <summary>Adds a single class, or multiple classs from a space seperated list.</summary>
         /// <param name="target">The target element to add to.</param>
         /// <param name="classValue">The class attribute value to apply.</param>
-        public static void AddClasses(jQueryObject target, string classValue)
+        public static jQueryObject AddClasses(jQueryObject target, string classValue)
         {
-            if (string.IsNullOrEmpty(classValue)) return;
+            if (string.IsNullOrEmpty(classValue)) return target;
             foreach (string className in classValue.Split(" "))
             {
                 target.AddClass(className);
             }
+            return target;
         }
         #endregion
 
@@ -153,58 +156,64 @@ namespace Open.Core
         #region Methods : Assign Styles
         /// <summary>Sets the given element to absolute positioning and sets all edges to 0px.</summary>
         /// <param name="element">The element to update.</param>
-        public static void AbsoluteFill(jQueryObject element)
+        public static jQueryObject AbsoluteFill(jQueryObject element)
         {
             element.CSS(Position, Absolute);
             element.CSS(Left, "0px");
             element.CSS(Top, "0px");
             element.CSS(Right, "0px");
             element.CSS(Bottom, "0px");
+            return element;
         }
 
         /// <summary>Sets the overflow style on the given element.</summary>
         /// <param name="element">The element to update.</param>
         /// <param name="value">The overflow value.</param>
-        public static void SetOverflow(jQueryObject element, CssOverflow value)
+        public static jQueryObject SetOverflow(jQueryObject element, CssOverflow value)
         {
             element.CSS(Overflow, value.ToString());
+            return element;
         }
 
         /// <summary>Applies a drop shadow.</summary>
         /// <param name="element">The element to update.</param>
         /// <param name="opacity">Opacity of the drop-shadow (005, 010, 020, 030, 040, 050, 060).</param>
-        public static void ApplyDropshadow(jQueryObject element, string opacity)
+        public static jQueryObject ApplyDropshadow(jQueryObject element, string opacity)
         {
             element.CSS("background-image", string.Format("url(/Open.Core/Images/DropShadow.12.{0}.png)", opacity));
             element.CSS("background-repeat", "repeat-x");
             element.CSS("height", "12px");
+            return element;
         }
 
         /// <summary>Shows or hides the given element.</summary>
         /// <param name="element">The element to effect.</param>
         /// <param name="isVisible">The desired visibility state.</param>
-        public static void SetVisible(jQueryObject element, bool isVisible)
+        public static jQueryObject SetVisible(jQueryObject element, bool isVisible)
         {
             element.CSS(Display, isVisible ? Block : None);
+            return element;
         }
 
         /// <summary>Sets the size of the element.</summary>
         /// <param name="element">The element to effect.</param>
         /// <param name="width">The pixel width of the element.</param>
         /// <param name="height">The pixel height of the element.</param>
-        public static void SetSize(jQueryObject element, int width, int height)
+        public static jQueryObject SetSize(jQueryObject element, int width, int height)
         {
             element.CSS(Width, width + Px);
             element.CSS(Height, height + Px);
+            return element;
         }
 
         /// <summary>Applies opacity.</summary>
         /// <param name="element">The element to effect.</param>
         /// <param name="percent">The opacity percentage (0..1).</param>
-        public static void SetOpacity(jQueryObject element, double percent)
+        public static jQueryObject SetOpacity(jQueryObject element, double percent)
         {
             percent = Helper.NumberDouble.WithinBounds(percent, 0, 1);
             element.CSS(Opacity, percent.ToString());
+            return element;
         }
         #endregion
 
@@ -212,28 +221,31 @@ namespace Open.Core
         /// <summary>Sets the left and top position of an element so it is centered within another element.</summary>
         /// <param name="element">The element to center.</param>
         /// <param name="within">The element to center within.</param>
-        public static void Center(jQueryObject element, jQueryObject within)
+        public static jQueryObject Center(jQueryObject element, jQueryObject within)
         {
             CenterHorizontally(element, within);
             CenterVertically(element, within);
+            return element;
         }
 
         /// <summary>Sets the left position of an element so it is horizontally centered within another element.</summary>
         /// <param name="element">The element to horizontally center.</param>
         /// <param name="within">The element to center within.</param>
-        public static void CenterHorizontally(jQueryObject element, jQueryObject within)
+        public static jQueryObject CenterHorizontally(jQueryObject element, jQueryObject within)
         {
             int left = (within.GetWidth() / 2) - (element.GetWidth() / 2);
             element.CSS(Css.Left, left + "px");
+            return element;
         }
 
         /// <summary>Sets the top position of an element so it is vertically centered within another element.</summary>
         /// <param name="element">The element to vertically center.</param>
         /// <param name="within">The element to center within.</param>
-        public static void CenterVertically(jQueryObject element, jQueryObject within)
+        public static jQueryObject CenterVertically(jQueryObject element, jQueryObject within)
         {
             int top = (within.GetHeight() / 2) - (element.GetHeight() / 2);
             element.CSS(Css.Top, top + "px");
+            return element;
         }
         #endregion
     }
@@ -242,6 +254,7 @@ namespace Open.Core
     {
         public readonly string TitleFont = "titleFont";
         public readonly string AbsoluteFill = "absoluteFill";
+        public readonly string NoSelect = "noSelect";
     }
 
     public class CoreCssUrls

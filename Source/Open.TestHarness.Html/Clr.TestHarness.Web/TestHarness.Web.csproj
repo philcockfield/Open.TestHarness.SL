@@ -86,6 +86,7 @@
     <Compile Include="TestHarnessController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Content Include="Content\Css\Sample.Button.css" />
     <Content Include="Content\Scripts\mscorlib.debug.js" />
     <Content Include="Content\Scripts\mscorlib.js" />
     <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
@@ -99,7 +100,6 @@
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
     <Content Include="Views\TestHarness\Embed.aspx" />
-    <Content Include="__TEMP.aspx" />
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Images\Icons\Icon.Assembly.Small.png" />
     <Content Include="Content\Images\Icons\Icon.Class.Small.png" />

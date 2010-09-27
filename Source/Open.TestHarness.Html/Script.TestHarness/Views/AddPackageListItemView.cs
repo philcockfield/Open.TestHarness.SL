@@ -18,7 +18,7 @@ namespace Open.Testing.Views
 
             // Insert the Add button.
             addButton = new LinkButton(StringLibrary.Add);
-            Container.Append(addButton.Container);
+//TEMP             Container.Append(addButton.Container);
 
             // Wire up events.
             AddButton.Click += delegate { Common.Events.FireAddPackageClick(); };

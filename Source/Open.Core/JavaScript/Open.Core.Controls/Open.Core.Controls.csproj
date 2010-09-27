@@ -51,11 +51,13 @@
     <Compile Include="..\..\Clr\Open.Core.Web\Code\Declarations\Enumerations.Controls.shared.cs">
       <Link>Declarations\Enumerations.Controls.shared.cs</Link>
     </Compile>
-    <Compile Include="Buttons\ButtonView.cs" />
-    <Compile Include="Buttons\ButtonModel.cs" />
-    <Compile Include="Buttons\Internal\ButtonEventManager.cs" />
-    <Compile Include="Buttons\Internal\ButtonTemplates.cs" />
-    <Compile Include="Buttons\Internal\StateContent.cs" />
+    <Compile Include="Buttons\Infrastructure\ButtonView.cs" />
+    <Compile Include="Buttons\Infrastructure\ButtonModel.cs" />
+    <Compile Include="Buttons\Controllers\ButtonEventController.cs" />
+    <Compile Include="Buttons\Controllers\ButtonContentController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Buttons\Infrastructure\ButtonStateContent.cs" />
     <Compile Include="Buttons\LinkButton.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />
     <Compile Include="Output\LogView.cs" />

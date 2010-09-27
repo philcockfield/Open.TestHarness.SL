@@ -37,6 +37,7 @@ namespace Open.Core
         public const string PropWidth = "Width";
         public const string PropHeight = "Height";
         public const string PropIsEnabled = "IsEnabled";
+        public const string PropIsFocused = "IsFocused";
 
         private readonly jQueryObject container;
 
@@ -64,6 +65,13 @@ namespace Open.Core
         {
             get { return (bool)Get(PropIsEnabled, true); }
             set { if (Set(PropIsEnabled, value, true)) FireIsEnabledChanged(); }
+        }
+
+        // TODO : IsFocused on ViewBase
+        public bool IsFocused
+        {
+            get { return (bool) Get(PropIsFocused, false); }
+            private set { Set(PropIsFocused, value, false); }
         }
 
         public bool IsVisible

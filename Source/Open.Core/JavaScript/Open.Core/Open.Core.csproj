@@ -51,8 +51,8 @@
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\DiContainer.cs" />
-    <Compile Include="Declarations\Enums\CssEnums.cs" />
-    <Compile Include="Declarations\Enums\HtmlEnums.cs" />
+    <Compile Include="Declarations\Enums\Enums.Css.cs" />
+    <Compile Include="Declarations\Enums\Enums.Html.cs" />
     <Compile Include="Declarations\Interfaces\IButtonView.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />

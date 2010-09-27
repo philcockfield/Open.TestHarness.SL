@@ -17,17 +17,16 @@ namespace Open.Core.Helpers
         #endregion
 
         #region Methods
-        /// <summary>Retrieves a Template instance (only downloading it if required).</summary>
+        /// <summary>Retrieves a Template singleton instance (downloading it if it has not already been pulled).</summary>
         /// <param name="url">The URL that contains the template.</param>
         /// <param name="selector">The CSS selector for the script block containing the template HTML.</param>
         /// <param name="callback">Callback to return the template in.</param>
-        public void Get(string url, string selector, TemplateCallback callback)
+        public void GetAsync(string url, string selector, TemplateCallback callback)
         {
             // Setup initial conditions.
             if (callback == null) return;
 
             // Check cache for pre-existing template.
-            string lowerUrl = url.ToLowerCase();
             Template template = Helper.Collection.First(templates, delegate(object o)
                                                                        {
                                                                            Template item = (Template) o;

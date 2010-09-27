@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
-using jQueryApi;
 
 namespace Open.Core.Controls.Buttons
 {
@@ -19,11 +17,6 @@ namespace Open.Core.Controls.Buttons
         public const string PropIsEnabled = "IsEnabled";
         public const string PropCanToggle = "CanToggle";
         public const string PropIsPressed = "IsPressed";
-
-        /// <summary>Constructor.</summary>
-        public ButtonModel()
-        {
-        }
         #endregion
 
         #region Properties : IButton
@@ -36,7 +29,14 @@ namespace Open.Core.Controls.Buttons
         public bool CanToggle
         {
             get { return (bool) Get(PropCanToggle, false); }
-            set { Set(PropCanToggle, value, false); }
+            set
+            {
+                if(Set(PropCanToggle, value, false))
+                {
+                    // If the button can no longer toggle, and it's in a pressed state, release the press.
+                    if (value == false && IsPressed) IsPressed = false;
+                }
+            }
         }
 
         public bool IsPressed

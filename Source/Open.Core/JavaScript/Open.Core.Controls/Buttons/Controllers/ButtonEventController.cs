@@ -4,19 +4,16 @@ using jQueryApi;
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>Manages the events for a button.</summary>
-    internal class ButtonEventManager : ModelBase
+    internal class ButtonEventController : ControllerBase
     {
         #region Head
-        public const string PropState = "State";
-        public const string PropIsMouseOver = "IsMouseOver";
-        public const string PropIsMouseDown = "IsMouseDown";
-
         private readonly ButtonView control;
         private bool ignoreIsPressedChanged;
 
         /// <summary>Constructor.</summary>
         /// <param name="control">The clickable button element.</param>
-        public ButtonEventManager(ButtonView control)
+        /// <param name="divMask">The mask element used to monitor mouse events with.</param>
+        public ButtonEventController(ButtonView control, jQueryObject divMask)
         {
             // Setup initial conditions.
             this.control = control;
@@ -25,11 +22,10 @@ namespace Open.Core.Controls.Buttons
             Model.IsPressedChanged += OnModelIsPressedChanged;
 
             // -- Mouse events.
-            jQueryObject element = control.Container;
-            element.MouseOver(OnMouseOver);
-            element.MouseOut(OnMouseOut);
-            element.MouseDown(OnMouseDown);
-            element.MouseUp(OnMouseUp);
+            divMask.MouseOver(OnMouseOver);
+            divMask.MouseOut(OnMouseOut);
+            divMask.MouseDown(OnMouseDown);
+            divMask.MouseUp(OnMouseUp);
         }
 
         protected override void OnDisposed()
@@ -62,8 +58,8 @@ namespace Open.Core.Controls.Buttons
         {
             bool wasMouseDown = IsMouseDown;
             IsMouseDown = false;
-            UpdateMouseState();
             if (IsEnabled && IsMouseOver && wasMouseDown) InvokeClick();
+            UpdateMouseState();
         }
 
         private void OnModelIsPressedChanged(object sender, EventArgs e)
@@ -76,20 +72,20 @@ namespace Open.Core.Controls.Buttons
         #region Properties : IButtonView
         public ButtonState State
         {
-            get { return (ButtonState)Get(PropState, ButtonState.Normal); }
-            private set { Set(PropState, value, ButtonState.Normal); }
+            get { return (ButtonState)Get(ButtonView.PropState, ButtonState.Normal); }
+            private set { Set(ButtonView.PropState, value, ButtonState.Normal); }
         }
 
         public bool IsMouseOver
         {
-            get { return (bool)Get(PropIsMouseOver, false); }
-            private set { Set(PropIsMouseOver, value, false); }
+            get { return (bool)Get(ButtonView.PropIsMouseOver, false); }
+            private set { Set(ButtonView.PropIsMouseOver, value, false); }
         }
 
         public bool IsMouseDown
         {
-            get { return (bool)Get(PropIsMouseDown, false); }
-            private set { Set(PropIsMouseDown, value, false); }
+            get { return (bool)Get(ButtonView.PropIsMouseDown, false); }
+            private set { Set(ButtonView.PropIsMouseDown, value, false); }
         }
         #endregion
 
@@ -112,7 +108,11 @@ namespace Open.Core.Controls.Buttons
             {
                 State = ButtonState.Normal;
             }
-            else if ((IsMouseOver && IsMouseDown) || Model.IsPressed)
+            else if ((IsMouseOver && IsMouseDown))
+            {
+                State = ButtonState.MouseDown;
+            }
+            else if (Model.IsPressed)
             {
                 State = ButtonState.Pressed;
             }

@@ -59,6 +59,13 @@ namespace Open.Core.Helpers
             return count;
         }
 
+        /// <summary>Gets the total number of items within the given collection.</summary>
+        /// <param name="collection">The collection to count.</param>
+        public int Count(IEnumerable collection)
+        {
+            return Total(collection, delegate(object o) { return true; });
+        }
+
         /// <summary>Clears the collection, disposing of all disposable children.</summary>
         /// <param name="collection">The collection to clear and dispose.</param>
         public void DisposeAndClear(ArrayList collection)

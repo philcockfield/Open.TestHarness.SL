@@ -21,18 +21,27 @@ namespace Open.Core
         Height = 1
     }
 
-    /// <summary>The various kinds of mouse-related states a button can be in.</summary>
-    public enum ButtonState
-    {
-        Normal = 0,
-        MouseOver = 1,
-        Pressed = 2,
-    }
-
     /// <summary>Flags indicating the various strategies for inserting content.</summary>
     public enum InsertMode
     {
         /// <summary>The target element is replaced with the inserted content.</summary>
         Replace = 0
+    }
+
+    /// <summary>The various kinds of mouse-related states a button can be in.</summary>
+    public enum ButtonState
+    {
+        Normal = 0,
+        MouseOver = 1,
+        MouseDown = 2,
+        Pressed = 3,
+    }
+
+    /// <summary>A boolean value that can also be null.</summary>
+    public enum NullableBool
+    {
+        Neither = -0,
+        No = 0,
+        Yes = 1,
     }
 }

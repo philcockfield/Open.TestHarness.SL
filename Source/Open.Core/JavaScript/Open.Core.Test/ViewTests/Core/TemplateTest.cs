@@ -37,7 +37,7 @@ namespace Open.Core.Test.ViewTests.Core
         public void GetTemplate()
         {
             Log.Info(string.Format("Getting template '{0}' at {1}", SelectorSample1, urlLink));
-            Helper.Template.Get(Url, SelectorSample1, delegate(Template template)
+            Helper.Template.GetAsync(Url, SelectorSample1, delegate(Template template)
                                                           {
                                                               Log.Success("Retrieved. Template result: " + template.ToString());
                                                           });
@@ -46,7 +46,7 @@ namespace Open.Core.Test.ViewTests.Core
         public void RenderTemplate()
         {
             Log.Info("Rendering...");
-            Helper.Template.Get(Url, SelectorSample1, delegate(Template template)
+            Helper.Template.GetAsync(Url, SelectorSample1, delegate(Template template)
                     {
                         Log.Info("Template: " + template.ToString());
                         
@@ -63,7 +63,7 @@ namespace Open.Core.Test.ViewTests.Core
         public void ToHtml()
         {
             Log.Info("Rendering...");
-            Helper.Template.Get(Url, SelectorSample1, delegate(Template template)
+            Helper.Template.GetAsync(Url, SelectorSample1, delegate(Template template)
                     {
                         Log.Info("Template: " + template.ToString());
 
