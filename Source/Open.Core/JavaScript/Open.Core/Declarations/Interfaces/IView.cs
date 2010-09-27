@@ -15,6 +15,12 @@ namespace Open.Core
 
         /// <summary>Fires when the size changes.</summary>
         event EventHandler SizeChanged;
+
+        /// <summary>Fires when the control recieves keyboard focus.</summary>
+        event EventHandler GotFocus;
+
+        /// <summary>Fires when the control loses keyboard focus (blur).</summary>
+        event EventHandler LostFocus;
         #endregion
 
         #region Main
@@ -35,11 +41,27 @@ namespace Open.Core
         /// <summary>Gets or sets whether the control is enabled.</summary>
         bool IsEnabled { get; set; }
 
+        /// <summary>Gets or sets whether the control is visible.</summary>
+        bool IsVisible { get; set; }
+        #endregion
+
+        #region Focus
         /// <summary>Gets or sets whether the control is currently focused.</summary>
         bool IsFocused { get; }
 
-        /// <summary>Gets or sets whether the control is visible.</summary>
-        bool IsVisible { get; set; }
+        /// <summary>Gets or sets whether the control can recieve keyboard focus.</summary>
+        /// <remarks>This causes the 'TabIndex' property to change.</remarks>
+        bool CanFocus { get; set; }
+
+        /// <summary>Gets or sets the index of the control within the keyboard tab order.</summary>
+        /// <remarks>-1:Not in tab order. 0:In tab order (source order). >0: Explicit ordering (overrides source order).</remarks>
+        int TabIndex { get; set; }
+
+        /// <summary>Gives keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
+        bool Focus();
+
+        /// <summary>Removes keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
+        bool Blur();
         #endregion
 
         #region Styles

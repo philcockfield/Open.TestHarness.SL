@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using jQueryApi;
 using Open.Testing;
 
 namespace Open.Core.Test.ViewTests.Core
@@ -18,6 +19,9 @@ namespace Open.Core.Test.ViewTests.Core
             TestHarness.AddControl(view);
 
             view.SizeChanged += delegate { Log.Info("!! SizeChanged - Width: " + view.Width + ", Height: " + view.Height); };
+            view.GotFocus += delegate { view.Text = "GotFocus"; };
+            view.LostFocus += delegate { view.Text = "LostFocus"; };
+//            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { Log.Info("!! PropertyChanged: " + args.Property.Name + " | IsFocused: " + view.IsFocused); };
         }
         public void ClassCleanup() { view.Dispose(); }
 
@@ -46,12 +50,28 @@ namespace Open.Core.Test.ViewTests.Core
         {
             if (view.Width == 150)
             {
-              view.SetSize(400, 300);  
+                view.SetSize(400, 300);
             }
             else
             {
                 view.SetSize(150, 100);
             }
+        }
+
+        public void Toggle__CanFocus()
+        {
+            view.CanFocus = !view.CanFocus;
+            Write_Properties();
+        }
+
+        public void Focus() { Log.Info("Focus: " + view.Focus()); }
+        public void Blur() { Log.Info("Blur: " + view.Blur()); }
+
+        public void Write_Properties()
+        {
+            Log.Info("CanFocus: " + view.CanFocus);
+            Log.Info("TabIndex: " + view.TabIndex);
+            Log.Info("IsFocused: " + view.IsFocused);
         }
         #endregion
     }

@@ -28,6 +28,12 @@ namespace Open.Core
             OnSizeChanged();
             if (SizeChanged != null) SizeChanged(this, new EventArgs());
         }
+
+        public event EventHandler GotFocus;
+        private void FireGotFocus(){if (GotFocus != null) GotFocus(this, new EventArgs());}
+
+        public event EventHandler LostFocus;
+        private void FireLostFocus(){if (LostFocus != null) LostFocus(this, new EventArgs());}
         #endregion
 
         #region Head
@@ -38,8 +44,11 @@ namespace Open.Core
         public const string PropHeight = "Height";
         public const string PropIsEnabled = "IsEnabled";
         public const string PropIsFocused = "IsFocused";
+        public const string PropCanFocus = "CanFocus";
+        public const string PropTabIndex = "TabIndex";
 
         private readonly jQueryObject container;
+        private bool tabIndexChanging;
 
         /// <summary>Constructor.</summary>
         [AlternateSignature]
@@ -49,8 +58,29 @@ namespace Open.Core
         /// <param name="container">The root HTML element of the control (if null a <DIV></DIV> is generated).</param>
         protected ViewBase(jQueryObject container)
         {
+            // Setup initial conditions.
             if (Script.IsNullOrUndefined(container)) container = Html.CreateDiv();
             this.container = container;
+
+            // Wire up events.
+            Container.Bind(Html.Focus, delegate(jQueryEvent e) { HandleFocusChanged(true); });
+            Container.Bind(Html.Blur, delegate(jQueryEvent e) { HandleFocusChanged(false); });
+        }
+
+        /// <summary>Destructor.</summary>
+        protected override void OnDisposed()
+        {
+            Container.Unbind(Html.Focus);
+            Container.Unbind(Html.Blur);
+            base.OnDisposed();
+        }
+        #endregion
+
+        #region Event Handlers
+        private void HandleFocusChanged(bool gotFocus)
+        {
+            IsFocused = gotFocus;
+            if (gotFocus) { FireGotFocus(); } else { FireLostFocus(); }
         }
         #endregion
 
@@ -67,13 +97,6 @@ namespace Open.Core
             set { if (Set(PropIsEnabled, value, true)) FireIsEnabledChanged(); }
         }
 
-        // TODO : IsFocused on ViewBase
-        public bool IsFocused
-        {
-            get { return (bool) Get(PropIsFocused, false); }
-            private set { Set(PropIsFocused, value, false); }
-        }
-
         public bool IsVisible
         {
             get { return Container == null ? false : Css.IsVisible(Container); }
@@ -83,6 +106,62 @@ namespace Open.Core
                 SetCss(Css.Display, value ? Css.Block : Css.None);
                 FireIsVisibleChanged();
                 FirePropertyChanged(PropIsVisible);
+            }
+        }
+        #endregion
+
+        #region Properties : IView (Focus)
+        public bool IsFocused
+        {
+            get { return (bool)Get(PropIsFocused, false); }
+            private set { Set(PropIsFocused, value, false); }
+        }
+
+        public bool CanFocus
+        {
+            get { return TabIndex >= 0; }
+            set 
+            {
+                // Setup initial conditions.
+                if (value == CanFocus) return;
+
+                // Update the value (stored in TabIndex).
+                int tabIndex = TabIndex;
+                if (value && tabIndex < 0) TabIndex = 0;
+                if (!value && tabIndex >= 0) TabIndex = -1;
+
+                // Finish up.
+                FirePropertyChanged(PropCanFocus);
+                IsFocused = false;
+            }
+        }
+
+        public int TabIndex
+        {
+            get
+            {
+                object value = Container.GetAttribute(Html.TabIndex);
+                return Script.IsNullOrUndefined(value) ? -1 : (int)value;
+            }
+            set
+            {
+                if (tabIndexChanging) return;
+                if (value == TabIndex) return;
+                if (value < 0)
+                {
+                    if (CanFocus)
+                    {
+                        tabIndexChanging = true;
+                        CanFocus = false;
+                        tabIndexChanging = false;
+                    }
+                    Container.RemoveAttr(Html.TabIndex);
+                }
+                else
+                {
+                    Container.Attribute(Html.TabIndex, value.ToString());
+                }
+                FirePropertyChanged(PropTabIndex);
             }
         }
         #endregion
@@ -160,6 +239,24 @@ namespace Open.Core
         /// <param name="replacedElement">The element being replaced with this control.</param>
         /// <remarks>Use this to extract any meta-data from the original element before it is removed from the DOM.</remarks>
         protected virtual void BeforeInsertReplace(jQueryObject replacedElement) { }
+
+        /// <summary>Gives keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
+        /// <returns>True if the control can recieve focus (and therefore focus was applied), otherwise False.</returns>
+        public bool Focus()
+        {
+            if (!CanFocus) return false;
+            Container.Focus();
+            return true;
+        }
+
+        /// <summary>Removes keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
+        /// <returns>True if the control can recieve focus (and therefore focus was removed), otherwise False.</returns>
+        public bool Blur()
+        {
+            if (!CanFocus) return false;
+            Container.Blur();
+            return true;
+        }
         #endregion
 
         #region Methods : Insert

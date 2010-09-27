@@ -25,6 +25,7 @@ namespace Open.Core
         public const string Value = "value";
         public const string Disabled = "disabled";
         public const string ClassAttr = "class";
+        public const string TabIndex = "tabindex";
 
         // Values.
         public const string Submit = "submit";
@@ -35,6 +36,8 @@ namespace Open.Core
 
         // Events.
         public const string Click = "click";
+        public const string Focus = "focus";
+        public const string Blur = "blur";
         #endregion
 
         #region Methods
