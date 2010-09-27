@@ -7,7 +7,7 @@ using Open.Testing;
 
 namespace Open.Core.Test.ViewTests.Controls.Buttons
 {
-    public class ButtonBaseTest
+    public class ButtonTest
     {
         #region Head
         public const string TemplateUrl = "/Samples/ButtonTemplate";
@@ -28,7 +28,17 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                           view = new MyButtonView();
                                                           model = view.Model;
                                                           model.Click += delegate { Log.Info("!! Click"); };
-                                                          model.IsPressedChanged += delegate { Log.Info("!! IsPressedChanged | IsPressed: " + model.IsPressed); };
+                                                          model.IsPressedChanged += delegate
+                                                                                        {
+                                                                                            if (model.IsPressed)
+                                                                                            {
+                                                                                                Log.Warning("!! IsPressedChanged | IsPressed: " + model.IsPressed);
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                Log.Success("!! IsPressedChanged | IsPressed: " + model.IsPressed);
+                                                                                            }
+                                                                                        };
                                                           //            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { Log.Info("!! View.PropertyChanged: " + args.Property.Name); };
                                                           
                                                           TestHarness.AddControl(view);
@@ -38,13 +48,6 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         #endregion
 
         #region Methods
-        public void Toggle_View__IsEnabled()
-        {
-            if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
-            view.IsEnabled = !view.IsEnabled;
-            Log.Info("View Toggled - IsEnabled: " + view.IsEnabled);
-        }
-
         public void Toggle_Model__IsEnabled()
         {
             if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
@@ -93,19 +96,16 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             SetSize(180, 45);
 
             // Create state content.
-//            ButtonStateContent background = new ButtonStateContent(AllStates, null, new Template("#btnSample_Background"));
             ButtonStateContent normal = new ButtonStateContent(new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "btn_sample_defaultText", new Template("#btnSample_Normal"));
-//            ButtonStateContent over = new ButtonStateContent(new ButtonState[] { ButtonState.MouseOver}, "btn_sample_over", null);
             ButtonStateContent down = new ButtonStateContent(new ButtonState[] { ButtonState.MouseDown }, null, new Template("#btnSample_Down"));
             ButtonStateContent overlay = new ButtonStateContent(ButtonView.AllStates, "btn_sample_overlay", new Template("#btnSample_Overlay"));
 
             // Assign states.
             AddStatesTemplate(0, AllStates, "#btnSample_Background");
-//            AddStateContent(0, background);
             AddStateContent(1, normal);
             AddStateCss(1, ButtonState.MouseOver, "btn_sample_over");
-//            AddLayerContent(1, over);
             AddStateContent(1, down);
+            AddStateTemplate(1, ButtonState.Pressed, "#btn_Sample_Pressed");
             AddStateContent(2, overlay);
 
             // Finish up.

@@ -17,7 +17,9 @@ namespace Open.Core.Controls.Buttons
         public const string PropState = "State";
         public const string PropIsMouseOver = "IsMouseOver";
         public const string PropIsMouseDown = "IsMouseDown";
+        public const string PropDisabledOpacity = "DisabledOpacity";
         public static readonly ButtonState[] AllStates = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver, ButtonState.MouseDown, ButtonState.Pressed };
+        private const double DefaultDisabledOpacity = 0.3;
 
         private readonly IButton model;
         private readonly ButtonEventController eventController;
@@ -59,12 +61,14 @@ namespace Open.Core.Controls.Buttons
             contentController = new ButtonContentController(this, divContent);
 
             // Wire up events.
+            Helper.ListenPropertyChanged(Model, OnModelPropertyChanged);
             eventController.PropertyChanged += OnEventControllerPropertyChanged;
         }
 
         /// <summary>Finalize.</summary>
         protected override void OnDisposed()
         {
+            Helper.UnlistenPropertyChanged(Model, OnModelPropertyChanged);
             eventController.Dispose();
             contentController.Dispose();
             base.OnDisposed();
@@ -87,6 +91,14 @@ namespace Open.Core.Controls.Buttons
             }
             FirePropertyChanged(e.Property.Name);
         }
+
+        private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.Property.Name == ButtonModel.PropIsEnabled)
+            {
+                UpdateLayout();
+            }
+        }
         #endregion
 
         #region Properties : IButtonView
@@ -96,10 +108,27 @@ namespace Open.Core.Controls.Buttons
         public bool IsMouseDown { get { return eventController.IsMouseDown; } }
         #endregion
 
+        #region Properties : Internal
+        /// <summary>Gets or sets the opacity of the button when it is disabled.</summary>
+        protected double DisabledOpacity
+        {
+            get { return (double)Get(PropDisabledOpacity, DefaultDisabledOpacity); }
+            set
+            {
+                value = Helper.NumberDouble.WithinBounds(value, 0, 1);
+                if (Set(PropDisabledOpacity, value, DefaultDisabledOpacity))
+                {
+                    UpdateLayout();
+                }
+            }
+        }
+        #endregion
+
         #region Methods
         /// <summary>Updates the visual state of the button.</summary>
         public void UpdateLayout()
         {
+            Css.SetOpacity(Container, Model.IsEnabled ? 1 : DisabledOpacity);
             contentController.UpdateLayout();
         }
 
@@ -146,7 +175,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
         protected ButtonStateContent AddStateTemplate(int layer, ButtonState state, string templateSelector)
         {
-            return AddStatesCss(layer, new ButtonState[] { state }, templateSelector);
+            return AddStatesTemplate(layer, new ButtonState[] { state }, templateSelector);
         }
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>

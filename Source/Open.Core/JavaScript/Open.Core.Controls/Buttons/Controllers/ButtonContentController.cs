@@ -41,15 +41,8 @@ namespace Open.Core.Controls.Buttons
             {
                 DivContent.Append(layer.Html);
                 Css.AddClasses(DivContent, layer.Content.CssClasses);
-
-                Log.Warning(">> CSS: " + layer.Content.CssClasses); //TEMP 
-
             }
-
-            Log.Success("class=" + DivContent.GetAttribute("class")); //TEMP 
-
         }
-
 
         public void InvalidateCache()
         {
@@ -58,7 +51,6 @@ namespace Open.Core.Controls.Buttons
                 item.Invalidate();
             }
         }
-
         #endregion
 
         #region Internal
@@ -71,7 +63,7 @@ namespace Open.Core.Controls.Buttons
             ArrayList items = Helper.Collection.Filter(contentList, delegate(object o)
                                     {
                                         return ((ButtonLayerContent)o).Content.States.Contains(currentState);
-                                    }) as ArrayList;
+                                    });
 
             // Sort on layer.
             items.Sort(delegate(object o1, object o2)

@@ -91,7 +91,7 @@ namespace Open.Core.Controls.Buttons
 
         #region Properties : Internal
         private IButton Model { get { return control.Model; } }
-        private bool IsEnabled { get { return control.IsEnabled && Model.IsEnabled; } }
+        private bool IsEnabled { get { return Model.IsEnabled; } }
         #endregion
 
         #region Internal
@@ -106,7 +106,7 @@ namespace Open.Core.Controls.Buttons
         {
             if (!IsEnabled)
             {
-                State = ButtonState.Normal;
+                State = Model.IsPressed ? ButtonState.Pressed : ButtonState.Normal;
             }
             else if ((IsMouseOver && IsMouseDown))
             {

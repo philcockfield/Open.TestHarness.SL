@@ -88,7 +88,6 @@ namespace Open.Core
             return string.Format("gid{0}", idCounter);
         }
 
-
         /// <summary>Disposes of the object (if it's not null and is an IDisposable).</summary>
         /// <param name="obj">The object to dispose of.</param>
         public static void Dispose(object obj)
@@ -96,6 +95,24 @@ namespace Open.Core
             if (Script.IsNullOrUndefined(obj)) return;
             IDisposable disposable = obj as IDisposable;
             if (disposable != null) disposable.Dispose();
+        }
+
+        /// <summary>Casts the given object to an 'INotifyPropertyChanged' and if it is observable wires up the given event handler to the 'PropertyChanged' event.</summary>
+        /// <param name="model">The model to wire up.</param>
+        /// <param name="handler">The handler to attach.</param>
+        public static void ListenPropertyChanged(object model, PropertyChangedHandler handler)
+        {
+            INotifyPropertyChanged observable = model as INotifyPropertyChanged;
+            if (observable != null) observable.PropertyChanged += handler;
+        }
+
+        /// <summary>Casts the given object to an 'INotifyPropertyChanged' and if it is observable un-wires the given event handler from the 'PropertyChanged' event.</summary>
+        /// <param name="model">The model to un-wire.</param>
+        /// <param name="handler">The handler to remove.</param>
+        public static void UnlistenPropertyChanged(object model, PropertyChangedHandler handler)
+        {
+            INotifyPropertyChanged observable = model as INotifyPropertyChanged;
+            if (observable != null) observable.PropertyChanged -= handler;
         }
         #endregion
     }

@@ -15,14 +15,8 @@
     border-radius: 6px;
 }
 
-.btn_sample_defaultText
-{
-    color:White;
-}
-
-.btn_sample_over
-{
-    color:orange;
-}
+.btn_sample_defaultText { color:White; }
+.btn_sample_over { color:orange; }
+.btn_sample_down { color:white; }
 
 .btn_sample.toolbarReflection { opacity:0.06; }

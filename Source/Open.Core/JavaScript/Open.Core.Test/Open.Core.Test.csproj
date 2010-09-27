@@ -55,7 +55,7 @@
     <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
     <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
     <Compile Include="UnitTests\ViewBaseUnitTest.cs" />
-    <Compile Include="ViewTests\Controls\Buttons\ButtonBaseTest.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\ButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\LinkButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\LogButtons.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
