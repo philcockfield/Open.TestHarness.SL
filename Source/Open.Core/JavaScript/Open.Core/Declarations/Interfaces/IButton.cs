@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace Open.Core
 {
@@ -25,6 +26,9 @@ namespace Open.Core
         ///     (see also IsMouseDown.  Relevant when IsToggleButton is True).
         /// </summary>
         bool IsPressed { get; set; }
+
+        /// <summary>Gets the data used to render the template.</summary>
+        Dictionary TemplateData { get; }
         #endregion
 
         #region Methods

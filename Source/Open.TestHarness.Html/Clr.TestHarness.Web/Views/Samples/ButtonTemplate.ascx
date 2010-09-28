@@ -7,7 +7,7 @@
 
 <script id="btnSample_Normal" type="text/x-jquery-tmpl">
     <div class="btn_sample btn_sample_normal absoluteFill">
-        <p>Sample:Normal</p>
+        <p>${buttonText}</p>
     </div>
 </script>
 

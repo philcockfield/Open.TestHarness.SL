@@ -27,6 +27,9 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                           Log.Success("Templates downloaded");
                                                           view = new MyButtonView();
                                                           model = view.Model;
+                                                          model.TemplateData["buttonText"] = "My Button Text";
+                                                          view.Invalidate(); // NB: Invalidates the cache, allowing the TemplateData to be written.
+
                                                           model.Click += delegate { Log.Info("!! Click"); };
                                                           model.IsPressedChanged += delegate
                                                                                         {

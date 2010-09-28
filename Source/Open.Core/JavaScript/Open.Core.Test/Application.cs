@@ -18,6 +18,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(DiContainerTest));
             TestHarness.RegisterClass(typeof(ModelBaseUnitTest));
             TestHarness.RegisterClass(typeof(ViewBaseUnitTest));
+            TestHarness.RegisterClass(typeof(CollectionHelperUnitTest));
 
             // View Tests
             TestHarness.RegisterClass(typeof(TemplateTest));
@@ -29,6 +30,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(HtmlListTest));
             TestHarness.RegisterClass(typeof(ButtonTest));
             TestHarness.RegisterClass(typeof(LinkButtonTest));
+            TestHarness.RegisterClass(typeof(Button_LibraryTest));
         }
     }
 }

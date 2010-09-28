@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace Open.Core.Controls.Buttons
 {
@@ -17,6 +18,8 @@ namespace Open.Core.Controls.Buttons
         public const string PropIsEnabled = "IsEnabled";
         public const string PropCanToggle = "CanToggle";
         public const string PropIsPressed = "IsPressed";
+
+        private Dictionary templateData;
         #endregion
 
         #region Properties : IButton
@@ -49,6 +52,11 @@ namespace Open.Core.Controls.Buttons
                     FireIsPressedChanged();
                 }
             }
+        }
+
+        public Dictionary TemplateData
+        {
+            get { return templateData ?? (templateData = new Dictionary()); }
         }
         #endregion
 

@@ -18,8 +18,12 @@ namespace Open.Core.Controls.Buttons
         public const string PropIsMouseOver = "IsMouseOver";
         public const string PropIsMouseDown = "IsMouseDown";
         public const string PropDisabledOpacity = "DisabledOpacity";
-        public static readonly ButtonState[] AllStates = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver, ButtonState.MouseDown, ButtonState.Pressed };
         private const double DefaultDisabledOpacity = 0.3;
+
+        public static readonly ButtonState[] AllStates = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver, ButtonState.MouseDown, ButtonState.Pressed };
+        public static readonly ButtonState[] DownAndPressed = new ButtonState[] { ButtonState.MouseDown, ButtonState.Pressed };
+        public static readonly ButtonState[] NotDownOrPressed = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver };
+
 
         private readonly IButton model;
         private readonly ButtonEventController eventController;
@@ -42,10 +46,11 @@ namespace Open.Core.Controls.Buttons
         protected ButtonView(IButton model, jQueryObject container) : base(InitContainer(container))
         {
             // Setup initial conditions.
-            if (Script.IsNullOrUndefined(model)) this.model = new ButtonModel();
+            if (Script.IsNullOrUndefined(model)) model = new ButtonModel();
+            this.model = model;
             Container.AddClass(Css.Classes.NoSelect);
 
-            // Make the container position relative (if it doesn't have an explicit position set).
+            // Make the container position relative (if it doesn't have an explicit position set).))
             if (string.IsNullOrEmpty(Container.GetCSS(Css.Position)))
             {
                 Container.CSS(Css.Position, Css.Relative);

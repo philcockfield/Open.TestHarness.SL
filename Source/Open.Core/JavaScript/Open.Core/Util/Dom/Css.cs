@@ -1,5 +1,6 @@
 using System;
 using System.Html;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core
@@ -184,6 +185,44 @@ namespace Open.Core
             element.CSS("background-repeat", "repeat-x");
             element.CSS("height", "12px");
             return element;
+        }
+
+        /// <summary>Applies rounded corners to the given element.</summary>
+        /// <param name="element">The element to apply rounded corners to.</param>
+        /// <param name="pixelRadius">The pixel radius to apply to each corner.</param>
+        [AlternateSignature]
+        public static extern void RoundedCorners(jQueryObject element, int pixelRadius);
+
+        /// <summary>Applies rounded corners to the given element.</summary>
+        /// <param name="element">The element to apply rounded corners to.</param>
+        /// <param name="topLeft">The top-left pixel radius.</param>
+        /// <param name="topRight">The top-right pixel radius.</param>
+        /// <param name="bottomRight">The bottom-right pixel radius.</param>
+        /// <param name="bottomLeft">The bottom-left pixel radius.</param>
+        public static void RoundedCorners(jQueryObject element, int topLeft, int topRight, int bottomRight, int bottomLeft)
+        {
+            // Setup initial conditions.
+            if (Script.IsUndefined(topRight)) topRight = topLeft;
+            if (Script.IsUndefined(bottomRight)) bottomRight = topLeft;
+            if (Script.IsUndefined(bottomLeft)) bottomLeft = topLeft;
+
+            // Webkit.
+            element.CSS("-webkit-border-top-left-radius", topLeft + "px");
+            element.CSS("-webkit-border-top-right-radius", topRight + "px");
+            element.CSS("-webkit-border-bottom-right-radius", bottomRight + "px");
+            element.CSS("-webkit-border-bottom-left-radius", bottomLeft + "px");
+
+            // Mozilla.
+            element.CSS("-moz-border-radius-topleft", topLeft + "px");
+            element.CSS("-moz-border-radius-topright", topRight + "px");
+            element.CSS("-moz-border-radius-bottomright", bottomRight + "px");
+            element.CSS("-moz-border-radius-bottomleft", bottomLeft + "px");
+
+            // CSS3.
+            element.CSS("border-top-left-radius", topLeft + "px");
+            element.CSS("border-top-right-radius", topRight + "px");
+            element.CSS("border-bottom-right-radius", bottomRight + "px");
+            element.CSS("border-bottom-left-radius", bottomLeft + "px");
         }
 
         /// <summary>Shows or hides the given element.</summary>

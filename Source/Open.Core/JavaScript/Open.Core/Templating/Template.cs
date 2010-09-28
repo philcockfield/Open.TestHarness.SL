@@ -20,12 +20,12 @@ namespace Open.Core
 
         /// <summary>Constructor.</summary>
         /// <param name="selector">The CSS selector for the script block containing the template HTML.</param>
-        /// <param name="url">Optional.  The URL that the tempate was retrieved from.</param>
         public Template(string selector)
         {
             // Setup initial conditions.
             id = Helper.CreateId();
             this.selector = selector;
+            if (TemplateHtml == null) throw new Exception(string.Format("A template at the selector '{0}' does not exist.", selector));
 
             // Compile the template for later use.
             Script.Literal("$.template({0}, {1})", id, TemplateHtml);
@@ -55,7 +55,7 @@ namespace Open.Core
         /// <param name="data">The source data for the template to read from.</param>
         public void AppendTo(jQueryObject target, object data)
         {
-            Script.Literal("$.tmpl( {0}, {1} ).appendTo( {2} )", id, data, target);
+            Script.Literal("$.tmpl( {0}, {1} ).appendTo( {2} )", TemplateHtml, data, target);
         }
 
         /// <summary>Renders the template to HTML using the specified data.</summary>

@@ -38,6 +38,7 @@ namespace Open.Core.Helpers
         /// <param name="predicate">The predicate to match.</param>
         public object First(IEnumerable collection, FuncBool predicate)
         {
+            if (Script.IsNullOrUndefined(collection)) return null;
             foreach (object item in collection)
             {
                 if (predicate(item)) return item;
@@ -45,12 +46,38 @@ namespace Open.Core.Helpers
             return null;
         }
 
+        /// <summary>Retrieves the last item in the given collection (or null if there are no items).</summary>
+        /// <param name="collection">The collection to examine.</param>
+        public object Last(IEnumerable collection)
+        {
+            // Setup initial conditions.
+            if (Script.IsNullOrUndefined(collection)) return null;
+            int count = Count(collection);
+            if (count == 0) return null;
+
+            // Retrieve the last item.
+            ArrayList list = collection as ArrayList;
+            if (list != null) return list[count - 1];
+
+            Array array = collection as Array;
+            if (array != null) return array[count - 1];
+
+            int currentIndex = 0;
+            foreach (object item in collection)
+            {
+                if (currentIndex == (count - 1)) return item;
+                currentIndex++;
+            }
+            return null;
+        }
+
+
         /// <summary>Gets the total number of items that match the given predicate.</summary>
         /// <param name="collection">The collection to examine.</param>
         /// <param name="predicate">The predicate to match.</param>
         public int Total(IEnumerable collection, FuncBool predicate)
         {
-            if (collection == null) return 0;
+            if (Script.IsNullOrUndefined(collection)) return 0;
             int count = 0;
             foreach (object item in collection)
             {
@@ -63,6 +90,12 @@ namespace Open.Core.Helpers
         /// <param name="collection">The collection to count.</param>
         public int Count(IEnumerable collection)
         {
+            ArrayList list = collection as ArrayList;
+            if (list != null) return list.Count;
+
+            Array array = collection as Array;
+            if (array != null) return array.Length;
+
             return Total(collection, delegate(object o) { return true; });
         }
 

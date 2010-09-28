@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Web.Mvc;
 
 namespace Open.Core.Web
 {
     /// <summary>The result content from an HTTP get operation.</summary>
-    public class HttpResult
+    /// <remarks>This can be returned directly from a controller's Action.</remarks>
+    public class HttpResult : ActionResult
     {
         #region Head
         /// <summary>Constructor.</summary>
@@ -25,6 +23,15 @@ namespace Open.Core.Web
 
         /// <summary>Gets the content string.</summary>
         public string Content { get; private set; }
+        #endregion
+
+        #region Methods
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var response = context.HttpContext.Response;
+            response.ContentType = ContentType;
+            response.Write(Content);
+        }
         #endregion
     }
 }

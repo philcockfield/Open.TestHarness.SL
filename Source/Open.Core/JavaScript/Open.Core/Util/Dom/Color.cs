@@ -7,6 +7,7 @@ namespace Open.Core
     {
         #region Properties
         public const string HotPink = "#ff00f0";
+        public const string Orange = "orange";
         #endregion
 
         #region Methods

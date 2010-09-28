@@ -51,11 +51,13 @@
     <Compile Include="Samples\SampleView.cs" />
     <Compile Include="Samples\SampleListItem.cs" />
     <Compile Include="Samples\SampleModel.cs" />
+    <Compile Include="UnitTests\CollectionHelperUnitTest.cs" />
     <Compile Include="UnitTests\DiContainerTest.cs" />
     <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
     <Compile Include="UnitTests\ScriptLoadHelperTest.cs" />
     <Compile Include="UnitTests\ViewBaseUnitTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\ButtonTest.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\Button_LibraryTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\LinkButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\LogButtons.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />

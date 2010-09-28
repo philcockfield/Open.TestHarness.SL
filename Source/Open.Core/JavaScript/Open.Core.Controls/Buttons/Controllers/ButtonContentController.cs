@@ -116,7 +116,7 @@ namespace Open.Core.Controls.Buttons
                 if (Cache.ContainsKey(key)) return Cache[key] as string;
 
                 // Create the HTML.
-                string html = Content.Template.ToHtml(Model);
+                string html = Content.Template.ToHtml(Model.TemplateData);
                 Cache[key] = html;
 
                 // Finish up.
