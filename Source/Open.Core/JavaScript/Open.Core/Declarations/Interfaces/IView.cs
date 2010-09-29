@@ -35,6 +35,9 @@ namespace Open.Core
 
         /// <summary>Destroys the control and clears resources.</summary>
         void Dispose();
+
+        /// <summary>Gets the contorl's focus options.</summary>
+        IFocus Focus { get; }
         #endregion
 
         #region State
@@ -45,24 +48,25 @@ namespace Open.Core
         bool IsVisible { get; set; }
         #endregion
 
-        #region Focus
-        /// <summary>Gets or sets whether the control is currently focused.</summary>
-        bool IsFocused { get; }
+        //TEMP 
+        //#region Focus
+        ///// <summary>Gets or sets whether the control is currently focused.</summary>
+        //bool IsFocused { get; }
 
-        /// <summary>Gets or sets whether the control can recieve keyboard focus.</summary>
-        /// <remarks>This causes the 'TabIndex' property to change.</remarks>
-        bool CanFocus { get; set; }
+        ///// <summary>Gets or sets whether the control can recieve keyboard focus.</summary>
+        ///// <remarks>This causes the 'TabIndex' property to change.</remarks>
+        //bool CanFocus { get; set; }
 
-        /// <summary>Gets or sets the index of the control within the keyboard tab order.</summary>
-        /// <remarks>-1:Not in tab order. 0:In tab order (source order). >0: Explicit ordering (overrides source order).</remarks>
-        int TabIndex { get; set; }
+        ///// <summary>Gets or sets the index of the control within the keyboard tab order.</summary>
+        ///// <remarks>-1:Not in tab order. 0:In tab order (source order). >0: Explicit ordering (overrides source order).</remarks>
+        //int TabIndex { get; set; }
 
-        /// <summary>Gives keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
-        bool Focus();
+        ///// <summary>Gives keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
+        //bool Focus();
 
-        /// <summary>Removes keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
-        bool Blur();
-        #endregion
+        ///// <summary>Removes keyboard focus to the control (see also: CanFocus, IsFocused, TabIndex properties).</summary>
+        //bool Blur();
+        //#endregion
 
         #region Styles
         /// <summary>Gets or sets the background CSS for the control.</summary>

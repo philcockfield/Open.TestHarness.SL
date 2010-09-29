@@ -55,8 +55,10 @@
     <Compile Include="Declarations\Enums\Enums.Html.cs" />
     <Compile Include="Declarations\Interfaces\IButtonView.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
+    <Compile Include="Declarations\Interfaces\IFocus.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Models\ButtonModel.cs" />
+    <Compile Include="Models\ViewFocus.cs" />
     <Compile Include="Templating\Template.cs" />
     <Compile Include="Testing\ITestHarnessEvents.cs" />
     <Compile Include="Testing\Should.cs" />

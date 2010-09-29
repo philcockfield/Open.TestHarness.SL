@@ -93,13 +93,12 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         {
             // Setup initial conditions.
             SetSize(180, 45);
-
-            //TEMP 
-            SetCssForStates(1, AllStates, "Foo");
+            Focus.CanFocus = true;
 
             // Assign states.
             // All.
             SetTemplateForStates(0, AllStates, "#btnSample_Background");
+            SetCssForStates(0, AllStates, "btn_sample_focus", NullableBool.Nothing, NullableBool.Yes);
 
             // Normal.
             SetTemplateForStates(1, new ButtonState[] {ButtonState.Normal, ButtonState.MouseOver}, "#btnSample_Normal");
@@ -109,6 +108,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             SetCssForState(1, ButtonState.MouseOver, "btn_sample_over");
             SetTemplateForState(1, ButtonState.MouseDown, "#btnSample_Down");
             SetTemplateForState(1, ButtonState.Pressed, "#btn_Sample_Pressed");
+
 
             // Overlay.
             SetCssForStates(2, AllStates, "btn_sample_overlay");

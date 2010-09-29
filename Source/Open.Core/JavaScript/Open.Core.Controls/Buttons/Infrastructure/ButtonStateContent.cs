@@ -7,8 +7,8 @@ namespace Open.Core.Controls.Buttons
         #region Head
         protected ButtonStateContent(ButtonState[] states, NullableBool forDisabled, NullableBool forFocused)
         {
-            if (Script.IsNullOrUndefined(forDisabled)) forDisabled = NullableBool.Neither;
-            if (Script.IsNullOrUndefined(forFocused)) forFocused = NullableBool.Neither;
+            if (Script.IsNullOrUndefined(forDisabled)) forDisabled = NullableBool.Nothing;
+            if (Script.IsNullOrUndefined(forFocused)) forFocused = NullableBool.Nothing;
 
             States = states;
             ForDisabled = forDisabled;
@@ -25,6 +25,21 @@ namespace Open.Core.Controls.Buttons
 
         /// <summary>Gets whether the content is for a focused state.</summary>
         public readonly NullableBool ForFocused;
+        #endregion
+
+        #region Methods
+        public bool IsCurrent(ButtonView button)
+        {
+            // Check that the button-state matches.
+            if (!States.Contains(button.State)) return false;
+
+            // Check that the disabled and focused conditions are met.
+            if (ForDisabled == NullableBool.Yes && button.IsEnabled) return false;
+            if (ForFocused == NullableBool.Yes && !button.Focus.IsFocused) return false;
+
+            // Finish up.
+            return true;
+        }
         #endregion
     }
 }

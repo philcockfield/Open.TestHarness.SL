@@ -49,6 +49,7 @@ namespace Open.Core.Controls.Buttons
             if (Script.IsNullOrUndefined(model)) model = new ButtonModel();
             this.model = model;
             Container.AddClass(Css.Classes.NoSelect);
+            Focus.BrowserHighlighting = false;
 
             // Make the container position relative (if it doesn't have an explicit position set).))
             if (string.IsNullOrEmpty(Container.GetCSS(Css.Position)))
@@ -57,10 +58,9 @@ namespace Open.Core.Controls.Buttons
             }
 
             // Insert the content and mask containers.
-            divContent = CreateContainer();
-            divMask = CreateContainer();
+            divContent = CreateContainer("buttonContent");
+            divMask = CreateContainer("clickMask");
             divMask.CSS(Css.Background, Css.Transparent); // NB: Mask prevents mouse events firing when child-elements of the content are mouse over/out.
-            divMask.AddClass("clickMask");
 
             // Create child controllers.
             eventController = new ButtonEventController(this, divMask);
@@ -69,6 +69,9 @@ namespace Open.Core.Controls.Buttons
             // Wire up events.
             Helper.ListenPropertyChanged(Model, OnModelPropertyChanged);
             eventController.PropertyChanged += OnEventControllerPropertyChanged;
+            GotFocus += delegate { UpdateLayout(); };
+            LostFocus += delegate { UpdateLayout(); };
+            IsEnabledChanged += delegate { UpdateLayout(); };
         }
 
         /// <summary>Finalize.</summary>
@@ -139,12 +142,21 @@ namespace Open.Core.Controls.Buttons
         }
         #endregion
 
-        #region Methods : Protected
+        #region Methods : Protected (CSS)
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="state">The state the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
-        protected void SetCssForState(int layer, ButtonState state, string cssClasses)
+        [AlternateSignature]
+        protected extern void SetCssForState(int layer, ButtonState state, string cssClasses);
+
+        /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
+        /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
+        /// <param name="state">The state the CSS classes apply to.</param>
+        /// <param name="cssClasses">A string containing one or more CSS class names.</param>
+        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
+        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
+        protected void SetCssForState(int layer, ButtonState state, string cssClasses, NullableBool forDisabled, NullableBool forFocused)
         {
             SetCssForStates(layer, new ButtonState[] { state }, cssClasses);
         }
@@ -153,16 +165,36 @@ namespace Open.Core.Controls.Buttons
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="states">The state(s) the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
-        protected void SetCssForStates(int layer, ButtonState[] states, string cssClasses)
+        [AlternateSignature]
+        protected extern void SetCssForStates(int layer, ButtonState[] states, string cssClasses);
+
+        /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
+        /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
+        /// <param name="states">The state(s) the CSS classes apply to.</param>
+        /// <param name="cssClasses">A string containing one or more CSS class names.</param>
+        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
+        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
+        protected void SetCssForStates(int layer, ButtonState[] states, string cssClasses, NullableBool forDisabled, NullableBool forFocused)
         {
-            contentController.AddCss(layer, new ButtonStateCss(states, cssClasses));
+            contentController.AddCss(layer, new ButtonStateCss(states, cssClasses, forDisabled, forFocused));
         }
+        #endregion
+
+        #region Methods : Protected (Template)
+        /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
+        /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
+        /// <param name="state">The state the template applies to.</param>
+        /// <param name="templateSelector">The CSS selector where the template can be found.</param>
+        [AlternateSignature]
+        protected extern void SetTemplateForState(int layer, ButtonState state, string templateSelector);
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="state">The state the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
-        protected void SetTemplateForState(int layer, ButtonState state, string templateSelector)
+        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
+        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
+        protected void SetTemplateForState(int layer, ButtonState state, string templateSelector, NullableBool forDisabled, NullableBool forFocused)
         {
             SetTemplateForStates(layer, new ButtonState[] { state }, templateSelector);
         }
@@ -171,23 +203,30 @@ namespace Open.Core.Controls.Buttons
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="states">The states the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
-        protected void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector)
+        [AlternateSignature]
+        protected extern void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector);
+
+        /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
+        /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
+        /// <param name="states">The states the template applies to.</param>
+        /// <param name="templateSelector">The CSS selector where the template can be found.</param>
+        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
+        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
+        protected void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector, NullableBool forDisabled, NullableBool forFocused)
         {
-            contentController.AddTemplate(layer, new ButtonStateTemplate(states, new Template(templateSelector)));
+            contentController.AddTemplate(layer, new ButtonStateTemplate(states, new Template(templateSelector), forDisabled, forFocused));
         }
         #endregion
 
         #region Internal
-        private jQueryObject CreateContainer()
+        private jQueryObject CreateContainer(string cssClass)
         {
             jQueryObject div = Html.CreateDiv();
-
             Css.AbsoluteFill(div);
-
             div.AppendTo(Container);
+            div.AddClass(cssClass);
             return div;
         }
         #endregion
-
     }
 }

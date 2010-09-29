@@ -8,9 +8,6 @@ namespace Open.Core.Controls.Buttons
         #region Head
         private readonly string cssClasses;
 
-        [AlternateSignature]
-        public extern ButtonStateCss(ButtonState[] states, string cssClasses);
-
         public ButtonStateCss(ButtonState[] states, string cssClasses, NullableBool forDisabled, NullableBool forFocused) : base(states, forDisabled, forFocused)
         {
             this.cssClasses = cssClasses;

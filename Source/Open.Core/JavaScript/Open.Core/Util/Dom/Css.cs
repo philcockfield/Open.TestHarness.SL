@@ -26,6 +26,7 @@ namespace Open.Core
         public const string Opacity = "opacity";
         public const string FontSize = "font-size";
         public const string TextAlign = "text-align";
+        public const string Outline = "outline";
 
         // Values.
         public const string Block = "block";

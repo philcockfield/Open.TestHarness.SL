@@ -9,11 +9,7 @@ namespace Open.Core.Controls.Buttons
         #region Head
         private readonly Template template;
 
-        [AlternateSignature]
-        public extern ButtonStateTemplate(ButtonState[] states, Template template);
-
-        public ButtonStateTemplate(ButtonState[] states, Template template, NullableBool forDisabled, NullableBool forFocused)
-            : base(states, forDisabled, forFocused)
+        public ButtonStateTemplate(ButtonState[] states, Template template, NullableBool forDisabled, NullableBool forFocused) : base(states, forDisabled, forFocused)
         {
             // Setup initial conditions.
             if (Script.IsUndefined(template)) template = null;

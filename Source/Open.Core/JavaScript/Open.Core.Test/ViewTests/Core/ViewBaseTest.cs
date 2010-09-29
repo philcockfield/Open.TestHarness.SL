@@ -13,7 +13,7 @@ namespace Open.Core.Test.ViewTests.Core
         public void ClassInitialize()
         {
             view = new SampleView();
-            view.Background = "orange";
+            view.Background = Color.HotPink;
             view.SetSize(150, 100);
 
             TestHarness.AddControl(view);
@@ -38,6 +38,13 @@ namespace Open.Core.Test.ViewTests.Core
         public void Toggle__Background()
         {
             view.Background = view.Background == "orange" ? "red" : "orange";
+            Log.Info("Background: " + view.Background);
+        }
+
+        public void Toggle__BrowserHighlighting()
+        {
+            view.Focus.BrowserHighlighting = !view.Focus.BrowserHighlighting;
+            Log.Info("BrowserHighlighting: " + view.Focus.BrowserHighlighting);
         }
 
         public void Toggle__Opacity()
@@ -60,18 +67,18 @@ namespace Open.Core.Test.ViewTests.Core
 
         public void Toggle__CanFocus()
         {
-            view.CanFocus = !view.CanFocus;
+            view.Focus.CanFocus = !view.Focus.CanFocus;
             Write_Properties();
         }
 
-        public void Focus() { Log.Info("Focus: " + view.Focus()); }
-        public void Blur() { Log.Info("Blur: " + view.Blur()); }
+        public void Focus() { Log.Info("Focus: " + view.Focus.Apply()); }
+        public void Blur() { Log.Info("Blur: " + view.Focus.Blur()); }
 
         public void Write_Properties()
         {
-            Log.Info("CanFocus: " + view.CanFocus);
-            Log.Info("TabIndex: " + view.TabIndex);
-            Log.Info("IsFocused: " + view.IsFocused);
+            Log.Info("CanFocus: " + view.Focus.CanFocus);
+            Log.Info("TabIndex: " + view.Focus.TabIndex);
+            Log.Info("IsFocused: " + view.Focus.IsFocused);
         }
         #endregion
     }

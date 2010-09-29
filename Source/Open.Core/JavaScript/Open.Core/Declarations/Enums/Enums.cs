@@ -40,7 +40,7 @@ namespace Open.Core
     /// <summary>A boolean value that can also be null.</summary>
     public enum NullableBool
     {
-        Neither = -0,
+        Nothing = -0,
         No = 0,
         Yes = 1,
     }

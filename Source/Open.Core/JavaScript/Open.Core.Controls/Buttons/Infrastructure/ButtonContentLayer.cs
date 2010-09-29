@@ -69,7 +69,7 @@ namespace Open.Core.Controls.Buttons
         {
             return Helper.Collection.Filter(collection, delegate(object o)
                                     {
-                                        return ((ButtonStateContent)o).States.Contains(View.State);
+                                        return ((ButtonStateContent) o).IsCurrent(View);
                                     });
         }
         #endregion
