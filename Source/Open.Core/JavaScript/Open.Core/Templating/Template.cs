@@ -60,11 +60,19 @@ namespace Open.Core
 
         /// <summary>Renders the template to HTML using the specified data.</summary>
         /// <param name="data">The source data for the template to read from.</param>
-        public string ToHtml(object data)
+        public string ToHtml(object data) { return WithinDiv(data).GetHtml(); }
+
+        /// <summary>Redners the template to a jQueryObject using the specified data.</summary>
+        /// <param name="data">The source data for the template to read from.</param>
+        public jQueryObject ToElement(object data) { return WithinDiv(data).Children().First(); }
+        #endregion
+
+        #region Internal
+        jQueryObject WithinDiv(object data)
         {
             jQueryObject div = Html.CreateDiv();
             AppendTo(div, data);
-            return div.GetHtml();
+            return div;
         }
         #endregion
     }

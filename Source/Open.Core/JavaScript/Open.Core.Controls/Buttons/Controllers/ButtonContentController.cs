@@ -8,7 +8,7 @@ namespace Open.Core.Controls.Buttons
     internal class ButtonContentController : ControllerBase
     {
         #region Head
-        private readonly ArrayList contentList = new ArrayList();
+        private readonly ArrayList layerList = new ArrayList();
 
         public ButtonContentController(ButtonView button, jQueryObject divContent)
         {
@@ -23,10 +23,14 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Methods
-        public void Add(int layer, ButtonStateContent content)
+        public void AddTemplate(int layer, ButtonStateTemplate template)
         {
-            ButtonLayerContent layerContent = new ButtonLayerContent(this, layer, content);
-            contentList.Add(layerContent);
+            GetLayerContent(layer).Templates.Add(template);
+        }
+
+        public void AddCss(int layer, ButtonStateCss css)
+        {
+            GetLayerContent(layer).CssClasses.Add(css);
         }
 
         public void UpdateLayout()
@@ -36,115 +40,72 @@ namespace Open.Core.Controls.Buttons
             DivContent.RemoveClass();
 
             // Insert HTML for each layer and add the CSS class.
-            IEnumerable layers = GetCurrentStateContent();
-            foreach (ButtonLayerContent layer in layers)
+            foreach (ButtonContentLayer layer in layerList)
             {
-                DivContent.Append(layer.Html);
-                Css.AddClasses(DivContent, layer.Content.CssClasses);
-            }
-        }
-
-        public void InvalidateCache()
-        {
-            foreach (ButtonLayerContent item in contentList)
-            {
-                item.Invalidate();
+                layer.Render(DivContent);
             }
         }
         #endregion
 
         #region Internal
+        private ButtonContentLayer GetLayerContent(int layer)
+        {
+            // Retrieve the layer if it exists.
+            ButtonContentLayer layerContent = Helper.Collection.First(layerList, delegate(object o)
+                                                            {
+                                                                return ((ButtonContentLayer) o).Layer == layer;
+                                                            }) as ButtonContentLayer;
+            if (layerContent != null) return layerContent;
+
+            // Doesn't exist, create and store it.
+            layerContent = new ButtonContentLayer(this, layer);
+            layerList.Add(layerContent);
+
+            // Ensure the collection is sored by layer.
+            SortLayers();
+
+            // Finish up.
+            return layerContent;
+        }
+
+        private void SortLayers()
+        {
+            layerList.Sort(delegate(object o1, object o2)
+                                    {
+                                        int layer1 = ((ButtonContentLayer)o1).Layer;
+                                        int layer2 = ((ButtonContentLayer)o2).Layer;
+                                        if (layer1 == layer2) return 0;
+                                        if (layer1 < layer2) return -1;
+                                        return 1;
+                                    });
+        }
+
+
         private IEnumerable GetCurrentStateContent()
         {
-            // Setup initial conditions.
-            ButtonState currentState = Button.State;
+            return null;
 
-            // Filter on content that is for the current state.
-            ArrayList items = Helper.Collection.Filter(contentList, delegate(object o)
-                                    {
-                                        return ((ButtonLayerContent)o).Content.States.Contains(currentState);
-                                    });
+            //// Setup initial conditions.
+            //ButtonState currentState = Button.State;
 
-            // Sort on layer.
-            items.Sort(delegate(object o1, object o2)
-                           {
-                               int layer1 = ((ButtonLayerContent)o1).Layer;
-                               int layer2 = ((ButtonLayerContent)o2).Layer;
-                               if (layer1 == layer2) return 0;
-                               if (layer1 < layer2) return -1;
-                               return 1;
-                           });
+            //// Filter on content that is for the current state.
+            //ArrayList items = Helper.Collection.Filter(contentList, delegate(object o)
+            //                        {
+            //                            return ((ButtonContentLayer) o).IsCurrent;
+            //                        });
 
-            // Finish up.)
-            return items;
-        }
-        #endregion
-    }
+            //// Sort on layer.
+            //items.Sort(delegate(object o1, object o2)
+            //               {
+            //                   int layer1 = ((ButtonContentLayer)o1).Layer;
+            //                   int layer2 = ((ButtonContentLayer)o2).Layer;
+            //                   if (layer1 == layer2) return 0;
+            //                   if (layer1 < layer2) return -1;
+            //                   return 1;
+            //               });
 
-    internal class ButtonLayerContent
-    {
-        #region Head
-        private Dictionary cache;
-        private readonly string states;
-
-        public ButtonLayerContent(ButtonContentController parent, int layer, ButtonStateContent content)
-        {
-            Parent = parent;
-            Layer = layer;
-            Content = content;
-            foreach (ButtonState state in content.States)
-            {
-                states += "-" + state;
-            }
-        }
-        #endregion
-
-        #region Properties : Public
-        public readonly ButtonContentController Parent;
-        public readonly int Layer;
-        public readonly ButtonStateContent Content;
-
-        public string Html
-        {
-            get
-            {
-                // Setup initial conditions.
-                if (Content.Template == null) return null;
-
-                // Check for cached version.
-                string key = GetKey();
-                if (Cache.ContainsKey(key)) return Cache[key] as string;
-
-                // Create the HTML.
-                string html = Content.Template.ToHtml(Model.TemplateData);
-                Cache[key] = html;
-
-                // Finish up.
-                return html;
-            }
-        }
-        #endregion
-
-        #region Properties : Internal
-        private ButtonView View { get { return Parent.Button; } }
-        private IButton Model { get { return View.Model; } }
-        private Dictionary Cache { get { return cache ?? (cache = new Dictionary()); } }
-        #endregion
-
-        #region Methods
-        public void Invalidate()
-        {
-            cache = null;
-        }
-        #endregion
-
-        #region Internal
-        private string GetKey()
-        {
-
-            // TODO - work out exclusiong if corresonding state has explicit disabled and focused values.
-
-            return string.Format("{0}:{1}:{2}", states, Model.IsEnabled, View.IsFocused);
+            //// Finish up.)
+            //return items;
         }
         #endregion
     }

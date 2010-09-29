@@ -60,6 +60,7 @@ namespace Open.Core.Controls.Buttons
             divContent = CreateContainer();
             divMask = CreateContainer();
             divMask.CSS(Css.Background, Css.Transparent); // NB: Mask prevents mouse events firing when child-elements of the content are mouse over/out.
+            divMask.AddClass("clickMask");
 
             // Create child controllers.
             eventController = new ButtonEventController(this, divMask);
@@ -136,62 +137,43 @@ namespace Open.Core.Controls.Buttons
             Css.SetOpacity(Container, Model.IsEnabled ? 1 : DisabledOpacity);
             contentController.UpdateLayout();
         }
-
-        /// <summary>Clears the visual cache of HTML and updates the layout.</summary>
-        public void Invalidate()
-        {
-            contentController.InvalidateCache();
-            UpdateLayout();
-        }
         #endregion
 
         #region Methods : Protected
-        /// <summary>Sets the content to use for the given state.</summary>
-        /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
-        /// <param name="content">The content for a given state.</param>
-        protected void AddStateContent(int layer, ButtonStateContent content)
-        {
-            contentController.Add(layer, content);
-        }
-
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="state">The state the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
-        protected ButtonStateContent AddStateCss(int layer, ButtonState state, string cssClasses)
+        protected void SetCssForState(int layer, ButtonState state, string cssClasses)
         {
-            return AddStatesCss(layer, new ButtonState[] { state }, cssClasses);
+            SetCssForStates(layer, new ButtonState[] { state }, cssClasses);
         }
 
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="states">The state(s) the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
-        protected ButtonStateContent AddStatesCss(int layer, ButtonState[] states, string cssClasses)
+        protected void SetCssForStates(int layer, ButtonState[] states, string cssClasses)
         {
-            ButtonStateContent content = new ButtonStateContent(states, cssClasses);
-            AddStateContent(layer, content);
-            return content;
+            contentController.AddCss(layer, new ButtonStateCss(states, cssClasses));
         }
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="state">The state the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
-        protected ButtonStateContent AddStateTemplate(int layer, ButtonState state, string templateSelector)
+        protected void SetTemplateForState(int layer, ButtonState state, string templateSelector)
         {
-            return AddStatesTemplate(layer, new ButtonState[] { state }, templateSelector);
+            SetTemplateForStates(layer, new ButtonState[] { state }, templateSelector);
         }
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="states">The states the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
-        protected ButtonStateContent AddStatesTemplate(int layer, ButtonState[] states, string templateSelector)
+        protected void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector)
         {
-            ButtonStateContent content = new ButtonStateContent(states, null, new Template(templateSelector));
-            AddStateContent(layer, content);
-            return content;
+            contentController.AddTemplate(layer, new ButtonStateTemplate(states, new Template(templateSelector)));
         }
         #endregion
 

@@ -28,7 +28,6 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                           view = new MyButtonView();
                                                           model = view.Model;
                                                           model.TemplateData["buttonText"] = "My Button Text";
-                                                          view.Invalidate(); // NB: Invalidates the cache, allowing the TemplateData to be written.
 
                                                           model.Click += delegate { Log.Info("!! Click"); };
                                                           model.IsPressedChanged += delegate
@@ -43,6 +42,8 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                                                             }
                                                                                         };
                                                           //            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { Log.Info("!! View.PropertyChanged: " + args.Property.Name); };
+
+                                                          view.UpdateLayout();
                                                           
                                                           TestHarness.AddControl(view);
                                                           isInitialized = true;
@@ -72,11 +73,6 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             Log.Info("Toggled - IsPressed: " + model.IsPressed);
         }
 
-        public void Invalidate()
-        {
-            view.Invalidate();
-        }
-
         public void Write_Properties()
         {
             if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
@@ -98,18 +94,25 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             // Setup initial conditions.
             SetSize(180, 45);
 
-            // Create state content.
-            ButtonStateContent normal = new ButtonStateContent(new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "btn_sample_defaultText", new Template("#btnSample_Normal"));
-            ButtonStateContent down = new ButtonStateContent(new ButtonState[] { ButtonState.MouseDown }, null, new Template("#btnSample_Down"));
-            ButtonStateContent overlay = new ButtonStateContent(ButtonView.AllStates, "btn_sample_overlay", new Template("#btnSample_Overlay"));
+            //TEMP 
+            SetCssForStates(1, AllStates, "Foo");
 
             // Assign states.
-            AddStatesTemplate(0, AllStates, "#btnSample_Background");
-            AddStateContent(1, normal);
-            AddStateCss(1, ButtonState.MouseOver, "btn_sample_over");
-            AddStateContent(1, down);
-            AddStateTemplate(1, ButtonState.Pressed, "#btn_Sample_Pressed");
-            AddStateContent(2, overlay);
+            // All.
+            SetTemplateForStates(0, AllStates, "#btnSample_Background");
+
+            // Normal.
+            SetTemplateForStates(1, new ButtonState[] {ButtonState.Normal, ButtonState.MouseOver}, "#btnSample_Normal");
+            SetCssForStates(1, new ButtonState[] {ButtonState.Normal, ButtonState.MouseOver}, "btn_sample_defaultText");
+
+            // Pressed.
+            SetCssForState(1, ButtonState.MouseOver, "btn_sample_over");
+            SetTemplateForState(1, ButtonState.MouseDown, "#btnSample_Down");
+            SetTemplateForState(1, ButtonState.Pressed, "#btn_Sample_Pressed");
+
+            // Overlay.
+            SetCssForStates(2, AllStates, "btn_sample_overlay");
+            SetTemplateForStates(2, AllStates, "#btnSample_Overlay");
 
             // Finish up.
             UpdateLayout();
