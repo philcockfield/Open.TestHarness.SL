@@ -6,9 +6,11 @@ namespace Open.Core
     /// <summary>Keyboard key codes.</summary>
     public enum Key
     {
+        Enter = 13,
         Shift = 16,
         Ctrl = 17,
         Alt = 18,
+        Space = 32,
     }
 
     /// <summary>Global monitoring of keyboard state.</summary>

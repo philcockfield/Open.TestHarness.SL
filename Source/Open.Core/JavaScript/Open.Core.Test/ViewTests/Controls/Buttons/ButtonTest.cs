@@ -44,7 +44,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                           //            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { Log.Info("!! View.PropertyChanged: " + args.Property.Name); };
 
                                                           view.UpdateLayout();
-                                                          
+
                                                           TestHarness.AddControl(view);
                                                           isInitialized = true;
                                                       });

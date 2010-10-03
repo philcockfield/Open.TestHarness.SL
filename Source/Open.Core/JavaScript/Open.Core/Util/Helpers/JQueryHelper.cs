@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using jQueryApi;
 
 namespace Open.Core.Helpers

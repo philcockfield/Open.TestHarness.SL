@@ -29,6 +29,12 @@ namespace Open.Core
 
         /// <summary>Gets the data used to render the template.</summary>
         Dictionary TemplateData { get; }
+
+        /// <summary>
+        ///     Gets the collection of key-codes which (when pressed when the button is focused) will cause the button to be invoked.
+        ///     Space and Enter added by default.
+        /// </summary>
+        ArrayList InvokeKeyCodes { get; }
         #endregion
 
         #region Methods

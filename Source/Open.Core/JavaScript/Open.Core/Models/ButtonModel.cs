@@ -20,6 +20,15 @@ namespace Open.Core.Controls.Buttons
         public const string PropIsPressed = "IsPressed";
 
         private Dictionary templateData;
+        private readonly ArrayList invokeKeyCodes = new ArrayList();
+
+        /// <summary>Constructor.</summary>
+        public ButtonModel()
+        {
+            // Add the default key-codes that will cause the button to be invoked when pressed.
+            InvokeKeyCodes.Add(Key.Enter);
+            InvokeKeyCodes.Add(Key.Space);
+        }
         #endregion
 
         #region Properties : IButton
@@ -58,6 +67,8 @@ namespace Open.Core.Controls.Buttons
         {
             get { return templateData ?? (templateData = new Dictionary()); }
         }
+
+        public ArrayList InvokeKeyCodes { get { return invokeKeyCodes; } }
         #endregion
 
         #region Methods : IButton

@@ -71,6 +71,10 @@ namespace Open.Core.Controls.Buttons
             GotFocus += delegate { UpdateLayout(); };
             LostFocus += delegate { UpdateLayout(); };
             IsEnabledChanged += delegate { UpdateLayout(); };
+            Container.Keydown(delegate(jQueryEvent e)
+                                  {
+                                      OnKeyPress(Int32.Parse(e.Which));
+                                  });
         }
 
         /// <summary>Finalize.</summary>
@@ -90,6 +94,14 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Event Handlers
+        private void OnKeyPress(int keyCode)
+        {
+            if (!IsEnabled) return;
+            if (!Focus.IsFocused) return;
+            if (!Model.InvokeKeyCodes.Contains(keyCode)) return;
+            Model.InvokeClick(false);
+        }
+
         private void OnEventControllerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.Property.Name == PropState)
