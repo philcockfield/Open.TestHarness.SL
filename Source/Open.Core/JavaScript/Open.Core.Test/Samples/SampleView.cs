@@ -8,6 +8,8 @@ namespace Open.Core.Test
         public SampleView() : base(Html.CreateDiv())
         {
             PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { LastPropertyChanged = args.Property; };
+            IsEnabledChanged += delegate { SyncDisabledOpacity(); };
+            SyncDisabledOpacity();
         }
         #endregion
 
@@ -23,6 +25,13 @@ namespace Open.Core.Test
                 Container.Empty();
                 Container.Append(value);
             }
+        }
+        #endregion
+
+        #region Internal
+        private void SyncDisabledOpacity( )
+        {
+            Opacity = IsEnabled ? 1 : 0.3;
         }
         #endregion
     }

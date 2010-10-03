@@ -111,7 +111,7 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Properties
-        // Defer enabled state to the model.
+        // Use enabled state to of the button's model.
         public override bool IsEnabled
         {
             get { return model.IsEnabled; }

@@ -45,7 +45,6 @@ namespace Open.Core
         public const string PropIsEnabled = "IsEnabled";
 
         private readonly jQueryObject container;
-        private bool tabIndexChanging;
         private ViewFocus focus;
 
         /// <summary>Constructor.</summary>

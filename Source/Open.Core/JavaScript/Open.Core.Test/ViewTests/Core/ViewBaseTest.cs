@@ -30,9 +30,16 @@ namespace Open.Core.Test.ViewTests.Core
         #endregion
 
         #region Tests
+        public void Toggle__IsEnabled()
+        {
+            view.IsEnabled = !view.IsEnabled;
+            Log.Info("IsEnabled: " + view.IsEnabled);
+        }
+
         public void Toggle__IsVisible()
         {
             view.IsVisible = !view.IsVisible;
+            Log.Info("IsVisible: " + view.IsVisible);
         }
 
         public void Toggle__Background()
@@ -68,6 +75,7 @@ namespace Open.Core.Test.ViewTests.Core
         public void Toggle__CanFocus()
         {
             view.Focus.CanFocus = !view.Focus.CanFocus;
+            view.Text = null;
             Write_Properties();
         }
 

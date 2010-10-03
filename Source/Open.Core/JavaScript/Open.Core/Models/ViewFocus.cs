@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core
@@ -28,6 +29,8 @@ namespace Open.Core
         public const string PropTabIndex = "TabIndex";
         public const string PropBrowserHighlighting = "BrowserHighlighting";
 
+        private const int noTabIndex = -1;
+        private int tabIndex = noTabIndex;
         private bool tabIndexChanging;
         private readonly ViewBase view;
 
@@ -39,12 +42,14 @@ namespace Open.Core
             // Wire up events.
             view.Container.Bind(Html.Focus, delegate(jQueryEvent e) { HandleFocusChanged(true); });
             view.Container.Bind(Html.Blur, delegate(jQueryEvent e) { HandleFocusChanged(false); });
+            view.IsEnabledChanged += HandleIsEnabledChanged;
         }
 
         protected override void OnDisposed()
         {
             view.Container.Unbind(Html.Focus);
             view.Container.Unbind(Html.Blur);
+            view.IsEnabledChanged -= HandleIsEnabledChanged;
             base.OnDisposed();
         }
         #endregion
@@ -54,6 +59,12 @@ namespace Open.Core
         {
             IsFocused = gotFocus;
             if (gotFocus) { FireGotFocus(); } else { FireLostFocus(); }
+        }
+
+        private void HandleIsEnabledChanged(object sender, EventArgs e)
+        {
+            if (IsFocused) Blur();
+            SyncTabIndexOnHtml();
         }
         #endregion
 
@@ -66,14 +77,13 @@ namespace Open.Core
 
         public bool CanFocus
         {
-            get { return TabIndex >= 0; }
+            get { return tabIndex >= 0; }
             set
             {
                 // Setup initial conditions.
                 if (value == CanFocus) return;
 
                 // Update the value (stored in TabIndex).
-                int tabIndex = TabIndex;
                 if (value && tabIndex < 0) TabIndex = 0;
                 if (!value && tabIndex >= 0) TabIndex = -1;
 
@@ -87,37 +97,38 @@ namespace Open.Core
         {
             get
             {
-                object value = view.Container.GetAttribute(Html.TabIndex);
-                return Script.IsNullOrUndefined(value) ? -1 : (int)value;
+                // Control can only recieve focus if it is enabled.
+                return view.IsEnabled ? tabIndex : noTabIndex;
             }
             set
             {
+                // Setup initial conditions.
                 if (tabIndexChanging) return;
-                if (value == TabIndex) return;
-                if (value < 0)
+                if (value == tabIndex) return;
+                tabIndex = value;
+
+                // Sync the 'CanFocus' property.
+                if (value < 0 && CanFocus)
                 {
-                    if (CanFocus)
-                    {
-                        tabIndexChanging = true;
-                        CanFocus = false;
-                        tabIndexChanging = false;
-                    }
-                    view.Container.RemoveAttr(Html.TabIndex);
+                    tabIndexChanging = true;
+                    CanFocus = false;
+                    tabIndexChanging = false;
                 }
-                else
-                {
-                    view.Container.Attribute(Html.TabIndex, value.ToString());
-                }
+
+                // Keep the HTML element in sync (change the 'tabIndex' attribute).
+                SyncTabIndexOnHtml(value);
+
+                // Finish up.
                 FirePropertyChanged(PropTabIndex);
             }
         }
 
         public bool BrowserHighlighting
         {
-            get { return (bool) Get(PropBrowserHighlighting, true); }
+            get { return (bool)Get(PropBrowserHighlighting, true); }
             set
             {
-                if(Set(PropBrowserHighlighting, value, true))
+                if (Set(PropBrowserHighlighting, value, true))
                 {
                     view.Container.CSS(Css.Outline, value ? string.Empty : "0");
                 }
@@ -138,6 +149,16 @@ namespace Open.Core
             if (!CanFocus) return false;
             view.Container.Blur();
             return true;
+        }
+        #endregion
+
+        #region Internal
+        [AlternateSignature]
+        private extern void SyncTabIndexOnHtml();
+        private void SyncTabIndexOnHtml(int value)
+        {
+            if (Script.IsNullOrUndefined(value)) value = TabIndex;
+            view.Container.Attribute(Html.TabIndex, value.ToString());
         }
         #endregion
     }
