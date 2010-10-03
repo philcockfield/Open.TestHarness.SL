@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>Represents CSS class(es) for a single state.</summary>
@@ -8,7 +6,8 @@ namespace Open.Core.Controls.Buttons
         #region Head
         private readonly string cssClasses;
 
-        public ButtonStateCss(ButtonState[] states, string cssClasses, NullableBool forDisabled, NullableBool forFocused) : base(states, forDisabled, forFocused)
+        public ButtonStateCss(ButtonState[] states, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
+            : base(states, enabledCondition, focusCondition)
         {
             this.cssClasses = cssClasses;
         }

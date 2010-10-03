@@ -24,7 +24,6 @@ namespace Open.Core.Controls.Buttons
         public static readonly ButtonState[] DownAndPressed = new ButtonState[] { ButtonState.MouseDown, ButtonState.Pressed };
         public static readonly ButtonState[] NotDownOrPressed = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver };
 
-
         private readonly IButton model;
         private readonly ButtonEventController eventController;
         private readonly ButtonContentController contentController;
@@ -106,7 +105,17 @@ namespace Open.Core.Controls.Buttons
             if (e.Property.Name == ButtonModel.PropIsEnabled)
             {
                 UpdateLayout();
+                FirePropertyChanged(PropIsEnabled);
             }
+        }
+        #endregion
+
+        #region Properties
+        // Defer enabled state to the model.
+        public override bool IsEnabled
+        {
+            get { return model.IsEnabled; }
+            set { model.IsEnabled = value; }
         }
         #endregion
 
@@ -154,11 +163,11 @@ namespace Open.Core.Controls.Buttons
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="state">The state the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
-        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
-        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
-        protected void SetCssForState(int layer, ButtonState state, string cssClasses, NullableBool forDisabled, NullableBool forFocused)
+        /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
+        /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
+        protected void SetCssForState(int layer, ButtonState state, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
-            SetCssForStates(layer, new ButtonState[] { state }, cssClasses);
+            SetCssForStates(layer, new ButtonState[] { state }, cssClasses, enabledCondition, focusCondition);
         }
 
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
@@ -172,11 +181,11 @@ namespace Open.Core.Controls.Buttons
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="states">The state(s) the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
-        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
-        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
-        protected void SetCssForStates(int layer, ButtonState[] states, string cssClasses, NullableBool forDisabled, NullableBool forFocused)
+        /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
+        /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
+        protected void SetCssForStates(int layer, ButtonState[] states, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
-            contentController.AddCss(layer, new ButtonStateCss(states, cssClasses, forDisabled, forFocused));
+            contentController.AddCss(layer, new ButtonStateCss(states, cssClasses, enabledCondition, focusCondition));
         }
         #endregion
 
@@ -192,11 +201,11 @@ namespace Open.Core.Controls.Buttons
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="state">The state the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
-        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
-        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
-        protected void SetTemplateForState(int layer, ButtonState state, string templateSelector, NullableBool forDisabled, NullableBool forFocused)
+        /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
+        /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
+        protected void SetTemplateForState(int layer, ButtonState state, string templateSelector, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
-            SetTemplateForStates(layer, new ButtonState[] { state }, templateSelector);
+            SetTemplateForStates(layer, new ButtonState[] { state }, templateSelector, enabledCondition, focusCondition);
         }
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
@@ -210,11 +219,11 @@ namespace Open.Core.Controls.Buttons
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
         /// <param name="states">The states the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
-        /// <param name="forDisabled">Flag indicating whether the content is for a disabled state.</param>
-        /// <param name="forFocused">Flag indicating whether the content is for a focused state.</param>
-        protected void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector, NullableBool forDisabled, NullableBool forFocused)
+        /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
+        /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
+        protected void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
-            contentController.AddTemplate(layer, new ButtonStateTemplate(states, new Template(templateSelector), forDisabled, forFocused));
+            contentController.AddTemplate(layer, new ButtonStateTemplate(states, new Template(templateSelector), enabledCondition, focusCondition));
         }
         #endregion
 

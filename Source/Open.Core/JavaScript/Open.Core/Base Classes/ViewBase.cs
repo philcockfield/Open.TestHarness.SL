@@ -77,13 +77,13 @@ namespace Open.Core
         #endregion
 
         #region Properties : IView - State
-        public bool IsEnabled
+        public virtual bool IsEnabled
         {
             get { return (bool)Get(PropIsEnabled, true); }
             set { if (Set(PropIsEnabled, value, true)) FireIsEnabledChanged(); }
         }
 
-        public bool IsVisible
+        public virtual bool IsVisible
         {
             get { return Container == null ? false : Css.IsVisible(Container); }
             set
@@ -96,63 +96,7 @@ namespace Open.Core
         }
         #endregion
 
-        //#region Properties : IView (Focus)
-        //public bool IsFocused
-        //{
-        //    get { return (bool)Get(PropIsFocused, false); }
-        //    private set { Set(PropIsFocused, value, false); }
-        //}
-
-        //public bool CanFocus
-        //{
-        //    get { return TabIndex >= 0; }
-        //    set 
-        //    {
-        //        // Setup initial conditions.
-        //        if (value == CanFocus) return;
-
-        //        // Update the value (stored in TabIndex).
-        //        int tabIndex = TabIndex;
-        //        if (value && tabIndex < 0) TabIndex = 0;
-        //        if (!value && tabIndex >= 0) TabIndex = -1;
-
-        //        // Finish up.
-        //        FirePropertyChanged(PropCanFocus);
-        //        IsFocused = false;
-        //    }
-        //}
-
-        //public int TabIndex
-        //{
-        //    get
-        //    {
-        //        object value = Container.GetAttribute(Html.TabIndex);
-        //        return Script.IsNullOrUndefined(value) ? -1 : (int)value;
-        //    }
-        //    set
-        //    {
-        //        if (tabIndexChanging) return;
-        //        if (value == TabIndex) return;
-        //        if (value < 0)
-        //        {
-        //            if (CanFocus)
-        //            {
-        //                tabIndexChanging = true;
-        //                CanFocus = false;
-        //                tabIndexChanging = false;
-        //            }
-        //            Container.RemoveAttr(Html.TabIndex);
-        //        }
-        //        else
-        //        {
-        //            Container.Attribute(Html.TabIndex, value.ToString());
-        //        }
-        //        FirePropertyChanged(PropTabIndex);
-        //    }
-        //}
-        //#endregion
-
-        #region Properties : Style
+        #region Properties : IView - Style
         public string Background
         {
             get { return GetCss(Css.Background); }
@@ -191,7 +135,7 @@ namespace Open.Core
             }
         }
 
-        public int Height
+        public virtual int Height
         {
             get { return Container == null ? 0 : Container.GetHeight(); }
             set

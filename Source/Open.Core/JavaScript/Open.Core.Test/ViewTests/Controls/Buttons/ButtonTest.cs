@@ -98,17 +98,22 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             // Assign states.
             // All.
             SetTemplateForStates(0, AllStates, "#btnSample_Background");
-            SetCssForStates(0, AllStates, "btn_sample_focus", NullableBool.Nothing, NullableBool.Yes);
 
             // Normal.
-            SetTemplateForStates(1, new ButtonState[] {ButtonState.Normal, ButtonState.MouseOver}, "#btnSample_Normal");
-            SetCssForStates(1, new ButtonState[] {ButtonState.Normal, ButtonState.MouseOver}, "btn_sample_defaultText");
+            SetTemplateForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "#btnSample_Normal", EnabledCondition.EnabledOnly, FocusCondition.UnfocusedOnly);
+            SetCssForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "btn_sample_defaultText");
 
             // Pressed.
             SetCssForState(1, ButtonState.MouseOver, "btn_sample_over");
             SetTemplateForState(1, ButtonState.MouseDown, "#btnSample_Down");
             SetTemplateForState(1, ButtonState.Pressed, "#btn_Sample_Pressed");
 
+            // Focused.
+            SetCssForStates(0, AllStates, "btn_sample_focus", EnabledCondition.Either, FocusCondition.FocusedOnly);
+            SetTemplateForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "#btn_Sample_Focused", EnabledCondition.EnabledOnly, FocusCondition.FocusedOnly);
+
+            // Disabled.
+            SetTemplateForStates(3, AllStates, "#btnSample_Disabled", EnabledCondition.DisabledOnly, FocusCondition.Either);
 
             // Overlay.
             SetCssForStates(2, AllStates, "btn_sample_overlay");

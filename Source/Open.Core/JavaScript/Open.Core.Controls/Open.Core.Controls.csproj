@@ -51,6 +51,7 @@
     <Compile Include="..\..\Clr\Open.Core.Web\Code\Declarations\Enumerations.Controls.shared.cs">
       <Link>Declarations\Enumerations.Controls.shared.cs</Link>
     </Compile>
+    <Compile Include="Buttons\Enums %28Button%29.cs" />
     <Compile Include="Buttons\Infrastructure\ButtonContentLayer.cs" />
     <Compile Include="Buttons\Infrastructure\ButtonStateContent.cs" />
     <Compile Include="Buttons\Infrastructure\ButtonView.cs" />

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Open.Core.Controls.Buttons
 {
@@ -9,7 +8,8 @@ namespace Open.Core.Controls.Buttons
         #region Head
         private readonly Template template;
 
-        public ButtonStateTemplate(ButtonState[] states, Template template, NullableBool forDisabled, NullableBool forFocused) : base(states, forDisabled, forFocused)
+        public ButtonStateTemplate(ButtonState[] states, Template template, EnabledCondition enabledCondition, FocusCondition focusCondition)
+            : base(states, enabledCondition, focusCondition)
         {
             // Setup initial conditions.
             if (Script.IsUndefined(template)) template = null;

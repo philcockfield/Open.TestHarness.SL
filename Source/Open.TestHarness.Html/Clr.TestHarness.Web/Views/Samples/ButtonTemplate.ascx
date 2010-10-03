@@ -23,6 +23,17 @@
     </div>
 </script>
 
+<script id="btn_Sample_Focused" type="text/x-jquery-tmpl">
+    <div class="btn_sample absoluteFill">
+        <p>Focused</p>
+    </div>
+</script>
+
 <script id="btnSample_Overlay" type="text/x-jquery-tmpl">
     <p class="btn_sample toolbarReflection"></p>
 </script>
+
+<script id="btnSample_Disabled" type="text/x-jquery-tmpl">
+    <div class="btn_sample btnSample_disabled absoluteFill">Disabled</div>
+</script>
+
