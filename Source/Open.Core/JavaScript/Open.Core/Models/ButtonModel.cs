@@ -78,6 +78,11 @@ namespace Open.Core.Controls.Buttons
             if (CanToggle) IsPressed = !IsPressed;
             FireClick();
         }
+
+        public virtual IButtonView CreateView()
+        {
+            return null; // Optionally implemented in deriving classes.
+        }
         #endregion
     }
 }

@@ -34,13 +34,32 @@ namespace Open.Core.Test.ViewTests.Core
             Log.Info("IsDownloaded: " + Helper.Template.IsDownloaded(Url) + " | " + urlLink);
         }
 
-        public void GetTemplate()
+        public void GetAsync()
         {
-            Log.Info(string.Format("Getting template '{0}' at {1}", SelectorSample1, urlLink));
+            Log.Info(string.Format("Getting template '{0}' at {1} (asynchronously).", SelectorSample1, urlLink));
             Helper.Template.GetAsync(Url, SelectorSample1, delegate(Template template)
                                                           {
                                                               Log.Success("Retrieved. Template result: " + template.ToString());
                                                           });
+        }
+
+        public void Get()
+        {
+            Log.Info(string.Format("Getting template '{0}'.", SelectorSample1));
+            Template template = Helper.Template.Get(SelectorSample1);
+            if (template == null)
+            {
+                Log.Error("Template not downloaded.");
+            }
+            else
+            {
+                Log.Success("Template: " + template.TemplateHtml.HtmlEncode());
+            }
+        }
+
+        public void IsAvailable()
+        {
+            Log.Info(string.Format("IsAvailable( '{0}' ): {1}", SelectorSample1, Helper.Template.IsAvailable(SelectorSample1)));
         }
 
         public void RenderTemplate()
@@ -76,7 +95,6 @@ namespace Open.Core.Test.ViewTests.Core
                         view.Container.Empty();
                         view.Container.Append(html);
                     });
-            
         }
         #endregion
     }

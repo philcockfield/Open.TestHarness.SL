@@ -1,0 +1,23 @@
+﻿.btnCommon.bg.silver.up
+{
+    background:#f0f1f0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#e3e3e3));
+    background: -moz-linear-gradient(top, #f9f9f9, #e3e3e3);
+}
+
+.btnCommon.bg.silver.down
+{
+    background:#c6c6c6;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#f9f9f9));
+    background: -moz-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+.btnCommon.bg.border
+{
+   border:solid 1px #cccccc;
+}
+
+.btnCommon.bg.border.highlight
+{
+   border:solid 1px #838383;
+}

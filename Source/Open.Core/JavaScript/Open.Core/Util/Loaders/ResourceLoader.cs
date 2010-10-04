@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
-using jQueryApi;
 
 namespace Open.Core.Helpers
 {

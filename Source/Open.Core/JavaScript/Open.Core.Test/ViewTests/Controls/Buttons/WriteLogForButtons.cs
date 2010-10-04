@@ -2,7 +2,7 @@ using Open.Core.Controls.Buttons;
 
 namespace Open.Core.Test.ViewTests.Controls.Buttons
 {
-    public static class LogButtons
+    public static class WriteLogForButtons
     {
         public static void WriteButtonModel(IButton button)
         {

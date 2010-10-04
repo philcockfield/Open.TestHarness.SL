@@ -45,6 +45,8 @@ namespace Open.Core.Controls.Buttons
                 layer.Render(DivContent);
             }
         }
+
+        public void Clear() { layerList.Clear(); }
         #endregion
 
         #region Internal

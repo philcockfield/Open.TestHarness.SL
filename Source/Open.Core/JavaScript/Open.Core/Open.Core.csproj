@@ -51,10 +51,10 @@
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\DiContainer.cs" />
-    <Compile Include="Declarations\Enums\Enums.Css.cs" />
-    <Compile Include="Declarations\Enums\Enums.Html.cs" />
-    <Compile Include="Declarations\Interfaces\IButtonView.cs" />
+    <Compile Include="Declarations\Enums\Enums %28Css%29.cs" />
+    <Compile Include="Declarations\Enums\Enums %28Html%29.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
+    <Compile Include="Declarations\Interfaces\IButtonView.cs" />
     <Compile Include="Declarations\Interfaces\IFocus.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Models\ButtonModel.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
     <Compile Include="Util\Helpers\StringHelper.cs" />
     <Compile Include="Util\Helpers\UrlHelper.cs" />
+    <Compile Include="Util\Loaders\TemplateLoader.cs" />
     <Compile Include="Util\Loaders\ResourceLoader.cs" />
     <Compile Include="Util\Loaders\ScriptLoader.cs" />
     <Compile Include="Util\Helpers\Scripts\ScriptLoadHelper.cs" />

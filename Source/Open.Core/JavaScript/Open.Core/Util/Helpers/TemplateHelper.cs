@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core.Helpers
@@ -27,32 +28,65 @@ namespace Open.Core.Helpers
             if (callback == null) return;
 
             // Check cache for pre-existing template.
-            Template template = Helper.Collection.First(templates, delegate(object o)
-                                                                       {
-                                                                           Template item = (Template) o;
-                                                                           return item.Selector == selector;
-                                                                       }) as Template;
+            Template template = Get(selector);
             if (template != null)
             {
                 callback(template);
                 return;
             }
 
-            // NB: Actual download is only invoked once (logic handled within the 'Download' method).
+            // NB: The actual download is only invoked once (logic handled within the 'Download' method).
             Download(url, delegate
-                                {
-                                    // Add to cache.
-                                    template = new Template(selector);
-                                    templates.Add(template);
-
-                                    // Finish up.
-                                    callback(template);
-                                });
+                              {
+                                  template = GetInternal(selector, false); // Don't recheck cahce.  Cache has already checked prior to downloading.
+                                  callback(template);
+                              });
         }
+
+        /// <summary>Retrieves the specified Template singleton instance (downloading it if it has not already been pulled).</summary>
+        /// <param name="selector">The CSS selector for the script block containing the template HTML.</param>
+        /// <returns>The specified template, or Null if it doesn't exist.</returns>
+        public Template Get(string selector) { return GetInternal(selector, true); }
+        public Template GetInternal(string selector, bool checkCache)
+        {
+            // Setup initial conditions.
+            Template template = null;
+
+            // Check cache for pre-existing template.
+            if (!Script.IsUndefined(checkCache) && checkCache)
+            {
+                template = Helper.Collection.First(templates, delegate(object o)
+                                                        {
+                                                            Template item = (Template)o;
+                                                            return item.Selector == selector;
+                                                        }) as Template;
+                if (template != null) return template;
+            }
+
+            // Attempt to create the template from the given selector (and add it to the cache).
+            try
+            {
+                template = new Template(selector);
+                templates.Add(template);
+                return template;
+            }
+            catch (Exception)
+            {
+                return null; // Selector not found.  No template to return.
+            }
+        }
+
+        /// <summary>Gets whether a template at the given selector is available to use (it exists within the page).</summary>
+        public bool IsAvailable(string selector) { return Get(selector) != null; }
 
         /// <summary>Determines whether the specified URL has been downloaded.</summary>
         /// <param name="url">The URL of the template(s) to check.</param>
         public bool IsDownloaded(string url) { return downloadedUrls.Contains(url.ToLowerCase()); }
+
+        /// <summary>Downloads the template(s) at the specified URL and appends them to the body.</summary>
+        /// <param name="url">The URL of the template(s) to download.</param>
+        [AlternateSignature]
+        public extern void Download(string url);
 
         /// <summary>Downloads the template(s) at the specified URL and appends them to the body.</summary>
         /// <param name="url">The URL of the template(s) to download.</param>

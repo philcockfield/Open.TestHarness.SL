@@ -10,10 +10,18 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         #region Tests
         public void Show__SampleButton()
         {
-            SampleButton button = new SampleButton();
-            TestHarness.AddControl(button);
-            WireUp(button);
+            MyButtonView.DownloadContent(delegate
+                                        {
+                                            MyButtonView button = new MyButtonView();
+                                            button.Text = "Sample Button";
+
+                                            TestHarness.AddControl(button);
+                                            WireUp(button);
+                                            button.UpdateLayout();
+                                        });
         }
+
+        public void Clear_All() { TestHarness.Reset(); }
         #endregion
 
         #region Internal

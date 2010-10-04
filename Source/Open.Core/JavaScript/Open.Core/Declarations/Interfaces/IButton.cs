@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Open.Core.Controls.Buttons;
 
 namespace Open.Core
 {
@@ -42,6 +43,9 @@ namespace Open.Core
         /// <param name="force">Flag indicating if the click action should be forced (even if the button is disabled).</param>
         /// <remarks>Typically used for programmatic testing.</remarks>
         void InvokeClick(bool force);
+
+        /// <summary>Creates a visual control for the logical button model.  Returns null if not implemented in deriving class.</summary>
+        IButtonView CreateView();
         #endregion
     }
 }

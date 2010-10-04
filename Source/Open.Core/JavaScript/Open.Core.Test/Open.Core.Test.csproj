@@ -58,8 +58,8 @@
     <Compile Include="UnitTests\ViewBaseUnitTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\ButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\Button_LibraryTest.cs" />
-    <Compile Include="ViewTests\Controls\Buttons\LinkButtonTest.cs" />
-    <Compile Include="ViewTests\Controls\Buttons\LogButtons.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\IconTextButtonTest.cs" />
+    <Compile Include="ViewTests\Controls\Buttons\WriteLogForButtons.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
     <Compile Include="ViewTests\Core\TemplateTest.cs" />

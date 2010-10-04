@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using jQueryApi;
 using Open.Core.Controls.Buttons;
 using Open.Testing;
 
@@ -27,7 +24,8 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                           Log.Success("Templates downloaded");
                                                           view = new MyButtonView();
                                                           model = view.Model;
-                                                          model.TemplateData["buttonText"] = "My Button Text";
+                                                          view.Text = "My Button Text";
+//                                                          model.TemplateData["buttonText"] = "My Button Text";
 
                                                           model.Click += delegate { Log.Info("!! Click"); };
                                                           model.IsPressedChanged += delegate
@@ -77,10 +75,10 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         {
             if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
             Log.Title("Model");
-            LogButtons.WriteButtonModel(model);
+            WriteLogForButtons.WriteButtonModel(model);
             Log.LineBreak();
             Log.Title("View");
-            LogButtons.WriteButtonView(view);
+            WriteLogForButtons.WriteButtonView(view);
             Log.LineBreak();
             Log.Info(view.OuterHtml.HtmlEncode());
         }
@@ -121,6 +119,23 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
 
             // Finish up.
             UpdateLayout();
+        }
+
+        public string Text
+        {
+            get { return Model.TemplateData["buttonText"] as string; }
+            set { Model.TemplateData["buttonText"] = value; }
+        }
+
+        public static void DownloadContent(Action onComplete)
+        {
+            Css.InsertLink(ButtonTest.CssUrl);
+            Log.Info("Downloading template for button: " + Html.ToHyperlink(ButtonTest.TemplateUrl));
+            Helper.Template.Download(ButtonTest.TemplateUrl, delegate
+                                    {
+                                        Log.Info("Template Downloaded. " + Html.ToHyperlink(ButtonTest.TemplateUrl));
+                                        Helper.Invoke(onComplete);
+                                    });
         }
     }
 }

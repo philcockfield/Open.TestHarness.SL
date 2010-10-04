@@ -1,4 +1,4 @@
-namespace Open.Core
+namespace Open.Core.Controls.Buttons
 {
     /// <summary>The visual control for a clickable button.</summary>
     public interface IButtonView
