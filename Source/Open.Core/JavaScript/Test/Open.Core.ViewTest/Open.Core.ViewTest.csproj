@@ -62,6 +62,7 @@
     <Compile Include="ViewTests\Controls\Buttons\WriteLogForButtons.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
+    <Compile Include="ViewTests\Core\IconTest.cs" />
     <Compile Include="ViewTests\Core\TemplateTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />

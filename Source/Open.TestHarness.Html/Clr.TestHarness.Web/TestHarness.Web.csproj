@@ -105,6 +105,7 @@
     <Content Include="Content\Scripts\TestHarness.Test.js" />
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
+    <Content Include="Views\Samples\Temp.aspx" />
     <Content Include="Views\TestHarness\Embed.aspx" />
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Images\Icons\Icon.Assembly.Small.png" />
@@ -121,7 +122,6 @@
     <Content Include="Views\Samples\Templates.aspx" />
     <Content Include="Views\TestHarness\AddPackage.ascx" />
     <Content Include="Views\TestHarness\Body.ascx" />
-    <Content Include="Views\TestHarness\Bootstrap.aspx" />
     <Content Include="Views\TestHarness\GoogleAnalytics.ascx" />
     <Content Include="Views\TestHarness\Head.ascx" />
     <Content Include="Views\TestHarness\Page.aspx" />

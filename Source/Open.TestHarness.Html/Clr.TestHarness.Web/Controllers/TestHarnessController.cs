@@ -17,9 +17,6 @@ namespace Open.Testing.Web.Controllers
         #endregion
 
         #region Methods : Actions
-        /// <summary>Page containing the bootstrapper script.</summary>
-        public virtual ActionResult Bootstrap() { return View(ViewModel); }
-
         /// <summary>The TestHarness page.</summary>
         public virtual ActionResult Index()
         {
@@ -32,7 +29,6 @@ namespace Open.Testing.Web.Controllers
         {
             return View(MVC.TestHarness.Views.Embed, ViewModel);
         }
-
 
         /// <summary>The HEAD content.</summary>
         public virtual ActionResult Head()

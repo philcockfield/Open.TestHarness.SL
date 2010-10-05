@@ -21,6 +21,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(CollectionHelperUnitTest));
 
             // View Tests
+            TestHarness.RegisterClass(typeof(IconTest));
             TestHarness.RegisterClass(typeof(TemplateTest));
             TestHarness.RegisterClass(typeof(ViewBaseTest));
             TestHarness.RegisterClass(typeof(ListTreeViewTest));

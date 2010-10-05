@@ -93,6 +93,7 @@
     <Compile Include="Util\Dom\Css.cs" />
     <Compile Include="Declarations\Events\DomEvents.cs" />
     <Compile Include="Util\Helpers\CollectionHelper.cs" />
+    <Compile Include="Util\Helpers\IconHelper.cs" />
     <Compile Include="Util\Helpers\TemplateHelper.cs" />
     <Compile Include="Util\Helpers\ExceptionHelper.cs" />
     <Compile Include="Util\Helpers\DoubleHelper.cs" />

@@ -46,6 +46,7 @@ namespace Open.TestHarness.Web.Controllers {
         public ActionNamesClass ActionNames { get { return s_actions; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass {
+            public readonly string Temp = "Temp";
             public readonly string Templates = "Templates";
             public readonly string ButtonTemplate = "ButtonTemplate";
             public readonly string JQuery = "JQuery";
@@ -61,6 +62,7 @@ namespace Open.TestHarness.Web.Controllers {
             public readonly string ButtonTemplate = "~/Views/Samples/ButtonTemplate.ascx";
             public readonly string Embed = "~/Views/Samples/Embed.aspx";
             public readonly string JQuery = "~/Views/Samples/JQuery.aspx";
+            public readonly string Temp = "~/Views/Samples/Temp.aspx";
             public readonly string Templates = "~/Views/Samples/Templates.aspx";
         }
     }
@@ -68,6 +70,11 @@ namespace Open.TestHarness.Web.Controllers {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public class T4MVC_SamplesController: Open.TestHarness.Web.Controllers.SamplesController {
         public T4MVC_SamplesController() : base(Dummy.Instance) { }
+
+        public override System.Web.Mvc.ActionResult Temp() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Temp);
+            return callInfo;
+        }
 
         public override System.Web.Mvc.ActionResult Templates() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Templates);

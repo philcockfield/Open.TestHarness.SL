@@ -60,6 +60,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AreaRegistration.cs" />
+    <Compile Include="Code\IconExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
