@@ -79,11 +79,6 @@
     <Compile Include="Models\HttpResult.cs" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.2.min.js" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.json-2.2.min.js" />
-    <EmbeddedResource Include="Content\Images\TestHarness\Icon.Assembly.Small.png" />
-    <EmbeddedResource Include="Content\Images\TestHarness\Icon.Class.Small.png" />
-    <EmbeddedResource Include="Content\Images\TestHarness\Icon.JavaScript.png" />
-    <EmbeddedResource Include="Content\Images\TestHarness\Icon.Method.Small.png" />
-    <EmbeddedResource Include="Content\Images\TestHarness\Sidebar.BackMask.png" />
     <EmbeddedResource Include="Content\Css\Core.Buttons.css" />
     <Content Include="Content\Scripts\JQuery\Readme.txt" />
     <Compile Include="Controllers\ButtonsController.cs" />

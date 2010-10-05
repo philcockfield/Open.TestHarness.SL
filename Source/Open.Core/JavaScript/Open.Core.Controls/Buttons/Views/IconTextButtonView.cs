@@ -31,7 +31,7 @@ namespace Open.Core.Controls.Buttons
 
 
             //TEMP 
-            SetSize(24, 24);
+            SetSize(80, 24);
             //Background = Color.HotPink;
             //Css.RoundedCorners(Container, 5);
 

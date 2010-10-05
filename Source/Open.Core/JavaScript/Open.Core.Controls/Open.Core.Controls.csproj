@@ -53,22 +53,22 @@
     </Compile>
     <Compile Include="Buttons\Infrastructure\ButtonStyles.cs" />
     <Compile Include="Buttons\Infrastructure\ButtonTemplates.cs" />
-    <Compile Include="Buttons\Infrastructure\ButtonCss.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonCss.cs" />
     <Compile Include="Buttons\Infrastructure\Enums %28Button%29.cs" />
     <Compile Include="Buttons\LinkButton.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Buttons\Models\IconTextButton.cs" />
     <Compile Include="Buttons\Views\IconTextButtonView.cs" />
-    <Compile Include="Buttons\Infrastructure\ButtonContentLayer.cs" />
-    <Compile Include="Buttons\Infrastructure\ButtonStateContent.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonContentLayer.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonStateContent.cs" />
     <Compile Include="Buttons\Infrastructure\ButtonView.cs" />
     <Compile Include="Buttons\Controllers\ButtonEventController.cs" />
     <Compile Include="Buttons\Controllers\ButtonContentController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Buttons\Infrastructure\ButtonStateTemplate.cs" />
-    <Compile Include="Buttons\Infrastructure\ButtonStateCss.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonStateTemplate.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonStateCss.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />
     <Compile Include="Output\LogView.cs" />
     <Content Include="Properties\Open.Core.Views.ruleset" />

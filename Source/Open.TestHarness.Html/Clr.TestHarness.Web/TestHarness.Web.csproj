@@ -164,6 +164,10 @@
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
       <Name>Open.Core.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Web.Assets\Open.Core.Web.Assets.csproj">
+      <Project>{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}</Project>
+      <Name>Open.Core.Web.Assets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Web\Open.Core.Web.csproj">
       <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
       <Name>Open.Core.Web</Name>

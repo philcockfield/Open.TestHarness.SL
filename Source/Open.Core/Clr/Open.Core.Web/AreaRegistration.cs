@@ -32,10 +32,6 @@ namespace Open.Core.Web
             context.MapEmbeddedResource(AreaName, "ResourceScriptsRouteJit", AreaName + "/Scripts/Jit/{resourceName}", resourcePath: "Content/Scripts/Jit");
             context.MapEmbeddedResource(AreaName, "ResourceScriptsRouteJQuery", AreaName + "/Scripts/JQuery/{resourceName}", resourcePath: "Content/Scripts/JQuery");
 
-            // TestHarness
-            context.MapEmbeddedResource(AreaName, "TestHarnessImageRoute", "TestHarness/Images/{resourceName}", resourcePath: "Content/Images/TestHarness");
-            context.MapEmbeddedResource(AreaName, "TestHarnessCssRoute", "TestHarness/Css/{resourceName}", resourcePath: "Content/Css/TestHarness");
-
             // Map the area.
             context.MapRoute(
                             AreaName,
