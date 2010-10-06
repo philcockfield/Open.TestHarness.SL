@@ -9,14 +9,16 @@ namespace Open.Core.Web
         /// <summary>Retrieves the path to the specified icon.</summary>
         /// <param name="helper">The HTML helper to extend.</param>
         /// <param name="icon">The icon.</param>
-        public static string IconUrl(this HtmlHelper helper, IconImage icon)
+        /// <param name="greyscale">Flag indicating if the greyscale version should be retrieved.</param>
+        public static string IconUrl(this HtmlHelper helper, IconImage icon, bool greyscale = false)
         {
             // Retrieve the folder.
             var iconName = icon.ToString();
             string subPath = null;
             if (iconName.StartsWith("Silk"))
             {
-                subPath = string.Format("Silk/{0}.png", iconName);
+                string greyscalePath = greyscale ? "/Greyscale" : null;
+                subPath = string.Format("Silk{0}/{1}.png", greyscalePath, iconName);
             }
             if (subPath == null) throw new NotFoundException(string.Format("Cannot resolve URL to the icon '{0}'.", iconName));
 

@@ -6,7 +6,6 @@ namespace Open.TestHarness.Web
     public enum TestHarnessScriptFile
     {
         TestHarness,
-        Bootstrap,
     }
 
     /// <summary>Gets URL paths to CSS files.</summary>
@@ -34,19 +33,6 @@ namespace Open.TestHarness.Web
                     Script.EntryPoint("Open.Testing.Application.main"));
             }
         }
-
-        /// <summary>Gets the Bootstrapper script for the TestHarness.</summary>
-        public string Bootstrap
-        {
-            get
-            {
-                return string.Format(
-                    "{0}\r\n{1}",
-                    this[TestHarnessScriptFile.Bootstrap],
-                    Script.EntryPoint("Open.Testing.Bootstrap.Application.main"));
-            }
-        }
-
         #endregion
 
         #region Internal
@@ -56,7 +42,6 @@ namespace Open.TestHarness.Web
             switch (cssFile)
             {
                 case TestHarnessScriptFile.TestHarness: path = "/Content/Scripts/Open.TestHarness.debug.js"; break;
-                case TestHarnessScriptFile.Bootstrap: path = "/Content/Scripts/Open.TestHarness.Bootstrap.debug.js"; break;
                 default: throw new NotSupportedException(cssFile.ToString());
             }
             return path.PrependDomain();

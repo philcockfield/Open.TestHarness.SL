@@ -9,12 +9,20 @@ namespace Open.Core.Helpers
     {
         /// <summary>Converts the named icon into a path.</summary>
         /// <param name="iconName">The name of the icon (see the IconImage enum on the server).</param>
-        public string Path(string iconName)
+        [AlternateSignature]
+        public extern string Path(string iconName);
+
+        /// <summary>Converts the named icon into a path.</summary>
+        /// <param name="iconName">The name of the icon (see the IconImage enum on the server).</param>
+        /// <param name="greyscale">Flag indicating if the greyscale version of the icon should be used.</param>
+        public string Path(string iconName, bool greyscale)
         {
             iconName = Helper.String.RemoveEnd(iconName, ".png");
             if (iconName.StartsWith("Silk"))
             {
-                return string.Format("/Open.Assets/Icons/Silk/{0}.png", iconName);
+                if (Script.IsNullOrUndefined(greyscale)) greyscale = false;
+                string greyscalePath = greyscale ? "/Greyscale" : null;
+                return string.Format("/Open.Assets/Icons/Silk{0}/{1}.png", greyscalePath, iconName);
             }
             throw new Exception(string.Format("Icon named '{0}' not found.", iconName));
         }
@@ -26,10 +34,10 @@ namespace Open.Core.Helpers
 
         /// <summary>Retrieves an IMG tag with the path to the specified icon.</summary>
         /// <param name="iconName">The name of the icon (see the IconImage enum on the server).</param>
-        /// <param name="alt">The alternative text for the image.</param>
-        public jQueryObject Image(string iconName, string alt)
+        /// <param name="greyscale">Flag indicating if the greyscale version of the icon should be used.</param>
+        public jQueryObject Image(string iconName, bool greyscale)
         {
-            return Html.CreateImage(Path(iconName), alt);
+            return Html.CreateImage(Path(iconName, greyscale), null);
         }
     }
 }

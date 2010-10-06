@@ -86,7 +86,7 @@ namespace Open.Testing
         /// <summary>Adds an HTML element to the host canvas.</summary>
         /// <param name="element">The HTML content of the control.</param>
         /// <returns>A DIV element to contain the control.</returns>
-        public static void AddHtml(jQueryObject element)
+        public static void AddElement(jQueryObject element)
         {
             if (element == null) throw new Exception("An HTML element was not specified.");
             FireControlAdded(null, element);

@@ -78,7 +78,7 @@ namespace Open.Core.Ria
         /// <typeparam name="T">The entity Type being loaded.</typeparam>
         /// <param name="query">The query to invoke.</param>
         /// <param name="callback">Optional callback to be called when the load operation completes.</param>
-        public void Load<T>(EntityQuery<T> query, Action<LoadOperation<T>> callback = null) where T : Entity
+        public virtual void Load<T>(EntityQuery<T> query, Action<LoadOperation<T>> callback = null) where T : Entity
         {
             Load(query, LoadBehavior.MergeIntoCurrent, callback);
         }
@@ -88,7 +88,7 @@ namespace Open.Core.Ria
         /// <param name="query">The query to invoke.</param>
         /// <param name="refresh">Flag indicating the refresh strategy to use (True:RefreshCurrent, False:MergeIntoCurrent).</param>
         /// <param name="callback">Optional callback to be called when the load operation completes.</param>
-        public void Load<T>(EntityQuery<T> query, bool refresh, Action<LoadOperation<T>> callback) where T : Entity
+        public virtual void Load<T>(EntityQuery<T> query, bool refresh, Action<LoadOperation<T>> callback) where T : Entity
         {
             var loadBehavior = refresh ? LoadBehavior.RefreshCurrent : LoadBehavior.MergeIntoCurrent;
             Load(query, loadBehavior, callback);
@@ -99,7 +99,7 @@ namespace Open.Core.Ria
         /// <param name="query">The query to invoke.</param>
         /// <param name="loadBehavior">Flag indicating what strategy to use when loading.</param>
         /// <param name="callback">Optional callback to be called when the load operation completes.</param>
-        public void Load<T>(EntityQuery<T> query, LoadBehavior loadBehavior, Action<LoadOperation<T>> callback = null) where T : Entity
+        public virtual void Load<T>(EntityQuery<T> query, LoadBehavior loadBehavior, Action<LoadOperation<T>> callback = null) where T : Entity
         {
             Context.Load(query, loadBehavior, callback, null);
         }
