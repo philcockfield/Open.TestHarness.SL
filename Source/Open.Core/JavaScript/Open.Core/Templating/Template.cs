@@ -6,10 +6,15 @@ namespace Open.Core
     /// <summary>A compiled jQuery template.</summary>
     /// <remarks>
     ///     Use the method 'Helper.Template.Get(selector)' to download and create an instances of the template.
-    ///     Source for jQuery plugin (Microsoft version): http://github.com/nje/jquery-tmpl
+    ///     
+    ///     Source for jQuery plugin: http://github.com/nje/jquery-tmpl
+    ///     Documentation: http://api.jquery.com/category/plugins/templates/
     ///     Introductory articles: 
+    ///         http://weblogs.asp.net/scottgu/archive/2010/10/04/jquery-templates-data-link-and-globalization-accepted-as-official-jquery-plugins.aspx
     ///         http://blog.reybango.com/2010/07/09/not-using-jquery-javascript-templates-youre-really-missing-out/
     ///         http://blog.reybango.com/2010/07/14/jquery-javascript-templates-tutorial-inline-expressions-and-code-blocks/
+    ///     
+    ///     Data-Linking: http://github.com/jquery/jquery-datalink
     /// </remarks>
     public class Template
     {

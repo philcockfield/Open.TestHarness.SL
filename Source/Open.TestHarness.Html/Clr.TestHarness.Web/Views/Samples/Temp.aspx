@@ -11,7 +11,7 @@
 <body>
 
   <img src="<%= Html.IconUrl(IconImage.SilkAccept) %>" />    
-  <img src="<%= Html.IconUrl(IconImage.SilkAccept, true) %>" />    
+  <img src="<%= Html.IconUrl(IconImage.SilkAccept, greyscale:true) %>" />    
 
 </body>
 </html>
