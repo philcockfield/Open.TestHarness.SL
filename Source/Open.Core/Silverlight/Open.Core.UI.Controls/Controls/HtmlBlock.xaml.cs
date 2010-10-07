@@ -66,7 +66,7 @@ namespace Open.Core.UI.Controls
         {
             // Setup initial conditions.
             InitializeComponent();
-            HtmlElementId = Guid.NewGuid().ToString();
+            HtmlElementId = string.Format("{0}_{1}", GetType().Name, Guid.NewGuid().ToString());
 
             // Create update delay.
             // NB: This is put on a delay (of zero, which causes it to be invoked asynchronously)
