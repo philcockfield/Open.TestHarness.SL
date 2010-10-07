@@ -20,6 +20,7 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             // Wire up events.
             textbox.TextChanged += delegate { Log.Info("!! TextChanged | Text: " + textbox.Text); };
             textbox.TextChangedDelay += delegate { Log.Success("!! TextChangedDelay | Text: " + textbox.Text); };
+            textbox.EnterPress += delegate { Log.Success("!! EnterPress"); };
         }
         #endregion
 

@@ -21,6 +21,10 @@ namespace Open.Core.Controls
         /// <remarks>Use this event to capture a set of keystroke events.</remarks>
         public event EventHandler TextChangedDelay;
         private void FireTextChangedDelay(){if (TextChangedDelay != null) TextChangedDelay(this, new EventArgs());}
+
+        /// <summary>Fires when the 'Enter' key is pressed</summary>
+        public event EventHandler EnterPress;
+        private void FireEnterPress(){if (EnterPress != null) EnterPress(this, new EventArgs());}
         #endregion
 
         #region Head
@@ -51,6 +55,8 @@ namespace Open.Core.Controls
             input.AppendTo(Container);
             input.AddClass(ClassTextbox);
             Css.AbsoluteFill(input);
+            input.CSS(Css.Width, "100%");
+            input.CSS(Css.Height, "100%");
 
             // Set initial size.
             Height = 40;
@@ -64,6 +70,7 @@ namespace Open.Core.Controls
             input.Keyup(delegate(jQueryEvent e)
                                     {
                                         if (previousText != Text) FireTextChanged();
+                                        if (Int32.Parse(e.Which) == (int)Key.Enter) FireEnterPress();
                                     });
             Focus.GotFocus += OnGotFocus;
             Focus.LostFocus += OnLostFocus;
