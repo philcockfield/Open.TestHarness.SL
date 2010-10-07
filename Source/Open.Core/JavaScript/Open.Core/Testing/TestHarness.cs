@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 using Open.Core;
 using Open.Testing.Internal;
@@ -76,20 +77,27 @@ namespace Open.Testing
 
         /// <summary>Adds a visual control to the host canvas.</summary>
         /// <param name="control">The control to add.</param>
-        /// <returns>A DIV element to contain the control.</returns>
-        public static void AddControl(IView control)
+        /// <returns>The added control (fluent).</returns>
+        public static IView AddControl(IView control)
         {
             if (control == null) throw new Exception("A visual control was not specified.");
             FireControlAdded(control, control.Container);
+            return control;
         }
+
+        /// <summary>Adds an DIV element to the host canvas.</summary>
+        /// <returns>The added DIV element.</returns>
+        [AlternateSignature]
+        public static extern jQueryObject AddElement();
 
         /// <summary>Adds an HTML element to the host canvas.</summary>
         /// <param name="element">The HTML content of the control.</param>
-        /// <returns>A DIV element to contain the control.</returns>
-        public static void AddElement(jQueryObject element)
+        /// <returns>The added element (fluent).</returns>
+        public static jQueryObject AddElement(jQueryObject element)
         {
-            if (element == null) throw new Exception("An HTML element was not specified.");
+            if (Script.IsNullOrUndefined(element)) element = Html.CreateDiv();
             FireControlAdded(null, element);
+            return element;
         }
 
         /// <summary>Clears the controls from the host canvas and resets to orginal state.</summary>
