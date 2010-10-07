@@ -14,6 +14,15 @@ namespace Open.Core
         Down = 1,
     }
 
+    /// <summary>Edges of an element.</summary>
+    public enum Edge
+    {
+        Left = 0,
+        Top = 1,
+        Right = 2,
+        Bottom = 3
+    }
+
     /// <summary>Flags representing the width or height of an object.</summary>
     public enum SizeDimension
     {

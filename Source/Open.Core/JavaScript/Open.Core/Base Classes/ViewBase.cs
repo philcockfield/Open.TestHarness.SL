@@ -45,7 +45,7 @@ namespace Open.Core
         public const string PropIsEnabled = "IsEnabled";
 
         private readonly jQueryObject container;
-        private ViewFocus focus;
+        private IFocus focus;
 
         /// <summary>Constructor.</summary>
         [AlternateSignature]
@@ -63,7 +63,7 @@ namespace Open.Core
         /// <summary>Destructor.</summary>
         protected override void OnDisposed()
         {
-            if (focus != null) focus.Dispose();
+            Helper.Dispose(focus);
             base.OnDisposed();
         }
         #endregion
@@ -72,7 +72,7 @@ namespace Open.Core
         public jQueryObject Container { get { return container; } }
         public string OuterHtml { get { return Html.ToHtml(Container); } }
         public string InnerHtml { get { return Container.GetHtml(); } }
-        public IFocus Focus { get { return focus ?? (focus = new ViewFocus(this)); } }
+        public IFocus Focus { get { return focus ?? (focus = new ViewFocus(this, Container)); } }
         #endregion
 
         #region Properties : IView - State
@@ -229,6 +229,18 @@ namespace Open.Core
                                                               Container.Html(data.ToString());
                                                               Helper.Invoke(onComplete);
                                                           });
+        }
+
+        /// <summary>Changes the element that is used for focus control.</summary>
+        /// <param name="element">The child element that is the primary reciever of focus.</param>
+        /// <remarks>
+        ///     By default this is the 'Container', however if a child element within 
+        ///     the control is the primary reciever of focus use this method to 
+        ///     assign it as such.
+        /// </remarks>
+        protected void ChangeFocusElement(jQueryObject element)
+        {
+            focus = new ViewFocus(this, element);
         }
         #endregion
     }

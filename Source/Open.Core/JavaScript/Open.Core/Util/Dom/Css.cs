@@ -229,7 +229,7 @@ namespace Open.Core
         /// <summary>Shows or hides the given element.</summary>
         /// <param name="element">The element to effect.</param>
         /// <param name="isVisible">The desired visibility state.</param>
-        public static jQueryObject SetVisible(jQueryObject element, bool isVisible)
+        public static jQueryObject SetVisibility(jQueryObject element, bool isVisible)
         {
             element.CSS(Display, isVisible ? Block : None);
             return element;
@@ -261,30 +261,59 @@ namespace Open.Core
         /// <summary>Sets the left and top position of an element so it is centered within another element.</summary>
         /// <param name="element">The element to center.</param>
         /// <param name="within">The element to center within.</param>
-        public static jQueryObject Center(jQueryObject element, jQueryObject within)
+        [AlternateSignature]
+        public static extern jQueryObject Center(jQueryObject element, jQueryObject within);
+
+        /// <summary>Sets the left and top position of an element so it is centered within another element.</summary>
+        /// <param name="element">The element to center.</param>
+        /// <param name="within">The element to center within.</param>
+        /// <param name="margin">The margin to take into account when calculating position.</param>
+        public static jQueryObject Center(jQueryObject element, jQueryObject within, Spacing margin)
         {
-            CenterHorizontally(element, within);
-            CenterVertically(element, within);
+            CenterHorizontally(element, within, margin);
+            CenterVertically(element, within, margin);
             return element;
         }
 
         /// <summary>Sets the left position of an element so it is horizontally centered within another element.</summary>
         /// <param name="element">The element to horizontally center.</param>
         /// <param name="within">The element to center within.</param>
-        public static jQueryObject CenterHorizontally(jQueryObject element, jQueryObject within)
+        [AlternateSignature]
+        public static extern jQueryObject CenterHorizontally(jQueryObject element, jQueryObject within);
+
+        /// <summary>Sets the left position of an element so it is horizontally centered within another element.</summary>
+        /// <param name="element">The element to horizontally center.</param>
+        /// <param name="within">The element to center within.</param>
+        /// <param name="margin">The margin to take into account when calculating position.</param>
+        public static jQueryObject CenterHorizontally(jQueryObject element, jQueryObject within, Spacing margin)
         {
             int left = (within.GetWidth() / 2) - (element.GetWidth() / 2);
-            element.CSS(Css.Left, left + "px");
+            if (!Script.IsNullOrUndefined(margin))
+            {
+                left += margin.HorizontalOffset;
+            }
+            element.CSS(Left, left + "px");
             return element;
         }
 
         /// <summary>Sets the top position of an element so it is vertically centered within another element.</summary>
         /// <param name="element">The element to vertically center.</param>
         /// <param name="within">The element to center within.</param>
-        public static jQueryObject CenterVertically(jQueryObject element, jQueryObject within)
+        [AlternateSignature]
+        public extern static jQueryObject CenterVertically(jQueryObject element, jQueryObject within);
+
+        /// <summary>Sets the top position of an element so it is vertically centered within another element.</summary>
+        /// <param name="element">The element to vertically center.</param>
+        /// <param name="within">The element to center within.</param>
+        /// <param name="margin">The margin to take into account when calculating position.</param>
+        public static jQueryObject CenterVertically(jQueryObject element, jQueryObject within, Spacing margin)
         {
             int top = (within.GetHeight() / 2) - (element.GetHeight() / 2);
-            element.CSS(Css.Top, top + "px");
+            if (!Script.IsNullOrUndefined(margin))
+            {
+                top += margin.VerticalOffset;
+            }
+            element.CSS(Top, top + "px");
             return element;
         }
         #endregion

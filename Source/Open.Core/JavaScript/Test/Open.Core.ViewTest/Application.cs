@@ -3,6 +3,7 @@ using Open.Core.Test.UnitTests;
 using Open.Core.Test.ViewTests.Controls;
 using Open.Core.Test.ViewTests.Controls.Buttons;
 using Open.Core.Test.ViewTests.Controls.HtmlPrimitive;
+using Open.Core.Test.ViewTests.Controls.Input;
 using Open.Core.Test.ViewTests.Core;
 using Open.Core.Test.ViewTests.Lists;
 using Open.Testing;
@@ -32,6 +33,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(ButtonTest));
             TestHarness.RegisterClass(typeof(Button_LibraryTest));
             TestHarness.RegisterClass(typeof(IconTextButtonTest));
+            TestHarness.RegisterClass(typeof(TextboxTest));
         }
     }
 }

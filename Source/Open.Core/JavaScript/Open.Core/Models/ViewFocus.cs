@@ -33,22 +33,24 @@ namespace Open.Core
         private int tabIndex = noTabIndex;
         private bool tabIndexChanging;
         private readonly ViewBase view;
+        private readonly jQueryObject element;
 
-        public ViewFocus(ViewBase view)
+        public ViewFocus(ViewBase view, jQueryObject element)
         {
             // Setup initial conditions.
             this.view = view;
+            this.element = element;
 
             // Wire up events.
-            view.Container.Bind(Html.Focus, delegate(jQueryEvent e) { HandleFocusChanged(true); });
-            view.Container.Bind(Html.Blur, delegate(jQueryEvent e) { HandleFocusChanged(false); });
+            element.Bind(Html.Focus, delegate(jQueryEvent e) { HandleFocusChanged(true); });
+            element.Bind(Html.Blur, delegate(jQueryEvent e) { HandleFocusChanged(false); });
             view.IsEnabledChanged += HandleIsEnabledChanged;
         }
 
         protected override void OnDisposed()
         {
-            view.Container.Unbind(Html.Focus);
-            view.Container.Unbind(Html.Blur);
+            element.Unbind(Html.Focus);
+            element.Unbind(Html.Blur);
             view.IsEnabledChanged -= HandleIsEnabledChanged;
             base.OnDisposed();
         }
@@ -130,7 +132,7 @@ namespace Open.Core
             {
                 if (Set(PropBrowserHighlighting, value, true))
                 {
-                    view.Container.CSS(Css.Outline, value ? string.Empty : "0");
+                    element.CSS(Css.Outline, value ? string.Empty : "0");
                 }
             }
         }
@@ -140,14 +142,14 @@ namespace Open.Core
         public bool Apply()
         {
             if (!CanFocus) return false;
-            view.Container.Focus();
+            element.Focus();
             return true;
         }
 
         public bool Blur()
         {
             if (!CanFocus) return false;
-            view.Container.Blur();
+            element.Blur();
             return true;
         }
         #endregion
@@ -158,7 +160,7 @@ namespace Open.Core
         private void SyncTabIndexOnHtml(int value)
         {
             if (Script.IsNullOrUndefined(value)) value = TabIndex;
-            view.Container.Attribute(Html.TabIndex, value.ToString());
+            element.Attribute(Html.TabIndex, value.ToString());
         }
         #endregion
     }

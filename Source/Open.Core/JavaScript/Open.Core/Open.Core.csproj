@@ -58,6 +58,7 @@
     <Compile Include="Declarations\Interfaces\IFocus.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Models\ButtonModel.cs" />
+    <Compile Include="Models\Spacing.cs" />
     <Compile Include="Models\ViewFocus.cs" />
     <Compile Include="Templating\Template.cs" />
     <Compile Include="Testing\ITestHarnessEvents.cs" />

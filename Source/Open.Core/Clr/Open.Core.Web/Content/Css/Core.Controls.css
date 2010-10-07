@@ -2,15 +2,13 @@
 div.c-log { }
 div.c-log-list { overflow:auto; }
 
-.c-log-listItem
-{
+.c-log-listItem {
     position:relative;
     border-bottom:solid 1px #e0e1e2;
     padding:5px 14px;
 }
 
-.c-log-sectionBreak
-{
+.c-log-sectionBreak {
     height:19px;
     padding:0px;
     background:#eceff3;
@@ -18,22 +16,19 @@ div.c-log-list { overflow:auto; }
     background-repeat:repeat-x;
 }
 
-.c-log-counter 
-{ 
+.c-log-counter { 
     color:#8d8d8d; 
     float:left;
 }
 
-.c-log-message
-{ 
+.c-log-message { 
     margin-left:55px;
     margin-right:55px;
 }
 
 /* ----------- Log Dividers ----------- */
 .c-log-lineBreak { border-bottom-color:#f35ae7; }
-div.c-log-margin
-{
+div.c-log-margin {
     left:50px;
     border-left-color:#91faff;
     border-left-width:1px;
@@ -47,3 +42,26 @@ div.c-log-margin
 .c-log-warning { background-color:#faecc9; }
 .c-log-error { background-color:#fadadb; }
 .c-log-success { background-color:#e4f7e1; }
+
+
+/* ----------- Textbox ----------- */
+span.textbox {
+    position:relative;
+}
+
+img.textbox.icon {
+    position:absolute;
+    left:0px;
+    top:0px;
+}
+
+input.textbox {
+    border: 1px solid #CCC;
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    font-family: Arial;
+    font-size: 16px;
+}
+input.textbox.focus { border: 1px solid #7da2ce; }

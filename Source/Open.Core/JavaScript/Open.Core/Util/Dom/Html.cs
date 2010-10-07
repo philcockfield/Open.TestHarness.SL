@@ -38,6 +38,7 @@ namespace Open.Core
         public const string Click = "click";
         public const string Focus = "focus";
         public const string Blur = "blur";
+        public const string OnChange = "onchange";
         #endregion
 
         #region Methods
