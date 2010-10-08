@@ -297,12 +297,6 @@ namespace Open.Core.Controls
 
         private int GetInputTop()
         {
-            //TEMP 
-            Log.Info("Container.GetHeight(): " + Container.GetHeight());
-            Log.Info("input.GetHeight(): " + input.GetHeight());
-            Log.Info("(Container.GetHeight() / 2) - (input.GetHeight() / 2): " + ((Container.GetHeight() / 2) - (input.GetHeight() / 2)));
-            Log.LineBreak();
-
             UpdateInputHeight();
             return (Height / 2) - (input.GetHeight() / 2);
         }
