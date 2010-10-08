@@ -59,6 +59,7 @@ namespace Open.Core
         #region Event Handlers
         private void HandleFocusChanged(bool gotFocus)
         {
+            if (IsFocused == gotFocus) return;
             IsFocused = gotFocus;
             if (gotFocus) { FireGotFocus(); } else { FireLostFocus(); }
         }

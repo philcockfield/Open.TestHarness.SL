@@ -19,6 +19,7 @@ namespace Open.Core
         public const string Background = "background";
         public const string Color = "color";
         public const string Display = "display";
+        public const string Visibility = "visibility";
         public const string Position = "position";
         public const string Padding = "padding";
         public const string Margin = "margin";
@@ -51,6 +52,13 @@ namespace Open.Core
         public static bool IsVisible(jQueryObject element)
         {
             return Script.IsNullOrUndefined(element) ? false : element.GetCSS(Display).ToLowerCase() != None;
+        }
+
+        /// <summary>Retrieves whether the element has a position value.</summary>
+        /// <param name="element">The element to examine.</param>
+        public static bool HasPosition(jQueryObject element)
+        {
+            return Script.IsNullOrUndefined(element) ? false : element.GetCSS(Position) != string.Empty;
         }
         #endregion
 
@@ -226,12 +234,21 @@ namespace Open.Core
             element.CSS("border-bottom-left-radius", bottomLeft + "px");
         }
 
-        /// <summary>Shows or hides the given element.</summary>
+        /// <summary>Shows or hides the given element using the Display property (collapses when not visible).</summary>
+        /// <param name="element">The element to effect.</param>
+        /// <param name="isVisible">The desired visibility state.</param>
+        public static jQueryObject SetDisplay(jQueryObject element, bool isVisible)
+        {
+            element.CSS(Display, isVisible ? Block : None);
+            return element;
+        }
+
+        /// <summary>Shows or hides the given element using the Visibility property (retains space when not visible).</summary>
         /// <param name="element">The element to effect.</param>
         /// <param name="isVisible">The desired visibility state.</param>
         public static jQueryObject SetVisibility(jQueryObject element, bool isVisible)
         {
-            element.CSS(Display, isVisible ? Block : None);
+            element.CSS(Visibility, isVisible ? "visible" : "hidden");
             return element;
         }
 

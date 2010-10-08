@@ -14,8 +14,10 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             // Setup initial conditions.
             textbox = new Textbox();
             TestHarness.AddControl(textbox);
+            textbox.UpdateLayout();
 
             textbox.Width = 250;
+            textbox.Height = 40;
 
             // Wire up events.
             textbox.TextChanged += delegate { Log.Info("!! TextChanged | Text: " + textbox.Text); };
@@ -24,7 +26,7 @@ namespace Open.Core.Test.ViewTests.Controls.Input
 
             // Finish up.
             Change_Text();
-//            Toggle__LeftIcon();
+            Toggle__LeftIcon();
         }
         #endregion
 
@@ -57,6 +59,11 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             textbox.Padding.Left = textbox.HasLeftIcon ? 5 : 10;
         }
 
+        public void Toggle__CornerRadius()
+        {
+            textbox.CornerRadius = textbox.CornerRadius == 5 ? 10 : 5;
+        }
+
         public void UpdateLayout()
         {
             textbox.UpdateLayout();
@@ -71,6 +78,7 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             Log.Info("LeftIconSrc: " + textbox.LeftIcon);
             Log.Info("LeftIconMargin: " + textbox.LeftIconMargin.ToString());
             Log.Info("SelectOnFocus: " + textbox.SelectOnFocus);
+            Log.Info("CornerRadius: " + textbox.CornerRadius);
             Log.Info("Width: " + textbox.Width);
             Log.Info("Height: " + textbox.Height);
         }

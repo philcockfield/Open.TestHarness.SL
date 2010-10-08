@@ -32,13 +32,13 @@ namespace Open.Core.Controls
         public const string PropEventDelay = "EventDelay";
         public const string PropLeftIcon = "LeftIcon";
         public const string PropSelectOnFocus = "SelectOnFocus";
+        public const string PropCornerRadius = "CornerRadius";
 
         private const string ClassFocus = "focus";
         private const string ClassTextbox = "textbox";
         private const string ClassIcon = "icon";
         private NullableBool wasFocusedOnMouseDown = NullableBool.Nothing;
 
-        private readonly jQueryObject liningElement;
         private readonly jQueryObject input;
         private jQueryObject icon;
         private Spacing leftIconMargin;
@@ -51,20 +51,13 @@ namespace Open.Core.Controls
         {
             // Setup initial conditions.
             SetCss(Css.Position, Css.Relative);
-
-            // Create lining element (to override Padding crazyness).
-            liningElement = Html.CreateDiv();
-            liningElement.AppendTo(Container);
-            Css.AbsoluteFill(liningElement);
+            Container.AddClass(ClassTextbox);
 
             // Create INPUT.
             input = Html.CreateElement("input");
             input.Attribute(Html.Type, "text");
-            input.AppendTo(liningElement);
+            input.AppendTo(Container);
             input.AddClass(ClassTextbox);
-            input.CSS(Css.Position, Css.Absolute);
-            input.CSS(Css.Width, "100%");
-            input.CSS(Css.Height, "100%");
 
             // Set initial size.
             Height = 40;
@@ -75,28 +68,31 @@ namespace Open.Core.Controls
             Focus.CanFocus = true;
 
             // Setup padding.
-            padding = Spacing.Create(input, SpacingMode.Padding, OnBeforePaddingSync);
-            padding.Uniform(10, 0);
+            padding = Spacing.Sync(input, OnBeforePaddingSync);
+            padding.Uniform(10, 5);
 
             // Create child objects.
             eventDelay = new DelayedAction(0.3, OnDelayElapsed);
 
-
             // Wire up events.
+            Container.MouseDown(delegate(jQueryEvent e) { FocusOnClick(); });
             input.Keyup(delegate(jQueryEvent e)
                                     {
                                         if (previousText != Text) FireTextChanged();
                                         if (Int32.Parse(e.Which) == (int)Key.Enter) FireEnterPress();
                                     });
-            input.MouseDown(delegate(jQueryEvent e) { OnMouseDown(); });
-            input.MouseUp(delegate(jQueryEvent e) { OnMouseUp(); });
+            input.MouseDown(delegate(jQueryEvent e) { OnInputMouseDown(); });
+            input.MouseUp(delegate(jQueryEvent e) { OnInputMouseUp(); });
             Focus.GotFocus += OnGotFocus;
             Focus.LostFocus += OnLostFocus;
             IsEnabledChanged += delegate { SyncEnabled(); };
+            SizeChanged += delegate { UpdateLayout(); };
+
+            // Sync size and shape.
+            SyncCornerRadius();
 
             // Finish up.
             previousText = Text;
-            UpdateLayout();
             FireSizeChanged();
         }
 
@@ -113,28 +109,40 @@ namespace Open.Core.Controls
         private void OnDelayElapsed() { FireTextChangedDelay(); }
         private void OnGotFocus(object sender, EventArgs e)
         {
-            input.AddClass(ClassFocus);
+            Container.AddClass(ClassFocus);
             if (SelectOnFocus) Select();
         }
-        private void OnLostFocus(object sender, EventArgs e) { input.RemoveClass(ClassFocus); }
+        private void OnLostFocus(object sender, EventArgs e) { Container.RemoveClass(ClassFocus); }
+
         private int OnBeforePaddingSync(Edge edge, int value)
         {
-            // Adjust left padding if an icon is visible.
-            if (!HasLeftIcon) return value;
-            if (leftIconMargin == null) return value;
-            if (edge != Edge.Left) return value;
+            switch (edge)
+            {
+                case Edge.Left:
+                    // Adjust left padding if an icon is visible.
+                    if (!HasLeftIcon) return value;
+                    if (leftIconMargin == null) return value;
+                    if (edge != Edge.Left) return value;
 
-            // Add the icon offset.
-            return value + (LeftIconMargin.HorizontalOffset + icon.GetWidth());
+                    // Add the icon offset.
+                    return value + (LeftIconMargin.HorizontalOffset + icon.GetWidth());
+
+                case Edge.Top:
+                    // Center the textbox vertically (required because FF doesn't strectch the height).
+                    return GetInputTop();
+                
+                default: return value;
+            }
         }
 
-        private void OnMouseDown()
+
+        private void OnInputMouseDown()
         {
             if (!SelectOnFocus) return;
             wasFocusedOnMouseDown = Focus.IsFocused ? NullableBool.Yes : NullableBool.No;
         }
 
-        private void OnMouseUp()
+        private void OnInputMouseUp()
         {
             if (!SelectOnFocus) return;
             if (wasFocusedOnMouseDown == NullableBool.Nothing) return;
@@ -145,7 +153,6 @@ namespace Open.Core.Controls
             }
             wasFocusedOnMouseDown = NullableBool.Nothing;
         }
-
         #endregion
 
         #region Properties
@@ -157,6 +164,7 @@ namespace Open.Core.Controls
             {
                 if (value == Text) return;
                 input.Attribute(Html.Value, value);
+                UpdateInputTop();
                 FireTextChanged();
             }
         }
@@ -190,7 +198,7 @@ namespace Open.Core.Controls
                 {
                     InsertIcon();
                     icon.Attribute(Html.Src, value);
-                    Css.SetVisibility(icon, !string.IsNullOrEmpty(value));
+                    Css.SetDisplay(icon, !string.IsNullOrEmpty(value));
                     PositionIcon();
                 }
             }
@@ -205,6 +213,17 @@ namespace Open.Core.Controls
             get { return (bool) Get(PropSelectOnFocus, true); }
             set { Set(PropSelectOnFocus, value, true); }
         }
+
+        /// <summary>Gets or sets the corner radius of the textbox border.</summary>
+        public int CornerRadius
+        {
+            get { return (int) Get(PropCornerRadius, 5); }
+            set
+            {
+                if (value < 0) value = 0;
+                if (Set(PropCornerRadius, value, 5)) SyncCornerRadius();
+            }
+        }
         #endregion
 
         #region Methods
@@ -213,10 +232,14 @@ namespace Open.Core.Controls
         {
             PositionIcon();
             SyncEnabled();
+            Padding.UpdateLayout();
         }
 
         /// <summary>Selects the text.</summary>
-        public void Select() { input.Select(); }
+        public void Select()
+        {
+            input.Select();
+        }
         #endregion
 
         #region Internal
@@ -229,15 +252,16 @@ namespace Open.Core.Controls
             icon = Html.CreateElement(Html.Img);
             icon.AddClass(ClassTextbox);
             icon.AddClass(ClassIcon);
-            Css.SetVisibility(icon, false);
+            Css.SetDisplay(icon, false);
             icon.AppendTo(Container);
 
             // Wire up events.
             icon.Load(delegate(jQueryEvent e)
                           {
                               PositionIcon();
-                              Padding.SyncElement();
+                              Padding.UpdateLayout();
                           });
+            icon.MouseDown(delegate(jQueryEvent e) { FocusOnClick(); });
         }
 
         private void PositionIcon()
@@ -253,6 +277,39 @@ namespace Open.Core.Controls
         private void SyncEnabled()
         {
             Html.SetDisabled(input, IsEnabled);
+        }
+
+        private void SyncCornerRadius()
+        {
+            Css.RoundedCorners(Container, CornerRadius);
+        }
+
+        private void FocusOnClick()
+        {
+            if (!IsEnabled) return;
+            DelayedAction.Invoke(0.01, delegate { Focus.Apply(); });
+        }
+
+        private void UpdateInputHeight()
+        {
+            if (Padding != null) input.Height(Container.GetHeight() - Padding.VerticalOffset);
+        }
+
+        private int GetInputTop()
+        {
+            //TEMP 
+            Log.Info("Container.GetHeight(): " + Container.GetHeight());
+            Log.Info("input.GetHeight(): " + input.GetHeight());
+            Log.Info("(Container.GetHeight() / 2) - (input.GetHeight() / 2): " + ((Container.GetHeight() / 2) - (input.GetHeight() / 2)));
+            Log.LineBreak();
+
+            UpdateInputHeight();
+            return (Height / 2) - (input.GetHeight() / 2);
+        }
+
+        private void UpdateInputTop()
+        {
+            input.CSS(Css.Top, GetInputTop() + Css.Px);
         }
         #endregion
     }

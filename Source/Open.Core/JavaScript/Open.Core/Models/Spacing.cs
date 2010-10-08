@@ -4,16 +4,6 @@ using jQueryApi;
 
 namespace Open.Core
 {
-    /// <summary>Flags representing how to manage spacing for an element.</summary>
-    public enum SpacingMode
-    {
-        /// <summary>Sync the padding value.</summary>
-        Padding = 0,
-
-        /// <summary>Sync the magin value.</summary>
-        Margin = 1,
-    }
-
     /// <summary>Used to alter an edge value when being synced by the Spacing object.</summary>
     /// <param name="edge">The edge being synced.</param>
     /// <param name="value">The value being written.</param>
@@ -29,13 +19,17 @@ namespace Open.Core
         public const string PropRight = "Right";
         public const string PropBottom = "Bottom";
 
-        private jQueryObject element;
-        private SpacingMode mode;
+        private jQueryObject inner;
         private SpacingSync onBeforeSync;
 
         /// <summary>Constructor.</summary>
         [AlternateSignature]
         public extern Spacing();
+
+        /// <summary>Constructor.</summary>
+        /// <param name="uniform">The uniform value to apply to all sides.</param>
+        [AlternateSignature]
+        public extern Spacing(int uniform);
 
         /// <summary>Constructor.</summary>
         /// <param name="left">The left value.</param>
@@ -44,6 +38,16 @@ namespace Open.Core
         /// <param name="bottom">The botton value.</param>
         public Spacing(int left, int top, int right, int bottom)
         {
+            // Setup initial conditions.
+            if (!Script.IsNullOrUndefined(left) && Script.IsNullOrUndefined(top))
+            {
+                // The 'uniform' constructor overload was called.
+                top = left;
+                right = left;
+                bottom = left;
+            }
+
+            // Store values.
             Left = left;
             Top = top;
             Right = right;
@@ -110,10 +114,20 @@ namespace Open.Core
         public void Uniform(int leftRight, int topBottom)
         {
             if (Script.IsNullOrUndefined(topBottom)) topBottom = leftRight;
-            Left = leftRight;
-            Right = leftRight;
-            Top = topBottom;
-            Bottom = topBottom;
+            Change(leftRight, topBottom, leftRight, topBottom);
+        }
+
+        /// <summary>Changes all edge values.</summary>
+        /// <param name="left">The left value.</param>
+        /// <param name="top">The top value.</param>
+        /// <param name="right">The right value.</param>
+        /// <param name="bottom">The bottom value.</param>
+        public void Change(int left, int top, int right, int bottom)
+        {
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
         }
 
         /// <summary>Copies the values from the given Spacing object.</summary>
@@ -156,36 +170,56 @@ namespace Open.Core
             return string.Format("[Left:{0},Top:{1},Right:{2},Bottom:{3}]", Left, Top, Right, Bottom);
         }
 
-        /// <summary>Syncs the bound element (if the object is bound to an element).</summary>
-        public void SyncElement()
+        /// <summary>Syncs the bound element (if the element is bound to this Spacing object.  See static create methods).</summary>
+        public void UpdateLayout()
         {
-            SyncCss(Edge.Left);
-            SyncCss(Edge.Top);
-            SyncCss(Edge.Right);
-            SyncCss(Edge.Bottom);
+            SyncEdge(Edge.Left);
+            SyncEdge(Edge.Top);
+            SyncEdge(Edge.Right);
+            SyncEdge(Edge.Bottom);
         }
         #endregion
 
         #region Methods : Static
-        /// <summary>Factory creator (provides syncing behavior).</summary>
-        /// <param name="element">The element the spacing pertains to.</param>
-        /// <param name="mode">The mode to use when syncing</param>
+        /// <summary>
+        ///     Creates a Spacing object that handles keeping an 'inner' object's size
+        ///     synced to its parent by settings it's making position:absolute and keeping it's 
+        ///         - left
+        ///         - right
+        ///         - top
+        ///         - bottom
+        ///     CSS properties in sync with this Spacing object.
+        /// </summary>
+        /// <param name="inner">The inner object in the sync relationship.</param>
         [AlternateSignature]
-        public extern static Spacing Create(jQueryObject element, SpacingMode mode);
+        public static extern Spacing Sync(jQueryObject inner);
 
-        /// <summary>Factory creator (provides syncing behavior).</summary>
-        /// <param name="element">The element the spacing pertains to.</param>
-        /// <param name="mode">The mode to use when syncing</param>
-        /// <param name="onBeforeSync">Invoked before the element is updated (use to alter the value).</param>
-        public static Spacing Create(jQueryObject element, SpacingMode mode, SpacingSync onBeforeSync)
+        /// <summary>
+        ///     Creates a Spacing object that handles keeping an 'inner' object's size
+        ///     synced to its parent by settings it's making position:absolute and keeping it's 
+        ///         - left
+        ///         - right
+        ///         - top
+        ///         - bottom
+        ///     CSS properties in sync with this Spacing object.
+        /// </summary>
+        /// <param name="inner">The inner object in the sync relationship.</param>
+        /// <param name="onBeforeSync">Invoked before the inner element is updated (use to alter the spacing values).</param>
+        public static Spacing Sync(jQueryObject inner, SpacingSync onBeforeSync)
         {
+            // Setup 'position' attributes on the elements.
+            inner.CSS(Css.Position, Css.Absolute);
+            
+            // Create the spacing object.
             Spacing spacing = new Spacing();
 
-            spacing.element = element;
-            spacing.mode = mode;
+            // Store values.
+            spacing.inner = inner;
             spacing.onBeforeSync = onBeforeSync;
-            if (!Script.IsNullOrUndefined(element)) spacing.InitializeSyncing();
 
+            // Finish up.
+            spacing.InitializeSyncing();
+            spacing.UpdateLayout();
             return spacing;
         }
         #endregion
@@ -202,7 +236,7 @@ namespace Open.Core
                                    {
                                        try
                                        {
-                                           SyncCss(ToEdge(args.Property.Name));
+                                           SyncEdge(ToEdge(args.Property.Name));
                                        }
                                        catch (Exception)
                                        {
@@ -211,7 +245,7 @@ namespace Open.Core
                                    };
         }
 
-        private void SyncCss(Edge edge)
+        private void SyncEdge(Edge edge)
         {
             // Setup initial conditions.
             int value = GetValue(edge);
@@ -223,10 +257,7 @@ namespace Open.Core
             }
 
             // Apply the CSS.
-            string attribute = string.Format("{0}-{1}", 
-                                             mode.ToString().ToLowerCase(), 
-                                             edge.ToString().ToLowerCase());
-            element.CSS(attribute, value + Css.Px);
+            inner.CSS(edge.ToString().ToLowerCase(), value + Css.Px);
         }
         #endregion
     }

@@ -159,7 +159,7 @@ namespace Open.Core.Lists
             bool isVisible = false;
             ITreeNode treeNode = ModelAsTreeNode;
             if (CanSelect && treeNode != null && treeNode.ChildCount > 0) isVisible = true;
-            Css.SetVisibility(imgRightIcon, isVisible);
+            Css.SetDisplay(imgRightIcon, isVisible);
 
             if (!isVisible) return;
             if (Container.GetHeight() == 0) return;

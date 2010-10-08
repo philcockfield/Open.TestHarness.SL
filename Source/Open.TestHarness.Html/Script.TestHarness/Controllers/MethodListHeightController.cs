@@ -88,7 +88,7 @@ namespace Open.Testing.Controllers
 
             // Show or hide.
             bool isShowing = methodListHeight > 0;
-            if (isShowing) Css.SetVisibility(methodList.Container, true);
+            if (isShowing) Css.SetDisplay(methodList.Container, true);
             methodList.UpdateLayout();
 
             //Animate.
@@ -104,7 +104,7 @@ namespace Open.Testing.Controllers
                     EffectEasing.Swing,
                     delegate
                             {
-                                if (!isShowing) Css.SetVisibility(methodList.Container, false);
+                                if (!isShowing) Css.SetDisplay(methodList.Container, false);
                                 Helper.Invoke(onComplete);
                             });
         }
@@ -117,9 +117,9 @@ namespace Open.Testing.Controllers
             // Get the final height of the list.
             //     NB: The list needs to made visible before calculating so that height values are registered.
             bool originalVisibility = Css.IsVisible(divList);
-            Css.SetVisibility(divList, true);
+            Css.SetDisplay(divList, true);
             int listHeight = methodList.OffsetHeight;
-            Css.SetVisibility(divList, originalVisibility);
+            Css.SetDisplay(divList, originalVisibility);
 
             // Ensure the height is not over 2/3 of side-bar.
             int maxHeight = (int)(divSidebarContent.GetHeight() * 0.66);

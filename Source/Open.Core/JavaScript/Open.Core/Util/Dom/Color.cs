@@ -15,14 +15,35 @@ namespace Open.Core
         /// <param name="opacity">The opacity percentage (0..1).</param>
         public static string Black(double opacity)
         {
-            return string.Format("rgba(0,0,0,{0})", Helper.NumberDouble.WithinBounds(opacity, 0, 1));
+            return string.Format("rgba(0,0,0,{0})", Percent(opacity));
         }
 
         /// <summary>Gets an RGBA value of white at the given opacity.</summary>
         /// <param name="opacity">The opacity percentage (0..1).</param>
         public static string White(double opacity)
         {
-            return string.Format("rgba(255,255,255,{0})", Helper.NumberDouble.WithinBounds(opacity, 0, 1));
+            return string.Format("rgba(255,255,255,{0})", Percent(opacity));
+        }
+
+        /// <summary>Gets an RGBA value of red at the given opacity.</summary>
+        /// <param name="opacity">The opacity percentage (0..1).</param>
+        public static string Red(double opacity)
+        {
+            return string.Format("rgba(255,0,0,{0})", Percent(opacity));
+        }
+
+        /// <summary>Gets an RGBA value of green at the given opacity.</summary>
+        /// <param name="opacity">The opacity percentage (0..1).</param>
+        public static string Green(double opacity)
+        {
+            return string.Format("rgba(0,255,0,{0})", Percent(opacity));
+        }
+        #endregion
+
+        #region Internal
+        private static double Percent(double value)
+        {
+            return Helper.NumberDouble.WithinBounds(value, 0, 1);
         }
         #endregion
     }

@@ -45,9 +45,12 @@ div.c-log-margin {
 
 
 /* ----------- Textbox ----------- */
-span.textbox {
+div.textbox {
+    background:white;
     position:relative;
+    border: 1px solid #aeaeae;
 }
+div.textbox.focus { border: 1px solid #7da2ce; }
 
 img.textbox.icon {
     position:absolute;
@@ -55,13 +58,10 @@ img.textbox.icon {
     top:0px;
 }
 
-input.textbox {
-    border: 1px solid #CCC;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
+input.textbox 
+{
+    border:none;
+    background:transparent
     font-family: Arial;
     font-size: 16px;
 }
-input.textbox.focus { border: 1px solid #7da2ce; }

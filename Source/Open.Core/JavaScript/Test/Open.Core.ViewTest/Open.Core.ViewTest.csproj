@@ -60,6 +60,7 @@
     <Compile Include="ViewTests\Controls\Buttons\Button_LibraryTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\IconTextButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\WriteLogForButtons.cs" />
+    <Compile Include="ViewTests\Controls\HtmlPrimitive\SpacingTest.cs" />
     <Compile Include="ViewTests\Controls\Input\TextboxTest.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
