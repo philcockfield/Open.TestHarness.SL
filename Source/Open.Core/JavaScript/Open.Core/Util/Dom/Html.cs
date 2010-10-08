@@ -153,6 +153,21 @@ namespace Open.Core
             if (element == null) return null;
             return CreateDiv().Append(element.Clone()).GetHtml();
         }
+
+        /// <summary>Adds or removes the 'disabled' attribute on the given INPUT element.</summary>
+        /// <param name="input">The input element to effect.</param>
+        /// <param name="isEnabled">The enabled value.</param>
+        public static void SetDisabled(jQueryObject input, bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                input.Attribute(Disabled, null);
+            }
+            else
+            {
+                input.Attribute(Disabled, Disabled);
+            }
+        }
         #endregion
     }
 }

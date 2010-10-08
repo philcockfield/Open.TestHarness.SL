@@ -31,11 +31,14 @@ namespace Open.Core.Controls
         public const string PropText = "Text";
         public const string PropEventDelay = "EventDelay";
         public const string PropLeftIcon = "LeftIcon";
+        public const string PropSelectOnFocus = "SelectOnFocus";
 
         private const string ClassFocus = "focus";
         private const string ClassTextbox = "textbox";
         private const string ClassIcon = "icon";
+        private NullableBool wasFocusedOnMouseDown = NullableBool.Nothing;
 
+        private readonly jQueryObject liningElement;
         private readonly jQueryObject input;
         private jQueryObject icon;
         private Spacing leftIconMargin;
@@ -44,17 +47,22 @@ namespace Open.Core.Controls
         private readonly Spacing padding;
 
         /// <summary>Constructor.</summary>
-        public Textbox() : base(Html.CreateSpan())
+        public Textbox() : base()
         {
             // Setup initial conditions.
             SetCss(Css.Position, Css.Relative);
 
+            // Create lining element (to override Padding crazyness).
+            liningElement = Html.CreateDiv();
+            liningElement.AppendTo(Container);
+            Css.AbsoluteFill(liningElement);
+
             // Create INPUT.
             input = Html.CreateElement("input");
             input.Attribute(Html.Type, "text");
-            input.AppendTo(Container);
+            input.AppendTo(liningElement);
             input.AddClass(ClassTextbox);
-            Css.AbsoluteFill(input);
+            input.CSS(Css.Position, Css.Absolute);
             input.CSS(Css.Width, "100%");
             input.CSS(Css.Height, "100%");
 
@@ -66,24 +74,29 @@ namespace Open.Core.Controls
             Focus.BrowserHighlighting = false;
             Focus.CanFocus = true;
 
+            // Setup padding.
+            padding = Spacing.Create(input, SpacingMode.Padding, OnBeforePaddingSync);
+            padding.Uniform(10, 0);
+
+            // Create child objects.
+            eventDelay = new DelayedAction(0.3, OnDelayElapsed);
+
+
             // Wire up events.
             input.Keyup(delegate(jQueryEvent e)
                                     {
                                         if (previousText != Text) FireTextChanged();
                                         if (Int32.Parse(e.Which) == (int)Key.Enter) FireEnterPress();
                                     });
+            input.MouseDown(delegate(jQueryEvent e) { OnMouseDown(); });
+            input.MouseUp(delegate(jQueryEvent e) { OnMouseUp(); });
             Focus.GotFocus += OnGotFocus;
             Focus.LostFocus += OnLostFocus;
-
-            // Setup padding.
-            padding = Spacing.Create(input, SpacingMode.Padding, OnBeforePaddingSync);
-            padding.Uniform(10, 5);
-
-            // Create child objects.
-            eventDelay = new DelayedAction(0.3, OnDelayElapsed);
+            IsEnabledChanged += delegate { SyncEnabled(); };
 
             // Finish up.
             previousText = Text;
+            UpdateLayout();
             FireSizeChanged();
         }
 
@@ -98,7 +111,11 @@ namespace Open.Core.Controls
 
         #region Event Handlers
         private void OnDelayElapsed() { FireTextChangedDelay(); }
-        private void OnGotFocus(object sender, EventArgs e) { input.AddClass(ClassFocus); }
+        private void OnGotFocus(object sender, EventArgs e)
+        {
+            input.AddClass(ClassFocus);
+            if (SelectOnFocus) Select();
+        }
         private void OnLostFocus(object sender, EventArgs e) { input.RemoveClass(ClassFocus); }
         private int OnBeforePaddingSync(Edge edge, int value)
         {
@@ -110,6 +127,25 @@ namespace Open.Core.Controls
             // Add the icon offset.
             return value + (LeftIconMargin.HorizontalOffset + icon.GetWidth());
         }
+
+        private void OnMouseDown()
+        {
+            if (!SelectOnFocus) return;
+            wasFocusedOnMouseDown = Focus.IsFocused ? NullableBool.Yes : NullableBool.No;
+        }
+
+        private void OnMouseUp()
+        {
+            if (!SelectOnFocus) return;
+            if (wasFocusedOnMouseDown == NullableBool.Nothing) return;
+            if (wasFocusedOnMouseDown == NullableBool.No)
+            {
+                // NB: Delayed action avoid default textbox behavior removing the selection on mouse-up.
+                DelayedAction.Invoke(0.01, Select);
+            }
+            wasFocusedOnMouseDown = NullableBool.Nothing;
+        }
+
         #endregion
 
         #region Properties
@@ -162,6 +198,25 @@ namespace Open.Core.Controls
 
         /// <summary>Gets the margin for the left-hand icon.</summary>
         public Spacing LeftIconMargin { get { return leftIconMargin ?? (leftIconMargin = new Spacing(8, 0, 0, 0)); } }
+
+        /// <summary>Gets or sets whether the text is selected when the control recieves focus.</summary>
+        public bool SelectOnFocus
+        {
+            get { return (bool) Get(PropSelectOnFocus, true); }
+            set { Set(PropSelectOnFocus, value, true); }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>Updates the layout of the control.</summary>
+        public void UpdateLayout()
+        {
+            PositionIcon();
+            SyncEnabled();
+        }
+
+        /// <summary>Selects the text.</summary>
+        public void Select() { input.Select(); }
         #endregion
 
         #region Internal
@@ -178,7 +233,7 @@ namespace Open.Core.Controls
             icon.AppendTo(Container);
 
             // Wire up events.
-            icon.Load(delegate(jQueryEvent @event)
+            icon.Load(delegate(jQueryEvent e)
                           {
                               PositionIcon();
                               Padding.SyncElement();
@@ -193,6 +248,11 @@ namespace Open.Core.Controls
             // Vertical and Left.
             Css.CenterVertically(icon, Container, LeftIconMargin);
             icon.CSS(Css.Left, LeftIconMargin.Left + Css.Px);
+        }
+
+        private void SyncEnabled()
+        {
+            Html.SetDisabled(input, IsEnabled);
         }
         #endregion
     }

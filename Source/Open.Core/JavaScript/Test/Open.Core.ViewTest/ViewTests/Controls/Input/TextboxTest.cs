@@ -21,10 +21,26 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             textbox.TextChanged += delegate { Log.Info("!! TextChanged | Text: " + textbox.Text); };
             textbox.TextChangedDelay += delegate { Log.Success("!! TextChangedDelay | Text: " + textbox.Text); };
             textbox.EnterPress += delegate { Log.Success("!! EnterPress"); };
+
+            // Finish up.
+            Change_Text();
+//            Toggle__LeftIcon();
         }
         #endregion
 
         #region Tests
+        public void Toggle__IsEnabled()
+        {
+            textbox.IsEnabled = !textbox.IsEnabled;
+            Log.Info("IsEnabled: " + textbox.IsEnabled);
+        }
+
+        public void Toggle_SelectOnFocus()
+        {
+            textbox.SelectOnFocus = !textbox.SelectOnFocus;
+            Log.Info("SelectOnFocus: " + textbox.SelectOnFocus);
+        }
+
         public void Change_Text()
         {
             textbox.Text = "My Value";
@@ -35,27 +51,28 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             DelayedAction.Invoke(0.5, delegate { textbox.Focus.Apply(); });
         }
 
-        public void Change_Padding()
-        {
-            textbox.Padding.Left = 30;
-            textbox.Padding.Top = 1;
-            textbox.Padding.Bottom = 5;
-            textbox.Padding.Right = 50;
-        }
-
         public void Toggle__LeftIcon()
         {
             textbox.LeftIcon = !textbox.HasLeftIcon ? Helper.Icon.Path("SilkAccept") : string.Empty;
             textbox.Padding.Left = textbox.HasLeftIcon ? 5 : 10;
         }
 
+        public void UpdateLayout()
+        {
+            textbox.UpdateLayout();
+        }
+
         public void Write_Properties()
         {
+            Log.Info("IsEnabled: " + textbox.IsEnabled);
             Log.Info("Text: " + textbox.Text);
             Log.Info("EventDelay: " + textbox.EventDelay);
             Log.Info("Padding: " + textbox.Padding.ToString());
             Log.Info("LeftIconSrc: " + textbox.LeftIcon);
             Log.Info("LeftIconMargin: " + textbox.LeftIconMargin.ToString());
+            Log.Info("SelectOnFocus: " + textbox.SelectOnFocus);
+            Log.Info("Width: " + textbox.Width);
+            Log.Info("Height: " + textbox.Height);
         }
         #endregion
     }

@@ -56,6 +56,7 @@ namespace Open.Testing
 
             AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
             AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
+            AddPackage("/Content/Scripts/Quest.Insandra.Test.debug.js", "Quest.Insandra.Test.Application.main");
         }
 
         private static void AddPackage(string scriptUrl, string initMethod)

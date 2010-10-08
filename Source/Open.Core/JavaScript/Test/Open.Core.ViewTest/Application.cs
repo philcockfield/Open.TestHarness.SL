@@ -30,6 +30,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(ListItemViewTest));
             TestHarness.RegisterClass(typeof(LogTest));
             TestHarness.RegisterClass(typeof(HtmlListTest));
+            TestHarness.RegisterClass(typeof(SpacingTest));
             TestHarness.RegisterClass(typeof(ButtonTest));
             TestHarness.RegisterClass(typeof(Button_LibraryTest));
             TestHarness.RegisterClass(typeof(IconTextButtonTest));
