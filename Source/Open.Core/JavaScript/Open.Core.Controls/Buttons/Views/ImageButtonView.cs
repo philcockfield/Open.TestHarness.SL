@@ -43,6 +43,7 @@ namespace Open.Core.Controls.Buttons
             string name = e.Property.Name;
             if (name == ButtonModel.PropWidth) SyncDimension(SizeDimension.Width);
             if (name == ButtonModel.PropHeight) SyncDimension(SizeDimension.Height);
+            if (name == ImageButton.PropBackgroundHighlighting) SetupContent();
         }
         #endregion
 
