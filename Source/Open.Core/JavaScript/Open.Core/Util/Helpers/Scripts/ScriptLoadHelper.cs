@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Html;
+using jQueryApi;
 
 namespace Open.Core.Helpers
 {
@@ -35,7 +37,7 @@ namespace Open.Core.Helpers
         private string rootScriptFolder = "/Open.Core/Scripts/";
         private bool useDebug;
         private JitScriptLoader jit;
-        private readonly ArrayList loadedLibraries = new ArrayList();
+        private readonly ArrayList loadedUrls = new ArrayList();
         private ScriptNames scripts;
         #endregion
 
@@ -62,9 +64,69 @@ namespace Open.Core.Helpers
         #endregion
 
         #region Methods : Load
+        /// <summary>Determines whether a SCRIPT block with the specified url exists in the DOM.</summary>
+        /// <param name="url">The URL of the script block to look for.</param>
+        public bool IsDeclared(string url)
+        {
+            // Setup initial conditions.
+            url = url.ToLowerCase();
+            jQueryObject allScripts = jQuery.Select("script[type='text/javascript']");
+
+            // Loop all SCRIPT references looking for a URL match.
+            bool exists = false;
+            allScripts.Each(delegate(int index, Element element)
+                             {
+                                 object attr = element.GetAttribute(Html.Src);
+                                 if (attr != null && attr.ToString().ToLowerCase() == url)
+                                 {
+                                     exists = true;
+                                     return false; // Exit loop.
+                                 }
+                                 return true; // Continue loop
+                             });
+
+            // Finish up.
+            return exists; 
+        }
+
+        /// <summary>
+        ///     Determines whether the specified URL has been loaded (either via one of the Load methods, 
+        ///     or is decalred within the page).
+        /// </summary>
+        /// <param name="url">The URL to look for.</param>
+        public bool IsLoaded(string url)
+        {
+            if (Script.IsNullOrUndefined(url)) return false;
+            url = url.ToLowerCase();
+            if (loadedUrls.Contains(url)) return true;
+            if (IsDeclared(url)) return true;
+            return false;
+        }
+
         /// <summary>Determines whether the specified library has been loaded.</summary>
         /// <param name="library">The library to look for.</param>
-        public bool IsLoaded(ScriptLibrary library) { return loadedLibraries.Contains(library); }
+        public bool IsLibraryLoaded(ScriptLibrary library)
+        {
+            if (loadedUrls.Contains(Scripts.Url(library))) return true;
+            if (IsDeclared(Scripts.Url(library))) return true;
+            return false;
+        }
+
+        /// <summary>
+        ///     Loads the specified SCRIPT file.
+        ///     This passes execution to 'jQuery.GetScript' but keep track of the URL as being loaded
+        ///     so future checks to IsLoaded will report the script is in existence on the client.
+        /// </summary>
+        /// <param name="url">The URL of the SCRIPT file to load.</param>
+        /// <param name="callback">Callback to invoke upon completion.</param>
+        public void Load(string url, AjaxCallback callback)
+        {
+            jQuery.GetScript(url, delegate(object data)
+                                      {
+                                          CacheUrl(url);
+                                          if (callback != null) callback(data);
+                                      });
+        }
 
         /// <summary>Loads the specified library.</summary>
         /// <param name="library">Flag indicating the library to load.</param>
@@ -72,7 +134,7 @@ namespace Open.Core.Helpers
         public void LoadLibrary(ScriptLibrary library, Action callback)
         {
             // Setup initial conditions.
-            if (IsLoaded(library))
+            if (IsLibraryLoaded(library))
             {
                 Helper.Invoke(callback);
                 return;
@@ -80,12 +142,13 @@ namespace Open.Core.Helpers
 
             // Download script.
             ScriptLoader loader = new ScriptLoader();
+            string url = Scripts.Url(library);
             loader.LoadComplete += delegate
                                        {
-                                           loadedLibraries.Add(library);
+                                           CacheUrl(url);
                                            Helper.Invoke(callback);
                                        };
-            loader.AddUrl(Scripts.Url(library));
+            loader.AddUrl(url);
             loader.Start();
         }
 
@@ -104,6 +167,13 @@ namespace Open.Core.Helpers
         {
             string debug = hasDebug && UseDebug ? ".debug" : null;
             return string.Format("{0}{1}.js", name, debug);
+        }
+        #endregion
+
+        #region Internal
+        private void CacheUrl(string url)
+        {
+            loadedUrls.Add(url.ToLowerCase());
         }
         #endregion
     }

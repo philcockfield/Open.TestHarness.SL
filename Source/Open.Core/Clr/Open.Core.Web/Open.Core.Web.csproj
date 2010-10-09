@@ -151,10 +151,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\Core\TestHarness.aspx" />
     <EmbeddedResource Include="Views\Core\RenderUrl.ascx" />
-    <EmbeddedResource Include="Views\Buttons\TemplatePrimary.ascx" />
-    <EmbeddedResource Include="Views\Buttons\TemplateIconText.ascx" />
+    <EmbeddedResource Include="Views\Buttons\Template.Primary.ascx" />
+    <EmbeddedResource Include="Views\Buttons\Template.IconText.ascx" />
     <EmbeddedResource Include="Views\Buttons\Template.ascx" />
-    <EmbeddedResource Include="Views\Buttons\TemplateCommon.ascx" />
+    <EmbeddedResource Include="Views\Buttons\Template.Common.ascx" />
+    <EmbeddedResource Include="Views\Buttons\Template.Image.ascx" />
     <Content Include="Views\Web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

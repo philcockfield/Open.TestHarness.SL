@@ -14,7 +14,7 @@ namespace Open.Core.Web.Controllers
         #region Methods
         public virtual ActionResult Template(ButtonTemplate? type)
         {
-            return View(type == null ? null : "Template" + type.Value);
+            return View(type == null ? null : "Template." + type.Value);
         }
         #endregion
     }

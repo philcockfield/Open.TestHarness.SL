@@ -59,6 +59,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Buttons\Models\IconTextButton.cs" />
+    <Compile Include="Buttons\Models\ImageButton.cs" />
     <Compile Include="Buttons\Views\IconTextButtonView.cs" />
     <Compile Include="Buttons\Infrastructure\Content\ButtonContentLayer.cs" />
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateContent.cs" />
@@ -69,6 +70,7 @@
     </Compile>
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateTemplate.cs" />
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateCss.cs" />
+    <Compile Include="Buttons\Views\ImageButtonView.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />
     <Compile Include="Input\Textbox.cs" />
     <Compile Include="Output\LogView.cs" />

@@ -78,7 +78,7 @@ namespace Open.Testing.Models
             }
 
             // Download the script.
-            jQuery.GetScript(scriptUrl, delegate(object data)
+            Helper.ScriptLoader.Load(scriptUrl, delegate(object data)
                                             {
                                                 if (IsDisposed) return; // Bail out if the downloader has been disposed.
 

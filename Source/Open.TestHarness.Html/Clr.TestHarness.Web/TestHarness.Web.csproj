@@ -87,6 +87,18 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Content Include="Content\Css\Sample.Button.css" />
+    <Content Include="Content\Images\ImageButton.Sample\Down.Disabled.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Down.Focused.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Down.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Normal.Disabled.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Normal.Focused.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Normal.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Over.Disabled.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Over.Focused.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Over.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Pressed.Disabled.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Pressed.Focused.png" />
+    <Content Include="Content\Images\ImageButton.Sample\Pressed.png" />
     <Content Include="Content\Scripts\mscorlib.debug.js" />
     <Content Include="Content\Scripts\mscorlib.js" />
     <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />

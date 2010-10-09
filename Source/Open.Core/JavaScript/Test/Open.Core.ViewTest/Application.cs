@@ -6,6 +6,7 @@ using Open.Core.Test.ViewTests.Controls.HtmlPrimitive;
 using Open.Core.Test.ViewTests.Controls.Input;
 using Open.Core.Test.ViewTests.Core;
 using Open.Core.Test.ViewTests.Lists;
+using Open.Core.Test.ViewTests.Util;
 using Open.Testing;
 
 namespace Open.Core.Test
@@ -15,13 +16,13 @@ namespace Open.Core.Test
         public static void Main(Dictionary args)
         {
             // Unit Tests.
-            TestHarness.RegisterClass(typeof(ScriptLoadHelperTest));
             TestHarness.RegisterClass(typeof(DiContainerTest));
             TestHarness.RegisterClass(typeof(ModelBaseUnitTest));
             TestHarness.RegisterClass(typeof(ViewBaseUnitTest));
             TestHarness.RegisterClass(typeof(CollectionHelperUnitTest));
 
             // View Tests
+            TestHarness.RegisterClass(typeof(Helper_ScriptLoadHelper));
             TestHarness.RegisterClass(typeof(IconTest));
             TestHarness.RegisterClass(typeof(TemplateTest));
             TestHarness.RegisterClass(typeof(ViewBaseTest));
@@ -34,6 +35,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(ButtonTest));
             TestHarness.RegisterClass(typeof(Button_LibraryTest));
             TestHarness.RegisterClass(typeof(IconTextButtonTest));
+            TestHarness.RegisterClass(typeof(ImageButtonTest));
             TestHarness.RegisterClass(typeof(TextboxTest));
         }
     }

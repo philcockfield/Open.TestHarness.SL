@@ -1,5 +1,4 @@
 ﻿using System;
-using jQueryApi;
 
 namespace Open.Core.Helpers
 {
@@ -8,7 +7,10 @@ namespace Open.Core.Helpers
     {
         protected override void LoadResource(string url, Action onDownloaded)
         {
-            jQuery.GetScript(url, delegate(object data) { onDownloaded(); });
+            Helper.ScriptLoader.Load(url, delegate(object data)
+                                              {
+                                                  Helper.Invoke(onDownloaded);
+                                              });
         }
     }
 }
