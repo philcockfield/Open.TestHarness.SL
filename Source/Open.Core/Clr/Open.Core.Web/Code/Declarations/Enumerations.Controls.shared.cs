@@ -6,5 +6,6 @@
         Common = 0,
         Primary = 1,
         IconText = 2,
+        Image = 3,
     }
 }

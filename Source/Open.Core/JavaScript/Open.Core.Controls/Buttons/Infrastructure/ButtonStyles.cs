@@ -18,12 +18,12 @@ namespace Open.Core.Controls.Buttons
             ButtonState[] downStates = new ButtonState[] { ButtonState.MouseDown, ButtonState.Pressed };
 
             // Insert the DIV element that will show the CSS styles.
-            button.SetTemplateForStates(layer, ButtonView.AllStates, ButtonTemplates.CommonBg, EnabledCondition.Either, FocusCondition.Either);
+            button.TemplateForStates(layer, ButtonView.AllStates, ButtonTemplates.CommonBg, EnabledCondition.Either, FocusCondition.Either);
 
             // Apply CSS.
-            button.SetCssForStates(layer, upStates, string.Format("{0} {1}", ButtonCss.ClassSilver, ButtonCss.ClassUp));
-            button.SetCssForStates(layer, downStates, string.Format("{0} {1}", ButtonCss.ClassSilver, ButtonCss.ClassDown));
-            button.SetCssForStates(layer, new ButtonState[] { ButtonState.MouseOver, ButtonState.MouseDown }, ButtonCss.ClassHighlight);
+            button.CssForStates(layer, upStates, string.Format("{0} {1}", ButtonCss.ClassSilver, ButtonCss.ClassUp));
+            button.CssForStates(layer, downStates, string.Format("{0} {1}", ButtonCss.ClassSilver, ButtonCss.ClassDown));
+            button.CssForStates(layer, new ButtonState[] { ButtonState.MouseOver, ButtonState.MouseDown }, ButtonCss.ClassHighlight);
         }
     }
 }

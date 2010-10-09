@@ -27,20 +27,8 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                                           view.Text = "My Button Text";
 //                                                          model.TemplateData["buttonText"] = "My Button Text";
 
-                                                          model.Click += delegate { Log.Info("!! Click"); };
-                                                          model.IsPressedChanged += delegate
-                                                                                        {
-                                                                                            if (model.IsPressed)
-                                                                                            {
-                                                                                                Log.Warning("!! IsPressedChanged | IsPressed: " + model.IsPressed);
-                                                                                            }
-                                                                                            else
-                                                                                            {
-                                                                                                Log.Success("!! IsPressedChanged | IsPressed: " + model.IsPressed);
-                                                                                            }
-                                                                                        };
                                                           //            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { Log.Info("!! View.PropertyChanged: " + args.Property.Name); };
-
+                                                          WireClickEvents(model);
                                                           view.UpdateLayout();
 
                                                           TestHarness.AddControl(view);
@@ -71,6 +59,14 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             Log.Info("Toggled - IsPressed: " + model.IsPressed);
         }
 
+        public void Toggle__CanFocus()
+        {
+            if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
+            model.CanFocus = !model.CanFocus;
+            Log.Info("Toggled - CanFocus: " + model.CanFocus);
+        }
+
+
         public void Write_Properties()
         {
             if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
@@ -83,6 +79,24 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             Log.Info(view.OuterHtml.HtmlEncode());
         }
         #endregion
+
+        #region Methods : Static
+        public static void WireClickEvents(IButton button)
+        {
+            button.Click += delegate { Log.Info("!! Click"); };
+            button.IsPressedChanged += delegate
+                                    {
+                                        if (button.IsPressed)
+                                        {
+                                            Log.Warning("!! IsPressedChanged | IsPressed: " + button.IsPressed);
+                                        }
+                                        else
+                                        {
+                                            Log.Success("!! IsPressedChanged | IsPressed: " + button.IsPressed);
+                                        }
+                                    };
+        }
+        #endregion
     }
 
     public class MyButtonView : ButtonView
@@ -91,31 +105,30 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         {
             // Setup initial conditions.
             SetSize(180, 45);
-            Focus.CanFocus = true;
 
             // Assign states.
             // All.
-            SetTemplateForStates(0, AllStates, "#btnSample_Background");
+            TemplateForStates(0, AllStates, "#btnSample_Background");
 
             // Normal.
-            SetTemplateForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "#btnSample_Normal", EnabledCondition.EnabledOnly, FocusCondition.UnfocusedOnly);
-            SetCssForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "btn_sample_defaultText");
+            TemplateForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "#btnSample_Normal", EnabledCondition.EnabledOnly, FocusCondition.UnfocusedOnly);
+            CssForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "btn_sample_defaultText");
 
             // Pressed.
-            SetCssForState(1, ButtonState.MouseOver, "btn_sample_over");
-            SetTemplateForState(1, ButtonState.MouseDown, "#btnSample_Down");
-            SetTemplateForState(1, ButtonState.Pressed, "#btn_Sample_Pressed");
+            CssForState(1, ButtonState.MouseOver, "btn_sample_over");
+            TemplateForState(1, ButtonState.MouseDown, "#btnSample_Down");
+            TemplateForState(1, ButtonState.Pressed, "#btn_Sample_Pressed");
 
             // Focused.
-            SetCssForStates(0, AllStates, "btn_sample_focus", EnabledCondition.Either, FocusCondition.FocusedOnly);
-            SetTemplateForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "#btn_Sample_Focused", EnabledCondition.EnabledOnly, FocusCondition.FocusedOnly);
+            CssForStates(0, AllStates, "btn_sample_focus", EnabledCondition.Either, FocusCondition.FocusedOnly);
+            TemplateForStates(1, new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver }, "#btn_Sample_Focused", EnabledCondition.EnabledOnly, FocusCondition.FocusedOnly);
 
             // Disabled.
-            SetTemplateForStates(3, AllStates, "#btnSample_Disabled", EnabledCondition.DisabledOnly, FocusCondition.Either);
+            TemplateForStates(3, AllStates, "#btnSample_Disabled", EnabledCondition.DisabledOnly, FocusCondition.Either);
 
             // Overlay.
-            SetCssForStates(2, AllStates, "btn_sample_overlay");
-            SetTemplateForStates(2, AllStates, "#btnSample_Overlay");
+            CssForStates(2, AllStates, "btn_sample_overlay");
+            TemplateForStates(2, AllStates, "#btnSample_Overlay");
 
             // Finish up.
             UpdateLayout();

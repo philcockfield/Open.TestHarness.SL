@@ -74,7 +74,11 @@ namespace Open.Core
         #region Properties : IFocus
         public bool IsFocused
         {
-            get { return (bool)Get(PropIsFocused, false); }
+            get
+            {
+                if (!CanFocus) return false;
+                return (bool)Get(PropIsFocused, false);
+            }
             private set { Set(PropIsFocused, value, false); }
         }
 

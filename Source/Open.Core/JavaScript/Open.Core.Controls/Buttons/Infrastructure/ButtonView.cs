@@ -21,6 +21,11 @@ namespace Open.Core.Controls.Buttons
         public const string PropDisabledOpacity = "DisabledOpacity";
         private const double DefaultDisabledOpacity = 0.3;
 
+        public const string ClassNormal = "normal";
+        public const string ClassOver = "over";
+        public const string ClassDown = "down";
+        public const string ClassPressed = "pressed";
+
         public static readonly ButtonState[] AllStates = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver, ButtonState.MouseDown, ButtonState.Pressed };
         public static readonly ButtonState[] DownAndPressed = new ButtonState[] { ButtonState.MouseDown, ButtonState.Pressed };
         public static readonly ButtonState[] NotDownOrPressed = new ButtonState[] { ButtonState.Normal, ButtonState.MouseOver };
@@ -77,9 +82,12 @@ namespace Open.Core.Controls.Buttons
                                   {
                                       OnKeyPress(Int32.Parse(e.Which));
                                   });
+
+            // Finish up.
+            SyncCanFocus();
         }
 
-        /// <summary>Finalize.</summary>
+        /// <summary>Destructor.</summary>
         protected override void OnDisposed()
         {
             Helper.UnlistenPropertyChanged(Model, OnModelPropertyChanged);
@@ -116,11 +124,15 @@ namespace Open.Core.Controls.Buttons
 
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.Property.Name == ButtonModel.PropIsEnabled)
+            string name = e.Property.Name;
+            if (name == ButtonModel.PropWidth) SyncDimension(SizeDimension.Width);
+            if (name == ButtonModel.PropHeight) SyncDimension(SizeDimension.Height);
+            if (name == ButtonModel.PropIsEnabled)
             {
                 UpdateLayout();
                 FirePropertyChanged(PropIsEnabled);
             }
+            if (name == ButtonModel.PropCanFocus) SyncCanFocus();
         }
         #endregion
 
@@ -156,12 +168,51 @@ namespace Open.Core.Controls.Buttons
         }
         #endregion
 
-        #region Methods
+        #region Methods - Layout
         /// <summary>Updates the visual state of the button.</summary>
         public void UpdateLayout()
         {
             Css.SetOpacity(Container, Model.IsEnabled ? 1 : DisabledOpacity);
+
+            OnRendering();
             contentController.UpdateLayout();
+            OnRendered();
+
+            SyncSize();
+        }
+
+        /// <summary>Invoked immediately before the button has rendered it's state.</summary>
+        protected virtual void OnRendering() { }
+
+        /// <summary>Invoked immediately after the button has rendered it's state.</summary>
+        protected virtual void OnRendered() { }
+
+        /// <summary>Syncs the size of the button with the model (if it has size values.  See 'NoSize' constant).</summary>
+        protected void SyncSize()
+        {
+            SyncDimension(SizeDimension.Width);
+            SyncDimension(SizeDimension.Height);
+        }
+
+        /// <summary>Syncs the specified of the button with the model (if it has size values.  See 'NoSize' constant).</summary>
+        /// <param name="dimension">The size dimension to sync.</param>
+        protected void SyncDimension(SizeDimension dimension)
+        {
+            // Setup initial conditions.
+            ISize size = Model as ISize;
+            if (size == null) return;
+
+            // Width.
+            if (dimension == SizeDimension.Width)
+            {
+                if (size.Width != ButtonModel.NoSize) Width = size.Width;
+            }
+
+            // Height.
+            if (dimension == SizeDimension.Height)
+            {
+                if (size.Height != ButtonModel.NoSize) Height = size.Height;
+            }
         }
         #endregion
 
@@ -207,7 +258,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="state">The state the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
         [AlternateSignature]
-        public extern void SetCssForState(int layer, ButtonState state, string cssClasses);
+        public extern void CssForState(int layer, ButtonState state, string cssClasses);
 
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
@@ -215,9 +266,9 @@ namespace Open.Core.Controls.Buttons
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
         /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
         /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
-        public void SetCssForState(int layer, ButtonState state, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
+        public void CssForState(int layer, ButtonState state, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
-            SetCssForStates(layer, new ButtonState[] { state }, cssClasses, enabledCondition, focusCondition);
+            CssForStates(layer, new ButtonState[] { state }, cssClasses, enabledCondition, focusCondition);
         }
 
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
@@ -225,7 +276,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="states">The state(s) the CSS classes apply to.</param>
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
         [AlternateSignature]
-        public extern void SetCssForStates(int layer, ButtonState[] states, string cssClasses);
+        public extern void CssForStates(int layer, ButtonState[] states, string cssClasses);
 
         /// <summary>Sets the CSS class(es) to use for a given layer.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
@@ -233,7 +284,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="cssClasses">A string containing one or more CSS class names.</param>
         /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
         /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
-        public void SetCssForStates(int layer, ButtonState[] states, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
+        public void CssForStates(int layer, ButtonState[] states, string cssClasses, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
             contentController.AddCss(layer, new ButtonStateCss(states, cssClasses, enabledCondition, focusCondition));
         }
@@ -245,7 +296,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="state">The state the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
         [AlternateSignature]
-        public extern void SetTemplateForState(int layer, ButtonState state, string templateSelector);
+        public extern void TemplateForState(int layer, ButtonState state, string templateSelector);
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
@@ -253,9 +304,9 @@ namespace Open.Core.Controls.Buttons
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
         /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
         /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
-        public void SetTemplateForState(int layer, ButtonState state, string templateSelector, EnabledCondition enabledCondition, FocusCondition focusCondition)
+        public void TemplateForState(int layer, ButtonState state, string templateSelector, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
-            SetTemplateForStates(layer, new ButtonState[] { state }, templateSelector, enabledCondition, focusCondition);
+            TemplateForStates(layer, new ButtonState[] { state }, templateSelector, enabledCondition, focusCondition);
         }
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
@@ -263,7 +314,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="states">The states the template applies to.</param>
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
         [AlternateSignature]
-        public extern void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector);
+        public extern void TemplateForStates(int layer, ButtonState[] states, string templateSelector);
 
         /// <summary>Creates a Template with the specified selector and adds it as content for the given state.</summary>
         /// <param name="layer">The layer the state is rendered on (0 lowest, higher values fall in front of lower values)</param>
@@ -271,7 +322,7 @@ namespace Open.Core.Controls.Buttons
         /// <param name="templateSelector">The CSS selector where the template can be found.</param>
         /// <param name="enabledCondition">The enabled-related conditions for which button content applies.</param>
         /// <param name="focusCondition">The focus-related conditions for which button content applies.</param>
-        public void SetTemplateForStates(int layer, ButtonState[] states, string templateSelector, EnabledCondition enabledCondition, FocusCondition focusCondition)
+        public void TemplateForStates(int layer, ButtonState[] states, string templateSelector, EnabledCondition enabledCondition, FocusCondition focusCondition)
         {
             contentController.AddTemplate(layer, new ButtonStateTemplate(states, new Template(templateSelector), enabledCondition, focusCondition));
         }
@@ -285,6 +336,11 @@ namespace Open.Core.Controls.Buttons
             div.AppendTo(Container);
             div.AddClass(cssClass);
             return div;
+        }
+
+        private void SyncCanFocus()
+        {
+            Focus.CanFocus = Model.CanFocus;
         }
         #endregion
     }

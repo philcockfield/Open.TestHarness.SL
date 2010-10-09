@@ -59,7 +59,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Buttons\Models\IconTextButton.cs" />
-    <Compile Include="Buttons\Models\ImageButton.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButtonUrls.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButton.cs" />
     <Compile Include="Buttons\Views\IconTextButtonView.cs" />
     <Compile Include="Buttons\Infrastructure\Content\ButtonContentLayer.cs" />
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateContent.cs" />

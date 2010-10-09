@@ -7,8 +7,9 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         public static void WriteButtonModel(IButton button)
         {
             Log.Info("IsEnabled: " + button.IsEnabled);
-            Log.Info("CanToggle: " + button.CanToggle);
             Log.Info("IsPressed: " + button.IsPressed);
+            Log.Info("CanToggle: " + button.CanToggle);
+            Log.Info("CanFocus: " + button.CanFocus);
         }
 
         public static void WriteButtonView(IButtonView button)
@@ -17,16 +18,5 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             Log.Info("IsMouseOver: " + button.IsMouseOver);
             Log.Info("IsMouseDown: " + button.IsMouseDown);
         }
-
-        //TEMP 
-        //public static void WriteSystemButton(SystemButton button)
-        //{
-        //    Log.Info("Html: " + button.HtmlContent);
-        //    Log.Info("Type: " + button.Type);
-        //    Log.Info("Value: " + button.Value);
-        //    Log.Info("Padding: " + button.Padding);
-        //    Log.Info("FontSize: " + button.FontSize);
-        //    WriteIButton(button);
-        //}
     }
 }

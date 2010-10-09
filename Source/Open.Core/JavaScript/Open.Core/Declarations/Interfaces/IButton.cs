@@ -22,6 +22,9 @@ namespace Open.Core
         /// <summary>Gets or sets whether the button retains it's state on each click.</summary>
         bool CanToggle { get; set; }
 
+        /// <summary>Gets or sets whether the button can recieve keyboard focus.</summary>
+        bool CanFocus { get; set; }
+
         /// <summary>
         ///     Gets or sets whether the button is currently pressed 
         ///     (see also IsMouseDown.  Relevant when IsToggleButton is True).

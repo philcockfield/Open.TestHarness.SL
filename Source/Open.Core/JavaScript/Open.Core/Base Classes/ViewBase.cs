@@ -5,7 +5,7 @@ using jQueryApi;
 namespace Open.Core
 {
     /// <summary>Base for classes that represent, manage and construct views ("UI").</summary>
-    public abstract class ViewBase : ModelBase, IView
+    public abstract class ViewBase : ModelBase, IView, ISize
     {
         #region Events
         public event EventHandler IsEnabledChanged;

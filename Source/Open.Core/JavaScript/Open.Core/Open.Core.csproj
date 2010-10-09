@@ -57,6 +57,7 @@
     <Compile Include="Declarations\Interfaces\IButtonView.cs" />
     <Compile Include="Declarations\Interfaces\IFocus.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
+    <Compile Include="Declarations\Interfaces\ISize.cs" />
     <Compile Include="Models\ButtonModel.cs" />
     <Compile Include="Models\Spacing.cs" />
     <Compile Include="Models\ViewFocus.cs" />
