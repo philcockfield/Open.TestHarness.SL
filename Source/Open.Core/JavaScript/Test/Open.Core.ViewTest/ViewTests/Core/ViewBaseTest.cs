@@ -83,11 +83,17 @@ namespace Open.Core.Test.ViewTests.Core
         public void Focus() { Log.Info("Focus: " + view.Focus.Apply()); }
         public void Blur() { Log.Info("Blur: " + view.Focus.Blur()); }
 
+        public void Position__None() { view.Position = CssPosition.None; }
+        public void Position__Relative() { view.Position = CssPosition.Relative; }
+        public void Position__Absolute() { view.Position = CssPosition.Absolute; }
+        public void Position__Fixed() { view.Position = CssPosition.Fixed; }
+
         public void Write_Properties()
         {
             Log.Info("CanFocus: " + view.Focus.CanFocus);
             Log.Info("TabIndex: " + view.Focus.TabIndex);
             Log.Info("IsFocused: " + view.Focus.IsFocused);
+            Log.Info("Position: " + view.Position.ToString());
         }
         #endregion
     }

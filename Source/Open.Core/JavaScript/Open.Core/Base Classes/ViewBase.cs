@@ -37,12 +37,15 @@ namespace Open.Core
         #endregion
 
         #region Head
+        public const string PropPosition = "Position";
         public const string PropBackground = "Background";
         public const string PropIsVisible = "IsVisible";
         public const string PropOpacity = "Opacity";
         public const string PropWidth = "Width";
         public const string PropHeight = "Height";
         public const string PropIsEnabled = "IsEnabled";
+
+        private const string CssStatic = "static";
 
         private readonly jQueryObject container;
         private IFocus focus;
@@ -96,6 +99,21 @@ namespace Open.Core
         #endregion
 
         #region Properties : IView - Style
+        public CssPosition Position
+        {
+            get
+            {
+                string value = GetCss(Css.Position);
+                return string.IsNullOrEmpty(value) || value == CssStatic
+                                           ? CssPosition.None
+                                           : (CssPosition)Enum.Parse(typeof(CssPosition), value);
+            }
+            set
+            {
+                SetCss(Css.Position, value == CssPosition.None ? CssStatic : value.ToString().ToLocaleLowerCase());
+            }
+        }
+
         public string Background
         {
             get { return GetCss(Css.Background); }

@@ -8,7 +8,7 @@ namespace Open.Testing.Models
     public enum CustomListItemType
     {
         /// <summary>Produces the view that gives the option to add a new test-package to the sidebar.</summary>
-        AddPackage =0,
+        AddPackage = 0,
     }
 
     /// <summary>A list-item node for custom UI.</summary>

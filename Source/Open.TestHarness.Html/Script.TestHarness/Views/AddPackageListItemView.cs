@@ -8,26 +8,36 @@ namespace Open.Testing.Views
     public class AddPackageListItemView : TestHarnessViewBase
     {
         #region Head
-        private readonly LinkButton addButton;
+        private ImageButton addButton;
+        private const int itemHeight = 34;
 
         public AddPackageListItemView()
         {
             // Setup initial conditions.
-            SetCss(Css.Padding, "15px 10px");
-            SetCss(Css.TextAlign, CssTextAlign.Right.ToString());
+            Height = itemHeight;
+            Position = CssPosition.Relative;
 
-            // Insert the Add button.
-            addButton = new LinkButton(StringLibrary.Add);
-//TEMP             Container.Append(addButton.Container);
-
-            // Wire up events.
-            AddButton.Click += delegate { Common.Events.FireAddPackageClick(); };
+            // Setup the 'Add' button.
+            InsertAddButton();
         }
         #endregion
 
-        #region Properties
-        /// <summary>Gets the button which causes the 'Add Package' screen to be shown.</summary>
-        public IButton AddButton { get { return addButton.Model; } }
+        #region Internal
+        private void InsertAddButton()
+        {
+            // Setup initial conditions.
+            addButton = Common.Buttons.AddPackage as ImageButton;
+            addButton.SetSize(itemHeight, itemHeight);
+            ButtonView view = addButton.CreateView() as ButtonView;
+
+            // Initialize CSS.
+            view.SetCss(Css.Position, Css.Absolute);
+            view.SetCss(Css.Right, 0 + Css.Px);
+            view.SetCss(Css.Top, 0 + Css.Px);
+
+            // Finish up.
+            Container.Append(view.Container);
+        }
         #endregion
     }
 }

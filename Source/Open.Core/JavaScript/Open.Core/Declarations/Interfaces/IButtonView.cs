@@ -1,8 +1,13 @@
+using jQueryApi;
+
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>The visual control for a clickable button.</summary>
     public interface IButtonView
     {
+        /// <summary>Gets the element that the control is contained within.</summary>
+        jQueryObject Container { get; }
+
         /// <summary>Gets the logical model of the button.</summary>
         IButton Model { get; }
 

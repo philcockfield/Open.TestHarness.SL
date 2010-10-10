@@ -37,6 +37,9 @@ namespace Open.Testing
             Container.RegisterSingleton(typeof(ITestHarnessEvents), new TestHarnessEvents());
             Container.RegisterSingleton(typeof(Common), new Common());
 
+            // Create shared models.
+            Container.RegisterSingleton(typeof (CommonButtons), new CommonButtons());
+
             // Create views.
             shell = new ShellView(jQuery.Select(CssSelectors.Root));
             Container.RegisterSingleton(typeof(ShellView), shell);

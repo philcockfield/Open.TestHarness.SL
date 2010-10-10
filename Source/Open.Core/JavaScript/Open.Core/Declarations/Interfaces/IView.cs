@@ -49,6 +49,9 @@ namespace Open.Core
         #endregion
 
         #region Styles
+        /// <summary>Gets or sets the CSS position setting for the control.</summary>
+        CssPosition Position { get; set; }
+
         /// <summary>Gets or sets the background CSS for the control.</summary>
         string Background { get; set; }
 

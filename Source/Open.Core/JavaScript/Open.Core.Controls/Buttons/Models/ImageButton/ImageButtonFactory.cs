@@ -16,6 +16,7 @@ namespace Open.Core.Controls.Buttons
         {
             // Setup initial conditions.
             ImageButton button = new ImageButton();
+            button.CanFocus = false;
 
             // Configure image URL's.
             switch (type)

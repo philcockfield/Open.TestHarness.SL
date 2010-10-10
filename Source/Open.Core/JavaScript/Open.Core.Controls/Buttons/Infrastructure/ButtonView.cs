@@ -21,6 +21,7 @@ namespace Open.Core.Controls.Buttons
         public const string PropDisabledOpacity = "DisabledOpacity";
         private const double DefaultDisabledOpacity = 0.3;
 
+        public const string ClassButton = "button";
         public const string ClassNormal = "normal";
         public const string ClassOver = "over";
         public const string ClassDown = "down";
@@ -54,6 +55,7 @@ namespace Open.Core.Controls.Buttons
             // Setup initial conditions.
             if (Script.IsNullOrUndefined(model)) model = new ButtonModel();
             this.model = model;
+            Container.AddClass(ClassButton);
             Container.AddClass(Css.Classes.NoSelect);
             Focus.BrowserHighlighting = false;
 

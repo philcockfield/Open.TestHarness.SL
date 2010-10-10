@@ -59,12 +59,13 @@
     <Compile Include="Controllers\MethodListController.cs" />
     <Compile Include="Controllers\MethodListHeightController.cs" />
     <Compile Include="Code\Events\TestHarnessEvents.cs" />
+    <Compile Include="Models\CommonButtons.cs" />
     <Compile Include="Models\ListItemNodes\CustomListItem.cs" />
     <Compile Include="Models\ListItemNodes\MethodListItem.cs" />
     <Compile Include="Models\ListItemNodes\ClassListItem.cs" />
-    <Compile Include="Models\MethodInfo.cs" />
-    <Compile Include="Models\PackageInfo.cs" />
-    <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Models\Members\MethodInfo.cs" />
+    <Compile Include="Models\Members\PackageInfo.cs" />
+    <Compile Include="Models\Members\ClassInfo.cs" />
     <Compile Include="Controllers\PanelResizeController.cs" />
     <Compile Include="Models\ListItemNodes\PackageListItem.cs" />
     <Compile Include="Controllers\SidebarController.cs" />

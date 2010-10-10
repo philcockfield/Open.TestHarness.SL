@@ -38,10 +38,6 @@ namespace Open.Testing
         /// <summary>Fires when the log-height is to be changed.</summary>
         internal event ChangeHeightEventHandler ChangeLogHeight;
         internal void FireChangeLogHeight(int height) { if (ChangeLogHeight != null) ChangeLogHeight(this, new ChangeHeightEventArgs(height)); }
-
-        /// <summary>Fires when the 'Add Package' option is clicked.</summary>
-        internal event EventHandler AddPackageClick;
-        internal void FireAddPackageClick() { if (AddPackageClick != null) AddPackageClick(this, new EventArgs()); }
         #endregion
     }
 

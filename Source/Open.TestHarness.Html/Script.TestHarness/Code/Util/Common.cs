@@ -1,5 +1,6 @@
 using Open.Core;
 using Open.Testing.Internal;
+using Open.Testing.Models;
 using Open.Testing.Views;
 
 namespace Open.Testing
@@ -11,6 +12,7 @@ namespace Open.Testing
         public DiContainer Container { get { return DiContainer.DefaultContainer; } }
         public TestHarnessEvents Events { get { return Container.GetSingleton(typeof(ITestHarnessEvents)) as TestHarnessEvents; } }
         public ShellView Shell { get { return Container.GetSingleton(typeof(ShellView)) as ShellView; } }
+        public CommonButtons Buttons { get { return Container.GetSingleton(typeof(CommonButtons)) as CommonButtons; } }
         #endregion
 
         #region Methods : Static
