@@ -1,6 +1,6 @@
 using Open.Core.Lists;
 
-namespace Open.Core.Test
+namespace Open.Core.Test.Samples
 {
     public class SampleListItem : ListItem
     {

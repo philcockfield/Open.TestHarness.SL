@@ -23,6 +23,16 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Methods
+        /// <summary>Removes all URL values.</summary>
+        public void Reset()
+        {
+            BasePath = null;
+            Normal = null;
+            Over = null;
+            Down = null;
+            Pressed = null;
+        }
+
         internal string GetPath(ButtonState state, string basePath)
         {
             // See if there's a value specified for the state.

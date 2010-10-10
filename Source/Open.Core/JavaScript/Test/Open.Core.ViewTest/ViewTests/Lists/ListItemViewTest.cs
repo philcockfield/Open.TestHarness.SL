@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Open.Core.Lists;
+using Open.Core.Test.Samples;
 using Open.Testing;
 
 namespace Open.Core.Test.ViewTests.Lists

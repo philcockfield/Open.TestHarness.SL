@@ -9,9 +9,9 @@ namespace Open.Core.Controls.Buttons
         private const string SelectorTemplate = "#btnImage";
         private const string SelectorBgTemplate = "#btnImage_Bg";
         private const string SelectorImage = "img.btnImage";
-        private readonly ImageButton buttonModel;
+        private readonly ImageButtonBase buttonModel;
 
-        public ImageButtonView(ImageButton model) : base(model)
+        public ImageButtonView(ImageButtonBase model) : base(model)
         {
             // Setup initial conditions.
             buttonModel = model;

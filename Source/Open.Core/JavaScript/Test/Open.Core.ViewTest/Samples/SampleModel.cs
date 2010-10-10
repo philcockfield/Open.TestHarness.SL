@@ -1,4 +1,4 @@
-namespace Open.Core.Test
+namespace Open.Core.Test.Samples
 {
     public class SampleModel : ModelBase
     {

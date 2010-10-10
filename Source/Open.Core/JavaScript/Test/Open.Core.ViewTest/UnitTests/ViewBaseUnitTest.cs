@@ -1,4 +1,5 @@
 using jQueryApi;
+using Open.Core.Test.Samples;
 using Open.Testing;
 
 namespace Open.Core.Test.UnitTests

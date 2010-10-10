@@ -2078,6 +2078,9 @@
     <EmbeddedResource Include="Content\Icons\Silk.Greyscale\SilkZoom.png" />
     <EmbeddedResource Include="Content\Icons\Silk.Greyscale\SilkZoomIn.png" />
     <EmbeddedResource Include="Content\Icons\Silk.Greyscale\SilkZoomOut.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Plus.15x15.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Plus.Over.15x15.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Plus.Down.15x15.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

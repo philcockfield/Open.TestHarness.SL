@@ -1,4 +1,5 @@
 using System;
+using Open.Core.Test.Samples;
 
 namespace Open.Core.Test.UnitTests
 {
