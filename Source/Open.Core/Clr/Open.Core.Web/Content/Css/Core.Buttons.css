@@ -27,5 +27,5 @@
 /* ImageButton */
 .btnImage { position:absolute; }
 .btnImage.bg.over { background:rgba(0,0,0, 0.03); }
-.btnImage.bg.down { background:rgba(0,0,0, 0.5); }
+.btnImage.bg.down { background:rgba(0,0,0, 0.06); }
 .btnImage.bg.pressed { background:rgba(0,0,0, 0.03); }
