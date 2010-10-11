@@ -46,6 +46,17 @@
     border-color:#989898; 
 }
 
+#testHarness div.buttonDivider 
+{ 
+    position:relative;
+    float:left;
+    top:0px;
+    width:0px;
+    height:100%;
+    border-left:solid 1px rgba(255,255,255, 0.6); 
+    border-right:solid 1px rgba(0,0,0, 0.2);
+}
+
 
 /*-------------- Sidebar --------------*/
 #testHarnessSidebar
@@ -87,12 +98,26 @@
 #testHarnessSidebar p.dropShadow { top:35px; }
 #testHarnessSidebar .th-testList-content { top:35px; }
 
-#testHarnessSidebar .th-testList button.runTests
+#testHarnessSidebar .th-testList .buttons
 {
     position:absolute;
-    right:5px;
-    top:5px;
+    top:1px;
+    right:0px;
+    bottom:0px;
+    width:120px;
 }
+
+#testHarnessSidebar .th-testList .buttons .button
+{
+    position:relative;
+    float:right;
+}
+
+#testHarnessSidebar .th-testList .buttons .buttonDivider
+{
+    float:right;
+}
+
 
 
 /*-------------- Main --------------*/

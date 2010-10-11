@@ -26,7 +26,7 @@ namespace Open.Testing.Controllers
             // Wire up events.
             events.MethodClicked += OnMethodClicked;
             sidebarView.MethodList.RunClick += OnRunClick;
-
+            sidebarView.MethodList.RefreshClick += OnRefreshClick;
             // Finish up.
             Reset();
         }
@@ -36,6 +36,7 @@ namespace Open.Testing.Controllers
             // Unwire events.
             events.MethodClicked -= OnMethodClicked;
             sidebarView.MethodList.RunClick -= OnRunClick;
+            sidebarView.MethodList.RefreshClick -= OnRefreshClick;
 
             // Invoke the class-teardown method.
             if (classInfo.ClassCleanup != null) classInfo.ClassCleanup.Invoke();
@@ -54,9 +55,17 @@ namespace Open.Testing.Controllers
             InvokeSelectedMethod();
         }
 
-        void OnRunClick(object sender, EventArgs e)
+        private void OnRunClick(object sender, EventArgs e)
         {
             RunAll();
+        }
+
+        private void OnRefreshClick(object sender, EventArgs e)
+        {
+            Log.Clear();
+            Log.Info(string.Format("Reload: <b>{0}</b>", classInfo.DisplayName));
+            Log.LineBreak();
+            Reset();
         }
         #endregion
 

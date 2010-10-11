@@ -21,6 +21,7 @@ namespace Open.Core
         public const string Display = "display";
         public const string Visibility = "visibility";
         public const string Position = "position";
+        public const string PositionFloat = "float";
         public const string Padding = "padding";
         public const string Margin = "margin";
         public const string Overflow = "overflow";
@@ -59,6 +60,33 @@ namespace Open.Core
         public static bool HasPosition(jQueryObject element)
         {
             return Script.IsNullOrUndefined(element) ? false : element.GetCSS(Position) != string.Empty;
+        }
+
+        /// <summary>Retrieves the border outline size for the given element (if it's border styles are specified in pixels).</summary>
+        /// <param name="element">The element to examine.</param>
+        public static Spacing GetPixelBorder(jQueryObject element)
+        {
+            // Setup initial conditions.
+            Spacing value = new Spacing();
+            if (Script.IsNullOrUndefined(element)) return value;
+
+            // Retrieve each edge.
+            value.Left = GetBorderEdge(element, Edge.Left);
+            value.Top = GetBorderEdge(element, Edge.Top);
+            value.Right = GetBorderEdge(element, Edge.Right);
+            value.Bottom = GetBorderEdge(element, Edge.Bottom);
+
+            // Finish up.
+            return value;
+        }
+
+        private static int GetBorderEdge(jQueryObject element, Edge edge)
+        {
+            if (Script.IsNullOrUndefined(element)) return 0;
+            string value = element.GetCSS(string.Format("border-{0}-width", edge.ToString().ToLocaleLowerCase()));
+            if (string.IsNullOrEmpty(value)) return 0;
+            if (!value.EndsWith(Px)) return 0;
+            return Int32.Parse(value);
         }
         #endregion
 

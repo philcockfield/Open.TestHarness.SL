@@ -7,11 +7,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Temp</title>
+
+    <style>
+        
+        div
+        {
+            position:relative;
+            border:solid 1px orange;
+            background:green;
+            width:50px;
+            height:50px;
+            float:right;
+         }
+        
+    </style>
+
 </head>
 <body>
 
-  <img src="<%= Html.IconUrl(IconImage.SilkAccept) %>" />    
-  <img src="<%= Html.IconUrl(IconImage.SilkAccept, greyscale:true) %>" />    
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
 
 </body>
 </html>

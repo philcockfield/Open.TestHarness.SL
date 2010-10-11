@@ -100,7 +100,7 @@ namespace Open.Core.Controls.Buttons
 
         private static jQueryObject InitContainer(jQueryObject container)
         {
-            if (Script.IsNullOrUndefined(container)) container = Html.CreateSpan();
+            if (Script.IsNullOrUndefined(container)) container = Html.CreateDiv();
             return container;
         }
         #endregion

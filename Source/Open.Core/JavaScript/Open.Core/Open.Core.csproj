@@ -84,6 +84,7 @@
     <Compile Include="Models\Log\Log.cs" />
     <Compile Include="Models\Log\LogWriter.cs" />
     <Compile Include="Models\Log\LogCss.cs" />
+    <Compile Include="UI\Positioning\StackPanel.cs" />
     <Compile Include="Util\ComponentModel\PropertyBinding.cs" />
     <Compile Include="Util\ComponentModel\PropertyDef.cs" />
     <Compile Include="Util\ComponentModel\PropertyRef.cs" />

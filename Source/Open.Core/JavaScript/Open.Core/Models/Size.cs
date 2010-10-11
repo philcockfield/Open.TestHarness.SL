@@ -24,5 +24,12 @@
         /// <summary>Gets or sets the pixel height of the element.</summary>
         public int Height { get { return height; } }
         #endregion
+
+        #region Methods
+        public override string ToString()
+        {
+            return string.Format("Width:{0};Height:{1};", Width, Height);
+        }
+        #endregion
     }
 }

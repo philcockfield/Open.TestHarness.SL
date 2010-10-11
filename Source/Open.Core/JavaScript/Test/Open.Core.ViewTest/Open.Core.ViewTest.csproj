@@ -70,6 +70,7 @@
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListTreeViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListViewTest.cs" />
+    <Compile Include="ViewTests\UI\StackPanelTest.cs" />
     <Compile Include="ViewTests\Util\Helper_ScriptLoadHelper.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />

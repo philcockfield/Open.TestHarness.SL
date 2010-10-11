@@ -1,10 +1,8 @@
 using System;
 using jQueryApi;
 using Open.Core;
-using Open.Core.Controls;
 using Open.Core.Controls.Buttons;
 using Open.Core.Lists;
-using Open.Testing.Automation;
 using Open.Testing.Models;
 
 namespace Open.Testing.Views
@@ -12,13 +10,20 @@ namespace Open.Testing.Views
     /// <summary>The list of tests.</summary>
     public class MethodListView : TestHarnessViewBase
     {
-        #region Head
+        #region Events
         /// <summary>Fires when the 'Run' button is clicked.</summary>
         public event EventHandler RunClick;
-        private void FireRunClick(){if (RunClick != null) RunClick(this, new EventArgs());}
+        private void FireRunClick() { if (RunClick != null) RunClick(this, new EventArgs()); }
 
+        /// <summary>Fires when the 'Refresh' button is clicked.</summary>
+        public event EventHandler RefreshClick;
+        private void FireRefreshClick(){if (RefreshClick != null) RefreshClick(this, new EventArgs());}
+        #endregion
+
+        #region Head
         public const string PropClassInfo = "ClassInfo";
         public const string PropSelectedMethod = "SelectedMethod";
+        private const int ButtonHeight = 33;
 
         private readonly ListTreeView listView;
         private readonly ListItem rootNode;
@@ -39,16 +44,17 @@ namespace Open.Testing.Views
             rootNode = new ListItem();
             listView.RootNode = rootNode;
 
-            // TEMP - Removed THROWS ERROR IN IE :: Debug
-
             // Construct buttons.
-            //btnRun = new SystemButton();
-            //btnRun.FontSize = "8pt"; // TODO - Style button, don't use system button.
-            //btnRun.Padding = "3px 8px";
-            //btnRun.Insert(CssSelectors.MethodListRunButton, InsertMode.Replace);
 
-            //// Wire up events.
-            //btnRun.Click += delegate { FireRunClick(); };
+            DelayedAction.Invoke(3, delegate
+                                        {
+                                            //TODO _ DO NOT PUT IN DELAY
+                                            // Sort out problem with pre-loading the same template multiple times (ie. multiple image buttons at once).
+                                            InsertButtons();
+
+                                        });
+
+
         }
        #endregion
 
@@ -121,6 +127,41 @@ namespace Open.Testing.Views
             }
             rootNode.ClearChildren();
             SelectedMethod = null;
+        }
+        #endregion
+
+        #region Internal : Buttons
+        private void InsertButtons()
+        {
+            // Run button.
+            InsertButton(
+                            ImageButtons.PlayDark, 
+                            CssSelectors.MethodListRunButton, 
+                            delegate { FireRunClick(); });
+
+            // Refresh button.
+            InsertButton(
+                            ImageButtons.RefreshDark, 
+                            CssSelectors.MethodListRefreshButton,
+                            delegate { FireRefreshClick(); });
+        }
+
+        private static void InsertButton(ImageButtons type, string replaceSeletor, EventHandler onClick)
+        {
+            // Create the buttons.
+            ImageButton button = ImageButtonFactory.Create(type);
+            button.BackgroundHighlighting = true;
+            button.SetSize(ButtonHeight, ButtonHeight);
+
+            // Setup CSS.
+            ButtonView view = button.CreateView() as ButtonView;
+
+            // Wire up events.
+            button.Click += onClick;
+
+            // Insert the button.
+            view.Insert(replaceSeletor, InsertMode.Replace);
+            view.UpdateLayout();
         }
         #endregion
     }

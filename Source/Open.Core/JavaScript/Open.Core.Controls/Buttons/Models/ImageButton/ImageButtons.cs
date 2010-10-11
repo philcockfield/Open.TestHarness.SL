@@ -5,5 +5,7 @@ namespace Open.Core.Controls.Buttons
     public enum ImageButtons
     {
         PlusDark = 0,
+        RefreshDark = 1,
+        PlayDark = 2,
     }
 }

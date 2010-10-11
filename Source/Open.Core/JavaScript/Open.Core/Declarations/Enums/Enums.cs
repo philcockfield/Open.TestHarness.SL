@@ -14,6 +14,22 @@ namespace Open.Core
         Down = 1,
     }
 
+    /// <summary>Alignment on the X plane.</summary>
+    public enum HorizontalAlign
+    {
+        Left = 0,
+        Center = 1,
+        Right = 2,
+    }
+
+    /// <summary>Alignment on the Y plane.</summary>
+    public enum VerticalAlign
+    {
+        Top = 0,
+        Center = 1,
+        Bottom = 2,
+    }
+
     /// <summary>Edges of an element.</summary>
     public enum Edge
     {

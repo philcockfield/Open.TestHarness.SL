@@ -10,7 +10,13 @@
                 <p class="title opacity060"><%= Model.MethodListTitle %></p>
             </div>
         </div>
-        <button class="runTests">Run</button>
+        <div class="buttons">
+            <button class="runTests button">Run</button>
+            <div class="buttonDivider"></div>
+            <button class="refresh button">Refresh</button>
+            <div class="buttonDivider"></div>
+        </div>
+
     </div>
 
     <!-- List -->
