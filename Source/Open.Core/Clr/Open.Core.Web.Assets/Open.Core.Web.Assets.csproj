@@ -2091,6 +2091,10 @@
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Search.15x15.png" />
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Search.Down.15x15.png" />
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Search.Over.15x15.png" />
+    <EmbeddedResource Include="Content\Icons\Sundry\Pin.Pushed.png" />
+    <EmbeddedResource Include="Content\Icons\Sundry\Pin.Unpushed.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Remove.14x14.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Remove.Down.14x14.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -33,7 +33,12 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                         });
         }
 
-        public void ImageButton__PlusDark(){ CreateImageButton(ImageButtons.PlusDark, 24, 24); }
+        public void ImageButton__PlusDark() { CreateImageButton(ImageButtons.PlusDark, 24, 24); }
+        public void ImageButton__PlayDark() { CreateImageButton(ImageButtons.PlayDark, 24, 24); }
+        public void ImageButton__RefreshDark() { CreateImageButton(ImageButtons.RefreshDark, 24, 24); }
+        public void ImageButton__SearchDark() { CreateImageButton(ImageButtons.SearchDark, 24, 24); }
+        public void ImageButton__PushRemove() { CreateImageButton(ImageButtons.Remove, 24, 24); }
+        public void ImageButton__PushPin() { CreateImageButton(ImageButtons.PushPin, 24, 24); }
         #endregion
 
         #region Internal

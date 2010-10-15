@@ -8,5 +8,8 @@ namespace Open.Core.Controls.Buttons
         RefreshDark = 1,
         PlayDark = 2,
         SearchDark = 3,
+
+        PushPin = 4,
+        Remove = 5,
     }
 }

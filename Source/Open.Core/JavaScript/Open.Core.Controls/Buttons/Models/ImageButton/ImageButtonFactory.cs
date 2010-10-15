@@ -7,6 +7,7 @@ namespace Open.Core.Controls.Buttons
     {
         #region Head
         public const string PathFlatDark = "/Open.Assets/Icons/Flat/Dark/";
+        public const string PathSundry = "/Open.Assets/Icons/Sundry/";
         #endregion
 
         #region Methods
@@ -25,6 +26,8 @@ namespace Open.Core.Controls.Buttons
                 case ImageButtons.PlayDark: InitFlatDark(button, "Play"); break;
                 case ImageButtons.RefreshDark: InitFlatDark(button, "Refresh"); break;
                 case ImageButtons.SearchDark: InitFlatDark(button, "Search"); break;
+                case ImageButtons.PushPin: InitPushPin(button); break;
+                case ImageButtons.Remove: InitRemove(button); break;
 
                 default: throw new Exception("ImageButton not supported: " + type.ToString());
             }
@@ -42,6 +45,25 @@ namespace Open.Core.Controls.Buttons
             button.DefaultUrls.Over = prefix + ".Over.15x15.png";
             button.DefaultUrls.Down = prefix + ".Down.15x15.png";
             button.SetSize(15, 15);
+        }
+
+        private static void InitRemove(ImageButton button)
+        {
+            button.BasePath = PathFlatDark;
+            button.DefaultUrls.Normal = "Remove.14x14.png";
+            button.DefaultUrls.Down = "Remove.Down.14x14.png";
+            button.SetSize(14, 14);
+            button.BackgroundHighlighting = false;
+        }
+
+        private static void InitPushPin(ImageButton button)
+        {
+            button.BasePath = PathSundry;
+            button.DefaultUrls.Normal = "Pin.Unpushed.png";
+            button.DefaultUrls.Pressed = "Pin.Pushed.png";
+            button.CanToggle = true;
+            button.CanFocus = false;
+            button.BackgroundHighlighting = false;
         }
         #endregion
     }
