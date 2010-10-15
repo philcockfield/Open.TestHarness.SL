@@ -7,10 +7,18 @@ namespace Open.Core.Helpers
     {
         protected override void LoadResource(string url, Action onDownloaded)
         {
-            Helper.ScriptLoader.Load(url, delegate(object data)
-                                              {
-                                                  Helper.Invoke(onDownloaded);
-                                              });
+            if (Helper.ScriptLoader.IsLoaded(url))
+            {
+                // No need to download, already exists in the page.
+                Helper.Invoke(onDownloaded);
+            }
+            else
+            {
+                Helper.ScriptLoader.Load(url, delegate(object data)
+                                                {
+                                                    Helper.Invoke(onDownloaded);
+                                                });
+            }
         }
     }
 }

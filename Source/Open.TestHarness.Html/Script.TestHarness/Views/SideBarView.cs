@@ -24,7 +24,7 @@ namespace Open.Testing.Views
         {
             // Create the list-tree.
             rootList = new ListTreeView(jQuery.Select(CssSelectors.SidebarRootList));
-            rootList.SlideDuration = SlideDuration;
+            rootList.Slide.Duration = SlideDuration;
 
             // Create the test-list.
             methodList = new MethodListView(jQuery.Select(CssSelectors.MethodList));

@@ -81,34 +81,6 @@ namespace Open.Core.Controls.Buttons
                                         return 1;
                                     });
         }
-
-
-        private IEnumerable GetCurrentStateContent()
-        {
-            return null;
-
-            //// Setup initial conditions.
-            //ButtonState currentState = Button.State;
-
-            //// Filter on content that is for the current state.
-            //ArrayList items = Helper.Collection.Filter(contentList, delegate(object o)
-            //                        {
-            //                            return ((ButtonContentLayer) o).IsCurrent;
-            //                        });
-
-            //// Sort on layer.
-            //items.Sort(delegate(object o1, object o2)
-            //               {
-            //                   int layer1 = ((ButtonContentLayer)o1).Layer;
-            //                   int layer2 = ((ButtonContentLayer)o2).Layer;
-            //                   if (layer1 == layer2) return 0;
-            //                   if (layer1 < layer2) return -1;
-            //                   return 1;
-            //               });
-
-            //// Finish up.)
-            //return items;
-        }
         #endregion
     }
 }

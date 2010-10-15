@@ -10,34 +10,37 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         public const string TemplateUrl = "/Samples/ButtonTemplate";
         public const string CssUrl = "/Content/Css/Sample.Button.css";
 
-        private MyButtonView view;
+        private SampleTemplatedButtonView view;
         private IButton model;
         private bool isInitialized;
         private const string NotInitializedWarning = "Test class not initialized.";
 
         public void ClassInitialize()
         {
-            Log.Info("Downloading sample button templates at: " + Html.ToHyperlink(TemplateUrl));
             Css.InsertLink(CssUrl);
+            Log.Info("Downloading sample button templates at: " + Html.ToHyperlink(TemplateUrl));
             Helper.Template.Download(TemplateUrl, delegate
-                                                      {
-                                                          Log.Success("Templates downloaded");
-                                                          view = new MyButtonView();
-                                                          model = view.Model;
-                                                          view.Text = "My Button Text";
-//                                                          model.TemplateData["buttonText"] = "My Button Text";
+                            {
+                                Log.Success("Templates downloaded");
+                                view = new SampleTemplatedButtonView();
+                                model = view.Model;
+                                view.Text = "My Button Text";
 
-                                                          //            view.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args) { Log.Info("!! View.PropertyChanged: " + args.Property.Name); };
-                                                          WireClickEvents(model);
-                                                          view.UpdateLayout();
+                                WireClickEvents(model);
+                                view.UpdateLayout();
 
-                                                          TestHarness.AddControl(view);
-                                                          isInitialized = true;
-                                                      });
+                                TestHarness.AddControl(view);
+                                isInitialized = true;
+                            });
         }
         #endregion
 
         #region Methods
+        public void Use__ButtonView()
+        {
+            
+        }
+
         public void Toggle_Model__IsEnabled()
         {
             if (!isInitialized) { Log.Warning(NotInitializedWarning); return; }
@@ -99,9 +102,9 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         #endregion
     }
 
-    public class MyButtonView : ButtonView
+    public class SampleTemplatedButtonView : ButtonView
     {
-        public MyButtonView() 
+        public SampleTemplatedButtonView() 
         {
             // Setup initial conditions.
             SetSize(180, 45);
@@ -125,10 +128,6 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
 
             // Disabled.
             TemplateForStates(3, AllStates, "#btnSample_Disabled", EnabledCondition.DisabledOnly, FocusCondition.Either);
-
-            // Overlay.
-            CssForStates(2, AllStates, "btn_sample_overlay");
-            TemplateForStates(2, AllStates, "#btnSample_Overlay");
 
             // Finish up.
             UpdateLayout();

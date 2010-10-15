@@ -1,4 +1,5 @@
 using System;
+using Open.Core.Helpers;
 
 namespace Open.Core.Controls.Buttons
 {
@@ -42,6 +43,14 @@ namespace Open.Core.Controls.Buttons
             // Prepend the base path.
             if (!string.IsNullOrEmpty(BasePath)) basePath = BasePath;
             return basePath + path;
+        }
+
+        internal void Preload(string basePath)
+        {
+            ImagePreloader.Preload(GetPath(ButtonState.Normal, basePath));
+            ImagePreloader.Preload(GetPath(ButtonState.MouseOver, basePath));
+            ImagePreloader.Preload(GetPath(ButtonState.MouseDown, basePath));
+            ImagePreloader.Preload(GetPath(ButtonState.Pressed, basePath));
         }
         #endregion
 

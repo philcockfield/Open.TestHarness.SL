@@ -51,17 +51,15 @@ div.textbox {
     border: 1px solid #aeaeae;
 }
 div.textbox.focus { border: 1px solid #7da2ce; }
-
 img.textbox.icon {
     position:absolute;
     left:0px;
     top:0px;
 }
 
-input.textbox 
-{
+input.textbox  {
     border:none;
-    background:transparent
+    background:transparent;
     font-family: Arial;
     font-size: 16px;
 }

@@ -1,7 +1,7 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 
 <script id="btnImage" type="text/html">
-    <img class="btnImage" />
+    <div class="btnImage icon absoluteFill"></div>
 </script>
 
 <script id="btnImage_Bg" type="text/html">

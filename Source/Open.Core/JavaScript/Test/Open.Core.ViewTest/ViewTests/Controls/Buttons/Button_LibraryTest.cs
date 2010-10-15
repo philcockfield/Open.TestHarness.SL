@@ -22,9 +22,9 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         #region Tests
         public void SampleButton()
         {
-            MyButtonView.DownloadContent(delegate
+            SampleTemplatedButtonView.DownloadContent(delegate
                                         {
-                                            MyButtonView view = new MyButtonView();
+                                            SampleTemplatedButtonView view = new SampleTemplatedButtonView();
                                             view.Text = "Sample Button";
 
                                             TestHarness.AddControl(view);

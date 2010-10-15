@@ -2087,6 +2087,10 @@
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Refresh.15x15.png" />
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Refresh.Down.15x15.png" />
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Refresh.Over.15x15.png" />
+    <EmbeddedResource Include="Content\Images\Transparent.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Search.15x15.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Search.Down.15x15.png" />
+    <EmbeddedResource Include="Content\Icons\Flat.Dark\Search.Over.15x15.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

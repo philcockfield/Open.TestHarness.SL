@@ -6,7 +6,7 @@ namespace Open.Core.Controls.Buttons
     public static class ImageButtonFactory
     {
         #region Head
-        private const string PathFlatDark = "/Open.Assets/Icons/Flat/Dark/";
+        public const string PathFlatDark = "/Open.Assets/Icons/Flat/Dark/";
         #endregion
 
         #region Methods
@@ -21,17 +21,10 @@ namespace Open.Core.Controls.Buttons
             // Configure image URL's.
             switch (type)
             {
-                case ImageButtons.PlusDark:
-                    InitFlatDark(button, "Plus");
-                    break;
-
-                case ImageButtons.PlayDark:
-                    InitFlatDark(button, "Play");
-                    break;
-
-                case ImageButtons.RefreshDark:
-                    InitFlatDark(button, "Refresh");
-                    break;
+                case ImageButtons.PlusDark: InitFlatDark(button, "Plus"); break;
+                case ImageButtons.PlayDark: InitFlatDark(button, "Play"); break;
+                case ImageButtons.RefreshDark: InitFlatDark(button, "Refresh"); break;
+                case ImageButtons.SearchDark: InitFlatDark(button, "Search"); break;
 
                 default: throw new Exception("ImageButton not supported: " + type.ToString());
             }

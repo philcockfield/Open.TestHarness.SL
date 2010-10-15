@@ -14,10 +14,13 @@
         {
             position:relative;
             border:solid 1px orange;
-            background:green;
+            background:silver;
             width:50px;
             height:50px;
             float:right;
+            background-image:url(/Open.Assets/Icons/Flat/Dark/Plus.15x15.png);
+            background-position:50% 50%;
+            background-repeat:no-repeat;
          }
         
     </style>

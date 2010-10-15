@@ -50,7 +50,6 @@ namespace Open.Core.Controls
         public Textbox() : base()
         {
             // Setup initial conditions.
-            SetCss(Css.Position, Css.Relative);
             Container.AddClass(ClassTextbox);
 
             // Create INPUT.

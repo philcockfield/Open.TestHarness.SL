@@ -80,7 +80,7 @@ namespace Open.Testing
         /// <returns>The added control (fluent).</returns>
         public static IView AddControl(IView control)
         {
-            if (control == null) throw new Exception("A visual control was not specified.");
+            if (Script.IsNullOrUndefined(control)) throw new Exception("A visual control was not specified.");
             FireControlAdded(control, control.Container);
             return control;
         }
@@ -98,6 +98,17 @@ namespace Open.Testing
             if (Script.IsNullOrUndefined(element)) element = Html.CreateDiv();
             FireControlAdded(null, element);
             return element;
+        }
+
+        /// <summary>Adds the view created from the given model to the host canvas.</summary>
+        /// <param name="model">The model to add.</param>
+        /// <returns>The view created for the model.</returns>
+        public static IView AddModel(IViewFactory model)
+        {
+            if (Script.IsNullOrUndefined(model)) throw new Exception("A model was not specified.");
+            IView control = model.CreateView();
+            AddControl(control);
+            return control;
         }
 
         /// <summary>Clears the controls from the host canvas and resets to orginal state.</summary>

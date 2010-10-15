@@ -29,10 +29,6 @@
     </div>
 </script>
 
-<script id="btnSample_Overlay" type="text/html">
-    <p class="btn_sample toolbarReflection"></p>
-</script>
-
 <script id="btnSample_Disabled" type="text/html">
     <div class="btn_sample btnSample_disabled absoluteFill">Disabled</div>
 </script>

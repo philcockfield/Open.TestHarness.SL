@@ -1,4 +1,15 @@
-﻿/* Common Backgrounds */
+﻿/* Button Infrastructure */
+.button .clickMask
+{
+    background:transparent;
+    /*
+    background-image:url(/Open.Assets/Images/Transparent.png);
+
+*/
+}
+
+
+/* Common Backgrounds */
 .btnCommon.bg.silver.up
 {
     background:#f0f1f0;
@@ -25,7 +36,11 @@
 
 
 /* ImageButton */
-.btnImage { position:absolute; }
+.btnImage.icon
+{
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+}
 .btnImage.bg.over { background:rgba(0,0,0, 0.03); }
 .btnImage.bg.down { background:rgba(0,0,0, 0.06); }
 .btnImage.bg.pressed { background:rgba(0,0,0, 0.03); }

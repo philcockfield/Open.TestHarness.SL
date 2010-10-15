@@ -16,14 +16,9 @@ namespace Open.Core.Controls.Buttons
         private readonly ImageButtonUrls defaultUrls = new ImageButtonUrls();
         private readonly ImageButtonUrls focusedUrls = new ImageButtonUrls();
         private readonly ImageButtonUrls disabledUrls = new ImageButtonUrls();
-
-        private Spacing imageOffset;
         #endregion
 
         #region Properties
-        /// <summary>Gets the pixel offset to apply to the image (applied when centering image within the button bounds).</summary>
-        public Spacing ImageOffset { get { return imageOffset ?? (imageOffset = new Spacing()); } }
-
         /// <summary>Gets or sets whether a background is shown for highlighting.</summary>
         public bool BackgroundHighlighting
         {
@@ -71,6 +66,14 @@ namespace Open.Core.Controls.Buttons
             }
 
             return DefaultUrls.GetPath(state, BasePath);
+        }
+
+        /// <summary>Preloads the images for the button.</summary>
+        public void Preload()
+        {
+            DefaultUrls.Preload(BasePath);
+            FocusedUrls.Preload(BasePath);
+            DisabledUrls.Preload(BasePath);
         }
         #endregion
     }

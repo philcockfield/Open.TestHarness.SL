@@ -108,6 +108,8 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             button.FocusedUrls.Over = "Over.Focused.png";
             button.FocusedUrls.Down = "Down.Focused.png";
             button.FocusedUrls.Pressed = "Pressed.Focused.png";
+
+            button.Preload();
         }
         #endregion
     }

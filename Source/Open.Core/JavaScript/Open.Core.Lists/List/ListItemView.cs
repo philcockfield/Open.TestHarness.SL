@@ -193,7 +193,7 @@ namespace Open.Core.Lists
         private void SetBinding(IModel bindable, string propertyName)
         {
             PropertyRef sourceProperty = bindable.GetPropertyRef(propertyName);
-            if (sourceProperty != null) GetPropertyRef(propertyName).BindTo = sourceProperty;
+            if (sourceProperty != null) GetPropertyRef(propertyName).BindTo(sourceProperty);
         }
         #endregion
     }

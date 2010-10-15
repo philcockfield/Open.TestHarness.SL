@@ -8,7 +8,7 @@ namespace Open.Core.Controls.Buttons
         #region Head
         private const string SelectorTemplate = "#btnImage";
         private const string SelectorBgTemplate = "#btnImage_Bg";
-        private const string SelectorImage = "img.btnImage";
+        private const string SelectorDivIcon = "div.btnImage.icon";
         private readonly ImageButtonBase buttonModel;
 
         public ImageButtonView(ImageButtonBase model) : base(model)
@@ -48,14 +48,13 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Properties
-        private jQueryObject Image { get { return Container.Find(SelectorImage); } }
+        private jQueryObject DivIcon { get { return Container.Find(SelectorDivIcon); } }
         #endregion
 
         #region Methods
         protected override void OnRendered()
         {
             SyncSrc();
-            Image.Load(delegate { CenterImage(); });
             base.OnRendered();
         }
         #endregion
@@ -85,14 +84,9 @@ namespace Open.Core.Controls.Buttons
 
         private void SyncSrc()
         {
-            string path = buttonModel.GetCurrentImage(State, Focus.IsFocused);
-            jQueryObject image = Image;
-            image.Attribute(Html.Src, path);
-        }
-
-        private void CenterImage()
-        {
-            Css.Center(Image, Container, buttonModel.ImageOffset);
+            DivIcon.CSS(
+                        "background-image", 
+                        string.Format("url({0})", buttonModel.GetCurrentImage(State, Focus.IsFocused)));
         }
         #endregion
     }

@@ -7,5 +7,6 @@ namespace Open.Core.Controls.Buttons
         PlusDark = 0,
         RefreshDark = 1,
         PlayDark = 2,
+        SearchDark = 3,
     }
 }

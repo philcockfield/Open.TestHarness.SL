@@ -111,6 +111,7 @@ namespace Open.Core.UI.Controls
             get { return (Point)(GetValue(OffsetProperty)); }
             set { SetValue(OffsetProperty, value); }
         }
+
         /// <summary>
         ///     Gets or sets the pixel offset to apply when calculating the position of the 
         ///     HTML (used when the SL app is not filling the entire window).

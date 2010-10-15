@@ -1,5 +1,3 @@
-using System;
-
 namespace Open.Core
 {
     /// <summary>Defines an object that has size (width and height).</summary>

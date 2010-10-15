@@ -54,6 +54,7 @@
     <Compile Include="UnitTests\CollectionHelperUnitTest.cs" />
     <Compile Include="UnitTests\DiContainerTest.cs" />
     <Compile Include="UnitTests\ModelBaseUnitTest.cs" />
+    <Compile Include="UnitTests\PropertyBindingUnitTest.cs" />
     <Compile Include="UnitTests\ViewBaseUnitTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\ButtonTest.cs" />
     <Compile Include="ViewTests\Controls\Buttons\Button_LibraryTest.cs" />
@@ -64,13 +65,14 @@
     <Compile Include="ViewTests\Controls\Input\TextboxTest.cs" />
     <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
+    <Compile Include="ViewTests\Controls\Panels\CollapsePanelTest.cs" />
     <Compile Include="ViewTests\Core\IconTest.cs" />
+    <Compile Include="ViewTests\Core\PartTest.cs" />
     <Compile Include="ViewTests\Core\TemplateTest.cs" />
     <Compile Include="ViewTests\Core\ViewBaseTest.cs" />
     <Compile Include="ViewTests\Lists\ListItemViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListTreeViewTest.cs" />
     <Compile Include="ViewTests\Lists\ListViewTest.cs" />
-    <Compile Include="ViewTests\UI\StackPanelTest.cs" />
     <Compile Include="ViewTests\Util\Helper_ScriptLoadHelper.cs" />
     <Content Include="Properties\Open.Core.Test.ruleset" />
     <Content Include="Properties\Open.Core.Test.script" />
@@ -90,6 +92,9 @@
       <Project>{D2AF91B8-0B64-463E-AC7F-5CD87C7D4F3E}</Project>
       <Name>Open.Core %28Script\Open.Core\Open.Core%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewTests\UI\" />
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>

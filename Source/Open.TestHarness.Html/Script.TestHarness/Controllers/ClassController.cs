@@ -62,9 +62,7 @@ namespace Open.Testing.Controllers
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            Log.Clear();
-            Log.Info(string.Format("Reload: <b>{0}</b>", classInfo.DisplayName));
-            Log.LineBreak();
+            Log.Success(string.Format("Reload: <b>{0}</b>", classInfo.DisplayName));
             Reset();
         }
         #endregion

@@ -51,6 +51,7 @@
     <Compile Include="Base Classes\ControllerBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\DiContainer.cs" />
+    <Compile Include="Composite\Part.cs" />
     <Compile Include="Declarations\Enums\Enums %28Css%29.cs" />
     <Compile Include="Declarations\Enums\Enums %28Html%29.cs" />
     <Compile Include="Declarations\Interfaces\IButton.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Declarations\Interfaces\IFocus.cs" />
     <Compile Include="Declarations\Interfaces\INotifyDisposed.cs" />
     <Compile Include="Declarations\Interfaces\ISize.cs" />
+    <Compile Include="Models\AnimationSettings.cs" />
     <Compile Include="Models\ButtonModel.cs" />
     <Compile Include="Models\Spacing.cs" />
     <Compile Include="Models\ViewFocus.cs" />
@@ -84,7 +86,6 @@
     <Compile Include="Models\Log\Log.cs" />
     <Compile Include="Models\Log\LogWriter.cs" />
     <Compile Include="Models\Log\LogCss.cs" />
-    <Compile Include="UI\Positioning\StackPanel.cs" />
     <Compile Include="Util\ComponentModel\PropertyBinding.cs" />
     <Compile Include="Util\ComponentModel\PropertyDef.cs" />
     <Compile Include="Util\ComponentModel\PropertyRef.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Util\Helpers\Scripts\JitScriptLoader.cs" />
     <Compile Include="Util\Helpers\StringHelper.cs" />
     <Compile Include="Util\Helpers\UrlHelper.cs" />
+    <Compile Include="Util\Loaders\ImagePreloader.cs" />
     <Compile Include="Util\Loaders\TemplateLoader.cs" />
     <Compile Include="Util\Loaders\ResourceLoader.cs" />
     <Compile Include="Util\Loaders\ScriptLoader.cs" />
@@ -126,6 +128,8 @@
     <Compile Include="Declarations\Delegates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UI\Positioning\" />
+  </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>

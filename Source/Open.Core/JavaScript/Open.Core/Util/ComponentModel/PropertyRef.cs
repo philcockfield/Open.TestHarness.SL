@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Open.Core
 {
@@ -12,7 +13,6 @@ namespace Open.Core
 
         private readonly object instance;
         private readonly INotifyPropertyChanged observable;
-        private PropertyRef bindTo;
         private PropertyBinding propertyBinding;
 
         /// <summary>Constructor.</summary>
@@ -54,18 +54,6 @@ namespace Open.Core
             get { return Type.GetProperty(Instance, JavaScriptName); }
             set{ Type.SetProperty(Instance, JavaScriptName, value); }
         }
-
-        /// <summary>Gets or sets the source property to bind this property to.</summary>
-        public PropertyRef BindTo
-        {
-            get { return bindTo; }
-            set
-            {
-                if (value == BindTo) return;
-                bindTo = value;
-                propertyBinding = new PropertyBinding(value, this);
-            }
-        }
         #endregion
 
         #region Methods
@@ -77,6 +65,30 @@ namespace Open.Core
         {
             IModel model = obj as IModel;
             return model == null ? null : model.GetPropertyRef(propertyName);
+        }
+
+        /// <summary>Binds this property (the target) to the given property (the source).</summary>
+        /// <param name="source">The source property to bind to.</param>
+        [AlternateSignature]
+        public extern bool BindTo(PropertyRef source);
+
+        /// <summary>Binds this property (the target) to the given property (the source).</summary>
+        /// <param name="source">The source property to bind to.</param>
+        /// <param name="mode">The binding mode.</param>
+        /// <remarks>
+        ///     The property can only be bound to one source.  
+        ///     Calling this method with another source disposes of the original binding.
+        /// </remarks>
+        public void BindTo(PropertyRef source, BindingMode mode)
+        {
+            ClearBinding();
+            propertyBinding = new PropertyBinding(source, this, mode);
+        }
+
+        /// <summary>Removes all property bindings.</summary>
+        public void ClearBinding()
+        {
+            if (propertyBinding != null) propertyBinding.Dispose();
         }
         #endregion
     }

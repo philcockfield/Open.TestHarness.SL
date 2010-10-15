@@ -22,11 +22,10 @@ namespace Open.Core.Lists
         public const string PropSelectedNode = "SelectedNode";
         public const string PropSelectedParent = "SelectedParent";
 
-        private jQueryObject divInner;
-        private double slideDuration = 0.4;
-        EffectEasing slideEasing = EffectEasing.Swing;
+        private readonly jQueryObject divInner;
         private readonly ArrayList panels = new ArrayList();
         private ITreeNode previousNode;
+        private readonly AnimationSettings slide = new AnimationSettings();
 
         /// <summary>Constructor.</summary>
         /// <param name="container">The containing element.</param>
@@ -107,20 +106,8 @@ namespace Open.Core.Lists
             }
         }
 
-        /// <summary>Gets or sets the slide duration (in seconds).</summary>
-        public double SlideDuration
-        {
-            get { return slideDuration; }
-            set { slideDuration = value; }
-        }
-
-        /// <summary>Gets or sets the easing effect applied to the slide.</summary>
-        public EffectEasing SlideEasing
-        {
-            get { return slideEasing; }
-            set { slideEasing = value; }
-        }
-
+        /// <summary>Gets the slide animation settings.</summary>
+        public AnimationSettings Slide { get { return slide; } }
 
         /// <summary>Gets the scroll height of the list.</summary>
         public int ScrollHeight

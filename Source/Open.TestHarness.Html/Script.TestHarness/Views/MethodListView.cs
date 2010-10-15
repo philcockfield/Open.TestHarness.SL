@@ -38,14 +38,13 @@ namespace Open.Testing.Views
 
             // Create the list-tree.
             listView = new ListTreeView(jQuery.Select(CssSelectors.MethodListContent));
-            listView.SlideDuration = SidebarView.SlideDuration;
+            listView.Slide.Duration = SidebarView.SlideDuration;
 
             // Construct the data-model root.
             rootNode = new ListItem();
             listView.RootNode = rootNode;
 
             // Construct buttons.
-
             DelayedAction.Invoke(3, delegate
                                         {
                                             //TODO _ DO NOT PUT IN DELAY
@@ -53,8 +52,6 @@ namespace Open.Testing.Views
                                             InsertButtons();
 
                                         });
-
-
         }
        #endregion
 

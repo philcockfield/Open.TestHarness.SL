@@ -89,7 +89,6 @@ namespace Open.Core.Lists
         public ITreeNode Node { get { return node; } }
         public bool IsCenterStage { get { return GetCss(Css.Left) == "0px"; } }
         public ListView ListView { get { return listView; } }
-        private int SlideDuration { get { return Helper.Time.ToMsecs(parentList.SlideDuration); } }
         #endregion
 
         #region Methods
@@ -104,9 +103,9 @@ namespace Open.Core.Lists
 
             // Perform animation.
             Container.Animate(
-                        properties, 
-                        SlideDuration, 
-                        parentList.SlideEasing, 
+                        properties,
+                        parentList.Slide.ToMsecs(), 
+                        parentList.Slide.Easing, 
                         delegate
                             {
                                 // On complete.
@@ -127,8 +126,8 @@ namespace Open.Core.Lists
             // Perform animation.
             Container.Animate(
                         properties,
-                        SlideDuration,
-                        parentList.SlideEasing,
+                        parentList.Slide.ToMsecs(), 
+                        parentList.Slide.Easing,
                         delegate
                             {
                                 // On complete.
