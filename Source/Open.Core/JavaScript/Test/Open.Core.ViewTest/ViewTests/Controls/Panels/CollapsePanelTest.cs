@@ -22,10 +22,10 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
             panel.Padding.Change(10);
 
             // Wire up events.
-            panel.Inflating += delegate { Log.Warning("!! Inflating"); };
-            panel.Inflated += delegate { Log.Warning("!! Inflated"); };
-            panel.Collapsing += delegate { Log.Warning("!! Collapsing"); };
-            panel.Collapsed += delegate { Log.Warning("!! Collapsed"); };
+            panel.Inflating += delegate { Log.Event("Inflating"); };
+            panel.Inflated += delegate { Log.Event("Inflated"); };
+            panel.Collapsing += delegate { Log.Event("Collapsing"); };
+            panel.Collapsed += delegate { Log.Event("Collapsed"); };
 
             // Setup test styles.
             view.SetSize(200, 450);

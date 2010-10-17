@@ -47,6 +47,8 @@ div.c_log_margin {
 .c_log_warning { background-color:#faecc9; }
 .c_log_error { background-color:#fadadb; }
 .c_log_success { background-color:#e4f7e1; }
+.c_log_event { background-color:#fef9e2; }
+
 
 /* ----------- Log : <UL> ----------- */
 div.c_log p.c_log_listTitle { }

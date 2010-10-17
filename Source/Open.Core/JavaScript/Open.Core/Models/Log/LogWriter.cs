@@ -13,7 +13,9 @@ namespace Open.Core
         public const string ClassPropertyName = "c_log_propName";
         public const string ClassPropertyValue = "c_log_propValue";
         public const string ClassListPropError = "c_log_propError";
+        public const string ClassListPropEvent = "c_log_event";
         public const string ClassItemIcon = "c_log_icon";
+
         public const string KeyGetter = "get_";
         public const string KeyPrivate = "_";
         public const string ImageClass = "/Open.Assets/Icons/Api/Class.png";
@@ -110,7 +112,7 @@ namespace Open.Core
 
         public void Event(object message)
         {
-            View.InsertMessage(message, null, null, Helper.Icon.Path(Icons.SilkLightning));
+            View.InsertMessage(message, ClassListPropEvent, null, Helper.Icon.Path(Icons.SilkLightning));
         }
 
         public void WriteProperties(object instance, string title)
