@@ -56,9 +56,16 @@ namespace Open.Testing
             PreloadImages();
 
             //TEMP : Insert sample packages.
-            InsertSamplePackages();
-        }
+            AddPackage("/Content/Scripts/TestHarness.Test.debug.js", "Test.Application.main");
+            AddPackage("/Content/Scripts/Open.Core.Test.debug.js", "Open.Core.Test.Application.main");
 
+            AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
+            AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
+            AddPackage("/Content/Scripts/Quest.Insandra.Test.debug.js", "Quest.Insandra.Test.Application.main");
+        }
+        #endregion
+
+        #region Internal
         private static void PreloadImages()
         {
             IconHelper icon = Helper.Icon;
@@ -68,16 +75,8 @@ namespace Open.Testing
             ImagePreloader.Preload(icon.Path(Icons.SilkExclamation));
             ImagePreloader.Preload(icon.Path(Icons.SilkError));
             ImagePreloader.Preload("/Content/Images/Sidebar.BackMask.png");
-        }
-
-        private static void InsertSamplePackages( )
-        {
-            AddPackage("/Content/Scripts/TestHarness.Test.debug.js", "Test.Application.main");
-            AddPackage("/Content/Scripts/Open.Core.Test.debug.js", "Open.Core.Test.Application.main");
-
-            AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
-            AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
-            AddPackage("/Content/Scripts/Quest.Insandra.Test.debug.js", "Quest.Insandra.Test.Application.main");
+            ImagePreloader.Preload(AddPackageView.IconJs);
+            ImagePreloader.Preload(AddPackageView.IconMethod);
         }
 
         private static void AddPackage(string scriptUrl, string initMethod)

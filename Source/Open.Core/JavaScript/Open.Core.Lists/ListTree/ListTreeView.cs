@@ -150,8 +150,7 @@ namespace Open.Core.Lists
             SelectedNode = RootNode;
         }
 
-        /// <summary>Updates the visual state of the control.</summary>
-        public void UpdateLayout()
+        protected override void OnUpdateLayout()
         {
             foreach (ListTreePanel panel in panels)
             {

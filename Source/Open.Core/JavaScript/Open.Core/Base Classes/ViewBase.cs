@@ -179,33 +179,49 @@ namespace Open.Core
             if (withEvent) FireSizeChanged();
         }
 
-        /// <summary>Invoked immediately before an Insert operation of mode 'Replace' is executed.</summary>
-        /// <param name="replacedElement">The element being replaced with this control.</param>
-        /// <remarks>Use this to extract any meta-data from the original element before it is removed from the DOM.</remarks>
-        protected virtual void BeforeInsertReplace(jQueryObject replacedElement) { }
+        public void UpdateLayout()
+        {
+            OnUpdateLayout();
+        }
+        protected virtual void OnUpdateLayout() { }
         #endregion
 
         #region Methods : Insert
         public void Insert(string cssSeletor, InsertMode mode)
         {
+            // Retreive the target element used for the insertion.
+            jQueryObject element = jQuery.Select(cssSeletor);
+            if (element == null) throw GetInsertException(cssSeletor, "No such element exists");
+
+            // Invoke the pre-method.
+            OnBeforeInsert(element, mode);
+
             switch (mode)
             {
                 case InsertMode.Replace:
-                    // Retreive the element to replace.
-                    jQueryObject replaceElement = jQuery.Select(cssSeletor);
-                    if (replaceElement == null) throw GetInsertException(cssSeletor, "No such element exists");
-
-                    // Invoke the pre-method
-                    BeforeInsertReplace(replaceElement);
-
                     // Perform the insertion.
-                    Css.CopyClasses(replaceElement, Container);
+                    Css.CopyClasses(element, Container);
                     Container.ReplaceAll(cssSeletor);
                     break;
 
                 default: throw GetInsertException(cssSeletor, string.Format("The insert mode '{0}' is not supported.", mode.ToString()));
             }
+
+            // Finish up.
+            UpdateLayout();
+            OnAfterInsert(mode);
         }
+
+        /// <summary>Invoked immediately before the insertion occurs via the 'Insert' method.</summary>
+        /// <param name="targetElement">The element being replaced.</param>
+        /// <param name="mode">The strategy used for the insertion.</param>
+        /// <remarks>Use this to extract any meta-data from the original element before it is removed from the DOM.</remarks>
+        protected virtual void OnBeforeInsert(jQueryObject targetElement, InsertMode mode) { }
+
+        /// <summary>Invoked immediately after the insertion occurs via the 'Insert' method.</summary>
+        /// <param name="mode">The strategy used for the insertion.</param>
+        protected virtual void OnAfterInsert(InsertMode mode) { }
+
 
         private Exception GetInsertException(string cssSeletor, string message)
         {

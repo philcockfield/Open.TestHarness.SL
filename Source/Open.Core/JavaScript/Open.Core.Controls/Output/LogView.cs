@@ -1,14 +1,13 @@
 using System;
 using jQueryApi;
 using Open.Core.Controls.HtmlPrimitive;
+using Open.Core.Helpers;
 
 namespace Open.Core.Controls
 {
     public class LogView : ViewBase, ILogView
     {
         #region Head
-        public const string ClassListTitle = "c_log_listTitle";
-
         private readonly jQueryObject divList;
         private jQueryObject divRow;
         private int counter = 0;
@@ -22,6 +21,7 @@ namespace Open.Core.Controls
             // Setup initial conditions.
             scrollDelay = new DelayedAction(0.05, OnScrollDelayElapsed);
             divList = container.Children(LogCss.List).First();
+            ImagePreloader.Preload(ControlsImages.LogSectionDivider);
 
             // Wire up events.
             GlobalEvents.WindowResize += delegate { UpdateLayout(); };
@@ -100,7 +100,7 @@ namespace Open.Core.Controls
             if (!Script.IsUndefined(title) && !string.IsNullOrEmpty(title))
             {
                 pTitle = CreatePara(title, iconPath);
-                pTitle.AddClass(ClassListTitle);
+                pTitle.AddClass(LogCssClasses.ListTitle);
             }
 
             // Insert the list (and optionally the title).
@@ -120,8 +120,7 @@ namespace Open.Core.Controls
             divList.Html(string.Empty);
         }
 
-        /// <summary>Updates the visual layout.</summary>
-        public void UpdateLayout()
+        protected override void OnUpdateLayout()
         {
             // Sync list width (prevents horizontal scroll bar appearing).
             divList.Width(Container.GetWidth());

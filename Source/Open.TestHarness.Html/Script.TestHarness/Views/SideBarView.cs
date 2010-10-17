@@ -85,8 +85,7 @@ namespace Open.Testing.Views
         #endregion
 
         #region Methods
-        /// <summary>Refreshes the visual state.</summary>
-        public void UpdateLayout()
+        protected override void OnUpdateLayout()
         {
             methodListHeightController.UpdateLayout();
             SyncRootListHeight();

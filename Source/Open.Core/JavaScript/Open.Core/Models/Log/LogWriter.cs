@@ -13,6 +13,7 @@ namespace Open.Core
         public const string PropertyError = "c_log_propError";
         public const string PropertyEvent = "c_log_event";
         public const string Icon = "c_log_icon";
+        public const string ListTitle = "c_log_listTitle";
     }
 
 
@@ -22,8 +23,8 @@ namespace Open.Core
         #region Head
         public const string KeyGetter = "get_";
         public const string KeyPrivate = "_";
-        public static readonly string ClassIcon = ImagePaths.ApiIconpath + "Class.png";
-        public static readonly string EventIcon = ImagePaths.ApiIconpath + "Event.png";
+        public static readonly string ClassIcon = ImagePaths.ApiIconPath + "Class.png";
+        public static readonly string EventIcon = ImagePaths.ApiIconPath + "Event.png";
 
         private bool isActive = true;
         private bool canInsertSection = true;

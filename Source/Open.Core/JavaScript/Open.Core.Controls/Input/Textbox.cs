@@ -47,7 +47,7 @@ namespace Open.Core.Controls
         private readonly Spacing padding;
 
         /// <summary>Constructor.</summary>
-        public Textbox() : base()
+        public Textbox() 
         {
             // Setup initial conditions.
             Container.AddClass(ClassTextbox);
@@ -133,7 +133,6 @@ namespace Open.Core.Controls
                 default: return value;
             }
         }
-
 
         private void OnInputMouseDown()
         {
@@ -226,8 +225,7 @@ namespace Open.Core.Controls
         #endregion
 
         #region Methods
-        /// <summary>Updates the layout of the control.</summary>
-        public void UpdateLayout()
+        protected override void OnUpdateLayout()
         {
             PositionIcon();
             SyncEnabled();
@@ -235,9 +233,24 @@ namespace Open.Core.Controls
         }
 
         /// <summary>Selects the text.</summary>
-        public void Select()
+        public void Select() { input.Select(); }
+        #endregion
+
+        #region Methods : Override
+        protected override void OnBeforeInsert(jQueryObject targetElement, InsertMode mode)
         {
-            input.Select();
+            // Setup initial conditions.
+            if (mode != InsertMode.Replace) return;
+
+            // Retrieve the 'value' if there is one.
+            string value = targetElement.GetAttribute(Html.Value);
+            if (!Script.IsUndefined(value))
+            {
+                Text = value;
+            }
+
+            // Finish up.
+            base.OnBeforeInsert(targetElement, mode);
         }
         #endregion
 

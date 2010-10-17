@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using jQueryApi;
 using Open.Core;
+using Open.Core.Controls;
 
 namespace Open.Testing.Views
 {
@@ -20,9 +21,15 @@ namespace Open.Testing.Views
 
         #region Head
         private const string ContentUrl = "/TestHarness/AddPackage/";
+        public static readonly string IconJs = Helper.Url.PrependDomain("/Content/Images/Icon.JavaScript.png");
+        public static readonly string IconMethod = Helper.Url.PrependDomain(ImagePaths.ApiIconPath + "Method.png");
+
         private const double SlideDuration = 0.25;
         private jQueryObject divInnerSlide;
         private string offLeft;
+
+        private Textbox txtScriptUrl;
+        private Textbox txtInitMethod;
 
         /// <summary>Constructor.</summary>
         public AddPackageView()
@@ -32,6 +39,7 @@ namespace Open.Testing.Views
                                          {
                                              divInnerSlide = jQuery.Select(CssSelectors.AddPackageInnerSlide);
                                              offLeft = divInnerSlide.GetCSS(Css.Left);
+                                             InitializeTextboxes();
                                              SlideOn(null);
                                          });
         }
@@ -75,6 +83,23 @@ namespace Open.Testing.Views
         #endregion
 
         #region Internal
+        private void InitializeTextboxes()
+        {
+            txtScriptUrl = InitializeTextbox(CssSelectors.AddPackageTxtScript, IconJs);
+            txtInitMethod = InitializeTextbox(CssSelectors.AddPackageTxtMethod, IconMethod);
+        }
+
+        private static Textbox InitializeTextbox(string selector, string icon)
+        {
+            Textbox textbox = new Textbox();
+            textbox.Padding.Change(10, 5);
+
+            textbox.Insert(selector, InsertMode.Replace);
+            textbox.LeftIcon = Helper.Url.PrependDomain(icon);
+
+            return textbox;
+        }
+
         private void Slide(string left, Action onComplete)
         {
             // Configure the animation.
@@ -87,9 +112,9 @@ namespace Open.Testing.Views
                 Helper.Time.ToMsecs(SlideDuration),
                 EffectEasing.Swing,
                 delegate
-                        {
-                            Helper.Invoke(onComplete);
-                        });
+                {
+                    Helper.Invoke(onComplete);
+                });
         }
         #endregion
     }

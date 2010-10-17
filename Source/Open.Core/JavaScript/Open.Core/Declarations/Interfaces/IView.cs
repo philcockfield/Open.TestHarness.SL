@@ -91,6 +91,9 @@ namespace Open.Core
         /// <param name="value">The value.</param>
         void SetAttribute(string attribute, string value);
 
+        /// <summary>Forces an update to the control's layout.</summary>
+        void UpdateLayout();
+
         /// <summary>Finds the element at the given CSS selector and replaces it with this button.</summary>
         /// <param name="cssSeletor">The CSS selector of the element to replace.</param>
         /// <param name="mode">The strategy used for the insertion.</param>

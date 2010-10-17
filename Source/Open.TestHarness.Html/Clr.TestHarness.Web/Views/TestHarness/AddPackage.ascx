@@ -8,16 +8,14 @@
             <div class="field_set">
                 <div class="field_set_scriptUrl">
                     <p class="th_fieldLabel"><%= Model.ScriptUrlLabel %></p>
-                    <input type="text" value="/Content/Scripts/MyScript.debug.js" class="textbox">
-                    <img class="iconJavaScript" src="<%= Links.Content.Images.Icons.Icon_JavaScript_png.PrependDomain() %>" />
+                    <input class="textbox" type="text" value="/Content/Scripts/MyScript.debug.js" />
                 </div>
 
                 <div class="fieldConnector"></div>
 
                 <div class="field_set_initMethod">
                     <p class="th_fieldLabel"><%= Model.InitMethodLabel%></p>
-                    <input type="text" value="Open.Core.Test.main()" class="textbox">
-                    <img class="iconMethod" src="<%= Model.MethodIcon %>" />
+                    <input class="textbox" type="text" value="Open.Core.Test.main()" />
                 </div>
             </div>
         </div>

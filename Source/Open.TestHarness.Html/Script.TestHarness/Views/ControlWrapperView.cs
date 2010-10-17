@@ -97,8 +97,7 @@ namespace Open.Testing.Views
         #endregion
 
         #region Methods
-        /// <summary>Updates the layout of the control.</summary>
-        public void UpdateLayout()
+        protected override void OnUpdateLayout()
         {
             UpdateSize();
             UpdatePosition();

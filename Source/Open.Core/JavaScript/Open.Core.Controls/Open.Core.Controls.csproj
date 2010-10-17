@@ -74,6 +74,7 @@
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateTemplate.cs" />
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateCss.cs" />
     <Compile Include="Buttons\Views\ImageButtonView.cs" />
+    <Compile Include="Declarations\ControlsImages.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />
     <Compile Include="Input\Textbox.cs" />
     <Compile Include="Output\LogView.cs" />

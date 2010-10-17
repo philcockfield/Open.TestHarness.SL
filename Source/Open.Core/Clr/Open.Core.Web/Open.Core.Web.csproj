@@ -59,6 +59,9 @@
     <Compile Include="..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\..\JavaScript\Open.Core.Controls\Declarations\ControlsImages.cs">
+      <Link>Code\Declarations\Paths\ControlsImages.cs</Link>
+    </Compile>
     <Compile Include="Code\Base Classes\ControllerBase.cs" />
     <Compile Include="Code\Config\ServerProxyConfig.cs" />
     <Compile Include="Code\Config\WebConfig.cs" />

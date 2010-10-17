@@ -170,8 +170,7 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Methods - Layout
-        /// <summary>Updates the visual state of the button.</summary>
-        public void UpdateLayout()
+        protected override void OnUpdateLayout()
         {
             Css.SetOpacity(Container, Model.IsEnabled ? 1 : DisabledOpacity);
 

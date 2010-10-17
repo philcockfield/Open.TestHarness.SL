@@ -1,8 +1,7 @@
-
 namespace Open.Core
 {
     public class ImagePaths
     {
-        public const string ApiIconpath = "/Open.Assets/Icons/Api/";
+        public const string ApiIconPath = "/Open.Assets/Icons/Api/";
     }
 }

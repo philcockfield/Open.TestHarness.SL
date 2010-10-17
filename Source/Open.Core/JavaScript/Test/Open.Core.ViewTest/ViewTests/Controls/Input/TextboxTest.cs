@@ -71,16 +71,17 @@ namespace Open.Core.Test.ViewTests.Controls.Input
 
         public void Write_Properties()
         {
-            Log.Info("IsEnabled: " + textbox.IsEnabled);
-            Log.Info("Text: " + textbox.Text);
-            Log.Info("EventDelay: " + textbox.EventDelay);
-            Log.Info("Padding: " + textbox.Padding.ToString());
-            Log.Info("LeftIconSrc: " + textbox.LeftIcon);
-            Log.Info("LeftIconMargin: " + textbox.LeftIconMargin.ToString());
-            Log.Info("SelectOnFocus: " + textbox.SelectOnFocus);
-            Log.Info("CornerRadius: " + textbox.CornerRadius);
-            Log.Info("Width: " + textbox.Width);
-            Log.Info("Height: " + textbox.Height);
+            Log.WriteProperties(textbox);
+            //Log.Info("IsEnabled: " + textbox.IsEnabled);
+            //Log.Info("Text: " + textbox.Text);
+            //Log.Info("EventDelay: " + textbox.EventDelay);
+            //Log.Info("Padding: " + textbox.Padding.ToString());
+            //Log.Info("LeftIconSrc: " + textbox.LeftIcon);
+            //Log.Info("LeftIconMargin: " + textbox.LeftIconMargin.ToString());
+            //Log.Info("SelectOnFocus: " + textbox.SelectOnFocus);
+            //Log.Info("CornerRadius: " + textbox.CornerRadius);
+            //Log.Info("Width: " + textbox.Width);
+            //Log.Info("Height: " + textbox.Height);
         }
         #endregion
     }

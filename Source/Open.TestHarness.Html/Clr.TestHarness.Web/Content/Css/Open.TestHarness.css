@@ -211,13 +211,7 @@
     margin-top:13px;
     margin-left:30px;
 }
-#testHarness .th_addPackage .field_set input
-{
-    position:absolute;
-    top:25px;
-    width:100%;
-    padding-left:38px;
-}
+
 #testHarness .th_addPackage p.th_fieldLabel { position:absolute; left:5px; }
 #testHarness .th_addPackage div.fieldConnector  
 {
@@ -234,30 +228,29 @@
 
 
 /* AddPackage.ScriptUrl */
-#testHarness .th_addPackage div.field_set_scriptUrl
+#testHarness div.field_set_scriptUrl
 {
     position:absolute;
     width:490px;
 }
-#testHarness .th_addPackage img.iconJavaScript
+#testHarness div.field_set_scriptUrl > .textbox
 {
     position:absolute;
-    top:32px;
-    left:7px;    
+    top:24px;
+    width:100%;
 }
 
 /* AddPackage.InitMethod */
-#testHarness .th_addPackage div.field_set_initMethod
+#testHarness div.field_set_initMethod
 {
     position:absolute;
     top:90px;
     left:66px;    
     width:432px;
 }
-#testHarness .th_addPackage img.iconMethod
+#testHarness div.field_set_initMethod > .textbox
 {
     position:absolute;
-    top:40px;
-    left:7px;    
+    top:24px;
+    width:100%;
 }
-#testHarness .th_addPackage div.field_set_initMethod input { padding-left:28px; }

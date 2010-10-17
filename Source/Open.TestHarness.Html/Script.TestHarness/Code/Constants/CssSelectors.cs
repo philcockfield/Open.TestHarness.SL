@@ -36,5 +36,7 @@ namespace Open.Testing
 
         // Add Package.
         public static readonly string AddPackageInnerSlide = "#testHarness div.th_addPackage div.innerSlide";
+        public static readonly string AddPackageTxtScript = ".field_set_scriptUrl > input";
+        public static readonly string AddPackageTxtMethod = ".field_set_initMethod > input";
     }
 }
