@@ -14,6 +14,20 @@ namespace Open.Core
         Down = 1,
     }
 
+    /// <summary>Flags representing the vertical or horizontal planes.</summary>
+    public enum Plane
+    {
+        Horizontal = 0,
+        Vertical = 1,
+    }
+
+    /// <summary>Flags representing the width or height of an object.</summary>
+    public enum SizeDimension
+    {
+        Width = 0,
+        Height = 1
+    }
+
     /// <summary>Alignment on the X plane.</summary>
     public enum HorizontalAlign
     {
@@ -37,13 +51,6 @@ namespace Open.Core
         Top = 1,
         Right = 2,
         Bottom = 3
-    }
-
-    /// <summary>Flags representing the width or height of an object.</summary>
-    public enum SizeDimension
-    {
-        Width = 0,
-        Height = 1
     }
 
     /// <summary>Flags indicating the various strategies for inserting content.</summary>

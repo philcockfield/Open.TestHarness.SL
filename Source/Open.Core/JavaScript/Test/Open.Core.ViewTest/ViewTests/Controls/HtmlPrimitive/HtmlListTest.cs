@@ -33,10 +33,19 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
             count++;
             string text = "Item " + count;
 
-            jQueryObject ulItem = list.Add(text, "myClass1 myClass2");
-            Log.Info("Inserted item: " + Html.ToHtml(ulItem).HtmlEncode());
+            jQueryObject ulItem = list.Add(text);
+            Log.Info("Inserted item: " + Html.OuterHtml(ulItem).HtmlEncode());
 
             Write_Properties();
+        }
+
+        public void AddElement()
+        {
+            jQueryObject div = Html.CreateDiv();
+            div.CSS("border", "solid 1px green");
+            div.CSS(Css.Margin, "5px");
+            div.Append("DIV");
+            list.AddElement(div);
         }
 
         public void RemoveAt_Zero()
@@ -75,7 +84,7 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
 
         private static string ItemToString(jQueryObject li)
         {
-            return Helper.String.FormatToString(li, delegate(object o) { return li.GetHtml(); });
+            return Helper.String.FormatToString(li, delegate(object o) { return li.GetHtml().HtmlEncode(); });
         }
         #endregion
     }

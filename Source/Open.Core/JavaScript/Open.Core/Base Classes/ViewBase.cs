@@ -73,7 +73,7 @@ namespace Open.Core
 
         #region Properties : IView
         public jQueryObject Container { get { return container; } }
-        public string OuterHtml { get { return Html.ToHtml(Container); } }
+        public string OuterHtml { get { return Html.OuterHtml(Container); } }
         public string InnerHtml { get { return Container.GetHtml(); } }
         public IFocus Focus { get { return focus ?? (focus = new ViewFocus(this, Container)); } }
         #endregion
@@ -175,10 +175,7 @@ namespace Open.Core
 
         private void SetSizeInternal(int value, SizeDimension dimension, bool withEvent)
         {
-            if (value < 0) value = 0;
-            SetCss(
-                dimension == SizeDimension.Width ? Css.Width : Css.Height, 
-                value + Css.Px);
+            Css.SetDimension(Container, dimension, value);
             if (withEvent) FireSizeChanged();
         }
 

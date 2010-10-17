@@ -107,16 +107,12 @@
     width:120px;
 }
 
-#testHarnessSidebar .th-testList .buttons .button
+#testHarnessSidebar .th-testList .button
 {
     position:relative;
     float:right;
 }
-
-#testHarnessSidebar .th-testList .buttons .buttonDivider
-{
-    float:right;
-}
+#testHarnessSidebar .th-testList .buttonDivider { float:right; }
 
 
 
@@ -155,7 +151,7 @@
     height:180px;
 }
 
-#testHarnessLog .c-log
+#testHarnessLog .c_log
 {
     background:#f9fafb;
     top:33px;
@@ -171,14 +167,21 @@
     font-weight:300;
     color:#828282;
 }
-
-#testHarnessLog ul.indentedList
+#testHarnessLog .th-log-tb .buttons
+{
+    position:absolute;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    width:120px;
+}
+#testHarnessLog .th-log-tb .button
 {
     position:relative;
-    margin-left:35px;
-    margin-top:4px;
-    line-height:20px;
+    float:right;
 }
+#testHarnessLog .th-log-tb .buttonDivider { float:right; }
+
 
 
 /*-------------- Add Package --------------*/

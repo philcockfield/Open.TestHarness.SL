@@ -1,11 +1,14 @@
 using System;
 using jQueryApi;
+using Open.Core.Controls.HtmlPrimitive;
 
 namespace Open.Core.Controls
 {
     public class LogView : ViewBase, ILogView
     {
         #region Head
+        public const string ClassListTitle = "c_log_listTitle";
+
         private readonly jQueryObject divList;
         private jQueryObject divRow;
         private int counter = 0;
@@ -56,27 +59,19 @@ namespace Open.Core.Controls
         #endregion
 
         #region Methods : ILogView
-        public void Insert(object message, string cssClass)
+        public void InsertMessage(object message, string cssClass, string backgroundColor, string iconPath)
+        {
+            InsertElement(CreatePara(message, iconPath), cssClass, backgroundColor);
+        }
+
+        public void InsertElement(jQueryObject element, string cssClass, string backgroundColor)
         {
             // Setup initial conditions.
             counter++;
-            string text = string.Empty;
-
-            // Check for null.
-            if (message == null)
-            {
-                text = "<null>".HtmlEncode();
-            }
-            else
-            {
-                text = message.ToString();
-                if (text == string.Empty) text = "<empty-string>".HtmlEncode();
-                if (string.IsNullOrEmpty(text.Trim())) text = "<whitespace>".HtmlEncode();
-            }
-
 
             // Create the row.
             divRow = CreateRowDiv(cssClass);
+            if (!string.IsNullOrEmpty(backgroundColor)) divRow.CSS(Css.Background, backgroundColor);
 
             // Prepare the 'counter'.
             jQueryObject spanCounter = Html.CreateSpan();
@@ -86,12 +81,35 @@ namespace Open.Core.Controls
             // Prepare the 'message'.
             jQueryObject divMessage = Html.CreateDiv();
             divMessage.AddClass(LogCss.MessageClass);
-            divMessage.Append(text);
+            divMessage.Append(element);
 
             // Perform inserts.
             spanCounter.AppendTo(divRow);
             divMessage.AppendTo(divRow);
             InsertRow(divRow);
+        }
+
+        public IHtmlList InsertList(string title, string cssClass, string backgroundColor, string iconPath)
+        {
+            // Setup initial conditions.
+            HtmlList htmlList = new HtmlList();
+            jQueryObject div = Html.CreateDiv();
+
+            // Create the title.
+            jQueryObject pTitle = null;
+            if (!Script.IsUndefined(title) && !string.IsNullOrEmpty(title))
+            {
+                pTitle = CreatePara(title, iconPath);
+                pTitle.AddClass(ClassListTitle);
+            }
+
+            // Insert the list (and optionally the title).
+            if (pTitle != null) div.Append(pTitle);
+            div.Append(htmlList.Container);
+
+            // Finish up.
+            InsertElement(div, cssClass, backgroundColor);
+            return htmlList;
         }
 
         public void Clear()
@@ -143,7 +161,7 @@ namespace Open.Core.Controls
 
         #region Internal
         // NB: Don't make static.  Causes error on logging from event-callbacks.
-        private jQueryObject CreateRowDiv(string cssClass)
+        private static jQueryObject CreateRowDiv(string cssClass)
         {
             jQueryObject  div = Html.CreateDiv();
             div.AddClass(cssClass);
@@ -155,6 +173,23 @@ namespace Open.Core.Controls
         {
             div.AppendTo(divList);
             scrollDelay.Start();
+        }
+
+        private static jQueryObject CreatePara(object message, string iconPath)
+        {
+            // Create the P element.
+            jQueryObject p = Html.CreateElement("p");
+            p.Append(Helper.String.FormatToString(message));
+
+            // Prepend icon (if specified).
+            if (iconPath != null)
+            {
+                p.AddClass(LogWriter.ClassItemIcon);
+                p.CSS(Css.BackgroundImage, string.Format("url({0})", iconPath));
+            }
+
+            // Finish up.
+            return p;
         }
         #endregion
     }

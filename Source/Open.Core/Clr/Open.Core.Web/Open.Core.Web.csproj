@@ -104,9 +104,7 @@
     <EmbeddedResource Include="Content\Css\Core.css" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Controls\Log.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Controls\Log.ascx" />
     <EmbeddedResource Include="Views\Scripts\CoreJQuery.aspx" />
     <EmbeddedResource Include="Views\Jit\HyperTree.aspx">
       <SubType>ASPXCodeBehind</SubType>

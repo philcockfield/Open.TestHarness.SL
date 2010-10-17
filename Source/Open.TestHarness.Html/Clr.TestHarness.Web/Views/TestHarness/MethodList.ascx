@@ -16,7 +16,6 @@
             <button class="refresh button">Refresh</button>
             <div class="buttonDivider"></div>
         </div>
-
     </div>
 
     <!-- List -->

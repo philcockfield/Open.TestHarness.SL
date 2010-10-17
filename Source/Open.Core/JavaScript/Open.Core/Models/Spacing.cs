@@ -55,7 +55,7 @@ namespace Open.Core
         }
         #endregion
 
-        #region Properties
+        #region Properties : Sides
         /// <summary>Gets or sets the left spacing value.</summary>
         public int Left
         {
@@ -103,19 +103,23 @@ namespace Open.Core
         /// <param name="value">The edge value.</param>
         public void SetValue(Edge edge, int value) { PropertyRefFromEdge(edge).Value = value; }
 
+        /// <summary>Gets the edge offset for the given plane (HorizontalOffset or VerticalOffset).</summary>
+        /// <param name="plane">The X:Y plane to retrieve the offset for.</param>
+        public int GetOffset(Plane plane)
+        {
+            return plane == Plane.Horizontal ? HorizontalOffset : VerticalOffset;
+        }
+
         /// <summary>Assigns the value to all edge.</summary>
         /// <param name="value">The edge value to assign.</param>
         [AlternateSignature]
-        public extern void Uniform(int value);
+        public extern void Change(int value);
 
         /// <summary>Assigns the value to all edge.</summary>
         /// <param name="leftRight">The left and right edge values to assign.</param>
         /// <param name="topBottom">The top and bottom edge values to assign.</param>
-        public void Uniform(int leftRight, int topBottom)
-        {
-            if (Script.IsNullOrUndefined(topBottom)) topBottom = leftRight;
-            Change(leftRight, topBottom, leftRight, topBottom);
-        }
+        [AlternateSignature]
+        public extern void Change(int leftRight, int topBottom);
 
         /// <summary>Changes all edge values.</summary>
         /// <param name="left">The left value.</param>
@@ -124,6 +128,21 @@ namespace Open.Core
         /// <param name="bottom">The bottom value.</param>
         public void Change(int left, int top, int right, int bottom)
         {
+            // Process parameters (potentally coming from overloads).
+            if (Script.IsNullOrUndefined(top))
+            {
+                // Single (uniform) value overload called.
+                top = left;
+                right = left;
+                bottom = left;
+            }
+            else if(Script.IsNullOrUndefined(right))
+            {
+                right = left;
+                bottom = top;
+            }
+
+            // Update values.
             Left = left;
             Top = top;
             Right = right;
@@ -192,7 +211,7 @@ namespace Open.Core
         /// </summary>
         /// <param name="inner">The inner object in the sync relationship.</param>
         [AlternateSignature]
-        public static extern Spacing Sync(jQueryObject inner);
+        public extern Spacing Sync(jQueryObject inner);
 
         /// <summary>
         ///     Creates a Spacing object that handles keeping an 'inner' object's size
@@ -205,22 +224,19 @@ namespace Open.Core
         /// </summary>
         /// <param name="inner">The inner object in the sync relationship.</param>
         /// <param name="onBeforeSync">Invoked before the inner element is updated (use to alter the spacing values).</param>
-        public static Spacing Sync(jQueryObject inner, SpacingSync onBeforeSync)
+        public Spacing Sync(jQueryObject inner, SpacingSync onBeforeSync)
         {
             // Setup 'position' attributes on the elements.
             inner.CSS(Css.Position, Css.Absolute);
-            
-            // Create the spacing object.
-            Spacing spacing = new Spacing();
 
             // Store values.
-            spacing.inner = inner;
-            spacing.onBeforeSync = onBeforeSync;
+            this.inner = inner;
+            this.onBeforeSync = onBeforeSync;
 
             // Finish up.
-            spacing.InitializeSyncing();
-            spacing.UpdateLayout();
-            return spacing;
+            InitializeSyncing();
+            UpdateLayout();
+            return this;
         }
         #endregion
 
@@ -234,9 +250,10 @@ namespace Open.Core
         {
             PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
                                    {
+                                       string name = args.Property.Name;
                                        try
                                        {
-                                           SyncEdge(ToEdge(args.Property.Name));
+                                           SyncEdge(ToEdge(name));
                                        }
                                        catch (Exception)
                                        {
@@ -248,6 +265,7 @@ namespace Open.Core
         private void SyncEdge(Edge edge)
         {
             // Setup initial conditions.
+            if (inner == null) return;
             int value = GetValue(edge);
 
             // Run the value through the modifier delegate.

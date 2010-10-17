@@ -1,10 +1,11 @@
 using System;
 using System.Runtime.CompilerServices;
+using jQueryApi;
 
 namespace Open.Core.Controls
 {
     /// <summary>A panel that can collapse.</summary>
-    public class CollapsePanel : ModelBase, IViewFactory
+    public class CollapsePanel : ModelBase
     {
         #region Events
         /// <summary>Fires when the panels starts collapsing.</summary>
@@ -22,7 +23,7 @@ namespace Open.Core.Controls
 
         /// <summary>Fires when the panel starts inflating (uncollapsing).</summary>
         public event EventHandler Inflating;
-        private void FireInflating(){if (Inflating != null) Inflating(this, new EventArgs());}
+        private void FireInflating() { if (Inflating != null) Inflating(this, new EventArgs()); }
 
         /// <summary>Fires when the panel has finished inflating (uncollapsed).</summary>
         public event EventHandler Inflated;
@@ -38,19 +39,30 @@ namespace Open.Core.Controls
         #region Head
         public const string PropIsCollapsed = "IsCollapsed";
         public const string PropIsInflated = "IsInflated";
-        
+        public const string PropPlane = "Plane";
+        public const string CssClass = "collapsePanel";
+
         private const bool DefaultIsCollapsed = false;
+        private const Plane DefaultPlane = Plane.Horizontal;
         internal const int NoTargetSize = -1;
 
         private Action collapsingCallback;
         private Action inflatingCallback;
         private AnimationSettings slide;
-        internal int inflateToTarget;
+        internal int inflateToTarget = NoTargetSize;
+        private readonly Spacing padding = new Spacing();
         #endregion
 
         #region Properties
         /// <summary>Gets the slide animation settings.</summary>
         public AnimationSettings Slide { get { return slide ?? (slide = new AnimationSettings()); } }
+
+        /// <summary>Gets or sets the X or Y plane that the panel collapses on.</summary>
+        public Plane Plane
+        {
+            get { return (Plane)Get(PropPlane, DefaultPlane); }
+            set { Set(PropPlane, value, DefaultPlane); }
+        }
 
         /// <summary>Gets or sets whether the panel is collapsed or not.</summary>
         public bool IsCollapsed
@@ -78,6 +90,9 @@ namespace Open.Core.Controls
 
         /// <summary>Gets whether the panel is currently showing (uncollapsing).</summary>
         public bool IsInflating { get { return inflatingCallback != null; } }
+
+        /// <summary>Gets or sets the pixel padding within the panel.</summary>
+        public Spacing Padding { get { return padding; } }
         #endregion
 
         #region Methods
@@ -122,7 +137,15 @@ namespace Open.Core.Controls
             FireCollapsing();
         }
 
-        public IView CreateView() { return new CollapsePanelView(this); }
+        /// <summary>Creates an instance of the view for the panel (Factory method).</summary>
+        /// <param name="content">
+        ///     The content that resides within the panel.
+        ///     NB: This content panel (typically a DIV) is set to 'absolute fill'.
+        /// </param>
+        public IView CreateView(jQueryObject content)
+        {
+            return new CollapsePanelView(this, content);
+        }
         #endregion
     }
 }

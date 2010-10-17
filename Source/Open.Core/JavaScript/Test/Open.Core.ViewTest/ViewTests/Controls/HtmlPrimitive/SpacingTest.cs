@@ -20,9 +20,8 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
             inner = CreateDiv("red");
             inner.AppendTo(outer);
 
-            spacing = Spacing.Sync(inner, delegate(Edge edge, int value) { return value += adjustBy; });
-
-            spacing = Spacing.Sync(inner);
+            spacing = new Spacing().Sync(inner, delegate(Edge edge, int value) { return value += adjustBy; });
+            //            spacing = Spacing.Sync(inner);
             Uniform_Padding();
 
             TestHarness.AddElement(outer);
@@ -30,10 +29,11 @@ namespace Open.Core.Test.ViewTests.Controls.HtmlPrimitive
         #endregion
 
         #region Tests
-        public void No_Padding() { spacing.Uniform(0); Write_Properties(); }
+        public void No_Padding() { spacing.Change(0); Write_Properties(); }
         public void Reduce_Padding() { spacing.Change(1, 2, 3, 4); Write_Properties(); }
         public void Increase_Padding() { spacing.Change(10, 20, 30, 40); Write_Properties(); }
-        public void Uniform_Padding() { spacing.Uniform(20); Write_Properties(); }
+        public void Uniform_Padding() { spacing.Change(20); Write_Properties(); }
+        public void X__Y_Padding() { spacing.Change(30, 5); Write_Properties(); }
 
         public void UpdateLayout() { spacing.UpdateLayout(); }
 

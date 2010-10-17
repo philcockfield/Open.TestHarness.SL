@@ -29,6 +29,20 @@ namespace Open.Core.Test.ViewTests.Core
                                               });
         }
 
+        public void Download__Called_Twice()
+        {
+            Log.Info("Downloading templates: " + urlLink);
+            Helper.Template.Download(Url, delegate
+                            {
+                                Log.Success("Downloaded - 1. " + urlLink);
+                            });
+            Helper.Template.Download(Url, delegate
+                            {
+                                Log.Success("Downloaded - 2. " + urlLink);
+                            });
+        }
+
+
         public void IsDownloaded()
         {
             Log.Info("IsDownloaded: " + Helper.Template.IsDownloaded(Url) + " | " + urlLink);

@@ -67,21 +67,21 @@ namespace Open.Core.Controls
             Focus.CanFocus = true;
 
             // Setup padding.
-            padding = Spacing.Sync(input, OnBeforePaddingSync);
-            padding.Uniform(10, 5);
+            padding = new Spacing().Sync(input, OnBeforePaddingSync);
+            padding.Change(10, 5);
 
             // Create child objects.
             eventDelay = new DelayedAction(0.3, OnDelayElapsed);
 
             // Wire up events.
-            Container.MouseDown(delegate(jQueryEvent e) { FocusOnClick(); });
+            Container.MouseDown(delegate { FocusOnClick(); });
             input.Keyup(delegate(jQueryEvent e)
                                     {
                                         if (previousText != Text) FireTextChanged();
                                         if (Int32.Parse(e.Which) == (int)Key.Enter) FireEnterPress();
                                     });
-            input.MouseDown(delegate(jQueryEvent e) { OnInputMouseDown(); });
-            input.MouseUp(delegate(jQueryEvent e) { OnInputMouseUp(); });
+            input.MouseDown(delegate { OnInputMouseDown(); });
+            input.MouseUp(delegate { OnInputMouseUp(); });
             Focus.GotFocus += OnGotFocus;
             Focus.LostFocus += OnLostFocus;
             IsEnabledChanged += delegate { SyncEnabled(); };

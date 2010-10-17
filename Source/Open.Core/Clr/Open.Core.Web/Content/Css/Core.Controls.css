@@ -1,14 +1,19 @@
 ﻿/* ----------- Log ----------- */
-div.c-log { }
-div.c-log-list { overflow:auto; }
+div.c_log { }
+div.c_log_list { overflow:auto; }
 
-.c-log-listItem {
+.c_log_listItem {
     position:relative;
     border-bottom:solid 1px #e0e1e2;
     padding:5px 14px;
 }
+.c_log_icon {
+    background-repeat: no-repeat;
+    background-position:0px 1px;
+    padding-left:20px;
+}
 
-.c-log-sectionBreak {
+.c_log_sectionBreak {
     height:19px;
     padding:0px;
     background:#eceff3;
@@ -16,19 +21,19 @@ div.c-log-list { overflow:auto; }
     background-repeat:repeat-x;
 }
 
-.c-log-counter { 
+.c_log_counter { 
     color:#8d8d8d; 
     float:left;
 }
 
-.c-log-message { 
+.c_log_message { 
     margin-left:55px;
     margin-right:55px;
 }
 
-/* ----------- Log Dividers ----------- */
-.c-log-lineBreak { border-bottom-color:#f35ae7; }
-div.c-log-margin {
+/* ----------- Log : Dividers ----------- */
+.c_log_lineBreak { border-bottom-color:#f35ae7; }
+div.c_log_margin {
     left:50px;
     border-left-color:#91faff;
     border-left-width:1px;
@@ -36,12 +41,43 @@ div.c-log-margin {
     width:1px;
 }
 
-/* ----------- Log Severity ----------- */
-.c-log-info { }
-.c-log-debug { }
-.c-log-warning { background-color:#faecc9; }
-.c-log-error { background-color:#fadadb; }
-.c-log-success { background-color:#e4f7e1; }
+/* ----------- Log : Severity ----------- */
+.c_log_info { }
+.c_log_debug { }
+.c_log_warning { background-color:#faecc9; }
+.c_log_error { background-color:#fadadb; }
+.c_log_success { background-color:#e4f7e1; }
+
+/* ----------- Log : <UL> ----------- */
+div.c_log p.c_log_listTitle { }
+div.c_log ul
+{
+    position:relative;
+    margin-left:35px;
+    margin-top:4px;
+    line-height:20px;
+}
+
+/* ----------- Log : Property List ----------- */
+div.c_log ul.c_log_propList
+{
+    margin-left:21px;
+    list-style-type: none;
+    padding: 0;
+    line-height:23px;
+}
+
+div.c_log ul.c_log_propList > li
+{
+    background-image: url(/Open.Assets/Icons/Api/Property.png);
+    background-repeat: no-repeat;
+    background-position:0px 5px;
+    padding-left:20px;
+}
+
+div.c_log .c_log_propName { color:#a31515; }
+div.c_log .c_log_propValue { color:#0000ff; }
+div.c_log .c_log_propError { color:Red; }
 
 
 /* ----------- Textbox ----------- */
@@ -63,3 +99,8 @@ input.textbox  {
     font-family: Arial;
     font-size: 16px;
 }
+
+
+/* ----------- Panels ----------- */
+div.collapsePanel { overflow:hidden; }
+

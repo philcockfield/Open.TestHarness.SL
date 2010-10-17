@@ -11,6 +11,10 @@
                <p class="title titleFont"><%= Model.OutputTitle %></p>
             </div>
         </div>
+        <div class="buttons">
+            <button class="clear button">Clear</button>
+            <div class="buttonDivider"></div>
+        </div>
     </div>
     <!-- Log Content -->
     <% Html.InsertLog(); %>

@@ -28,6 +28,7 @@ namespace Open.Core.Web.Assets
             context.MapEmbeddedResource(AreaName, "SilkIconGreyRoute", AreaName + "/Icons/Silk/Greyscale/{resourceName}", resourcePath: "Content/Icons/Silk.Greyscale");
             context.MapEmbeddedResource(AreaName, "IconFlatDarkRoute", AreaName + "/Icons/Flat/Dark/{resourceName}", resourcePath: "Content/Icons/Flat.Dark");
             context.MapEmbeddedResource(AreaName, "IconSundry", AreaName + "/Icons/Sundry/{resourceName}", resourcePath: "Content/Icons/Sundry");
+            context.MapEmbeddedResource(AreaName, "IconApi", AreaName + "/Icons/Api/{resourceName}", resourcePath: "Content/Icons/Api");
 
             // Map the area.
             context.MapRoute(

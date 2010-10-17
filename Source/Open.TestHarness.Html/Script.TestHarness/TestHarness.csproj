@@ -51,6 +51,7 @@
     <Compile Include="Code\Constants\CssSelectors.cs" />
     <Compile Include="Code\Constants\Elements.cs" />
     <Compile Include="Code\Constants\StringLibrary.cs" />
+    <Compile Include="Code\Util\ButtonHelper.cs" />
     <Compile Include="Controllers\AddPackageController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ControlHostController.cs" />

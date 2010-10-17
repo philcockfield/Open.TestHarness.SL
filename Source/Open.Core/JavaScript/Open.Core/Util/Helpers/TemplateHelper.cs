@@ -13,6 +13,7 @@ namespace Open.Core.Helpers
     public class TemplateHelper
     {
         #region Head
+        private readonly ArrayList downloadCallbacks = new ArrayList();
         private readonly ArrayList downloadedUrls = new ArrayList();
         private readonly ArrayList templates = new ArrayList();
         #endregion
@@ -99,18 +100,53 @@ namespace Open.Core.Helpers
                 Helper.Invoke(onComplete);
                 return;
             }
+            bool isDownloading = IsDownloading(url);
+
+            // Store reference to callback.
+            // NB: This is done in case multiple calls are made.  This allows a collection
+            //       of callbacks to be made when the download completes.
+            DownloadCallback callback = new DownloadCallback();
+            callback.Url = url.ToLowerCase();
+            callback.OnComplete = onComplete;
+            downloadCallbacks.Add(callback);
+            if (isDownloading) return;
 
             // Download the template.
-            downloadedUrls.Add(url.ToLowerCase());
             jQuery.Get(url, delegate(object data)
                                 {
+                                    // Store reference.
+                                    downloadedUrls.Add(url.ToLowerCase());
+
                                     // Append the templates to the BODY.
                                     jQuery.Select(Html.Body).Append(data.ToString());
 
-                                    // Finish up.
-                                    Helper.Invoke(onComplete);
+                                    // Invoke the collection of callbacks to invoke.
+                                    foreach (DownloadCallback item in GetDownloadCallbacks(url))
+                                    {
+                                        Helper.Invoke(item.OnComplete);
+                                        downloadCallbacks.Remove(item);
+                                    }
                                 });
         }
         #endregion
+
+        #region Internal
+        private bool IsDownloading(string url) { return GetDownloadCallbacks(url).Count > 0; }
+        private ArrayList GetDownloadCallbacks(string url)
+        {
+            url = url.ToLowerCase();
+            return Helper.Collection.Filter(downloadCallbacks, delegate(object o)
+                                                             {
+                                                                 DownloadCallback item = (DownloadCallback) o;
+                                                                 return url == item.Url;
+                                                             });
+        }
+        #endregion
+    }
+
+    internal class DownloadCallback
+    {
+        public string Url;
+        public Action OnComplete;
     }
 }

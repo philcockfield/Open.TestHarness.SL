@@ -75,6 +75,9 @@ namespace Open.Core
         /// <returns>True if the value was different the the current value, otherwise False.</returns>
         protected bool Set(string propertyName, object value, object defaultValue)
         {
+            // Setup initial conditions.
+            if (Script.IsNullOrUndefined(value)) value = null;
+
             // Don't continue if the value has not changed.
             object currentValue = Get(propertyName, defaultValue);
             if (value == currentValue) return false;

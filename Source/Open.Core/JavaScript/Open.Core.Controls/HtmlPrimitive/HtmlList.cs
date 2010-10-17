@@ -1,28 +1,36 @@
 using System;
-using System.Collections;
+using System.Html;
 using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core.Controls.HtmlPrimitive
 {
     /// <summary>Renders an <UL></UL> or <OL></OL>.</summary>
-    public class HtmlList : ViewBase
+    public class HtmlList : ViewBase, IHtmlList
     {
         #region Head
         private readonly HtmlListType listType;
-        private ArrayList items = new ArrayList();
+
+        /// <summary>Constructor.</summary>
+        [AlternateSignature]
+        public extern HtmlList();
 
         /// <summary>Constructor.</summary>
         /// <param name="listType">The type of list to construct.</param>
         /// <param name="cssClass">The CSS class attribute to add to the root list element (can be multiple classes).</param>
-        public HtmlList(HtmlListType listType, string cssClass)
-            : base(Html.CreateElement(listType == HtmlListType.Unordered ? "ul" : "ol"))
+        public HtmlList(HtmlListType listType, string cssClass) : base(InitHtml(listType))
         {
             // Setup initial conditions.
             this.listType = listType;
 
             // Create the root list element.
             Css.AddClasses(Container, cssClass);
+        }
+
+        private static jQueryObject InitHtml(HtmlListType listType)
+        {
+            if (Script.IsNullOrUndefined(listType)) listType = HtmlListType.Unordered;
+            return Html.CreateElement(listType == HtmlListType.Unordered ? "ul" : "ol");
         }
         #endregion
 
@@ -55,18 +63,20 @@ namespace Open.Core.Controls.HtmlPrimitive
         /// <summary>Adds a new list item <li></li>.</summary>
         /// <param name="text">The text to insert within the element.</param>
         /// <returns>The LI element.</returns>
-        [AlternateSignature]
-        public extern jQueryObject Add(string text);
+        public jQueryObject Add(string text)
+        {
+            jQueryObject p = Html.CreateElement("p");
+            p.Append(text);
+            return AddElement(p);
+        }
 
-        /// <summary>Adds a new list item <li></li>.</summary>
-        /// <param name="text">The text to insert within the element.</param>
-        /// <param name="cssClass">The class(es) to apply to the LI.</param>
+        /// <summary>Adds a new element within an <li></li> item.</summary>
+        /// <param name="element">The element to add (within the LI).</param>
         /// <returns>The LI element.</returns>
-        public jQueryObject Add(string text, string cssClass)
+        public jQueryObject AddElement(jQueryObject element)
         {
             jQueryObject li = Html.CreateElement("li");
-            if (!string.IsNullOrEmpty(text)) li.Append(string.Format("<p>{0}</p>", text));
-            Css.AddClasses(li, cssClass);
+            li.Append(element);
             li.AppendTo(Container);
             FireSizeChanged();
             return li;

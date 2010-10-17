@@ -17,6 +17,7 @@ namespace Open.Core
         public const string Width = "width";
         public const string Height = "height";
         public const string Background = "background";
+        public const string BackgroundImage = "background-image";
         public const string Color = "color";
         public const string Display = "display";
         public const string Visibility = "visibility";
@@ -87,6 +88,35 @@ namespace Open.Core
             if (string.IsNullOrEmpty(value)) return 0;
             if (!value.EndsWith(Px)) return 0;
             return Int32.Parse(value);
+        }
+
+        /// <summary>Converts an X:Y plane dimension to it's corresponding size-dimension.</summary>
+        /// <param name="plane">The plane to convert.</param>
+        public static SizeDimension ToSizeDimension(Plane plane)
+        {
+            return plane == Plane.Horizontal ? SizeDimension.Width : SizeDimension.Height;
+        }
+
+        /// <summary>Retrieves the size for the given dimension (Width or Height).</summary>
+        /// <param name="element">The element to read.</param>
+        /// <param name="dimension">The dimension.</param>
+        public static int GetDimension(jQueryObject element, SizeDimension dimension)
+        {
+            if (Script.IsNullOrUndefined(element)) return 0;
+            return dimension == SizeDimension.Width ? element.GetWidth() : element.GetHeight();
+        }
+
+        /// <summary>Sets the size for the given dimension (Width or Height).</summary>
+        /// <param name="element">The element to read.</param>
+        /// <param name="dimension">The dimension.</param>
+        /// <param name="value">The value to set.</param>
+        public static void SetDimension(jQueryObject element, SizeDimension dimension, int value)
+        {
+            if (Script.IsNullOrUndefined(element)) return;
+            if (value < 0) value = 0;
+            element.CSS(
+                        dimension == SizeDimension.Width ? Width : Height,
+                        value + Px);
         }
         #endregion
 

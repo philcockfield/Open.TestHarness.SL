@@ -57,21 +57,18 @@ namespace Open.Testing.Automation
             int failures = Failures;
             bool hasFailures = failures > 0;
 
-            // Prepare summary details.
-            HtmlList list = new HtmlList(HtmlListType.Unordered, CssSelectors.Classes.LogIndentedList);
+            // Log the summary details.
+            string summary = string.Format("Test run for class <b>{0}</b>", classInfo.DisplayName);
+            IHtmlList list = log.WriteListSeverity(summary, hasFailures ? LogSeverity.Error : LogSeverity.Success);
             list.Add(string.Format("Successes: {0} ({1}%)", successes, ToPercent(successes)));
             list.Add(string.Format("Failures: {0} ({1}%)", failures, ToPercent(failures)));
-            string summary = string.Format("Test run for class <b>{0}</b><br/>{1}", classInfo.DisplayName, list.OuterHtml);
-
-            // Write to log.
-            log.Write(summary, hasFailures ? LogSeverity.Error : LogSeverity.Success);
 
             // Write out exceptions.
             if (hasFailures) log.LineBreak();
             foreach (ExecutedTest item in results)
             {
                 if (item.Error == null) continue;
-                log.Write(item.Method.FormatError(item.Error), LogSeverity.Error);
+                item.Method.LogError(item.Error);
             }
             log.NewSection();
         }

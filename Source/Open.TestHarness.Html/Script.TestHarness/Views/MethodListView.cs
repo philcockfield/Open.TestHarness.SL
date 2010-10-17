@@ -45,13 +45,7 @@ namespace Open.Testing.Views
             listView.RootNode = rootNode;
 
             // Construct buttons.
-            DelayedAction.Invoke(3, delegate
-                                        {
-                                            //TODO _ DO NOT PUT IN DELAY
-                                            // Sort out problem with pre-loading the same template multiple times (ie. multiple image buttons at once).
-                                            InsertButtons();
-
-                                        });
+            InsertButtons();
         }
        #endregion
 
@@ -131,34 +125,18 @@ namespace Open.Testing.Views
         private void InsertButtons()
         {
             // Run button.
-            InsertButton(
+            ButtonHelper.InsertButton(
                             ImageButtons.PlayDark, 
                             CssSelectors.MethodListRunButton, 
+                            ButtonHeight,
                             delegate { FireRunClick(); });
 
             // Refresh button.
-            InsertButton(
+            ButtonHelper.InsertButton(
                             ImageButtons.RefreshDark, 
                             CssSelectors.MethodListRefreshButton,
+                            ButtonHeight,
                             delegate { FireRefreshClick(); });
-        }
-
-        private static void InsertButton(ImageButtons type, string replaceSeletor, EventHandler onClick)
-        {
-            // Create the buttons.
-            ImageButton button = ImageButtonFactory.Create(type);
-            button.BackgroundHighlighting = true;
-            button.SetSize(ButtonHeight, ButtonHeight);
-
-            // Setup CSS.
-            ButtonView view = button.CreateView() as ButtonView;
-
-            // Wire up events.
-            button.Click += onClick;
-
-            // Insert the button.
-            view.Insert(replaceSeletor, InsertMode.Replace);
-            view.UpdateLayout();
         }
         #endregion
     }

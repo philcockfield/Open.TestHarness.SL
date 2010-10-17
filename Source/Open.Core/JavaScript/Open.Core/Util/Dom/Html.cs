@@ -148,7 +148,7 @@ namespace Open.Core
 
         /// <summary>Retreives the OuterHtml of the given element.</summary>
         /// <param name="element">The element to retrieve the HTML for.</param>
-        public static string ToHtml(jQueryObject element)
+        public static string OuterHtml(jQueryObject element)
         {
             if (element == null) return null;
             return CreateDiv().Append(element.Clone()).GetHtml();

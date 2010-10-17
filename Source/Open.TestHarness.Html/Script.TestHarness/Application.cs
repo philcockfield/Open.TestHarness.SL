@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using jQueryApi;
 using Open.Core;
+using Open.Core.Helpers;
 using Open.Testing.Controllers;
 using Open.Testing.Internal;
 using Open.Testing.Models;
@@ -50,6 +51,15 @@ namespace Open.Testing
             controlHostController = new ControlHostController();
             logController = new LogController();
             addPackageController = new AddPackageController();
+
+            // Preload images.
+            IconHelper icon = Helper.Icon;
+            ImagePreloader.Preload("/Open.Assets/Icons/Api/Property.png");
+            ImagePreloader.Preload("/Open.Assets/Icons/Api/Class.png");
+            ImagePreloader.Preload(icon.Path(Icons.SilkAccept));
+            ImagePreloader.Preload(icon.Path(Icons.SilkExclamation));
+            ImagePreloader.Preload(icon.Path(Icons.SilkError));
+            ImagePreloader.Preload(icon.Path(Icons.SilkLightning));
 
             // =================================
 

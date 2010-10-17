@@ -48,6 +48,7 @@
     <Reference Include="Script.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Samples\SamplePart.cs" />
     <Compile Include="Samples\SampleView.cs" />
     <Compile Include="Samples\SampleListItem.cs" />
     <Compile Include="Samples\SampleModel.cs" />

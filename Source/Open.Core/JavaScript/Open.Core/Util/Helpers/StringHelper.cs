@@ -75,10 +75,11 @@ namespace Open.Core.Helpers
 
             // Convert the value to a string.
             string text = toString == null ? value.ToString() : toString(value);
-            if (string.IsNullOrEmpty(text)) text = "<empty-string>";
+            if (text == string.Empty) text = "<empty-string>".HtmlEncode();
+            if (string.IsNullOrEmpty(text.Trim())) text = "<whitespace>".HtmlEncode();
 
             // Finish up.
-            return text.HtmlEncode();
+            return text;
         }
     }
 }

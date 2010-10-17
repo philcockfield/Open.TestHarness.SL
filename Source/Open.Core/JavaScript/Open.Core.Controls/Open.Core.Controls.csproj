@@ -81,6 +81,7 @@
     <Content Include="Properties\Open.Core.Views.script" />
     <Compile Include="Panels\CollapsePanel.cs" />
     <Compile Include="Panels\CollapsePanelView.cs" />
+    <Compile Include="Panels\PinnablePanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

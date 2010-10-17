@@ -86,6 +86,7 @@
     <Compile Include="TestHarnessController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Content Include="Content\Css\Sample.css" />
     <Content Include="Content\Css\Sample.Button.css" />
     <Content Include="Content\Images\ImageButton.Sample\Down.Disabled.png" />
     <Content Include="Content\Images\ImageButton.Sample\Down.Focused.png" />

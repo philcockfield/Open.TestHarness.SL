@@ -29,6 +29,7 @@ namespace Open.Testing.Controllers
 
             // Wire up events.
             events.ChangeLogHeight += OnChangeLogHeight;
+            Common.Shell.LogContainer.ClearClick += delegate { Log.Clear(); };
         }
 
         /// <summary>Destroy.</summary>

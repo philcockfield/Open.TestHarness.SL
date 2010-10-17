@@ -2095,6 +2095,10 @@
     <EmbeddedResource Include="Content\Icons\Sundry\Pin.Unpushed.png" />
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Remove.14x14.png" />
     <EmbeddedResource Include="Content\Icons\Flat.Dark\Remove.Down.14x14.png" />
+    <EmbeddedResource Include="Content\Icons\Api\Assembly.png" />
+    <EmbeddedResource Include="Content\Icons\Api\Class.png" />
+    <EmbeddedResource Include="Content\Icons\Api\Method.png" />
+    <EmbeddedResource Include="Content\Icons\Api\Property.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

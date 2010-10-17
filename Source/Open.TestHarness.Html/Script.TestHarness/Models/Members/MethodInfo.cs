@@ -67,7 +67,7 @@ namespace Open.Testing.Models
             catch (Exception e)
             {
                 error = e;
-                Log.Error(FormatError(error));
+                LogError(error);
             }
 
             // Invoke the post "teardown" method (if this a standard test-method and is not itself one of the special methods).
@@ -79,17 +79,15 @@ namespace Open.Testing.Models
 
         /// <summary>Formats an error message.</summary>
         /// <param name="error">The invoke error.</param>
-        public string FormatError(Exception error)
+        public void LogError(Exception error)
         {
-            HtmlList htmlList = new HtmlList(HtmlListType.Unordered, CssSelectors.Classes.LogIndentedList);
+            IHtmlList htmlList = Log.WriteListSeverity(
+                            string.Format("<b>Exception</b> Failed while executing '<b>{0}</b>'.", DisplayName),
+                            LogSeverity.Error);
             htmlList.Add(string.Format("Message: '{0}'", error.Message));
             htmlList.Add("Method: " + Helper.String.ToCamelCase(Name));
             htmlList.Add("Class: " + ClassInfo.ClassType.FullName);
             htmlList.Add("Package: " + Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrl, null, LinkTarget.Blank));
-            return string.Format(
-                                "<b>Exception</b> Failed while executing '<b>{0}</b>'.<br/>{1}",
-                                DisplayName,
-                                htmlList.OuterHtml);
         }
         #endregion
 
