@@ -53,17 +53,25 @@ namespace Open.Testing
             addPackageController = new AddPackageController();
 
             // Preload images.
+            PreloadImages();
+
+            //TEMP : Insert sample packages.
+            InsertSamplePackages();
+        }
+
+        private static void PreloadImages()
+        {
             IconHelper icon = Helper.Icon;
             ImagePreloader.Preload("/Open.Assets/Icons/Api/Property.png");
             ImagePreloader.Preload("/Open.Assets/Icons/Api/Class.png");
             ImagePreloader.Preload(icon.Path(Icons.SilkAccept));
             ImagePreloader.Preload(icon.Path(Icons.SilkExclamation));
             ImagePreloader.Preload(icon.Path(Icons.SilkError));
-            ImagePreloader.Preload(icon.Path(Icons.SilkLightning));
+            ImagePreloader.Preload("/Content/Images/Sidebar.BackMask.png");
+        }
 
-            // =================================
-
-            //TEMP : Insert sample packages.
+        private static void InsertSamplePackages( )
+        {
             AddPackage("/Content/Scripts/TestHarness.Test.debug.js", "Test.Application.main");
             AddPackage("/Content/Scripts/Open.Core.Test.debug.js", "Open.Core.Test.Application.main");
 

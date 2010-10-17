@@ -119,10 +119,7 @@
     <Content Include="Views\Samples\Temp.aspx" />
     <Content Include="Views\TestHarness\Embed.aspx" />
     <Content Include="Content\Css\Open.TestHarness.IE.css" />
-    <Content Include="Content\Images\Icons\Icon.Assembly.Small.png" />
-    <Content Include="Content\Images\Icons\Icon.Class.Small.png" />
     <Content Include="Content\Images\Icons\Icon.JavaScript.png" />
-    <Content Include="Content\Images\Icons\Icon.Method.Small.png" />
     <Content Include="Content\Images\Sidebar.BackMask.png" />
     <Content Include="Favicon.ico" />
   </ItemGroup>

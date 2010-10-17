@@ -17,7 +17,7 @@
                 <div class="field_set_initMethod">
                     <p class="th_fieldLabel"><%= Model.InitMethodLabel%></p>
                     <input type="text" value="Open.Core.Test.main()" class="textbox">
-                    <img class="iconMethod" src="<%= Links.Content.Images.Icons.Icon_Method_Small_png.PrependDomain() %>" />
+                    <img class="iconMethod" src="<%= Model.MethodIcon %>" />
                 </div>
             </div>
         </div>

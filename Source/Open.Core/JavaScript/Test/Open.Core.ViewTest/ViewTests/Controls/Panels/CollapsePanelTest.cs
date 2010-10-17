@@ -92,13 +92,14 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
 
         public void Write_Properties()
         {
-            Log.Info("Plane: " + panel.Plane.ToString());
-            Log.Info("IsCollapsed: " + panel.IsCollapsed);
-            Log.Info("IsInflated: " + panel.IsInflated);
-            Log.Info("IsCollapsing: " + panel.IsCollapsing);
-            Log.Info("IsInflating: " + panel.IsInflating);
-            Log.Info("Slide (Settings): " + panel.Slide.ToString());
-            Log.Info("Padding: " + panel.Padding.ToString());
+            Log.WriteProperties(panel);
+            //Log.Info("Plane: " + panel.Plane.ToString());
+            //Log.Info("IsCollapsed: " + panel.IsCollapsed);
+            //Log.Info("IsInflated: " + panel.IsInflated);
+            //Log.Info("IsCollapsing: " + panel.IsCollapsing);
+            //Log.Info("IsInflating: " + panel.IsInflating);
+            //Log.Info("Slide (Settings): " + panel.Slide.ToString());
+            //Log.Info("Padding: " + panel.Padding.ToString());
         }
         #endregion
     }

@@ -83,6 +83,7 @@ namespace Open.Testing.Web.Controllers
             ViewModel.Title = GetResource(KeyAddPackageTitle);
             ViewModel.ScriptUrlLabel = GetResource(KeyAddPackageLabelScriptUrl);
             ViewModel.InitMethodLabel = GetResource(KeyAddPackageLabelInitMethod);
+            ViewModel.MethodIcon = "/Open.Assets/Icons/Api/Method.png".PrependDomain();
 
             return View(ViewModel);
         }

@@ -5,20 +5,25 @@ using Open.Core.Helpers;
 
 namespace Open.Core
 {
+    public class LogCssClasses
+    {
+        public const string PropertyList = "c_log_propList";
+        public const string PropertyName = "c_log_propName";
+        public const string PropertyValue = "c_log_propValue";
+        public const string PropertyError = "c_log_propError";
+        public const string PropertyEvent = "c_log_event";
+        public const string Icon = "c_log_icon";
+    }
+
+
     /// <summary>An output log.</summary>
     public class LogWriter : ModelBase, ILog
     {
         #region Head
-        public const string ClassPropertyList = "c_log_propList";
-        public const string ClassPropertyName = "c_log_propName";
-        public const string ClassPropertyValue = "c_log_propValue";
-        public const string ClassListPropError = "c_log_propError";
-        public const string ClassListPropEvent = "c_log_event";
-        public const string ClassItemIcon = "c_log_icon";
-
         public const string KeyGetter = "get_";
         public const string KeyPrivate = "_";
-        public const string ImageClass = "/Open.Assets/Icons/Api/Class.png";
+        public static readonly string ClassIcon = ImagePaths.ApiIconpath + "Class.png";
+        public static readonly string EventIcon = ImagePaths.ApiIconpath + "Event.png";
 
         private bool isActive = true;
         private bool canInsertSection = true;
@@ -112,7 +117,7 @@ namespace Open.Core
 
         public void Event(object message)
         {
-            View.InsertMessage(message, ClassListPropEvent, null, Helper.Icon.Path(Icons.SilkLightning));
+            View.InsertMessage(message, LogCssClasses.PropertyEvent, null, EventIcon);
         }
 
         public void WriteProperties(object instance, string title)
@@ -125,12 +130,12 @@ namespace Open.Core
             if (Script.IsUndefined(title))
             {
                 title = string.Format("{0}:", instance.GetType().Name);
-                titleIcon = ImageClass;
+                titleIcon = ClassIcon;
             }
 
             // Create the property list.
             IHtmlList list = View.InsertList(title, null, null, titleIcon);
-            list.Container.AddClass(ClassPropertyList);
+            list.Container.AddClass(LogCssClasses.PropertyList);
 
             // Insert the property values.
             foreach (DictionaryEntry entry in Dictionary.GetDictionary(instance))
@@ -140,7 +145,7 @@ namespace Open.Core
 
                 string item = string.Format(
                                     "<span class='{0}'>{1}:</span>&nbsp;{2}",
-                                    ClassPropertyName,
+                                    LogCssClasses.PropertyName,
                                     propName,
                                     GetPropertyValue(instance, entry));
                 list.Add(item);
@@ -217,8 +222,8 @@ namespace Open.Core
             }
 
             // Prepare the CSS.
-            string cssClass = ClassPropertyValue;
-            if (hasError) cssClass += " " + ClassListPropError;
+            string cssClass = LogCssClasses.PropertyValue;
+            if (hasError) cssClass += " " + LogCssClasses.PropertyError;
 
             // Format into SPAN.
             string text = Script.IsNullOrUndefined(value)

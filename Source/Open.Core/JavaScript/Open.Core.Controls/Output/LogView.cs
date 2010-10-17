@@ -184,7 +184,7 @@ namespace Open.Core.Controls
             // Prepend icon (if specified).
             if (iconPath != null)
             {
-                p.AddClass(LogWriter.ClassItemIcon);
+                p.AddClass(LogCssClasses.Icon);
                 p.CSS(Css.BackgroundImage, string.Format("url({0})", iconPath));
             }
 

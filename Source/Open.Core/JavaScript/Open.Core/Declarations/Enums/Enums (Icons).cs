@@ -7,6 +7,5 @@ namespace Open.Core
         SilkAccept = 0,
         SilkError = 1,
         SilkExclamation = 2,
-        SilkLightning = 3,
     }
 }

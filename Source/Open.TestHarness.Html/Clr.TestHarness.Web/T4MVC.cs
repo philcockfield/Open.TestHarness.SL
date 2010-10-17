@@ -213,6 +213,7 @@ namespace Links {
             public static readonly string Open_TestHarness_css = Url("Open.TestHarness.css");
             public static readonly string Open_TestHarness_IE_css = Url("Open.TestHarness.IE.css");
             public static readonly string Sample_Button_css = Url("Sample.Button.css");
+            public static readonly string Sample_css = Url("Sample.css");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -225,10 +226,26 @@ namespace Links {
                 private const string URLPATH = "~/Content/Images/Icons";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string Icon_Assembly_Small_png = Url("Icon.Assembly.Small.png");
-                public static readonly string Icon_Class_Small_png = Url("Icon.Class.Small.png");
                 public static readonly string Icon_JavaScript_png = Url("Icon.JavaScript.png");
-                public static readonly string Icon_Method_Small_png = Url("Icon.Method.Small.png");
+            }
+        
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class ImageButton_Sample {
+                private const string URLPATH = "~/Content/Images/ImageButton.Sample";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string Down_Disabled_png = Url("Down.Disabled.png");
+                public static readonly string Down_Focused_png = Url("Down.Focused.png");
+                public static readonly string Down_png = Url("Down.png");
+                public static readonly string Normal_Disabled_png = Url("Normal.Disabled.png");
+                public static readonly string Normal_Focused_png = Url("Normal.Focused.png");
+                public static readonly string Normal_png = Url("Normal.png");
+                public static readonly string Over_Disabled_png = Url("Over.Disabled.png");
+                public static readonly string Over_Focused_png = Url("Over.Focused.png");
+                public static readonly string Over_png = Url("Over.png");
+                public static readonly string Pressed_Disabled_png = Url("Pressed.Disabled.png");
+                public static readonly string Pressed_Focused_png = Url("Pressed.Focused.png");
+                public static readonly string Pressed_png = Url("Pressed.png");
             }
         
             public static readonly string Sidebar_BackMask_png = Url("Sidebar.BackMask.png");
@@ -258,10 +275,6 @@ namespace Links {
             public static readonly string Open_Core_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.debug.min.js") ? Url("Open.Core.Test.debug.min.js") : Url("Open.Core.Test.debug.js");
                           
             public static readonly string Open_Core_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.min.js") ? Url("Open.Core.Test.min.js") : Url("Open.Core.Test.js");
-                          
-            public static readonly string Open_TestHarness_Bootstrap_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.Bootstrap.debug.min.js") ? Url("Open.TestHarness.Bootstrap.debug.min.js") : Url("Open.TestHarness.Bootstrap.debug.js");
-                          
-            public static readonly string Open_TestHarness_Bootstrap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.Bootstrap.min.js") ? Url("Open.TestHarness.Bootstrap.min.js") : Url("Open.TestHarness.Bootstrap.js");
                           
             public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
                           

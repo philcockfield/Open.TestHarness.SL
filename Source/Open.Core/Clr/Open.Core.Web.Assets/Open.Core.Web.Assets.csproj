@@ -2099,6 +2099,7 @@
     <EmbeddedResource Include="Content\Icons\Api\Class.png" />
     <EmbeddedResource Include="Content\Icons\Api\Method.png" />
     <EmbeddedResource Include="Content\Icons\Api\Property.png" />
+    <EmbeddedResource Include="Content\Icons\Api\Event.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

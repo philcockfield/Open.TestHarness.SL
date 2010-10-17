@@ -58,7 +58,14 @@ namespace Open.Testing.Models
         #endregion
 
         #region Methods
-        public IEnumerator GetEnumerator() { return classes.GetEnumerator(); }
+        public IEnumerator GetEnumerator()
+        {
+            classes.Sort(delegate(object o1, object o2)
+                             {
+                                 return string.Compare(((ClassInfo)o1).DisplayName, ((ClassInfo)o2).DisplayName);
+                             });
+            return classes.GetEnumerator();
+        }
 
         /// <summary>Adds a test-class to the package.</summary>
         /// <param name="testClass">The type of the test class.</param>
