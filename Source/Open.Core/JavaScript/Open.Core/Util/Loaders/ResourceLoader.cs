@@ -17,6 +17,7 @@ namespace Open.Core.Helpers
         #endregion
 
         #region Properties
+        /// <summary>Gets whether the script have been downloaded.</summary>
         public bool IsLoaded
         {
             get
@@ -45,7 +46,7 @@ namespace Open.Core.Helpers
         /// <param name="delimiter">The delimiter.</param>
         public void AddUrl(string urls, string delimiter)
         {
-            if (string.IsNullOrEmpty(urls)) return;
+            if (!Helper.String.HasValue(urls)) return;
             if (Script.IsNullOrUndefined(delimiter))
             {
                 // Add single URL.

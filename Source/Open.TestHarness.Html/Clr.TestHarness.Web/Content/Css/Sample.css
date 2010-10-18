@@ -1,1 +1,7 @@
-﻿
+﻿.samplePart > h1
+{
+    color:#09b7ff;
+    font-weight:normal;
+    margin:10px;
+    text-align:center;
+}

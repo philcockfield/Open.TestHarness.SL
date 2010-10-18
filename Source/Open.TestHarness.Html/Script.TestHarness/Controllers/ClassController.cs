@@ -62,6 +62,7 @@ namespace Open.Testing.Controllers
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
+            if (Keyboard.IsCtrlPressed) Log.Clear();
             Log.Success(string.Format("Reload: <b>{0}</b>", classInfo.DisplayName));
             Reset();
         }

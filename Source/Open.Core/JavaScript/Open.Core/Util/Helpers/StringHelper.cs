@@ -81,5 +81,15 @@ namespace Open.Core.Helpers
             // Finish up.
             return text;
         }
+
+        /// <summary>Checks the string to make sure it is not null, undefines, empty, or just white-space.</summary>
+        /// <param name="value">The value to examine.</param>
+        public bool HasValue(string value)
+        {
+            if (Script.IsNullOrUndefined(value)) return false;
+            if (string.IsNullOrEmpty(value)) return false;
+            if (value.Trim() == string.Empty) return false;
+            return true;
+        }
     }
 }

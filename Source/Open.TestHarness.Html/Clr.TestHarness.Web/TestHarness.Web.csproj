@@ -116,6 +116,7 @@
     <Content Include="Content\Scripts\TestHarness.Test.js" />
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
+    <Content Include="Views\Samples\SamplePart.aspx" />
     <Content Include="Views\Samples\Temp.aspx" />
     <Content Include="Views\TestHarness\Embed.aspx" />
     <Content Include="Content\Css\Open.TestHarness.IE.css" />

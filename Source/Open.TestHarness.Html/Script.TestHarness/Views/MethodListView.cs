@@ -1,6 +1,5 @@
 using System;
 using jQueryApi;
-using Open.Core;
 using Open.Core.Controls.Buttons;
 using Open.Core.Lists;
 using Open.Testing.Models;

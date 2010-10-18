@@ -96,10 +96,21 @@ namespace Open.Core.Helpers
         /// <param name="url">The URL to look for.</param>
         public bool IsLoaded(string url)
         {
+            // Setup initial conditions.
             if (Script.IsNullOrUndefined(url)) return false;
             url = url.ToLowerCase();
+
+            // Check if the script has been downloaded.
             if (loadedUrls.Contains(url)) return true;
             if (IsDeclared(url)) return true;
+
+            // Not Found: check if the SCRIPT file is referenced with a fully-qualified domain.
+            if (!url.StartsWith("http"))
+            {
+                if (IsLoaded(Helper.Url.PrependDomain(url))) return true;
+            }
+
+            // Finish up (Not Found).
             return false;
         }
 

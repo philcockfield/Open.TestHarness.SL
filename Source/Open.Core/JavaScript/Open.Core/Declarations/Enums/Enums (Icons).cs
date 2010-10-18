@@ -7,5 +7,10 @@ namespace Open.Core
         SilkAccept = 0,
         SilkError = 1,
         SilkExclamation = 2,
+        SilkEmoticonSmile = 3,
+        SilkEmoticonUnhappy = 4,
+        SilkUser = 5,
+        SilkStar = 6,
+        SilkBug = 7,
     }
 }

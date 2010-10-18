@@ -1,5 +1,4 @@
-﻿using System;
-using System.Html;
+﻿using System.Html;
 
 namespace Open.Core.Helpers
 {
@@ -11,7 +10,8 @@ namespace Open.Core.Helpers
         public string PrependDomain(string urlPath)
         {
             // Setup initial conditions.
-            if (Script.IsNullOrUndefined(urlPath) || string.IsNullOrEmpty(urlPath)) return urlPath;
+            if (!Helper.String.HasValue(urlPath)) return urlPath;
+            urlPath = urlPath.Trim();
             if (urlPath.StartsWith("http")) return urlPath;
             urlPath = Helper.String.RemoveStart(urlPath, "/");
 

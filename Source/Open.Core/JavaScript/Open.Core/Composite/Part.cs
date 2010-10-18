@@ -44,7 +44,8 @@ namespace Open.Core
 
         #region Methods
         /// <summary>Initializes the part.</summary>
-        public void Initialize()
+        /// <param name="callback">Action to invoke upon completion.</param>
+        public void Initialize(Action callback)
         {
             // Setup initial conditions.
             if (IsInitialized || isInitializing) return;
@@ -57,6 +58,7 @@ namespace Open.Core
                                  isInitializing = false;
                                  IsInitialized = true;
                                  FireInitialized();
+                                 Helper.Invoke(callback);
                              });
         }
 

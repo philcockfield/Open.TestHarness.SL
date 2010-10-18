@@ -192,13 +192,14 @@ namespace Open.Core
         /// <summary>Inserts a CSS link within the document head (only if the CSS is not already present).</summary>
         /// <param name="url">The URL of the CSS to load.</param>
         /// <returns>True if the link was inserted, of False if the link was already present.</returns>
-        public static bool InsertLink(string url)
+        /// <exception cref="Exception">Thrown if a URL was not specified.</exception>
+        public static void InsertLink(string url)
         {
-            if (IsLinked(url)) return false;
+            if (!Helper.String.HasValue(url)) return;
+            if (IsLinked(url)) return;
             jQuery
                 .Select(Html.Head)
                 .Append(string.Format("<link rel='Stylesheet' href='{0}' type='text/css' />", url));
-            return true;
         }
 
         /// <summary>Determines whether the specified URL has a link within the page.</summary>
@@ -210,13 +211,26 @@ namespace Open.Core
         /// <returns>The specified CSS link, or null if the link does not exist within the page.</returns>
         public static Element GetLink(string url)
         {
-            url = url.ToLowerCase();
+            // Setup initial conditions.
+            if (!Helper.String.HasValue(url)) return null;
+            url = url.ToLowerCase().Trim();
+
+            // Enumerate the colleciton of items.
             foreach (Element link in jQuery.Select("link[type='text/css']").GetElements())
             {
                 ElementAttribute href = link.GetAttributeNode(Html.Href);
                 if (Script.IsNullOrUndefined(href)) continue;
-                if (url == href.Value.ToLowerCase()) return link;
+                if (url == href.Value.ToLowerCase().Trim()) return link;
             }
+
+            // Not Found: check if the CSS file is referenced with a fully-qualified domain.
+            if (!url.StartsWith("http"))
+            {
+                Element link = GetLink(Helper.Url.PrependDomain(url));
+                if (link != null) return link;
+            }
+
+            // Finish up (Not Found).
             return null;
         }
         #endregion

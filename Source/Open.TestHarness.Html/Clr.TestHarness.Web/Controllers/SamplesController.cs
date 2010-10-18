@@ -11,5 +11,8 @@ namespace Open.TestHarness.Web.Controllers
 
         public virtual ActionResult JQuery() { return View(); }
         public virtual ActionResult Embed() { return View(); }
+
+        public virtual ActionResult SamplePart() { return View(); }
+
     }
 }
