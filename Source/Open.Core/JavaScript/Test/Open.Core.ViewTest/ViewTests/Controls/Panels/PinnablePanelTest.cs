@@ -27,8 +27,15 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
         #endregion
 
         #region Tests
+        public void Toggle__IsCollapsed()
+        {
+            panel.IsCollapsed = !panel.IsCollapsed;
+            Write_Properties();
+        }
+
         public void Write_Properties()
         {
+            Log.Info("foo", Icons.SilkEmoticonSmile); //TEMP 
             Log.WriteProperties(panel);
         }
         #endregion

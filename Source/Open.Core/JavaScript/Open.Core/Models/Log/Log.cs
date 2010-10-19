@@ -85,7 +85,7 @@ namespace Open.Core
         /// <summary>Writes a informational message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
         /// <param name="icon">An icon.</param>
-        public static void Info(object message, Icons icon) { Writer.WriteSeverity(message, LogSeverity.Info); }
+        public static void Info(object message, Icons icon) { Writer.WriteSeverity(message, LogSeverity.Info, icon); }
 
         /// <summary>Writes a debug message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
@@ -95,7 +95,7 @@ namespace Open.Core
         /// <summary>Writes a debug message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
         /// <param name="icon">An icon.</param>
-        public static void Debug(object message, Icons icon) { Writer.Debug(message); }
+        public static void Debug(object message, Icons icon) { Writer.WriteSeverity(message, LogSeverity.Debug, icon); }
 
         /// <summary>Writes a warning to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>

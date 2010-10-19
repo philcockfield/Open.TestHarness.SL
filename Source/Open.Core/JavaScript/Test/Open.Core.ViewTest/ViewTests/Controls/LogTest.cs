@@ -27,7 +27,9 @@ namespace Open.Core.Test.ViewTests.Controls
 
         #region Tests
         public void Log__Info() { Log.Info("Info"); }
+        public void Log__Info_with_icon() { Log.Info("Info", Icons.SilkEmoticonSmile); }
         public void Log__Debug() { Log.Debug("Debug"); }
+        public void Log__Debug_with_icon() { Log.Debug("Debug", Icons.SilkStar); }
         public void Log__Warning() { Log.Warning("Warning"); }
         public void Log__Error() { Log.Error(new Exception("My error.")); }
         public void Log__Null() { Log.Info(null); }
