@@ -91,11 +91,11 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                                     {
                                         if (button.IsPressed)
                                         {
-                                            Log.Warning("!! IsPressedChanged | IsPressed: " + button.IsPressed);
+                                            Log.Event("!! IsPressedChanged | IsPressed: " + button.IsPressed);
                                         }
                                         else
                                         {
-                                            Log.Success("!! IsPressedChanged | IsPressed: " + button.IsPressed);
+                                            Log.Event("!! IsPressedChanged | IsPressed: " + button.IsPressed);
                                         }
                                     };
         }

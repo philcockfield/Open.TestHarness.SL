@@ -48,7 +48,7 @@ namespace Open.Core.Helpers
         /// <param name="selector">The CSS selector for the script block containing the template HTML.</param>
         /// <returns>The specified template, or Null if it doesn't exist.</returns>
         public Template Get(string selector) { return GetInternal(selector, true); }
-        public Template GetInternal(string selector, bool checkCache)
+        private Template GetInternal(string selector, bool checkCache)
         {
             // Setup initial conditions.
             Template template = null;

@@ -15,7 +15,6 @@ namespace Open.Core.Controls.Buttons
         {
             // Setup initial conditions.
             buttonModel = model;
-            Css.InsertLink(Css.Urls.CoreButtons);
 
             // Ensure the required templates are downloaded.
             AddRequiredTemplate(ButtonTemplates.CommonBg, ButtonTemplates.TemplateUrl(ButtonTemplate.Common));

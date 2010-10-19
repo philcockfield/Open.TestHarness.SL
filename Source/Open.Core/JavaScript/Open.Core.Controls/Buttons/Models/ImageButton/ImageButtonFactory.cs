@@ -64,6 +64,7 @@ namespace Open.Core.Controls.Buttons
             button.CanToggle = true;
             button.CanFocus = false;
             button.BackgroundHighlighting = false;
+            button.SetSize(15, 15);
         }
         #endregion
     }

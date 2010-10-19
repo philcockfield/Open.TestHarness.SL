@@ -52,8 +52,6 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
                 button.SetSize(width, height);
             }
             AddButton(button);
-
-
         }
 
         private static void AddButton(ButtonModel button)

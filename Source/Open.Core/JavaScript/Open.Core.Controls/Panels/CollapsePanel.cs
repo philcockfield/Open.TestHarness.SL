@@ -77,7 +77,7 @@ namespace Open.Core.Controls
 
         #region Properties
         /// <summary>Gets the DIV that contains the display content of the panel.  </summary>
-        public jQueryObject Content { get { return content; } }
+        public jQueryObject Content{get { return content; }}
 
         /// <summary>Gets the slide animation settings.</summary>
         public AnimationSettings Slide { get { return slide ?? (slide = new AnimationSettings()); } }

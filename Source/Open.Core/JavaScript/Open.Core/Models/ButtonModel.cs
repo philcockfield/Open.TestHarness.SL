@@ -12,6 +12,9 @@ namespace Open.Core.Controls.Buttons
 
         public event EventHandler IsPressedChanged;
         private void FireIsPressedChanged() { if (IsPressedChanged != null) IsPressedChanged(this, new EventArgs()); }
+
+        public event EventHandler LayoutInvalidated;
+        protected void FireLayoutInvalidated(){if (LayoutInvalidated != null) LayoutInvalidated(this, new EventArgs());}
         #endregion
 
         #region Head

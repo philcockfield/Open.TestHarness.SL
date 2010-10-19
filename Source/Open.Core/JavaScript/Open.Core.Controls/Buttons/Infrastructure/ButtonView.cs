@@ -55,15 +55,12 @@ namespace Open.Core.Controls.Buttons
             // Setup initial conditions.
             if (Script.IsNullOrUndefined(model)) model = new ButtonModel();
             this.model = model;
-            Container.AddClass(ClassButton);
-            Container.AddClass(Css.Classes.NoSelect);
             Focus.BrowserHighlighting = false;
 
-            // Make the container position relative (if it doesn't have an explicit position set).))
-            if (string.IsNullOrEmpty(Container.GetCSS(Css.Position)))
-            {
-                Container.CSS(Css.Position, Css.Relative);
-            }
+            // Setup CSS.
+            Css.InsertLink(Css.Urls.CoreButtons);
+            Container.AddClass(ClassButton);
+            Container.AddClass(Css.Classes.NoSelect);
 
             // Insert the content and mask containers.
             divContent = CreateContainer("buttonContent");
@@ -74,6 +71,7 @@ namespace Open.Core.Controls.Buttons
             contentController = new ButtonContentController(this, divContent);
 
             // Wire up events.
+            Model.LayoutInvalidated += OnLayoutInvalidated;
             Helper.ListenPropertyChanged(Model, OnModelPropertyChanged);
             eventController.PropertyChanged += OnEventControllerPropertyChanged;
             GotFocus += delegate { UpdateLayout(); };
@@ -88,9 +86,11 @@ namespace Open.Core.Controls.Buttons
             SyncCanFocus();
         }
 
+
         /// <summary>Destructor.</summary>
         protected override void OnDisposed()
         {
+            Model.LayoutInvalidated -= OnLayoutInvalidated;
             Helper.UnlistenPropertyChanged(Model, OnModelPropertyChanged);
             eventController.Dispose();
             contentController.Dispose();
@@ -105,6 +105,8 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Event Handlers
+        private void OnLayoutInvalidated(object sender, EventArgs e) { UpdateLayout(); }
+
         private void OnKeyPress(int keyCode)
         {
             if (!IsEnabled) return;

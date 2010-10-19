@@ -13,6 +13,12 @@ namespace Open.Core
 
         /// <summary>Fires when the IsPressed state changes.</summary>
         event EventHandler IsPressedChanged;
+
+        /// <summary>Fires when a property values changes.</summary>
+        event PropertyChangedHandler PropertyChanged;
+
+        /// <summary>Fires when the layout has been invalidated.</summary>
+        event EventHandler LayoutInvalidated;
         #endregion
 
         #region Properties

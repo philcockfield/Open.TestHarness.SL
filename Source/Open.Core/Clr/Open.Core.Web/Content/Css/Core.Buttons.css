@@ -1,11 +1,9 @@
 ﻿/* Button Infrastructure */
+.button { position:relative; }
+
 .button .clickMask
 {
     background:transparent;
-    /*
-    background-image:url(/Open.Assets/Images/Transparent.png);
-
-*/
 }
 
 

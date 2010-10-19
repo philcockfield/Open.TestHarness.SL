@@ -17,8 +17,11 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
 
             // Wire up events.
             CollapsePanelTest.LogEvents(panel);
+            panel.Pinned += delegate { Log.Event("Pinned"); };
+            panel.Unpinned += delegate { Log.Event("Unpinned"); };
 
             // Setup test styles.
+            panel.Padding.Top = 24;
             panel.SetSize(200, 350);
             panel.Background = Color.Red(0.1);
             panel.Content.CSS(Css.Background, Color.Red(0.4));
@@ -27,15 +30,11 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
         #endregion
 
         #region Tests
-        public void Toggle__IsCollapsed()
-        {
-            panel.IsCollapsed = !panel.IsCollapsed;
-            Write_Properties();
-        }
+        public void Toggle__IsCollapsed() { panel.IsCollapsed = !panel.IsCollapsed; }
+        public void Toggle__IsPinned() { panel.IsPinned = !panel.IsPinned; }
 
         public void Write_Properties()
         {
-            Log.Info("foo", Icons.SilkEmoticonSmile); //TEMP 
             Log.WriteProperties(panel);
         }
         #endregion
