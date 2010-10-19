@@ -37,23 +37,23 @@ namespace Open.Core.Test.ViewTests.Core
         #endregion
 
         #region Methods
-        public void Download()
+        public void Load()
         {
             TestHarness.Reset();
-            DownloadInternal(InsertContainer());
+            LoadPart(InsertContainer());
         }
 
-        public void DownloadTwice()
+        public void Load_Twice()
         {
             TestHarness.Reset();
-            DownloadInternal(InsertContainer());
-            DownloadInternal(InsertContainer());
+            LoadPart(InsertContainer());
+            LoadPart(InsertContainer());
         }
 
-        private void DownloadInternal(jQueryObject container)
+        private void LoadPart(jQueryObject container)
         {
             Log.Info("Downloading part...");
-            partDefinition.Download(container, delegate(Part value)
+            partDefinition.Load(container, delegate(Part value)
                                         {
                                             part = value as SamplePart;
                                             if (partDefinition.HasError) { Log.Error("Download callback (failed)"); } else { Log.Success("Download callback (succeeded) - " + part.InstanceId); }
@@ -61,14 +61,14 @@ namespace Open.Core.Test.ViewTests.Core
         }
 
         public void Clear__ScriptUrls() { partDefinition.ScriptUrls = null; }
-        public void Clear__CssUrls() { partDefinition.CssUrls = null; }
+        public void Clear__CssUrls() { partDefinition.ResourceUrls = null; }
         public void Clear__EntryPoint() { partDefinition.EntryPoint = null; }
         public void Failure_ScriptUrls() { partDefinition.ScriptUrls = "NotAFile.js"; }
 
         public void Write__Urls()
         {
             WriteUrls("ScriptUrls: ", partDefinition.ScriptUrls);
-            WriteUrls("CssUrls: ", partDefinition.CssUrls);
+            WriteUrls("CssUrls: ", partDefinition.ResourceUrls);
         }
 
         public void Write__Properties()

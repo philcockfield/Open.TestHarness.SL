@@ -14,7 +14,7 @@ namespace Open.Core
     {
         #region Head
         public const string PropScriptUrls = "ScriptUrls";
-        public const string PropCssUrls = "CssUrls";
+        public const string PropResourceUrls = "ResourceUrls";
         public const string PropEntryPoint = "EntryPoint";
         public const string PropLoadError = "LoadError";
         public const string PropHasError = "HasError";
@@ -43,15 +43,16 @@ namespace Open.Core
         ///     The paths to the script(s) required for the part.
         ///     If multiple scripts a semi-colon (;) seperated list is expected.
         /// </param>
-        /// <param name="cssUrls">
-        ///     The paths to the CSS file(s) required for the part.
-        ///     If multiple CSS fiels a semi-colon (;) seperated list is expected.
+        /// <param name="resourceUrls">
+        ///     The paths to the resource file(s) that are required by the part (images, CSS).
+        ///     Multiple files are seperated by a semi-colon (;).
+        ///     Images (.png .jpg) are pre-loaded using the [ImagePreloader].
         /// </param>
-        public PartDefinition(string entryPoint, string scriptUrls, string cssUrls)
+        public PartDefinition(string entryPoint, string scriptUrls, string resourceUrls)
         {
             EntryPoint = entryPoint;
             ScriptUrls = scriptUrls;
-            CssUrls = cssUrls;
+            ResourceUrls = resourceUrls;
         }
         #endregion
 
@@ -67,13 +68,14 @@ namespace Open.Core
         }
 
         /// <summary>
-        ///     Gets or sets the paths to the CSS file(s) required for the part.
-        ///     If multiple CSS fiels a semi-colon (;) seperated list is expected.
+        ///     Gets or sets the paths to the CSS and image file(s) required for the part.
+        ///     Multiple files are seperated by a semi-colon (;).
+        ///     Images (.png .jpg) are pre-loaded using the [ImagePreloader].
         /// </summary>
-        public string CssUrls
+        public string ResourceUrls
         {
-            get { return (string)Get(PropCssUrls, null); }
-            set { Set(PropCssUrls, value, null); }
+            get { return (string)Get(PropResourceUrls, null); }
+            set { Set(PropResourceUrls, value, null); }
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Open.Core
         public Exception LoadError
         {
             get { return (Exception)Get(PropLoadError, null); }
-            set
+            internal set
             {
                 if (Set(PropLoadError, value, null))
                 {
@@ -97,6 +99,9 @@ namespace Open.Core
                 }
             }
         }
+
+        /// <summary>Gets whether a download error occured.</summary>
+        public bool HasError { get { return LoadError != null; } }
 
         /// <summary>Gets or sets the timeout (in seconds) to wait while downloading the part before it is considered a failure.</summary>
         public double DownloadTimeout
@@ -106,25 +111,11 @@ namespace Open.Core
         }
         #endregion
 
-        #region Properties : Boolean
-        /// <summary>Gets whether a download error occured.</summary>
-        public bool HasError { get { return LoadError != null; } }
-
-        /// <summary>Gets whether the part has Script URLs.</summary>
-        public bool HasScriptUrls { get { return Helper.String.HasValue(ScriptUrls); } }
-
-        /// <summary>Gets whether the part has CSS file URLs.</summary>
-        public bool HasCssUrls { get { return Helper.String.HasValue(CssUrls); } }
-
-        /// <summary>Gets whether the part has an entry point.</summary>
-        public bool HasEntryPoint { get { return Helper.String.HasValue(EntryPoint); } }
-        #endregion
-
         #region Properties : Boolean (IsDownloaded)
         /// <summary>Gets whether all the required files have been downloaded.</summary>
         public bool IsDownloaded
         {
-            get { return IsScriptsDownloaded && IsCssDownloaded; }
+            get { return IsScriptsDownloaded && IsResourcesDownloaded; }
         }
 
         /// <summary>Gets whether the script file(s) have been downloaded.</summary>
@@ -137,20 +128,33 @@ namespace Open.Core
             }
         }
 
-        /// <summary>Gets whether the CSS file(s) have been inserted.</summary>
-        public bool IsCssDownloaded
+        /// <summary>Gets whether the defined resource file(s) have been loaded into the page.</summary>
+        public bool IsResourcesDownloaded
         {
             get
             {
-                if (!HasCssUrls) return true; // Nothing to download.
-                foreach (string url in CssUrls.Split(PathDivider))
+                if (!HasResourceUrls) return true; // Nothing to download.
+                foreach (string url in ResourceUrls.Split(PathDivider))
                 {
                     if (!Helper.String.HasValue(url)) continue;
                     if (!Css.IsLinked(url)) return false;
+
+                    // TODO - Extend to include all resource types (images + CSS).
                 }
                 return true;
             }
         }
+        #endregion
+
+        #region Properties (Internal)
+        /// <summary>Gets whether the part has Script URLs.</summary>
+        private bool HasScriptUrls { get { return Helper.String.HasValue(ScriptUrls); } }
+
+        /// <summary>Gets whether the part has CSS file URLs.</summary>
+        private bool HasResourceUrls { get { return Helper.String.HasValue(ResourceUrls); } }
+
+        /// <summary>Gets whether the part has an entry point.</summary>
+        private bool HasEntryPoint { get { return Helper.String.HasValue(EntryPoint); } }
         #endregion
 
         #region Methods
@@ -161,49 +165,79 @@ namespace Open.Core
         #endregion
 
         #region Methods : Download
-        /// <summary>Downloads and initializes the part.</summary>
+        /// <summary>Loads and initializes the part (downloading resources as required).</summary>
         /// <param name="container">The container that the part resides within.</param>
         /// <param name="onComplete">Action to invoke upon completion.</param>
         [AlternateSignature]
-        public extern void Download(jQueryObject container, PartCallback onComplete);
+        public extern virtual void Load(jQueryObject container, PartCallback onComplete);
 
-        /// <summary>Downloads and initializes the part.</summary>
+        /// <summary>Loads and optionally initializes the part (downloading resources as required).</summary>
         /// <param name="container">The container that the part resides within.</param>
         /// <param name="onComplete">Action to invoke upon completion.</param>
-        /// <param name="initialize">Flag indicating if the part should be initialized after download.</param>
-        public void Download(jQueryObject container, PartCallback onComplete, bool initialize)
+        /// <param name="initializeOnComplete">Flag indicating if the part should be initialized after download.</param>
+        public virtual void Load(jQueryObject container, PartCallback onComplete, bool initializeOnComplete)
         {
             // Setup initial conditions.
-            if (!HasEntryPoint) throw new Exception("There is no entry point method to invoke.");
+            if (!HasEntryPoint) throw new Exception("There is no entry point method for the Part.");
+            if (Script.IsNullOrUndefined(initializeOnComplete)) initializeOnComplete = true;
+
+            // Insert resources.
             InsertCssLinks();
+            // TODO - Extend to include all resource types (images + CSS).
+
+            // Progress flags.
+            bool downloaded = false;
 
             // Setup failure timeout.
             DelayedAction timeout = new DelayedAction(DownloadTimeout, delegate
                                     {
-                                        string msg = string.Format("Failed to download the module at '{0}'.  Timed out.", ScriptUrls);
+                                        string msg = downloaded
+                                                    ? string.Format("Failed to initialize the Part at '{0}'.  The Part did not call back from its 'OnInitialize' method.", EntryPoint)
+                                                    : string.Format("Failed to download the Part at '{0}'.  Timed out.", EntryPoint);
                                         SetDownloadError(msg);
-                                        if (onComplete != null) onComplete(null);
+                                        FinishLoad(null, null, onComplete);
                                     });
             timeout.Start();
 
             // Download the scripts
             DownloadScripts(delegate
                                 {
-                                    timeout.Dispose();
+                                    downloaded = true;
 
-                                    // Retrieve and initialize the part.
-                                    Part part = DynamicallyCreatePart();
-                                    SetupPart(part, container);
-
-                                    if (Script.IsNullOrUndefined(initialize) || initialize)
+                                    // Retrieve the part.
+                                    Part part = CreatePart();
+                                    if (part == null && HasError)
                                     {
+                                        FinishLoad(timeout, part, onComplete);
+                                        return;
+                                    }
+
+                                    // Initialize the part.
+                                    SetupPart(part, container);
+                                    if (initializeOnComplete)
+                                    {
+                                        if (!timeout.IsRunning) return; // Callback occurs after timeout elapsed.
                                         part.Initialize(delegate
                                                             {
-                                                                // Finish up.
-                                                                if (onComplete != null) onComplete(part);
+                                                                FinishLoad(timeout, part, onComplete);
                                                             });
                                     }
+                                    else
+                                    {
+                                        FinishLoad(timeout, part, onComplete);
+                                    }
                                 });
+        }
+
+        private static void FinishLoad(DelayedAction timeout, Part part, PartCallback onComplete)
+        {
+            if (timeout != null)
+            {
+                if (!timeout.IsRunning) return; // Callback occurs after timeout elapsed.
+                timeout.Dispose();
+            }
+            if (part != null) part.UpdateLayout();
+            if (onComplete != null) onComplete(part);
         }
 
         private void SetupPart(Part part, jQueryObject container)
@@ -220,8 +254,8 @@ namespace Open.Core
         #region Internal
         private void InsertCssLinks()
         {
-            if (!HasCssUrls) return;
-            foreach (string url in CssUrls.Split(PathDivider))
+            if (!HasResourceUrls) return;
+            foreach (string url in ResourceUrls.Split(PathDivider))
             {
                 // NB: Does not insert the same link multiple times within the page.
                 Css.InsertLink(FormatUrl(url));
@@ -272,7 +306,7 @@ namespace Open.Core
                                 name.ToLocaleLowerCase());
         }
 
-        private Part DynamicallyCreatePart()
+        private Part CreatePart()
         {
             // Invoke the entry point method.
             string method = FormatMethod();

@@ -49,10 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base Classes\ControllerBase.cs" />
+    <Compile Include="Base Classes\DisposableBase.cs" />
     <Compile Include="Base Classes\ModelBase.cs" />
     <Compile Include="Composite\PartDefinition.cs" />
     <Compile Include="Composite\DiContainer.cs" />
     <Compile Include="Composite\Part.cs" />
+    <Compile Include="Composite\PartDownloader.cs" />
     <Compile Include="Declarations\Enums\Enums %28Css%29.cs" />
     <Compile Include="Declarations\Enums\Enums %28Html%29.cs" />
     <Compile Include="Declarations\Enums\Enums %28Icons%29.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="Declarations\Interfaces\ISize.cs" />
     <Compile Include="Models\AnimationSettings.cs" />
     <Compile Include="Models\ButtonModel.cs" />
+    <Compile Include="Models\Log\BrowserConsole.cs" />
+    <Compile Include="Models\Log\PropertyWriter.cs" />
     <Compile Include="Models\Spacing.cs" />
     <Compile Include="Models\ViewFocus.cs" />
     <Compile Include="Templating\Template.cs" />

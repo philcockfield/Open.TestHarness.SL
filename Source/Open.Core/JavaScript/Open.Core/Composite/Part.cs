@@ -10,6 +10,10 @@ namespace Open.Core
         /// <summary>Fires when the part has completed initializing.</summary>
         public event EventHandler Initialized;
         private void FireInitialized(){if (Initialized != null) Initialized(this, new EventArgs());}
+
+        /// <summary>Fires when the UpdateLayout method is invoked.</summary>
+        public event EventHandler LayoutRequired;
+        private void FireLayoutRequired(){if (LayoutRequired != null) LayoutRequired(this, new EventArgs());}
         #endregion
 
         #region Head
@@ -69,6 +73,16 @@ namespace Open.Core
         ///     if available, will be set.
         /// </remarks>
         protected abstract void OnInitialize(Action callback);
+
+        /// <summary>Forces an update to the Part's layout.</summary>
+        public void UpdateLayout()
+        {
+            OnUpdateLayout();
+            FireLayoutRequired();
+        }
+
+        /// <summary>Implemented in deriving class to update the Part's layout.</summary>
+        protected virtual void OnUpdateLayout() { }
         #endregion
     }
 }

@@ -8,11 +8,11 @@ namespace Open.Core.Test.ViewTests.Controls
     {
         #region Head
         private string myReadWrite;
+        LogTest objectProperty;
         #endregion
 
         #region Properties
         public static string MyStatic { get { return "My Static Value"; } }
-
         public string MyReadOnly { get { return "Foo"; } }
         public string MyReadWrite
         {
@@ -22,6 +22,7 @@ namespace Open.Core.Test.ViewTests.Controls
         public string MyNullProperty { get { return null; } }
         public string MyErrorProperty { get { throw new Exception("Error from Property"); } }
         private string MyPrivateProperty { get { return "Private Value"; } }
+        public LogTest ObjectProperty { get { return objectProperty ?? (objectProperty = new LogTest()); } }
         #endregion
 
         #region Tests

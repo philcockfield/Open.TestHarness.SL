@@ -24,6 +24,7 @@ namespace Open.Core.Test
 
             // View Tests
             TestHarness.RegisterClass(typeof(CollapsePanelTest));
+            TestHarness.RegisterClass(typeof(PinnablePanelTest));
             TestHarness.RegisterClass(typeof(PartTest));
             TestHarness.RegisterClass(typeof(IconTest));
             TestHarness.RegisterClass(typeof(TemplateTest));

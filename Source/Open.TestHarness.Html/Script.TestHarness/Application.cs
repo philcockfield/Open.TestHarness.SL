@@ -13,6 +13,8 @@ namespace Open.Testing
     public class Application
     {
         #region Head
+        public const string PublicDomain = "http://TestHarness.org";
+
         // View.
         private static ShellView shell;
 
@@ -74,9 +76,6 @@ namespace Open.Testing
             ImagePreloader.Preload(icon.Path(Icons.SilkAccept));
             ImagePreloader.Preload(icon.Path(Icons.SilkExclamation));
             ImagePreloader.Preload(icon.Path(Icons.SilkError));
-            ImagePreloader.Preload("/Content/Images/Sidebar.BackMask.png");
-            ImagePreloader.Preload(AddPackageView.IconJs);
-            ImagePreloader.Preload(AddPackageView.IconMethod);
         }
 
         private static void AddPackage(string scriptUrl, string initMethod)

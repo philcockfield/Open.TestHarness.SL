@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using Open.Core.Controls.HtmlPrimitive;
 using Open.Core.Helpers;
 
@@ -14,15 +12,13 @@ namespace Open.Core
         public const string PropertyEvent = "c_log_event";
         public const string Icon = "c_log_icon";
         public const string ListTitle = "c_log_listTitle";
+        public const string TotalChars = "c_log_totalChars";
     }
-
 
     /// <summary>An output log.</summary>
     public class LogWriter : ModelBase, ILog
     {
         #region Head
-        public const string KeyGetter = "get_";
-        public const string KeyPrivate = "_";
         public static readonly string ClassIcon = ImagePaths.ApiIconPath + "Class.png";
         public static readonly string EventIcon = ImagePaths.ApiIconPath + "Event.png";
 
@@ -99,6 +95,7 @@ namespace Open.Core
         public void WriteSeverity(object message, LogSeverity severity)
         {
             WriteInternal(message, LogCss.SeverityClass(severity), null, ToIconPath(severity));
+            BrowserConsole.WriteSeverity(message, severity);
         }
 
         public IHtmlList WriteList(string title, string backgroundColor)
@@ -123,34 +120,7 @@ namespace Open.Core
 
         public void WriteProperties(object instance, string title)
         {
-            // Setup initial conditions.
-            if (Script.IsNullOrUndefined(instance)) { Write(instance, null); return; }
-
-            // Format the title (generate default title if the caller did not specify it.  If 'null' was explicitly passed no title is shown).
-            string titleIcon = null;
-            if (Script.IsUndefined(title))
-            {
-                title = string.Format("{0}:", instance.GetType().Name);
-                titleIcon = ClassIcon;
-            }
-
-            // Create the property list.
-            IHtmlList list = View.InsertList(title, null, null, titleIcon);
-            list.Container.AddClass(LogCssClasses.PropertyList);
-
-            // Insert the property values.
-            foreach (DictionaryEntry entry in Dictionary.GetDictionary(instance))
-            {
-                string propName = GetPropertyName(entry.Key);
-                if (propName == null) continue;
-
-                string item = string.Format(
-                                    "<span class='{0}'>{1}:</span>&nbsp;{2}",
-                                    LogCssClasses.PropertyName,
-                                    propName,
-                                    GetPropertyValue(instance, entry));
-                list.Add(item);
-            }
+            new PropertyWriter(this).Write(instance, title);
         }
 
         public void Clear()
@@ -196,41 +166,6 @@ namespace Open.Core
                 case LogSeverity.Error: return icon.Path(Icons.SilkExclamation);
             }
             return null;
-        }
-
-        private static string GetPropertyName(string key)
-        {
-            if (!key.StartsWith(KeyGetter)) return null;
-            key = Helper.String.RemoveStart(key, KeyGetter);
-            if (key.StartsWith(KeyPrivate)) return null;
-            return Helper.String.ToSentenceCase(key);
-        }
-
-        private static string GetPropertyValue(object instance, DictionaryEntry property)
-        {
-            // Retrieve the value.
-            object value = null;
-            bool hasError = false;
-            try
-            {
-                Function func = Helper.Reflection.GetFunction(instance, property.Key);
-                if (func != null) value = func.Call(instance);
-            }
-            catch (Exception e)
-            {
-                hasError = true;
-                value = "ERROR: " + e.Message;
-            }
-
-            // Prepare the CSS.
-            string cssClass = LogCssClasses.PropertyValue;
-            if (hasError) cssClass += " " + LogCssClasses.PropertyError;
-
-            // Format into SPAN.
-            string text = Script.IsNullOrUndefined(value)
-                               ? "<null>".HtmlEncode()
-                               : Helper.String.FormatToString(value).HtmlEncode();
-            return string.Format("<span class='{0}'>{1}</span>", cssClass, text);
         }
         #endregion
     }

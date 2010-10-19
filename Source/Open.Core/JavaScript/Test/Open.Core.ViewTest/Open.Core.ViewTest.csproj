@@ -67,6 +67,7 @@
     <Compile Include="ViewTests\Controls\LogTest.cs" />
     <Compile Include="ViewTests\Controls\HtmlPrimitive\HtmlListTest.cs" />
     <Compile Include="ViewTests\Controls\Panels\CollapsePanelTest.cs" />
+    <Compile Include="ViewTests\Controls\Panels\PinnablePanelTest.cs" />
     <Compile Include="ViewTests\Core\IconTest.cs" />
     <Compile Include="ViewTests\Core\PartTest.cs" />
     <Compile Include="ViewTests\Core\TemplateTest.cs" />

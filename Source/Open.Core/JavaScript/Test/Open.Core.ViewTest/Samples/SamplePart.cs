@@ -15,7 +15,11 @@ namespace Open.Core.Test.Samples
         #endregion
 
         #region Methods
-        public static SamplePart Create() { return new SamplePart(); }
+        public static SamplePart Create()
+        {
+//            throw new Exception("MY FOO"); //TEMP 
+            return new SamplePart();
+        }
 
         protected override void OnInitialize(Action callback)
         {
@@ -32,6 +36,8 @@ namespace Open.Core.Test.Samples
 
                                             Container.Empty();
                                             template.AppendTo(Container, dic);
+
+                                            callback();
                                         });
         }
         #endregion

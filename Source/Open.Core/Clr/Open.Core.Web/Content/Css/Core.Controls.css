@@ -31,6 +31,11 @@ div.c_log_list { overflow:auto; }
     margin-right:55px;
 }
 
+.c_log_totalChars  {
+    font-size:7pt;
+    color:#7e7e7e;
+}
+
 /* ----------- Log : Dividers ----------- */
 .c_log_lineBreak { border-bottom-color:#f35ae7; }
 div.c_log_margin {

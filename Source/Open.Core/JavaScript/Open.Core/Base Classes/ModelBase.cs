@@ -4,51 +4,33 @@ using System.Collections;
 namespace Open.Core
 {
     /// <summary>Base class for data models.</summary>
-    public abstract class ModelBase : IModel, INotifyPropertyChanged, IDisposable, INotifyDisposed
+    public abstract class ModelBase : DisposableBase, IModel, INotifyPropertyChanged, IDisposable, INotifyDisposed
     {
         #region Events
         public event PropertyChangedHandler PropertyChanged;
-
-        public event EventHandler Disposed;
-        private void FireDisposed(){if (Disposed != null) Disposed(this, new EventArgs());}
         #endregion
 
         #region Head
-        private bool isDisposed;
         private Dictionary propertyBag;
         private ArrayList propertRefs;
         #endregion
 
         #region Properties
-        public bool IsDisposed { get { return isDisposed; } }
-
         private Dictionary PropertyBag { get { return propertyBag ?? (propertyBag = new Dictionary()); } }
         private ArrayList PropertyRefs { get { return propertRefs ?? (propertRefs = new ArrayList()); } }
         #endregion
 
         #region Methods
-        /// <summary>Disposes of the object.</summary>
-        public void Dispose()
-        {
-            // Setup initial conditions.
-            if (isDisposed) return;
-
-            // Dispose of property-refs.
-            Helper.Collection.DisposeAndClear(PropertyRefs);
-            FireDisposed();
-
-            // Finish up.
-            OnDisposed();
-            isDisposed = true;
-        }
-
         /// <summary>Serializes the model to JSON.</summary>
         public virtual string ToJson() { return Helper.Json.Serialize(this); }
         #endregion
 
         #region Methods : Protected
-        /// <summary>Invoked when the model is disposed.</summary>
-        protected virtual void OnDisposed() { }
+        protected override void OnDisposed()
+        {
+            Helper.Collection.DisposeAndClear(PropertyRefs);
+            base.OnDisposed();
+        }
 
         /// <summary>Fires the 'PropertyChanged' event.</summary>
         /// <param name="propertyName">The name of the property that has changed.</param>

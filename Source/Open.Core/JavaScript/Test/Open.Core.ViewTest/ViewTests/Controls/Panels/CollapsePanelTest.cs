@@ -8,15 +8,12 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
     {
         #region Head
         private CollapsePanel panel;
-        private IView view;
-        private readonly jQueryObject content = Html.CreateDiv();
 
         public void ClassInitialize()
         {
             // Setup initial conditions.
             panel = new CollapsePanel();
-            view = panel.CreateView(content);
-            TestHarness.AddControl(view);
+            TestHarness.AddControl(panel);
 
             // Initialize panel settings.
             panel.Padding.Change(10);
@@ -28,10 +25,10 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
             panel.Collapsed += delegate { Log.Event("Collapsed"); };
 
             // Setup test styles.
-            view.SetSize(200, 450);
-            view.Background = Color.Red(0.1);
-            content.CSS(Css.Background, Color.Red(0.4));
-            content.Append("123456789 123456789");
+            panel.SetSize(200, 450);
+            panel.Background = Color.Red(0.1);
+            panel.Content.CSS(Css.Background, Color.Red(0.4));
+            panel.Content.Append("123456789 123456789");
         }
         #endregion
 
@@ -86,7 +83,7 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
 
         public void Toggle__Size()
         {
-            view.Width = view.Width >= 200 ? 60 : 200;
+            panel.Width = panel.Width >= 200 ? 60 : 200;
             TestHarness.UpdateLayout();
         }
 

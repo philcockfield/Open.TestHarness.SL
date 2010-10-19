@@ -4,9 +4,9 @@
 using System;
 using System.Collections;
 
-namespace Open.Core.Controls.Panels
+namespace Open.Core.Controls
 {
-    public class PinnablePanel
+    public class PinnablePanel : ViewBase
     {
     }
 }

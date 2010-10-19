@@ -1,11 +1,12 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core.Controls
 {
     /// <summary>A panel that can collapse.</summary>
-    public class CollapsePanel : ModelBase
+    public class CollapsePanel : ViewBase
     {
         #region Events
         /// <summary>Fires when the panels starts collapsing.</summary>
@@ -14,7 +15,7 @@ namespace Open.Core.Controls
 
         /// <summary>Fires when the panel has finished collapsing.</summary>
         public event EventHandler Collapsed;
-        internal void FireCollapsed()
+        private void FireCollapsed()
         {
             Helper.Invoke(collapsingCallback);
             collapsingCallback = null;
@@ -27,7 +28,7 @@ namespace Open.Core.Controls
 
         /// <summary>Fires when the panel has finished inflating (uncollapsed).</summary>
         public event EventHandler Inflated;
-        internal void FireInflated()
+        private void FireInflated()
         {
             Helper.Invoke(inflatingCallback);
             inflatingCallback = null;
@@ -51,9 +52,33 @@ namespace Open.Core.Controls
         private AnimationSettings slide;
         internal int inflateToTarget = NoTargetSize;
         private readonly Spacing padding = new Spacing();
+
+        private readonly jQueryObject content;
+        private int inflatedSize;
+
+
+        /// <summary>Constructor.</summary>
+        [AlternateSignature]
+        public extern CollapsePanel();
+
+        /// <summary>Constructor.</summary>
+        /// <param name="container">The root HTML element of the control (if null a <DIV></DIV> is generated).</param>
+        public CollapsePanel(jQueryObject container) : base(container)
+        {
+            // Setup initial conditions.
+            Container.AddClass(CssClass);
+
+            // Initialize the content panel.
+            content = Html.CreateDiv();
+            Padding.Sync(content);
+            Container.Append(content);
+        }
         #endregion
 
         #region Properties
+        /// <summary>Gets the DIV that contains the display content of the panel.  </summary>
+        public jQueryObject Content { get { return content; } }
+
         /// <summary>Gets the slide animation settings.</summary>
         public AnimationSettings Slide { get { return slide ?? (slide = new AnimationSettings()); } }
 
@@ -72,7 +97,7 @@ namespace Open.Core.Controls
             {
                 if (Set(PropIsCollapsed, value, DefaultIsCollapsed))
                 {
-                    if (value) { HideInternal(null); } else { InflateInternal(null); } // Show or hide if value has changed.
+                    if (value) { CollapseInternal(null); } else { InflateInternal(null); } // Show or hide if value has changed.
                     FirePropertyChanged(PropIsInflated); // Fire change event for inverse property.
                 }
             }
@@ -93,6 +118,11 @@ namespace Open.Core.Controls
 
         /// <summary>Gets or sets the pixel padding within the panel.</summary>
         public Spacing Padding { get { return padding; } }
+        #endregion
+
+        #region Properties : Internal
+        private string CssAttribute { get { return Plane == Plane.Horizontal ? Css.Width : Css.Height; } }
+        private SizeDimension Dimension { get { return Css.ToSizeDimension(Plane); } }
         #endregion
 
         #region Methods
@@ -118,6 +148,7 @@ namespace Open.Core.Controls
 
             // Alert listeners.
             FireInflating();
+            InflateAnimation();
         }
 
         /// <summary>Collapses the panel.</summary>
@@ -127,7 +158,7 @@ namespace Open.Core.Controls
             if (IsCollapsed) return;
             IsCollapsed = true; // Internal animation is called via the IsCollapsed property logic.
         }
-        private void HideInternal(Action callback)
+        private void CollapseInternal(Action callback)
         {
             // Store callback.
             if (callback == null) callback = delegate { }; // Dummy callback.
@@ -135,17 +166,68 @@ namespace Open.Core.Controls
 
             // Alert listeners.
             FireCollapsing();
-        }
-
-        /// <summary>Creates an instance of the view for the panel (Factory method).</summary>
-        /// <param name="content">
-        ///     The content that resides within the panel.
-        ///     NB: This content panel (typically a DIV) is set to 'absolute fill'.
-        /// </param>
-        public IView CreateView(jQueryObject content)
-        {
-            return new CollapsePanelView(this, content);
+            CollapseAnimation();
         }
         #endregion
+
+        #region Internal
+        private void FixContentSize()
+        {
+            // NB: Fixing the size prevents the content from wrapping during a a collapse 
+            //       operation.  Wrapping is restored after inflaction via 'ReleaseContentSize'.
+            SetContentSize(Css.GetDimension(content, Dimension));
+        }
+
+        private void ReleaseContentSize()
+        {
+            content.CSS(CssAttribute, string.Empty);
+        }
+
+        private void SetContentSize(int value)
+        {
+            content.CSS(CssAttribute, value + Css.Px);
+        }
+        #endregion
+
+        #region Internal : Animation
+        private void InflateAnimation()
+        {
+            // Setup initial conditions.
+            int finalSize = inflateToTarget == CollapsePanel.NoTargetSize
+                                                                                        ? inflatedSize
+                                                                                        : inflateToTarget;
+            SetContentSize(finalSize - Padding.GetOffset(Plane));
+
+            // Animate.
+            Dictionary properties = new Dictionary();
+            properties[CssAttribute] = finalSize;
+            Container.Animate(
+                                properties,
+                                Slide.ToMsecs(),
+                                Slide.Easing,
+                                delegate
+                                {
+                                    ReleaseContentSize();
+                                    FireInflated();
+                                });
+        }
+
+        private void CollapseAnimation()
+        {
+            // Store original size.
+            inflatedSize = Plane == Plane.Horizontal ? Width : Height;
+            FixContentSize();
+
+            // Animate.
+            Dictionary properties = new Dictionary();
+            properties[CssAttribute] = 0;
+            Container.Animate(
+                                properties,
+                                Slide.ToMsecs(),
+                                Slide.Easing,
+                                FireCollapsed);
+        }
+        #endregion
+
     }
 }
