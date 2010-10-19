@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using jQueryApi;
 using Open.Core.Controls.HtmlPrimitive;
 using Open.Core.Helpers;
 
@@ -93,10 +94,13 @@ namespace Open.Core
 
             // Prepare the text version of the value.
             string text = hasValue
-                              ? String.FormatToString(value.ToString())
-                              : "<null>";
-            text = text.HtmlEncode();
-            if (hasValue) text = Shorten(FormatKnownValues(value, text));
+                              ? String.FormatToString(value)
+                              : "<null>".HtmlEncode();
+            if (hasValue)
+            {
+                text = FormatKnownValues(value, text);
+                text = Shorten(text.HtmlEncode());
+            }
 
             // Format into SPAN.
             return string.Format("<span class='{0}'>{1}</span>", cssClass, text);
@@ -114,7 +118,10 @@ namespace Open.Core
 
         private static string FormatKnownValues(object value, string text)
         {
-            if (text.ToString() == "[object Object]") text = TypeName(value);
+            string jQueryObjText = JQueryObject(value);
+            if (jQueryObjText != null) return jQueryObjText;
+
+            if (text == "[object Object]") text = TypeName(value);
             return text;
         }
 
@@ -122,6 +129,22 @@ namespace Open.Core
         {
             string name = String.RemoveStart(value.GetType().Name, "_");
             return string.Format("[{0}]", String.ToSentenceCase(name));
+        }
+
+        private static string JQueryObject(object value)
+        {
+            if (value is string) return null;
+            try
+            {
+                jQueryObject obj = (jQueryObject)value;
+                if (Script.IsNullOrUndefined(obj.Length)) return null;
+                return string.Format("[jQueryObject.Length:{0}]", obj.Length);
+            }
+            catch (Exception)
+            {
+                // Ignore.
+                return null;
+            }
         }
         #endregion
     }

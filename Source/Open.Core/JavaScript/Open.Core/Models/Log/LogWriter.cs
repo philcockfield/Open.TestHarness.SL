@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.CompilerServices;
 using Open.Core.Controls.HtmlPrimitive;
 using Open.Core.Helpers;
 
@@ -92,9 +94,12 @@ namespace Open.Core
             WriteInternal(message, null, backgroundColor, null);
         }
 
-        public void WriteSeverity(object message, LogSeverity severity)
+        [AlternateSignature]
+        public extern void WriteSeverity(object message, LogSeverity severity);
+        public void WriteSeverity(object message, LogSeverity severity, Icons icon)
         {
-            WriteInternal(message, LogCss.SeverityClass(severity), null, ToIconPath(severity));
+            string iconPath = Script.IsNullOrUndefined(icon) ? ToIconPath(severity) : Helper.Icon.Path(icon);
+            WriteInternal(message, LogCss.SeverityClass(severity), null, iconPath);
             BrowserConsole.WriteSeverity(message, severity);
         }
 

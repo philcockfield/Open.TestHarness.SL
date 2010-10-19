@@ -19,16 +19,13 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
             panel.Padding.Change(10);
 
             // Wire up events.
-            panel.Inflating += delegate { Log.Event("Inflating"); };
-            panel.Inflated += delegate { Log.Event("Inflated"); };
-            panel.Collapsing += delegate { Log.Event("Collapsing"); };
-            panel.Collapsed += delegate { Log.Event("Collapsed"); };
+            LogEvents(panel);
 
             // Setup test styles.
-            panel.SetSize(200, 450);
+            panel.SetSize(200, 350);
             panel.Background = Color.Red(0.1);
             panel.Content.CSS(Css.Background, Color.Red(0.4));
-            panel.Content.Append("123456789 123456789");
+            panel.Content.Append("123456789 abcdefg");
         }
         #endregion
 
@@ -97,6 +94,16 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
             //Log.Info("IsInflating: " + panel.IsInflating);
             //Log.Info("Slide (Settings): " + panel.Slide.ToString());
             //Log.Info("Padding: " + panel.Padding.ToString());
+        }
+        #endregion
+
+        #region Methods
+        public static void LogEvents(CollapsePanel panel)
+        {
+            panel.Inflating += delegate { Log.Event("Inflating"); };
+            panel.Inflated += delegate { Log.Event("Inflated"); };
+            panel.Collapsing += delegate { Log.Event("Collapsing"); };
+            panel.Collapsed += delegate { Log.Event("Collapsed"); };
         }
         #endregion
     }

@@ -53,7 +53,7 @@ namespace Open.Core
 
         /// <summary>Writes a message to the log (prepended with an icon).</summary>
         /// <param name="message">The message to write.</param>
-        /// <param name="icon">An icon .</param>
+        /// <param name="icon">An icon.</param>
         /// <param name="backgroundColor">The background color to apply to the log entry.</param>
         public static void WriteIcon(object message, Icons icon, string backgroundColor)
         {
@@ -79,11 +79,23 @@ namespace Open.Core
 
         /// <summary>Writes a informational message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Info(object message) { Writer.Info(message); }
+        [AlternateSignature]
+        public extern static void Info(object message);
+
+        /// <summary>Writes a informational message to the log.</summary>
+        /// <param name="message">The messge to write (HTML).</param>
+        /// <param name="icon">An icon.</param>
+        public static void Info(object message, Icons icon) { Writer.WriteSeverity(message, LogSeverity.Info); }
 
         /// <summary>Writes a debug message to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
-        public static void Debug(object message) { Writer.Debug(message); }
+        [AlternateSignature]
+        public extern static void Debug(object message);
+
+        /// <summary>Writes a debug message to the log.</summary>
+        /// <param name="message">The messge to write (HTML).</param>
+        /// <param name="icon">An icon.</param>
+        public static void Debug(object message, Icons icon) { Writer.Debug(message); }
 
         /// <summary>Writes a warning to the log.</summary>
         /// <param name="message">The messge to write (HTML).</param>
