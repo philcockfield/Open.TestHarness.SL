@@ -13,5 +13,7 @@ namespace Open.Core
         SilkStar = 6,
         SilkBug = 7,
         SilkApplicationEdit = 8,
+        SilkMouse = 9,
+        SilkBrick = 10,
     }
 }

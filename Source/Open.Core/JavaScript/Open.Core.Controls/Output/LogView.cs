@@ -44,7 +44,7 @@ namespace Open.Core.Controls
         private void OnScrollDelayElapsed()
         {
             if (divRow == null) return;
-            UpdateLayout();
+            OnUpdateLayout();
             Helper.Scroll.ToBottom(divList, ScrollDuration, EffectEasing.Swing, null);
         }
         #endregion
@@ -119,12 +119,6 @@ namespace Open.Core.Controls
             divRow = null;
             divList.Html(string.Empty);
         }
-
-        protected override void OnUpdateLayout()
-        {
-            // Sync list width (prevents horizontal scroll bar appearing).
-            divList.Width(Container.GetWidth());
-        }
         #endregion
 
         #region Methods : Dividers
@@ -155,6 +149,14 @@ namespace Open.Core.Controls
         private void InsertSectionDivider()
         {
             InsertRow(CreateRowDiv(LogCss.SectionBreak));
+        }
+        #endregion
+
+        #region Methods : Override
+        protected override void OnUpdateLayout()
+        {
+            // Sync list width (prevents horizontal scroll bar appearing).
+            divList.Width(Container.GetWidth());
         }
         #endregion
 

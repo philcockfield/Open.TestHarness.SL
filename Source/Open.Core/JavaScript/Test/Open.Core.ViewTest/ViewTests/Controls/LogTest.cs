@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Open.Core.Controls.HtmlPrimitive;
 
@@ -23,6 +24,9 @@ namespace Open.Core.Test.ViewTests.Controls
         public string MyErrorProperty { get { throw new Exception("Error from Property"); } }
         private string MyPrivateProperty { get { return "Private Value"; } }
         public LogTest ObjectProperty { get { return objectProperty ?? (objectProperty = new LogTest()); } }
+        public ArrayList ArrayList { get { return new ArrayList(); } }
+        public string[] Array { get { return new string[] { "foo" }; } }
+        public IEnumerable Enumerable { get { return new int[] { 1, 2 }; } }
         #endregion
 
         #region Tests

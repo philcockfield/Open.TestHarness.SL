@@ -40,8 +40,8 @@ namespace Open.Core.Controls.Buttons
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             string name = e.Property.Name;
-            if (name == ButtonModel.PropWidth) SyncDimension(SizeDimension.Width);
-            if (name == ButtonModel.PropHeight) SyncDimension(SizeDimension.Height);
+            if (name == ButtonBase.PropWidth) SyncDimension(SizeDimension.Width);
+            if (name == ButtonBase.PropHeight) SyncDimension(SizeDimension.Height);
             if (name == ImageButton.PropBackgroundHighlighting) SetupContent();
         }
         #endregion

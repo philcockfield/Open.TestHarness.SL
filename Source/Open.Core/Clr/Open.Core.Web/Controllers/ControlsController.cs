@@ -12,6 +12,7 @@ namespace Open.Core.Web.Controllers
 
         #region Methods
         public virtual ActionResult Log() { return View(); }
+        public virtual ActionResult TabPanelSet() { return View(); }
         #endregion
     }
 }

@@ -55,6 +55,9 @@ namespace Open.Core
 
         /// <summary>Creates a visual control for the logical button model.  Returns null if not implemented in deriving class.</summary>
         IButtonView CreateView();
+
+        /// <summary>Invoked when the layout needs to be updated.</summary>
+        void UpdateLayout();
         #endregion
     }
 }

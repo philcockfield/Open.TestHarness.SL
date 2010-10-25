@@ -34,7 +34,6 @@ namespace Open.Core.Controls.Buttons
         private readonly IButton model;
         private readonly ButtonEventController eventController;
         private readonly ButtonContentController contentController;
-        private readonly jQueryObject divMask;
         private readonly jQueryObject divContent;
         private TemplateLoader templateLoader;
 
@@ -53,7 +52,7 @@ namespace Open.Core.Controls.Buttons
         protected ButtonView(IButton model, jQueryObject container) : base(InitContainer(container))
         {
             // Setup initial conditions.
-            if (Script.IsNullOrUndefined(model)) model = new ButtonModel();
+            if (Script.IsNullOrUndefined(model)) model = new ButtonBase();
             this.model = model;
             Focus.BrowserHighlighting = false;
 
@@ -64,10 +63,9 @@ namespace Open.Core.Controls.Buttons
 
             // Insert the content and mask containers.
             divContent = CreateContainer("buttonContent");
-            divMask = CreateContainer("clickMask");
 
             // Create child controllers.
-            eventController = new ButtonEventController(this, divMask);
+            eventController = new ButtonEventController(this);
             contentController = new ButtonContentController(this, divContent);
 
             // Wire up events.
@@ -128,14 +126,14 @@ namespace Open.Core.Controls.Buttons
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             string name = e.Property.Name;
-            if (name == ButtonModel.PropWidth) SyncDimension(SizeDimension.Width);
-            if (name == ButtonModel.PropHeight) SyncDimension(SizeDimension.Height);
-            if (name == ButtonModel.PropIsEnabled)
+            if (name == ButtonBase.PropWidth) SyncDimension(SizeDimension.Width);
+            if (name == ButtonBase.PropHeight) SyncDimension(SizeDimension.Height);
+            if (name == ButtonBase.PropIsEnabled)
             {
                 UpdateLayout();
                 FirePropertyChanged(PropIsEnabled);
             }
-            if (name == ButtonModel.PropCanFocus) SyncCanFocus();
+            if (name == ButtonBase.PropCanFocus) SyncCanFocus();
         }
         #endregion
 
@@ -207,13 +205,13 @@ namespace Open.Core.Controls.Buttons
             // Width.
             if (dimension == SizeDimension.Width)
             {
-                if (size.Width != ButtonModel.NoSize) Width = size.Width;
+                if (size.Width != ButtonBase.NoSize) Width = size.Width;
             }
 
             // Height.
             if (dimension == SizeDimension.Height)
             {
-                if (size.Height != ButtonModel.NoSize) Height = size.Height;
+                if (size.Height != ButtonBase.NoSize) Height = size.Height;
             }
         }
         #endregion

@@ -114,6 +114,7 @@
     <Content Include="Content\Scripts\Open.TestHarness.js" />
     <Content Include="Content\Scripts\TestHarness.Test.debug.js" />
     <Content Include="Content\Scripts\TestHarness.Test.js" />
+    <Content Include="Views\Samples\AccordianTest.ascx" />
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
     <Content Include="Views\Samples\SamplePart.aspx" />

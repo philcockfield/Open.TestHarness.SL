@@ -4,15 +4,15 @@ using Open.Testing;
 
 namespace Open.Core.Test.ViewTests.Controls.Panels
 {
-    public class PinnablePanelTest
+    public class PinPanelTest
     {
         #region Head
-        private PinnablePanel panel;
+        private PinPanel panel;
 
         public void ClassInitialize()
         {
             // Setup initial conditions.
-            panel = new PinnablePanel();
+            panel = new PinPanel();
             TestHarness.AddControl(panel);
 
             // Wire up events.

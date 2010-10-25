@@ -54,7 +54,7 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
             AddButton(button);
         }
 
-        private static void AddButton(ButtonModel button)
+        private static void AddButton(ButtonBase button)
         {
             TestHarness.AddControl(button.CreateView() as IView);
             ButtonTest.WireClickEvents(button);

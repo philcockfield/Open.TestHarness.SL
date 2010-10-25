@@ -31,6 +31,16 @@ namespace Open.Core.Test.ViewTests.Core
         #endregion
 
         #region Tests
+        public void Position()
+        {
+            jQueryPosition pos = view.Container.Position();
+            Log.Info("Left: " + pos.Left + " | top: "+ pos.Top);
+
+            jQueryPosition offset = view.Container.GetOffset();
+            Log.Info("Left: " + offset.Left + " | top: " + offset.Top);
+            
+        }
+
         public void Toggle__IsEnabled()
         {
             view.IsEnabled = !view.IsEnabled;

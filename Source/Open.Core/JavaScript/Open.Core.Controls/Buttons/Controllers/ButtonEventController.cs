@@ -12,11 +12,11 @@ namespace Open.Core.Controls.Buttons
 
         /// <summary>Constructor.</summary>
         /// <param name="control">The clickable button element.</param>
-        /// <param name="divMask">The mask element used to monitor mouse events with.</param>
-        public ButtonEventController(ButtonView control, jQueryObject divMask)
+        public ButtonEventController(ButtonView control)
         {
             // Setup initial conditions.
             this.control = control;
+            jQueryObject divMask = control.Container;
 
             // Wire up events.
             Model.IsPressedChanged += OnModelIsPressedChanged;

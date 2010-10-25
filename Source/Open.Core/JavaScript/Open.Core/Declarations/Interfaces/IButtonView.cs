@@ -19,5 +19,10 @@ namespace Open.Core.Controls.Buttons
 
         /// <summary>Gets whether the mouse is currently pressing the button.</summary>
         bool IsMouseDown { get; }
+
+        /// <summary>Finds the element at the given CSS selector and replaces it with this button.</summary>
+        /// <param name="cssSeletor">The CSS selector of the element to replace.</param>
+        /// <param name="mode">The strategy used for the insertion.</param>
+        void Insert(string cssSeletor, InsertMode mode);
     }
 }

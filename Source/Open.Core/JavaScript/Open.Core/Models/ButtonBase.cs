@@ -4,7 +4,7 @@ using System.Collections;
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>A logical model for a button.</summary>
-    public class ButtonModel : ModelBase, IButton, ISize
+    public class ButtonBase : ModelBase, IButton, ISize
     {
         #region Events
         public event EventHandler Click;
@@ -31,7 +31,7 @@ namespace Open.Core.Controls.Buttons
         private readonly ArrayList invokeKeyCodes = new ArrayList();
 
         /// <summary>Constructor.</summary>
-        public ButtonModel()
+        public ButtonBase()
         {
             // Add the default key-codes that will cause the button to be invoked when pressed.
             InvokeKeyCodes.Add(Key.Enter);
@@ -110,6 +110,11 @@ namespace Open.Core.Controls.Buttons
         public virtual IButtonView CreateView()
         {
             return null; // Optionally implemented in deriving classes.
+        }
+
+        public void UpdateLayout()
+        {
+            FireLayoutInvalidated();
         }
         #endregion
 

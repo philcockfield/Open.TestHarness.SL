@@ -4,7 +4,7 @@ using System.Collections;
 namespace Open.Core.Controls.Buttons
 {
     /// <summary>A simple button which displays either an icon, or text, or both.</summary>
-    public class IconTextButton : ButtonModel
+    public class IconTextButton : ButtonBase
     {
         #region Head
         public const string PropText = "Text";

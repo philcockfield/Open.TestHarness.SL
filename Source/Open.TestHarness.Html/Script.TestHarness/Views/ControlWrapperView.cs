@@ -18,7 +18,6 @@ namespace Open.Testing.Views
         private readonly IEnumerable allViews;
         private readonly int index;
         private readonly TestHarnessEvents events;
-        private readonly DelayedAction sizeDelay;
 
         /// <summary>Constructor.</summary>
         /// <param name="divHost">The control host DIV.</param>
@@ -40,7 +39,6 @@ namespace Open.Testing.Views
             this.allViews = allViews;
             index = divHost.Children().Length; // Store the order position of the control in the host.
             events = Common.Events;
-            sizeDelay = new DelayedAction(0.2, UpdateLayout);
 
             // Create the wrapper DIV.
             divRoot = Html.CreateDiv();
@@ -77,7 +75,7 @@ namespace Open.Testing.Views
         private void OnHostResized(object sender, EventArgs e)
         {
             Css.SetOverflow(Container, CssOverflow.Hidden); // Hide scroll behavior during resize operation.
-            sizeDelay.Start();
+            UpdateLayout();
         }
         #endregion
 

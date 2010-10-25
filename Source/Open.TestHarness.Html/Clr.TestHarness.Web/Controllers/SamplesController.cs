@@ -14,5 +14,7 @@ namespace Open.TestHarness.Web.Controllers
 
         public virtual ActionResult SamplePart() { return View(); }
 
+        public virtual ActionResult AccordianTest() { return View(); }
+
     }
 }

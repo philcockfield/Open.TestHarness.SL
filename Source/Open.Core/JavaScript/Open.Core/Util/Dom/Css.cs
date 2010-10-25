@@ -311,7 +311,7 @@ namespace Open.Core
         /// <param name="isVisible">The desired visibility state.</param>
         public static jQueryObject SetDisplay(jQueryObject element, bool isVisible)
         {
-            element.CSS(Display, isVisible ? Block : None);
+            if (element != null) element.CSS(Display, isVisible ? Block : None);
             return element;
         }
 
@@ -320,7 +320,7 @@ namespace Open.Core
         /// <param name="isVisible">The desired visibility state.</param>
         public static jQueryObject SetVisibility(jQueryObject element, bool isVisible)
         {
-            element.CSS(Visibility, isVisible ? "visible" : "hidden");
+            if (element != null) element.CSS(Visibility, isVisible ? "visible" : "hidden");
             return element;
         }
 

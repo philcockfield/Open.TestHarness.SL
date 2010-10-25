@@ -1,12 +1,6 @@
 ﻿/* Button Infrastructure */
 .button { position:relative; }
 
-.button .clickMask
-{
-    background:transparent;
-}
-
-
 /* Common Backgrounds */
 .btnCommon.bg.silver.up
 {

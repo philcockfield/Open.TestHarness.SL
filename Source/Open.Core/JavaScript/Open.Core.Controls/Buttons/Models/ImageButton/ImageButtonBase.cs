@@ -8,7 +8,7 @@ namespace Open.Core.Controls.Buttons
     ///     the set of images to use.  [ImageButtonBase] class is provided to that specific image-buttons
     ///     can be cleanly provided without exposing the API for assigning image URL's.
     /// </remarks>
-    public abstract class ImageButtonBase : ButtonModel
+    public abstract class ImageButtonBase : ButtonBase
     {
         #region Head
         public const string PropBackgroundHighlighting = "BackgroundHighlighting";

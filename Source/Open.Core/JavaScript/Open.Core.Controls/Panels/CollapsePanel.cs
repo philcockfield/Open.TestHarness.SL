@@ -193,9 +193,9 @@ namespace Open.Core.Controls
         private void InflateAnimation()
         {
             // Setup initial conditions.
-            int finalSize = inflateToTarget == CollapsePanel.NoTargetSize
-                                                                                        ? inflatedSize
-                                                                                        : inflateToTarget;
+            int finalSize = inflateToTarget == NoTargetSize
+                                                                ? inflatedSize
+                                                                : inflateToTarget;
             SetContentSize(finalSize - Padding.GetOffset(Plane));
 
             // Animate.
@@ -228,6 +228,5 @@ namespace Open.Core.Controls
                                 FireCollapsed);
         }
         #endregion
-
     }
 }

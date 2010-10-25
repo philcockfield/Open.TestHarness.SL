@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Html;
 using System.Runtime.CompilerServices;
 using jQueryApi;
 
@@ -8,6 +9,13 @@ namespace Open.Core
     public abstract class ViewBase : ModelBase, IView, ISize
     {
         #region Events
+        public event EventHandler Loaded;
+        protected void FireLoaded()
+        {
+            IsLoaded = true;
+            if (Loaded != null) Loaded(this, new EventArgs());
+        }
+
         public event EventHandler IsEnabledChanged;
         protected void FireIsEnabledChanged()
         {
@@ -37,6 +45,7 @@ namespace Open.Core
         #endregion
 
         #region Head
+        public const string PropIsLoaded = "IsLoaded";
         public const string PropPosition = "Position";
         public const string PropBackground = "Background";
         public const string PropIsVisible = "IsVisible";
@@ -73,27 +82,43 @@ namespace Open.Core
 
         #region Properties : IView
         public jQueryObject Container { get { return container; } }
+        public Element Element { get { return Container.GetElement(0); } }
         public string OuterHtml { get { return Html.OuterHtml(Container); } }
         public string InnerHtml { get { return Container.GetHtml(); } }
         public IFocus Focus { get { return focus ?? (focus = new ViewFocus(this, Container)); } }
         #endregion
 
         #region Properties : IView - State
+        /// <remarks>
+        ///     Implementers: This is set to True by default.  When performing an async
+        ///     initialization during the constructor set this to False, then fire the 'Loaded'
+        ///     event upon completion (causing IsLoaded to be set to true).
+        /// </remarks>
+        public bool IsLoaded
+        {
+            get { return (bool) Get(PropIsLoaded, true); }
+            protected set { Set(PropIsLoaded, value, true); }
+        }
+
         public virtual bool IsEnabled
         {
             get { return (bool)Get(PropIsEnabled, true); }
             set { if (Set(PropIsEnabled, value, true)) FireIsEnabledChanged(); }
         }
 
-        public virtual bool IsVisible
+        public bool IsVisible
         {
-            get { return Container == null ? false : Css.IsVisible(Container); }
+            get { return (bool) Get(PropIsVisible, true); }
             set
             {
-                if (value == IsVisible) return;
-                SetCss(Css.Display, value ? Css.Block : Css.None);
-                FireIsVisibleChanged();
-                FirePropertyChanged(PropIsVisible);
+                if (Set(PropIsVisible, value, true))
+                {
+                    // Update the CSS.
+                    SyncVisibility(value);
+
+                    // Finish up.
+                    FireIsVisibleChanged();
+                }
             }
         }
         #endregion
@@ -181,6 +206,7 @@ namespace Open.Core
 
         public void UpdateLayout()
         {
+            SyncVisibility(IsVisible); 
             OnUpdateLayout();
         }
         protected virtual void OnUpdateLayout() { }
@@ -247,8 +273,22 @@ namespace Open.Core
 
         #region Methods : Protected 
         protected virtual void OnIsEnabledChanged() { }
-        protected virtual void OnIsVisibleChanged() { }
         protected virtual void OnSizeChanged() { }
+
+        /// <summary>
+        ///     Invoked when the 'IsVisible' property is causing the visibility to change.
+        /// </summary>
+        /// <param name="isVisible">The IsVisible value.</param>
+        /// <returns>The IsVisible value (overridden value if change required).</returns>
+        /// <remarks>
+        ///     Override this method to intercept the visibility value which is ultmately used
+        ///     to chance the CSS value.  For instance, this is useful when you want to retain
+        ///     the 'IsVisible' property value as a logical value, but cause the control to be hidden
+        ///     like when a tab should be shown (logically), but is overflowing off the screen so
+        ///     should be hidden.
+        /// </remarks>
+        protected virtual bool OnIsVisibleChanging(bool isVisible) { return isVisible; }
+        protected virtual void OnIsVisibleChanged() { }
 
         /// <summary>Inserts the HTML from the specified URL.</summary>
         /// <param name="url">The URL of the HTML content to retrieve.</param>
@@ -272,6 +312,18 @@ namespace Open.Core
         protected void ChangeFocusElement(jQueryObject element)
         {
             focus = new ViewFocus(this, element);
+        }
+        #endregion
+
+        #region Internal
+        private void SyncVisibility(bool isVisible)
+        {
+
+
+//            Log.Info("SYNC: " + isVisible + ":" + this.GetType().Name); //TEMP 
+
+            isVisible = OnIsVisibleChanging(isVisible); // Allow deriving class to override the display value.
+            Css.SetDisplay(Container, isVisible);
         }
         #endregion
     }

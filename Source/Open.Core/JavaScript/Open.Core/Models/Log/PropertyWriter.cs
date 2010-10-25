@@ -118,17 +118,33 @@ namespace Open.Core
 
         private static string FormatKnownValues(object value, string text)
         {
-            string jQueryObjText = JQueryObject(value);
-            if (jQueryObjText != null) return jQueryObjText;
+            try
+            {
+                // Look for array list.
+                ArrayList list = value as ArrayList;
+                if (list != null) return string.Format("[{0}:{1}]", TypeName(value), list.Count);
 
-            if (text == "[object Object]") text = TypeName(value);
+                // JQuery.
+                string jQueryObjText = JQueryObject(value);
+                if (jQueryObjText != null) return jQueryObjText;
+
+                // Convert [object] to Type Name.
+                if (text == "[object Object]") text = string.Format("[{0}]", TypeName(value)); ;
+
+            }
+            catch (Exception)
+            {
+                // Ignore - return original value.
+            }
+
+            // Finish up.
             return text;
         }
 
         private static string TypeName(object value)
         {
             string name = String.RemoveStart(value.GetType().Name, "_");
-            return string.Format("[{0}]", String.ToSentenceCase(name));
+            return String.ToSentenceCase(name);
         }
 
         private static string JQueryObject(object value)

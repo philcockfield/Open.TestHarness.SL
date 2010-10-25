@@ -1,4 +1,5 @@
 using System;
+using System.Html;
 using jQueryApi;
 
 namespace Open.Core
@@ -7,6 +8,10 @@ namespace Open.Core
     public interface IView
     {
         #region Events
+        /// <summary>Fires when the control has loaded all initialization content required (relevant when making async calls during the constructor).</summary>
+        /// <remarks>This is not guaranteed to fire.  It only fires on controls that have asynchronous load operations.</remarks>
+        event EventHandler Loaded;
+
         /// <summary>Fires when the enabled state of the control changes.</summary>
         event EventHandler IsEnabledChanged;
 
@@ -24,8 +29,11 @@ namespace Open.Core
         #endregion
 
         #region Main
-        /// <summary>Gets the element that the control is contained within.</summary>
+        /// <summary>Gets the jQueryObject that represents the root element of the control.</summary>
         jQueryObject Container { get; }
+
+        /// <summary>Gets the DOM element version of 'Container'.</summary>
+        Element Element { get; }
 
         /// <summary>Gets the complete HTML of the control.</summary>
         string OuterHtml { get; }
@@ -41,6 +49,9 @@ namespace Open.Core
         #endregion
 
         #region State
+        /// <summary>Gets the 'loaded' state of the control.</summary>
+        bool IsLoaded { get; }
+
         /// <summary>Gets or sets whether the control is enabled.</summary>
         bool IsEnabled { get; set; }
 

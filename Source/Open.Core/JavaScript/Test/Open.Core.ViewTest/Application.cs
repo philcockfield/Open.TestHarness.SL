@@ -24,7 +24,8 @@ namespace Open.Core.Test
 
             // View Tests
             TestHarness.RegisterClass(typeof(CollapsePanelTest));
-            TestHarness.RegisterClass(typeof(PinnablePanelTest));
+            TestHarness.RegisterClass(typeof(PinPanelTest));
+            TestHarness.RegisterClass(typeof(TabPanelSetTest));
             TestHarness.RegisterClass(typeof(PartTest));
             TestHarness.RegisterClass(typeof(IconTest));
             TestHarness.RegisterClass(typeof(TemplateTest));
@@ -40,6 +41,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(IconTextButtonTest));
             TestHarness.RegisterClass(typeof(ImageButtonTest));
             TestHarness.RegisterClass(typeof(TextboxTest));
+            TestHarness.RegisterClass(typeof(AccordianTest));
         }
     }
 }

@@ -75,13 +75,19 @@
     <Compile Include="Buttons\Infrastructure\Content\ButtonStateCss.cs" />
     <Compile Include="Buttons\Views\ImageButtonView.cs" />
     <Compile Include="Declarations\ControlsImages.cs" />
+    <Compile Include="Declarations\Urls.cs" />
     <Compile Include="HtmlPrimitive\HtmlList.cs" />
     <Compile Include="Input\Textbox.cs" />
     <Compile Include="Output\LogView.cs" />
     <Content Include="Properties\Open.Core.Views.ruleset" />
     <Content Include="Properties\Open.Core.Views.script" />
     <Compile Include="Panels\CollapsePanel.cs" />
-    <Compile Include="Panels\PinnablePanel.cs" />
+    <Compile Include="Panels\PinPanel.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanel.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelButton.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelSet.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelSetController.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelSetView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
