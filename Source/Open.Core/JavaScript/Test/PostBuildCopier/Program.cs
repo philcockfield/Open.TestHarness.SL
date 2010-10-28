@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -14,8 +15,14 @@ namespace PostBuildCopier
         {
             try
             {
+                // Script files.
                 CopyFiles(@"\JavaScript\Test\Open.Core.Test\bin\Debug", @"\Clr\Test\TestHarness.Web\Content\Scripts", FilterJs);
                 CopyFiles(@"\JavaScript\Open.TestHarness\bin\Debug", @"\Clr\Open.Core.Web\Content\Scripts", FilterJs);
+
+                // DLL's to Bin.
+                CopyToBin("Open.Core");
+                CopyToBin("Open.Core.Controls");
+                CopyToBin("Open.Core.Lists");
             }
             catch (Exception e)
             {
@@ -43,10 +50,23 @@ namespace PostBuildCopier
         #endregion
 
         #region Internal
-        private static void CopyFiles(string fromPath, string toPath, string filter)
+        private static void CopyToBin(string projectFolder)
+        {
+            const string binPath = @"\Bin\Bin.JavaScript";
+            CopyFiles(string.Format(@"\JavaScript\{0}\bin\Debug", projectFolder), binPath, "*.dll", "*.xml");
+        }
+
+        private static void CopyFiles(string fromPath, string toPath, params string[] filter)
         {
             var to = GetFolder(toPath);
-            foreach (FileInfo fileInfo in GetFolder(fromPath).GetFiles(filter))
+
+            var files = new List<FileInfo>();
+            foreach (string item in filter)
+            {
+                files.AddRange(GetFolder(fromPath).GetFiles(item));
+            }
+
+            foreach (FileInfo fileInfo in files)
             {
                 new CopyItem(fileInfo.FullName, to.FullName).Copy();
             }
