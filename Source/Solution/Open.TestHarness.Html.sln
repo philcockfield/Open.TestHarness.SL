@@ -30,9 +30,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Web", "..\Open.Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clr", "Clr", "{BF33D058-431C-4350-9EE4-536C5F84FFD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Clr", "..\Open.Core\Clr\Open.Core\Open.Core.Clr.csproj", "{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.clr", "..\Open.Core\Clr\Open.Core\Open.Core.clr.csproj", "{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Contracts.Clr", "..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj", "{DE11A17B-85C9-4B05-95FD-7D41A22F3520}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Contracts.clr", "..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.clr.csproj", "{DE11A17B-85C9-4B05-95FD-7D41A22F3520}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Open.Core", "Open.Core", "{04773D46-7ADA-485A-BB71-263DBB88247B}"
 EndProject

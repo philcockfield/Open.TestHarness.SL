@@ -22,8 +22,8 @@ using T4MVC;
 
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static class MVC {
+    public static Open.TestHarness.Web.Controllers.HomeController Home = new Open.TestHarness.Web.Controllers.T4MVC_HomeController();
     public static Open.TestHarness.Web.Controllers.SamplesController Samples = new Open.TestHarness.Web.Controllers.T4MVC_SamplesController();
-    public static T4MVC.TestHarnessController TestHarness = new T4MVC.TestHarnessController();
 }
 
 namespace T4MVC {
@@ -264,8 +264,6 @@ namespace Links {
             private const string URLPATH = "~/Content/Css";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string Open_TestHarness_css = Url("Open.TestHarness.css");
-            public static readonly string Open_TestHarness_IE_css = Url("Open.TestHarness.IE.css");
             public static readonly string Sample_Button_css = Url("Sample.Button.css");
             public static readonly string Sample_css = Url("Sample.css");
         }
@@ -275,7 +273,6 @@ namespace Links {
             private const string URLPATH = "~/Content/Images";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string Icon_JavaScript_png = Url("Icon.JavaScript.png");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class ImageButton_Sample {
                 private const string URLPATH = "~/Content/Images/ImageButton.Sample";
@@ -295,7 +292,6 @@ namespace Links {
                 public static readonly string Pressed_png = Url("Pressed.png");
             }
         
-            public static readonly string Sidebar_BackMask_png = Url("Sidebar.BackMask.png");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -318,6 +314,10 @@ namespace Links {
             public static readonly string Open_Core_Lists_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Lists.debug.min.js") ? Url("Open.Core.Lists.debug.min.js") : Url("Open.Core.Lists.debug.js");
                           
             public static readonly string Open_Core_Lists_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Lists.min.js") ? Url("Open.Core.Lists.min.js") : Url("Open.Core.Lists.js");
+                          
+            public static readonly string Open_Core_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.debug.min.js") ? Url("Open.Core.Test.debug.min.js") : Url("Open.Core.Test.debug.js");
+                          
+            public static readonly string Open_Core_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.min.js") ? Url("Open.Core.Test.min.js") : Url("Open.Core.Test.js");
                           
             public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
                           

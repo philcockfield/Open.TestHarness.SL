@@ -40,11 +40,11 @@ namespace Open.Core.Web.Controllers
             //        Just compile the test JS project causing all Open.Core filed to be copied locally.  
             if (Request.IsLocal) WebConstants.Script.OpenCorePath = "/Content/Scripts/";
 
-            return View(ViewModel);
+            return View();
         }
 
         /// <summary>The BODY content.</summary>
-        public virtual ActionResult Body() { return View(ViewModel); }
+        public virtual ActionResult Body() { return View(); }
         #endregion
 
         #region Methods : Child Actions
@@ -54,37 +54,37 @@ namespace Open.Core.Web.Controllers
         {
             ViewData["Key"] = GoogleAnalyticsKey;
             ViewData["IsLocal"] = Request.IsLocal;
-            return View(ViewModel);
+            return View();
         }
 
         /// <summary>The Output Log.</summary>
         [ChildActionOnly]
         public virtual ActionResult Log()
         {
-            return View(ViewModel);
+            return View();
         }
 
         /// <summary>The Sidebar index.</summary>
         [ChildActionOnly]
-        public virtual ActionResult Sidebar() { return View(ViewModel); }
+        public virtual ActionResult Sidebar() { return View(); }
 
         /// <summary>The panel that contains the list of tests within the Sidebar.</summary>
         [ChildActionOnly]
         public virtual ActionResult MethodList()
         {
-            return View(ViewModel);
+            return View();
         }
 
         /// <summary>The Main content panel.</summary>
         [ChildActionOnly]
-        public virtual ActionResult Main() { return View(ViewModel); }
+        public virtual ActionResult Main() { return View(); }
         #endregion
 
         #region Methods : Component Screens
         /// <summary>The 'Add Package' screen .</summary>
         public virtual ActionResult AddPackage()
         {
-            return View(ViewModel);
+            return View();
         }
         #endregion
     }

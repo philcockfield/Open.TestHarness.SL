@@ -58,6 +58,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebMatrix.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\TestHarnessStrings.Designer.cs">
@@ -70,6 +73,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HomeController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SamplesController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -77,9 +83,6 @@
     <Compile Include="T4MVC.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TestHarnessController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Content Include="Content\Css\Sample.css" />
@@ -143,9 +146,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
+    <ProjectReference Include="..\..\Open.Core.Contracts\Open.Core.Contracts.clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts.Clr</Name>
+      <Name>Open.Core.Contracts.clr</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core.Web.Assets\Open.Core.Web.Assets.csproj">
       <Project>{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}</Project>
@@ -155,9 +158,9 @@
       <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
       <Name>Open.Core.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\Open.Core.Clr.csproj">
+    <ProjectReference Include="..\..\Open.Core\Open.Core.clr.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core.Clr</Name>
+      <Name>Open.Core.clr</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

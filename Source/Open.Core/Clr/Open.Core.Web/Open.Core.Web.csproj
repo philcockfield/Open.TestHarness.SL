@@ -48,7 +48,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
@@ -93,7 +93,7 @@
     <Compile Include="Controllers\TestHarnessController.cs" />
     <Compile Include="Models\HttpResult.cs" />
     <Content Include="Assets\TestHarnessStrings.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TestHarnessStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
@@ -116,13 +116,13 @@
     <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
+    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts.Clr</Name>
+      <Name>Open.Core.Contracts.clr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Open.Core\Open.Core.Clr.csproj">
+    <ProjectReference Include="..\Open.Core\Open.Core.clr.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core.Clr</Name>
+      <Name>Open.Core.clr</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

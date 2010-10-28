@@ -172,9 +172,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
+    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts.Clr</Name>
+      <Name>Open.Core.Contracts.clr</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
