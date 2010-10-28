@@ -40,7 +40,16 @@
     <DocumentationFile>bin\Release\Open.TestHarness.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib, Version=0.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="mscorlib, Version=0.6.1.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="Open.Core">
+      <HintPath>..\..\Open.Core\Bin\Bin.JavaScript\Open.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Open.Core.Controls">
+      <HintPath>..\..\Open.Core\Bin\Bin.JavaScript\Open.Core.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Open.Core.Lists">
+      <HintPath>..\..\Open.Core\Bin\Bin.JavaScript\Open.Core.Lists.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web" />
     <Reference Include="Script.jQuery" />
   </ItemGroup>
@@ -88,20 +97,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Controls\Open.Core.Controls.js.csproj">
-      <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
-      <Name>Open.Core.Controls.js</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Lists\Open.Core.Lists.js.csproj">
-      <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>
-      <Name>Open.Core.Lists.js</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core\Open.Core.js.csproj">
-      <Project>{6DC09A85-8CE4-40FC-BF85-3152EC6F0210}</Project>
-      <Name>Open.Core.js</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

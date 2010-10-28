@@ -40,7 +40,10 @@
     <DocumentationFile>bin\Release\Open.Core.Controls.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib, Version=0.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="mscorlib, Version=0.6.1.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="Open.Core">
+      <HintPath>..\..\Bin\Bin.JavaScript\Open.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web" />
     <Reference Include="Script.jQuery" />
   </ItemGroup>
@@ -87,12 +90,6 @@
     <Compile Include="Panels\TabPanelSet\TabPanelSetController.cs" />
     <Compile Include="Panels\TabPanelSet\TabPanelSetView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Open.Core\Open.Core.js.csproj">
-      <Project>{6DC09A85-8CE4-40FC-BF85-3152EC6F0210}</Project>
-      <Name>Open.Core.js</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
   <PropertyGroup>

@@ -40,7 +40,7 @@
     <DocumentationFile>bin\Release\Open.Core.Test.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib, Version=0.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="mscorlib, Version=0.6.1.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
     <Reference Include="Script.Web" />
     <Reference Include="Script.jQuery" />
     <Reference Include="System" />
