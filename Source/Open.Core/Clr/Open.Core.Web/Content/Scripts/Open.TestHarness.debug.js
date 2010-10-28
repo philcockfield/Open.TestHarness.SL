@@ -3425,5 +3425,5 @@ Open.Testing.Views.MethodListView.propSelectedMethod = 'SelectedMethod';
 Open.Testing.Views.MethodListView._buttonHeight$4 = 33;
 
 }
-ss.loader.registerScript('TestHarness.Script3', ['Open.Core.Views','Open.Core.Script','Open.Core.Lists'], executeScript);
+ss.loader.registerScript('TestHarness.Script3', ['Open.Core.Views','Open.Core2','Open.Core.Lists'], executeScript);
 })();

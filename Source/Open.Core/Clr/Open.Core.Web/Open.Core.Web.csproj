@@ -149,16 +149,16 @@
     <EmbeddedResource Include="Content\Images\Log.SectionDivider.Rip.png" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmpl.js" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmplPlus.js" />
-    <EmbeddedResource Include="Content\Scripts\mscorlib.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\mscorlib.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Core.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Core.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.TestHarness.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.TestHarness.js" />
+    <None Include="Content\Scripts\mscorlib.debug.js" />
+    <None Include="Content\Scripts\mscorlib.js" />
+    <None Include="Content\Scripts\Open.Core.Controls.debug.js" />
+    <None Include="Content\Scripts\Open.Core.Controls.js" />
+    <None Include="Content\Scripts\Open.Core.debug.js" />
+    <None Include="Content\Scripts\Open.Core.js" />
+    <None Include="Content\Scripts\Open.Core.Lists.debug.js" />
+    <None Include="Content\Scripts\Open.Core.Lists.js" />
+    <None Include="Content\Scripts\Open.TestHarness.debug.js" />
+    <None Include="Content\Scripts\Open.TestHarness.js" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

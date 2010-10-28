@@ -17,7 +17,6 @@
     <TemplateFile>Properties\Open.Core.Test.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\Open.Core.Test.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\..\..\..\Open.TestHarness.Html\Clr.TestHarness.Web\Content\Scripts</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,7 +42,6 @@
     <Reference Include="mscorlib, Version=0.6.1.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
     <Reference Include="Script.Web" />
     <Reference Include="Script.jQuery" />
-    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Samples\SamplePart.cs" />
@@ -88,21 +86,28 @@
     <Compile Include="Application.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewTests\UI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Open.TestHarness.Html\Script.TestHarness\Open.TestHarness.js.csproj">
+      <Project>{E1C9C7B6-0D3B-4F29-A90B-33D0049D6205}</Project>
+      <Name>Open.TestHarness.js</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Open.Core.Controls\Open.Core.Controls.js.csproj">
       <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
       <Name>Open.Core.Controls.js</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core.Lists\Open.Core.Lists.js.csproj">
       <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>
       <Name>Open.Core.Lists.js</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\Open.Core.js.csproj">
       <Project>{6DC09A85-8CE4-40FC-BF85-3152EC6F0210}</Project>
       <Name>Open.Core.js</Name>
+      <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewTests\UI\" />
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>

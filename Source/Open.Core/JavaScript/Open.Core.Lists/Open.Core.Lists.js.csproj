@@ -17,7 +17,8 @@
     <TemplateFile>Properties\Open.Core.Lists.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\Open.Core.Lists.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
-    <DeploymentPath>..\..\Clr\Open.Core.Web\Content\Scripts\</DeploymentPath>
+    <DeploymentPath>
+    </DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Debug\Open.Core.Lists.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Open.Core.Lists.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,13 +38,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0028, 1591, 1684</NoWarn>
-    <DocumentationFile>bin\Release\Open.Core.Lists.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Open.Core.Lists.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=0.6.1.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
-    <Reference Include="Open.Core">
-      <HintPath>..\..\Bin\Bin.JavaScript\Open.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Script.Web" />
     <Reference Include="Script.jQuery" />
   </ItemGroup>
@@ -62,6 +60,12 @@
     <Compile Include="List\ListView.cs" />
     <Compile Include="List\ListItemView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Open.Core\Open.Core.js.csproj">
+      <Project>{6DC09A85-8CE4-40FC-BF85-3152EC6F0210}</Project>
+      <Name>Open.Core.js</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
 </Project>
