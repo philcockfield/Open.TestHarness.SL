@@ -5,7 +5,7 @@ namespace Open.Core.PostBuild
 {
     /// <summary>Executes classes decorated with the [OnPostBuild].</summary>
     /// <remarks>
-    ///     To use copy the 'PostBuild.exe' to your output BIN directory.<br/>
+    ///     To use: copy the 'PostBuild.exe' to your output BIN directory.<br/>
     ///     Then in the post-build event insert:<br/>
     ///         $(TargetDir)PostBuild.exe<br/>
     /// 

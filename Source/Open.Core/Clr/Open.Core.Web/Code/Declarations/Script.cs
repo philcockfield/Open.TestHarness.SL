@@ -128,7 +128,7 @@ namespace Open.Core.Web
         private static bool UseDefaultPath(ScriptFile scriptFile)
         {
             if (scriptFile.IsJQuery()) return true;
-            if (scriptFile == ScriptFile.TestHarness) return true;
+//            if (scriptFile == ScriptFile.TestHarness) return true;
             return false;
         }
         #endregion

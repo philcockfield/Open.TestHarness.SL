@@ -12,11 +12,11 @@ namespace Open.Core.Test.ViewTests.Controls.Panels
 
         public void ClassInitialize()
         {
-            //TestHarness.DisplayMode = ControlDisplayMode.FillWithMargin;
-            //divRoot = TestHarness.AddElement();
+            TestHarness.DisplayMode = ControlDisplayMode.FillWithMargin;
+            divRoot = TestHarness.AddElement();
 
-            ////TEMP 
-            //divRoot.CSS(Css.Background, Color.Red(0.1));
+            //TEMP 
+            divRoot.CSS(Css.Background, Color.Red(0.1));
         }
         #endregion
     }

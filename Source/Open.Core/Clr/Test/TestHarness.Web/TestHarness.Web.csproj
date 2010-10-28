@@ -96,6 +96,18 @@
     <Content Include="Content\Images\ImageButton.Sample\Pressed.Disabled.png" />
     <Content Include="Content\Images\ImageButton.Sample\Pressed.Focused.png" />
     <Content Include="Content\Images\ImageButton.Sample\Pressed.png" />
+    <Content Include="Content\Scripts\mscorlib.debug.js" />
+    <Content Include="Content\Scripts\mscorlib.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.js" />
+    <Content Include="Content\Scripts\Open.Core.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.js" />
+    <Content Include="Content\Scripts\Open.Core.Lists.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Lists.js" />
+    <Content Include="Content\Scripts\Open.Core.Test.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Test.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.js" />
     <Content Include="Views\Samples\AccordianTest.ascx" />
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
@@ -118,7 +130,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
-    <Folder Include="Content\Scripts\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
