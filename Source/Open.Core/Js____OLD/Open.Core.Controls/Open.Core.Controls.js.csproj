@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5A693084-8A66-49E2-AFDA-FF4593833AEF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStdLib>True</NoStdLib>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <LangVersion>ISO-2</LangVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Open.Core.Controls</RootNamespace>
+    <AssemblyName>Open.Core.Controls</AssemblyName>
+    <TemplateFile>Properties\Open.Core.Controls.script</TemplateFile>
+    <CodeAnalysisRuleSet>Properties\Open.Core.Controls.ruleset</CodeAnalysisRuleSet>
+    <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
+    <DeploymentPath>
+    </DeploymentPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0028, 1591, 1684</NoWarn>
+    <DocumentationFile>bin\Debug\Open.Core.Controls.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0028, 1591, 1684</NoWarn>
+    <DocumentationFile>bin\Release\Open.Core.Controls.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib, Version=0.6.1.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL" />
+    <Reference Include="Script.jQuery, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\ScriptSharp\v1.0\Framework\Script.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Open.Core.Controls.ruleset" />
+    <Content Include="Properties\Open.Core.Controls.script" />
+    <Compile Include="Buttons\Controllers\ButtonContentController.cs" />
+    <Compile Include="Buttons\Controllers\ButtonEventController.cs" />
+    <Compile Include="Buttons\Infrastructure\ButtonStyles.cs" />
+    <Compile Include="Buttons\Infrastructure\ButtonTemplates.cs" />
+    <Compile Include="Buttons\Infrastructure\ButtonView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Buttons\Infrastructure\Content\ButtonContentLayer.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonCss.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonStateContent.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonStateCss.cs" />
+    <Compile Include="Buttons\Infrastructure\Content\ButtonStateTemplate.cs" />
+    <Compile Include="Buttons\Infrastructure\Enums %28Button%29.cs" />
+    <Compile Include="Buttons\Models\IconTextButton.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButton.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButtonBase.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButtonFactory.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButtons.cs" />
+    <Compile Include="Buttons\Models\ImageButton\ImageButtonUrls.cs" />
+    <Compile Include="Buttons\Views\IconTextButtonView.cs" />
+    <Compile Include="Buttons\Views\ImageButtonView.cs" />
+    <Compile Include="Declarations\ControlsImages.cs" />
+    <Compile Include="Declarations\Enumerations.Controls.shared.cs" />
+    <Compile Include="Declarations\Urls.cs" />
+    <Compile Include="HtmlPrimitive\HtmlList.cs" />
+    <Compile Include="Input\Textbox.cs" />
+    <Compile Include="Output\LogView.cs" />
+    <Compile Include="Panels\CollapsePanel.cs" />
+    <Compile Include="Panels\PinPanel.cs" />
+    <Compile Include="Panels\SplitPanel\SplitPanel.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanel.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelButton.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelSet.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelSetController.cs" />
+    <Compile Include="Panels\TabPanelSet\TabPanelSetView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Open.Core\Open.Core.js.csproj">
+      <Project>{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29}</Project>
+      <Name>Open.Core.js</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
+</Project>

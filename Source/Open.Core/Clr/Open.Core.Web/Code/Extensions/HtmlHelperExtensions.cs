@@ -29,7 +29,7 @@ namespace Open.Core.Web
         public static void RenderUrl(this HtmlHelper helper, string url)
         {
             RenderAction(
-                            helper, 
+                            helper,
                             CoreController.Name,
                             CoreController.ActionRenderUrl, 
                             new { Area = AreaRegistration.Name, Url = url });
@@ -41,7 +41,7 @@ namespace Open.Core.Web
         public static void RenderTestHarness(this HtmlHelper helper, TestHarnessEmbed mode = TestHarnessEmbed.Page)
         {
             var url = "http://TestHarness.org";
-            if (mode == TestHarnessEmbed.Partial) url += "/embed";
+            if (mode == TestHarnessEmbed.Partial) url += string.Format("/{0}/TestHarness/Embed", AreaRegistration.Name);
             helper.RenderUrl(url);
         }
         #endregion

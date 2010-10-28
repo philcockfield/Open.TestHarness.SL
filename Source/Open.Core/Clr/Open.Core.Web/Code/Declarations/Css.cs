@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Web;
-
 
 namespace Open.Core.Web
 {
@@ -11,12 +8,15 @@ namespace Open.Core.Web
         Core,
         CoreControls,
         CoreLists,
-        LibraryJit,
     }
 
     /// <summary>Constants and helpers for working with CSS.</summary>
     public class Css
     {
+        #region Head
+        public static readonly string CssFolderPath = string.Format("/{0}/Css", AreaRegistration.Name);
+        #endregion
+
         #region Properties
         /// <summary>Gets the embed tag for the specified script.</summary>
         /// <param name="cssFile">Flag indicating what css file to retrieve the path for.</param>
@@ -47,7 +47,6 @@ namespace Open.Core.Web
                 case CssFile.Core: path = "/Open.Core/Css/Core.css"; break;
                 case CssFile.CoreControls: path = "/Open.Core/Css/Core.Controls.css"; break;
                 case CssFile.CoreLists: path = "/Open.Core/Css/Core.Lists.css"; break;
-                case CssFile.LibraryJit: path = "/Open.Core/Css/Jit.Hypertree.css"; break;
                 case CssFile.JQueryUi: path = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"; break;
 
                 default: throw new NotSupportedException(cssFile.ToString());

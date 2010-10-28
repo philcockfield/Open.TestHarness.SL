@@ -17,14 +17,9 @@ namespace TestHarness.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                        "Embed", // Route name
-                        "embed", // URL with parameters
-                        new { controller = MVC.TestHarness.Name, action = MVC.TestHarness.ActionNames.Embed});
-
-            routes.MapRoute(
-                        "Default", // Route name
-                        "{controller}/{action}/{id}", // URL with parameters
-                        new { controller = MVC.TestHarness.Name, action = MVC.TestHarness.ActionNames.Index, id = UrlParameter.Optional } // Parameter defaults
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
         }
 

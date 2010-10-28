@@ -23,7 +23,7 @@ using T4MVC;
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static class MVC {
     public static Open.TestHarness.Web.Controllers.SamplesController Samples = new Open.TestHarness.Web.Controllers.T4MVC_SamplesController();
-    public static Open.Testing.Web.Controllers.TestHarnessController TestHarness = new Open.Testing.Web.Controllers.T4MVC_TestHarnessController();
+    public static T4MVC.TestHarnessController TestHarness = new T4MVC.TestHarnessController();
 }
 
 namespace T4MVC {
@@ -88,14 +88,62 @@ namespace System.Web.Mvc {
         }
 
         public static Route MapRoute(this RouteCollection routes, string name, string url, ActionResult result) {
-            return routes.MapRoute(name, url, result, (ActionResult)null);
+            return MapRoute(routes, name, url, result, null /*namespaces*/);
         }
 
         public static Route MapRoute(this RouteCollection routes, string name, string url, ActionResult result, object defaults) {
-            return MapRoute(routes, name, url, result, defaults, null);
+            return MapRoute(routes, name, url, result, defaults, null /*constraints*/, null /*namespaces*/);
+        }
+
+        public static Route MapRoute(this RouteCollection routes, string name, string url, ActionResult result, string[] namespaces) {
+            return MapRoute(routes, name, url, result, null /*defaults*/, namespaces);
         }
 
         public static Route MapRoute(this RouteCollection routes, string name, string url, ActionResult result, object defaults, object constraints) {
+            return MapRoute(routes, name, url, result, defaults, constraints, null /*namespaces*/);
+        }
+
+        public static Route MapRoute(this RouteCollection routes, string name, string url, ActionResult result, object defaults, string[] namespaces) {
+            return MapRoute(routes, name, url, result, defaults, null /*constraints*/, namespaces);
+        }
+
+        public static Route MapRoute(this RouteCollection routes, string name, string url, ActionResult result, object defaults, object constraints, string[] namespaces) {
+            // Create and add the route
+            var route = CreateRoute(url, result, defaults, constraints, namespaces);
+            routes.Add(name, route);
+            return route;
+        }
+
+        // Note: can't name the AreaRegistrationContext methods 'MapRoute', as that conflicts with the existing methods
+        public static Route MapRouteArea(this AreaRegistrationContext context, string name, string url, ActionResult result) {
+            return MapRouteArea(context, name, url, result, null /*namespaces*/);
+        }
+
+        public static Route MapRouteArea(this AreaRegistrationContext context, string name, string url, ActionResult result, object defaults) {
+            return MapRouteArea(context, name, url, result, defaults, null /*constraints*/, null /*namespaces*/);
+        }
+
+        public static Route MapRouteArea(this AreaRegistrationContext context, string name, string url, ActionResult result, string[] namespaces) {
+            return MapRouteArea(context, name, url, result, null /*defaults*/, namespaces);
+        }
+
+        public static Route MapRouteArea(this AreaRegistrationContext context, string name, string url, ActionResult result, object defaults, object constraints) {
+            return MapRouteArea(context, name, url, result, defaults, constraints, null /*namespaces*/);
+        }
+
+        public static Route MapRouteArea(this AreaRegistrationContext context, string name, string url, ActionResult result, object defaults, string[] namespaces) {
+            return MapRouteArea(context, name, url, result, defaults, null /*constraints*/, namespaces);
+        }
+
+        public static Route MapRouteArea(this AreaRegistrationContext context, string name, string url, ActionResult result, object defaults, object constraints, string[] namespaces) {
+            // Create and add the route
+            var route = CreateRoute(url, result, defaults, constraints, namespaces);
+            context.Routes.Add(name, route);
+            route.DataTokens["area"] = context.AreaName;
+            return route;
+        }
+
+        private static Route CreateRoute(string url, ActionResult result, object defaults, object constraints, string[] namespaces) {
             // Start by adding the default values from the anonymous object (if any)
             var routeValues = new RouteValueDictionary(defaults);
 
@@ -108,7 +156,13 @@ namespace System.Web.Mvc {
 
             // Create and add the route
             var route = new Route(url, routeValues, routeConstraints, new MvcRouteHandler());
-            routes.Add(name, route);
+
+            route.DataTokens = new RouteValueDictionary();
+
+            if (namespaces != null && namespaces.Length > 0) {
+                route.DataTokens["Namespaces"] = namespaces;
+            }
+
             return route;
         }
 
@@ -221,14 +275,7 @@ namespace Links {
             private const string URLPATH = "~/Content/Images";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-            public static class Icons {
-                private const string URLPATH = "~/Content/Images/Icons";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string Icon_JavaScript_png = Url("Icon.JavaScript.png");
-            }
-        
+            public static readonly string Icon_JavaScript_png = Url("Icon.JavaScript.png");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class ImageButton_Sample {
                 private const string URLPATH = "~/Content/Images/ImageButton.Sample";
@@ -272,17 +319,9 @@ namespace Links {
                           
             public static readonly string Open_Core_Lists_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Lists.min.js") ? Url("Open.Core.Lists.min.js") : Url("Open.Core.Lists.js");
                           
-            public static readonly string Open_Core_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.debug.min.js") ? Url("Open.Core.Test.debug.min.js") : Url("Open.Core.Test.debug.js");
-                          
-            public static readonly string Open_Core_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.Core.Test.min.js") ? Url("Open.Core.Test.min.js") : Url("Open.Core.Test.js");
-                          
             public static readonly string Open_TestHarness_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.debug.min.js") ? Url("Open.TestHarness.debug.min.js") : Url("Open.TestHarness.debug.js");
                           
             public static readonly string Open_TestHarness_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Open.TestHarness.min.js") ? Url("Open.TestHarness.min.js") : Url("Open.TestHarness.js");
-                          
-            public static readonly string TestHarness_Test_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Test.debug.min.js") ? Url("TestHarness.Test.debug.min.js") : Url("TestHarness.Test.debug.js");
-                          
-            public static readonly string TestHarness_Test_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/TestHarness.Test.min.js") ? Url("TestHarness.Test.min.js") : Url("TestHarness.Test.js");
                           
         }
     
@@ -322,6 +361,8 @@ namespace T4MVC {
         public static Dummy Instance = new Dummy();
     }
 }
+
+	
 
 #endregion T4MVC
 #pragma warning restore 1591

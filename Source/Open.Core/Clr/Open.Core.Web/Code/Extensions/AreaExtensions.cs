@@ -18,11 +18,6 @@ namespace Open.Core.Web
             helper.RenderAction(ScriptsController.Name, ScriptsController.ActionCoreJQuery);
         }
 
-        public static void InsertHyperTree(this HtmlHelper helper)
-        {
-            helper.RenderAction(JitController.Name, JitController.ActionHyperTree);
-        }
-
         public static void InsertLog(this HtmlHelper helper)
         {
             helper.RenderAction(ControlsController.Name, ControlsController.ActionLog);

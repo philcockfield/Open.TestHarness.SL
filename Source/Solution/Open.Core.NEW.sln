@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.js", "..\Open.Core\Js\Open.Core\Open.Core.js.csproj", "{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB251338-39E3-42E7-9019-F38ADCA2B60E} = {BB251338-39E3-42E7-9019-F38ADCA2B60E}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Controls.js", "..\Open.Core\Js\Open.Core.Controls\Open.Core.Controls.js.csproj", "{5A693084-8A66-49E2-AFDA-FF4593833AEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Lists.js", "..\Open.Core\Js\Open.Core.Lists\Open.Core.Lists.js.csproj", "{E0AF9A14-11BE-4405-B1EE-8562D69D461C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client (Script)", "Client (Script)", "{49F173F4-7679-46CF-9D0B-48AC4781ED5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server (Web)", "Server (Web)", "{04E0DC13-4E5C-497A-8115-7FAB2A935239}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clr", "Clr", "{172A5C93-518A-4CB3-8A9E-76FA218FA070}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Clr", "..\Open.Core\Clr\Open.Core\Open.Core.Clr.csproj", "{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Contracts.Clr", "..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj", "{DE11A17B-85C9-4B05-95FD-7D41A22F3520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Web", "..\Open.Core\Clr\Open.Core.Web\Open.Core.Web.csproj", "{BB251338-39E3-42E7-9019-F38ADCA2B60E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open.Core.Web.Assets", "..\Open.Core\Clr\Open.Core.Web.Assets\Open.Core.Web.Assets.csproj", "{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.Web", "..\Open.TestHarness.Html\Clr.TestHarness.Web\TestHarness.Web.csproj", "{D94FD341-C75C-4EA9-8479-D46DB46048B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A693084-8A66-49E2-AFDA-FF4593833AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A693084-8A66-49E2-AFDA-FF4593833AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A693084-8A66-49E2-AFDA-FF4593833AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A693084-8A66-49E2-AFDA-FF4593833AEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AF9A14-11BE-4405-B1EE-8562D69D461C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AF9A14-11BE-4405-B1EE-8562D69D461C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AF9A14-11BE-4405-B1EE-8562D69D461C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AF9A14-11BE-4405-B1EE-8562D69D461C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE11A17B-85C9-4B05-95FD-7D41A22F3520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE11A17B-85C9-4B05-95FD-7D41A22F3520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE11A17B-85C9-4B05-95FD-7D41A22F3520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE11A17B-85C9-4B05-95FD-7D41A22F3520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB251338-39E3-42E7-9019-F38ADCA2B60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB251338-39E3-42E7-9019-F38ADCA2B60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB251338-39E3-42E7-9019-F38ADCA2B60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB251338-39E3-42E7-9019-F38ADCA2B60E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D94FD341-C75C-4EA9-8479-D46DB46048B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D94FD341-C75C-4EA9-8479-D46DB46048B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D94FD341-C75C-4EA9-8479-D46DB46048B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D94FD341-C75C-4EA9-8479-D46DB46048B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A693084-8A66-49E2-AFDA-FF4593833AEF} = {49F173F4-7679-46CF-9D0B-48AC4781ED5A}
+		{E0AF9A14-11BE-4405-B1EE-8562D69D461C} = {49F173F4-7679-46CF-9D0B-48AC4781ED5A}
+		{56E2C3AE-9C7F-4E8A-BDFB-9B67A1426C29} = {49F173F4-7679-46CF-9D0B-48AC4781ED5A}
+		{D94FD341-C75C-4EA9-8479-D46DB46048B6} = {04E0DC13-4E5C-497A-8115-7FAB2A935239}
+		{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD} = {172A5C93-518A-4CB3-8A9E-76FA218FA070}
+		{DE11A17B-85C9-4B05-95FD-7D41A22F3520} = {172A5C93-518A-4CB3-8A9E-76FA218FA070}
+		{BB251338-39E3-42E7-9019-F38ADCA2B60E} = {172A5C93-518A-4CB3-8A9E-76FA218FA070}
+		{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7} = {172A5C93-518A-4CB3-8A9E-76FA218FA070}
+	EndGlobalSection
+EndGlobal

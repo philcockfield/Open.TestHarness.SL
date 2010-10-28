@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using MvcContrib.PortableAreas;
+using Open.Core.Web.Controllers;
 
 namespace Open.Core.Web
 {
@@ -26,16 +27,22 @@ namespace Open.Core.Web
             context.MapEmbeddedResource(AreaName, "ResourceContentRoute", AreaName + "/Content/{resourceName}");
             context.MapEmbeddedResource(AreaName, "ResourceImageRoute", AreaName + "/Images/{resourceName}", resourcePath: "Content/Images");
             context.MapEmbeddedResource(AreaName, "ResourceCssRoute", AreaName + "/Css/{resourceName}", resourcePath: "Content/Css");
+            context.MapEmbeddedResource(AreaName, "TestHarnessImagesRoute", AreaName + "/TestHarness/Images/{resourceName}", resourcePath: "Content/Images/TestHarness");
 
             // Script folders:
             context.MapEmbeddedResource(AreaName, "ResourceScriptsRoute", AreaName + "/Scripts/{resourceName}", resourcePath: "Content/Scripts");
-            context.MapEmbeddedResource(AreaName, "ResourceScriptsRouteJit", AreaName + "/Scripts/Jit/{resourceName}", resourcePath: "Content/Scripts/Jit");
             context.MapEmbeddedResource(AreaName, "ResourceScriptsRouteJQuery", AreaName + "/Scripts/JQuery/{resourceName}", resourcePath: "Content/Scripts/JQuery");
 
             // Map the area.
             context.MapRoute(
-                            AreaName,
-                            string.Format("{0}/{{controller}}/{{action}}", AreaName));
+                AreaName + "TestHarness",  // Route name
+                AreaName,  // URL
+                new { controller = TestHarnessController.Name, action = TestHarnessController.ActionPage });
+
+            // Default mapping.
+            context.MapRoute(
+                AreaName,
+                string.Format("{0}/{{controller}}/{{action}}", AreaName));
 
             // Finish up.
             base.RegisterAreaEmbeddedResources();

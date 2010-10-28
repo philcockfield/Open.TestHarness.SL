@@ -51,6 +51,8 @@ namespace Open.TestHarness.Web.Controllers {
             public readonly string ButtonTemplate = "ButtonTemplate";
             public readonly string JQuery = "JQuery";
             public readonly string Embed = "Embed";
+            public readonly string SamplePart = "SamplePart";
+            public readonly string AccordianTest = "AccordianTest";
         }
 
 
@@ -59,9 +61,11 @@ namespace Open.TestHarness.Web.Controllers {
         public ViewNames Views { get { return s_views; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ViewNames {
+            public readonly string AccordianTest = "~/Views/Samples/AccordianTest.ascx";
             public readonly string ButtonTemplate = "~/Views/Samples/ButtonTemplate.ascx";
             public readonly string Embed = "~/Views/Samples/Embed.aspx";
             public readonly string JQuery = "~/Views/Samples/JQuery.aspx";
+            public readonly string SamplePart = "~/Views/Samples/SamplePart.aspx";
             public readonly string Temp = "~/Views/Samples/Temp.aspx";
             public readonly string Templates = "~/Views/Samples/Templates.aspx";
         }
@@ -93,6 +97,16 @@ namespace Open.TestHarness.Web.Controllers {
 
         public override System.Web.Mvc.ActionResult Embed() {
             var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Embed);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult SamplePart() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.SamplePart);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult AccordianTest() {
+            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.AccordianTest);
             return callInfo;
         }
 

@@ -15,10 +15,11 @@ namespace Open.Core.Web
         Core,
         CoreControls,
         CoreLists,
-        LibraryJit,
+        TestHarness,
     }
 
     /// <summary>Constants and helpers for working with script.</summary>
+    /// <remarks>Retrieve instance from [WebConstants].</remarks>
     public class Script
     {
         #region Head
@@ -37,7 +38,7 @@ namespace Open.Core.Web
         /// <param name="scriptFile">Flag indicating what script to retrieve the path for.</param>
         public string this[ScriptFile scriptFile]
         {
-            get { return ToScriptLink(GetPath(scriptFile)); }
+            get { return ToScriptLink(Path(scriptFile)); }
         }
 
         /// <summary>Gets or sets the base path used for script files.</summary>
@@ -81,16 +82,16 @@ namespace Open.Core.Web
             string script = string.Format("$(document).ready(function () {{ {0}(); }});", initMethod);
             return WithinBlock(script);
         }
-        #endregion
 
-        #region Internal
-        private string GetPath(ScriptFile scriptFile)
+        /// <summary>Retreives the path to the specified script.</summary>
+        /// <param name="script">The script to retrieve the path for.</param>
+        public string Path(ScriptFile script)
         {
             string path;
-            switch (scriptFile)
+            switch (script)
             {
-                case ScriptFile.JQuery: path = "JQuery/jquery-1.4.2.min.js"; break;
-                case ScriptFile.JQueryUi: path = "JQuery/jquery-ui-1.8.4.custom.min.js"; break;
+                case ScriptFile.JQuery: path = string.Format("JQuery/{0}.js", WebConstantsShared.JQuery); break;
+                case ScriptFile.JQueryUi: path = string.Format("JQuery/{0}.js", WebConstantsShared.JQueryUi); break;
                 case ScriptFile.JQueryCookie: path = "JQuery/jquery.cookie.js"; break;
                 case ScriptFile.JQueryTemplate: path = "JQuery/jquery.tmpl.js"; break;
                 case ScriptFile.JQueryTemplatePlus: path = "JQuery/jquery.tmplPlus.js"; break;
@@ -102,23 +103,33 @@ namespace Open.Core.Web
                 case ScriptFile.CoreControls: path = "Open.Core.Controls.debug.js"; break;
                 case ScriptFile.CoreLists: path = "Open.Core.Lists.debug.js"; break;
 
-                case ScriptFile.LibraryJit: path = "Open.Library.Jit.debug.js"; break;
+                case ScriptFile.TestHarness: path = "Open.TestHarness.debug.js"; break;
 
-                default: throw new NotSupportedException(scriptFile.ToString());
+                default: throw new NotSupportedException(script.ToString());
             }
 
             return string.Format(
-                                "{0}/{1}",
-                                GetBasePath(scriptFile).RemoveEnd("/"), 
-                                path).PrependDomain();
+                "{0}/{1}",
+                GetBasePath(script).RemoveEnd("/"), 
+                path).PrependDomain();
         }
+        #endregion
 
+        #region Internal
         private string GetBasePath(ScriptFile scriptFile)
         {
-            if (scriptFile.IsJQuery()) return DefaultOpenCorePath;
-            return OpenCorePath.IsNullOrEmpty(true) 
-                                            ? DefaultOpenCorePath 
-                                            : OpenCorePath;
+            // Look for exclusions.
+            if (UseDefaultPath(scriptFile)) return DefaultOpenCorePath;
+            return OpenCorePath.IsNullOrEmpty(true)
+                       ? DefaultOpenCorePath
+                       : OpenCorePath;
+        }
+
+        private static bool UseDefaultPath(ScriptFile scriptFile)
+        {
+            if (scriptFile.IsJQuery()) return true;
+            if (scriptFile == ScriptFile.TestHarness) return true;
+            return false;
         }
         #endregion
     }

@@ -19,45 +19,8 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace Open.Testing.Web.Controllers {
-    public partial class TestHarnessController {
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public TestHarnessController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected TestHarnessController(Dummy d) { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected RedirectToRouteResult RedirectToAction(ActionResult result) {
-            var callInfo = result.GetT4MVCResult();
-            return RedirectToRoute(callInfo.RouteValueDictionary);
-        }
-
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public TestHarnessController Actions { get { return MVC.TestHarness; } }
-        [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Area = "";
-        [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "TestHarness";
-
-        static readonly ActionNamesClass s_actions = new ActionNamesClass();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionNamesClass ActionNames { get { return s_actions; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionNamesClass {
-            public readonly string Index = "Index";
-            public readonly string Embed = "Embed";
-            public readonly string Head = "Head";
-            public readonly string Body = "Body";
-            public readonly string GoogleAnalytics = "GoogleAnalytics";
-            public readonly string Log = "Log";
-            public readonly string Sidebar = "Sidebar";
-            public readonly string MethodList = "MethodList";
-            public readonly string Main = "Main";
-            public readonly string AddPackage = "AddPackage";
-        }
-
+namespace T4MVC {
+    public class TestHarnessController {
 
         static readonly ViewNames s_views = new ViewNames();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -77,61 +40,6 @@ namespace Open.Testing.Web.Controllers {
         }
     }
 
-    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public class T4MVC_TestHarnessController: Open.Testing.Web.Controllers.TestHarnessController {
-        public T4MVC_TestHarnessController() : base(Dummy.Instance) { }
-
-        public override System.Web.Mvc.ActionResult Index() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Index);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult Embed() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Embed);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult Head() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Head);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult Body() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Body);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult GoogleAnalytics() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.GoogleAnalytics);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult Log() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Log);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult Sidebar() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Sidebar);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult MethodList() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.MethodList);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult Main() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.Main);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult AddPackage() {
-            var callInfo = new T4MVC_ActionResult(Area, Name, ActionNames.AddPackage);
-            return callInfo;
-        }
-
-    }
 }
 
 #endregion T4MVC

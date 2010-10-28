@@ -20,7 +20,7 @@ namespace Open.Testing.Views
         #endregion
 
         #region Head
-        private const string ContentUrl = "/TestHarness/AddPackage/";
+        private const string ContentUrl = "/Open.Core/TestHarness/AddPackage/";
         public static readonly string IconJs = Helper.Url.PrependDomain("/Content/Images/Icon.JavaScript.png");
         public static readonly string IconMethod = Helper.Url.PrependDomain(ImagePaths.ApiIconPath + "Method.png");
 

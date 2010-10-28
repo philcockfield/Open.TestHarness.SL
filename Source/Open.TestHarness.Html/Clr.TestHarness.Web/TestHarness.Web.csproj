@@ -65,12 +65,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestHarnessStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Code\Base Classes\ControllerBase.cs" />
-    <Compile Include="Code\Declarations\TestHarnessScript.cs" />
-    <Compile Include="Code\Declarations\TestHarnessCss.cs" />
-    <Compile Include="Code\Declarations\TestHarnessConstants.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SamplesController.cs" />
-    <Compile Include="Controllers\TestHarnessController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -100,45 +96,17 @@
     <Content Include="Content\Images\ImageButton.Sample\Pressed.Disabled.png" />
     <Content Include="Content\Images\ImageButton.Sample\Pressed.Focused.png" />
     <Content Include="Content\Images\ImageButton.Sample\Pressed.png" />
-    <Content Include="Content\Scripts\mscorlib.debug.js" />
-    <Content Include="Content\Scripts\mscorlib.js" />
-    <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.Controls.js" />
-    <Content Include="Content\Scripts\Open.Core.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.js" />
-    <Content Include="Content\Scripts\Open.Core.Lists.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.Lists.js" />
-    <Content Include="Content\Scripts\Open.Core.Test.debug.js" />
-    <Content Include="Content\Scripts\Open.Core.Test.js" />
-    <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
-    <Content Include="Content\Scripts\Open.TestHarness.js" />
-    <Content Include="Content\Scripts\TestHarness.Test.debug.js" />
-    <Content Include="Content\Scripts\TestHarness.Test.js" />
     <Content Include="Views\Samples\AccordianTest.ascx" />
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
     <Content Include="Views\Samples\SamplePart.aspx" />
     <Content Include="Views\Samples\Temp.aspx" />
-    <Content Include="Views\TestHarness\Embed.aspx" />
-    <Content Include="Content\Css\Open.TestHarness.IE.css" />
-    <Content Include="Content\Images\Icon.JavaScript.png" />
-    <Content Include="Content\Images\Sidebar.BackMask.png" />
     <Content Include="Favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Css\Open.TestHarness.css" />
     <Content Include="Global.asax" />
     <Content Include="Views\Samples\JQuery.aspx" />
     <Content Include="Views\Samples\Templates.aspx" />
-    <Content Include="Views\TestHarness\AddPackage.ascx" />
-    <Content Include="Views\TestHarness\Body.ascx" />
-    <Content Include="Views\TestHarness\GoogleAnalytics.ascx" />
-    <Content Include="Views\TestHarness\Head.ascx" />
-    <Content Include="Views\TestHarness\Page.aspx" />
-    <Content Include="Views\TestHarness\Log.ascx" />
-    <Content Include="Views\TestHarness\Main.ascx" />
-    <Content Include="Views\TestHarness\Sidebar.ascx" />
-    <Content Include="Views\TestHarness\MethodList.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -150,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="Content\Scripts\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -163,16 +132,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="T4MVC.settings.t4" />
-    <None Include="T4MVC.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>T4MVC.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.csproj">
+    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts</Name>
+      <Name>Open.Core.Contracts.Clr</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Web.Assets\Open.Core.Web.Assets.csproj">
       <Project>{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}</Project>
@@ -182,10 +144,18 @@
       <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
       <Name>Open.Core.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core\Open.Core.csproj">
+    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core\Open.Core.Clr.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core %28Clr\Open.Core%29</Name>
+      <Name>Open.Core.Clr</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="T4MVC.settings.t4" />
+    <None Include="T4MVC.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T4MVC.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

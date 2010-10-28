@@ -58,9 +58,7 @@ namespace Open.Testing
             PreloadImages();
 
             //TEMP : Insert sample packages.
-            AddPackage("/Content/Scripts/TestHarness.Test.debug.js", "Test.Application.main");
             AddPackage("/Content/Scripts/Open.Core.Test.debug.js", "Open.Core.Test.Application.main");
-
             AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
             AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
             AddPackage("/Content/Scripts/Quest.Insandra.Test.debug.js", "Quest.Insandra.Test.Application.main");

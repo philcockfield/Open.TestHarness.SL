@@ -7,7 +7,7 @@ namespace Open.Core.Web.Controllers
     public partial class ButtonsController : ControllerBase
     {
         #region Head
-        public const string Name = "Buttons";
+//TEMP T4        public const string Name = "Buttons";
         public const string ActionTemplate = "Template";
         #endregion
 

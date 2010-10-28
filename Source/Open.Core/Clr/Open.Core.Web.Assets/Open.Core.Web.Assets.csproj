@@ -63,17 +63,17 @@
     <Compile Include="Code\IconExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
+    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts</Name>
+      <Name>Open.Core.Contracts.Clr</Name>
     </ProjectReference>
     <ProjectReference Include="..\Open.Core.Web\Open.Core.Web.csproj">
       <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
       <Name>Open.Core.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Open.Core\Open.Core.csproj">
+    <ProjectReference Include="..\Open.Core\Open.Core.Clr.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core %28Clr\Open.Core%29</Name>
+      <Name>Open.Core.Clr</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

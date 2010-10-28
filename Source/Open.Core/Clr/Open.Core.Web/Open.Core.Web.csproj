@@ -47,7 +47,9 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -62,12 +64,21 @@
     <Compile Include="..\..\JavaScript\Open.Core.Controls\Declarations\ControlsImages.cs">
       <Link>Code\Declarations\Paths\ControlsImages.cs</Link>
     </Compile>
+    <Compile Include="Assets\TestHarnessStrings.Designer.cs">
+      <DependentUpon>TestHarnessStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Code\Base Classes\ControllerBase.cs" />
     <Compile Include="Code\Config\ServerProxyConfig.cs" />
     <Compile Include="Code\Config\WebConfig.cs" />
+    <Compile Include="Code\Declarations\TestHarness\TestHarnessConstants.cs" />
     <Compile Include="Code\Declarations\ContentTypes.cs" />
+    <Compile Include="Code\Declarations\TestHarness\TestHarnessScript.cs" />
     <Compile Include="Code\Declarations\Css.cs" />
+    <Compile Include="Code\Declarations\TestHarness\TestHarnessCss.cs" />
     <Compile Include="Code\Declarations\Script.cs" />
+    <Compile Include="Code\Declarations\WebConstants.Shared.cs" />
     <Compile Include="Code\Extensions\AreaExtensions.cs" />
     <Compile Include="AreaRegistration.cs" />
     <Compile Include="Code\Extensions\EnumExtensions.cs" />
@@ -79,48 +90,52 @@
     <Compile Include="Code\Identity\OpenIdAuthentication.cs" />
     <Compile Include="Code\Server\ServerProxy.cs" />
     <Compile Include="Code\Declarations\WebConstants.cs" />
+    <Compile Include="Controllers\TestHarnessController.cs" />
     <Compile Include="Models\HttpResult.cs" />
+    <Content Include="Assets\TestHarnessStrings.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TestHarnessStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.2.min.js" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.json-2.2.min.js" />
     <EmbeddedResource Include="Content\Css\Core.Buttons.css" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-ui-1.8.4.custom.min.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery-ui-1.8.5.custom.min.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.3.min.js" />
+    <EmbeddedResource Include="Content\Images\TestHarness\Icon.JavaScript.png" />
+    <EmbeddedResource Include="Content\Images\TestHarness\Sidebar.BackMask.png" />
+    <EmbeddedResource Include="Content\Css\Open.TestHarness.css" />
+    <EmbeddedResource Include="Content\Css\Open.TestHarness.IE.css" />
     <Content Include="Content\Scripts\JQuery\Readme.txt" />
     <Compile Include="Controllers\ButtonsController.cs" />
     <Compile Include="Controllers\ControlsController.cs" />
     <Compile Include="Controllers\CoreController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\JitController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.csproj">
+    <ProjectReference Include="..\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
-      <Name>Open.Core.Contracts</Name>
+      <Name>Open.Core.Contracts.Clr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Open.Core\Open.Core.csproj">
+    <ProjectReference Include="..\Open.Core\Open.Core.Clr.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
-      <Name>Open.Core %28Clr\Open.Core%29</Name>
+      <Name>Open.Core.Clr</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\Css\Core.css" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Controls\Log.ascx" />
     <EmbeddedResource Include="Views\Scripts\CoreJQuery.aspx" />
-    <EmbeddedResource Include="Views\Jit\HyperTree.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Scripts\CoreScripts.aspx" />
-    <EmbeddedResource Include="Content\Scripts\Jit\excanvas.js" />
-    <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.Initialize.js" />
-    <EmbeddedResource Include="Content\Scripts\Jit\HyperTree.js" />
-    <EmbeddedResource Include="Content\Scripts\Jit\Jit.Initialize.js" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.cookie.js" />
-    <EmbeddedResource Include="Content\Css\Jit.Hypertree.css" />
     <EmbeddedResource Include="Content\Css\Core.Lists.css" />
     <EmbeddedResource Include="Content\Images\DropShadow.12.030.png" />
     <EmbeddedResource Include="Content\Images\DropShadow.12.020.png" />
@@ -131,6 +146,9 @@
     <EmbeddedResource Include="Content\Images\DropShadow.12.010.png" />
     <EmbeddedResource Include="Content\Css\Core.Controls.css" />
     <EmbeddedResource Include="Content\Images\ListItem.ChildPointer.png" />
+    <EmbeddedResource Include="Content\Images\Log.SectionDivider.Rip.png" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmpl.js" />
+    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmplPlus.js" />
     <EmbeddedResource Include="Content\Scripts\mscorlib.debug.js" />
     <EmbeddedResource Include="Content\Scripts\mscorlib.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Core.Controls.debug.js" />
@@ -139,11 +157,8 @@
     <EmbeddedResource Include="Content\Scripts\Open.Core.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.debug.js" />
     <EmbeddedResource Include="Content\Scripts\Open.Core.Lists.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.debug.js" />
-    <EmbeddedResource Include="Content\Scripts\Open.Library.Jit.js" />
-    <EmbeddedResource Include="Content\Images\Log.SectionDivider.Rip.png" />
-    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmpl.js" />
-    <EmbeddedResource Include="Content\Scripts\JQuery\jquery.tmplPlus.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.TestHarness.debug.js" />
+    <EmbeddedResource Include="Content\Scripts\Open.TestHarness.js" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +175,16 @@
     <EmbeddedResource Include="Views\Controls\TabPanelSet.ascx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\TestHarness\AddPackage.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\Body.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\Embed.aspx" />
+    <EmbeddedResource Include="Views\TestHarness\GoogleAnalytics.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\Head.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\Log.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\Main.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\MethodList.ascx" />
+    <EmbeddedResource Include="Views\TestHarness\Page.aspx" />
+    <EmbeddedResource Include="Views\TestHarness\Sidebar.ascx" />
     <Content Include="Views\Web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
