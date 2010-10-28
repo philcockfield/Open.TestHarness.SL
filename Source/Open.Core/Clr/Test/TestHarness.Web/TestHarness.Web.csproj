@@ -132,19 +132,19 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
+    <ProjectReference Include="..\..\Open.Core.Contracts\Open.Core.Contracts.Clr.csproj">
       <Project>{DE11A17B-85C9-4B05-95FD-7D41A22F3520}</Project>
       <Name>Open.Core.Contracts.Clr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Web.Assets\Open.Core.Web.Assets.csproj">
+    <ProjectReference Include="..\..\Open.Core.Web.Assets\Open.Core.Web.Assets.csproj">
       <Project>{D19FA3FD-529F-4EDA-93B4-FDDBEB1231D7}</Project>
       <Name>Open.Core.Web.Assets</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core.Web\Open.Core.Web.csproj">
+    <ProjectReference Include="..\..\Open.Core.Web\Open.Core.Web.csproj">
       <Project>{BB251338-39E3-42E7-9019-F38ADCA2B60E}</Project>
       <Name>Open.Core.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\Clr\Open.Core\Open.Core.Clr.csproj">
+    <ProjectReference Include="..\..\Open.Core\Open.Core.Clr.csproj">
       <Project>{C7A8A0C6-757D-4D7E-8463-D2BCEA3196DD}</Project>
       <Name>Open.Core.Clr</Name>
     </ProjectReference>

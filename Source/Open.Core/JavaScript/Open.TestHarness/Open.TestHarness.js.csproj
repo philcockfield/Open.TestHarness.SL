@@ -89,15 +89,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Controls\Open.Core.Controls.js.csproj">
+    <ProjectReference Include="..\Open.Core.Controls\Open.Core.Controls.js.csproj">
       <Project>{161B676D-DCD7-4639-B030-AA2095C5C0FA}</Project>
       <Name>Open.Core.Controls.js</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core.Lists\Open.Core.Lists.js.csproj">
+    <ProjectReference Include="..\Open.Core.Lists\Open.Core.Lists.js.csproj">
       <Project>{880AC6C2-E1EE-48A2-8AE8-19A74AF06A68}</Project>
       <Name>Open.Core.Lists.js</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open.Core\JavaScript\Open.Core\Open.Core.js.csproj">
+    <ProjectReference Include="..\Open.Core\Open.Core.js.csproj">
       <Project>{6DC09A85-8CE4-40FC-BF85-3152EC6F0210}</Project>
       <Name>Open.Core.js</Name>
     </ProjectReference>
