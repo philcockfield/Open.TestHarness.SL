@@ -17,6 +17,7 @@
     <TemplateFile>Properties\Open.Core.Test.script</TemplateFile>
     <CodeAnalysisRuleSet>Properties\Open.Core.Test.ruleset</CodeAnalysisRuleSet>
     <ReferencePath>$(ProgramFiles)\ScriptSharp\v1.0\Framework\</ReferencePath>
+    <DeploymentPath>..\..\..\Clr\Test\TestHarness.Web\Content\Scripts</DeploymentPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,7 +90,7 @@
     <Folder Include="ViewTests\UI\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Open.TestHarness.Html\Script.TestHarness\Open.TestHarness.js.csproj">
+    <ProjectReference Include="..\..\Open.TestHarness\Open.TestHarness.js.csproj">
       <Project>{E1C9C7B6-0D3B-4F29-A90B-33D0049D6205}</Project>
       <Name>Open.TestHarness.js</Name>
     </ProjectReference>
