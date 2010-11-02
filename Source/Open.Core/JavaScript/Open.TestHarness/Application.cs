@@ -78,7 +78,7 @@ namespace Open.Testing
 
         private static void AddPackage(string scriptUrl, string initMethod)
         {
-            PackageInfo testHarnessPackage = PackageInfo.SingletonFromUrl(scriptUrl, initMethod);
+            PackageInfo testHarnessPackage = PackageInfo.SingletonFromUrl(initMethod, scriptUrl);
             sidebarController.AddPackage(testHarnessPackage);
         }
         #endregion

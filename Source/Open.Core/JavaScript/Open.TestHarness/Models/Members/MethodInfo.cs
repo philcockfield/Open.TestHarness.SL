@@ -87,7 +87,7 @@ namespace Open.Testing.Models
             htmlList.Add(string.Format("Message: '{0}'", error.Message));
             htmlList.Add("Method: " + Helper.String.ToCamelCase(Name));
             htmlList.Add("Class: " + ClassInfo.ClassType.FullName);
-            htmlList.Add("Package: " + Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrl, null, LinkTarget.Blank));
+            htmlList.Add("Package: " + Html.ToHyperlink(ClassInfo.PackageInfo.Loader.ScriptUrls, null, LinkTarget.Blank));
         }
         #endregion
 

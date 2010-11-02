@@ -590,7 +590,7 @@ Open.Testing.Application._addPackage = function Open_Testing_Application$_addPac
     /// </param>
     /// <param name="initMethod" type="String">
     /// </param>
-    var testHarnessPackage = Open.Testing.Models.PackageInfo.singletonFromUrl(scriptUrl, initMethod);
+    var testHarnessPackage = Open.Testing.Models.PackageInfo.singletonFromUrl(initMethod, scriptUrl);
     Open.Testing.Application._sidebarController.addPackage(testHarnessPackage);
 }
 
@@ -1629,27 +1629,16 @@ Open.Testing.Controllers.PackageController.prototype = {
     },
     
     _download$4: function Open_Testing_Controllers_PackageController$_download$4() {
-        if (this.get_testPackage().get_isLoaded()) {
+        var loader = this.get_testPackage().get_loader();
+        if (loader.get_isDownloaded()) {
             return;
         }
-        var loader = this.get_testPackage().get_loader();
-        var link = Open.Core.Html.toHyperlink(loader.get_scriptUrl(), null, Open.Core.LinkTarget.blank);
-        var timeout = new Open.Core.DelayedAction(Open.Testing.Controllers.PackageController._loadTimeout$4, ss.Delegate.create(this, function() {
-            loader.dispose();
-            Open.Core.Log.error(String.format('<b>Failed</b> to download and initialize the test-package at \'{0}\'.  Please ensure the file exists.', link));
-            Open.Core.Log.lineBreak();
-        }));
-        Open.Core.Log.info(String.format('Downloading test-package: {0} ...', link));
         loader.load(ss.Delegate.create(this, function() {
-            timeout.stop();
-            if (loader.get_succeeded()) {
-                Open.Core.Log.success('Test-package loaded successfully.');
+            if (!loader.get_hasError()) {
                 this._addChildNodes$4();
                 this._fireLoaded$4();
             }
-            Open.Core.Log.newSection();
         }));
-        timeout.start();
     },
     
     _addChildNodes$4: function Open_Testing_Controllers_PackageController$_addChildNodes$4() {
@@ -1953,7 +1942,7 @@ Open.Testing.Models.MethodInfo.prototype = {
         htmlList.add(String.format('Message: \'{0}\'', error.message));
         htmlList.add('Method: ' + Open.Core.Helper.get_string().toCamelCase(this.get_name()));
         htmlList.add('Class: ' + this.get_classInfo().get_classType().get_fullName());
-        htmlList.add('Package: ' + Open.Core.Html.toHyperlink(this.get_classInfo().get_packageInfo().get_loader().get_scriptUrl(), null, Open.Core.LinkTarget.blank));
+        htmlList.add('Package: ' + Open.Core.Html.toHyperlink(this.get_classInfo().get_packageInfo().get_loader().get_scriptUrls(), null, Open.Core.LinkTarget.blank));
     }
 }
 
@@ -1961,23 +1950,23 @@ Open.Testing.Models.MethodInfo.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Testing.Models.PackageInfo
 
-Open.Testing.Models.PackageInfo = function Open_Testing_Models_PackageInfo(scriptUrl, initMethod) {
+Open.Testing.Models.PackageInfo = function Open_Testing_Models_PackageInfo(initMethod, scriptUrl) {
     /// <summary>
     /// Represents a package of tests from a single JavaScript file.
     /// </summary>
-    /// <param name="scriptUrl" type="String">
-    /// The URL to the JavaScript file to load.
-    /// </param>
     /// <param name="initMethod" type="String">
     /// The entry point method to invoke upon load completion.
+    /// </param>
+    /// <param name="scriptUrl" type="String">
+    /// The URL to the JavaScript file to load.
     /// </param>
     /// <field name="_singletons$2" type="Array" static="true">
     /// </field>
     /// <field name="_classes$2" type="Array">
     /// </field>
-    /// <field name="_loader$2" type="Open.Testing.Models.PackageLoader">
-    /// </field>
     /// <field name="_name$2" type="String">
+    /// </field>
+    /// <field name="_loader$2" type="Open.Testing.Models.PackageLoader">
     /// </field>
     this._classes$2 = [];
     Open.Testing.Models.PackageInfo.initializeBase(this);
@@ -1988,7 +1977,7 @@ Open.Testing.Models.PackageInfo = function Open_Testing_Models_PackageInfo(scrip
         throw new Error('An entry point method must be specified.');
     }
     this._name$2 = Open.Testing.Models.PackageInfo._getName$2(scriptUrl);
-    this._loader$2 = new Open.Testing.Models.PackageLoader(this, scriptUrl.toLowerCase(), initMethod);
+    this._loader$2 = new Open.Testing.Models.PackageLoader(this, initMethod, scriptUrl);
 }
 Open.Testing.Models.PackageInfo.get_singletons = function Open_Testing_Models_PackageInfo$get_singletons() {
     /// <summary>
@@ -1997,22 +1986,22 @@ Open.Testing.Models.PackageInfo.get_singletons = function Open_Testing_Models_Pa
     /// <value type="Array"></value>
     return Open.Testing.Models.PackageInfo._singletons$2;
 }
-Open.Testing.Models.PackageInfo.singletonFromUrl = function Open_Testing_Models_PackageInfo$singletonFromUrl(scriptUrl, initMethod) {
+Open.Testing.Models.PackageInfo.singletonFromUrl = function Open_Testing_Models_PackageInfo$singletonFromUrl(initMethod, scriptUrl) {
     /// <summary>
     /// Retrieves (or creates) the singleton instance of the definition for the given package type.
     /// </summary>
-    /// <param name="scriptUrl" type="String">
-    /// The URL to the JavaScript file to load.
-    /// </param>
     /// <param name="initMethod" type="String">
     /// The entry point method to invoke upon load completion.
+    /// </param>
+    /// <param name="scriptUrl" type="String">
+    /// The URL to the JavaScript file to load.
     /// </param>
     /// <returns type="Open.Testing.Models.PackageInfo"></returns>
     var def = Type.safeCast(Open.Core.Helper.get_collection().first(Open.Testing.Models.PackageInfo._singletons$2, function(o) {
         return (o).get_id() === scriptUrl.toLowerCase();
     }), Open.Testing.Models.PackageInfo);
     if (def == null) {
-        def = new Open.Testing.Models.PackageInfo(scriptUrl, initMethod);
+        def = new Open.Testing.Models.PackageInfo(initMethod, scriptUrl);
         Open.Testing.Models.PackageInfo._singletons$2.add(def);
     }
     return def;
@@ -2031,15 +2020,15 @@ Open.Testing.Models.PackageInfo._getName$2 = function Open_Testing_Models_Packag
     return scriptUrl;
 }
 Open.Testing.Models.PackageInfo.prototype = {
-    _loader$2: null,
     _name$2: null,
+    _loader$2: null,
     
     get_id: function Open_Testing_Models_PackageInfo$get_id() {
         /// <summary>
         /// Gets the unique ID of the package.
         /// </summary>
         /// <value type="String"></value>
-        return this.get_loader().get_scriptUrl();
+        return this.get_loader().get_scriptUrls();
     },
     
     get_name: function Open_Testing_Models_PackageInfo$get_name() {
@@ -2050,28 +2039,20 @@ Open.Testing.Models.PackageInfo.prototype = {
         return this._name$2;
     },
     
-    get_loader: function Open_Testing_Models_PackageInfo$get_loader() {
-        /// <summary>
-        /// Gets the package loader.
-        /// </summary>
-        /// <value type="Open.Testing.Models.PackageLoader"></value>
-        return this._loader$2;
-    },
-    
-    get_isLoaded: function Open_Testing_Models_PackageInfo$get_isLoaded() {
-        /// <summary>
-        /// Gets or sets whether the package has been loaded.
-        /// </summary>
-        /// <value type="Boolean"></value>
-        return this.get_loader().get_isLoaded();
-    },
-    
     get_count: function Open_Testing_Models_PackageInfo$get_count() {
         /// <summary>
         /// Gets the number of test classes within the package.
         /// </summary>
         /// <value type="Number" integer="true"></value>
         return this._classes$2.length;
+    },
+    
+    get_loader: function Open_Testing_Models_PackageInfo$get_loader() {
+        /// <summary>
+        /// Gets the package loader.
+        /// </summary>
+        /// <value type="Open.Testing.Models.PackageLoader"></value>
+        return this._loader$2;
     },
     
     getEnumerator: function Open_Testing_Models_PackageInfo$getEnumerator() {
@@ -2383,47 +2364,31 @@ Open.Testing.Models.PackageListItem.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Open.Testing.Models.PackageLoader
 
-Open.Testing.Models.PackageLoader = function Open_Testing_Models_PackageLoader(parent, scriptUrl, initMethod) {
+Open.Testing.Models.PackageLoader = function Open_Testing_Models_PackageLoader(parent, initMethod, scriptUrl) {
     /// <summary>
     /// Handles loading a test-package and executing the entry point assembly.
     /// </summary>
     /// <param name="parent" type="Open.Testing.Models.PackageInfo">
     /// The test-package this object is loading.
     /// </param>
-    /// <param name="scriptUrl" type="String">
-    /// The URL to the JavaScript file to load.
-    /// </param>
     /// <param name="initMethod" type="String">
     /// The entry point method to invoke upon load completion.
     /// </param>
+    /// <param name="scriptUrl" type="String">
+    /// The URL to the JavaScript file to load.
+    /// </param>
     /// <field name="_parent$4" type="Open.Testing.Models.PackageInfo">
-    /// </field>
-    /// <field name="_scriptUrl$4" type="String">
-    /// </field>
-    /// <field name="_initMethod$4" type="String">
-    /// </field>
-    /// <field name="_isLoaded$4" type="Boolean">
-    /// </field>
-    /// <field name="_error$4" type="Error">
-    /// </field>
-    /// <field name="_isInitializing$4" type="Boolean">
     /// </field>
     /// <field name="_events$4" type="Open.Testing.TestHarnessEvents">
     /// </field>
-    Open.Testing.Models.PackageLoader.initializeBase(this);
+    Open.Testing.Models.PackageLoader.initializeBase(this, [ initMethod, scriptUrl ]);
     this._parent$4 = parent;
-    this._scriptUrl$4 = scriptUrl;
-    this._initMethod$4 = initMethod;
-    this._events$4 = this.get_common().get_events();
+    this._events$4 = Open.Testing.Common.getFromContainer().get_events();
     this._events$4.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
+    this.set_logErrors(false);
 }
 Open.Testing.Models.PackageLoader.prototype = {
     _parent$4: null,
-    _scriptUrl$4: null,
-    _initMethod$4: null,
-    _isLoaded$4: false,
-    _error$4: null,
-    _isInitializing$4: false,
     _events$4: null,
     
     onDisposed: function Open_Testing_Models_PackageLoader$onDisposed() {
@@ -2436,81 +2401,30 @@ Open.Testing.Models.PackageLoader.prototype = {
         /// </param>
         /// <param name="e" type="Open.Testing.Internal.TestClassEventArgs">
         /// </param>
-        if (!this._isInitializing$4) {
+        if (!this.get_isLoading()) {
             return;
         }
         this._parent$4.addClass(e.testClass);
     },
     
-    get_scriptUrl: function Open_Testing_Models_PackageLoader$get_scriptUrl() {
-        /// <summary>
-        /// Gets the URL to the JavaScript file to load.
-        /// </summary>
-        /// <value type="String"></value>
-        return this._scriptUrl$4;
-    },
-    
-    get_initMethod: function Open_Testing_Models_PackageLoader$get_initMethod() {
-        /// <summary>
-        /// Gets the entry point method to invoke upon load completion.
-        /// </summary>
-        /// <value type="String"></value>
-        return this._initMethod$4;
-    },
-    
-    get_isLoaded: function Open_Testing_Models_PackageLoader$get_isLoaded() {
-        /// <summary>
-        /// Gets whether the script has been loaded.
-        /// </summary>
-        /// <value type="Boolean"></value>
-        return this._isLoaded$4;
-    },
-    
-    get_error: function Open_Testing_Models_PackageLoader$get_error() {
-        /// <summary>
-        /// Gets the error (if any) that occured during the Load operation.
-        /// </summary>
-        /// <value type="Error"></value>
-        return this._error$4;
-    },
-    
-    get_succeeded: function Open_Testing_Models_PackageLoader$get_succeeded() {
-        /// <summary>
-        /// Gets or sets whether the load operation failed.
-        /// </summary>
-        /// <value type="Boolean"></value>
-        return this.get_error() == null;
-    },
-    
     load: function Open_Testing_Models_PackageLoader$load(onComplete) {
-        /// <summary>
-        /// Downloads the test-package.
-        /// </summary>
         /// <param name="onComplete" type="Action">
-        /// Action to invoke upon completion.
         /// </param>
-        if (this.get_isLoaded()) {
+        this._events$4.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
+        var link = Open.Core.Html.toHyperlink(this.get_scriptUrls(), null, Open.Core.LinkTarget.blank);
+        Open.Core.Log.info(String.format('Downloading test-package: {0} ...', link));
+        Open.Testing.Models.PackageLoader.callBaseMethod(this, 'load', [ ss.Delegate.create(this, function() {
+            if (!this.get_hasError()) {
+                Open.Core.Log.success('Test-package loaded successfully.');
+            }
+            else {
+                var msg = (this.get_timedOut()) ? String.format('<b>Failed</b> to download and initialize the test-package at \'{0}\'.  Please ensure the file exists.', link) : String.format('<b>Failed</b> to initialize the script-file at \'{0}\' with the entry method \'{1}()\'.<br/>Please ensure there aren\'t errors in any of the test-class constructors.<br/>Message: \'{2}\'', Open.Core.Html.toHyperlink(this.get_scriptUrls()), this.get_entryPoint(), this.get_loadError().message);
+                Open.Core.Log.error(msg);
+            }
+            Open.Core.Log.newSection();
+            this._events$4.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
             Open.Core.Helper.invoke(onComplete);
-            return;
-        }
-        Open.Core.Helper.get_scriptLoader().load(this._scriptUrl$4, ss.Delegate.create(this, function(data) {
-            if (this.get_isDisposed()) {
-                return;
-            }
-            try {
-                this._isInitializing$4 = true;
-                eval(this._initMethod$4 + '();');
-            }
-            catch (e) {
-                Open.Core.Log.error(String.format('<b>Failed</b> to initialize the script-file at \'{0}\' with the entry method \'{1}()\'.<br/>Please ensure there aren\'t errors in any of the test-class constructors.<br/>Message: \'{2}\'', Open.Core.Html.toHyperlink(this._scriptUrl$4), this._initMethod$4, e.message));
-                this._error$4 = e;
-            }
-            finally {
-                this._isInitializing$4 = false;
-            }
-            this._isLoaded$4 = this.get_succeeded();
-            Open.Core.Helper.invoke(onComplete);
-        }));
+        }) ]);
     }
 }
 
@@ -3350,7 +3264,7 @@ Open.Testing.Models.MethodInfo.registerClass('Open.Testing.Models.MethodInfo', O
 Open.Testing.Models.PackageInfo.registerClass('Open.Testing.Models.PackageInfo', Open.Core.ModelBase, ss.IEnumerable);
 Open.Testing.Models.ClassInfo.registerClass('Open.Testing.Models.ClassInfo', Open.Core.ModelBase, ss.IEnumerable);
 Open.Testing.Models.PackageListItem.registerClass('Open.Testing.Models.PackageListItem', Open.Core.Lists.ListItem);
-Open.Testing.Models.PackageLoader.registerClass('Open.Testing.Models.PackageLoader', Open.Testing.TestHarnessControllerBase, ss.IDisposable);
+Open.Testing.Models.PackageLoader.registerClass('Open.Testing.Models.PackageLoader', Open.Core.Package, ss.IDisposable);
 Open.Testing.Views.AddPackageListItemView.registerClass('Open.Testing.Views.AddPackageListItemView', Open.Testing.TestHarnessViewBase);
 Open.Testing.Views.AddPackageView.registerClass('Open.Testing.Views.AddPackageView', Open.Testing.TestHarnessViewBase);
 Open.Testing.Views.ControlHostView.registerClass('Open.Testing.Views.ControlHostView', Open.Testing.TestHarnessViewBase);

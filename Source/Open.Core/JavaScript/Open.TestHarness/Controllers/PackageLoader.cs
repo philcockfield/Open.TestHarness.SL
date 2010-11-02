@@ -1,36 +1,31 @@
 using System;
-using jQueryApi;
 using Open.Core;
 using Open.Testing.Internal;
 
 namespace Open.Testing.Models
 {
     /// <summary>Handles loading a test-package and executing the entry point assembly.</summary>
-    public class PackageLoader : TestHarnessControllerBase, IDisposable
+    public class PackageLoader : Package
     {
         #region Head
         private readonly PackageInfo parent;
-        private readonly string scriptUrl;
-        private readonly string initMethod;
-        private bool isLoaded;
-        private Exception error;
-        private bool isInitializing;
         private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
         /// <param name="parent">The test-package this object is loading.</param>
-        /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        public PackageLoader(PackageInfo parent, string scriptUrl, string initMethod)
+        /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
+        public PackageLoader(PackageInfo parent, string initMethod, string scriptUrl) : base(initMethod, scriptUrl)
         {
             // Store values.
             this.parent = parent;
-            this.scriptUrl = scriptUrl;
-            this.initMethod = initMethod;
-            events = Common.Events;
+            events = Common.GetFromContainer().Events;
 
             // Wire up events.
             events.TestClassRegistered += OnTestClassRegistered;
+
+            // Finish up.
+            LogErrors = false;
         }
 
         protected override void OnDisposed()
@@ -43,69 +38,45 @@ namespace Open.Testing.Models
         #region Event Handlers
         private void OnTestClassRegistered(object sender, TestClassEventArgs e)
         {
-            if (!isInitializing) return;
+            if (!IsLoading) return;
             parent.AddClass(e.TestClass);
         }
         #endregion
 
-        #region Properties
-        /// <summary>Gets the URL to the JavaScript file to load.</summary>
-        public string ScriptUrl { get { return scriptUrl; } }
-
-        /// <summary>Gets the entry point method to invoke upon load completion.</summary>
-        public string InitMethod { get { return initMethod; } }
-
-        /// <summary>Gets whether the script has been loaded.</summary>
-        public bool IsLoaded { get { return isLoaded; } }
-
-        /// <summary>Gets the error (if any) that occured during the Load operation.</summary>
-        public Exception Error { get { return error; } }
-
-        /// <summary>Gets or sets whether the load operation failed.</summary>
-        public bool Succeeded { get { return Error == null; } }
-        #endregion
-
         #region Methods
-        /// <summary>Downloads the test-package.</summary>
-        /// <param name="onComplete">Action to invoke upon completion.</param>
-        public void Load(Action onComplete)
+        public override void Load(Action onComplete)
         {
-            // Setup initial conditions.);
-            if (IsLoaded)
-            {
-                Helper.Invoke(onComplete);
-                return;
-            }
+            // Setup initial conditions.
+            events.TestClassRegistered += OnTestClassRegistered;
+            string link = Html.ToHyperlink(ScriptUrls, null, LinkTarget.Blank);
 
-            // Download the script.
-            Helper.ScriptLoader.Load(scriptUrl, delegate(object data)
-                                            {
-                                                if (IsDisposed) return; // Bail out if the downloader has been disposed.
+            // Start the load.
+            Log.Info(string.Format("Downloading test-package: {0} ...", link));
+            base.Load(delegate
+                    {
+                        if (!HasError)
+                        {
+                            // Success.
+                            Log.Success("Test-package loaded successfully.");
+                        }
+                        else
+                        {
+                            // Failure.
+                            string msg = TimedOut
+                                    ? string.Format("<b>Failed</b> to download and initialize the test-package at '{0}'.  Please ensure the file exists.", link)
+                                    : string.Format(
+                                        "<b>Failed</b> to initialize the script-file at '{0}' with the entry method '{1}()'.<br/>Please ensure there aren't errors in any of the test-class constructors.<br/>Message: '{2}'",
+                                        Html.ToHyperlink(ScriptUrls),
+                                        EntryPoint,
+                                        LoadError.Message);
+                            Log.Error(msg);
+                        }
+                        Log.NewSection();
 
-                                                // Execute the entry-point method.
-                                                try
-                                                {
-                                                    isInitializing = true;
-                                                    Script.Eval(initMethod + "();");
-                                                }
-                                                catch (Exception e)
-                                                {
-                                                    Log.Error(string.Format(
-                                                                    "<b>Failed</b> to initialize the script-file at '{0}' with the entry method '{1}()'.<br/>Please ensure there aren't errors in any of the test-class constructors.<br/>Message: '{2}'",
-                                                                    Html.ToHyperlink(scriptUrl), 
-                                                                    initMethod, 
-                                                                    e.Message));
-                                                    error = e;
-                                                }
-                                                finally
-                                                {
-                                                    isInitializing = false;
-                                                }
-
-                                                // Finish up.
-                                                isLoaded = Succeeded;
-                                                Helper.Invoke(onComplete);
-                                            });
+                        // Finish up.
+                        events.TestClassRegistered -= OnTestClassRegistered;
+                        Helper.Invoke(onComplete);
+                    });
         }
         #endregion
     }

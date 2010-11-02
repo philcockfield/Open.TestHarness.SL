@@ -18,13 +18,13 @@ namespace Open.Testing.Models
         #region Head
         private static readonly ArrayList singletons = new ArrayList();
         private readonly ArrayList classes = new ArrayList();
-        private readonly PackageLoader loader;
         private readonly string name;
+        private readonly PackageLoader loader;
 
         /// <summary>Constructor.</summary>
-        /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        private PackageInfo(string scriptUrl, string initMethod)
+        /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
+        private PackageInfo(string initMethod, string scriptUrl) 
         {
             // Setup initial conditions.
             if (string.IsNullOrEmpty(scriptUrl)) throw new Exception("A URL to the test-package script must be specified.");
@@ -32,29 +32,22 @@ namespace Open.Testing.Models
 
             // Store values.
             name = GetName(scriptUrl);
-            loader = new PackageLoader(this, scriptUrl.ToLowerCase(), initMethod);
+            loader = new PackageLoader(this, initMethod, scriptUrl);
         }
         #endregion
 
         #region Properties
         /// <summary>Gets the unique ID of the package.</summary>
-        public string Id { get { return Loader.ScriptUrl; } }
+        public string Id { get { return Loader.ScriptUrls; } }
 
         /// <summary>Gets the display name of the package.</summary>
         public string Name { get { return name; } }
 
-//        public PartDefinition
-
-        //TEMP 
-        /// <summary>Gets the package loader.</summary>
-        public PackageLoader Loader{get { return loader; }}
-
-        /// <summary>Gets or sets whether the package has been loaded.</summary>
-        /// <remarks>If not loaded use the 'Loader'.</remarks>
-        public bool IsLoaded { get { return Loader.IsLoaded; } }
-
         /// <summary>Gets the number of test classes within the package.</summary>
         public int Count { get { return classes.Count; } }
+
+        /// <summary>Gets the package loader.</summary>
+        public PackageLoader Loader { get { return loader; } }
 
         /// <summary>Gets the collection of singleton TestPackageDef instances.</summary>
         public static ArrayList Singletons { get { return singletons; } }
@@ -99,20 +92,20 @@ namespace Open.Testing.Models
 
         #region Methods : Static (Singletons)
         /// <summary>Retrieves (or creates) the singleton instance of the definition for the given package type.</summary>
-        /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
         /// <param name="initMethod">The entry point method to invoke upon load completion.</param>
-        public static PackageInfo SingletonFromUrl(string scriptUrl, string initMethod)
+        /// <param name="scriptUrl">The URL to the JavaScript file to load.</param>
+        public static PackageInfo SingletonFromUrl(string initMethod, string scriptUrl)
         {
             // Retrieve the existing singleton (if there is one).
             PackageInfo def = Helper.Collection.First(singletons, delegate(object o)
-                                                                         {
-                                                                             return ((PackageInfo)o).Id == scriptUrl.ToLowerCase();
-                                                                         }) as PackageInfo;
+                                                                      {
+                                                                          return ((PackageInfo)o).Id == scriptUrl.ToLowerCase();
+                                                                      }) as PackageInfo;
 
             // Create and return the package-def.
             if (def == null)
             {
-                def = new PackageInfo(scriptUrl, initMethod);
+                def = new PackageInfo(initMethod, scriptUrl);
                 singletons.Add(def);
             }
 

@@ -95,32 +95,18 @@ namespace Open.Testing.Controllers
         private void Download()
         {
             // Setup initial conditions.
-            if (TestPackage.IsLoaded) return;
             PackageLoader loader = TestPackage.Loader;
-            string link = Html.ToHyperlink(loader.ScriptUrl, null, LinkTarget.Blank);
+            if (loader.IsDownloaded) return;
 
-            // Create time-out handler.
-            DelayedAction timeout = new DelayedAction(loadTimeout, delegate
-                            {
-                                loader.Dispose();
-                                Log.Error(string.Format("<b>Failed</b> to download and initialize the test-package at '{0}'.  Please ensure the file exists.", link));
-                                Log.LineBreak();
-                            });
-
-            // Start downloading the package.
-            Log.Info(string.Format("Downloading test-package: {0} ...", link));
+            // Start the download.
             loader.Load(delegate
-                                        {
-                                            timeout.Stop();
-                                            if (loader.Succeeded)
-                                            {
-                                                Log.Success("Test-package loaded successfully.");
-                                                AddChildNodes();
-                                                FireLoaded();
-                                            }
-                                            Log.NewSection();
-                                        });
-            timeout.Start();
+                    {
+                        if (!loader.HasError)
+                        {
+                            AddChildNodes();
+                            FireLoaded();
+                        }
+                    });
         }
 
         private void AddChildNodes()

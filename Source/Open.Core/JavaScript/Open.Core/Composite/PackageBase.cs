@@ -15,6 +15,8 @@ namespace Open.Core
         public const string PropHasError = "HasError";
         public const string PropDownloadTimeout = "DownloadTimeout";
         public const string PropTimedOut = "TimedOut";
+        public const string PropIsLoading = "IsLoading";
+        public const string PropLogErrors = "LogErrors";
 
         public const string PathDivider = ";";
         public const double DefaultDownloadTimeout = 8;
@@ -116,6 +118,20 @@ namespace Open.Core
             get { return (bool) Get(PropTimedOut, false); }
             private set { Set(PropTimedOut, value, false); }
         }
+
+        /// <summary>Gets whether the package is currently in the process of loading.</summary>
+        public bool IsLoading
+        {
+            get { return (bool) Get(PropIsLoading, false); }
+            set { Set(PropIsLoading, value, false); }
+        }
+
+        /// <summary>Gets or sets whether error are logged.</summary>
+        public bool LogErrors
+        {
+            get { return (bool) Get(PropLogErrors, true); }
+            set { Set(PropLogErrors, value, true); }
+        }
         #endregion
 
         #region Properties : Boolean (IsDownloaded)
@@ -178,6 +194,7 @@ namespace Open.Core
             // Setup initial conditions.
             if (!HasEntryPoint) throw new Exception("There is no entry point method for the Part.");
             TimedOut = false;
+            IsLoading = true;
 
             // Insert resources.
             InsertCssLinks();
@@ -187,6 +204,7 @@ namespace Open.Core
             DelayedAction timeout = new DelayedAction(DownloadTimeout, delegate
                                     {
                                         TimedOut = true;
+                                        IsLoading = false;
                                         Helper.Invoke(onTimedOut);
                                     });
             timeout.Start();
@@ -199,6 +217,7 @@ namespace Open.Core
                                         Helper.Invoke(onScriptsDownloaded);
                                     }
                                     timeout.Dispose();
+                                    IsLoading = false;
                                 });
         }
 
@@ -206,7 +225,7 @@ namespace Open.Core
         /// <param name="message">The error message.</param>
         protected void SetDownloadError(string message)
         {
-            Log.Error(message);
+            if (LogErrors) Log.Error(message);
             LoadError = new Exception(message);
         }
         #endregion
