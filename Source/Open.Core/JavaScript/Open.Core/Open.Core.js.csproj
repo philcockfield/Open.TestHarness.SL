@@ -49,10 +49,10 @@
     <Compile Include="..\..\Clr\Open.Core.Web\Code\Declarations\WebConstants.Shared.cs">
       <Link>Declarations\WebConstants.Shared.cs</Link>
     </Compile>
+    <Compile Include="Composite\PartDefinition.cs" />
     <Compile Include="Composite\DiContainer.cs" />
     <Compile Include="Composite\Part.cs" />
-    <Compile Include="Composite\PartDefinition.cs" />
-    <Compile Include="Composite\PartDownloader.cs" />
+    <Compile Include="Composite\PackageBase.cs" />
     <Compile Include="Declarations\Delegates.cs" />
     <Compile Include="Declarations\Enums\Enums %28Css%29.cs" />
     <Compile Include="Declarations\Enums\Enums %28Html%29.cs" />

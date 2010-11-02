@@ -81,6 +81,8 @@
     <Content Include="Properties\Open.Core.Views.script" />
     <Compile Include="Panels\CollapsePanel.cs" />
     <Compile Include="Panels\PinPanel.cs" />
+    <Compile Include="Panels\SplitPanel\Planes\HorizontalSplitPanel.cs" />
+    <Compile Include="Panels\SplitPanel\Pane.cs" />
     <Compile Include="Panels\SplitPanel\SplitPanel.cs" />
     <Compile Include="Panels\TabPanelSet\TabPanel.cs" />
     <Compile Include="Panels\TabPanelSet\TabPanelButton.cs" />
@@ -94,6 +96,9 @@
       <Project>{6DC09A85-8CE4-40FC-BF85-3152EC6F0210}</Project>
       <Name>Open.Core.js</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Panels\SplitPanel\Planes\Controllers\" />
   </ItemGroup>
   <Import Project="$(ProgramFiles)\ScriptSharp\v1.0\ScriptSharp.targets" />
   <PropertyGroup>

@@ -92,14 +92,14 @@ namespace Open.Core.Lists
         #endregion
 
         #region Methods
-        public void SlideOff(HorizontalDirection direction, Action onComplete)
+        public void SlideOff(HorizontalEdge direction, Action onComplete)
         {
             // Ensure the panel is on stage.
             CenterStage();
 
             // Configure the animation.
             Dictionary properties = new Dictionary();
-            properties[Css.Left] = direction == HorizontalDirection.Left ? 0 - Width : Width;
+            properties[Css.Left] = direction == HorizontalEdge.Left ? 0 - Width : Width;
 
             // Perform animation.
             Container.Animate(
@@ -114,7 +114,7 @@ namespace Open.Core.Lists
                             });
         }
 
-        public void SlideOn(HorizontalDirection direction, Action onComplete)
+        public void SlideOn(HorizontalEdge direction, Action onComplete)
         {
             // Prepare the panels starting position.
             SetPosition(direction, true);
@@ -142,9 +142,9 @@ namespace Open.Core.Lists
             SyncWidth();
         }
 
-        public void SetPosition(HorizontalDirection direction, bool isVisible)
+        public void SetPosition(HorizontalEdge direction, bool isVisible)
         {
-            int startLeft = direction == HorizontalDirection.Right ? 0 - Width : Width;
+            int startLeft = direction == HorizontalEdge.Right ? 0 - Width : Width;
             Container.CSS(Css.Left, startLeft + Css.Px);
             Container.CSS(Css.Display, isVisible ? Css.Block : Css.None);
             SyncWidth();

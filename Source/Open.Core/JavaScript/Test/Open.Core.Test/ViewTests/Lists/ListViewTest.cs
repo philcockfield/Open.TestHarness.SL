@@ -94,7 +94,7 @@ namespace Open.Core.Test.ViewTests.Lists
         public IView CreateView()
         {
             IView view = new SampleItemView(this);
-            view.Background = Color.HotPink;
+            view.Background = Color.HotPink();
             view.SetCss(Css.Color, "white");
             return view;
         }

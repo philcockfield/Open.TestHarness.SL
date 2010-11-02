@@ -163,7 +163,7 @@ namespace Open.Core.Lists
         private void SlidePanels(ITreeNode previousNode, ITreeNode newNode)
         {
             // Setup initial conditions.
-            HorizontalDirection direction = GetSlideDirection(previousNode, newNode);
+            HorizontalEdge direction = GetSlideDirection(previousNode, newNode);
 
             // Slide off the old panel.
             if (previousNode != null)
@@ -177,12 +177,12 @@ namespace Open.Core.Lists
             panel.SlideOn(direction, null);
         }
 
-        private static HorizontalDirection GetSlideDirection(ITreeNode previousNode, ITreeNode newNode)
+        private static HorizontalEdge GetSlideDirection(ITreeNode previousNode, ITreeNode newNode)
         {
-            if (previousNode == null) return HorizontalDirection.Left;
+            if (previousNode == null) return HorizontalEdge.Left;
             return previousNode.ContainsDescendent(newNode) 
-                       ? HorizontalDirection.Left 
-                       : HorizontalDirection.Right;
+                       ? HorizontalEdge.Left 
+                       : HorizontalEdge.Right;
         }
 
         private ListTreePanel GetOrCreatePanel(ITreeNode node)

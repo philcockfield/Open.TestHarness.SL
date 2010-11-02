@@ -1,17 +1,26 @@
 namespace Open.Core
 {
-    /// <summary>A direction on the X plane.</summary>
-    public enum HorizontalDirection
+    /// <summary>Edges of an element.</summary>
+    public enum Edge
+    {
+        Left = 0,
+        Top = 1,
+        Right = 2,
+        Bottom = 3
+    }
+
+    /// <summary>Edges on the horizontal plane.</summary>
+    public enum HorizontalEdge
     {
         Left = 0,
         Right = 1
     }
 
-    /// <summary>A direction on the Y plane.</summary>
-    public enum VerticalDirection
+    /// <summary>Edges on the vertical plane.</summary>
+    public enum VerticalEdge
     {
-        Up = 0,
-        Down = 1,
+        Top = 0,
+        Bottom = 1,
     }
 
     /// <summary>Flags representing the vertical or horizontal planes.</summary>
@@ -42,15 +51,6 @@ namespace Open.Core
         Top = 0,
         Center = 1,
         Bottom = 2,
-    }
-
-    /// <summary>Edges of an element.</summary>
-    public enum Edge
-    {
-        Left = 0,
-        Top = 1,
-        Right = 2,
-        Bottom = 3
     }
 
     /// <summary>Flags indicating the various strategies for inserting content.</summary>

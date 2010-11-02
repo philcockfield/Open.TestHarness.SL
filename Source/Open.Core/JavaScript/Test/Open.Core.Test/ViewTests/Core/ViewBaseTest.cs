@@ -14,7 +14,7 @@ namespace Open.Core.Test.ViewTests.Core
         public void ClassInitialize()
         {
             view = new SampleView();
-            view.Background = Color.HotPink;
+            view.Background = Color.HotPink();
             view.SetSize(150, 100);
 
             TestHarness.AddControl(view);
