@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using jQueryApi;
-using Open.Core.Helpers;
 
 namespace Open.Core
 {
@@ -9,7 +8,7 @@ namespace Open.Core
     /// <param name="part">The part that has been loaded.</param>
     public delegate void PartCallback(Part part);
 
-    /// <summary>The source and dependency references that define Part.</summary>
+    /// <summary>The script(s) and other dependencies that make up a 'Part'.</summary>
     public class PartDefinition : PackageBase
     {
         #region Head
@@ -62,48 +61,46 @@ namespace Open.Core
             // Progress flags.
             bool wasDownloaded = false;
 
-            // Download async.
-            Download(
-                    delegate // Script downloaded.
-                    {
-                        wasDownloaded = true;
-
-                        // Retrieve the part.
-                        Part part = CreatePart();
-                        if (part == null && HasError)
+            // Start the download.
+            DownloadAsync(
+                        delegate // Script(s) downloaded.
                         {
-                            FinishLoad(part, onComplete);
-                            return;
-                        }
+                            wasDownloaded = true;
 
-                        // Initialize the part.
-                        SetupPart(part, container);
-                        if (initializeOnComplete)
-                        {
-                            part.Initialize(delegate
-                                                {
-                                                    FinishLoad(part, onComplete);
-                                                });
-                        }
-                        else
-                        {
-                            FinishLoad(part, onComplete);
-                        }
-                    }, 
+                            // Retrieve the part.
+                            Part part = CreatePart();
+                            if (part == null && HasError)
+                            {
+                                FinishLoad(part, onComplete);
+                                return;
+                            }
 
-                    delegate // Timed out (failure).
-                    {
-                        string msg = wasDownloaded
-                                    ? string.Format("Failed to initialize the Part at '{0}'.  The Part did not call back from its 'OnInitialize' method.", EntryPoint)
-                                    : string.Format("Failed to download the Part at '{0}'.  Timed out.", EntryPoint);
-                        SetDownloadError(msg);
-                        FinishLoad(null, onComplete);     
-                    });
+                            // Initialize the part.
+                            SetupPart(part, container);
+                            if (initializeOnComplete)
+                            {
+                                part.Initialize(delegate
+                                                    {
+                                                        FinishLoad(part, onComplete);
+                                                    });
+                            }
+                            else
+                            {
+                                FinishLoad(part, onComplete);
+                            }
+                        }, 
+                        delegate // Timed out (failure).
+                        {
+                            string msg = wasDownloaded
+                                        ? string.Format("Failed to initialize the Part at '{0}'.  The Part did not call back from its 'OnInitialize' method.", EntryPoint)
+                                        : string.Format("Failed to download the Part at '{0}'.  Timed out after {1} seconds.", EntryPoint, DownloadTimeout);
+                            SetDownloadError(msg);
+                            FinishLoad(null, onComplete);     
+                        });
         }
         #endregion
 
         #region Internal
-
         private static void FinishLoad(Part part, PartCallback onComplete)
         {
             if (part != null) part.UpdateLayout();
@@ -113,12 +110,11 @@ namespace Open.Core
         private Part CreatePart()
         {
             // Invoke the entry point method.
-            string method = FormatMethod();
             try
             {
                 // Create the part.
                 Part part = null;
-                string script = string.Format("part = {0};", method);
+                string script = string.Format("part = {0};", EntryPoint);
                 Script.Eval(script);
 
                 // Finish up.
@@ -128,9 +124,8 @@ namespace Open.Core
             {
                 // Ignore.
                 string msg = string.Format(
-                                "Failed to initialize the Part at '{0}' with the entry method '{1}'.  Ensure the method exists and returns a [Part].<br/>Message: {2}",
-                                ScriptUrls,
-                                method,
+                                "Failed to initialize the Part with the entry method '{0}'. Ensure the method exists and returns a [Part].<br/>Message: {1}",
+                                EntryPoint,
                                 error.Message);
                 SetDownloadError(msg);
             }
@@ -145,21 +140,6 @@ namespace Open.Core
             // Assign default values.
             part.Definition = this;
             if (!Script.IsNullOrUndefined(container)) part.Container = container;
-        }
-
-        private string FormatMethod()
-        {
-            StringHelper helper = Helper.String;
-            string entryPoint = EntryPoint;
-            entryPoint = helper.RemoveEnd(entryPoint, ";");
-            entryPoint = helper.RemoveEnd(entryPoint, "()");
-
-            string[] parts = entryPoint.Split(".");
-            string name = parts[parts.Length - 1];
-
-            return string.Format("{0}{1}()",
-                                helper.RemoveEnd(entryPoint, name),
-                                name.ToLocaleLowerCase());
         }
         #endregion
     }

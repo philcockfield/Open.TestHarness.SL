@@ -1,11 +1,10 @@
 using System;
 using System.Runtime.CompilerServices;
-using jQueryApi;
 using Open.Core.Helpers;
 
 namespace Open.Core
 {
-    /// <summary>The source and dependency references that define Part.</summary>
+    /// <summary>A set of script(s) and other dependencies with an entry-point method.</summary>
     public abstract class PackageBase : ModelBase
     {
         #region Head
@@ -15,12 +14,13 @@ namespace Open.Core
         public const string PropLoadError = "LoadError";
         public const string PropHasError = "HasError";
         public const string PropDownloadTimeout = "DownloadTimeout";
+        public const string PropTimedOut = "TimedOut";
 
         public const string PathDivider = ";";
         public const double DefaultDownloadTimeout = 8;
 
         /// <summary>Constructor.</summary>
-        /// <param name="entryPoint">The entry point method to invoke.  This method must return a [Part] instance.</param>
+        /// <param name="entryPoint">The entry point method to invoke.</param>
         [AlternateSignature]
         protected extern PackageBase(string entryPoint);
 
@@ -80,7 +80,11 @@ namespace Open.Core
         public string EntryPoint
         {
             get { return (string)Get(PropEntryPoint, null); }
-            set { Set(PropEntryPoint, value, null); }
+            set
+            {
+                value = FormatMethod(value);
+                Set(PropEntryPoint, value, null);
+            }
         }
 
         /// <summary>Gets the exception that occured during download or initialization (if one occured).</summary>
@@ -104,6 +108,13 @@ namespace Open.Core
         {
             get { return (double) Get(PropDownloadTimeout, DefaultDownloadTimeout); }
             set { Set(PropDownloadTimeout, value, DefaultDownloadTimeout); }
+        }
+
+        /// <summary>Gets whether the load error is due to the operation timing out.</summary>
+        public bool TimedOut
+        {
+            get { return (bool) Get(PropTimedOut, false); }
+            private set { Set(PropTimedOut, value, false); }
         }
         #endregion
 
@@ -159,14 +170,14 @@ namespace Open.Core
             return string.Format("[{0}]", GetType().Name);
         }
 
-
         /// <summary>Downloads the resources defined for the package.</summary>
         /// <param name="onScriptsDownloaded">Invoked when the scripts have completed downloading.</param>
         /// <param name="onTimedOut">Invoked when/if the operation times out (NB: 'onScriptsDownloaded' is never called if the operation times out).</param>
-        protected void Download(Action onScriptsDownloaded, Action onTimedOut)
+        protected void DownloadAsync(Action onScriptsDownloaded, Action onTimedOut)
         {
             // Setup initial conditions.
             if (!HasEntryPoint) throw new Exception("There is no entry point method for the Part.");
+            TimedOut = false;
 
             // Insert resources.
             InsertCssLinks();
@@ -174,15 +185,16 @@ namespace Open.Core
 
             // Setup failure timeout.
             DelayedAction timeout = new DelayedAction(DownloadTimeout, delegate
-                                                                           {
-                                                                               Helper.Invoke(onTimedOut);
-                                                                           });
+                                    {
+                                        TimedOut = true;
+                                        Helper.Invoke(onTimedOut);
+                                    });
             timeout.Start();
 
             // Download the scripts
             DownloadScripts(delegate
                                 {
-                                    if (timeout.IsRunning) // Don't invoke if the timeout elapsed before this callback.
+                                    if (!TimedOut) // Only invoke if the timeout hasn't elapsed before this callback.
                                     {
                                         Helper.Invoke(onScriptsDownloaded);
                                     }
@@ -237,6 +249,22 @@ namespace Open.Core
         {
             url = Helper.String.HasValue(url) ? url.Trim() : null;
             return url;
+        }
+
+        private static string FormatMethod(string method)
+        {
+            if (Script.IsUndefined(method) || string.IsNullOrEmpty(method)) return null;
+
+            StringHelper helper = Helper.String;
+            method = helper.RemoveEnd(method, ";");
+            method = helper.RemoveEnd(method, "()");
+
+            string[] parts = method.Split(".");
+            string name = parts[parts.Length - 1];
+
+            return string.Format("{0}{1}()",
+                                 helper.RemoveEnd(method, name),
+                                 helper.ToCamelCase(name));
         }
         #endregion
     }

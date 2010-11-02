@@ -15,9 +15,13 @@ namespace Open.Core.Test.Samples
         #endregion
 
         #region Methods
+        public static void PackageInitialize()
+        {
+            Log.Info("PackageInitialize", Icons.SilkEmoticonSmile);
+        }
+
         public static SamplePart Create()
         {
-//            throw new Exception("MY FOO"); //TEMP 
             return new SamplePart();
         }
 

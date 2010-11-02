@@ -1,4 +1,3 @@
-using System;
 using jQueryApi;
 using Open.Core.Controls.HtmlPrimitive;
 using Open.Core.Test.Samples;
@@ -79,8 +78,8 @@ namespace Open.Core.Test.ViewTests.Core
         }
         #endregion
 
-        #region Internal
-        private static void WriteUrls(string title, string urls)
+        #region Methods : Static
+        public static void WriteUrls(string title, string urls)
         {
             if (!Helper.String.HasValue(urls)) return;
             IHtmlList list = Log.WriteList(title);

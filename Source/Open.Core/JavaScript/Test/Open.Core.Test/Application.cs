@@ -29,6 +29,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(TabPanelSetTest));
             TestHarness.RegisterClass(typeof(SplitPanelTest));
             TestHarness.RegisterClass(typeof(PartTest));
+            TestHarness.RegisterClass(typeof(PackageTest));
             TestHarness.RegisterClass(typeof(IconTest));
             TestHarness.RegisterClass(typeof(TemplateTest));
             TestHarness.RegisterClass(typeof(ViewBaseTest));

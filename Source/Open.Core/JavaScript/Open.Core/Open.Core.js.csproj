@@ -49,6 +49,7 @@
     <Compile Include="..\..\Clr\Open.Core.Web\Code\Declarations\WebConstants.Shared.cs">
       <Link>Declarations\WebConstants.Shared.cs</Link>
     </Compile>
+    <Compile Include="Composite\Package.cs" />
     <Compile Include="Composite\PartDefinition.cs" />
     <Compile Include="Composite\DiContainer.cs" />
     <Compile Include="Composite\Part.cs" />
