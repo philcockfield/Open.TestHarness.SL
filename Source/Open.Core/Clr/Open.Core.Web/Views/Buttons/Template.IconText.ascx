@@ -1,5 +1,7 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 
-<script id="btnIconText_bg" type="text/html">
-    <h1>Icon Text Button</h1>
+<script id="btnIconText_content" type="text/html">
+    <div class="content absoluteFill">
+        <p class="label">${Text}</p>
+    </div>
 </script>

@@ -19,9 +19,20 @@ namespace Open.Core.Test.ViewTests.Controls.Buttons
         #endregion
 
         #region Tests
+        public void Change_Text()
+        {
+            button.Text = button.Text == "My Button" ? "Foo" : "MyButton";
+            button.UpdateLayout();
+        }
+
+        public void UpdateLayout()
+        {
+            button.UpdateLayout();
+        }
+
         public void Write_Properties()
         {
-            Log.Info("Text: " + button.Text);
+            Log.WriteProperties(button);
         }
         #endregion
     }

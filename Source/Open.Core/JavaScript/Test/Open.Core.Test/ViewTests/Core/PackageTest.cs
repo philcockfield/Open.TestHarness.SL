@@ -23,25 +23,34 @@ namespace Open.Core.Test.ViewTests.Core
         #endregion
 
         #region Methods
-        public void Load()
-        {
-            TestHarness.Reset();
-            LoadPackage();
-        }
-
-        public void Load_Twice()
-        {
-            TestHarness.Reset();
-            LoadPackage();
-            LoadPackage();
-        }
-
-        private void LoadPackage()
+        public void Download()
         {
             Log.Info("Downloading package...");
-            partDefinition.Load(delegate
+            partDefinition.Download(delegate
+                        {
+                            if (partDefinition.HasError) { Log.Error("Download callback (failed)"); } else { Log.Success("Download callback (succeeded)"); }
+                        });
+        }
+
+        public void Initialize()
+        {
+            TestHarness.Reset();
+            InitializePackage();
+        }
+
+        public void Initialize_Twice()
+        {
+            TestHarness.Reset();
+            InitializePackage();
+            InitializePackage();
+        }
+
+        private void InitializePackage()
+        {
+            Log.Info("Initializing package...");
+            partDefinition.Initialize(delegate
                                         {
-                                            if (partDefinition.HasError) { Log.Error("Download callback (failed)"); } else { Log.Success("Download callback (succeeded)"); }
+                                            if (partDefinition.HasError) { Log.Error("Initialize callback (failed)"); } else { Log.Success("Initialize callback (succeeded)"); }
                                         });
         }
 

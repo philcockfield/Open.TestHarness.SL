@@ -68,6 +68,7 @@
       <DependentUpon>TestHarnessStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Code\Base Classes\ControllerBase.cs" />
     <Compile Include="Code\Config\ServerProxyConfig.cs" />
@@ -96,6 +97,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TestHarnessStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery-1.4.2.min.js" />
     <EmbeddedResource Include="Content\Scripts\JQuery\jquery.json-2.2.min.js" />
@@ -167,14 +169,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\Core\TestHarness.aspx" />
     <EmbeddedResource Include="Views\Core\RenderUrl.ascx" />
-    <EmbeddedResource Include="Views\Buttons\Template.Primary.ascx" />
     <EmbeddedResource Include="Views\Buttons\Template.IconText.ascx" />
     <EmbeddedResource Include="Views\Buttons\Template.ascx" />
     <EmbeddedResource Include="Views\Buttons\Template.Common.ascx" />
     <EmbeddedResource Include="Views\Buttons\Template.Image.ascx" />
-    <EmbeddedResource Include="Views\Controls\TabPanelSet.ascx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Controls\TabPanelSet.ascx" />
     <EmbeddedResource Include="Views\TestHarness\AddPackage.ascx" />
     <EmbeddedResource Include="Views\TestHarness\Body.ascx" />
     <EmbeddedResource Include="Views\TestHarness\Embed.aspx" />

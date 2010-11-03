@@ -7,7 +7,7 @@ namespace Open.Core.Controls.Buttons
     {
         #region Head
         public const string RootClass = "iconTextButton";
-        private const string TemplateBg = "#btnIconText_bg";
+        private const string TemplateContent = "#btnIconText_content";
 
         public IconTextButtonView(IconTextButton model) : base(model)
         {
@@ -17,25 +17,17 @@ namespace Open.Core.Controls.Buttons
 
             // Ensure the required templates are downloaded.
             AddRequiredTemplate(ButtonTemplates.CommonBg, ButtonTemplates.TemplateUrl(ButtonTemplate.Common));
-            AddRequiredTemplate(TemplateBg, ButtonTemplates.TemplateUrl(ButtonTemplate.IconText));
+            AddRequiredTemplate(TemplateContent, ButtonTemplates.TemplateUrl(ButtonTemplate.IconText));
             DownloadTemplates(delegate
                                   {
-                                      //TEMP 
-                                      Log.Warning("Completed Download");
-
+                                      // Initialize the button content.
                                       ButtonStyles.SilverBackground(0, this, true);
+                                      ButtonStyles.Rounded(0, this);
+                                      TemplateForStates(1, AllStates, TemplateContent, EnabledCondition.Either, FocusCondition.Either);
 
                                       // Finish up.
                                       UpdateLayout();
                                   });
-
-
-            //TEMP 
-            SetSize(80, 24);
-            //Background = Color.HotPink;
-            //Css.RoundedCorners(Container, 5);
-
-            // Finish up.
         }
         #endregion
     }

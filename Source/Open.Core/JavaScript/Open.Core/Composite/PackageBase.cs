@@ -171,13 +171,13 @@ namespace Open.Core
 
         #region Properties (Internal)
         /// <summary>Gets whether the part has Script URLs.</summary>
-        private bool HasScriptUrls { get { return Helper.String.HasValue(ScriptUrls); } }
+        protected bool HasScriptUrls { get { return Helper.String.HasValue(ScriptUrls); } }
 
         /// <summary>Gets whether the part has CSS file URLs.</summary>
-        private bool HasResourceUrls { get { return Helper.String.HasValue(ResourceUrls); } }
+        protected bool HasResourceUrls { get { return Helper.String.HasValue(ResourceUrls); } }
 
         /// <summary>Gets whether the part has an entry point.</summary>
-        private bool HasEntryPoint { get { return Helper.String.HasValue(EntryPoint); } }
+        protected bool HasEntryPoint { get { return Helper.String.HasValue(EntryPoint); } }
         #endregion
 
         #region Methods
@@ -185,14 +185,39 @@ namespace Open.Core
         {
             return string.Format("[{0}]", GetType().Name);
         }
+        #endregion
+
+        #region Methods : Download
+        /// <summary>Downloading the scripts and resources for the package (but does not invoke the EntryPoint method).</summary>
+        [AlternateSignature]
+        public extern virtual void Download();
+
+        /// <summary>Downloading the scripts and resources for the package (but does not invoke the EntryPoint method).</summary>
+        /// <param name="onComplete">Action to invoke upon completion.</param>
+        public virtual void Download(Action onComplete)
+        {
+            // Start the download.
+            DownloadInternal(
+                    delegate // Script(s) downloaded.
+                    {
+                        Helper.Invoke(onComplete);
+                    },
+                    delegate // Timed out (failure).
+                    {
+                        SetDownloadError(
+                                        string.Format("Failed to download the package at '{0}'. Timed out after {1} seconds.",
+                                        EntryPoint,
+                                        DownloadTimeout));
+                        Helper.Invoke(onComplete);
+                    });
+        }
 
         /// <summary>Downloads the resources defined for the package.</summary>
         /// <param name="onScriptsDownloaded">Invoked when the scripts have completed downloading.</param>
         /// <param name="onTimedOut">Invoked when/if the operation times out (NB: 'onScriptsDownloaded' is never called if the operation times out).</param>
-        protected void DownloadAsync(Action onScriptsDownloaded, Action onTimedOut)
+        protected void DownloadInternal(Action onScriptsDownloaded, Action onTimedOut)
         {
             // Setup initial conditions.
-            if (!HasEntryPoint) throw new Exception("There is no entry point method for the Part.");
             TimedOut = false;
             IsLoading = true;
 

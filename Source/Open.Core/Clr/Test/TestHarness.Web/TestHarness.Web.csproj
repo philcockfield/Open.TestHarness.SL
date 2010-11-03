@@ -34,6 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MvcContrib, Version=2.0.36.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Lib\MVCContrib\MvcContrib.dll</HintPath>
@@ -48,6 +51,15 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -99,6 +111,18 @@
     <Content Include="Content\Images\ImageButton.Sample\Pressed.Disabled.png" />
     <Content Include="Content\Images\ImageButton.Sample\Pressed.Focused.png" />
     <Content Include="Content\Images\ImageButton.Sample\Pressed.png" />
+    <Content Include="Content\Scripts\mscorlib.debug.js" />
+    <Content Include="Content\Scripts\mscorlib.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Controls.js" />
+    <Content Include="Content\Scripts\Open.Core.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.js" />
+    <Content Include="Content\Scripts\Open.Core.Lists.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Lists.js" />
+    <Content Include="Content\Scripts\Open.Core.Test.debug.js" />
+    <Content Include="Content\Scripts\Open.Core.Test.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.debug.js" />
+    <Content Include="Content\Scripts\Open.TestHarness.js" />
     <Content Include="Views\Samples\AccordianTest.ascx" />
     <Content Include="Views\Samples\Embed.aspx" />
     <Content Include="Views\Samples\ButtonTemplate.ascx" />
@@ -121,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
-    <Folder Include="Content\Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\TestHarnessStrings.resx">

@@ -43,26 +43,29 @@ namespace Open.Core
         #endregion
 
         #region Methods
+
+
         /// <summary>Loads and initializes the part (downloading resources as required).</summary>
         /// <param name="container">The container that the part resides within.</param>
         /// <param name="onComplete">Action to invoke upon completion.</param>
         [AlternateSignature]
-        public extern virtual void Load(jQueryObject container, PartCallback onComplete);
+        public extern virtual void Initialize(jQueryObject container, PartCallback onComplete);
 
         /// <summary>Loads and optionally initializes the part (downloading resources as required).</summary>
         /// <param name="container">The container that the part resides within.</param>
         /// <param name="onComplete">Action to invoke upon completion.</param>
         /// <param name="initializeOnComplete">Flag indicating if the part should be initialized after download.</param>
-        public virtual void Load(jQueryObject container, PartCallback onComplete, bool initializeOnComplete)
+        public virtual void Initialize(jQueryObject container, PartCallback onComplete, bool initializeOnComplete)
         {
             // Setup initial conditions.
+            if (!HasEntryPoint) throw new Exception("There is no entry point method for the Part.");
             if (Script.IsNullOrUndefined(initializeOnComplete)) initializeOnComplete = true;
 
             // Progress flags.
             bool wasDownloaded = false;
 
             // Start the download.
-            DownloadAsync(
+            DownloadInternal(
                         delegate // Script(s) downloaded.
                         {
                             wasDownloaded = true;

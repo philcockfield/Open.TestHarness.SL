@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 
 namespace Open.Core.Controls.Buttons
 {
@@ -11,6 +10,7 @@ namespace Open.Core.Controls.Buttons
         #endregion
 
         #region Properties
+        /// <summary>Gets or sets the text label of the button.</summary>
         public string Text
         {
             get

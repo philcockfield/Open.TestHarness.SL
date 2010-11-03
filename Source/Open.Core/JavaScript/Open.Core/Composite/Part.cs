@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using jQueryApi;
 
 namespace Open.Core
@@ -83,6 +84,36 @@ namespace Open.Core
 
         /// <summary>Implemented in deriving class to update the Part's layout.</summary>
         protected virtual void OnUpdateLayout() { }
+
+        /// <summary>Loads the HTML at the given URL into the Container.</summary>
+        /// <param name="url">The URL of the content to load.</param>
+        /// <param name="onComplete">Action to invoke upon completion.</param>
+        protected void LoadHtml(string url, Action onComplete)
+        {
+            if (Container == null) throw new Exception("Container not initialized.");
+            jQuery.Get(url, delegate(object data)
+                                {
+                                    Container.Empty();
+                                    Container.Append(data.ToString());
+                                    Helper.Invoke(onComplete);
+                                });
+        }
+        #endregion
+
+        #region Methods : Static
+        /// <summary>Formats the default entry point method for a part (using the method name 'Create').</summary>
+        /// <param name="type">The type of the part.</param>
+        [AlternateSignature]
+        public static extern string GetEntryPoint(Type type);
+
+        /// <summary>Formats the entry point method for a part.</summary>
+        /// <param name="type">The type of the part.</param>
+        /// <param name="methodName">The method name.</param>
+        public static string GetEntryPoint(Type type, string methodName)
+        {
+            if (Script.IsNullOrUndefined(methodName)) methodName = "Create";
+            return string.Format("{0}.{1}()", type.FullName, methodName);
+        }
         #endregion
     }
 }

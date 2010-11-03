@@ -16,6 +16,13 @@
     background: -moz-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
 
+.button .rounded
+{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;    
+}
+
 .btnCommon.bg.border
 {
    border:solid 1px #cccccc;
@@ -36,3 +43,18 @@
 .btnImage.bg.over { background:rgba(0,0,0, 0.03); }
 .btnImage.bg.down { background:rgba(0,0,0, 0.06); }
 .btnImage.bg.pressed { background:rgba(0,0,0, 0.03); }
+
+
+/* Icon Text Button */
+.button.iconTextButton
+{
+    width:100px;
+    height:32px;
+}
+
+.button.iconTextButton div.content { text-align:center; }
+.button.iconTextButton .label
+{
+    position:relative;
+    top:7px;
+}

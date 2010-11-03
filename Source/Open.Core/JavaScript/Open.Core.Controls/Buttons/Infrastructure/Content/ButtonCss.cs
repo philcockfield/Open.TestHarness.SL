@@ -10,6 +10,7 @@ namespace Open.Core.Controls.Buttons
         public const string ClassUp = "up";
         public const string ClassDown = "down";
         public const string ClassHighlight = "highlight";
+        public const string ClassRounded = "rounded";
         #endregion
     }
 }

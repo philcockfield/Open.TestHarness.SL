@@ -99,7 +99,7 @@ namespace Open.Testing.Controllers
             if (loader.IsDownloaded) return;
 
             // Start the download.
-            loader.Load(delegate
+            loader.Initialize(delegate
                     {
                         if (!loader.HasError)
                         {

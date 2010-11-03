@@ -39,28 +39,21 @@ namespace Open.Core
         #region Methods
         /// <summary>Loads the package (downloading resources as required) and invokes the EntryPoint method upon completion.</summary>
         [AlternateSignature]
-        public virtual extern void Load();
+        public virtual extern void Initialize();
 
         /// <summary>Loads the package (downloading resources as required) and invokes the EntryPoint method upon completion.</summary>
         /// <param name="onComplete">Action to invoke upon completion.</param>
-        public virtual void Load(Action onComplete)
+        public virtual void Initialize(Action onComplete)
         {
-            // Start the download.
-            DownloadAsync(
-                    delegate // Script(s) downloaded.
-                    {
-                        // Finish up.
-                        InvokeEntryPoint();
-                        Helper.Invoke(onComplete);
-                    },
-                    delegate // Timed out (failure).
-                    {
-                        SetDownloadError(
-                                        string.Format("Failed to download the package at '{0}'. Timed out after {1} seconds.", 
-                                        EntryPoint, 
-                                        DownloadTimeout));
-                        Helper.Invoke(onComplete);
-                    });
+            if (!HasEntryPoint) throw new Exception("There is no entry point method for the Package.");
+            Download(delegate
+                         {
+                             if (!HasError)
+                             {
+                                 InvokeEntryPoint();
+                             }
+                             Helper.Invoke(onComplete);
+                         });
         }
         #endregion
 

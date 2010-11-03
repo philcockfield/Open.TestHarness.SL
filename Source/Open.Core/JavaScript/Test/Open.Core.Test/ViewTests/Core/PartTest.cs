@@ -52,7 +52,7 @@ namespace Open.Core.Test.ViewTests.Core
         private void LoadPart(jQueryObject container)
         {
             Log.Info("Downloading part...");
-            partDefinition.Load(container, delegate(Part value)
+            partDefinition.Initialize(container, delegate(Part value)
                                         {
                                             part = value as SamplePart;
                                             if (partDefinition.HasError) { Log.Error("Download callback (failed)"); } else { Log.Success("Download callback (succeeded) - " + part.InstanceId); }

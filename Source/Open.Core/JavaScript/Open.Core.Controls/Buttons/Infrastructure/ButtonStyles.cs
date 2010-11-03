@@ -25,5 +25,13 @@ namespace Open.Core.Controls.Buttons
             button.CssForStates(layer, downStates, string.Format("{0} {1}", ButtonCss.ClassSilver, ButtonCss.ClassDown));
             button.CssForStates(layer, new ButtonState[] { ButtonState.MouseOver, ButtonState.MouseDown }, ButtonCss.ClassHighlight);
         }
+
+        /// <summary>Adds a style for rounded corners.</summary>
+        /// <param name="layer">The layer to assign the content to (typically '0').</param>
+        /// <param name="button">The button to effect.</param>
+        public static void Rounded(int layer, ButtonView button)
+        {
+            button.CssForStates(layer, ButtonView.AllStates, ButtonCss.ClassRounded);
+        }
     }
 }

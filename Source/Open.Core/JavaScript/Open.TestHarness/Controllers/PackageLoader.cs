@@ -44,7 +44,7 @@ namespace Open.Testing.Models
         #endregion
 
         #region Methods
-        public override void Load(Action onComplete)
+        public override void Initialize(Action onComplete)
         {
             // Setup initial conditions.
             events.TestClassRegistered += OnTestClassRegistered;
@@ -52,7 +52,7 @@ namespace Open.Testing.Models
 
             // Start the load.
             Log.Info(string.Format("Downloading test-package: {0} ...", link));
-            base.Load(delegate
+            base.Initialize(delegate
                     {
                         if (!HasError)
                         {

@@ -575,7 +575,7 @@ Open.Testing.Application.main = function Open_Testing_Application$main(args) {
     Open.Testing.Application._addPackage('/Content/Scripts/Open.Core.Test.debug.js', 'Open.Core.Test.Application.main');
     Open.Testing.Application._addPackage('/Content/Scripts/Quest.Rogue.Test.debug.js', 'Quest.Rogue.Test.Application.main');
     Open.Testing.Application._addPackage('/Content/Scripts/Quest.OnDemand.Test.debug.js', 'Quest.OnDemand.Test.Application.main');
-    Open.Testing.Application._addPackage('/Content/Scripts/Quest.Insandra.Test.debug.js', 'Quest.Insandra.Test.Application.main');
+    Open.Testing.Application._addPackage('/Content/Scripts/Quest.EventViewer.Test.debug.js', 'Quest.EventViewer.Test.Application.main');
 }
 Open.Testing.Application._preloadImages = function Open_Testing_Application$_preloadImages() {
     var icon = Open.Core.Helper.get_icon();
@@ -1633,7 +1633,7 @@ Open.Testing.Controllers.PackageController.prototype = {
         if (loader.get_isDownloaded()) {
             return;
         }
-        loader.load(ss.Delegate.create(this, function() {
+        loader.initialize(ss.Delegate.create(this, function() {
             if (!loader.get_hasError()) {
                 this._addChildNodes$4();
                 this._fireLoaded$4();
@@ -1669,6 +1669,74 @@ Open.Testing.Models.CustomListItemType.prototype = {
     addPackage: 0
 }
 Open.Testing.Models.CustomListItemType.registerEnum('Open.Testing.Models.CustomListItemType', false);
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.Models.PackageLoader
+
+Open.Testing.Models.PackageLoader = function Open_Testing_Models_PackageLoader(parent, initMethod, scriptUrl) {
+    /// <summary>
+    /// Handles loading a test-package and executing the entry point assembly.
+    /// </summary>
+    /// <param name="parent" type="Open.Testing.Models.PackageInfo">
+    /// The test-package this object is loading.
+    /// </param>
+    /// <param name="initMethod" type="String">
+    /// The entry point method to invoke upon load completion.
+    /// </param>
+    /// <param name="scriptUrl" type="String">
+    /// The URL to the JavaScript file to load.
+    /// </param>
+    /// <field name="_parent$4" type="Open.Testing.Models.PackageInfo">
+    /// </field>
+    /// <field name="_events$4" type="Open.Testing.TestHarnessEvents">
+    /// </field>
+    Open.Testing.Models.PackageLoader.initializeBase(this, [ initMethod, scriptUrl ]);
+    this._parent$4 = parent;
+    this._events$4 = Open.Testing.Common.getFromContainer().get_events();
+    this._events$4.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
+    this.set_logErrors(false);
+}
+Open.Testing.Models.PackageLoader.prototype = {
+    _parent$4: null,
+    _events$4: null,
+    
+    onDisposed: function Open_Testing_Models_PackageLoader$onDisposed() {
+        this._events$4.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
+        Open.Testing.Models.PackageLoader.callBaseMethod(this, 'onDisposed');
+    },
+    
+    _onTestClassRegistered$4: function Open_Testing_Models_PackageLoader$_onTestClassRegistered$4(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Testing.Internal.TestClassEventArgs">
+        /// </param>
+        if (!this.get_isLoading()) {
+            return;
+        }
+        this._parent$4.addClass(e.testClass);
+    },
+    
+    initialize: function Open_Testing_Models_PackageLoader$initialize(onComplete) {
+        /// <param name="onComplete" type="Action">
+        /// </param>
+        this._events$4.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
+        var link = Open.Core.Html.toHyperlink(this.get_scriptUrls(), null, Open.Core.LinkTarget.blank);
+        Open.Core.Log.info(String.format('Downloading test-package: {0} ...', link));
+        Open.Testing.Models.PackageLoader.callBaseMethod(this, 'initialize', [ ss.Delegate.create(this, function() {
+            if (!this.get_hasError()) {
+                Open.Core.Log.success('Test-package loaded successfully.');
+            }
+            else {
+                var msg = (this.get_timedOut()) ? String.format('<b>Failed</b> to download and initialize the test-package at \'{0}\'.  Please ensure the file exists.', link) : String.format('<b>Failed</b> to initialize the script-file at \'{0}\' with the entry method \'{1}()\'.<br/>Please ensure there aren\'t errors in any of the test-class constructors.<br/>Message: \'{2}\'', Open.Core.Html.toHyperlink(this.get_scriptUrls()), this.get_entryPoint(), this.get_loadError().message);
+                Open.Core.Log.error(msg);
+            }
+            Open.Core.Log.newSection();
+            this._events$4.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
+            Open.Core.Helper.invoke(onComplete);
+        }) ]);
+    }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2357,74 +2425,6 @@ Open.Testing.Models.PackageListItem.prototype = {
         /// </summary>
         /// <value type="Open.Testing.Models.PackageInfo"></value>
         return this._testPackage$4;
-    }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Open.Testing.Models.PackageLoader
-
-Open.Testing.Models.PackageLoader = function Open_Testing_Models_PackageLoader(parent, initMethod, scriptUrl) {
-    /// <summary>
-    /// Handles loading a test-package and executing the entry point assembly.
-    /// </summary>
-    /// <param name="parent" type="Open.Testing.Models.PackageInfo">
-    /// The test-package this object is loading.
-    /// </param>
-    /// <param name="initMethod" type="String">
-    /// The entry point method to invoke upon load completion.
-    /// </param>
-    /// <param name="scriptUrl" type="String">
-    /// The URL to the JavaScript file to load.
-    /// </param>
-    /// <field name="_parent$4" type="Open.Testing.Models.PackageInfo">
-    /// </field>
-    /// <field name="_events$4" type="Open.Testing.TestHarnessEvents">
-    /// </field>
-    Open.Testing.Models.PackageLoader.initializeBase(this, [ initMethod, scriptUrl ]);
-    this._parent$4 = parent;
-    this._events$4 = Open.Testing.Common.getFromContainer().get_events();
-    this._events$4.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
-    this.set_logErrors(false);
-}
-Open.Testing.Models.PackageLoader.prototype = {
-    _parent$4: null,
-    _events$4: null,
-    
-    onDisposed: function Open_Testing_Models_PackageLoader$onDisposed() {
-        this._events$4.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
-        Open.Testing.Models.PackageLoader.callBaseMethod(this, 'onDisposed');
-    },
-    
-    _onTestClassRegistered$4: function Open_Testing_Models_PackageLoader$_onTestClassRegistered$4(sender, e) {
-        /// <param name="sender" type="Object">
-        /// </param>
-        /// <param name="e" type="Open.Testing.Internal.TestClassEventArgs">
-        /// </param>
-        if (!this.get_isLoading()) {
-            return;
-        }
-        this._parent$4.addClass(e.testClass);
-    },
-    
-    load: function Open_Testing_Models_PackageLoader$load(onComplete) {
-        /// <param name="onComplete" type="Action">
-        /// </param>
-        this._events$4.add_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
-        var link = Open.Core.Html.toHyperlink(this.get_scriptUrls(), null, Open.Core.LinkTarget.blank);
-        Open.Core.Log.info(String.format('Downloading test-package: {0} ...', link));
-        Open.Testing.Models.PackageLoader.callBaseMethod(this, 'load', [ ss.Delegate.create(this, function() {
-            if (!this.get_hasError()) {
-                Open.Core.Log.success('Test-package loaded successfully.');
-            }
-            else {
-                var msg = (this.get_timedOut()) ? String.format('<b>Failed</b> to download and initialize the test-package at \'{0}\'.  Please ensure the file exists.', link) : String.format('<b>Failed</b> to initialize the script-file at \'{0}\' with the entry method \'{1}()\'.<br/>Please ensure there aren\'t errors in any of the test-class constructors.<br/>Message: \'{2}\'', Open.Core.Html.toHyperlink(this.get_scriptUrls()), this.get_entryPoint(), this.get_loadError().message);
-                Open.Core.Log.error(msg);
-            }
-            Open.Core.Log.newSection();
-            this._events$4.remove_testClassRegistered(ss.Delegate.create(this, this._onTestClassRegistered$4));
-            Open.Core.Helper.invoke(onComplete);
-        }) ]);
     }
 }
 
@@ -3256,6 +3256,7 @@ Open.Testing.Controllers._methodListHeightController.registerClass('Open.Testing
 Open.Testing.Controllers.PanelResizeController.registerClass('Open.Testing.Controllers.PanelResizeController', Open.Testing.TestHarnessControllerBase, Open.Testing.Controllers.IPanelResizeController);
 Open.Testing.Controllers.SidebarController.registerClass('Open.Testing.Controllers.SidebarController', Open.Testing.TestHarnessControllerBase);
 Open.Testing.Controllers.PackageController.registerClass('Open.Testing.Controllers.PackageController', Open.Testing.TestHarnessControllerBase);
+Open.Testing.Models.PackageLoader.registerClass('Open.Testing.Models.PackageLoader', Open.Core.Package);
 Open.Testing.Models.CommonButtons.registerClass('Open.Testing.Models.CommonButtons', Open.Core.ModelBase);
 Open.Testing.Models.CustomListItem.registerClass('Open.Testing.Models.CustomListItem', Open.Core.Lists.ListItem, Open.Core.IViewFactory);
 Open.Testing.Models.MethodListItem.registerClass('Open.Testing.Models.MethodListItem', Open.Core.Lists.ListItem);
@@ -3264,7 +3265,6 @@ Open.Testing.Models.MethodInfo.registerClass('Open.Testing.Models.MethodInfo', O
 Open.Testing.Models.PackageInfo.registerClass('Open.Testing.Models.PackageInfo', Open.Core.ModelBase, ss.IEnumerable);
 Open.Testing.Models.ClassInfo.registerClass('Open.Testing.Models.ClassInfo', Open.Core.ModelBase, ss.IEnumerable);
 Open.Testing.Models.PackageListItem.registerClass('Open.Testing.Models.PackageListItem', Open.Core.Lists.ListItem);
-Open.Testing.Models.PackageLoader.registerClass('Open.Testing.Models.PackageLoader', Open.Core.Package, ss.IDisposable);
 Open.Testing.Views.AddPackageListItemView.registerClass('Open.Testing.Views.AddPackageListItemView', Open.Testing.TestHarnessViewBase);
 Open.Testing.Views.AddPackageView.registerClass('Open.Testing.Views.AddPackageView', Open.Testing.TestHarnessViewBase);
 Open.Testing.Views.ControlHostView.registerClass('Open.Testing.Views.ControlHostView', Open.Testing.TestHarnessViewBase);

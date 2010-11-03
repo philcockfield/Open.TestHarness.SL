@@ -4,8 +4,7 @@
     public enum ButtonTemplate
     {
         Common = 0,
-        Primary = 1,
-        IconText = 2,
-        Image = 3,
+        IconText = 1,
+        Image = 2,
     }
 }
