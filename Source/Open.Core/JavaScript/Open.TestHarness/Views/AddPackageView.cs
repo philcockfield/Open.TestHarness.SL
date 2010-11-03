@@ -3,6 +3,7 @@ using System.Collections;
 using jQueryApi;
 using Open.Core;
 using Open.Core.Controls;
+using Open.Core.Controls.Buttons;
 
 namespace Open.Testing.Views
 {
@@ -21,7 +22,7 @@ namespace Open.Testing.Views
 
         #region Head
         private const string ContentUrl = "/Open.Core/TestHarness/AddPackage/";
-        public static readonly string IconJs = Helper.Url.PrependDomain("/Content/Images/Icon.JavaScript.png");
+        public static readonly string IconJs = Helper.Url.PrependDomain("/Open.Core/TestHarness/Images/Icon.JavaScript.png");
         public static readonly string IconMethod = Helper.Url.PrependDomain(ImagePaths.ApiIconPath + "Method.png");
 
         private const double SlideDuration = 0.25;
@@ -30,6 +31,9 @@ namespace Open.Testing.Views
 
         private Textbox txtScriptUrl;
         private Textbox txtInitMethod;
+
+        private IconTextButton btnAdd;
+        private IconTextButton btnCancel;
 
         /// <summary>Constructor.</summary>
         public AddPackageView()
@@ -40,8 +44,21 @@ namespace Open.Testing.Views
                                              divInnerSlide = jQuery.Select(CssSelectors.AddPackageInnerSlide);
                                              offLeft = divInnerSlide.GetCSS(Css.Left);
                                              InitializeTextboxes();
+                                             InitializeButtons();
                                              SlideOn(null);
                                          });
+        }
+        #endregion
+
+        #region Event Handlers
+        private void OnAddClick(object sender, EventArgs e)
+        {
+            Log.Event("Add Click"); //TEMP 
+        }
+
+        private void OnCancelClick(object sender, EventArgs e)
+        {
+            Log.Event("Cancel Click"); //TEMP 
         }
         #endregion
 
@@ -98,6 +115,27 @@ namespace Open.Testing.Views
             textbox.LeftIcon = Helper.Url.PrependDomain(icon);
 
             return textbox;
+        }
+
+
+        private void InitializeButtons()
+        {
+            btnAdd = InitializeButton(CssSelectors.AddPackageBtnAdd, StringLibrary.Add, OnAddClick);
+            btnCancel = InitializeButton(CssSelectors.AddPackageBtnCancel, StringLibrary.Cancel, OnCancelClick);
+        }
+
+        private static IconTextButton InitializeButton(string selector, string text, EventHandler handler)
+        {
+            // Create and insert the button.
+            IconTextButton button = new IconTextButton();
+            button.Text = text;
+            button.CreateView().Insert(selector, InsertMode.Replace);
+
+            // Wire up events.
+            button.Click += handler;
+
+            // Finish up.
+            return button;
         }
 
         private void Slide(string left, Action onComplete)

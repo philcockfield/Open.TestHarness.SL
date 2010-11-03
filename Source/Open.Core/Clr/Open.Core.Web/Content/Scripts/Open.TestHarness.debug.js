@@ -107,6 +107,12 @@ Open.Testing.CssSelectors = function Open_Testing_CssSelectors() {
     /// </field>
     /// <field name="addPackageTxtMethod" type="String" static="true">
     /// </field>
+    /// <field name="addPackageButtons" type="String" static="true">
+    /// </field>
+    /// <field name="addPackageBtnAdd" type="String" static="true">
+    /// </field>
+    /// <field name="addPackageBtnCancel" type="String" static="true">
+    /// </field>
 }
 
 
@@ -131,6 +137,10 @@ Open.Testing.StringLibrary = function Open_Testing_StringLibrary() {
     /// <summary>
     /// String resources.
     /// </summary>
+    /// <field name="add" type="String" static="true">
+    /// </field>
+    /// <field name="cancel" type="String" static="true">
+    /// </field>
 }
 
 
@@ -2489,11 +2499,16 @@ Open.Testing.Views.AddPackageView = function Open_Testing_Views_AddPackageView()
     /// </field>
     /// <field name="_txtInitMethod$4" type="Open.Core.Controls.Textbox">
     /// </field>
+    /// <field name="_btnAdd$4" type="Open.Core.Controls.Buttons.IconTextButton">
+    /// </field>
+    /// <field name="_btnCancel$4" type="Open.Core.Controls.Buttons.IconTextButton">
+    /// </field>
     Open.Testing.Views.AddPackageView.initializeBase(this);
     this.retrieveHtml(Open.Testing.Views.AddPackageView._contentUrl$4, ss.Delegate.create(this, function() {
         this._divInnerSlide$4 = $(Open.Testing.CssSelectors.addPackageInnerSlide);
         this._offLeft$4 = this._divInnerSlide$4.css(Open.Core.Css.left);
         this._initializeTextboxes$4();
+        this._initializeButtons$4();
         this.slideOn(null);
     }));
 }
@@ -2559,11 +2574,43 @@ Open.Testing.Views.AddPackageView._initializeTextbox$4 = function Open_Testing_V
     textbox.set_leftIcon(Open.Core.Helper.get_url().prependDomain(icon));
     return textbox;
 }
+Open.Testing.Views.AddPackageView._initializeButton$4 = function Open_Testing_Views_AddPackageView$_initializeButton$4(selector, text, handler) {
+    /// <param name="selector" type="String">
+    /// </param>
+    /// <param name="text" type="String">
+    /// </param>
+    /// <param name="handler" type="EventHandler">
+    /// </param>
+    /// <returns type="Open.Core.Controls.Buttons.IconTextButton"></returns>
+    var button = new Open.Core.Controls.Buttons.IconTextButton();
+    button.set_text(text);
+    button.createView().insert(selector, Open.Core.InsertMode.replace);
+    button.add_click(handler);
+    return button;
+}
 Open.Testing.Views.AddPackageView.prototype = {
     _divInnerSlide$4: null,
     _offLeft$4: null,
     _txtScriptUrl$4: null,
     _txtInitMethod$4: null,
+    _btnAdd$4: null,
+    _btnCancel$4: null,
+    
+    _onAddClick$4: function Open_Testing_Views_AddPackageView$_onAddClick$4(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        Open.Core.Log.event('Add Click');
+    },
+    
+    _onCancelClick$4: function Open_Testing_Views_AddPackageView$_onCancelClick$4(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        Open.Core.Log.event('Cancel Click');
+    },
     
     slideOn: function Open_Testing_Views_AddPackageView$slideOn(onComplete) {
         /// <summary>
@@ -2592,6 +2639,11 @@ Open.Testing.Views.AddPackageView.prototype = {
     _initializeTextboxes$4: function Open_Testing_Views_AddPackageView$_initializeTextboxes$4() {
         this._txtScriptUrl$4 = Open.Testing.Views.AddPackageView._initializeTextbox$4(Open.Testing.CssSelectors.addPackageTxtScript, Open.Testing.Views.AddPackageView.iconJs);
         this._txtInitMethod$4 = Open.Testing.Views.AddPackageView._initializeTextbox$4(Open.Testing.CssSelectors.addPackageTxtMethod, Open.Testing.Views.AddPackageView.iconMethod);
+    },
+    
+    _initializeButtons$4: function Open_Testing_Views_AddPackageView$_initializeButtons$4() {
+        this._btnAdd$4 = Open.Testing.Views.AddPackageView._initializeButton$4(Open.Testing.CssSelectors.addPackageBtnAdd, Open.Testing.StringLibrary.add, ss.Delegate.create(this, this._onAddClick$4));
+        this._btnCancel$4 = Open.Testing.Views.AddPackageView._initializeButton$4(Open.Testing.CssSelectors.addPackageBtnCancel, Open.Testing.StringLibrary.cancel, ss.Delegate.create(this, this._onCancelClick$4));
     },
     
     _slide$4: function Open_Testing_Views_AddPackageView$_slide$4(left, onComplete) {
@@ -3295,8 +3347,13 @@ Open.Testing.CssSelectors.logClearButton = '#testHarnessLog .th-log-tb .button.c
 Open.Testing.CssSelectors.addPackageInnerSlide = '#testHarness div.th_addPackage div.innerSlide';
 Open.Testing.CssSelectors.addPackageTxtScript = '.field_set_scriptUrl > input';
 Open.Testing.CssSelectors.addPackageTxtMethod = '.field_set_initMethod > input';
+Open.Testing.CssSelectors.addPackageButtons = '#testHarness .th_addPackage div.buttons';
+Open.Testing.CssSelectors.addPackageBtnAdd = Open.Testing.CssSelectors.addPackageButtons + ' .button.add';
+Open.Testing.CssSelectors.addPackageBtnCancel = Open.Testing.CssSelectors.addPackageButtons + ' .button.cancel';
 Open.Testing.Elements.root = 'testHarness';
 Open.Testing.Elements.outputLog = 'testHarnessLog';
+Open.Testing.StringLibrary.add = 'Add';
+Open.Testing.StringLibrary.cancel = 'Cancel';
 Open.Testing._methodHelper.keyConstructor = 'constructor';
 Open.Testing._methodHelper.keyClassInitialize = 'classInitialize';
 Open.Testing._methodHelper.keyClassCleanup = 'classCleanup';
@@ -3327,7 +3384,7 @@ Open.Testing.Views.AddPackageListItemView._itemHeight$4 = 34;
 Open.Testing.Views.AddPackageView.__showing$4 = null;
 Open.Testing.Views.AddPackageView.__hidden$4 = null;
 Open.Testing.Views.AddPackageView._contentUrl$4 = '/Open.Core/TestHarness/AddPackage/';
-Open.Testing.Views.AddPackageView.iconJs = Open.Core.Helper.get_url().prependDomain('/Content/Images/Icon.JavaScript.png');
+Open.Testing.Views.AddPackageView.iconJs = Open.Core.Helper.get_url().prependDomain('/Open.Core/TestHarness/Images/Icon.JavaScript.png');
 Open.Testing.Views.AddPackageView.iconMethod = Open.Core.Helper.get_url().prependDomain(Open.Core.ImagePaths.apiIconPath + 'Method.png');
 Open.Testing.Views.AddPackageView._slideDuration$4 = 0.25;
 Open.Testing.Views.ControlWrapperView._fillMargin$4 = 30;

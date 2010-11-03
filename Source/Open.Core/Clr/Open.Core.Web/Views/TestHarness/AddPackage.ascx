@@ -18,6 +18,10 @@
                     <input class="textbox" type="text" value="Open.Core.Test.main()" />
                 </div>
             </div>
+            <div class="buttons">
+                <button class="add button">Add</button>
+                <button class="cancel button">Cancel</button>
+            </div>
         </div>
     </div>
     <p class="dropShadow"></p>

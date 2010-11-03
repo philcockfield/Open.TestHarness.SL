@@ -205,11 +205,15 @@
     font-size:80pt; 
     color:rgba(0,0,0,0.1);
 }
-#testHarness .th_addPackage .field_set
+
+#testHarness .th_addPackage div.field_set
 {
-    position:relative;
-    margin-top:13px;
-    margin-left:30px;
+    position:absolute;
+    top:130px;
+    left:30px;
+    height:185px;
+    width:550px;
+    overflow:hidden;
 }
 
 #testHarness .th_addPackage p.th_fieldLabel { position:absolute; left:5px; }
@@ -246,11 +250,28 @@
     position:absolute;
     top:90px;
     left:66px;    
-    width:432px;
+    width:424px;
 }
 #testHarness div.field_set_initMethod > .textbox
 {
     position:absolute;
     top:24px;
     width:100%;
+}
+
+/* Action Buttons */
+#testHarness .th_addPackage div.buttons
+{
+    position:absolute;
+    left:30px;
+    top:303px;
+    width:492px;
+    height:32px;
+}
+
+#testHarness .th_addPackage div.buttons .button
+{
+    position:relative;
+    float:right;
+    margin-left:5px;
 }
