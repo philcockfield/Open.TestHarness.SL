@@ -58,24 +58,50 @@ namespace Open.Core.Web
         {
             // Setup initial conditions.
             if (urlPath.IsNullOrEmpty(true)) return null;
-            urlPath = urlPath.TrimStart("/".ToCharArray());
+            urlPath = FormatPath(urlPath);
 
-            // Pass call to the target server.
+            // Pass GET call to the target server.
             using (var client = new HttpClient(GetBaseUrl()))
             {
                 using (var response = client.Get(urlPath))
                 {
-                    response.EnsureStatusIsSuccessful();
-                    StreamReader reader = new StreamReader(response.Content.ReadAsStream());
-                    var text = reader.ReadToEnd();
-                    reader.Dispose();
-                    return new HttpResult(response.Content.ContentType, text);
+                    return ProcessResponse(response);
+                }
+            }
+        }
+
+        public HttpResult Put(string urlPath, HttpContent content)
+        {
+            // Setup initial conditions.
+            if (urlPath.IsNullOrEmpty(true)) return null;
+            urlPath = FormatPath(urlPath);
+
+            // Pass PUT call to the target server.
+            using (var client = new HttpClient(GetBaseUrl()))
+            {
+                using (var response = client.Put(urlPath, content))
+                {
+                    return ProcessResponse(response);
                 }
             }
         }
         #endregion
 
         #region Internal
+        private static HttpResult ProcessResponse(HttpResponseMessage response)
+        {
+            response.EnsureStatusIsSuccessful();
+            StreamReader reader = new StreamReader(response.Content.ReadAsStream());
+            var text = reader.ReadToEnd();
+            reader.Dispose();
+            return new HttpResult(response.Content.ContentType, text);
+        }
+
+        private static string FormatPath(string urlPath)
+        {
+            return urlPath.TrimStart("/".ToCharArray());
+        }
+
         private static string FormatUrl(string url)
         {
             if (url.IsNullOrEmpty(true)) return url;
@@ -86,7 +112,9 @@ namespace Open.Core.Web
 
         private string GetBaseUrl()
         {
-            return UseLocalHost ? LocalHost : Url;
+            return UseLocalHost
+                            ? LocalHost.IsNullOrEmpty(true) ? Url : LocalHost
+                            : Url;
         }
         #endregion
     }
