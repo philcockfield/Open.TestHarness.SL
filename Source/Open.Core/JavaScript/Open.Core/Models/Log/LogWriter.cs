@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Open.Core.Controls.HtmlPrimitive;
 using Open.Core.Helpers;
@@ -125,7 +126,12 @@ namespace Open.Core
 
         public void WriteProperties(object instance, string title)
         {
-            new PropertyWriter(this).Write(instance, title);
+            new PropertyWriter(this).WriteProperties(instance, title);
+        }
+
+        public void WriteDictionary(object instance, string title)
+        {
+            new PropertyWriter(this).WriteDictionary(instance as Dictionary, title);
         }
 
         public void Clear()

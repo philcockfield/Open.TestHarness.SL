@@ -25,46 +25,46 @@ namespace Open.Core.Test.UnitTests
         #region Tests
         public void ShouldNotHaveBackground()
         {
-            Should.BeNull(view.Background);
+            Assert.That(view.Background).IsNull();
         }
 
         public void ShouldSetCssValue()
         {
             view.Background = "orange";
-            Should.Equal(view.Background, "orange");
+            Assert.That(view.Background).Is("orange");
         }
 
         public void ShouldResetCssValueToNull()
         {
             view.Background = "orange";
             view.Background = "";
-            Should.BeNull(view.Background);
+            Assert.That(view.Background).IsNull();
         }
 
         public void ShouldFireBackgroundChangedEvent()
         {
             view.LastPropertyChanged = null;
             view.Background = "orange";
-            Should.Equal(view.LastPropertyChanged.Name, ViewBase.PropBackground);
+            Assert.That(view.LastPropertyChanged.Name).Is(ViewBase.PropBackground);
         }
 
         public void ShouldBeVisibleByDefault()
         {
-            Should.BeTrue(view.IsVisible);
-            Should.Equal(view.GetCss(Css.Display), Css.Block);
+            Assert.That(view.IsVisible).IsTrue();
+            Assert.That(view.GetCss(Css.Display)).Is(Css.Block);
         }
 
         public void ShouldSetDisplayToBlockWhenIsVisible()
         {
             view.IsVisible = false;
             view.IsVisible = true;
-            Should.Equal(view.GetCss(Css.Display), Css.Block);
+            Assert.That(view.GetCss(Css.Display)).Is(Css.Block);
         }
 
         public void ShouldSetDisplayToNoneWhenNotIsVisible()
         {
             view.IsVisible = false;
-            Should.Equal(view.GetCss(Css.Display), Css.None);
+            Assert.That(view.GetCss(Css.Display)).Is(Css.None);
         }
 
         public void ShouldFireVisibilityChangedEventsOnce()
@@ -82,57 +82,57 @@ namespace Open.Core.Test.UnitTests
             view.IsVisible = false;
             view.IsVisible = false;
 
-            Should.Equal(propChangedCount, 1);
-            Should.Equal(visibilityChangedCount, 1);
+            Assert.That(propChangedCount).Is(1);
+            Assert.That(visibilityChangedCount).Is(1);
         }
 
         public void ShouldBeFullOpacityByDefault()
         {
-            Should.Equal(view.Opacity, 1);
+            Assert.That(view.Opacity).Is(1);
         }
 
         public void ShouldBoundOpacityValue()
         {
             view.Opacity = 2;
-            Should.Equal(view.Opacity, 1);
+            Assert.That(view.Opacity).Is(1);
 
             view.Opacity = -1;
-            Should.Equal(view.Opacity, 0);
+            Assert.That(view.Opacity).Is(0);
         }
 
         public void ShouldSetOpacityCss()
         {
             view.Opacity = 0.5;
-            Should.Equal(view.GetCss("opacity"), "0.5");
+            Assert.That(view.GetCss("opacity")).Is("0.5");
         }
 
         public void ShouldChangeWidth()
         {
             int fireCount = 0;
             view.SizeChanged += delegate { fireCount++; };
-            Should.Equal(view.Width, 0);
+            Assert.That(view.Width).Is(0);
             view.Width = 50;
             view.Width = 50;
-            Should.Equal(view.Width, 50);
-            Should.Equal(fireCount, 1);
+            Assert.That(view.Width).Is(50);
+            Assert.That(fireCount).Is(1);
         }
 
         public void ShouldChangeHeight()
         {
             int fireCount = 0;
             view.SizeChanged += delegate { fireCount++; };
-            Should.Equal(view.Height, 0);
+            Assert.That(view.Height).Is(0);
             view.Height = 50;
             view.Height = 50;
-            Should.Equal(view.Height, 50);
-            Should.Equal(fireCount, 1);
+            Assert.That(view.Height).Is(50);
+            Assert.That(fireCount).Is(1);
         }
 
         public void ShouldSetSize()
         {
             view.SetSize(80, 80);
-            Should.Equal(view.Width, 80);
-            Should.Equal(view.Height, 80);
+            Assert.That(view.Width).Is(80);
+            Assert.That(view.Height).Is(80);
         }
 
         public void ShouldFireSizeChangedOnce()
@@ -142,24 +142,24 @@ namespace Open.Core.Test.UnitTests
 
             view.SetSize(80, 80);
             view.SetSize(80, 80);
-            Should.Equal(fireCount, 1);
+            Assert.That(fireCount).Is(1);
         }
 
         public void ShouldNowAllowNegativeSizing()
         {
             view.SetSize(-1, -1);
-            Should.Equal(view.Width, 0);
-            Should.Equal(view.Height, 0);
+            Assert.That(view.Width).Is(0);
+            Assert.That(view.Height).Is(0);
 
             view.Width = -15;
             view.Height = -5;
-            Should.Equal(view.Width, 0);
-            Should.Equal(view.Height, 0);
+            Assert.That(view.Width).Is(0);
+            Assert.That(view.Height).Is(0);
         }
 
         public void ShouldBeEnabledByDefault()
         {
-            Should.BeTrue(view.IsEnabled);
+            Assert.That(view.IsEnabled).IsTrue();
         }
 
         public void ShouldFireIsEnabledChanged()
@@ -177,15 +177,15 @@ namespace Open.Core.Test.UnitTests
             view.IsEnabled = false;
             view.IsEnabled = false;
 
-            Should.BeFalse(view.IsEnabled);
-            Should.Equal(isEnabledChangedCount, 1);
-            Should.Equal(propChangedCount, 1);
+            Assert.That(view.IsEnabled).IsFalse();
+            Assert.That(isEnabledChangedCount).Is(1);
+            Assert.That(propChangedCount).Is(1);
 
             view.IsEnabled = true;
 
-            Should.BeTrue(view.IsEnabled);
-            Should.Equal(isEnabledChangedCount, 2);
-            Should.Equal(propChangedCount, 2);
+            Assert.That(view.IsEnabled).IsTrue();
+            Assert.That(isEnabledChangedCount).Is(2);
+            Assert.That(propChangedCount).Is(2);
         }
         #endregion
     }

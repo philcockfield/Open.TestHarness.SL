@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Open.Core.Controls.HtmlPrimitive;
 
@@ -153,6 +154,19 @@ namespace Open.Core
         public static void WriteProperties(object instance, string title)
         {
             Writer.WriteProperties(instance, title);
+        }
+
+        /// <summary>Writes out the keys values for the given Dictionary.</summary>
+        /// <param name="instance">The Dictionary to write.</param>
+        [AlternateSignature]
+        public static extern void WriteDictionary(object instance);
+
+        /// <summary>Writes out the keys values for the given Dictionary.</summary>
+        /// <param name="instance">The Dictionary to write.</param>
+        /// <param name="title">The title to put above the object.</param>
+        public static void WriteDictionary(object instance, string title)
+        {
+            Writer.WriteDictionary(instance, title);
         }
         #endregion
 

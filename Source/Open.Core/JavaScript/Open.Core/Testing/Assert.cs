@@ -2,53 +2,68 @@ using System;
 
 namespace Open.Core
 {
-    /// <summary>Testing assertions.</summary>
-    public static class Should
+    /// <summary>BDD style testing assertions.</summary>
+    public class Assert
     {
         #region Head
-        /// <summary>Asserts that an object is equal to another object (uses != comparison).</summary>
-        /// <param name="subject">The value being compared.</param>
-        /// <param name="value">The value to compare to.</param>
-        public static void Equal(object subject, object value)
+        private readonly object subject;
+
+        private Assert(object subject)
         {
-            bool isSame = (bool)Script.Literal("{0} == {1}", subject, value);
+            this.subject = subject;
+        }
+        #endregion
+
+        #region Methods : Static
+        /// <summary>Factory method for starting an assertion.</summary>
+        /// <param name="value">The value being examined.</param>
+        /// <returns>A new assertion object allowing to you call an assert.</returns>
+        public static Assert That(object value)
+        {
+            return new Assert(value);
+        }
+        #endregion
+
+        #region Methods (Assertions)
+        /// <summary>Asserts that an object is equal to another object (uses != comparison).</summary>
+        /// <param name="value">The value to compare to.</param>
+        public void Is(object value)
+        {
+            bool isSame = (bool)Script.Literal("{0} === {1}", subject, value);
             if (!isSame) ThrowError(string.Format("The two values '{0}' and '{1}' are not equal.", Format(subject), Format(value)));
         }
 
         /// <summary>Asserts that an object is not equal to another object (uses != comparison).</summary>
-        /// <param name="subject">The value being compared.</param>
         /// <param name="value">The value to compare to.</param>
-        public static void NotEqual(object subject, object value)
+        public void IsNot(object value)
         {
             if (subject == value) ThrowError(string.Format("The two values '{0}' and '{1}' should not be equal.", Format(subject), Format(value)));
         }
 
         /// <summary>Asserts that an object is not null.</summary>
-        /// <param name="subject">The value being examined.</param>
-        public static void NotBeNull(object subject)
+        public void IsNotNull()
         {
-          if (subject == null) ThrowError("Value should not be null.");
+            if (subject == null) ThrowError("Value should not be null.");
         }
 
         /// <summary>Asserts that an object is not null.</summary>
-        /// <param name="subject">The value being examined.</param>
-        public static void BeNull(object subject)
+        public void IsNull()
         {
             if (subject != null) ThrowError(string.Format("The value '{0}' should actually be null.", Format(subject)));
         }
 
         /// <summary>Asserts that an value is True.</summary>
-        /// <param name="value">The value being examined.</param>
-        public static void BeTrue(bool value)
+        public void IsTrue()
         {
-            if (value != true) ThrowError("Value should be True.");
+            if (!(subject is bool)) ThrowError("Value is not a boolean.");
+            if ((bool)subject != true) ThrowError("Value should be True.");
         }
 
         /// <summary>Asserts that an value is False.</summary>
-        /// <param name="value">The value being examined.</param>
-        public static void BeFalse(bool value)
+        public void IsFalse()
         {
-            if (value != false) ThrowError("Value should be False.");
+            if (!(subject is bool)) ThrowError("Value is not a boolean.");
+            if ((bool)subject != false) ThrowError("Value should be False.");
         }
         #endregion
 

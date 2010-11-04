@@ -28,7 +28,10 @@ namespace Open.Core
         #endregion
 
         #region Methods
-        public void Write(object instance, string title)
+        public void WriteProperties(object instance, string title) { Write(instance, title, false); }
+        public void WriteDictionary(Dictionary instance, string title) { Write(instance, title, true); }
+
+        private void Write(object instance, string title, bool isDictionary)
         {
             // Setup initial conditions.
             if (Script.IsNullOrUndefined(instance)) { writer.Write(instance, null); return; }
@@ -37,7 +40,7 @@ namespace Open.Core
             string titleIcon = null;
             if (Script.IsUndefined(title))
             {
-                title = string.Format("{0}:", instance.GetType().Name);
+                title = string.Format("{0}:", isDictionary ? "Dictionary" :  instance.GetType().Name);
                 titleIcon = LogWriter.ClassIcon;
             }
 
@@ -48,18 +51,18 @@ namespace Open.Core
             // Insert the property values.
             foreach (DictionaryEntry entry in Dictionary.GetDictionary(instance))
             {
-                string propName = GetPropertyName(entry.Key);
+                string propName = isDictionary ? entry.Key : GetPropertyName(entry.Key);
                 if (propName == null) continue;
 
+                object value = isDictionary ? entry.Value : GetPropertyValue(instance, entry);
                 string item = string.Format(
                                     "<span class='{0}'>{1}:</span>&nbsp;{2}",
                                     LogCssClasses.PropertyName,
                                     propName,
-                                    GetPropertyValue(instance, entry));
+                                    value);
                 list.Add(item);
             }            
         }
-
         #endregion
 
         #region Internal

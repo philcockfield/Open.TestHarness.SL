@@ -23,6 +23,7 @@ Thumbs.db
 [Dd]ebug*/
 *.lib
 *.sbr
+*.Publish.xml
 obj/
 [Rr]elease*/
 _ReSharper*/

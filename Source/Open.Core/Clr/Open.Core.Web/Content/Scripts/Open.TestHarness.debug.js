@@ -2585,6 +2585,7 @@ Open.Testing.Views.AddPackageView._initializeButton$4 = function Open_Testing_Vi
     var button = new Open.Core.Controls.Buttons.IconTextButton();
     button.set_text(text);
     button.createView().insert(selector, Open.Core.InsertMode.replace);
+    button.set_canFocus(false);
     button.add_click(handler);
     return button;
 }

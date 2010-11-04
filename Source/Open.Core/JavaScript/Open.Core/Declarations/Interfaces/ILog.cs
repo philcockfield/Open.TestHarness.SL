@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Open.Core.Controls.HtmlPrimitive;
 
@@ -87,6 +88,11 @@ namespace Open.Core
         /// <param name="instance">The object to write.</param>
         /// <param name="title">The title to put above the object.</param>
         void WriteProperties(object instance, string title);
+
+        /// <summary>Writes out the keys values for the given Dictionary.</summary>
+        /// <param name="instance">The Dictionary to write.</param>
+        /// <param name="title">The title to put above the object.</param>
+        void WriteDictionary(object instance, string title);
 
         /// <summary>Inserts a line break to the log.</summary>
         void LineBreak();

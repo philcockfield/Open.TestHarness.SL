@@ -25,7 +25,7 @@ namespace Open.Core.Test.UnitTests
         #region Methods
         public void ShouldNotHaveSingleton()
         {
-            Should.BeNull(container.GetSingleton(typeof(IMyInterface)));
+            Assert.That(container.GetSingleton(typeof(IMyInterface))).IsNull();
         }
 
         public void ShouldHaveSingletonAfterRegistering()
@@ -34,7 +34,7 @@ namespace Open.Core.Test.UnitTests
             container.RegisterSingleton(typeof(IMyInterface), instance);
 
             object retreived = container.GetSingleton(typeof (IMyInterface));
-            Should.Equal(retreived, instance);
+            Assert.That(retreived).Is(instance);
         }
 
         public void ShouldReplaceSingleton()
@@ -46,24 +46,24 @@ namespace Open.Core.Test.UnitTests
             container.RegisterSingleton(typeof(IMyInterface), instance2);
 
             object retreived = container.GetSingleton(typeof(IMyInterface));
-            Should.NotEqual(retreived, instance1);
-            Should.Equal(retreived, instance2);
+            Assert.That(retreived).IsNot(instance1);
+            Assert.That(retreived).Is(instance2);
         }
 
         public void ShouldReturnNullWhenNoKeySpecified()
         {
-            Should.BeNull(container.GetSingleton(null));
+            Assert.That(container.GetSingleton(null)).IsNull();
         }
 
         public void ShouldNotContainSingleton()
         {
-            Should.BeFalse(container.ContainsSingleton(typeof(IMyInterface)));
+            Assert.That(container.ContainsSingleton(typeof(IMyInterface))).IsFalse();
         }
 
         public void ShouldContainSingleton()
         {
             container.RegisterSingleton(typeof(IMyInterface), new MyClass());
-            Should.BeTrue(container.ContainsSingleton(typeof(IMyInterface)));
+            Assert.That(container.ContainsSingleton(typeof(IMyInterface))).IsTrue();
         }
 
         public void ShouldUnregisterSingleton()
@@ -71,21 +71,21 @@ namespace Open.Core.Test.UnitTests
             MyClass instance1 = new MyClass();
             container.RegisterSingleton(typeof(IMyInterface), instance1);
             container.RegisterSingleton(typeof(IMyInterface), instance1);
-            Should.Equal(container.GetSingleton(typeof (IMyInterface)), instance1);
+            Assert.That(container.GetSingleton(typeof(IMyInterface))).Is(instance1);
 
             container.UnregisterSingleton(typeof(IMyInterface));
-            Should.Equal(container.GetSingleton(typeof(IMyInterface)), null);
+            Assert.That(container.GetSingleton(typeof(IMyInterface))).Is(null);
         }
 
         public void ShouldCreateSingletonInstance()
         {
-            Should.BeNull(container.GetSingleton(typeof(IMyInterface)));
+            Assert.That(container.GetSingleton(typeof(IMyInterface))).IsNull();
 
             MyClass instance1 = new MyClass();
             object retrieved = container.GetOrCreateSingleton(typeof(IMyInterface), delegate { return instance1; });
 
-            Should.Equal(retrieved, instance1);
-            Should.Equal(container.GetSingleton(typeof(IMyInterface)), instance1);
+            Assert.That(retrieved).Is(instance1);
+            Assert.That(container.GetSingleton(typeof(IMyInterface))).Is(instance1);
         }
         #endregion
     }

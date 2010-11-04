@@ -26,13 +26,13 @@ namespace Open.Core.Test.UnitTests
         #region Tests
         public void ShouldNotBeDisposed()
         {
-            Should.BeFalse(model.IsDisposed);
+            Assert.That(model.IsDisposed).IsFalse();
         }
 
         public void ShouldBeDisposed()
         {
             model.Dispose();
-            Should.BeTrue(model.IsDisposed);
+            Assert.That(model.IsDisposed).IsTrue();
         }
 
         public void ShouldFireDisposedEventOnce()
@@ -43,7 +43,7 @@ namespace Open.Core.Test.UnitTests
             model.Dispose();
             model.Dispose();
 
-            Should.Equal(count, 1);
+            Assert.That(count).Is(1);
         }
         #endregion
     }

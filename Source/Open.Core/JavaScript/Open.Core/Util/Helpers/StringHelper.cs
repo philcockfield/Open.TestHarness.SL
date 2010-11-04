@@ -91,5 +91,13 @@ namespace Open.Core.Helpers
             if (value.Trim() == string.Empty) return false;
             return true;
         }
+
+        /// <summary>Determines if the specified value is in capitals.</summary>
+        /// <param name="value">The value to examine.</param>
+        public bool IsCapital(string value)
+        {
+            if (Script.IsNullOrUndefined(value)) return false;
+            return value == value.ToUpperCase();
+        }
     }
 }

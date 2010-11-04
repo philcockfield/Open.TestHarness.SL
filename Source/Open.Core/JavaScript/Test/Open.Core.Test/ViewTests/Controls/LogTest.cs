@@ -50,6 +50,13 @@ namespace Open.Core.Test.ViewTests.Controls
         public void Log__WriteProperties_null_title() { WriteProperties(null); }
         public void Log__WriteProperties_no_title_passed() { WriteProperties(); }
         public void Log__WriteProperties_string() { WriteProperties("Foo String"); }
+        public void Log__WriteDictionary()
+        {
+            Dictionary dic = new Dictionary();
+            dic["MyText"] = "Foo";
+            dic["MyNumber"] = 3;
+            Log.WriteDictionary(dic);
+        }
 
         [AlternateSignature]
         private static extern void WriteProperties();

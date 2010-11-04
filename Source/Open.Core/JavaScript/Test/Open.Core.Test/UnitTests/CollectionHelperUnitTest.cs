@@ -11,15 +11,15 @@ namespace Open.Core.Test.UnitTests
             Array array = new string[] { };
             ArrayList list = new ArrayList();
 
-            Should.BeNull(Helper.Collection.Last(null));
-            Should.BeNull(Helper.Collection.Last(array));
-            Should.BeNull(Helper.Collection.Last(list));
+            Assert.That(Helper.Collection.Last(null)).IsNull();
+            Assert.That(Helper.Collection.Last(array)).IsNull();
+            Assert.That(Helper.Collection.Last(list)).IsNull();
         }
 
         public void ShouldReturnLastItemFromArray()
         {
             Array array = new string[] { "one", "two", "three" };
-            Should.Equal(Helper.Collection.Last(array), "three");
+            Assert.That(Helper.Collection.Last(array)).Is("three");
         }
 
         public void ShouldReturnLastItemFromArrayList()
@@ -28,13 +28,13 @@ namespace Open.Core.Test.UnitTests
             list.Add(1);
             list.Add(2);
             list.Add(3);
-            Should.Equal(Helper.Collection.Last(list), 3);
+            Assert.That(Helper.Collection.Last(list)).Is(3);
         }
 
         public void ShouldReturnLastItemFromEnumerable()
         {
             SampleEnumerator enumerable = new SampleEnumerator();
-            Should.Equal(Helper.Collection.Last(enumerable), "c");
+            Assert.That(Helper.Collection.Last(enumerable)).Is("c");
         }
     }
 

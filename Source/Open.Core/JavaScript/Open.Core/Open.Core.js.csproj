@@ -91,8 +91,8 @@
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Models\ViewFocus.cs" />
     <Compile Include="Templating\Template.cs" />
+    <Compile Include="Testing\Assert.cs" />
     <Compile Include="Testing\ITestHarnessEvents.cs" />
-    <Compile Include="Testing\Should.cs" />
     <Compile Include="Testing\TestHarness.cs" />
     <Compile Include="UI\Resize\HorizontalPanelResizer.cs" />
     <Compile Include="UI\Resize\PanelResizerBase.cs" />

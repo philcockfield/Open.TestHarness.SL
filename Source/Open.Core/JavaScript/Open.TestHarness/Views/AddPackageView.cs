@@ -130,6 +130,7 @@ namespace Open.Testing.Views
             IconTextButton button = new IconTextButton();
             button.Text = text;
             button.CreateView().Insert(selector, InsertMode.Replace);
+            button.CanFocus = false;
 
             // Wire up events.
             button.Click += handler;

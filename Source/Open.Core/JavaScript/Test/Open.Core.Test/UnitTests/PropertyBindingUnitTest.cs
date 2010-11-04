@@ -31,20 +31,20 @@ namespace Open.Core.Test.UnitTests
 
             sourceModel.Text = "Foo";
             WriteModels("After change to 'Foo'");
-            Should.Equal(targetModel.Text, "Foo");
+            Assert.That(targetModel.Text).Is("Foo");
 
             // --
 
             // No change - only one-way binding
             targetModel.Text = "Bar";
-            Should.Equal(sourceModel.Text, "Foo");
+            Assert.That(sourceModel.Text).Is("Foo");
         }
 
         public void ShouldClearBinding()
         {
             targetProp.BindTo(sourceProp, BindingMode.OneWay);
             sourceModel.Text = "Foo";
-            Should.Equal(targetModel.Text, "Foo");
+            Assert.That(targetModel.Text).Is("Foo");
             
             // --
 
@@ -56,14 +56,14 @@ namespace Open.Core.Test.UnitTests
 
             sourceModel.Text = "Bar";
             WriteModels("After Changed to 'Bar'");
-            Should.Equal(targetModel.Text, "Foo");
+            Assert.That(targetModel.Text).Is("Foo");
         }
 
         public void ShouldChangeBinding()
         {
             targetProp.BindTo(sourceProp, BindingMode.OneWay);
             sourceModel.Text = "Foo";
-            Should.Equal(targetModel.Text, "Foo");
+            Assert.That(targetModel.Text).Is("Foo");
 
             // --
 
@@ -78,7 +78,7 @@ namespace Open.Core.Test.UnitTests
             source2.Text = "Zana";
             sourceModel.Text = "Another value";
             WriteModels("After change to second bound source ('Zana')");
-            Should.Equal(targetModel.Text, "Zana");
+            Assert.That(targetModel.Text).Is("Zana");
         }
 
         public void ShouldSetValueOnBind()
@@ -86,7 +86,7 @@ namespace Open.Core.Test.UnitTests
             sourceModel.Text = "One";
             targetProp.BindTo(sourceProp, BindingMode.OneWay);
             WriteModels("Bound with initial value of 'One'.");
-            Should.Equal(targetModel.Text, "One");
+            Assert.That(targetModel.Text).Is("One");
         }
 
         public void ShouldBindTwoWays()
@@ -94,11 +94,11 @@ namespace Open.Core.Test.UnitTests
             targetProp.BindTo(sourceProp, BindingMode.TwoWay);
             sourceModel.Text = "Foo";
             WriteModels("After source changed to 'Foo'.");
-            Should.Equal(targetModel.Text, "Foo");
+            Assert.That(targetModel.Text).Is("Foo");
 
             targetModel.Text = "Bar";
             WriteModels("After target changed to 'Bar'.");
-            Should.Equal(sourceModel.Text, "Bar");
+            Assert.That(sourceModel.Text).Is("Bar");
         }
         #endregion
 
