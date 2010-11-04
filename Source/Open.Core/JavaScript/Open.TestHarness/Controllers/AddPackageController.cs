@@ -1,5 +1,6 @@
 using System;
 using Open.Core;
+using Open.Testing.Models;
 using Open.Testing.Views;
 
 namespace Open.Testing.Controllers
@@ -64,17 +65,15 @@ namespace Open.Testing.Controllers
 
         private void OnAddClick(object sender, EventArgs e)
         {
-            Log.Event("Add Click"); //TEMP 
+            if (!isShowing || view == null) return;
+            if (!view.IsPopulated) return;
+            events.FireAddPackage(view.GetPackageInfo());
         }
 
         private void OnCancelClick(object sender, EventArgs e)
         {
-            if (!isShowing) return;
-            if (view == null) return;
-            view.SlideOff(delegate
-                              {
-                                  DestroyView();
-                              });
+            if (!isShowing || view == null) return;
+            view.SlideOff(delegate { DestroyView(); });
         }
         #endregion
 

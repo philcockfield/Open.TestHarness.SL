@@ -184,6 +184,8 @@ Open.Testing.TestHarnessEvents = function Open_Testing_TestHarnessEvents() {
     /// </field>
     /// <field name="__selectedClassChanged" type="Open.Testing.ClassEventHandler">
     /// </field>
+    /// <field name="__addPackage" type="Open.Testing.PackageEventHandler">
+    /// </field>
     /// <field name="__controlHostSizeChanged" type="EventHandler">
     /// </field>
     /// <field name="__changeLogHeight" type="Open.Testing._changeHeightEventHandler">
@@ -313,6 +315,31 @@ Open.Testing.TestHarnessEvents.prototype = {
         }
     },
     
+    add_addPackage: function Open_Testing_TestHarnessEvents$add_addPackage(value) {
+        /// <summary>
+        /// Fires when a new package is to be added.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__addPackage = ss.Delegate.combine(this.__addPackage, value);
+    },
+    remove_addPackage: function Open_Testing_TestHarnessEvents$remove_addPackage(value) {
+        /// <summary>
+        /// Fires when a new package is to be added.
+        /// </summary>
+        /// <param name="value" type="Function" />
+        this.__addPackage = ss.Delegate.remove(this.__addPackage, value);
+    },
+    
+    __addPackage: null,
+    
+    _fireAddPackage: function Open_Testing_TestHarnessEvents$_fireAddPackage(packageInfo) {
+        /// <param name="packageInfo" type="Open.Testing.Models.PackageInfo">
+        /// </param>
+        if (this.__addPackage != null) {
+            this.__addPackage.invoke(this, new Open.Testing.PackageEventArgs(packageInfo));
+        }
+    },
+    
     add__controlHostSizeChanged: function Open_Testing_TestHarnessEvents$add__controlHostSizeChanged(value) {
         /// <summary>
         /// Fires when the width of the control-host changes.
@@ -375,6 +402,21 @@ Open.Testing.MethodEventArgs = function Open_Testing_MethodEventArgs(methodInfo)
 }
 Open.Testing.MethodEventArgs.prototype = {
     methodInfo: null
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Open.Testing.PackageEventArgs
+
+Open.Testing.PackageEventArgs = function Open_Testing_PackageEventArgs(packageInfo) {
+    /// <param name="packageInfo" type="Open.Testing.Models.PackageInfo">
+    /// </param>
+    /// <field name="packageInfo" type="Open.Testing.Models.PackageInfo">
+    /// </field>
+    this.packageInfo = packageInfo;
+}
+Open.Testing.PackageEventArgs.prototype = {
+    packageInfo: null
 }
 
 
@@ -822,7 +864,13 @@ Open.Testing.Controllers.AddPackageController.prototype = {
         /// </param>
         /// <param name="e" type="ss.EventArgs">
         /// </param>
-        Open.Core.Log.event('Add Click');
+        if (!this._isShowing$4 || this._view$4 == null) {
+            return;
+        }
+        if (!this._view$4.get_isPopulated()) {
+            return;
+        }
+        this._events$4._fireAddPackage(this._view$4.getPackageInfo());
     },
     
     _onCancelClick$4: function Open_Testing_Controllers_AddPackageController$_onCancelClick$4(sender, e) {
@@ -830,10 +878,7 @@ Open.Testing.Controllers.AddPackageController.prototype = {
         /// </param>
         /// <param name="e" type="ss.EventArgs">
         /// </param>
-        if (!this._isShowing$4) {
-            return;
-        }
-        if (this._view$4 == null) {
+        if (!this._isShowing$4 || this._view$4 == null) {
             return;
         }
         this._view$4.slideOff(ss.Delegate.create(this, function() {
@@ -1456,14 +1501,18 @@ Open.Testing.Controllers.SidebarController = function Open_Testing_Controllers_S
     /// </field>
     /// <field name="_listRoot$4" type="Open.Core.Lists.ListItem">
     /// </field>
+    /// <field name="_events$4" type="Open.Testing.TestHarnessEvents">
+    /// </field>
     this._packageControllers$4 = [];
     Open.Testing.Controllers.SidebarController.initializeBase(this);
+    this._events$4 = this.get_common().get_events();
     this._listRoot$4 = new Open.Core.Lists.ListItem();
     this._view$4 = this.get_common().get_shell().get_sidebar();
     this._view$4.get_rootList().set_rootNode(this._listRoot$4);
     this._methodListController$4 = new Open.Testing.Controllers.MethodListController();
     this._listRoot$4.addChild(new Open.Testing.Models.CustomListItem(Open.Testing.Models.CustomListItemType.addPackage));
     this._listRoot$4.add_childSelectionChanged(Open.Testing.Controllers.SidebarController._onChildSelectionChanged$4);
+    this._events$4.add_addPackage(ss.Delegate.create(this, this._onAddPackageRequest$4));
 }
 Open.Testing.Controllers.SidebarController._onChildSelectionChanged$4 = function Open_Testing_Controllers_SidebarController$_onChildSelectionChanged$4(sender, e) {
     /// <param name="sender" type="Object">
@@ -1476,9 +1525,11 @@ Open.Testing.Controllers.SidebarController.prototype = {
     _view$4: null,
     _methodListController$4: null,
     _listRoot$4: null,
+    _events$4: null,
     
     onDisposed: function Open_Testing_Controllers_SidebarController$onDisposed() {
         this._listRoot$4.remove_childSelectionChanged(Open.Testing.Controllers.SidebarController._onChildSelectionChanged$4);
+        this._events$4.remove_addPackage(ss.Delegate.create(this, this._onAddPackageRequest$4));
         this._view$4.dispose();
         this._methodListController$4.dispose();
         var $enum1 = ss.IEnumerator.getEnumerator(this._packageControllers$4);
@@ -1487,6 +1538,14 @@ Open.Testing.Controllers.SidebarController.prototype = {
             controller.dispose();
         }
         Open.Testing.Controllers.SidebarController.callBaseMethod(this, 'onDisposed');
+    },
+    
+    _onAddPackageRequest$4: function Open_Testing_Controllers_SidebarController$_onAddPackageRequest$4(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="Open.Testing.PackageEventArgs">
+        /// </param>
+        this.addPackage(e.packageInfo);
     },
     
     addPackage: function Open_Testing_Controllers_SidebarController$addPackage(testPackage) {
@@ -2659,6 +2718,17 @@ Open.Testing.Views.AddPackageView.prototype = {
         return this._txtScriptUrl$4.get_hasText() && this._txtInitMethod$4.get_hasText();
     },
     
+    getPackageInfo: function Open_Testing_Views_AddPackageView$getPackageInfo() {
+        /// <summary>
+        /// Gets the package-info singleton from the currently text settings.
+        /// </summary>
+        /// <returns type="Open.Testing.Models.PackageInfo"></returns>
+        if (!this.get_isPopulated()) {
+            return null;
+        }
+        return Open.Testing.Models.PackageInfo.singletonFromUrl(this._txtInitMethod$4.get_text(), this._txtScriptUrl$4.get_text());
+    },
+    
     slideOn: function Open_Testing_Views_AddPackageView$slideOn(onComplete) {
         /// <summary>
         /// Slides the panel on screen.
@@ -3377,6 +3447,7 @@ Open.Testing.StringLibrary.registerClass('Open.Testing.StringLibrary');
 Open.Testing._buttonHelper.registerClass('Open.Testing._buttonHelper');
 Open.Testing.TestHarnessEvents.registerClass('Open.Testing.TestHarnessEvents', null, Open.Testing.Internal.ITestHarnessEvents);
 Open.Testing.MethodEventArgs.registerClass('Open.Testing.MethodEventArgs');
+Open.Testing.PackageEventArgs.registerClass('Open.Testing.PackageEventArgs');
 Open.Testing.ClassEventArgs.registerClass('Open.Testing.ClassEventArgs');
 Open.Testing._changeHeightEventArgs.registerClass('Open.Testing._changeHeightEventArgs');
 Open.Testing.Common.registerClass('Open.Testing.Common');

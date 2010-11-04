@@ -16,11 +16,13 @@ namespace Open.Testing.Controllers
         private readonly SidebarView view;
         private readonly MethodListController methodListController;
         private readonly ListItem listRoot;
+        private readonly TestHarnessEvents events;
 
         /// <summary>Constructor.</summary>
         public SidebarController()
         {
             // Setup initial conditions.
+            events = Common.Events;
             listRoot = new ListItem();
             view = Common.Shell.Sidebar;
             view.RootList.RootNode = listRoot;
@@ -33,11 +35,13 @@ namespace Open.Testing.Controllers
 
             // Wire up events.
             listRoot.ChildSelectionChanged += OnChildSelectionChanged;
+            events.AddPackage += OnAddPackageRequest;
         }
 
         protected override void OnDisposed()
         {
             listRoot.ChildSelectionChanged -= OnChildSelectionChanged;
+            events.AddPackage -= OnAddPackageRequest;
             view.Dispose();
             methodListController.Dispose();
             foreach (PackageController controller in packageControllers)
@@ -53,6 +57,11 @@ namespace Open.Testing.Controllers
         {
             // An item in the root sidebar list has been selected.
             TestHarness.Reset();
+        }
+
+        private void OnAddPackageRequest(object sender, PackageEventArgs e)
+        {
+            AddPackage(e.PackageInfo);
         }
         #endregion
 

@@ -4,6 +4,7 @@ using jQueryApi;
 using Open.Core;
 using Open.Core.Controls;
 using Open.Core.Controls.Buttons;
+using Open.Testing.Models;
 
 namespace Open.Testing.Views
 {
@@ -90,6 +91,14 @@ namespace Open.Testing.Views
         #endregion
 
         #region Methods
+        /// <summary>Gets the package-info singleton from the currently text settings.</summary>
+        /// <returns>The package-info, or null if the control is not populated.</returns>
+        public PackageInfo GetPackageInfo()
+        {
+            if (!IsPopulated) return null;
+            return PackageInfo.SingletonFromUrl(txtInitMethod.Text, txtScriptUrl.Text);
+        }
+
         /// <summary>Inserts an instance of the view into the TestHarness' main canvas.</summary>
         public static AddPackageView AddToTestHarness()
         {
@@ -187,9 +196,9 @@ namespace Open.Testing.Views
                 Helper.Time.ToMsecs(SlideDuration),
                 EffectEasing.Swing,
                 delegate
-                        {
-                            Helper.Invoke(onComplete);
-                        });
+                    {
+                        Helper.Invoke(onComplete);
+                    });
         }
         #endregion
     }

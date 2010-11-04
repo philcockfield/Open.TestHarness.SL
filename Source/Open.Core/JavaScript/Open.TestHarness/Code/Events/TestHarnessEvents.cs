@@ -28,6 +28,10 @@ namespace Open.Testing
         /// <summary>Fires when when the selected class changes.</summary>
         public event ClassEventHandler SelectedClassChanged;
         internal void FireSelectedClassChanged(ClassInfo classInfo) { if (SelectedClassChanged != null) SelectedClassChanged(this, new ClassEventArgs(classInfo)); }
+
+        /// <summary>Fires when a new package is to be added.</summary>
+        public event PackageEventHandler AddPackage;
+        internal void FireAddPackage(PackageInfo packageInfo) { if (AddPackage != null) AddPackage(this, new PackageEventArgs(packageInfo)); }
         #endregion
 
         #region Methods : Display
@@ -46,6 +50,13 @@ namespace Open.Testing
     {
         public MethodEventArgs(MethodInfo methodInfo){MethodInfo = methodInfo;}
         public MethodInfo MethodInfo;
+    }
+
+    public delegate void PackageEventHandler(object sender, PackageEventArgs e);
+    public class PackageEventArgs 
+    {
+        public PackageEventArgs(PackageInfo packageInfo) { PackageInfo = packageInfo; }
+        public PackageInfo PackageInfo;
     }
 
     public delegate void ClassEventHandler(object sender, ClassEventArgs e);
