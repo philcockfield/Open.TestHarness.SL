@@ -10,9 +10,10 @@ namespace Open.Testing.Controllers
         #region Head
         private const int MinHeight = 450;
 
+        private AddPackageView view;
         private readonly TestHarnessEvents events;
         private readonly ShellView shell;
-        private readonly IButton addButton;
+        private readonly IButton showButton;
         private bool isShowing;
 
         /// <summary>Constructor.</summary>
@@ -21,20 +22,19 @@ namespace Open.Testing.Controllers
             // Setup initial conditions.
             events = Common.Events;
             shell = Common.Shell;
-            addButton = Common.Buttons.AddPackage;
+            showButton = Common.Buttons.AddPackage;
 
             // Wire up events.
-            addButton.Click += OnAddPackageClick;
+            showButton.Click += OnShowClick;
             AddPackageView.Showing += OnViewShowing;
             AddPackageView.Hidden += OnViewHidden;
             events.ClearControls += OnViewHidden;
         }
 
-
         /// <summary>Destroy.</summary>
         protected override void OnDisposed()
         {
-            addButton.Click -= OnAddPackageClick;
+            showButton.Click -= OnShowClick;
             AddPackageView.Showing -= OnViewShowing;
             AddPackageView.Hidden -= OnViewHidden;
             base.OnDisposed();
@@ -42,9 +42,9 @@ namespace Open.Testing.Controllers
         #endregion
 
         #region Event Handlers
-        private void OnAddPackageClick(object sender, EventArgs e)
+        private void OnShowClick(object sender, EventArgs e)
         {
-            addButton.IsEnabled = false;
+            showButton.IsEnabled = false;
             Show();
         }
 
@@ -54,11 +54,27 @@ namespace Open.Testing.Controllers
             SyncButtonState();
         }
 
-        void OnViewHidden(object sender, EventArgs e)
+        private void OnViewHidden(object sender, EventArgs e)
         {
             if (!isShowing) return;
             isShowing = false;
+            DestroyView();
             SyncButtonState();
+        }
+
+        private void OnAddClick(object sender, EventArgs e)
+        {
+            Log.Event("Add Click"); //TEMP 
+        }
+
+        private void OnCancelClick(object sender, EventArgs e)
+        {
+            if (!isShowing) return;
+            if (view == null) return;
+            view.SlideOff(delegate
+                              {
+                                  DestroyView();
+                              });
         }
         #endregion
 
@@ -72,15 +88,24 @@ namespace Open.Testing.Controllers
                 events.FireChangeLogHeight(shell.ControlHost.DivMain.GetHeight() - MinHeight);
             }
 
-            // Reveal the screen.
-            AddPackageView.AddToTestHarness();
+            // Insert a new view.
+            view = AddPackageView.AddToTestHarness();
+            view.AddButton.Click += OnAddClick;
+            view.CancelButton.Click += OnCancelClick;
         }
         #endregion
 
         #region Internal
         private void SyncButtonState()
         {
-            addButton.IsEnabled = !isShowing;
+            showButton.IsEnabled = !isShowing;
+        }
+
+        private void DestroyView()
+        {
+            if (view != null) view.Dispose();
+            view = null;
+            TestHarness.Reset();
         }
         #endregion
     }

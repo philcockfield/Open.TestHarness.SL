@@ -20,9 +20,9 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             textbox.Height = 40;
 
             // Wire up events.
-            textbox.TextChanged += delegate { Log.Info("!! TextChanged | Text: " + textbox.Text); };
-            textbox.TextChangedDelay += delegate { Log.Success("!! TextChangedDelay | Text: " + textbox.Text); };
-            textbox.EnterPress += delegate { Log.Success("!! EnterPress"); };
+            textbox.TextChanged += delegate { Log.Event("TextChanged | Text: " + textbox.Text); };
+            textbox.TextChangedDelay += delegate { Log.Event("TextChangedDelay | Text: " + textbox.Text); };
+            textbox.EnterPress += delegate { Log.Event("EnterPress"); };
 
             // Finish up.
             Change_Text();

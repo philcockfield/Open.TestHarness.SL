@@ -15,7 +15,6 @@ namespace Open.Core
         private static StringHelper StringHelper;
         private static TimeHelper TimeHelper;
         private static ScrollHelper ScrollHelper;
-        private static JQueryHelper JQueryHelper;
         private static TreeHelper TreeHelper;
         private static EventHelper EventHelper;
         private static DoubleHelper DoubleHelper;
@@ -51,9 +50,6 @@ namespace Open.Core
 
         /// <summary>Gets the helper for working with scrolling.</summary>
         public static ScrollHelper Scroll { get { return ScrollHelper ?? (ScrollHelper = new ScrollHelper()); } }
-
-        /// <summary>Gets the helper for working with JQuery.</summary>
-        public static JQueryHelper JQuery { get { return JQueryHelper ?? (JQueryHelper = new JQueryHelper()); } }
 
         /// <summary>Gets the helper for working with Tree data-structures.</summary>
         public static TreeHelper Tree { get { return TreeHelper ?? (TreeHelper = new TreeHelper()); } }

@@ -167,6 +167,12 @@ namespace Open.Core.Controls
             }
         }
 
+        /// <summary>Gets whether the textbox is empty (True if null, empty or only whitespace).</summary>
+        public bool HasText
+        {
+            get { return Helper.String.HasValue(Text); }
+        }
+
         /// <summary>Gets or sets the delay (in seconds) after the Text changes and the TextChangedDelay event is fired.</summary>
         public double EventDelay
         {

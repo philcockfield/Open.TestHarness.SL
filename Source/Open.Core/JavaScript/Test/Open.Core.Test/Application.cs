@@ -45,6 +45,7 @@ namespace Open.Core.Test
             TestHarness.RegisterClass(typeof(ImageButtonTest));
             TestHarness.RegisterClass(typeof(TextboxTest));
             TestHarness.RegisterClass(typeof(AccordianTest));
+            TestHarness.RegisterClass(typeof(KeyboardTest));
 
             // TestHarness
             TestHarness.RegisterClass(typeof(MyTestClass1));

@@ -60,6 +60,9 @@ namespace Open.Testing.Views
         /// <summary>Destructor.</summary>
         protected override void OnDisposed()
         {
+            // Dispose of children.
+            if (control != null) control.Dispose();
+
             // Unwire events.
             events.ControlHostSizeChanged -= OnHostResized;
 

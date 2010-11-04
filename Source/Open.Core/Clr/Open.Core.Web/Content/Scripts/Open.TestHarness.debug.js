@@ -750,45 +750,48 @@ Open.Testing.Controllers.AddPackageController = function Open_Testing_Controller
     /// </summary>
     /// <field name="_minHeight$4" type="Number" integer="true" static="true">
     /// </field>
+    /// <field name="_view$4" type="Open.Testing.Views.AddPackageView">
+    /// </field>
     /// <field name="_events$4" type="Open.Testing.TestHarnessEvents">
     /// </field>
     /// <field name="_shell$4" type="Open.Testing.Views.ShellView">
     /// </field>
-    /// <field name="_addButton$4" type="Open.Core.IButton">
+    /// <field name="_showButton$4" type="Open.Core.IButton">
     /// </field>
     /// <field name="_isShowing$4" type="Boolean">
     /// </field>
     Open.Testing.Controllers.AddPackageController.initializeBase(this);
     this._events$4 = this.get_common().get_events();
     this._shell$4 = this.get_common().get_shell();
-    this._addButton$4 = this.get_common().get_buttons().get_addPackage();
-    this._addButton$4.add_click(ss.Delegate.create(this, this._onAddPackageClick$4));
+    this._showButton$4 = this.get_common().get_buttons().get_addPackage();
+    this._showButton$4.add_click(ss.Delegate.create(this, this._onShowClick$4));
     Open.Testing.Views.AddPackageView.add_showing(ss.Delegate.create(this, this._onViewShowing$4));
     Open.Testing.Views.AddPackageView.add_hidden(ss.Delegate.create(this, this._onViewHidden$4));
     this._events$4.add_clearControls(ss.Delegate.create(this, this._onViewHidden$4));
 }
 Open.Testing.Controllers.AddPackageController.prototype = {
+    _view$4: null,
     _events$4: null,
     _shell$4: null,
-    _addButton$4: null,
+    _showButton$4: null,
     _isShowing$4: false,
     
     onDisposed: function Open_Testing_Controllers_AddPackageController$onDisposed() {
         /// <summary>
         /// Destroy.
         /// </summary>
-        this._addButton$4.remove_click(ss.Delegate.create(this, this._onAddPackageClick$4));
+        this._showButton$4.remove_click(ss.Delegate.create(this, this._onShowClick$4));
         Open.Testing.Views.AddPackageView.remove_showing(ss.Delegate.create(this, this._onViewShowing$4));
         Open.Testing.Views.AddPackageView.remove_hidden(ss.Delegate.create(this, this._onViewHidden$4));
         Open.Testing.Controllers.AddPackageController.callBaseMethod(this, 'onDisposed');
     },
     
-    _onAddPackageClick$4: function Open_Testing_Controllers_AddPackageController$_onAddPackageClick$4(sender, e) {
+    _onShowClick$4: function Open_Testing_Controllers_AddPackageController$_onShowClick$4(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
         /// <param name="e" type="ss.EventArgs">
         /// </param>
-        this._addButton$4.set_isEnabled(false);
+        this._showButton$4.set_isEnabled(false);
         this.show();
     },
     
@@ -810,7 +813,32 @@ Open.Testing.Controllers.AddPackageController.prototype = {
             return;
         }
         this._isShowing$4 = false;
+        this._destroyView$4();
         this._syncButtonState$4();
+    },
+    
+    _onAddClick$4: function Open_Testing_Controllers_AddPackageController$_onAddClick$4(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        Open.Core.Log.event('Add Click');
+    },
+    
+    _onCancelClick$4: function Open_Testing_Controllers_AddPackageController$_onCancelClick$4(sender, e) {
+        /// <param name="sender" type="Object">
+        /// </param>
+        /// <param name="e" type="ss.EventArgs">
+        /// </param>
+        if (!this._isShowing$4) {
+            return;
+        }
+        if (this._view$4 == null) {
+            return;
+        }
+        this._view$4.slideOff(ss.Delegate.create(this, function() {
+            this._destroyView$4();
+        }));
     },
     
     show: function Open_Testing_Controllers_AddPackageController$show() {
@@ -820,11 +848,21 @@ Open.Testing.Controllers.AddPackageController.prototype = {
         if (this._shell$4.get_controlHost().get_height() < Open.Testing.Controllers.AddPackageController._minHeight$4) {
             this._events$4._fireChangeLogHeight(this._shell$4.get_controlHost().get_divMain().height() - Open.Testing.Controllers.AddPackageController._minHeight$4);
         }
-        Open.Testing.Views.AddPackageView.addToTestHarness();
+        this._view$4 = Open.Testing.Views.AddPackageView.addToTestHarness();
+        this._view$4.get_addButton().add_click(ss.Delegate.create(this, this._onAddClick$4));
+        this._view$4.get_cancelButton().add_click(ss.Delegate.create(this, this._onCancelClick$4));
     },
     
     _syncButtonState$4: function Open_Testing_Controllers_AddPackageController$_syncButtonState$4() {
-        this._addButton$4.set_isEnabled(!this._isShowing$4);
+        this._showButton$4.set_isEnabled(!this._isShowing$4);
+    },
+    
+    _destroyView$4: function Open_Testing_Controllers_AddPackageController$_destroyView$4() {
+        if (this._view$4 != null) {
+            this._view$4.dispose();
+        }
+        this._view$4 = null;
+        Open.Testing.TestHarness.reset();
     }
 }
 
@@ -2499,16 +2537,26 @@ Open.Testing.Views.AddPackageView = function Open_Testing_Views_AddPackageView()
     /// </field>
     /// <field name="_txtInitMethod$4" type="Open.Core.Controls.Textbox">
     /// </field>
-    /// <field name="_btnAdd$4" type="Open.Core.Controls.Buttons.IconTextButton">
+    /// <field name="_addButton$4" type="Open.Core.Controls.Buttons.IconTextButton">
     /// </field>
-    /// <field name="_btnCancel$4" type="Open.Core.Controls.Buttons.IconTextButton">
+    /// <field name="_cancelButton$4" type="Open.Core.Controls.Buttons.IconTextButton">
+    /// </field>
+    /// <field name="_isInitialized$4" type="Boolean">
+    /// </field>
+    /// <field name="_isShowing$4" type="Boolean">
     /// </field>
     Open.Testing.Views.AddPackageView.initializeBase(this);
+    this._addButton$4 = Open.Testing.Views.AddPackageView._createButton$4(Open.Testing.StringLibrary.add);
+    this._cancelButton$4 = Open.Testing.Views.AddPackageView._createButton$4(Open.Testing.StringLibrary.cancel);
     this.retrieveHtml(Open.Testing.Views.AddPackageView._contentUrl$4, ss.Delegate.create(this, function() {
         this._divInnerSlide$4 = $(Open.Testing.CssSelectors.addPackageInnerSlide);
         this._offLeft$4 = this._divInnerSlide$4.css(Open.Core.Css.left);
         this._initializeTextboxes$4();
-        this._initializeButtons$4();
+        this._addButton$4.createView().insert(Open.Testing.CssSelectors.addPackageBtnAdd, Open.Core.InsertMode.replace);
+        this._cancelButton$4.createView().insert(Open.Testing.CssSelectors.addPackageBtnCancel, Open.Core.InsertMode.replace);
+        Open.Core.Keyboard.add_keydown(ss.Delegate.create(this, this._onKeydown$4));
+        this._isInitialized$4 = true;
+        this.updateState();
         this.slideOn(null);
     }));
 }
@@ -2562,31 +2610,13 @@ Open.Testing.Views.AddPackageView.addToTestHarness = function Open_Testing_Views
     Open.Testing.TestHarness.addControl(view);
     return view;
 }
-Open.Testing.Views.AddPackageView._initializeTextbox$4 = function Open_Testing_Views_AddPackageView$_initializeTextbox$4(selector, icon) {
-    /// <param name="selector" type="String">
-    /// </param>
-    /// <param name="icon" type="String">
-    /// </param>
-    /// <returns type="Open.Core.Controls.Textbox"></returns>
-    var textbox = new Open.Core.Controls.Textbox();
-    textbox.get_padding().change(10, 5);
-    textbox.insert(selector, Open.Core.InsertMode.replace);
-    textbox.set_leftIcon(Open.Core.Helper.get_url().prependDomain(icon));
-    return textbox;
-}
-Open.Testing.Views.AddPackageView._initializeButton$4 = function Open_Testing_Views_AddPackageView$_initializeButton$4(selector, text, handler) {
-    /// <param name="selector" type="String">
-    /// </param>
+Open.Testing.Views.AddPackageView._createButton$4 = function Open_Testing_Views_AddPackageView$_createButton$4(text) {
     /// <param name="text" type="String">
-    /// </param>
-    /// <param name="handler" type="EventHandler">
     /// </param>
     /// <returns type="Open.Core.Controls.Buttons.IconTextButton"></returns>
     var button = new Open.Core.Controls.Buttons.IconTextButton();
     button.set_text(text);
-    button.createView().insert(selector, Open.Core.InsertMode.replace);
     button.set_canFocus(false);
-    button.add_click(handler);
     return button;
 }
 Open.Testing.Views.AddPackageView.prototype = {
@@ -2594,23 +2624,39 @@ Open.Testing.Views.AddPackageView.prototype = {
     _offLeft$4: null,
     _txtScriptUrl$4: null,
     _txtInitMethod$4: null,
-    _btnAdd$4: null,
-    _btnCancel$4: null,
+    _addButton$4: null,
+    _cancelButton$4: null,
+    _isInitialized$4: false,
+    _isShowing$4: false,
     
-    _onAddClick$4: function Open_Testing_Views_AddPackageView$_onAddClick$4(sender, e) {
-        /// <param name="sender" type="Object">
-        /// </param>
-        /// <param name="e" type="ss.EventArgs">
-        /// </param>
-        Open.Core.Log.event('Add Click');
+    onDisposed: function Open_Testing_Views_AddPackageView$onDisposed() {
+        Open.Core.Keyboard.remove_keydown(ss.Delegate.create(this, this._onKeydown$4));
+        Open.Testing.Views.AddPackageView.callBaseMethod(this, 'onDisposed');
     },
     
-    _onCancelClick$4: function Open_Testing_Views_AddPackageView$_onCancelClick$4(sender, e) {
+    _onKeydown$4: function Open_Testing_Views_AddPackageView$_onKeydown$4(sender, e) {
         /// <param name="sender" type="Object">
         /// </param>
-        /// <param name="e" type="ss.EventArgs">
+        /// <param name="e" type="Open.Core.KeyEventArgs">
         /// </param>
-        Open.Core.Log.event('Cancel Click');
+        if (this._isShowing$4 && e.key === Open.Core.Key.esc) {
+            this.get_cancelButton().invokeClick(false);
+        }
+    },
+    
+    get_addButton: function Open_Testing_Views_AddPackageView$get_addButton() {
+        /// <value type="Open.Core.IButton"></value>
+        return this._addButton$4;
+    },
+    
+    get_cancelButton: function Open_Testing_Views_AddPackageView$get_cancelButton() {
+        /// <value type="Open.Core.IButton"></value>
+        return this._cancelButton$4;
+    },
+    
+    get_isPopulated: function Open_Testing_Views_AddPackageView$get_isPopulated() {
+        /// <value type="Boolean"></value>
+        return this._txtScriptUrl$4.get_hasText() && this._txtInitMethod$4.get_hasText();
     },
     
     slideOn: function Open_Testing_Views_AddPackageView$slideOn(onComplete) {
@@ -2620,8 +2666,15 @@ Open.Testing.Views.AddPackageView.prototype = {
         /// <param name="onComplete" type="Action">
         /// Action to invoke upon completion.
         /// </param>
+        if (!this._isInitialized$4) {
+            return;
+        }
         Open.Testing.Views.AddPackageView._fireShowing$4();
-        this._slide$4('0px', onComplete);
+        this._slide$4('0px', ss.Delegate.create(this, function() {
+            this._isShowing$4 = true;
+            this._txtScriptUrl$4.get_focus().apply();
+            Open.Core.Helper.invoke(onComplete);
+        }));
     },
     
     slideOff: function Open_Testing_Views_AddPackageView$slideOff(onComplete) {
@@ -2631,20 +2684,48 @@ Open.Testing.Views.AddPackageView.prototype = {
         /// <param name="onComplete" type="Action">
         /// Action to invoke upon completion.
         /// </param>
+        if (!this._isInitialized$4) {
+            return;
+        }
         this._slide$4(this._offLeft$4, ss.Delegate.create(this, function() {
+            this._isShowing$4 = false;
             Open.Testing.Views.AddPackageView._fireHidden$4();
             Open.Core.Helper.invoke(onComplete);
         }));
     },
     
-    _initializeTextboxes$4: function Open_Testing_Views_AddPackageView$_initializeTextboxes$4() {
-        this._txtScriptUrl$4 = Open.Testing.Views.AddPackageView._initializeTextbox$4(Open.Testing.CssSelectors.addPackageTxtScript, Open.Testing.Views.AddPackageView.iconJs);
-        this._txtInitMethod$4 = Open.Testing.Views.AddPackageView._initializeTextbox$4(Open.Testing.CssSelectors.addPackageTxtMethod, Open.Testing.Views.AddPackageView.iconMethod);
+    updateState: function Open_Testing_Views_AddPackageView$updateState() {
+        /// <summary>
+        /// Updates the state of the control and it's children.
+        /// </summary>
+        if (!this._isInitialized$4) {
+            return;
+        }
+        this._addButton$4.set_isEnabled(this.get_isPopulated());
     },
     
-    _initializeButtons$4: function Open_Testing_Views_AddPackageView$_initializeButtons$4() {
-        this._btnAdd$4 = Open.Testing.Views.AddPackageView._initializeButton$4(Open.Testing.CssSelectors.addPackageBtnAdd, Open.Testing.StringLibrary.add, ss.Delegate.create(this, this._onAddClick$4));
-        this._btnCancel$4 = Open.Testing.Views.AddPackageView._initializeButton$4(Open.Testing.CssSelectors.addPackageBtnCancel, Open.Testing.StringLibrary.cancel, ss.Delegate.create(this, this._onCancelClick$4));
+    _initializeTextboxes$4: function Open_Testing_Views_AddPackageView$_initializeTextboxes$4() {
+        this._txtScriptUrl$4 = this._initializeTextbox$4(Open.Testing.CssSelectors.addPackageTxtScript, Open.Testing.Views.AddPackageView.iconJs);
+        this._txtInitMethod$4 = this._initializeTextbox$4(Open.Testing.CssSelectors.addPackageTxtMethod, Open.Testing.Views.AddPackageView.iconMethod);
+    },
+    
+    _initializeTextbox$4: function Open_Testing_Views_AddPackageView$_initializeTextbox$4(selector, icon) {
+        /// <param name="selector" type="String">
+        /// </param>
+        /// <param name="icon" type="String">
+        /// </param>
+        /// <returns type="Open.Core.Controls.Textbox"></returns>
+        var textbox = new Open.Core.Controls.Textbox();
+        textbox.get_padding().change(10, 5);
+        textbox.set_leftIcon(Open.Core.Helper.get_url().prependDomain(icon));
+        textbox.insert(selector, Open.Core.InsertMode.replace);
+        textbox.add_textChanged(ss.Delegate.create(this, function() {
+            this.updateState();
+        }));
+        textbox.add_enterPress(ss.Delegate.create(this, function() {
+            this.get_addButton().invokeClick(false);
+        }));
+        return textbox;
     },
     
     _slide$4: function Open_Testing_Views_AddPackageView$_slide$4(left, onComplete) {
@@ -2752,6 +2833,9 @@ Open.Testing.Views.ControlWrapperView.prototype = {
         /// <summary>
         /// Destructor.
         /// </summary>
+        if (this._control$4 != null) {
+            this._control$4.dispose();
+        }
         this._events$4.remove__controlHostSizeChanged(ss.Delegate.create(this, this._onHostResized$4));
         this._divRoot$4.remove();
         Open.Testing.Views.ControlWrapperView.callBaseMethod(this, 'onDisposed');

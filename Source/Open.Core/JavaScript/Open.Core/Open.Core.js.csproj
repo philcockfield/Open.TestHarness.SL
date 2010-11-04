@@ -112,7 +112,6 @@
     <Compile Include="Util\Helpers\ExceptionHelper.cs" />
     <Compile Include="Util\Helpers\Helper.cs" />
     <Compile Include="Util\Helpers\IconHelper.cs" />
-    <Compile Include="Util\Helpers\JQueryHelper.cs" />
     <Compile Include="Util\Helpers\JsonHelper.cs" />
     <Compile Include="Util\Helpers\ReflectionHelper.cs" />
     <Compile Include="Util\Helpers\ScriptLoadHelper.cs" />

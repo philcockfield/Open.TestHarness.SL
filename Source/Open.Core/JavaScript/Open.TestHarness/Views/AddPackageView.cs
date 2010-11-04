@@ -32,34 +32,61 @@ namespace Open.Testing.Views
         private Textbox txtScriptUrl;
         private Textbox txtInitMethod;
 
-        private IconTextButton btnAdd;
-        private IconTextButton btnCancel;
+        private readonly IconTextButton addButton;
+        private readonly IconTextButton cancelButton;
+        private bool isInitialized = false;
+        private bool isShowing = false;
 
         /// <summary>Constructor.</summary>
         public AddPackageView()
         {
+            // Create buttons.
+            addButton = CreateButton(StringLibrary.Add);
+            cancelButton = CreateButton(StringLibrary.Cancel);
+
             // Load the HTML content.
             RetrieveHtml(ContentUrl, delegate
                                          {
+                                             // Setup children.
                                              divInnerSlide = jQuery.Select(CssSelectors.AddPackageInnerSlide);
                                              offLeft = divInnerSlide.GetCSS(Css.Left);
                                              InitializeTextboxes();
-                                             InitializeButtons();
+
+                                             // Insert buttons.
+                                             addButton.CreateView().Insert(CssSelectors.AddPackageBtnAdd, InsertMode.Replace);
+                                             cancelButton.CreateView().Insert(CssSelectors.AddPackageBtnCancel, InsertMode.Replace);
+
+                                             // Wire up events.
+                                             Keyboard.Keydown += OnKeydown;
+
+                                             // Finish up.
+                                             isInitialized = true;
+                                             UpdateState();
                                              SlideOn(null);
                                          });
+        }
+
+        protected override void OnDisposed()
+        {
+            Keyboard.Keydown -= OnKeydown;
+            base.OnDisposed();
         }
         #endregion
 
         #region Event Handlers
-        private void OnAddClick(object sender, EventArgs e)
+        private void OnKeydown(object sender, KeyEventArgs e)
         {
-            Log.Event("Add Click"); //TEMP 
+            if (isShowing && e.Key == Key.Esc)
+            {
+                CancelButton.InvokeClick(false);
+            }
         }
+        #endregion
 
-        private void OnCancelClick(object sender, EventArgs e)
-        {
-            Log.Event("Cancel Click"); //TEMP 
-        }
+        #region Properties
+        public IButton AddButton { get { return addButton; } }
+        public IButton CancelButton{get { return cancelButton; }}
+        public bool IsPopulated { get { return txtScriptUrl.HasText && txtInitMethod.HasText; } }
         #endregion
 
         #region Methods
@@ -83,19 +110,34 @@ namespace Open.Testing.Views
         /// <param name="onComplete">Action to invoke upon completion.</param>
         public void SlideOn(Action onComplete)
         {
+            if (!isInitialized) return;
             FireShowing();
-            Slide("0px", onComplete);
+            Slide("0px", delegate
+                             {
+                                 isShowing = true;
+                                 txtScriptUrl.Focus.Apply();
+                                 Helper.Invoke(onComplete);
+                             });
         }
 
         /// <summary>Slides the panel off screen.</summary>
         /// <param name="onComplete">Action to invoke upon completion.</param>
         public void SlideOff(Action onComplete)
         {
+            if (!isInitialized) return;
             Slide(offLeft, delegate
                                {
+                                   isShowing = false;
                                    FireHidden();
                                    Helper.Invoke(onComplete);
                                });
+        }
+
+        /// <summary>Updates the state of the control and it's children.</summary>
+        public void UpdateState()
+        {
+            if (!isInitialized) return;
+            addButton.IsEnabled = IsPopulated;
         }
         #endregion
 
@@ -106,34 +148,28 @@ namespace Open.Testing.Views
             txtInitMethod = InitializeTextbox(CssSelectors.AddPackageTxtMethod, IconMethod);
         }
 
-        private static Textbox InitializeTextbox(string selector, string icon)
+        private Textbox InitializeTextbox(string selector, string icon)
         {
+            // Create and insert the textbox.
             Textbox textbox = new Textbox();
             textbox.Padding.Change(10, 5);
-
-            textbox.Insert(selector, InsertMode.Replace);
             textbox.LeftIcon = Helper.Url.PrependDomain(icon);
+            textbox.Insert(selector, InsertMode.Replace);
 
+            // Wire up events.
+            textbox.TextChanged += delegate { UpdateState(); };
+            textbox.EnterPress += delegate { AddButton.InvokeClick(false); };
+
+            // Finish up.
             return textbox;
         }
 
-
-        private void InitializeButtons()
-        {
-            btnAdd = InitializeButton(CssSelectors.AddPackageBtnAdd, StringLibrary.Add, OnAddClick);
-            btnCancel = InitializeButton(CssSelectors.AddPackageBtnCancel, StringLibrary.Cancel, OnCancelClick);
-        }
-
-        private static IconTextButton InitializeButton(string selector, string text, EventHandler handler)
+        private static IconTextButton CreateButton(string text)
         {
             // Create and insert the button.
             IconTextButton button = new IconTextButton();
             button.Text = text;
-            button.CreateView().Insert(selector, InsertMode.Replace);
             button.CanFocus = false;
-
-            // Wire up events.
-            button.Click += handler;
 
             // Finish up.
             return button;
@@ -151,9 +187,9 @@ namespace Open.Testing.Views
                 Helper.Time.ToMsecs(SlideDuration),
                 EffectEasing.Swing,
                 delegate
-                {
-                    Helper.Invoke(onComplete);
-                });
+                        {
+                            Helper.Invoke(onComplete);
+                        });
         }
         #endregion
     }

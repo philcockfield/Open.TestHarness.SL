@@ -69,6 +69,7 @@
     <Compile Include="ViewTests\Controls\Panels\PinPanelTest.cs" />
     <Compile Include="ViewTests\Controls\Panels\SplitPanelTest.cs" />
     <Compile Include="ViewTests\Controls\Panels\TabPanelSetTest.cs" />
+    <Compile Include="ViewTests\Core\KeyboardTest.cs" />
     <Compile Include="ViewTests\Core\PackageTest.cs" />
     <Compile Include="ViewTests\Core\IconTest.cs" />
     <Compile Include="ViewTests\Core\PartTest.cs" />
