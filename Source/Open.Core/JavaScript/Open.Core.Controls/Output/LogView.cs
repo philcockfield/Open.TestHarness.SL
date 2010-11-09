@@ -12,6 +12,7 @@ namespace Open.Core.Controls
         private jQueryObject divRow;
         private int counter = 0;
         private double scrollDuration = 0;
+        private bool autoScroll = true;
         private readonly DelayedAction scrollDelay;
 
         /// <summary>Constructor.</summary>
@@ -43,7 +44,7 @@ namespace Open.Core.Controls
         #region Event Handlers
         private void OnScrollDelayElapsed()
         {
-            if (divRow == null) return;
+            if (divRow == null || !AutoScroll) return;
             OnUpdateLayout();
             Helper.Scroll.ToBottom(divList, ScrollDuration, EffectEasing.Swing, null);
         }
@@ -55,6 +56,13 @@ namespace Open.Core.Controls
         {
             get { return scrollDuration; }
             set { scrollDuration = value; }
+        }
+
+        /// <summary>Gets or sets whether the log automatically scrolls to the bottom when new data is added.</summary>
+        public bool AutoScroll
+        {
+            get { return autoScroll; }
+            set { autoScroll = value; }
         }
         #endregion
 

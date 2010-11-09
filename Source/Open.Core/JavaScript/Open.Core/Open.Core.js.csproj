@@ -82,6 +82,7 @@
     <Compile Include="Models\AnimationSettings.cs" />
     <Compile Include="Models\ButtonBase.cs" />
     <Compile Include="Models\Log\BrowserConsole.cs" />
+    <Compile Include="Models\Log\PropertyListBuilder.cs" />
     <Compile Include="Models\Log\Log.cs" />
     <Compile Include="Models\Log\LogCss.cs" />
     <Compile Include="Models\Log\LogWriter.cs" />

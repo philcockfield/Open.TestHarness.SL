@@ -92,6 +92,7 @@ namespace Open.Core
         #region Methods : ILog
         public void Write(object message, string backgroundColor)
         {
+            if (!CanWrite) return;
             WriteInternal(message, null, backgroundColor, null);
         }
 
@@ -99,6 +100,7 @@ namespace Open.Core
         public extern void WriteSeverity(object message, LogSeverity severity);
         public void WriteSeverity(object message, LogSeverity severity, Icons icon)
         {
+            if (!CanWrite) return;
             string iconPath = Script.IsNullOrUndefined(icon) ? ToIconPath(severity) : Helper.Icon.Path(icon);
             WriteInternal(message, LogCss.SeverityClass(severity), null, iconPath);
             BrowserConsole.WriteSeverity(message, severity);
@@ -106,31 +108,37 @@ namespace Open.Core
 
         public IHtmlList WriteList(string title, string backgroundColor)
         {
+            if (!CanWrite) return null;
             return View.InsertList(title, null, backgroundColor, null);
         }
 
         public IHtmlList WriteListSeverity(string title, LogSeverity severity)
         {
+            if (!CanWrite) return null;
             return View.InsertList(title, LogCss.SeverityClass(severity), null, ToIconPath(severity));
         }
 
         public void WriteIcon(object message, Icons icon, string backgroundColor)
         {
+            if (!CanWrite) return;
             View.InsertMessage(message, null, backgroundColor, Helper.Icon.Path(icon));
         }
 
         public void Event(object message)
         {
+            if (!CanWrite) return;
             View.InsertMessage(message, LogCssClasses.PropertyEvent, null, EventIcon);
         }
 
         public void WriteProperties(object instance, string title)
         {
+            if (!CanWrite) return;
             new PropertyWriter(this).WriteProperties(instance, title);
         }
 
         public void WriteDictionary(object instance, string title)
         {
+            if (!CanWrite) return;
             new PropertyWriter(this).WriteDictionary(instance as Dictionary, title);
         }
 

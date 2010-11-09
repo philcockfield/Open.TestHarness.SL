@@ -65,8 +65,9 @@ div.table { position:absolute; display:table; }
     border-color: #717376;
     border-width: 0px;
 }
-.panelBorderRight { border-right-width: 1px; }
+.panelBorderLeft { border-left-width: 1px; }
 .panelBorderTop { border-top-width: 1px; }
+.panelBorderRight { border-right-width: 1px; }
 .panelBorderBottom { border-bottom-width: 1px; }
 
 

@@ -15,5 +15,10 @@ namespace Open.Core
         SilkApplicationEdit = 8,
         SilkMouse = 9,
         SilkBrick = 10,
+        SilkBulletBlue = 11,
+        SilkBulletGreen = 12,
+        SilkBulletOrange = 13,
+        SilkBulletRed = 14,
+        SilkLightning = 15,
     }
 }

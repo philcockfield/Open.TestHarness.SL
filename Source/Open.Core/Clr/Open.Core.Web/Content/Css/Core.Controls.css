@@ -66,7 +66,7 @@ div.c_log ul
 }
 
 /* ----------- Log : Property List ----------- */
-div.c_log ul.c_log_propList
+ul.c_log_propList
 {
     margin-left:21px;
     list-style-type: none;
@@ -74,7 +74,7 @@ div.c_log ul.c_log_propList
     line-height:23px;
 }
 
-div.c_log ul.c_log_propList > li
+ul.c_log_propList > li
 {
     background-image: url(/Open.Assets/Icons/Api/Property.png);
     background-repeat: no-repeat;
@@ -82,14 +82,14 @@ div.c_log ul.c_log_propList > li
     padding-left:20px;
 }
 
-div.c_log .c_log_propName { color:#a31515; }
-div.c_log .c_log_propValue { color:#0000ff; }
-div.c_log .c_log_propError { color:Red; }
+.c_log_propName { color:#a31515; }
+.c_log_propValue { color:#0000ff; }
+.c_log_propError { color:Red; }
 
 
 /* ----------- Textbox ----------- */
 div.textbox {
-    background:white;
+    background:red;
     position:relative;
     border: 1px solid #aeaeae;
 }

@@ -62,6 +62,7 @@ namespace Open.Testing
             AddPackage("/Content/Scripts/Quest.Rogue.Test.debug.js", "Quest.Rogue.Test.Application.main");
             AddPackage("/Content/Scripts/Quest.OnDemand.Test.debug.js", "Quest.OnDemand.Test.Application.main");
             AddPackage("/Content/Scripts/Quest.EventViewer.Test.debug.js", "Quest.EventViewer.Test.Application.main");
+
         }
         #endregion
 

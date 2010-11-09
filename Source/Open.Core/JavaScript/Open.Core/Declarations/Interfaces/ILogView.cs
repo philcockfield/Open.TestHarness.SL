@@ -6,6 +6,9 @@ namespace Open.Core
     /// <summary>A visual representation of a log.</summary>
     public interface ILogView
     {
+        /// <summary>Gets or sets whether the log automatically scrolls to the bottom when new data is added.</summary>
+        bool AutoScroll { get; set; }
+
         /// <summary>Appends the given message to the log.</summary>
         /// <param name="message">The message to write (can be HTML).</param>
         /// <param name="cssClass">The CSS class to apply to log item.</param>

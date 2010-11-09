@@ -37,10 +37,16 @@ namespace Open.Core.Test.ViewTests.Controls.Input
             Log.Info("IsEnabled: " + textbox.IsEnabled);
         }
 
-        public void Toggle_SelectOnFocus()
+        public void Toggle__SelectOnFocus()
         {
             textbox.SelectOnFocus = !textbox.SelectOnFocus;
             Log.Info("SelectOnFocus: " + textbox.SelectOnFocus);
+        }
+
+        public void Toggle__Width()
+        {
+            textbox.Width = textbox.Width == 250 ? 400 : 250;
+            Log.Info("Width: " + textbox.Width);
         }
 
         public void Change_Text()
